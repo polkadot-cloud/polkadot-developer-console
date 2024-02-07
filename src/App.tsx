@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Entry } from '@polkadot-cloud/react';
+import { ButtonText, Entry } from '@polkadot-cloud/react';
 import { TabWrapper, TabsWrapper } from 'library/Tabs/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -15,16 +15,25 @@ const App = () => {
   return (
     <Entry mode="light" theme={`polkadot-relay`}>
       <HeaderWrapper>
-        <ConsoleSVG
-          style={{
-            width: '1.25rem',
-            marginRight: '0.5rem',
-            fill: 'url(#console-gradient) var(--accent-color-primary)',
-          }}
-        />
-        <h1>
-          Polkadot Developer Console <span>{version}</span>
-        </h1>
+        <div>
+          <ConsoleSVG
+            style={{
+              width: '1.25rem',
+              marginRight: '0.5rem',
+              fill: 'url(#console-gradient) var(--accent-color-primary)',
+            }}
+          />
+          <h1>
+            Polkadot Developer Console <span>{version}</span>
+          </h1>
+        </div>
+        <div>
+          <ButtonText
+            iconTransform="shrink-2"
+            text="Accounts"
+            style={{ fontSize: '0.8rem', color: 'var(--accent-color-primary)' }}
+          />
+        </div>
       </HeaderWrapper>
       <TabsWrapper>
         <TabWrapper className="active">Polkadot Relay</TabWrapper>
