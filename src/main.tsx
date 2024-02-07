@@ -1,5 +1,9 @@
+// Network themes
+import '@polkadot-cloud/core/accent/polkadot-relay.css';
+
 // Default template fonts.
 import '@polkadot-cloud/core/theme/default/fonts/index.css';
+
 // Default template theme.
 import '@polkadot-cloud/core/theme/default/index.css';
 
