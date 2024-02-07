@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { HeaderWrapper } from 'library/Header/Wrappers';
 import ConsoleSVG from 'svg/Console.svg?react';
+import { version } from '../package.json';
 
 const App = () => {
   const [count, setCount] = useState(0);
@@ -19,10 +20,12 @@ const App = () => {
             fill: 'url(#console-gradient) var(--accent-color-primary)',
           }}
         />
-        <h1>Polkadot Developer Console</h1>
+        <h1>
+          Polkadot Developer Console <span>{version}</span>
+        </h1>
       </HeaderWrapper>
       <TabsWrapper>
-        <TabWrapper>Polkadot Relay</TabWrapper>
+        <TabWrapper className="active">Polkadot Relay</TabWrapper>
         <TabWrapper>Kusama Relay</TabWrapper>
         <TabWrapper>Westend Relay</TabWrapper>
         <TabWrapper>

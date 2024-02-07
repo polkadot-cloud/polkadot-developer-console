@@ -19,5 +19,13 @@ export const HeaderWrapper = styled.div`
     );
     /* -webkit-text-fill-color: transparent;
     background-clip: text; */
+
+    > span {
+      color: var(--text-color-primary);
+      font-family: Inter, sans-serif;
+      margin-left: 0.35rem;
+      font-size: 0.7rem;
+      opacity: 0.75;
+    }
   }
 `;

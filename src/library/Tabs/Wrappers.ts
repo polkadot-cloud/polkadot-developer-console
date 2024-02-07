@@ -10,20 +10,11 @@ export const TabsWrapper = styled.div`
   > div {
     color: var(--text-color-secondary);
     border-right: 1px solid var(--border-secondary-color);
+    display: flex;
+    align-items: center;
 
     &:last-child {
       border-right: none;
-    }
-
-    &:hover {
-      color: var(--text-color-primary);
-      background-color: var(--button-tab-background);
-      cursor: pointer;
-      transition: all 0.1s;
-    }
-
-    > .icon {
-      margin-right: 0.25rem;
     }
   }
 `;
@@ -31,4 +22,22 @@ export const TabsWrapper = styled.div`
 export const TabWrapper = styled.div`
   font-size: 0.8rem;
   padding: 0.65rem 0.85rem;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    color: var(--text-color-primary);
+    background-color: var(--button-tab-background);
+    cursor: pointer;
+    transition: all 0.1s;
+  }
+
+  &.active {
+    color: var(--accent-color-primary);
+    background-color: var(--button-tab-background);
+  }
+
+  .icon {
+    margin-right: 0.25rem;
+  }
 `;
