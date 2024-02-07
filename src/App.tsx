@@ -6,6 +6,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { HeaderWrapper } from 'library/Header/Wrappers';
 import ConsoleSVG from 'svg/Console.svg?react';
 import { version } from '../package.json';
+import { FooterWrapper } from 'library/Footer/Wrappers';
+import { faHive } from '@fortawesome/free-brands-svg-icons';
 
 const App = () => {
   const [count, setCount] = useState(0);
@@ -32,16 +34,27 @@ const App = () => {
           <FontAwesomeIcon icon={faPlus} className="icon" /> New
         </TabWrapper>
       </TabsWrapper>
-      <h1>Vite + React</h1>
-      <div className="card">
+
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <h1>Vite + React</h1>
+        <br />
         <button onClick={() => setCount((c) => c + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+      <FooterWrapper>
+        <div>Connected</div>
+        <div>
+          <FontAwesomeIcon icon={faHive} className="icon" />
+          &nbsp; 1,234,567
+        </div>
+      </FooterWrapper>
     </Entry>
   );
 };
