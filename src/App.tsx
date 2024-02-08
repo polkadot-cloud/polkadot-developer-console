@@ -9,7 +9,7 @@ import { version } from '../package.json';
 import { FooterWrapper } from 'library/Footer/Wrappers';
 import { faHive } from '@fortawesome/free-brands-svg-icons';
 
-const App = () => {
+export const App = () => {
   const [count, setCount] = useState(0);
 
   return (
@@ -67,5 +67,3 @@ const App = () => {
     </Entry>
   );
 };
-
-export default App;
