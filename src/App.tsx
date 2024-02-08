@@ -1,3 +1,6 @@
+// Copyright 2024 @rossbulat/console authors & contributors
+// SPDX-License-Identifier: GPL-3.0-only
+
 import { useState } from 'react';
 import { ButtonText, Entry } from '@polkadot-cloud/react';
 import { TabWrapper, TabsWrapper } from 'library/Tabs/Wrappers';

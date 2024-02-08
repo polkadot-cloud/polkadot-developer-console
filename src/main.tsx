@@ -1,3 +1,6 @@
+// Copyright 2024 @rossbulat/console authors & contributors
+// SPDX-License-Identifier: GPL-3.0-only
+
 // Network themes
 import '@polkadot-cloud/core/accent/polkadot-relay.css';
 
