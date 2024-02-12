@@ -31,6 +31,7 @@ export const TabWrapper = styled.div`
   transition:
     background-color 0.15s,
     border 0.2s;
+  min-width: 7rem;
 
   &:hover {
     background-color: var(--button-tab-background);
