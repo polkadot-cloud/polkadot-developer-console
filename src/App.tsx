@@ -9,6 +9,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
 import { Header } from 'library/Header';
 import { Footer } from 'library/Footer';
+import { Tab } from 'library/Tabs/Tab';
 
 export const App = () => {
   const { tabs, activeTabId } = useTabs();
@@ -20,12 +21,7 @@ export const App = () => {
       <Header />
       <TabsWrapper>
         {tabs.map(({ id, name }) => (
-          <TabWrapper
-            key={`tab_${id}`}
-            className={id === activeTabId ? 'active' : undefined}
-          >
-            {name}
-          </TabWrapper>
+          <Tab key={`tab_${id}`} name={name} active={id === activeTabId} />
         ))}
         <TabWrapper>
           <FontAwesomeIcon icon={faPlus} className="icon" /> New
