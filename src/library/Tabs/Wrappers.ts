@@ -4,11 +4,16 @@
 import styled from 'styled-components';
 
 export const TabsWrapper = styled.div`
+  background-color: var(--background-list-item);
   border-top: 1px solid var(--border-secondary-color);
   border-bottom: 1px solid var(--border-secondary-color);
+  border-image: linear-gradient(45deg, #c3c3c3, #e6e6e6) 50;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-style: solid;
   display: flex;
   margin-bottom: 1rem;
-  padding: 0.2rem 0.3rem;
+  padding: 0.25rem 0.3rem;
   width: 100%;
 
   > div {
@@ -20,7 +25,7 @@ export const TabsWrapper = styled.div`
 
 export const TabWrapper = styled.div`
   border-right: 1px solid var(--border-secondary-color);
-  color: var(--text-color-secondary);
+  color: var(--text-color-tertiary);
   font-size: 0.8rem;
   padding: 0rem 0.85rem;
   display: flex;
@@ -43,7 +48,7 @@ export const TabWrapper = styled.div`
   &.active {
     border-right-color: var(--background-default);
     background-color: var(--button-tab-background);
-    color: var(--accent-color-primary);
+    color: var(--text-color-primary);
     border-radius: 0.35rem;
   }
 
@@ -52,6 +57,7 @@ export const TabWrapper = styled.div`
   }
 
   &.new {
+    color: var(--text-color-primary);
     margin-left: 0.2rem;
     min-width: auto;
   }
