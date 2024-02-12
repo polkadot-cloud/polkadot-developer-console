@@ -27,11 +27,12 @@ export const TabWrapper = styled.div`
   font-size: 0.8rem;
   padding: 0.5rem 0.85rem;
   display: flex;
+  position: relative;
   align-items: center;
   transition:
     background-color 0.15s,
     border 0.2s;
-  min-width: 7rem;
+  min-width: 8.5rem;
 
   &:hover {
     background-color: var(--button-tab-background);
@@ -59,5 +60,23 @@ export const TabWrapper = styled.div`
 
   .icon {
     margin-right: 0.25rem;
+  }
+
+  .close {
+    background-color: var(--button-tab-background);
+    color: var(--text-color-secondary);
+    position: absolute;
+    right: 0.5rem;
+    height: inherit;
+    padding: 0 0.1rem 0 0.5rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:hover,
+  &.active {
+    .close {
+      opacity: 1;
+    }
   }
 `;

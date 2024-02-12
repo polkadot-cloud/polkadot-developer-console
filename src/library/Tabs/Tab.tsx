@@ -8,6 +8,8 @@ import type { TabProps } from './types';
 import { useEventListener } from 'usehooks-ts';
 import { useTabs } from 'contexts/Tabs';
 import { useMenu } from 'contexts/Menu';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 export const Tab = ({ id, name, activeTabId }: TabProps) => {
   const { openMenu, setMenuInner } = useMenu();
@@ -18,7 +20,7 @@ export const Tab = ({ id, name, activeTabId }: TabProps) => {
   // Handle mouse over tab to change previous tab style.
   const handlePrevTab = (
     ev: ReactMouseEvent<HTMLDivElement, MouseEvent>,
-    on: 'over' | 'out'
+    on: 'over' | 'leave'
   ) => {
     if (ev.target instanceof HTMLElement) {
       const prevTabEl = document.getElementById(`tab-${id - 1}`);
@@ -54,9 +56,12 @@ export const Tab = ({ id, name, activeTabId }: TabProps) => {
       className={`${activeTabId === id ? `active ` : ``}${id === activeTabId - 1 ? `pre-active` : ``}`}
       onClick={() => setActiveTabId(id)}
       onMouseOver={(ev) => handlePrevTab(ev, 'over')}
-      onMouseOut={(ev) => handlePrevTab(ev, 'out')}
+      onMouseLeave={(ev) => handlePrevTab(ev, 'leave')}
     >
       {name}
+      <div className="close">
+        <FontAwesomeIcon icon={faClose} />
+      </div>
     </TabWrapper>
   );
 };
