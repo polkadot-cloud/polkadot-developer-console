@@ -6,8 +6,10 @@ import { TabWrapper } from './Wrappers';
 import type { TabProps } from './types';
 import { useEventListener } from 'usehooks-ts';
 import { useTabs } from 'contexts/Tabs';
+import { useMenu } from 'contexts/Menu';
 
 export const Tab = ({ id, name, active }: TabProps) => {
+  const { openMenu } = useMenu();
   const { setActiveTabId } = useTabs();
 
   const tabRef = useRef<HTMLDivElement>(null);
@@ -15,6 +17,7 @@ export const Tab = ({ id, name, active }: TabProps) => {
   // Handle context menu when tab is right clicked.
   const handleTabContextMenu = (e: Event): void => {
     e.preventDefault();
+    openMenu(e as MouseEvent);
   };
 
   useEventListener('contextmenu', handleTabContextMenu, tabRef);

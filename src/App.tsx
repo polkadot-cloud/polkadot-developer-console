@@ -9,12 +9,16 @@ import { useTabs } from 'contexts/Tabs';
 import { Header } from 'library/Header';
 import { Footer } from 'library/Footer';
 import { Tab } from 'library/Tabs/Tab';
+import { Menu } from 'library/Menu';
 
 export const App = () => {
   const { tabs, activeTabId, getActiveTab, createTab } = useTabs();
 
   return (
     <Entry mode="light" theme={`polkadot-relay`}>
+      {/* Menu: closed by default */}
+      <Menu />
+
       <Header />
       <TabsWrapper>
         {tabs.map(({ id, name }) => (
