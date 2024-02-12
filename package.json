@@ -19,7 +19,8 @@
     "@polkadot-cloud/react": "^0.3.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "usehooks-ts": "^2.14.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
