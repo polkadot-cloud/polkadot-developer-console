@@ -23,15 +23,21 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Currently active tab index.
   const [activeTabIndex, setActiveTabIndex] = useState<number>(1);
 
+  // Gets the currently hovered tab index.
+  const [tabHoverIndex, setTabHoverIndex] = useState<number>(0);
+
   // Gets the active tab.
   const getActiveTab = () => tabs.find((tab) => tab.id === activeTabId);
 
-  // Gets the currently hovered tab.
-  const [tabHoverIndex, setTabHoverIndex] = useState<number>(0);
+  // Get the largest id from a list of tabs.
+  const getLargestId = (list: Tabs) =>
+    [...list].sort((a, b) => b.id - a.id)?.[0].id || 0;
 
   // Create a new tab.
   const createTab = () => {
-    const newTabId = tabs.length + 1;
+    // Get the largest active tab id and increment it.
+    const newTabId = getLargestId(tabs) + 1;
+
     const newTab = {
       id: newTabId,
       chain: undefined,
@@ -42,7 +48,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
     setTabs(newTabs);
     setActiveTabId(newTabId);
-    setActiveTabIndex(newTabs.length);
+    setActiveTabIndex(newTabs.length - 1);
   };
 
   // Removes a tab from state.
@@ -50,9 +56,10 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const newTabs = [...tabs].filter((t) => t.id !== id);
 
     setTabs(newTabs);
+
     if (id === activeTabId) {
-      setActiveTabId(1);
-      setActiveTabIndex(0);
+      setActiveTabId(getLargestId(newTabs));
+      setActiveTabIndex(tabs.length);
     }
 
     if (activeTabIndex > index) {
