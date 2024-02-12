@@ -37,6 +37,16 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setActiveTabId(newTabId);
   };
 
+  // Removes a tab from state.
+  const destroyTab = (id: number) => {
+    const newTabs = [...tabs].filter((t) => t.id !== id);
+
+    setTabs(newTabs);
+    if (id === activeTabId) {
+      setActiveTabId(newTabs[newTabs.length - 1].id);
+    }
+  };
+
   return (
     <TabsContext.Provider
       value={{
@@ -45,6 +55,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         createTab,
         activeTabId,
         getActiveTab,
+        destroyTab,
         setActiveTabId,
       }}
     >

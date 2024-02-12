@@ -18,5 +18,6 @@ export interface TabsContextInterface {
   createTab: () => void;
   activeTabId: number;
   getActiveTab: () => Tab | undefined;
+  destroyTab: (id: number) => void;
   setActiveTabId: Dispatch<SetStateAction<number>>;
 }

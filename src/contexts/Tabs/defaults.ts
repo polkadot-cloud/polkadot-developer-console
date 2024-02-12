@@ -9,6 +9,7 @@ export const defaultTabsContext: TabsContextInterface = {
   setTabs: (tabs) => {},
   activeTabId: 0,
   createTab: () => {},
+  destroyTab: (id) => {},
   setActiveTabId: (id) => {},
   getActiveTab: () => undefined,
 };

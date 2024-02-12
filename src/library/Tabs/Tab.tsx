@@ -13,7 +13,7 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 export const Tab = ({ id, name, activeTabId }: TabProps) => {
   const { openMenu, setMenuInner } = useMenu();
-  const { setActiveTabId } = useTabs();
+  const { setActiveTabId, destroyTab, tabs } = useTabs();
 
   const tabRef = useRef<HTMLDivElement>(null);
 
@@ -54,14 +54,18 @@ export const Tab = ({ id, name, activeTabId }: TabProps) => {
       data-id={id}
       id={`tab-${id}`}
       className={`${activeTabId === id ? `active ` : ``}${id === activeTabId - 1 ? `pre-active` : ``}`}
-      onClick={() => setActiveTabId(id)}
       onMouseOver={(ev) => handlePrevTab(ev, 'over')}
       onMouseLeave={(ev) => handlePrevTab(ev, 'leave')}
     >
-      {name}
-      <div className="close">
-        <FontAwesomeIcon icon={faClose} />
-      </div>
+      <button className="name" onClick={() => setActiveTabId(id)}>
+        {name}
+      </button>
+
+      {tabs.length > 1 && (
+        <button className="close" onClick={() => destroyTab(id)}>
+          <FontAwesomeIcon icon={faClose} />
+        </button>
+      )}
     </TabWrapper>
   );
 };

@@ -12,10 +12,6 @@ export const TabsWrapper = styled.div`
   width: 100%;
 
   > div {
-    color: var(--text-color-secondary);
-    display: flex;
-    align-items: center;
-
     &:last-child {
       border-right-color: var(--background-default);
     }
@@ -24,11 +20,14 @@ export const TabsWrapper = styled.div`
 
 export const TabWrapper = styled.div`
   border-right: 1px solid var(--border-secondary-color);
+  color: var(--text-color-secondary);
   font-size: 0.8rem;
   padding: 0.5rem 0.85rem;
   display: flex;
   position: relative;
   align-items: center;
+  margin-right: 0.1rem;
+  cursor: pointer;
   transition:
     background-color 0.15s,
     border 0.2s;
@@ -39,7 +38,6 @@ export const TabWrapper = styled.div`
     border-right-color: var(--background-default);
     color: var(--text-color-primary);
     border-radius: 0.35rem;
-    cursor: pointer;
   }
 
   &.active {
@@ -62,13 +60,19 @@ export const TabWrapper = styled.div`
     margin-right: 0.25rem;
   }
 
-  .close {
+  > .name {
+    color: inherit;
+    text-align: left;
+    width: 100%;
+  }
+
+  > .close {
     background-color: var(--button-tab-background);
     color: var(--text-color-secondary);
     position: absolute;
     right: 0.5rem;
     height: inherit;
-    padding: 0 0.1rem 0 0.5rem;
+    padding: 0 0 0 0.5rem;
     opacity: 0;
     transition: opacity 0.2s;
   }
