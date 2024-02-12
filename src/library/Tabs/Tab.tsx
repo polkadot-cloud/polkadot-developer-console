@@ -9,7 +9,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useMenu } from 'contexts/Menu';
 
 export const Tab = ({ id, name, active }: TabProps) => {
-  const { openMenu } = useMenu();
+  const { openMenu, setMenuInner } = useMenu();
   const { setActiveTabId } = useTabs();
 
   const tabRef = useRef<HTMLDivElement>(null);
@@ -17,6 +17,7 @@ export const Tab = ({ id, name, active }: TabProps) => {
   // Handle context menu when tab is right clicked.
   const handleTabContextMenu = (e: Event): void => {
     e.preventDefault();
+    setMenuInner(<span>Testing</span>);
     openMenu(e as MouseEvent);
   };
 

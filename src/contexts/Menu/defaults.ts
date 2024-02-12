@@ -7,10 +7,10 @@ import type { MenuContextInterface } from './types';
 export const defaultMenuContext: MenuContextInterface = {
   open: false,
   show: false,
-  items: [],
+  inner: null,
   position: [0, 0],
   openMenu: (event) => {},
   closeMenu: () => {},
-  setMenuItems: (items) => {},
+  setMenuInner: (inner) => {},
   checkMenuPosition: (menuRef) => {},
 };

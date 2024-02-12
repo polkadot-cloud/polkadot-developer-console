@@ -3,14 +3,14 @@
 
 import { useEffect, useRef } from 'react';
 import { useMenu } from 'contexts/Menu';
-import { ItemWrapper, Wrapper } from './Wrappers';
+import { Wrapper } from './Wrappers';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 
 export const Menu = () => {
   const {
     open,
     show,
-    items,
+    inner,
     closeMenu,
     position: [x, y],
     checkMenuPosition,
@@ -55,22 +55,7 @@ export const Menu = () => {
           opacity: show ? 1 : 0,
         }}
       >
-        {items.map((item, i: number) => {
-          const { icon, title, cb } = item;
-
-          return (
-            <ItemWrapper
-              key={`menu_item_${i}`}
-              onClick={() => {
-                cb();
-                closeMenu();
-              }}
-            >
-              {icon}
-              <div className="title">{title}</div>
-            </ItemWrapper>
-          );
-        })}
+        {inner}
       </Wrapper>
     )
   );

@@ -4,7 +4,7 @@
 import type { ReactNode, RefObject } from 'react';
 import { createContext, useContext, useState } from 'react';
 import { defaultMenuContext } from './defaults';
-import type { MenuContextInterface, MenuItem } from './types';
+import type { MenuContextInterface } from './types';
 
 export const MenuContext =
   createContext<MenuContextInterface>(defaultMenuContext);
@@ -19,20 +19,14 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
   // Whether the menu is currently showing.
   const [show, setShow] = useState<boolean>(false);
 
-  // The items to display in the menu.
-  const [items, setItems] = useState<MenuItem[]>([]);
+  // The components to be displayed in the menu.
+  const [inner, setInner] = useState<ReactNode | null>(null);
 
   // The menu position coordinates.
   const [position, setPosition] = useState<[number, number]>([0, 0]);
 
   // Padding from the window edge.
   const DocumentPadding = 20;
-
-  // Hides the menu and closes.
-  const closeMenu = () => {
-    setShow(false);
-    setOpen(false);
-  };
 
   // Sets the menu position and opens it. Only succeeds if the menu has been instantiated and is not
   // currently open.
@@ -48,9 +42,15 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
     setOpen(true);
   };
 
-  // Sets the items of the menu.
-  const setMenuItems = (newItems: MenuItem[]) => {
-    setItems(newItems);
+  // Hides the menu and closes.
+  const closeMenu = () => {
+    setShow(false);
+    setOpen(false);
+  };
+
+  // Sets the inner JSX of the menu.
+  const setMenuInner = (newInner: ReactNode | null) => {
+    setInner(newInner);
   };
 
   // Adjusts menu position and shows the menu.
@@ -83,11 +83,11 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
       value={{
         open,
         show,
-        items,
+        inner,
         position,
         closeMenu,
-        setMenuItems,
         openMenu,
+        setMenuInner,
         checkMenuPosition,
       }}
     >

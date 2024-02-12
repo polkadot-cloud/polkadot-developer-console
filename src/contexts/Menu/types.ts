@@ -6,11 +6,11 @@ import type { ReactNode, RefObject } from 'react';
 export interface MenuContextInterface {
   open: boolean;
   show: boolean;
-  items: MenuItem[];
+  inner: ReactNode | null;
   position: [number, number];
   openMenu: (event: MouseEvent) => void;
   closeMenu: () => void;
-  setMenuItems: (items: MenuItem[]) => void;
+  setMenuInner: (items: ReactNode) => void;
   checkMenuPosition: (ref: RefObject<HTMLDivElement>) => void;
 }
 
