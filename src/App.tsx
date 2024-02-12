@@ -11,8 +11,11 @@ import ConsoleSVG from 'svg/Console.svg?react';
 import { version } from '../package.json';
 import { FooterWrapper } from 'library/Footer/Wrappers';
 import { faHive } from '@fortawesome/free-brands-svg-icons';
+import { useTabs } from 'contexts/Tabs';
 
 export const App = () => {
+  const { tabs, activeTabId } = useTabs();
+
   const [count, setCount] = useState(0);
 
   return (
@@ -39,9 +42,14 @@ export const App = () => {
         </div>
       </HeaderWrapper>
       <TabsWrapper>
-        <TabWrapper className="active">Polkadot Relay</TabWrapper>
-        <TabWrapper>Kusama Relay</TabWrapper>
-        <TabWrapper>Westend Relay</TabWrapper>
+        {tabs.map(({ id, name }) => (
+          <TabWrapper
+            key={`tab_${id}`}
+            className={id === activeTabId ? 'active' : undefined}
+          >
+            {name}
+          </TabWrapper>
+        ))}
         <TabWrapper>
           <FontAwesomeIcon icon={faPlus} className="icon" /> New
         </TabWrapper>
