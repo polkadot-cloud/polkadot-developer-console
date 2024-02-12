@@ -24,11 +24,25 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Gets the active tab.
   const getActiveTab = () => tabs.find((tab) => tab.id === activeTabId);
 
+  // Create a new tab.
+  const createTab = () => {
+    const newTabId = tabs.length + 1;
+    const newTab = {
+      id: newTabId,
+      chain: undefined,
+      name: 'New Tab',
+    };
+
+    setTabs([...tabs, newTab]);
+    setActiveTabId(newTabId);
+  };
+
   return (
     <TabsContext.Provider
       value={{
         tabs,
         setTabs,
+        createTab,
         activeTabId,
         getActiveTab,
         setActiveTabId,

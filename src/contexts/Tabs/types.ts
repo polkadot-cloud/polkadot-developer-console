@@ -8,13 +8,14 @@ export type Tabs = Tab[];
 
 export interface Tab {
   id: number;
-  chain: NetworkDirectoryName;
+  chain: NetworkDirectoryName | undefined;
   name: string;
 }
 
 export interface TabsContextInterface {
   tabs: Tabs;
   setTabs: Dispatch<SetStateAction<Tabs>>;
+  createTab: () => void;
   activeTabId: number;
   getActiveTab: () => Tab | undefined;
   setActiveTabId: Dispatch<SetStateAction<number>>;

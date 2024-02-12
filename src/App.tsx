@@ -11,7 +11,7 @@ import { Footer } from 'library/Footer';
 import { Tab } from 'library/Tabs/Tab';
 
 export const App = () => {
-  const { tabs, activeTabId, getActiveTab } = useTabs();
+  const { tabs, activeTabId, getActiveTab, createTab } = useTabs();
 
   return (
     <Entry mode="light" theme={`polkadot-relay`}>
@@ -25,7 +25,7 @@ export const App = () => {
             active={id === activeTabId}
           />
         ))}
-        <TabWrapper>
+        <TabWrapper onClick={() => createTab()}>
           <FontAwesomeIcon icon={faPlus} className="icon" /> New
         </TabWrapper>
       </TabsWrapper>
