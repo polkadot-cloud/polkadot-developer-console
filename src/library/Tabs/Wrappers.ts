@@ -54,6 +54,7 @@ export const TabWrapper = styled.div`
 
   &.new {
     margin-left: 0.35rem;
+    min-width: auto;
   }
 
   .icon {
