@@ -52,7 +52,7 @@ export const TabWrapper = styled.div`
   }
 
   &.new {
-    margin-left: 0.35rem;
+    margin-left: 0.2rem;
     min-width: auto;
   }
 
