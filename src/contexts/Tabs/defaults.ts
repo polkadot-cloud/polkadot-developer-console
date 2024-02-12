@@ -9,9 +9,13 @@ export const defaultTabsContext: TabsContextInterface = {
   setTabs: (tabs) => {},
   activeTabId: 0,
   createTab: () => {},
-  destroyTab: (id) => {},
+  destroyTab: (index, id) => {},
   setActiveTabId: (id) => {},
   getActiveTab: () => undefined,
+  tabHoverIndex: 0,
+  setTabHoverIndex: (id) => {},
+  activeTabIndex: 0,
+  setActiveTabIndex: (index) => {},
 };
 
 export const defaultTabs: Tabs = [

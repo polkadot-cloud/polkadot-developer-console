@@ -12,7 +12,7 @@ import { Tab } from 'library/Tabs/Tab';
 import { Menu } from 'library/Menu';
 
 export const App = () => {
-  const { tabs, activeTabId, getActiveTab, createTab } = useTabs();
+  const { tabs, getActiveTab, createTab } = useTabs();
 
   return (
     <Entry mode="light" theme={`polkadot-relay`}>
@@ -21,13 +21,8 @@ export const App = () => {
 
       <Header />
       <TabsWrapper>
-        {tabs.map(({ id, name }) => (
-          <Tab
-            key={`tab_${id}`}
-            id={id}
-            name={name}
-            activeTabId={activeTabId}
-          />
+        {tabs.map(({ id, name }, index: number) => (
+          <Tab key={`tab_${index}}`} id={id} name={name} index={index} />
         ))}
         <TabWrapper onClick={() => createTab()} className="new">
           <FontAwesomeIcon icon={faPlus} className="icon" /> New

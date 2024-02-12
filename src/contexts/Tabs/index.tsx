@@ -12,7 +12,6 @@ export const TabsContext =
 export const useTabs = () => useContext(TabsContext);
 
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
-  // TODO: Bootstrap the initial active tabs. Takes the relay chains from the network directory and opens tabs for them.
   // TODO: Connect to the Polkadot Relay chain (first tab).
 
   // Created tabs.
@@ -21,8 +20,14 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Currently active tab.
   const [activeTabId, setActiveTabId] = useState<number>(1);
 
+  // Currently active tab index.
+  const [activeTabIndex, setActiveTabIndex] = useState<number>(1);
+
   // Gets the active tab.
   const getActiveTab = () => tabs.find((tab) => tab.id === activeTabId);
+
+  // Gets the currently hovered tab.
+  const [tabHoverIndex, setTabHoverIndex] = useState<number>(0);
 
   // Create a new tab.
   const createTab = () => {
@@ -33,17 +38,25 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       name: 'New Tab',
     };
 
-    setTabs([...tabs, newTab]);
+    const newTabs = [...tabs, newTab];
+
+    setTabs(newTabs);
     setActiveTabId(newTabId);
+    setActiveTabIndex(newTabs.length);
   };
 
   // Removes a tab from state.
-  const destroyTab = (id: number) => {
+  const destroyTab = (index: number, id: number) => {
     const newTabs = [...tabs].filter((t) => t.id !== id);
 
     setTabs(newTabs);
     if (id === activeTabId) {
-      setActiveTabId(newTabs[newTabs.length - 1].id);
+      setActiveTabId(1);
+      setActiveTabIndex(0);
+    }
+
+    if (activeTabIndex > index) {
+      setActiveTabIndex(activeTabIndex - 1);
     }
   };
 
@@ -57,6 +70,10 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         getActiveTab,
         destroyTab,
         setActiveTabId,
+        tabHoverIndex,
+        setTabHoverIndex,
+        activeTabIndex,
+        setActiveTabIndex,
       }}
     >
       {children}

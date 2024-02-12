@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { MouseEvent as ReactMouseEvent } from 'react';
 import { useRef } from 'react';
 import { TabWrapper } from './Wrappers';
 import type { TabProps } from './types';
@@ -11,32 +10,20 @@ import { useMenu } from 'contexts/Menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 
-export const Tab = ({ id, name, activeTabId }: TabProps) => {
+export const Tab = ({ index, id, name }: TabProps) => {
   const { openMenu, setMenuInner } = useMenu();
-  const { setActiveTabId, destroyTab, tabs } = useTabs();
+  const {
+    tabs,
+    activeTabId,
+    setActiveTabId,
+    activeTabIndex,
+    setActiveTabIndex,
+    tabHoverIndex,
+    setTabHoverIndex,
+    destroyTab,
+  } = useTabs();
 
   const tabRef = useRef<HTMLDivElement>(null);
-
-  // Handle mouse over tab to change previous tab style.
-  const handlePrevTab = (
-    ev: ReactMouseEvent<HTMLDivElement, MouseEvent>,
-    on: 'over' | 'leave'
-  ) => {
-    if (ev.target instanceof HTMLElement) {
-      const prevTabEl = document.getElementById(`tab-${id - 1}`);
-
-      if (prevTabEl && !prevTabEl.classList.contains('active')) {
-        if (on === 'over') {
-          prevTabEl.style.setProperty(
-            'border-right-color',
-            'var(--background-default)'
-          );
-        } else {
-          prevTabEl.style.removeProperty('border-right-color');
-        }
-      }
-    }
-  };
 
   // Handle context menu when tab is right clicked.
   const handleTabContextMenu = (ev: Event): void => {
@@ -51,18 +38,32 @@ export const Tab = ({ id, name, activeTabId }: TabProps) => {
   return (
     <TabWrapper
       ref={tabRef}
-      data-id={id}
-      id={`tab-${id}`}
-      className={`${activeTabId === id ? `active ` : ``}${id === activeTabId - 1 ? `pre-active` : ``}`}
-      onMouseOver={(ev) => handlePrevTab(ev, 'over')}
-      onMouseLeave={(ev) => handlePrevTab(ev, 'leave')}
+      className={`${activeTabId === id ? `active ` : ``}${index === activeTabIndex - 1 || index === tabHoverIndex - 1 ? `hide-border` : ``}`}
+      onMouseOver={() => {
+        setTabHoverIndex(index);
+      }}
+      onMouseLeave={() => {
+        setTabHoverIndex(0);
+      }}
     >
-      <button className="name" onClick={() => setActiveTabId(id)}>
+      <button
+        className="name"
+        onClick={() => {
+          setActiveTabId(id);
+          setActiveTabIndex(index);
+        }}
+      >
         {name}
       </button>
 
       {tabs.length > 1 && (
-        <button className="close" onClick={() => destroyTab(id)}>
+        <button
+          className="close"
+          onClick={() => {
+            setTabHoverIndex(0);
+            destroyTab(index, id);
+          }}
+        >
           <FontAwesomeIcon icon={faClose} />
         </button>
       )}

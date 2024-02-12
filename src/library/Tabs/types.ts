@@ -3,6 +3,6 @@
 
 export interface TabProps {
   id: number;
+  index: number;
   name: string;
-  activeTabId: number;
 }

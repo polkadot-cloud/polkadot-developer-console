@@ -22,7 +22,7 @@ export const TabWrapper = styled.div`
   border-right: 1px solid var(--border-secondary-color);
   color: var(--text-color-secondary);
   font-size: 0.8rem;
-  padding: 0.5rem 0.85rem;
+  padding: 0rem 0.85rem;
   display: flex;
   position: relative;
   align-items: center;
@@ -47,7 +47,7 @@ export const TabWrapper = styled.div`
     border-radius: 0.35rem;
   }
 
-  &.pre-active {
+  &.hide-border {
     border-right-color: var(--background-default);
   }
 
@@ -63,6 +63,7 @@ export const TabWrapper = styled.div`
   > .name {
     color: inherit;
     text-align: left;
+    padding: 0.5rem 0;
     width: 100%;
   }
 
