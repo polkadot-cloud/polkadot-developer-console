@@ -64,7 +64,7 @@ export const Tab = ({ index, id, name }: TabProps) => {
             destroyTab(index, id);
           }}
         >
-          <FontAwesomeIcon icon={faClose} />
+          <FontAwesomeIcon icon={faClose} transform="shrink-1" />
         </button>
       )}
     </TabWrapper>

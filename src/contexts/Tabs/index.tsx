@@ -59,8 +59,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
     // If the active tab is being closed, fall back to its previous tab.
     if (id === activeTabId) {
-      setActiveTabId(Object.values(newTabs)[index - 1]?.id);
-      setActiveTabIndex(Math.max(index - 1, 1));
+      setActiveTabId(Object.values(newTabs)[Math.max(index - 1, 0)]?.id);
+      setActiveTabIndex(Math.max(index - 1, 0));
     }
     // Re-sync the active tab index if the destroyed tab was in front of it.
     if (activeTabIndex > index) {
