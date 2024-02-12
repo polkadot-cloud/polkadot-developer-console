@@ -21,12 +21,16 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Currently active tab.
   const [activeTabId, setActiveTabId] = useState<number>(1);
 
+  // Gets the active tab.
+  const getActiveTab = () => tabs.find((tab) => tab.id === activeTabId);
+
   return (
     <TabsContext.Provider
       value={{
         tabs,
         setTabs,
         activeTabId,
+        getActiveTab,
         setActiveTabId,
       }}
     >

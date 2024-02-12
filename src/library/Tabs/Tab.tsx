@@ -5,9 +5,10 @@ import { useRef } from 'react';
 import { TabWrapper } from './Wrappers';
 import type { TabProps } from './types';
 import { useEventListener } from 'usehooks-ts';
+import { useTabs } from 'contexts/Tabs';
 
-export const Tab = ({ name, active }: TabProps) => {
-  useEventListener;
+export const Tab = ({ id, name, active }: TabProps) => {
+  const { setActiveTabId } = useTabs();
 
   const tabRef = useRef<HTMLDivElement>(null);
 
@@ -19,7 +20,11 @@ export const Tab = ({ name, active }: TabProps) => {
   useEventListener('contextmenu', handleTabContextMenu, tabRef);
 
   return (
-    <TabWrapper ref={tabRef} className={active ? 'active' : undefined}>
+    <TabWrapper
+      ref={tabRef}
+      className={active ? 'active' : undefined}
+      onClick={() => setActiveTabId(id)}
+    >
       {name}
     </TabWrapper>
   );
