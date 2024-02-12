@@ -8,7 +8,7 @@ export interface MenuContextInterface {
   show: boolean;
   inner: ReactNode | null;
   position: [number, number];
-  openMenu: (event: MouseEvent) => void;
+  openMenu: (ev: MouseEvent) => void;
   closeMenu: () => void;
   setMenuInner: (items: ReactNode) => void;
   checkMenuPosition: (ref: RefObject<HTMLDivElement>) => void;

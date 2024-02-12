@@ -4,5 +4,5 @@
 export interface TabProps {
   id: number;
   name: string;
-  active: boolean;
+  activeTabId: number;
 }

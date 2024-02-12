@@ -30,13 +30,13 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
 
   // Sets the menu position and opens it. Only succeeds if the menu has been instantiated and is not
   // currently open.
-  const openMenu = (event: MouseEvent) => {
+  const openMenu = (ev: MouseEvent) => {
     if (open) {
       return;
     }
     const bodyRect = document.body.getBoundingClientRect();
-    const x = event.clientX - bodyRect.left;
-    const y = event.clientY - bodyRect.top;
+    const x = ev.clientX - bodyRect.left;
+    const y = ev.clientY - bodyRect.top;
 
     setPosition([x, y]);
     setOpen(true);

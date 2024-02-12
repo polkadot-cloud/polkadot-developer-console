@@ -26,10 +26,10 @@ export const App = () => {
             key={`tab_${id}`}
             id={id}
             name={name}
-            active={id === activeTabId}
+            activeTabId={activeTabId}
           />
         ))}
-        <TabWrapper onClick={() => createTab()}>
+        <TabWrapper onClick={() => createTab()} className="new">
           <FontAwesomeIcon icon={faPlus} className="icon" /> New
         </TabWrapper>
       </TabsWrapper>

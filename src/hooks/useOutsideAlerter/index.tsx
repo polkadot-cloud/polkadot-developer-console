@@ -11,14 +11,12 @@ export const useOutsideAlerter = (
   ignore: string[] = []
 ) => {
   useEffect(() => {
-    const handleClickOutside = (event: Event) => {
-      if (event) {
-        if (ref.current && !ref.current.contains(event.target as Node)) {
-          const target = event.target as Element;
+    const handleClickOutside = (ev: Event) => {
+      if (ev) {
+        if (ref.current && !ref.current.contains(ev.target as Node)) {
+          const target = ev.target as HTMLElement;
 
-          const invalid = ignore.find((i: string) =>
-            target.classList.contains(i)
-          );
+          const invalid = ignore.find((i) => target.classList.contains(i));
           if (invalid === undefined) {
             callback();
           }
