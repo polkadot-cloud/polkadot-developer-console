@@ -53,15 +53,16 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Removes a tab from state.
   const destroyTab = (index: number, id: number) => {
+    // Remove destroyed tab from state.
     const newTabs = [...tabs].filter((t) => t.id !== id);
-
     setTabs(newTabs);
 
+    // If the active tab is being closed, fall back to its previous tab.
     if (id === activeTabId) {
-      setActiveTabId(getLargestId(newTabs));
-      setActiveTabIndex(tabs.length);
+      setActiveTabId(Object.values(newTabs)[index - 1]?.id);
+      setActiveTabIndex(Math.max(index - 1, 1));
     }
-
+    // Re-sync the active tab index if the destroyed tab was in front of it.
     if (activeTabIndex > index) {
       setActiveTabIndex(activeTabIndex - 1);
     }
