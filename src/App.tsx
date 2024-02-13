@@ -10,9 +10,15 @@ import { Header } from 'library/Header';
 import { Footer } from 'library/Footer';
 import { Tab } from 'library/Tabs/Tab';
 import { Menu } from 'library/Menu';
+import { useRef } from 'react';
 
 export const App = () => {
   const { tabs, getActiveTab, createTab } = useTabs();
+
+  // Handle initial render logic.
+  const initialRef = useRef<boolean>(true);
+  const isInitial = initialRef.current === true;
+  initialRef.current = false;
 
   return (
     <Entry mode="light" theme={`polkadot-relay`}>
@@ -22,7 +28,13 @@ export const App = () => {
       <Header />
       <TabsWrapper>
         {tabs.map(({ id, name }, index: number) => (
-          <Tab key={`tab_${index}}`} id={id} name={name} index={index} />
+          <Tab
+            key={`tab_${index}_${id}}`}
+            id={id}
+            name={name}
+            index={index}
+            initial={isInitial}
+          />
         ))}
         <TabWrapper onClick={() => createTab()} className="new">
           <FontAwesomeIcon icon={faPlus} className="icon" /> New

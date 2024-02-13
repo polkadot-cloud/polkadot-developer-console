@@ -1,6 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 export const TabsWrapper = styled.div`
@@ -23,7 +24,7 @@ export const TabsWrapper = styled.div`
   }
 `;
 
-export const TabWrapper = styled.div`
+export const TabWrapper = styled(motion.div)`
   --tab-height: 2rem;
   --tab-border-radius: 0.35rem;
 
@@ -31,16 +32,15 @@ export const TabWrapper = styled.div`
   color: var(--text-color-tertiary);
   height: var(--tab-height);
   font-size: 0.8rem;
-  padding: 0rem 0.85rem;
   display: flex;
   position: relative;
   align-items: center;
   margin-right: 0.1rem;
   cursor: pointer;
+  overflow: hidden;
   transition:
     background-color 0.15s,
     border 0.2s;
-  min-width: 8.5rem;
 
   &:hover,
   &.active {
@@ -57,6 +57,7 @@ export const TabWrapper = styled.div`
   &.new {
     color: var(--text-color-primary);
     margin-left: 0.2rem;
+    padding: 0 0.75rem;
     min-width: auto;
   }
 

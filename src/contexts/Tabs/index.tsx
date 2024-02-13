@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import type { Tabs, TabsContextInterface } from './types';
 import { defaultTabs, defaultTabsContext } from './defaults';
 
@@ -26,6 +26,22 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Gets the currently hovered tab index.
   const [tabHoverIndex, setTabHoverIndex] = useState<number>(0);
 
+  // Instantiated tab ids.
+  const instantiatedIds = useRef<number[]>([]);
+
+  // Adds an id to instantiated tabs.
+  const addInstantiatedId = (index: number) => {
+    instantiatedIds.current = [
+      ...new Set(instantiatedIds.current.concat(index)),
+    ];
+  };
+
+  // Remove an id from destroying tabs.
+  const removeInstantiatedId = (id: number) => {
+    instantiatedIds.current = instantiatedIds.current.filter(
+      (item) => item !== id
+    );
+  };
   // Gets the active tab.
   const getActiveTab = () => tabs.find((tab) => tab.id === activeTabId);
 
@@ -53,6 +69,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Removes a tab from state.
   const destroyTab = (index: number, id: number) => {
+    // Remove instantiated id.
+    removeInstantiatedId(id);
+
     // Remove destroyed tab from state.
     const newTabs = [...tabs].filter((t) => t.id !== id);
     setTabs(newTabs);
@@ -82,6 +101,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         setTabHoverIndex,
         activeTabIndex,
         setActiveTabIndex,
+        addInstantiatedId,
+        instantiatedIds: instantiatedIds.current,
       }}
     >
       {children}
