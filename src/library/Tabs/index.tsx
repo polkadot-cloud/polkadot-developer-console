@@ -41,7 +41,6 @@ export const Tabs = () => {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    console.log(active, over);
 
     if (over?.id && active.id !== over.id) {
       const oldIndex = tabs.map((tab) => tab.id).indexOf(active.id as number);
