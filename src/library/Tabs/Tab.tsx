@@ -48,7 +48,7 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
 
   // Handle context menu when tab is right clicked.
   const handleTabContextMenu = (ev: MouseEvent): void => {
-    // ev.preventDefault();
+    ev.preventDefault();
     openMenu(ev, <Menu />);
   };
 
@@ -91,9 +91,12 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
       <button
         ref={buttonRef}
         className="name"
-        onMouseUp={() => {
-          setActiveTabId(id);
-          setActiveTabIndex(index);
+        onMouseUp={(ev) => {
+          // Only handle left click.
+          if (ev.button === 0) {
+            setActiveTabId(id);
+            setActiveTabIndex(index);
+          }
         }}
       >
         {name}
