@@ -26,7 +26,7 @@ export const ListWrapper = styled.ul`
 
   > li {
     font-family: Inter, sans-serif;
-    padding: 0.5rem 0.5rem;
+    padding: 0.55rem 0.5rem;
     font-size: 0.85rem;
 
     &:hover {
