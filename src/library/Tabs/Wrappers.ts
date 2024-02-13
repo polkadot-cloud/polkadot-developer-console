@@ -43,11 +43,16 @@ export const TabWrapper = styled(motion.div)`
     border 0.2s;
 
   &:hover,
-  &.active {
+  &.active,
+  &:active {
     background-color: var(--button-tab-background);
     border-right-color: var(--background-default);
     border-radius: var(--tab-border-radius);
     color: var(--text-color-primary);
+  }
+
+  &:active {
+    z-index: 5;
   }
 
   &.hide-border {
@@ -59,6 +64,7 @@ export const TabWrapper = styled(motion.div)`
     margin-left: 0.2rem;
     padding: 0 0.75rem;
     min-width: auto;
+    border-right: none;
   }
 
   > .icon {
@@ -99,7 +105,8 @@ export const TabWrapper = styled(motion.div)`
   }
 
   &:hover,
-  &.active {
+  &.active,
+  &:active {
     > .fade {
       background: linear-gradient(
         90deg,

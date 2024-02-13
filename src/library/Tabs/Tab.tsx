@@ -10,6 +10,9 @@ import { useMenu } from 'contexts/Menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { Menu } from './Menu';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
 export const Tab = ({ index, id, name, initial }: TabProps) => {
   const {
     tabs,
@@ -25,7 +28,15 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
   } = useTabs();
   const { openMenu } = useMenu();
 
-  const tabRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   const [destroying, setDestroying] = useState<boolean>(false);
 
@@ -37,16 +48,16 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
 
   // Handle context menu when tab is right clicked.
   const handleTabContextMenu = (ev: MouseEvent): void => {
-    ev.preventDefault();
+    // ev.preventDefault();
     openMenu(ev, <Menu />);
   };
 
   // Listen to `contextmenu` events.
-  useEventListener('contextmenu', handleTabContextMenu, tabRef);
+  useEventListener('contextmenu', handleTabContextMenu, buttonRef);
 
   return (
     <TabWrapper
-      ref={tabRef}
+      ref={setNodeRef}
       className={`${activeTabId === id ? `active ` : ``}${index === activeTabIndex - 1 || index === tabHoverIndex - 1 ? `hide-border` : ``}`}
       onMouseOver={() => {
         setTabHoverIndex(index);
@@ -72,11 +83,15 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
           },
         },
       }}
+      style={style}
+      {...attributes}
+      {...listeners}
     >
       <div className="fade" />
       <button
+        ref={buttonRef}
         className="name"
-        onClick={() => {
+        onMouseUp={() => {
           setActiveTabId(id);
           setActiveTabIndex(index);
         }}
@@ -87,7 +102,7 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
       {tabs.length > 1 && (
         <button
           className="close"
-          onClick={() => {
+          onMouseUp={() => {
             setDestroying(true);
             setTabHoverIndex(0);
             setTimeout(() => {
