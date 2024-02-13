@@ -9,6 +9,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useMenu } from 'contexts/Menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { Menu } from './Menu';
 export const Tab = ({ index, id, name }: TabProps) => {
   const {
     tabs,
@@ -27,7 +28,7 @@ export const Tab = ({ index, id, name }: TabProps) => {
   // Handle context menu when tab is right clicked.
   const handleTabContextMenu = (ev: MouseEvent): void => {
     ev.preventDefault();
-    openMenu(ev, <span>Testing</span>);
+    openMenu(ev, <Menu />);
   };
 
   // Listen to `contextmenu` events.
