@@ -13,9 +13,3 @@ export interface MenuContextInterface {
   setMenuInner: (items: ReactNode) => void;
   checkMenuPosition: (ref: RefObject<HTMLDivElement>) => void;
 }
-
-export interface MenuItem {
-  icon: ReactNode;
-  title: string;
-  cb: () => void;
-}
