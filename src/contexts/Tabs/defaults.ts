@@ -32,6 +32,6 @@ export const defaultTabs: Tabs = [
   {
     id: 3,
     chain: 'westend-relay',
-    name: 'Westend Relay',
+    name: 'Westend Relay Long Name',
   },
 ];

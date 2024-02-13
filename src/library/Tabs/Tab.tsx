@@ -45,6 +45,7 @@ export const Tab = ({ index, id, name }: TabProps) => {
         setTabHoverIndex(0);
       }}
     >
+      <div className="fade" />
       <button
         className="name"
         onClick={() => {

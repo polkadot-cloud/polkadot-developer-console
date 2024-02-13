@@ -24,8 +24,12 @@ export const TabsWrapper = styled.div`
 `;
 
 export const TabWrapper = styled.div`
+  --tab-height: 2rem;
+  --tab-border-radius: 0.35rem;
+
   border-right: 1px solid var(--border-secondary-color);
   color: var(--text-color-tertiary);
+  height: var(--tab-height);
   font-size: 0.8rem;
   padding: 0rem 0.85rem;
   display: flex;
@@ -38,18 +42,12 @@ export const TabWrapper = styled.div`
     border 0.2s;
   min-width: 8.5rem;
 
-  &:hover {
-    background-color: var(--button-tab-background);
-    border-right-color: var(--background-default);
-    color: var(--text-color-primary);
-    border-radius: 0.35rem;
-  }
-
+  &:hover,
   &.active {
-    border-right-color: var(--background-default);
     background-color: var(--button-tab-background);
+    border-right-color: var(--background-default);
+    border-radius: var(--tab-border-radius);
     color: var(--text-color-primary);
-    border-radius: 0.35rem;
   }
 
   &.hide-border {
@@ -62,26 +60,63 @@ export const TabWrapper = styled.div`
     min-width: auto;
   }
 
-  .icon {
+  > .icon {
     margin-right: 0.25rem;
   }
 
   > .name {
+    height: var(--tab-height);
     color: inherit;
     text-align: left;
-    padding: 0.5rem 0;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    padding: 0 0.75rem;
+    /* Handle text overflow */
+    text-overflow: clip;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  > .fade {
+    /* TODO: abstract these gradients into theme variable. */
+    background: linear-gradient(
+      90deg,
+      rgba(239, 238, 238, 0) 0%,
+      rgba(239, 238, 238, 1) 25%,
+      rgba(239, 238, 238, 1) 100%
+    );
+    border-top-right-radius: var(--tab-border-radius);
+    border-bottom-right-radius: var(--tab-border-radius);
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 1.85rem;
+    z-index: 3;
+  }
+
+  &:hover,
+  &.active {
+    > .fade {
+      background: linear-gradient(
+        90deg,
+        rgba(228, 226, 226, 0) 0%,
+        rgba(228, 226, 226, 1) 25%,
+        rgba(228, 226, 226, 1) 100%
+      );
+    }
   }
 
   > .close {
-    background-color: var(--button-tab-background);
     color: var(--text-color-secondary);
     position: absolute;
-    right: 0.5rem;
+    right: 0rem;
     height: inherit;
-    padding: 0 0 0 0.5rem;
+    padding: 0 0.5rem 0 0.5rem;
     opacity: 0;
-    transition: opacity 0.2s;
+    z-index: 4;
   }
 
   &:hover,
