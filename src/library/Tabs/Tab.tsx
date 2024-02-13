@@ -1,15 +1,16 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
+/* eslint-disable react/display-name */
 
 import { useRef, useState } from 'react';
 import { TabWrapper } from './Wrappers';
-import type { TabProps } from './types';
 import { useEventListener } from 'usehooks-ts';
 import { useTabs } from 'contexts/Tabs';
 import { useMenu } from 'contexts/Menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { Menu } from './Menu';
+import type { TabProps } from './types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -48,7 +49,7 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
 
   // Handle context menu when tab is right clicked.
   const handleTabContextMenu = (ev: MouseEvent): void => {
-    ev.preventDefault();
+    // ev.preventDefault();
     openMenu(ev, <Menu />);
   };
 
@@ -58,7 +59,7 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
   return (
     <TabWrapper
       ref={setNodeRef}
-      className={`${activeTabId === id ? `active ` : ``}${index === activeTabIndex - 1 || index === tabHoverIndex - 1 ? `hide-border` : ``}`}
+      className={`${activeTabId === id ? `active ` : ``}${index === activeTabIndex - 1 || index === tabHoverIndex - 1 ? `hide-border` : ``} sortable`}
       onMouseOver={() => {
         setTabHoverIndex(index);
       }}
@@ -83,15 +84,15 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
           },
         },
       }}
-      style={style}
-      {...attributes}
       {...listeners}
+      {...attributes}
+      style={style}
     >
       <div className="fade" />
       <button
         ref={buttonRef}
         className="name"
-        onMouseUp={(ev) => {
+        onMouseDown={(ev) => {
           // Only handle left click.
           if (ev.button === 0) {
             setActiveTabId(id);
@@ -105,7 +106,7 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
       {tabs.length > 1 && (
         <button
           className="close"
-          onMouseUp={() => {
+          onMouseDown={() => {
             setDestroying(true);
             setTabHoverIndex(0);
             setTimeout(() => {

@@ -40,7 +40,8 @@ export const TabWrapper = styled(motion.div)`
   overflow: hidden;
   transition:
     background-color 0.15s,
-    border 0.2s;
+    border 0.2s,
+    position 0.2s;
 
   &:hover,
   &.active,
@@ -101,7 +102,14 @@ export const TabWrapper = styled(motion.div)`
     top: 0;
     height: 100%;
     width: 1.85rem;
+    z-index: 4;
+  }
+
+  &.sortable {
     z-index: 3;
+    &:active {
+      opacity: 0;
+    }
   }
 
   &:hover,

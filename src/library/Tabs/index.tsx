@@ -1,12 +1,12 @@
+// Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { TabWrapper, TabsWrapper } from 'library/Tabs/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
-import { Tab } from 'library/Tabs/Tab';
-import { useRef } from 'react';
-import type { DragEndEvent } from '@dnd-kit/core';
+import { useRef, useState } from 'react';
+import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import {
   DndContext,
   closestCenter,
@@ -14,6 +14,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  DragOverlay,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -22,10 +23,14 @@ import {
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
+import { Presentational } from './Presentational';
+import { Tab } from './Tab';
 
 export const Tabs = () => {
-  const { tabs, createTab, setTabs, setActiveTabIndex, activeTabId } =
+  const { tabs, setTabs, createTab, activeTabId, setActiveTabIndex } =
     useTabs();
+
+  const [activeId, setActiveId] = useState<number | null>(null);
 
   // Handle initial render logic.
   const initialRef = useRef<boolean>(true);
@@ -38,6 +43,14 @@ export const Tabs = () => {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const activeTab = tabs.map((tab) => tab.id).indexOf(activeId || -1);
+  const activeTabData = tabs[activeTab];
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    setActiveId(Number(active.id));
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -59,6 +72,7 @@ export const Tabs = () => {
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         modifiers={[restrictToHorizontalAxis]}
       >
@@ -76,6 +90,17 @@ export const Tabs = () => {
             <FontAwesomeIcon icon={faPlus} className="icon" /> New
           </TabWrapper>
         </SortableContext>
+        <DragOverlay>
+          {activeTab !== null ? (
+            <Presentational
+              sortable={false}
+              id={activeTabData?.id || -1}
+              name={activeTabData?.name || ''}
+              index={activeTab}
+              initial={true}
+            />
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </TabsWrapper>
   );
