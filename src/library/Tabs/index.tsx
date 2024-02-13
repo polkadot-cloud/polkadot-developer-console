@@ -30,7 +30,7 @@ export const Tabs = () => {
   const { tabs, setTabs, createTab, activeTabId, setActiveTabIndex } =
     useTabs();
 
-  const [activeId, setActiveId] = useState<number | null>(null);
+  const [dragId, setDragId] = useState<number | null>(null);
 
   // Handle initial render logic.
   const initialRef = useRef<boolean>(true);
@@ -44,12 +44,12 @@ export const Tabs = () => {
     })
   );
 
-  const activeTab = tabs.map((tab) => tab.id).indexOf(activeId || -1);
+  const activeTab = tabs.map((tab) => tab.id).indexOf(dragId || -1);
   const activeTabData = tabs[activeTab];
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
-    setActiveId(Number(active.id));
+    setDragId(Number(active.id));
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -65,6 +65,7 @@ export const Tabs = () => {
       setTabs(newTabs);
       setActiveTabIndex(newTabs.map((tab) => tab.id).indexOf(activeTabId));
     }
+    setDragId(null);
   };
 
   return (
@@ -80,6 +81,7 @@ export const Tabs = () => {
           {tabs.map(({ id, name }, index: number) => (
             <Tab
               key={`tab_${index}_${id}}`}
+              dragIndex={activeTab || -1}
               id={id}
               name={name}
               index={index}

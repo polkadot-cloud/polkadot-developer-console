@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable react/display-name */
 
-import { useRef, useState } from 'react';
+import type { RefObject } from 'react';
+import { useState } from 'react';
 import { TabWrapper } from './Wrappers';
 import { useEventListener } from 'usehooks-ts';
 import { useTabs } from 'contexts/Tabs';
@@ -14,7 +15,7 @@ import type { TabProps } from './types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-export const Tab = ({ index, id, name, initial }: TabProps) => {
+export const Tab = ({ index, id, name, initial, dragIndex }: TabProps) => {
   const {
     tabs,
     destroyTab,
@@ -23,16 +24,20 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
     activeTabIndex,
     setActiveTabId,
     instantiatedIds,
-    setTabHoverIndex,
     setActiveTabIndex,
+    setTabHoverIndex,
     addInstantiatedId,
   } = useTabs();
   const { openMenu } = useMenu();
 
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -49,17 +54,27 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
 
   // Handle context menu when tab is right clicked.
   const handleTabContextMenu = (ev: MouseEvent): void => {
-    // ev.preventDefault();
+    ev.preventDefault();
     openMenu(ev, <Menu />);
   };
 
   // Listen to `contextmenu` events.
-  useEventListener('contextmenu', handleTabContextMenu, buttonRef);
+  useEventListener(
+    'contextmenu',
+    handleTabContextMenu,
+    setActivatorNodeRef as unknown as RefObject<HTMLElement>
+  );
+
+  const dragging = dragIndex === index;
+  const active = activeTabId === id || dragging;
+  const adjacentToHover = index === tabHoverIndex - 1;
+  const adjacentToActive = index === activeTabIndex - 1;
+  const adjacentToDragging = index === dragIndex - 1;
 
   return (
     <TabWrapper
       ref={setNodeRef}
-      className={`${activeTabId === id ? `active ` : ``}${index === activeTabIndex - 1 || index === tabHoverIndex - 1 ? `hide-border` : ``} sortable`}
+      className={`${active ? `active ` : ``}${adjacentToActive || adjacentToHover || adjacentToDragging ? `hide-border` : ``} ${dragging ? ` sortable` : ``}`}
       onMouseOver={() => {
         setTabHoverIndex(index);
       }}
@@ -84,14 +99,11 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
           },
         },
       }}
-      {...listeners}
-      {...attributes}
       style={style}
     >
-      <div className="fade" />
       <button
-        ref={buttonRef}
-        className="name"
+        className="drag"
+        ref={setActivatorNodeRef}
         onMouseDown={(ev) => {
           // Only handle left click.
           if (ev.button === 0) {
@@ -99,14 +111,16 @@ export const Tab = ({ index, id, name, initial }: TabProps) => {
             setActiveTabIndex(index);
           }
         }}
-      >
-        {name}
-      </button>
+        {...attributes}
+        {...listeners}
+      />
+      <button className="name">{name}</button>
+      <div className="fade" />
 
       {tabs.length > 1 && (
         <button
           className="close"
-          onMouseDown={() => {
+          onMouseUp={() => {
             setDestroying(true);
             setTabHoverIndex(0);
             setTimeout(() => {
