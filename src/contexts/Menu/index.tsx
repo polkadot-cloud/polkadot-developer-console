@@ -4,7 +4,7 @@
 import type { ReactNode, RefObject } from 'react';
 import { createContext, useContext, useState } from 'react';
 import { defaultMenuContext } from './defaults';
-import type { MenuContextInterface } from './types';
+import type { MenuContextInterface, MenuMouseEvent } from './types';
 
 export const MenuContext =
   createContext<MenuContextInterface>(defaultMenuContext);
@@ -20,7 +20,7 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
   const [show, setShow] = useState<boolean>(false);
 
   // The components to be displayed in the menu.
-  const [inner, setInner] = useState<ReactNode | null>(null);
+  const [inner, setInner] = useState<ReactNode>(null);
 
   // The menu position coordinates.
   const [position, setPosition] = useState<[number, number]>([0, 0]);
@@ -30,13 +30,17 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
 
   // Sets the menu position and opens it. Only succeeds if the menu has been instantiated and is not
   // currently open.
-  const openMenu = (ev: MouseEvent) => {
+  const openMenu = (ev: MenuMouseEvent, newInner?: ReactNode) => {
     if (open) {
       return;
     }
     const bodyRect = document.body.getBoundingClientRect();
     const x = ev.clientX - bodyRect.left;
     const y = ev.clientY - bodyRect.top;
+
+    if (newInner) {
+      setInner(newInner);
+    }
 
     setPosition([x, y]);
     setOpen(true);
@@ -49,7 +53,7 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Sets the inner JSX of the menu.
-  const setMenuInner = (newInner: ReactNode | null) => {
+  const setMenuInner = (newInner: ReactNode) => {
     setInner(newInner);
   };
 

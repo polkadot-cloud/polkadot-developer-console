@@ -9,27 +9,25 @@ import { useTabs } from 'contexts/Tabs';
 import { useMenu } from 'contexts/Menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-
 export const Tab = ({ index, id, name }: TabProps) => {
-  const { openMenu, setMenuInner } = useMenu();
   const {
     tabs,
-    activeTabId,
-    setActiveTabId,
-    activeTabIndex,
-    setActiveTabIndex,
-    tabHoverIndex,
-    setTabHoverIndex,
     destroyTab,
+    activeTabId,
+    tabHoverIndex,
+    activeTabIndex,
+    setActiveTabId,
+    setTabHoverIndex,
+    setActiveTabIndex,
   } = useTabs();
+  const { openMenu } = useMenu();
 
   const tabRef = useRef<HTMLDivElement>(null);
 
   // Handle context menu when tab is right clicked.
-  const handleTabContextMenu = (ev: Event): void => {
+  const handleTabContextMenu = (ev: MouseEvent): void => {
     ev.preventDefault();
-    setMenuInner(<span>Testing</span>);
-    openMenu(ev as MouseEvent);
+    openMenu(ev, <span>Testing</span>);
   };
 
   // Listen to `contextmenu` events.
