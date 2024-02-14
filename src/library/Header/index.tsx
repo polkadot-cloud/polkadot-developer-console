@@ -4,7 +4,6 @@
 import { HeaderWrapper } from './Wrappers';
 import ConsoleSVG from 'svg/Console.svg?react';
 import { version } from '../../../package.json';
-import { ButtonText } from '@polkadot-cloud/react';
 
 export const Header = () => (
   <HeaderWrapper>
@@ -20,12 +19,6 @@ export const Header = () => (
         Polkadot Developer Console <span>{version}</span>
       </h1>
     </div>
-    <div>
-      <ButtonText
-        iconTransform="shrink-2"
-        text="Accounts"
-        style={{ fontSize: '0.8rem', color: 'var(--accent-color-primary)' }}
-      />
-    </div>
+    <div></div>
   </HeaderWrapper>
 );

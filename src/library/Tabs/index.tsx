@@ -7,7 +7,7 @@ import {
   TabsWrapper,
 } from 'library/Tabs/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlug, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
 import { useRef } from 'react';
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
@@ -106,22 +106,42 @@ export const Tabs = () => {
           ))}
         </SortableContext>
         <ControlsWrapper>
-          <TabWrapper
-            onClick={() => {
-              createTab();
-              setTimeout(() => {
-                if (tabContainerRef.current) {
-                  tabContainerRef.current?.scrollTo({
-                    left: tabContainerRef.current.scrollWidth,
-                    behavior: 'smooth',
-                  });
-                }
-              }, TAB_TRANSITION_DURATION_MS);
-            }}
-            className="new"
-          >
-            <FontAwesomeIcon icon={faPlus} className="icon" /> New
-          </TabWrapper>
+          <div>
+            <TabWrapper
+              onClick={() => {
+                createTab();
+                setTimeout(() => {
+                  if (tabContainerRef.current) {
+                    tabContainerRef.current?.scrollTo({
+                      left: tabContainerRef.current.scrollWidth,
+                      behavior: 'smooth',
+                    });
+                  }
+                }, TAB_TRANSITION_DURATION_MS);
+              }}
+              className="action"
+            >
+              <FontAwesomeIcon icon={faPlus} className="icon" /> New
+            </TabWrapper>
+          </div>
+          <div>
+            <TabWrapper
+              onClick={() => {
+                /* Do nothing. */
+              }}
+              className="action"
+            >
+              Accounts
+            </TabWrapper>
+            <TabWrapper
+              onClick={() => {
+                /* Do nothing. */
+              }}
+              className="action last"
+            >
+              <FontAwesomeIcon icon={faPlug} />
+            </TabWrapper>
+          </div>
         </ControlsWrapper>
         <DragOverlay>
           {dragIndex !== null ? (

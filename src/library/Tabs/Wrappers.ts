@@ -64,12 +64,16 @@ export const TabWrapper = styled(motion.div)`
     border-right-color: var(--background-default);
   }
 
-  &.new {
+  &.action {
     color: var(--text-color-primary);
     margin-left: 0.2rem;
     padding: 0 0.75rem;
     min-width: auto;
     border-right: none;
+
+    &.last {
+      margin-left: 0;
+    }
   }
 
   /* Hide element and ensure below drag element. */
@@ -170,10 +174,19 @@ export const ControlsWrapper = styled.div`
   color: var(--text-color-tertiary);
   height: var(--tab-height);
   display: flex;
-  position: relative;
   align-items: center;
+  flex-grow: 1;
   font-size: 0.8rem;
   position: sticky;
   right: 0rem;
   z-index: 5;
+  padding-right: 0.25rem;
+
+  > div {
+    &:last-child {
+      display: flex;
+      justify-content: flex-end;
+      flex: 1;
+    }
+  }
 `;
