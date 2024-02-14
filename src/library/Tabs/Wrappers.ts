@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 export const TabsWrapper = styled.div`
+  --tab-height: 2rem;
+  --tab-border-radius: 0.35rem;
+
   background-color: var(--background-list-item);
   border-top: 1px solid var(--border-secondary-color);
   border-bottom: 1px solid var(--border-secondary-color);
@@ -14,19 +17,26 @@ export const TabsWrapper = styled.div`
   border-style: solid;
   display: flex;
   margin-bottom: 1rem;
-  padding: 0.25rem 0.3rem;
+  padding: 0.25rem 0rem 0.25rem 0.3rem;
   width: 100%;
+  overflow-x: auto;
+
+  /* Hide scrollbar. */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 export const TabWrapper = styled(motion.div)`
-  --tab-height: 2rem;
-  --tab-border-radius: 0.35rem;
-
   border-right: 1px solid var(--border-secondary-color);
   color: var(--text-color-tertiary);
   height: var(--tab-height);
   font-size: 0.8rem;
   display: flex;
+  flex-shrink: 0;
   position: relative;
   align-items: center;
   margin-right: 0.1rem;
@@ -106,9 +116,10 @@ export const TabWrapper = styled(motion.div)`
   > .close {
     color: var(--text-color-secondary);
     position: absolute;
-    right: 0rem;
+    top: 0;
+    right: 0;
     height: inherit;
-    padding: 0 0.5rem 0 0.5rem;
+    padding-right: 0.4rem;
     opacity: 0;
     z-index: 4;
   }
@@ -127,7 +138,7 @@ export const TabWrapper = styled(motion.div)`
     background: linear-gradient(
       90deg,
       rgba(239, 238, 238, 0) 0%,
-      rgba(239, 238, 238, 1) 50%,
+      rgba(239, 238, 238, 1) 70%,
       rgba(239, 238, 238, 1) 100%
     );
     border-top-right-radius: var(--tab-border-radius);
@@ -136,7 +147,7 @@ export const TabWrapper = styled(motion.div)`
     right: 0;
     top: 0;
     height: 100%;
-    width: 1.85rem;
+    width: 2rem;
     z-index: 4;
   }
 
@@ -152,4 +163,17 @@ export const TabWrapper = styled(motion.div)`
       );
     }
   }
+`;
+
+export const ControlsWrapper = styled.div`
+  background-color: var(--background-list-item);
+  color: var(--text-color-tertiary);
+  height: var(--tab-height);
+  display: flex;
+  position: relative;
+  align-items: center;
+  font-size: 0.8rem;
+  position: sticky;
+  right: 0rem;
+  z-index: 5;
 `;

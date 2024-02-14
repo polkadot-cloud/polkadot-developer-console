@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable react/display-name */
 
-import type { RefObject } from 'react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { TabWrapper } from './Wrappers';
 import { useEventListener } from 'usehooks-ts';
 import { useTabs } from 'contexts/Tabs';
@@ -14,6 +13,7 @@ import { Menu } from './Menu';
 import type { TabProps } from './types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { DEFAULT_TAB_WIDTH_PX } from 'contexts/Tabs/defaults';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -79,16 +79,18 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     openMenu(ev, <Menu />);
   };
 
+  // Context menu ref.
+  const tabRef = useRef<HTMLDivElement | null>(null);
+
   // Listen to context menu events.
-  useEventListener(
-    'contextmenu',
-    handleTabContextMenu,
-    setActivatorNodeRef as unknown as RefObject<HTMLElement>
-  );
+  useEventListener('contextmenu', handleTabContextMenu, tabRef);
 
   return (
     <TabWrapper
-      ref={setNodeRef}
+      ref={(el) => {
+        setNodeRef(el);
+        tabRef.current = el;
+      }}
       className={`${active ? `active ` : ``}${adjacentToActive || adjacentToHover || adjacentToDragging ? `hide-border` : ``} ${dragging ? ` dragging` : ``}`}
       onMouseOver={() => setTabHoverIndex(index)}
       onMouseLeave={() => setTabHoverIndex(0)}
@@ -103,7 +105,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
           },
         },
         show: {
-          width: 135,
+          width: DEFAULT_TAB_WIDTH_PX,
           transition: {
             duration: 0.3,
             ease: [0.1, 1, 0.1, 1],
@@ -113,8 +115,8 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
       style={style}
     >
       <button
-        className="drag"
         ref={setActivatorNodeRef}
+        className="drag"
         onMouseDown={(ev) => {
           // Only handle left click.
           if (ev.button === 0) {

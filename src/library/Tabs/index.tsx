@@ -1,7 +1,11 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { TabWrapper, TabsWrapper } from 'library/Tabs/Wrappers';
+import {
+  ControlsWrapper,
+  TabWrapper,
+  TabsWrapper,
+} from 'library/Tabs/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
@@ -75,8 +79,11 @@ export const Tabs = () => {
   const dragIndex = tabs.map((tab) => tab.id).indexOf(dragId || -1);
   const dragTab = tabs[dragIndex] || defaultEemptyTab;
 
+  // Ref for tabs container.
+  const tabContainerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <TabsWrapper>
+    <TabsWrapper ref={tabContainerRef}>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -94,10 +101,25 @@ export const Tabs = () => {
               initial={isInitial}
             />
           ))}
-          <TabWrapper onClick={() => createTab()} className="new">
+        </SortableContext>
+        <ControlsWrapper>
+          <TabWrapper
+            onClick={() => {
+              createTab();
+              setTimeout(() => {
+                if (tabContainerRef.current) {
+                  tabContainerRef.current?.scrollTo({
+                    left: tabContainerRef.current.scrollWidth,
+                    behavior: 'smooth',
+                  });
+                }
+              }, 300);
+            }}
+            className="new"
+          >
             <FontAwesomeIcon icon={faPlus} className="icon" /> New
           </TabWrapper>
-        </SortableContext>
+        </ControlsWrapper>
         <DragOverlay>
           {dragIndex !== null ? (
             <TabOverlay

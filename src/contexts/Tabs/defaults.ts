@@ -22,6 +22,8 @@ export const defaultTabsContext: TabsContextInterface = {
   instantiatedIds: [],
 };
 
+export const DEFAULT_TAB_WIDTH_PX = 130;
+
 export const defaultTabs: Tabs = [
   {
     id: 1,
