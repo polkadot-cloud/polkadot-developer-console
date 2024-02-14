@@ -16,10 +16,9 @@ export const TabsWrapper = styled.div`
   border-bottom-width: 1px;
   border-style: solid;
   display: flex;
-  margin-bottom: 1rem;
   padding: 0.25rem 0rem 0.25rem 0.3rem;
-  width: 100%;
   overflow-x: auto;
+  width: 100%;
 
   /* Hide scrollbar. */
 

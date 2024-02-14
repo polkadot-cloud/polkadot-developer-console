@@ -6,8 +6,8 @@ import { useTabs } from 'contexts/Tabs';
 import { Header } from 'library/Header';
 import { Footer } from 'library/Footer';
 import { Menu } from 'library/Menu';
-
 import { Tabs } from 'library/Tabs';
+import { ChainMenu } from 'library/ChainMenu';
 
 export const App = () => {
   const { getActiveTab } = useTabs();
@@ -17,15 +17,17 @@ export const App = () => {
       <Menu />
       <Header />
       <Tabs />
+      <ChainMenu />
       <div
         style={{
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          marginTop: '1rem',
         }}
       >
-        <h1>{getActiveTab()?.name || 'No ActiveTab'}</h1>
+        <h1>{getActiveTab()?.name || 'No Active Tab'}</h1>
       </div>
       <Footer />
     </Entry>
