@@ -24,6 +24,8 @@ export const defaultTabsContext: TabsContextInterface = {
 
 export const DEFAULT_TAB_WIDTH_PX = 130;
 
+export const TAB_TRANSITION_DURATION_MS = 300;
+
 export const defaultTabs: Tabs = [
   {
     id: 1,

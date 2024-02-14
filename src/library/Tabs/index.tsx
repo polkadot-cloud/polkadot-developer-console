@@ -29,7 +29,10 @@ import {
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
 import { TabOverlay } from './TabOverlay';
 import { Tab } from './Tab';
-import { defaultEemptyTab } from 'contexts/Tabs/defaults';
+import {
+  TAB_TRANSITION_DURATION_MS,
+  defaultEemptyTab,
+} from 'contexts/Tabs/defaults';
 
 export const Tabs = () => {
   const {
@@ -113,7 +116,7 @@ export const Tabs = () => {
                     behavior: 'smooth',
                   });
                 }
-              }, 300);
+              }, TAB_TRANSITION_DURATION_MS);
             }}
             className="new"
           >

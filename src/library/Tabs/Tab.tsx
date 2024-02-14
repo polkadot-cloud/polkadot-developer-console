@@ -13,7 +13,10 @@ import { Menu } from './Menu';
 import type { TabProps } from './types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { DEFAULT_TAB_WIDTH_PX } from 'contexts/Tabs/defaults';
+import {
+  DEFAULT_TAB_WIDTH_PX,
+  TAB_TRANSITION_DURATION_MS,
+} from 'contexts/Tabs/defaults';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -107,7 +110,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
         show: {
           width: DEFAULT_TAB_WIDTH_PX,
           transition: {
-            duration: 0.3,
+            duration: TAB_TRANSITION_DURATION_MS * 0.001,
             ease: [0.1, 1, 0.1, 1],
           },
         },
