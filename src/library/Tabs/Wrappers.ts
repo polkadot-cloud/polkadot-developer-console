@@ -40,7 +40,7 @@ export const TabWrapper = styled(motion.div)`
   overflow: hidden;
   transition:
     background-color 0.15s,
-    border 0.2s,
+    border 0.3s,
     position 0.2s;
 
   &:hover,

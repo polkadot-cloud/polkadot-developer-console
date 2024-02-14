@@ -43,7 +43,6 @@ export const Tabs = () => {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-
   const activeTab = tabs.map((tab) => tab.id).indexOf(dragId || -1);
   const activeTabData = tabs[activeTab];
 
@@ -81,7 +80,7 @@ export const Tabs = () => {
           {tabs.map(({ id, name }, index: number) => (
             <Tab
               key={`tab_${index}_${id}}`}
-              dragIndex={activeTab || -1}
+              dragIndex={activeTab ?? -1}
               id={id}
               name={name}
               index={index}
