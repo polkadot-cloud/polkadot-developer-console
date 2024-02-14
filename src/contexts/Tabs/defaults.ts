@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
-import type { Tabs, TabsContextInterface } from './types';
+import type { Tab, Tabs, TabsContextInterface } from './types';
 
 export const defaultTabsContext: TabsContextInterface = {
   tabs: [],
@@ -40,8 +40,8 @@ export const defaultTabs: Tabs = [
   },
 ];
 
-export const defaultEemptyTab = {
+export const defaultEemptyTab: Tab = {
   id: -1,
-  chain: '',
+  chain: undefined,
   name: '',
 };
