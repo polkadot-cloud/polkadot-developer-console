@@ -25,5 +25,7 @@ export interface TabsContextInterface {
   activeTabIndex: number;
   setActiveTabIndex: Dispatch<SetStateAction<number>>;
   addInstantiatedId: (id: number) => void;
+  setDragId: Dispatch<SetStateAction<number | null>>;
+  dragId: number | null;
   instantiatedIds: number[];
 }

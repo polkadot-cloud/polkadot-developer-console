@@ -3,7 +3,6 @@
 
 export interface TabProps {
   id: number;
-  dragIndex: number;
   index: number;
   name: string;
   initial?: boolean;

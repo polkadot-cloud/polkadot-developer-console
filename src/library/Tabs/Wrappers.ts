@@ -16,12 +16,6 @@ export const TabsWrapper = styled.div`
   margin-bottom: 1rem;
   padding: 0.25rem 0.3rem;
   width: 100%;
-
-  > div {
-    &:last-child {
-      border-right-color: var(--background-default);
-    }
-  }
 `;
 
 export const TabWrapper = styled(motion.div)`
@@ -68,6 +62,15 @@ export const TabWrapper = styled(motion.div)`
     border-right: none;
   }
 
+  /* Hide element and ensure below drag element. */
+
+  &.dragging {
+    z-index: 3;
+    opacity: 0;
+  }
+
+  /* Main tab elements. */
+
   > .icon {
     margin-right: 0.25rem;
   }
@@ -81,33 +84,12 @@ export const TabWrapper = styled(motion.div)`
     left: 0;
     width: 100%;
     padding: 0 0.75rem;
+    display: flex;
+    align-items: center;
     /* Handle text overflow */
     text-overflow: clip;
     white-space: nowrap;
     overflow: hidden;
-  }
-
-  > .fade {
-    /* TODO: abstract these gradients into theme variable. */
-    background: linear-gradient(
-      90deg,
-      rgba(239, 238, 238, 0) 0%,
-      rgba(239, 238, 238, 1) 25%,
-      rgba(239, 238, 238, 1) 100%
-    );
-    border-top-right-radius: var(--tab-border-radius);
-    border-bottom-right-radius: var(--tab-border-radius);
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 1.85rem;
-    z-index: 4;
-  }
-
-  &.sortable {
-    z-index: 3;
-    opacity: 0;
   }
 
   > .drag {
@@ -119,18 +101,7 @@ export const TabWrapper = styled(motion.div)`
     height: 100%;
   }
 
-  &:hover,
-  &.active,
-  &:active {
-    > .fade {
-      background: linear-gradient(
-        90deg,
-        rgba(228, 226, 226, 0) 0%,
-        rgba(228, 226, 226, 1) 25%,
-        rgba(228, 226, 226, 1) 100%
-      );
-    }
-  }
+  /* Close button. */
 
   > .close {
     color: var(--text-color-secondary);
@@ -146,6 +117,39 @@ export const TabWrapper = styled(motion.div)`
   &.active {
     .close {
       opacity: 1;
+    }
+  }
+
+  /* Fade for cosmetic text clipping. */
+
+  > .fade {
+    /* TODO: abstract these gradients into theme variable. */
+    background: linear-gradient(
+      90deg,
+      rgba(239, 238, 238, 0) 0%,
+      rgba(239, 238, 238, 1) 50%,
+      rgba(239, 238, 238, 1) 100%
+    );
+    border-top-right-radius: var(--tab-border-radius);
+    border-bottom-right-radius: var(--tab-border-radius);
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 1.85rem;
+    z-index: 4;
+  }
+
+  &:hover,
+  &.active,
+  &:active {
+    > .fade {
+      background: linear-gradient(
+        90deg,
+        rgba(228, 226, 226, 0) 0%,
+        rgba(228, 226, 226, 1) 50%,
+        rgba(228, 226, 226, 1) 100%
+      );
     }
   }
 `;

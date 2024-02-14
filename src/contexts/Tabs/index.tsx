@@ -17,14 +17,17 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Created tabs.
   const [tabs, setTabs] = useState<Tabs>(defaultTabs);
 
-  // Currently active tab.
+  // Current active tab id.
   const [activeTabId, setActiveTabId] = useState<number>(1);
 
-  // Currently active tab index.
+  // Current active tab index.
   const [activeTabIndex, setActiveTabIndex] = useState<number>(1);
 
-  // Gets the currently hovered tab index.
-  const [tabHoverIndex, setTabHoverIndex] = useState<number>(0);
+  // Current hovered tab index.
+  const [tabHoverIndex, setTabHoverIndex] = useState<number>(-1);
+
+  // Current drag tab index.
+  const [dragId, setDragId] = useState<number | null>(null);
 
   // Instantiated tab ids.
   const instantiatedIds = useRef<number[]>([]);
@@ -49,18 +52,20 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const getLargestId = (list: Tabs) =>
     [...list].sort((a, b) => b.id - a.id)?.[0].id || 0;
 
-  // Create a new tab.
+  // Creates a new tab and makes it active.
   const createTab = () => {
-    // Get the largest active tab id and increment it.
+    // NOTE: The new tab ID is determined by getting the largest existing id and incrementing it.
+    // This ensures that the new tab ID is unique. Tab IDs do not represent order.
     const newTabId = getLargestId(tabs) + 1;
 
-    const newTab = {
-      id: newTabId,
-      chain: undefined,
-      name: 'New Tab',
-    };
-
-    const newTabs = [...tabs, newTab];
+    const newTabs = [
+      ...tabs,
+      {
+        id: newTabId,
+        chain: undefined,
+        name: 'New Tab',
+      },
+    ];
 
     setTabs(newTabs);
     setActiveTabId(newTabId);
@@ -102,6 +107,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         activeTabIndex,
         setActiveTabIndex,
         addInstantiatedId,
+        setDragId,
+        dragId,
         instantiatedIds: instantiatedIds.current,
       }}
     >

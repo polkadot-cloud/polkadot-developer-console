@@ -5,7 +5,7 @@ import { TabWrapper, TabsWrapper } from 'library/Tabs/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import {
   DndContext,
@@ -23,19 +23,20 @@ import {
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
-import { Presentational } from './Presentational';
+import { TabOverlay } from './TabOverlay';
 import { Tab } from './Tab';
+import { defaultEemptyTab } from 'contexts/Tabs/defaults';
 
 export const Tabs = () => {
-  const { tabs, setTabs, createTab, activeTabId, setActiveTabIndex } =
-    useTabs();
-
-  const [dragId, setDragId] = useState<number | null>(null);
-
-  // Handle initial render logic.
-  const initialRef = useRef<boolean>(true);
-  const isInitial = initialRef.current === true;
-  initialRef.current = false;
+  const {
+    tabs,
+    dragId,
+    setTabs,
+    setDragId,
+    createTab,
+    activeTabId,
+    setActiveTabIndex,
+  } = useTabs();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -43,22 +44,25 @@ export const Tabs = () => {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-  const activeTab = tabs.map((tab) => tab.id).indexOf(dragId || -1);
-  const activeTabData = tabs[activeTab];
 
+  // Handle initial render. Used for tabs to prevent its initial animation.
+  const initialRef = useRef<boolean>(true);
+  const isInitial = initialRef.current === true;
+  initialRef.current = false;
+
+  // Handler for starting a drag. Sets the id of the tab being dragged.
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     setDragId(Number(active.id));
   };
 
+  // Handler for ending a drag. Updates tab order and resets the drag id.
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (over?.id && active.id !== over.id) {
-      const oldIndex = tabs.map((tab) => tab.id).indexOf(active.id as number);
-      const newIndex = tabs
-        .map((tab) => tab.id)
-        .indexOf((over?.id || -1) as number);
+      const oldIndex = tabs.map((tab) => tab.id).indexOf(Number(active.id));
+      const newIndex = tabs.map(({ id }) => id).indexOf(Number(over?.id || -1));
       const newTabs = arrayMove(tabs, oldIndex, newIndex);
 
       setTabs(newTabs);
@@ -66,6 +70,10 @@ export const Tabs = () => {
     }
     setDragId(null);
   };
+
+  // Determine drag tab index and drag tab data. Falls back to defaults if no tab is being dragged.
+  const dragIndex = tabs.map((tab) => tab.id).indexOf(dragId || -1);
+  const dragTab = tabs[dragIndex] || defaultEemptyTab;
 
   return (
     <TabsWrapper>
@@ -80,7 +88,6 @@ export const Tabs = () => {
           {tabs.map(({ id, name }, index: number) => (
             <Tab
               key={`tab_${index}_${id}}`}
-              dragIndex={activeTab ?? -1}
               id={id}
               name={name}
               index={index}
@@ -92,12 +99,11 @@ export const Tabs = () => {
           </TabWrapper>
         </SortableContext>
         <DragOverlay>
-          {activeTab !== null ? (
-            <Presentational
-              sortable={false}
-              id={activeTabData?.id || -1}
-              name={activeTabData?.name || ''}
-              index={activeTab}
+          {dragIndex !== null ? (
+            <TabOverlay
+              id={dragTab.id}
+              name={dragTab.name}
+              index={dragIndex}
               initial={true}
             />
           ) : null}

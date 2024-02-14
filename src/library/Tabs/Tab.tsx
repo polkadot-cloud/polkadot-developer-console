@@ -15,42 +15,63 @@ import type { TabProps } from './types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-export const Tab = ({ index, id, name, initial, dragIndex }: TabProps) => {
+export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
     tabs,
+    dragId,
     destroyTab,
     activeTabId,
     tabHoverIndex,
     activeTabIndex,
     setActiveTabId,
     instantiatedIds,
-    setActiveTabIndex,
     setTabHoverIndex,
+    setActiveTabIndex,
     addInstantiatedId,
   } = useTabs();
   const { openMenu } = useMenu();
 
   const {
-    attributes,
     listeners,
-    setNodeRef,
-    setActivatorNodeRef,
     transform,
+    attributes,
+    setNodeRef,
     transition,
+    setActivatorNodeRef,
   } = useSortable({ id });
 
+  // Update the tab to instantiated.
+  addInstantiatedId(id);
+
+  // Transform style for dragging.
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
+  // Whether the tab is being destroyed.
   const [destroying, setDestroying] = useState<boolean>(false);
 
-  // Whether the tab is instantiated on this render.
-  const isInstantiated = instantiatedIds.includes(id);
+  // Get the index of the current dragged tab, if any.
+  const dragIndex = tabs.map((tab) => tab.id).indexOf(dragId || -1);
 
-  // Update the tab to instantiated.
-  addInstantiatedId(id);
+  // Is the tab instantiated on this render.
+  const instantiated = instantiatedIds.includes(id);
+
+  // Is the tab currently being dragged.
+  const dragging = dragIndex === index;
+
+  // Is the tab active or being dragged.
+  const active = activeTabId === id || dragging;
+
+  // Is this tab adjacent to the actve tab.
+  const adjacentToActive = index === activeTabIndex - 1;
+
+  // Is this tab adjacent to the hovered tab.
+  const adjacentToHover = index === tabHoverIndex - 1;
+
+  // Is this tab adjacent to the dragged tab.
+  const adjacentToDragging = index === (dragIndex ?? -1) - 1;
 
   // Handle context menu when tab is right clicked.
   const handleTabContextMenu = (ev: MouseEvent): void => {
@@ -58,31 +79,21 @@ export const Tab = ({ index, id, name, initial, dragIndex }: TabProps) => {
     openMenu(ev, <Menu />);
   };
 
-  // Listen to `contextmenu` events.
+  // Listen to context menu events.
   useEventListener(
     'contextmenu',
     handleTabContextMenu,
     setActivatorNodeRef as unknown as RefObject<HTMLElement>
   );
 
-  const dragging = dragIndex === index;
-  const active = activeTabId === id || dragging;
-  const adjacentToHover = index === tabHoverIndex - 1;
-  const adjacentToActive = index === activeTabIndex - 1;
-  const adjacentToDragging = index === dragIndex - 1;
-
   return (
     <TabWrapper
       ref={setNodeRef}
-      className={`${active ? `active ` : ``}${adjacentToActive || adjacentToHover || adjacentToDragging ? `hide-border` : ``} ${dragging ? ` sortable` : ``}`}
-      onMouseOver={() => {
-        setTabHoverIndex(index);
-      }}
-      onMouseLeave={() => {
-        setTabHoverIndex(0);
-      }}
-      initial={!isInstantiated && !initial ? 'hidden' : 'show'}
-      animate={!isInstantiated ? 'show' : destroying ? 'hidden' : false}
+      className={`${active ? `active ` : ``}${adjacentToActive || adjacentToHover || adjacentToDragging ? `hide-border` : ``} ${dragging ? ` dragging` : ``}`}
+      onMouseOver={() => setTabHoverIndex(index)}
+      onMouseLeave={() => setTabHoverIndex(0)}
+      initial={!instantiated && !initial ? 'hidden' : 'show'}
+      animate={!instantiated ? 'show' : destroying ? 'hidden' : false}
       variants={{
         hidden: {
           width: 0,
@@ -114,7 +125,7 @@ export const Tab = ({ index, id, name, initial, dragIndex }: TabProps) => {
         {...attributes}
         {...listeners}
       />
-      <button className="name">{name}</button>
+      <div className="name">{name}</div>
       <div className="fade" />
 
       {tabs.length > 1 && (

@@ -8,15 +8,17 @@ export const defaultTabsContext: TabsContextInterface = {
   tabs: [],
   setTabs: (tabs) => {},
   activeTabId: 0,
+  setActiveTabId: (id) => {},
   createTab: () => {},
   destroyTab: (index, id) => {},
-  setActiveTabId: (id) => {},
   getActiveTab: () => undefined,
   tabHoverIndex: 0,
   setTabHoverIndex: (id) => {},
   activeTabIndex: 0,
   setActiveTabIndex: (index) => {},
   addInstantiatedId: (id) => {},
+  dragId: null,
+  setDragId: (index) => {},
   instantiatedIds: [],
 };
 
@@ -37,3 +39,9 @@ export const defaultTabs: Tabs = [
     name: 'Westend Relay Long Name',
   },
 ];
+
+export const defaultEemptyTab = {
+  id: -1,
+  chain: '',
+  name: '',
+};
