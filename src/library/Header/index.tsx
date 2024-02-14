@@ -2,23 +2,45 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { HeaderWrapper } from './Wrappers';
-import ConsoleSVG from 'svg/Console.svg?react';
+import HeaderSVG from 'svg/Header.svg?react';
 import { version } from '../../../package.json';
+import { useGlitch } from 'react-powerglitch';
 
-export const Header = () => (
-  <HeaderWrapper>
-    <div>
-      <ConsoleSVG
-        style={{
-          width: '1.25rem',
-          marginRight: '0.5rem',
-          fill: 'url(#console-gradient) var(--accent-color-primary)',
-        }}
-      />
-      <h1>
-        Polkadot Developer Console <span>{version}</span>
-      </h1>
-    </div>
-    <div></div>
-  </HeaderWrapper>
-);
+export const Header = () => {
+  const glitch = useGlitch({
+    timing: {
+      duration: 7500,
+    },
+    glitchTimeSpan: {
+      start: 0.55,
+      end: 0.65,
+    },
+    shake: {
+      velocity: 2,
+      amplitudeX: 0.2,
+      amplitudeY: 0.2,
+    },
+  });
+
+  return (
+    <HeaderWrapper>
+      <div>
+        <span
+          ref={glitch.ref}
+          style={{ width: '1.1rem', height: '1.1rem', marginRight: '0.4rem' }}
+        >
+          <HeaderSVG
+            style={{
+              width: '100%',
+              height: '100%',
+              fill: 'var(--accent-color-secondary)',
+            }}
+          />
+        </span>
+        <h1>Polkadot Developer Console</h1>
+        <span>{version}</span>
+      </div>
+      <div></div>
+    </HeaderWrapper>
+  );
+};

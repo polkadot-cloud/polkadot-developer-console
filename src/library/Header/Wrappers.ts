@@ -6,7 +6,7 @@ import styled from 'styled-components';
 export const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 0.45rem 0.85rem;
+  padding: 0.6rem 0.85rem;
   width: 100%;
 
   > div {
@@ -18,25 +18,27 @@ export const HeaderWrapper = styled.div`
       > h1 {
         color: var(--accent-color-primary);
         font-family: Inter, sans-serif;
-        font-size: 0.8rem;
+        font-size: 0.72rem;
+        text-transform: uppercase;
         /* NOTE: Text gradients not yet standardised. Falls back to color on non-webkit compatible
         browsers. */
-        /* background: linear-gradient(
+        background: linear-gradient(
           90deg,
-          var(--accent-color-primary) 0%,
-          var(--accent-color-secondary) 100%
+          var(--accent-color-secondary) 0%,
+          var(--accent-color-secondary) 40%,
+          var(--accent-color-primary) 100%
         );
-        /* -webkit-text-fill-color: transparent;
-        background-clip: text; */
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
 
-        > span {
-          color: var(--text-color-primary);
-          font-family: Inter, sans-serif;
-          margin-left: 0.35rem;
-          margin-right: 0.5rem;
-          font-size: 0.7rem;
-          opacity: 0.75;
-        }
+      > span {
+        color: var(--text-color-primary);
+        font-family: Inter, sans-serif;
+        margin-left: 0.35rem;
+        margin-right: 0.5rem;
+        font-size: 0.7rem;
+        opacity: 0.75;
       }
     }
 
