@@ -10,9 +10,26 @@ export const Wrapper = styled.div`
   width: 100%;
   display: flex;
 
-  > div {
-    color: var(--text-color-tertiary);
-    padding: 0.7rem 0.75rem;
-    font-size: 0.8rem;
+  > .menu {
+    display: flex;
+    align-items: center;
+
+    > div {
+      color: var(--text-color-tertiary);
+      padding: 0.7rem 0.75rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  > .config {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: flex-end;
+    padding-right: 1rem;
+
+    .icon {
+      color: var(--text-color-secondary);
+    }
   }
 `;
