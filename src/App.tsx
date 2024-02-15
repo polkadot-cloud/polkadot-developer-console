@@ -2,34 +2,24 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Entry } from '@polkadot-cloud/react';
-import { useTabs } from 'contexts/Tabs';
 import { Header } from 'library/Header';
 import { Footer } from 'library/Footer';
 import { Menu } from 'library/Menu';
 import { Tabs } from 'library/Tabs';
 import { ChainMenu } from 'library/ChainMenu';
+import { Body } from 'library/Body';
+import { Default } from 'screens/Default';
 
-export const App = () => {
-  const { getActiveTab } = useTabs();
-
-  return (
-    <Entry mode="light" theme={`polkadot-relay`}>
-      <Menu />
-      <Header />
-      <Tabs />
-      <ChainMenu />
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          marginTop: '1rem',
-        }}
-      >
-        <h1>{getActiveTab()?.name || 'No Active Tab'}</h1>
-      </div>
-      <Footer />
-    </Entry>
-  );
-};
+export const App = () => (
+  // TODO: Get accent theme from active network, if any, otherwise default to `polkadot-relay`.
+  <Entry mode="light" theme={`polkadot-relay`}>
+    <Menu />
+    <Header />
+    <Tabs />
+    <ChainMenu />
+    <Body>
+      <Default />
+    </Body>
+    <Footer />
+  </Entry>
+);

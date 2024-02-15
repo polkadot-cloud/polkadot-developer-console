@@ -23,6 +23,14 @@ SPDX-License-Identifier: GPL-3.0-only */
 }
 
 @font-face {
+  font-family: InterExtraBold;
+  font-style: normal;
+  font-weight: 800;
+  src: url("./fonts/Inter800.woff2") format("woff2");
+}
+
+
+@font-face {
   font-family: Unbounded;
   font-style: normal;
   font-weight: 800;
