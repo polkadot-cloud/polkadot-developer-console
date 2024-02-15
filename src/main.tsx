@@ -1,17 +1,17 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-// Network themes
+// Network themes from Polkadot Cloud.
 import '@polkadot-cloud/core/accent/polkadot-relay.css';
 
 // Default template fonts.
-import '@polkadot-cloud/core/theme/default/fonts/index.css';
+import 'theme/fonts.css';
 
 // Default template theme.
-import '@polkadot-cloud/core/theme/default/index.css';
+import 'theme/theme.css';
 
 // Polkadot Cloud core styles.
-import '@polkadot-cloud/core/css/styles/index.css';
+import 'theme/index.css';
 
 import ReactDOM from 'react-dom/client';
 import { Providers } from './Providers';
