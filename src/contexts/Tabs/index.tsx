@@ -29,6 +29,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Current drag tab index.
   const [dragId, setDragId] = useState<number | null>(null);
 
+  // Whether the tab menu is hidden.
+  const [tabsHidden, setTabsHidden] = useState<boolean>(false);
+
   // Instantiated tab ids.
   const instantiatedIds = useRef<number[]>([]);
 
@@ -109,6 +112,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         addInstantiatedId,
         setDragId,
         dragId,
+        tabsHidden,
+        setTabsHidden,
         instantiatedIds: instantiatedIds.current,
       }}
     >

@@ -4,7 +4,7 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-export const TabsWrapper = styled.div`
+export const TabsWrapper = styled(motion.div)`
   --tab-height: 2rem;
   --tab-border-radius: 0.35rem;
 
@@ -18,7 +18,15 @@ export const TabsWrapper = styled.div`
   display: flex;
   padding: 0.25rem 0rem 0.25rem 0.3rem;
   overflow-x: auto;
+  overflow-y: hidden;
   width: 100%;
+
+  &.hidden {
+    border-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 0;
+  }
 
   /* Hide scrollbar. */
 

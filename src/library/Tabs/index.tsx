@@ -41,6 +41,7 @@ export const Tabs = () => {
     setTabs,
     setDragId,
     createTab,
+    tabsHidden,
     activeTabId,
     setActiveTabIndex,
   } = useTabs();
@@ -86,7 +87,23 @@ export const Tabs = () => {
   const tabContainerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <TabsWrapper ref={tabContainerRef}>
+    <TabsWrapper
+      ref={tabContainerRef}
+      className={tabsHidden ? 'hidden' : undefined}
+      initial={'show'}
+      animate={!tabsHidden ? 'show' : 'hidden'}
+      variants={{
+        hidden: {
+          height: 0,
+        },
+        show: {
+          height: 'auto',
+        },
+      }}
+      transition={{
+        duration: 0.075,
+      }}
+    >
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}

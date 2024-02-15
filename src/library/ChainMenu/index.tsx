@@ -3,22 +3,28 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ButtonWrapper, ChainManuWrapper } from './Wrappers';
-import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { useTabs } from 'contexts/Tabs';
 
-export const ChainMenu = () => (
-  <ChainManuWrapper>
-    <div className="menu">
-      <div>Not Connected</div>
-    </div>
-    <div className="config">
-      <ButtonWrapper
-        onClick={() => {
-          /* Do nothing */
-        }}
-        className="action"
-      >
-        <FontAwesomeIcon icon={faAngleUp} transform="shrink-3" />
-      </ButtonWrapper>
-    </div>
-  </ChainManuWrapper>
-);
+export const ChainMenu = () => {
+  const { tabsHidden, setTabsHidden } = useTabs();
+
+  return (
+    <ChainManuWrapper>
+      <div className="menu">
+        <div>Not Connected</div>
+      </div>
+      <div className="config">
+        <ButtonWrapper
+          onClick={() => setTabsHidden(!tabsHidden)}
+          className="action"
+        >
+          <FontAwesomeIcon
+            icon={tabsHidden ? faAngleDown : faAngleUp}
+            transform="shrink-3"
+          />
+        </ButtonWrapper>
+      </div>
+    </ChainManuWrapper>
+  );
+};

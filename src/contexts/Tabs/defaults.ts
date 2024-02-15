@@ -19,6 +19,8 @@ export const defaultTabsContext: TabsContextInterface = {
   addInstantiatedId: (id) => {},
   dragId: null,
   setDragId: (index) => {},
+  tabsHidden: false,
+  setTabsHidden: (hidden) => {},
   instantiatedIds: [],
 };
 
