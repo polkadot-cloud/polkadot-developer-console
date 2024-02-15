@@ -5,6 +5,13 @@ SPDX-License-Identifier: GPL-3.0-only */
 
 /* Every element conforms to border-box by default. */
 
+html {
+  font-size: 15px;
+  @media (min-width: 600px) {
+    font-size: 16px;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
