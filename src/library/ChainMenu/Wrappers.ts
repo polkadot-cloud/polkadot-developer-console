@@ -3,7 +3,10 @@
 
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const ChainManuWrapper = styled.div`
+  --chain-menu-button-height: 1.75rem;
+  --chain-menu-button-border-radius: 0.35rem;
+
   background-color: var(--background-primary);
   border-bottom: 1px solid var(--border-primary-color);
   display: flex;
@@ -25,10 +28,28 @@ export const Wrapper = styled.div`
     align-items: center;
     flex-grow: 1;
     justify-content: flex-end;
-    padding-right: 1rem;
+    padding-right: 0.4rem;
 
     .icon {
       color: var(--text-color-secondary);
     }
+  }
+`;
+
+export const ButtonWrapper = styled.button`
+  border-radius: var(--chain-menu-button-border-radius);
+  height: var(--chain-menu-button-height);
+  color: var(--text-color-secondary);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 0.2rem;
+  padding: 0 0.75rem;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background-color: var(--button-hover-background);
+    color: var(--text-color-primary);
   }
 `;
