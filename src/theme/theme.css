@@ -3,11 +3,12 @@ SPDX-License-Identifier: GPL-3.0-only */
 
 .theme-light {
   --background-default: #efeeee;
-  --background-primary: #f8f7f7;
+  --background-primary: #f3f2f2;
   --background-invert: #333;
 
   --border-primary-color: #e4e4e4;
   --border-secondary-color: #cfcccc;
+  --border-gradient: linear-gradient(45deg, #c3c3c3, #e6e6e6);
 
   --button-primary-background: #efeeee;
   --button-secondary-background: #e7e5e5;
@@ -34,6 +35,18 @@ SPDX-License-Identifier: GPL-3.0-only */
     #e6e6e6 80%,
     #fbede8 100%
   );
+  --gradient-tab-fade: linear-gradient(
+    90deg,
+    rgba(239, 238, 238, 0) 0%,
+    rgba(239, 238, 238, 1) 70%,
+    rgba(239, 238, 238, 1) 100%
+  );
+  --gradient-tab-fade-hover: linear-gradient(
+    90deg,
+      rgba(228, 226, 226, 0) 0%,
+      rgba(228, 226, 226, 1) 50%,
+      rgba(228, 226, 226, 1) 100%
+    );
 
   --card-shadow-color: rgb(158 158 158 / 20%);
   --card-deep-shadow-color: rgb(158 158 158 / 50%);
@@ -60,10 +73,13 @@ SPDX-License-Identifier: GPL-3.0-only */
 
 .theme-dark {
   --background-default: rgb(36 32 36);
-  --background-primary: rgb(45 41 45);
+  --background-primary: rgb(41 37 41);
   --background-invert: #ddd;
+
   --border-primary-color: rgb(58 52 58);
   --border-secondary-color: rgb(95 90 95);
+  /* TODO: Update for dark theme. */
+  --border-gradient: linear-gradient(45deg, #c3c3c3, #e6e6e6);
 
   --button-secondary-background: rgb(55 50 55);
   --button-tertiary-background: rgb(54 49 54);
@@ -88,6 +104,20 @@ SPDX-License-Identifier: GPL-3.0-only */
     rgb(36 32 36) 100px,
     rgb(32 28 32) 100%
   );
+  /* TODO: Update for dark theme. */
+  --gradient-tab-fade: linear-gradient(
+    90deg,
+    rgba(239, 238, 238, 0) 0%,
+    rgba(239, 238, 238, 1) 70%,
+    rgba(239, 238, 238, 1) 100%
+  );
+  /* TODO: Update for dark theme. */
+  --gradient-tab-fade-hover: linear-gradient(
+    90deg,
+      rgba(228, 226, 226, 0) 0%,
+      rgba(228, 226, 226, 1) 50%,
+      rgba(228, 226, 226, 1) 100%
+    );
 
   --card-shadow-color: rgb(28 24 28 / 25%);
   --card-deep-shadow-color: rgb(28 24 28 / 50%);

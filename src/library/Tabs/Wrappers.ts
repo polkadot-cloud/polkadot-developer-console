@@ -11,7 +11,7 @@ export const TabsWrapper = styled.div`
   background-color: var(--background-list-item);
   border-top: 1px solid var(--border-secondary-color);
   border-bottom: 1px solid var(--border-secondary-color);
-  border-image: linear-gradient(45deg, #c3c3c3, #e6e6e6) 50;
+  border-image: var(--border-gradient) 50;
   border-top-width: 1px;
   border-bottom-width: 1px;
   border-style: solid;
@@ -137,13 +137,7 @@ export const TabWrapper = styled(motion.div)`
   /* Fade for cosmetic text clipping. */
 
   > .fade {
-    /* TODO: abstract these gradients into theme variable. */
-    background: linear-gradient(
-      90deg,
-      rgba(239, 238, 238, 0) 0%,
-      rgba(239, 238, 238, 1) 70%,
-      rgba(239, 238, 238, 1) 100%
-    );
+    background: var(--gradient-tab-fade);
     border-top-right-radius: var(--tab-border-radius);
     border-bottom-right-radius: var(--tab-border-radius);
     position: absolute;
@@ -158,12 +152,7 @@ export const TabWrapper = styled(motion.div)`
   &.active,
   &:active {
     > .fade {
-      background: linear-gradient(
-        90deg,
-        rgba(228, 226, 226, 0) 0%,
-        rgba(228, 226, 226, 1) 50%,
-        rgba(228, 226, 226, 1) 100%
-      );
+      background: var(--gradient-tab-fade-hover);
     }
   }
 `;

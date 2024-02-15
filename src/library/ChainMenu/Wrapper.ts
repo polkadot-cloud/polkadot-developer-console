@@ -4,11 +4,10 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  /* background-color: var(--background-primary); */
-  background-color: #f3f2f2; /* TODO: use new --background-primary */
+  background-color: var(--background-primary);
   border-bottom: 1px solid var(--border-primary-color);
-  width: 100%;
   display: flex;
+  width: 100%;
 
   > .menu {
     display: flex;
