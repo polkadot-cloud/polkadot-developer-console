@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
 
     > div {
       color: var(--text-color-tertiary);
-      padding: 0.7rem 0.75rem;
+      padding: 0.7rem 0.5rem 0.7rem 1.1rem;
       font-size: 0.8rem;
     }
   }
