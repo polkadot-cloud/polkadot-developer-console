@@ -39,6 +39,7 @@ export const RenameTab = () => {
       name="tab_name"
       value={editableValue}
       placeholder="Tab Name"
+      label="Tab Name"
       onChange={onChange}
       onSubmit={onSubmit}
     />

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { RenameTab } from './RenameTab';
-import { Wrapper } from './Wrapper';
+import { Wrapper } from './Wrappers';
 
 export const Default = () => (
   <Wrapper>

@@ -5,6 +5,7 @@ export interface TextInputProps {
   name: string;
   value: string;
   placeholder: string;
+  label?: string;
   onChange: (value: string) => void;
   onSubmit: (value: string) => void;
 }

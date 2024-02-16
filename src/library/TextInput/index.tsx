@@ -9,6 +9,7 @@ export const TextInput = ({
   name,
   value,
   placeholder,
+  label,
   onSubmit,
   onChange,
 }: TextInputProps) => {
@@ -31,34 +32,37 @@ export const TextInput = ({
   };
 
   return (
-    <Wrapper className={focus ? 'focus' : undefined}>
-      <input
-        ref={inputRef}
-        name={name}
-        value={value}
-        placeholder={placeholder}
-        onChange={(ev) => onChange(ev.currentTarget.value)}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        onKeyDown={(ev) => {
-          // Submit on enter key.
-          if (ev.key === 'Enter') {
-            onSubmit(formatSubmitted(value));
-          }
-          // Blue on escape key.
-          if (ev.key === 'Escape') {
-            inputRef.current?.blur();
-            setFocus(false);
-          }
-        }}
-      />
-      <div className="controls">
-        <button
-          onClick={() => onSubmit(formatSubmitted(value))}
-          disabled={!valid}
-        >
-          Save
-        </button>
+    <Wrapper>
+      {label && <h5 className={`${focus ? 'focus' : undefined}`}>{label}</h5>}
+      <div className={`inner ${focus ? 'focus' : undefined}`}>
+        <input
+          ref={inputRef}
+          name={name}
+          value={value}
+          placeholder={placeholder}
+          onChange={(ev) => onChange(ev.currentTarget.value)}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          onKeyDown={(ev) => {
+            // Submit on enter key.
+            if (ev.key === 'Enter') {
+              onSubmit(formatSubmitted(value));
+            }
+            // Blue on escape key.
+            if (ev.key === 'Escape') {
+              inputRef.current?.blur();
+              setFocus(false);
+            }
+          }}
+        />
+        <div className="controls">
+          <button
+            onClick={() => onSubmit(formatSubmitted(value))}
+            disabled={!valid}
+          >
+            Save
+          </button>
+        </div>
       </div>
     </Wrapper>
   );
