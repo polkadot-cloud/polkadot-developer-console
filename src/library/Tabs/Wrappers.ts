@@ -39,7 +39,7 @@ export const TabsWrapper = styled(motion.div)`
 
 export const TabWrapper = styled(motion.div)`
   border-right: 1px solid var(--border-secondary-color);
-  color: var(--text-color-tertiary);
+  color: var(--text-color-secondary);
   height: var(--tab-height);
   font-size: 0.8rem;
   display: flex;
