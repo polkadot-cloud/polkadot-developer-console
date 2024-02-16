@@ -7,7 +7,7 @@ SPDX-License-Identifier: GPL-3.0-only */
   --background-invert: #333;
 
   --border-primary-color: #e4e4e4;
-  --border-secondary-color: #cfcccc;
+  --border-secondary-color: #d3d1d1;
   --border-gradient: linear-gradient(45deg, #c3c3c3, #e6e6e6);
 
   --button-primary-background: #efeeee;
@@ -24,7 +24,7 @@ SPDX-License-Identifier: GPL-3.0-only */
   --status-danger-color-transparent: rgb(255 0 0 / 25%);
 
   --text-color-primary: #3f3f3f;
-  --text-color-secondary: #555;
+  --text-color-secondary: #666;
   --text-color-tertiary: #888;
   --text-color-invert: #fafafa;
 

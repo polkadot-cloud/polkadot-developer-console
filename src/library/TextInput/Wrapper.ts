@@ -4,12 +4,11 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  max-width: 500px;
   width: 100%;
 
   > h5 {
     color: var(--text-color-tertiary);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.3rem;
 
     &.focus {
       color: var(--accent-color-secondary);
@@ -30,8 +29,9 @@ export const Wrapper = styled.div`
     > input {
       color: var(--text-color-secondary);
       font-family: InterSemiBold, sans-serif;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       flex-grow: 1;
+      padding: 0.65rem 0;
       width: 100%;
     }
 
@@ -43,7 +43,7 @@ export const Wrapper = styled.div`
       > button {
         color: var(--text-color-tertiary);
         font-family: InterSemiBold, sans-serif;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         transition: color 0.15s;
 
         &:hover {

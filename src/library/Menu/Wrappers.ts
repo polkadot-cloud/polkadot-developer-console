@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
   border-radius: 0.4rem;
   display: flex;
   flex-flow: column wrap;
+  /* TODO: make theme variable + dark mode support */
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.07),
     0 2px 4px -2px rgba(0, 0, 0, 0.07);

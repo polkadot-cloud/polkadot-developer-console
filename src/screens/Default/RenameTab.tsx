@@ -5,6 +5,7 @@ import { useEffectIgnoreInitial } from '@polkadot-cloud/react';
 import { useTabs } from 'contexts/Tabs';
 import { TextInput } from 'library/TextInput';
 import { useState } from 'react';
+import { RenameTabWrapper } from './Wrappers';
 
 export const RenameTab = () => {
   const { activeTabId, getActiveTab, renameTab } = useTabs();
@@ -35,13 +36,15 @@ export const RenameTab = () => {
   }, [activeTabId, initialValue]);
 
   return (
-    <TextInput
-      name="tab_name"
-      value={editableValue}
-      placeholder="Tab Name"
-      label="Tab Name"
-      onChange={onChange}
-      onSubmit={onSubmit}
-    />
+    <RenameTabWrapper>
+      <TextInput
+        name="tab_name"
+        value={editableValue}
+        placeholder="Tab Name"
+        label="Tab Name"
+        onChange={onChange}
+        onSubmit={onSubmit}
+      />
+    </RenameTabWrapper>
   );
 };
