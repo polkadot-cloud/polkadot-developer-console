@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
   > .inner {
     border: 1px solid var(--border-secondary-color);
     background-color: var(--background-primary);
-    border-radius: 0.75rem;
+    border-radius: 0.85rem;
     padding: 0rem 0.8rem;
     display: flex;
     align-items: center;
@@ -43,7 +43,7 @@ export const Wrapper = styled.div`
       font-family: InterSemiBold, sans-serif;
       font-size: 0.95rem;
       flex-grow: 1;
-      padding: 0.75rem 0;
+      padding: 0.85rem 0;
       width: 100%;
     }
   }
