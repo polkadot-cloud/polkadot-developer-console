@@ -40,6 +40,7 @@ export const Wrapper = styled.div`
 
       &:disabled {
         color: var(--text-color-tertiary);
+        opacity: 0.5;
       }
     }
   }

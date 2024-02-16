@@ -32,7 +32,7 @@ export const RenameTab = () => {
   // Update tab value when active tab changes.
   useEffectIgnoreInitial(() => {
     setEditableValue(initialValue);
-  }, [activeTabId]);
+  }, [activeTabId, initialValue]);
 
   return (
     <TextInput
