@@ -26,7 +26,7 @@ export const SearchChainWrapper = styled.div`
 export const ChainListWrapper = styled.div`
   border: 1px solid var(--border-primary-color);
   background-color: var(--background-primary);
-  border-radius: 0.75rem;
+  border-radius: 0.9rem;
   margin-top: 1rem;
   padding: 0.9rem 1rem;
   max-width: 750px;
