@@ -43,10 +43,10 @@ SPDX-License-Identifier: GPL-3.0-only */
   );
   --gradient-tab-fade-hover: linear-gradient(
     90deg,
-      rgba(228, 226, 226, 0) 0%,
-      rgba(228, 226, 226, 1) 50%,
-      rgba(228, 226, 226, 1) 100%
-    );
+    rgba(228, 226, 226, 0) 0%,
+    rgba(228, 226, 226, 1) 50%,
+    rgba(228, 226, 226, 1) 100%
+  );
 
   --card-shadow-color: rgb(158 158 158 / 20%);
   --card-deep-shadow-color: rgb(158 158 158 / 50%);
@@ -114,10 +114,10 @@ SPDX-License-Identifier: GPL-3.0-only */
   /* TODO: Update for dark theme. */
   --gradient-tab-fade-hover: linear-gradient(
     90deg,
-      rgba(228, 226, 226, 0) 0%,
-      rgba(228, 226, 226, 1) 50%,
-      rgba(228, 226, 226, 1) 100%
-    );
+    rgba(228, 226, 226, 0) 0%,
+    rgba(228, 226, 226, 1) 50%,
+    rgba(228, 226, 226, 1) 100%
+  );
 
   --card-shadow-color: rgb(28 24 28 / 25%);
   --card-deep-shadow-color: rgb(28 24 28 / 50%);
