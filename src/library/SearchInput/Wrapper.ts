@@ -45,6 +45,10 @@ export const Wrapper = styled.div`
       flex-grow: 1;
       padding: 0.85rem 0;
       width: 100%;
+
+      &:focus {
+        color: var(--text-color-primary);
+      }
     }
   }
 `;
