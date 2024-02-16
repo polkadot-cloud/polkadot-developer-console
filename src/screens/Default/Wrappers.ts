@@ -19,6 +19,16 @@ export const RenameTabWrapper = styled.div`
 
 export const SearchChainWrapper = styled.div`
   margin-top: 1.65rem;
-  max-width: 600px;
+  max-width: 750px;
+  width: 100%;
+`;
+
+export const ChainListWrapper = styled.div`
+  border: 1px solid var(--border-primary-color);
+  background-color: var(--background-primary);
+  border-radius: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  max-width: 750px;
   width: 100%;
 `;

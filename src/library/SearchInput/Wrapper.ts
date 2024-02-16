@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
 
   > h5 {
     color: var(--text-color-tertiary);
-    margin-bottom: 0.1rem;
+    margin-bottom: 0.3rem;
 
     &.focus {
       color: var(--accent-color-secondary);
@@ -28,6 +28,10 @@ export const Wrapper = styled.div`
     align-items: center;
     width: 100%;
 
+    &.focus {
+      border-color: var(--accent-color-secondary);
+    }
+
     > .icon {
       color: var(--text-color-tertiary);
       opacity: 0.75;
@@ -37,7 +41,7 @@ export const Wrapper = styled.div`
     > input {
       color: var(--text-color-secondary);
       font-family: InterSemiBold, sans-serif;
-      font-size: 1rem;
+      font-size: 0.95rem;
       flex-grow: 1;
       padding: 0.75rem 0;
       width: 100%;

@@ -3,11 +3,13 @@
 
 import { RenameTab } from './RenameTab';
 import { SearchChain } from './SearchChain';
+import { ChainList } from './ChainList';
 import { Wrapper } from './Wrappers';
 
 export const Default = () => (
   <Wrapper>
     <RenameTab />
     <SearchChain />
+    <ChainList />
   </Wrapper>
 );

@@ -3,9 +3,36 @@
 
 import { SearchInput } from 'library/SearchInput';
 import { SearchChainWrapper } from './Wrappers';
+import { useTabs } from 'contexts/Tabs';
+import { useState } from 'react';
+import { useEffectIgnoreInitial } from '@polkadot-cloud/react';
 
-export const SearchChain = () => (
-  <SearchChainWrapper>
-    <SearchInput placeholder="Search Chain" value="Polkadot Relay Chain" />
-  </SearchChainWrapper>
-);
+export const SearchChain = () => {
+  const { activeTabId } = useTabs();
+
+  // The editable value of the input.
+  const initialValue = 'Polkadot Relay Chain';
+  const [editableValue, setEditableValue] = useState<string>(initialValue);
+
+  // Handle tab name change.
+  const onChange = (value: string) => {
+    // If trimmed value and the current value is empty, don't update.
+    if (!(!value.trim().length && editableValue === '')) {
+      setEditableValue(value);
+    }
+  };
+  // Update tab value when active tab changes.
+  useEffectIgnoreInitial(() => {
+    setEditableValue(initialValue);
+  }, [activeTabId, initialValue]);
+
+  return (
+    <SearchChainWrapper>
+      <SearchInput
+        placeholder="Search Chain"
+        value={editableValue}
+        onChange={onChange}
+      />
+    </SearchChainWrapper>
+  );
+};
