@@ -30,4 +30,5 @@ export interface TabsContextInterface {
   tabsHidden: boolean;
   setTabsHidden: (hidden: boolean) => void;
   instantiatedIds: number[];
+  renameTab: (id: number, name: string) => void;
 }

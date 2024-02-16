@@ -9,9 +9,4 @@ export const Wrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   margin-top: 1rem;
-
-  h1 {
-    color: var(--text-color-secondary);
-    font-family: InterExtraBold, sans-serif;
-  }
 `;

@@ -95,6 +95,12 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Rename a tab.
+  const renameTab = (id: number, name: string) => {
+    const newTabs = tabs.map((tab) => (tab.id === id ? { ...tab, name } : tab));
+    setTabs(newTabs);
+  };
+
   return (
     <TabsContext.Provider
       value={{
@@ -114,6 +120,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         dragId,
         tabsHidden,
         setTabsHidden,
+        renameTab,
         instantiatedIds: instantiatedIds.current,
       }}
     >

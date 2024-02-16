@@ -22,6 +22,7 @@ export const defaultTabsContext: TabsContextInterface = {
   tabsHidden: false,
   setTabsHidden: (hidden) => {},
   instantiatedIds: [],
+  renameTab: (id, name) => {},
 };
 
 export const DEFAULT_TAB_WIDTH_PX = 130;
