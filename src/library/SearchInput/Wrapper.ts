@@ -40,7 +40,7 @@ export const Wrapper = styled.div`
 
     > input {
       color: var(--text-color-secondary);
-      font-family: InterSemiBold, sans-serif;
+      font-family: InterBold, sans-serif;
       font-size: 0.95rem;
       flex-grow: 1;
       padding: 0.85rem 0;
