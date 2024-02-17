@@ -42,6 +42,32 @@ export const Separator = styled.div`
   border-top: 1px solid var(--border-primary-color);
 `;
 
+export const TagControlsWrapper = styled.div`
+  margin-top: 0.85rem;
+  display: flex;
+  flex-direction: column;
+
+  > div {
+    display: flex;
+    align-items: center;
+    margin-left: 0.25rem;
+
+    &.controls {
+      margin-bottom: 0.25rem;
+      > h5 {
+        padding-right: 0.7rem;
+      }
+    }
+
+    &.applied {
+      margin-top: 0.5rem;
+    }
+    > button {
+      margin-right: 0.7rem;
+    }
+  }
+`;
+
 export const ChainListItemWrapper = styled.div`
   border: 1px solid var(--border-primary-color);
   background-color: var(--background-primary);
@@ -111,31 +137,5 @@ export const ChainListItemWrapper = styled.div`
   }
   &:hover {
     transform: scale(1.01);
-  }
-`;
-
-export const TagControlsWrapper = styled.div`
-  margin-top: 0.75rem;
-  display: flex;
-  flex-direction: column;
-
-  > div {
-    display: flex;
-    align-items: center;
-    margin-left: 0.25rem;
-
-    &.controls {
-      margin-bottom: 0.3rem;
-      > h5 {
-        padding-right: 0.5rem;
-      }
-    }
-
-    &.applied {
-      margin-top: 0.5rem;
-    }
-    > button {
-      margin-right: 0.6rem;
-    }
   }
 `;
