@@ -13,7 +13,9 @@ export const ChainListItem = ({ networkKey, name }: ChainListItemProps) => {
   // eslint-disable-next-line
   const Icon = useMemo(
     () =>
-      lazy(() => import(`../../config/networks/icons/${networkKey}/Icon.tsx`)),
+      lazy(
+        () => import(`../../config/networks/icons/${networkKey}/Inline.tsx`)
+      ),
     []
   );
 

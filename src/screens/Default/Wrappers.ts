@@ -24,6 +24,8 @@ export const SearchChainWrapper = styled.div`
 `;
 
 export const ChainListWrapper = styled.div`
+  --chain-list-item-border-radius: 0.9rem;
+
   display: flex;
   flex-direction: column;
   margin-top: 0.5rem;
@@ -39,12 +41,12 @@ export const Separator = styled.div`
 export const ChainListItemWrapper = styled.div`
   border: 1px solid var(--border-primary-color);
   background-color: var(--background-primary);
-  border-radius: 0.9rem;
+  border-radius: var(--chain-list-item-border-radius);
   margin-top: 0.5rem;
-  padding: 0rem 0.75rem;
   flex: 1;
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s;
 
   > div {
     display: flex;
@@ -54,25 +56,41 @@ export const ChainListItemWrapper = styled.div`
 
     &.header {
       border-bottom: 1px solid var(--border-primary-color);
-      padding-top: 0.75rem;
-      padding-bottom: 0.5rem;
+      border-top-left-radius: var(--chain-list-item-border-radius);
+      border-top-right-radius: var(--chain-list-item-border-radius);
+
+      cursor: pointer;
+      padding: 0.8rem 0.75rem 0.8rem 0.75rem;
 
       > h3 {
         color: var(--text-color-secondary);
+        transition: color 0.25s;
       }
+
       > .icon {
         width: 1.25rem;
         height: 1.25rem;
         margin-right: 0.6rem;
       }
+
+      &:hover {
+        background-color: var(--background-default);
+        > h3 {
+          color: var(--accent-color-secondary);
+        }
+      }
     }
 
     &.footer {
-      padding-top: 0.5rem;
-      padding-bottom: 0.6rem;
+      padding: 0.5rem 0.75em 0.6rem 0.75rem;
+
       > h5 {
         color: var(--text-color-tertiary);
       }
     }
+  }
+
+  &:hover {
+    transform: scale(1.01);
   }
 `;
