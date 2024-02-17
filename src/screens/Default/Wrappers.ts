@@ -103,7 +103,7 @@ export const ChainListItemWrapper = styled.div`
       > .tags {
         display: flex;
         margin-top: 0.4rem;
-        > button {
+        > div {
           margin-right: 0.45rem;
 
           &:last-child {

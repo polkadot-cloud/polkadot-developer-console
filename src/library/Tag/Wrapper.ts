@@ -3,7 +3,7 @@
 
 import styled from 'styled-components';
 
-export const TagWrapper = styled.button`
+export const TagWrapper = styled.div`
   background-color: var(--button-tertiary-background);
   color: var(--text-color-secondary);
   font-family: InterSemiBold, sans-serif;
