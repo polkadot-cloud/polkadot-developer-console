@@ -17,6 +17,7 @@ import {
   DEFAULT_TAB_WIDTH_PX,
   TAB_TRANSITION_DURATION_MS,
 } from 'contexts/Tabs/defaults';
+import DisconnectSVG from 'svg/Disconnect.svg?react';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -130,6 +131,9 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
         {...attributes}
         {...listeners}
       />
+      <div className="connection">
+        <DisconnectSVG />
+      </div>
       <div className="name">{name}</div>
       <div className="fade" />
 

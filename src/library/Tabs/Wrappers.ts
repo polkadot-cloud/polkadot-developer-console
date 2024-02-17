@@ -92,6 +92,22 @@ export const TabWrapper = styled(motion.div)`
 
   /* Main tab elements. */
 
+  .connection {
+    --connection-icon-size: 0.74rem;
+    height: var(--tab-height);
+    position: absolute;
+    top: 0;
+    left: 0.4rem;
+    width: var(--connection-icon-size);
+    display: flex;
+    align-items: center;
+
+    > svg {
+      fill: var(--text-color-tertiary);
+      width: var(--connection-icon-size);
+      height: var(--connection-icon-size);
+    }
+  }
   > .icon {
     margin-right: 0.25rem;
   }
@@ -104,7 +120,7 @@ export const TabWrapper = styled(motion.div)`
     top: 0;
     left: 0;
     width: 100%;
-    padding: 0 0.75rem;
+    padding: 0 0.75rem 0 1.5rem;
     display: flex;
     align-items: center;
     /* Handle text overflow */

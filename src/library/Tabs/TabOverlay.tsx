@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import type { TabProps } from './types';
 import { DEFAULT_TAB_WIDTH_PX } from 'contexts/Tabs/defaults';
+import DisconnectSVG from 'svg/Disconnect.svg?react';
 
 export const TabOverlay = ({ name }: TabProps) => (
   <TabWrapper
@@ -14,6 +15,9 @@ export const TabOverlay = ({ name }: TabProps) => (
     style={{ width: DEFAULT_TAB_WIDTH_PX }}
   >
     <div className="fade" />
+    <div className="connection">
+      <DisconnectSVG />
+    </div>
     <div className="name">{name}</div>
 
     <button className="close">
