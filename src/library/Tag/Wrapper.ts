@@ -10,7 +10,6 @@ export const TagWrapper = styled.button`
   font-size: 0.68rem;
   padding: 0.35rem 0.45rem;
   border-radius: 0.35rem;
-  margin-right: 0.5rem;
 
   &:hover {
     background-color: var(--button-hover-background);
