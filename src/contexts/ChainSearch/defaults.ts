@@ -9,5 +9,12 @@ export const defaultChainSearchContext: ChainSearchContextInterface = {
   getSearchTerm: (tabId) => '',
   setSearchTerm: (tabId, searchTerm) => {},
   appliedTags: {},
+  getAppliedTags: (tabId) => [],
   applyTags: (tabId, tags) => {},
+};
+
+export const defaultAppliedTags = {
+  1: ['Relay Chain', 'Test Network', 'Canary Network'],
+  2: ['Relay Chain', 'Canary Network'],
+  3: ['Relay Chain', 'Test Network'],
 };

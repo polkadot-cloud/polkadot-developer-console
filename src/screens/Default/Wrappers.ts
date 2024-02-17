@@ -46,7 +46,7 @@ export const ChainListItemWrapper = styled.div`
   border: 1px solid var(--border-primary-color);
   background-color: var(--background-primary);
   border-radius: var(--chain-list-item-border-radius);
-  margin-top: 0.5rem;
+  margin-top: 0.45rem;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -117,13 +117,23 @@ export const ChainListItemWrapper = styled.div`
 export const TagControlsWrapper = styled.div`
   margin-top: 0.75rem;
   display: flex;
-  align-items: center;
-  padding-left: 0.5rem;
+  flex-direction: column;
 
   > div {
     display: flex;
-    margin-left: 0.7rem;
+    align-items: center;
+    margin-left: 0.25rem;
 
+    &.controls {
+      margin-bottom: 0.3rem;
+      > h5 {
+        padding-right: 0.5rem;
+      }
+    }
+
+    &.applied {
+      margin-top: 0.5rem;
+    }
     > button {
       margin-right: 0.6rem;
     }

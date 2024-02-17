@@ -11,6 +11,13 @@ export const TagControlWrapper = styled.button`
   padding: 0.35rem 0.45rem;
   border-radius: 0.35rem;
 
+  &.large {
+    color: var(--text-color-primary);
+    font-size: 0.8rem;
+    padding: 0.45rem 0.65rem;
+    border-radius: 0.45rem;
+  }
+
   > .icon {
     margin-right: 0.4rem;
   }

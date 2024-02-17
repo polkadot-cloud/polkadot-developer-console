@@ -6,6 +6,7 @@ export interface ChainSearchContextInterface {
   getSearchTerm: (tabId: number) => string;
   setSearchTerm: (tabId: number, searchTerm: string) => void;
   appliedTags: AppliedTags;
+  getAppliedTags: (tabId: number) => string[];
   applyTags: (tabId: number, tags: string[]) => void;
 }
 

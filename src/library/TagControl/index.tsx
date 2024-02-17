@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TagControlWrapper } from './Wrapper';
 import type { TagControlProps } from './types';
 
-export const TagControl = ({ name, icon }: TagControlProps) => (
-  <TagControlWrapper>
+export const TagControl = ({ name, icon, large }: TagControlProps) => (
+  <TagControlWrapper className={large ? 'large' : undefined}>
     {icon && (
       <FontAwesomeIcon icon={icon} transform="shrink-1" className="icon" />
     )}
