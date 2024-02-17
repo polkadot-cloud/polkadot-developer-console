@@ -5,11 +5,12 @@
 // used.
 
 export type NetworkDirectoryName =
-  | 'polkadot-relay'
-  | 'kusama-relay'
-  | 'westend-relay';
+  | 'polkadot-relay-chain'
+  | 'kusama-relay-chain'
+  | 'westend-relay-chain';
 
 export interface NetworkDirectoryItem {
+  name: string;
   unit: string;
 }
 
@@ -20,13 +21,16 @@ export type NetworkDirectory = Record<
 
 // The currently supported networks.
 export const NetworkDirectory: NetworkDirectory = {
-  'polkadot-relay': {
+  'polkadot-relay-chain': {
+    name: 'Polkadot Relay Chain',
     unit: 'DOT',
   },
-  'kusama-relay': {
+  'kusama-relay-chain': {
+    name: 'Kusama Relay Chain',
     unit: 'KSM',
   },
-  'westend-relay': {
+  'westend-relay-chain': {
+    name: 'Westend Relay Chain',
     unit: 'WND',
   },
 };

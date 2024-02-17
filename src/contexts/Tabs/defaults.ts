@@ -29,20 +29,21 @@ export const DEFAULT_TAB_WIDTH_PX = 130;
 
 export const TAB_TRANSITION_DURATION_MS = 300;
 
+// TODO: derive this default value from `NetworkDirectory`.
 export const defaultTabs: Tabs = [
   {
     id: 1,
-    chain: 'polkadot-relay',
+    chain: 'polkadot-relay-chain',
     name: 'Polkadot Relay',
   },
   {
     id: 2,
-    chain: 'kusama-relay',
+    chain: 'kusama-relay-chain',
     name: 'Kusama Relay',
   },
   {
     id: 3,
-    chain: 'westend-relay',
+    chain: 'westend-relay-chain',
     name: 'Westend Relay Long Name',
   },
 ];
