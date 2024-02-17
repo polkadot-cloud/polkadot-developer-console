@@ -63,7 +63,7 @@ export const ChainListItemWrapper = styled.div`
       padding: 0.8rem 0.75rem 0.8rem 0.75rem;
 
       > h3 {
-        color: var(--text-color-secondary);
+        color: var(--text-color-primary);
         transition: color 0.25s;
       }
 
