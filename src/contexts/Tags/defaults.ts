@@ -10,6 +10,7 @@ export const defaultTagsConfig = {
     'kusama-relay-chain',
     'westend-relay-chain',
   ],
+  'Canary Network': ['kusama-relay-chain'],
   'Test Network': ['westend-relay-chain'],
 };
 
