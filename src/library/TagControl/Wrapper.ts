@@ -8,7 +8,7 @@ export const TagControlWrapper = styled.button`
   color: var(--text-color-secondary);
   font-family: InterSemiBold, sans-serif;
   font-size: 0.75rem;
-  padding: 0.34rem 0.45rem;
+  padding: 0.32rem 0.45rem;
   border-radius: 0.35rem;
 
   &:hover {
@@ -19,7 +19,7 @@ export const TagControlWrapper = styled.button`
   &.large {
     background-color: var(--button-tertiary-background);
     border: none;
-    color: var(--text-color-secondary);
+    color: var(--text-color-primary);
     font-size: 0.8rem;
     padding: 0.45rem 0.65rem;
     border-radius: 0.45rem;
