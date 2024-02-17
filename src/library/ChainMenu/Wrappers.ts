@@ -3,7 +3,7 @@
 
 import styled from 'styled-components';
 
-export const ChainManuWrapper = styled.div`
+export const ChainMenuWrapper = styled.div`
   --chain-menu-button-height: 1.75rem;
   --chain-menu-button-border-radius: 0.35rem;
 

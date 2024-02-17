@@ -122,44 +122,6 @@ export const Tabs = () => {
             />
           ))}
         </SortableContext>
-        <ControlsWrapper>
-          <div>
-            <TabWrapper
-              onClick={() => {
-                createTab();
-                setTimeout(() => {
-                  if (tabContainerRef.current) {
-                    tabContainerRef.current?.scrollTo({
-                      left: tabContainerRef.current.scrollWidth,
-                      behavior: 'smooth',
-                    });
-                  }
-                }, TAB_TRANSITION_DURATION_MS);
-              }}
-              className="action"
-            >
-              <FontAwesomeIcon icon={faPlus} className="icon" /> New
-            </TabWrapper>
-          </div>
-          <div>
-            <TabWrapper
-              onClick={() => {
-                /* Do nothing. */
-              }}
-              className="action"
-            >
-              Accounts
-            </TabWrapper>
-            <TabWrapper
-              onClick={() => {
-                /* Do nothing. */
-              }}
-              className="action last"
-            >
-              <FontAwesomeIcon icon={faPlug} />
-            </TabWrapper>
-          </div>
-        </ControlsWrapper>
         <DragOverlay>
           {dragIndex !== null ? (
             <TabOverlay
@@ -171,6 +133,44 @@ export const Tabs = () => {
           ) : null}
         </DragOverlay>
       </DndContext>
+      <ControlsWrapper>
+        <div>
+          <TabWrapper
+            onClick={() => {
+              createTab();
+              setTimeout(() => {
+                if (tabContainerRef.current) {
+                  tabContainerRef.current?.scrollTo({
+                    left: tabContainerRef.current.scrollWidth,
+                    behavior: 'smooth',
+                  });
+                }
+              }, TAB_TRANSITION_DURATION_MS);
+            }}
+            className="action"
+          >
+            <FontAwesomeIcon icon={faPlus} className="icon" /> New
+          </TabWrapper>
+        </div>
+        <div>
+          <TabWrapper
+            onClick={() => {
+              /* Do nothing. */
+            }}
+            className="action"
+          >
+            Accounts
+          </TabWrapper>
+          <TabWrapper
+            onClick={() => {
+              /* Do nothing. */
+            }}
+            className="action last"
+          >
+            <FontAwesomeIcon icon={faPlug} />
+          </TabWrapper>
+        </div>
+      </ControlsWrapper>
     </TabsWrapper>
   );
 };

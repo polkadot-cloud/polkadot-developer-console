@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ButtonWrapper, ChainManuWrapper } from './Wrappers';
+import { ButtonWrapper, ChainMenuWrapper } from './Wrappers';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
 
@@ -10,7 +10,7 @@ export const ChainMenu = () => {
   const { tabsHidden, setTabsHidden } = useTabs();
 
   return (
-    <ChainManuWrapper>
+    <ChainMenuWrapper>
       <div className="menu">
         <div>Not Connected</div>
       </div>
@@ -25,6 +25,6 @@ export const ChainMenu = () => {
           />
         </ButtonWrapper>
       </div>
-    </ChainManuWrapper>
+    </ChainMenuWrapper>
   );
 };

@@ -166,7 +166,7 @@ export const TabWrapper = styled(motion.div)`
 `;
 
 export const ControlsWrapper = styled.div`
-  background-color: var(--background-list-item);
+  background-color: var(--background-default);
   color: var(--text-color-tertiary);
   height: var(--tab-height);
   display: flex;
