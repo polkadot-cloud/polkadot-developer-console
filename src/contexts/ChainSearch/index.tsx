@@ -23,19 +23,28 @@ export const ChainSearchProvider = ({ children }: { children: ReactNode }) => {
   // The current applied tags to a given key.
   const [appliedTags, setAppliedTags] = useState<AppliedTags>({});
 
+  // Gets a search term for a given key.
+  const getSearchTerm = (tabId: number) => searchTerms[tabId] || '';
+
   // Sets a search term for a given key.
-  const setSearchTerm = (tabId: string, value: string) => {
+  const setSearchTerm = (tabId: number, value: string) => {
     setSearchTerms((prev) => ({ ...prev, [tabId]: value }));
   };
 
   // Sets applioed tags for a given key.
-  const applyTags = (tabId: string, tags: string[]) => {
+  const applyTags = (tabId: number, tags: string[]) => {
     setAppliedTags((prev) => ({ ...prev, [tabId]: tags }));
   };
 
   return (
     <ChainSearchContext.Provider
-      value={{ searchTerms, setSearchTerm, appliedTags, applyTags }}
+      value={{
+        searchTerms,
+        getSearchTerm,
+        setSearchTerm,
+        appliedTags,
+        applyTags,
+      }}
     >
       {children}
     </ChainSearchContext.Provider>

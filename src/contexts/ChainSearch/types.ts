@@ -3,9 +3,10 @@
 
 export interface ChainSearchContextInterface {
   searchTerms: SearchTerms;
-  setSearchTerm: (key: string, searchTerm: string) => void;
+  getSearchTerm: (tabId: number) => string;
+  setSearchTerm: (tabId: number, searchTerm: string) => void;
   appliedTags: AppliedTags;
-  applyTags: (key: string, tags: string[]) => void;
+  applyTags: (tabId: number, tags: string[]) => void;
 }
 
 export type SearchTerms = Record<number, string>;

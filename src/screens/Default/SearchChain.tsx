@@ -4,34 +4,29 @@
 import { SearchInput } from 'library/SearchInput';
 import { SearchChainWrapper } from './Wrappers';
 import { useTabs } from 'contexts/Tabs';
-import { useState } from 'react';
-import { useEffectIgnoreInitial } from '@polkadot-cloud/react';
 import { TagControls } from './TagControls';
+import { useChainSearch } from 'contexts/ChainSearch';
 
 export const SearchChain = () => {
   const { activeTabId } = useTabs();
+  const { getSearchTerm, setSearchTerm } = useChainSearch();
 
   // The editable value of the input.
-  const initialValue = '';
-  const [editableValue, setEditableValue] = useState<string>(initialValue);
+  const searchTerm = getSearchTerm(activeTabId);
 
   // Handle tab name change.
   const onChange = (value: string) => {
     // If trimmed value and the current value is empty, don't update.
-    if (!(!value.trim().length && editableValue === '')) {
-      setEditableValue(value);
+    if (!(!value.trim().length && searchTerm === '')) {
+      setSearchTerm(activeTabId, value);
     }
   };
-  // Update tab value when active tab changes.
-  useEffectIgnoreInitial(() => {
-    setEditableValue(initialValue);
-  }, [activeTabId, initialValue]);
 
   return (
     <SearchChainWrapper>
       <SearchInput
         placeholder="Chain Name"
-        value={editableValue}
+        value={searchTerm}
         onChange={onChange}
       />
       <TagControls />
