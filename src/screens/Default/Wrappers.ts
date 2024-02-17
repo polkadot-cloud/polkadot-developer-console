@@ -64,7 +64,7 @@ export const ChainListItemWrapper = styled.div`
       border-top-right-radius: var(--chain-list-item-border-radius);
 
       cursor: pointer;
-      padding: 0.8rem 0.75rem 0.8rem 0.75rem;
+      padding: 0.75rem 0.75rem 0.75rem 0.75rem;
 
       > h3 {
         color: var(--text-color-primary);
