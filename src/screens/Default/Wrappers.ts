@@ -57,6 +57,9 @@ export const ChainListItemWrapper = styled.div`
       padding-top: 0.75rem;
       padding-bottom: 0.5rem;
 
+      > h3 {
+        color: var(--text-color-secondary);
+      }
       > .icon {
         width: 1.25rem;
         height: 1.25rem;
@@ -67,6 +70,9 @@ export const ChainListItemWrapper = styled.div`
     &.footer {
       padding-top: 0.5rem;
       padding-bottom: 0.6rem;
+      > h5 {
+        color: var(--text-color-tertiary);
+      }
     }
   }
 `;
