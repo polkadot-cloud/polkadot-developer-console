@@ -55,7 +55,7 @@ export const TagControlsWrapper = styled.div`
     &.controls {
       margin-bottom: 0.25rem;
       > h5 {
-        padding-right: 0.7rem;
+        padding-right: 0.65rem;
       }
     }
 
@@ -63,7 +63,7 @@ export const TagControlsWrapper = styled.div`
       margin-top: 0.5rem;
     }
     > button {
-      margin-right: 0.7rem;
+      margin-right: 0.6rem;
     }
   }
 `;
