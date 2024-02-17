@@ -6,10 +6,11 @@ import { TabsProvider } from 'contexts/Tabs';
 import type { Provider } from 'hooks/withProviders';
 import { withProviders } from 'hooks/withProviders';
 import { MenuProvider } from 'contexts/Menu';
+import { TagsProvider } from 'contexts/Tags';
 
 export const Providers = () => {
   // !! Provider order matters.
-  const providers: Provider[] = [TabsProvider, MenuProvider];
+  const providers: Provider[] = [TabsProvider, TagsProvider, MenuProvider];
 
   return withProviders(providers, App);
 };
