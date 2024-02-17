@@ -29,7 +29,7 @@ export const SearchChain = () => {
   return (
     <SearchChainWrapper>
       <SearchInput
-        placeholder="Search Chain"
+        placeholder="Chain Name"
         value={editableValue}
         onChange={onChange}
       />
