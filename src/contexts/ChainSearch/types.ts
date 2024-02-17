@@ -8,6 +8,6 @@ export interface ChainSearchContextInterface {
   applyTags: (key: string, tags: string[]) => void;
 }
 
-export type SearchTerms = Record<string, string>;
+export type SearchTerms = Record<number, string>;
 
-export type AppliedTags = Record<string, string[]>;
+export type AppliedTags = Record<number, string[]>;

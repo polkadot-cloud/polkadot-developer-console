@@ -6,7 +6,7 @@ import type { ChainSearchContextInterface } from './types';
 
 export const defaultChainSearchContext: ChainSearchContextInterface = {
   searchTerms: {},
-  setSearchTerm: (key, searchTerm) => {},
+  setSearchTerm: (tabId, searchTerm) => {},
   appliedTags: {},
-  applyTags: (key, tags) => {},
+  applyTags: (tabId, tags) => {},
 };
