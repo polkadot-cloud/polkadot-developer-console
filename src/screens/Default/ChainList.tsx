@@ -9,6 +9,8 @@ import { ChainListItem } from './ChainListItem';
 export const ChainList = () => (
   <ChainListWrapper>
     <Separator />
+    <h4>3 Chains Found</h4>
+
     {Object.entries(NetworkDirectory).map(([key, { name }]) => (
       <ChainListItem key={`chain_index_${key}`} networkKey={key} name={name} />
     ))}

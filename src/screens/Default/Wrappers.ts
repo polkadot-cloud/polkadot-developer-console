@@ -31,6 +31,10 @@ export const ChainListWrapper = styled.div`
   margin-top: 0.5rem;
   max-width: 750px;
   width: 100%;
+
+  > h4 {
+    color: var(--text-color-secondary);
+  }
 `;
 
 export const Separator = styled.div`
