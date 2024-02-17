@@ -12,7 +12,7 @@ export const ChainList = () => (
     <h4>3 Chains Found</h4>
 
     {Object.entries(NetworkDirectory).map(([key, { name }]) => (
-      <ChainListItem key={`chain_index_${key}`} networkKey={key} name={name} />
+      <ChainListItem key={`chain_index_${key}`} chain={key} name={name} />
     ))}
   </ChainListWrapper>
 );

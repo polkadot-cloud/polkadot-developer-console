@@ -4,19 +4,20 @@
 import { Suspense, lazy, useMemo } from 'react';
 import { ChainListItemWrapper } from './Wrappers';
 import { Tag } from 'library/Tag';
+import { useTags } from 'contexts/Tags';
 
 export interface ChainListItemProps {
-  networkKey: string;
+  chain: string;
   name: string;
 }
 
-export const ChainListItem = ({ networkKey, name }: ChainListItemProps) => {
-  // eslint-disable-next-line
+export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
+  const { getTagsForChain } = useTags();
+  const tags = getTagsForChain(chain);
+
+  // Lazily load the icon for the chain.
   const Icon = useMemo(
-    () =>
-      lazy(
-        () => import(`../../config/networks/icons/${networkKey}/Inline.tsx`)
-      ),
+    () => lazy(() => import(`../../config/networks/icons/${chain}/Inline.tsx`)),
     []
   );
 
@@ -28,16 +29,18 @@ export const ChainListItem = ({ networkKey, name }: ChainListItemProps) => {
             <Icon />
           </div>
         </Suspense>
-
         <h3>{name}</h3>
       </div>
 
       <div className="footer">
-        <h5>{networkKey}</h5>
-        <div className="tags">
-          <Tag name="Relay Chain" />
-          <Tag name="Test Network" />
-        </div>
+        <h5>{chain}</h5>
+        {tags.length ? (
+          <div className="tags">
+            {tags.map((tag) => (
+              <Tag key={`tag_${tag}`} name={tag} />
+            ))}
+          </div>
+        ) : null}
       </div>
     </ChainListItemWrapper>
   );
