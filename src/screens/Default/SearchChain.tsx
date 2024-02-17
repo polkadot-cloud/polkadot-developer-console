@@ -11,7 +11,7 @@ export const SearchChain = () => {
   const { activeTabId } = useTabs();
 
   // The editable value of the input.
-  const initialValue = 'Polkadot Relay Chain';
+  const initialValue = '';
   const [editableValue, setEditableValue] = useState<string>(initialValue);
 
   // Handle tab name change.
