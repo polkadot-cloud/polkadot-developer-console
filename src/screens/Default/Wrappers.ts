@@ -72,7 +72,6 @@ export const ChainListItemWrapper = styled.div`
       }
 
       > h5 {
-        color: var(--text-color-tertiary);
         margin-top: 0.15rem;
       }
 
@@ -96,13 +95,10 @@ export const ChainListItemWrapper = styled.div`
       flex-direction: column;
       align-items: flex-start;
 
-      > h5 {
-        color: var(--text-color-tertiary);
-      }
-
       > .tags {
         display: flex;
         margin-top: 0.4rem;
+
         > div {
           margin-right: 0.45rem;
 
@@ -113,8 +109,23 @@ export const ChainListItemWrapper = styled.div`
       }
     }
   }
-
   &:hover {
     transform: scale(1.01);
+  }
+`;
+
+export const TagControlsWrapper = styled.div`
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
+
+  > div {
+    display: flex;
+    margin-left: 0.7rem;
+
+    > button {
+      margin-right: 0.6rem;
+    }
   }
 `;

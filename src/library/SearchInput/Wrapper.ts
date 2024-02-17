@@ -7,8 +7,7 @@ export const Wrapper = styled.div`
   width: 100%;
 
   > h5 {
-    color: var(--text-color-tertiary);
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.35rem;
 
     &.focus {
       color: var(--accent-color-secondary);

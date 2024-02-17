@@ -6,6 +6,7 @@ import { SearchChainWrapper } from './Wrappers';
 import { useTabs } from 'contexts/Tabs';
 import { useState } from 'react';
 import { useEffectIgnoreInitial } from '@polkadot-cloud/react';
+import { TagControls } from './TagControls';
 
 export const SearchChain = () => {
   const { activeTabId } = useTabs();
@@ -33,6 +34,7 @@ export const SearchChain = () => {
         value={editableValue}
         onChange={onChange}
       />
+      <TagControls />
     </SearchChainWrapper>
   );
 };
