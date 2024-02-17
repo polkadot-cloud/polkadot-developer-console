@@ -62,19 +62,24 @@ export const ChainListItemWrapper = styled.div`
       border-bottom: 1px solid var(--border-primary-color);
       border-top-left-radius: var(--chain-list-item-border-radius);
       border-top-right-radius: var(--chain-list-item-border-radius);
-
+      padding: 0.7rem 0.75rem 0.7rem 0.75rem;
       cursor: pointer;
-      padding: 0.75rem 0.75rem 0.75rem 0.75rem;
 
-      > h3 {
+      h3 {
         color: var(--text-color-primary);
+        font-family: InterBold, sans-serif;
         transition: color 0.25s;
+      }
+
+      > h5 {
+        color: var(--text-color-tertiary);
+        margin-top: 0.15rem;
       }
 
       > .icon {
         width: 1.25rem;
         height: 1.25rem;
-        margin-right: 0.6rem;
+        margin-right: 0.55rem;
       }
 
       &:hover {
@@ -86,15 +91,37 @@ export const ChainListItemWrapper = styled.div`
     }
 
     &.footer {
-      padding: 0.5rem 0.75em 0.6rem 0.75rem;
+      padding: 0.3rem 0.75em 0.6rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
 
       > h5 {
         color: var(--text-color-tertiary);
+      }
+
+      > .tags {
+        display: flex;
+        margin-top: 0.4rem;
       }
     }
   }
 
   &:hover {
     transform: scale(1.01);
+  }
+`;
+
+export const TagWrapper = styled.button`
+  background-color: var(--button-tertiary-background);
+  color: var(--text-color-secondary);
+  font-family: InterSemiBold, sans-serif;
+  font-size: 0.68rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: 0.35rem;
+  margin-right: 0.5rem;
+
+  &:hover {
+    background-color: var(--button-hover-background);
   }
 `;
