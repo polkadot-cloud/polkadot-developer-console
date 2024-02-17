@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Suspense, lazy, useMemo } from 'react';
-import { ChainListItemWrapper, TagWrapper } from './Wrappers';
+import { ChainListItemWrapper } from './Wrappers';
+import { Tag } from 'library/Tag';
 
 export interface ChainListItemProps {
   networkKey: string;
@@ -34,8 +35,8 @@ export const ChainListItem = ({ networkKey, name }: ChainListItemProps) => {
       <div className="footer">
         <h5>{networkKey}</h5>
         <div className="tags">
-          <TagWrapper>Relay Chain</TagWrapper>
-          <TagWrapper>Test Network</TagWrapper>
+          <Tag name="Relay Chain" />
+          <Tag name="Test Network" />
         </div>
       </div>
     </ChainListItemWrapper>
