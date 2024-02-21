@@ -5,11 +5,11 @@ import { SearchInput } from 'library/SearchInput';
 import { SearchChainWrapper } from './Wrappers';
 import { useTabs } from 'contexts/Tabs';
 import { TagControls } from './TagControls';
-import { useChainSearch } from 'contexts/ChainSearch';
+import { useChainFilter } from 'contexts/ChainFilter';
 
 export const SearchChain = () => {
   const { activeTabId } = useTabs();
-  const { getSearchTerm, setSearchTerm } = useChainSearch();
+  const { getSearchTerm, setSearchTerm } = useChainFilter();
 
   // The editable value of the input.
   const searchTerm = getSearchTerm(activeTabId);

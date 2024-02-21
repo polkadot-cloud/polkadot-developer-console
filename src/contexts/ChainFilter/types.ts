@@ -1,7 +1,7 @@
 // Copyright 2023 @paritytech/polkadot-staking-dashboard authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-export interface ChainSearchContextInterface {
+export interface ChainFilterInterface {
   searchTerms: SearchTerms;
   getSearchTerm: (tabId: number) => string;
   setSearchTerm: (tabId: number, searchTerm: string) => void;

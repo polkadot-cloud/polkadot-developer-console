@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
-import type { ChainSearchContextInterface } from './types';
+import type { ChainFilterInterface } from './types';
 
-export const defaultChainSearchContext: ChainSearchContextInterface = {
+export const defaultChainFilter: ChainFilterInterface = {
   searchTerms: {},
   getSearchTerm: (tabId) => '',
   setSearchTerm: (tabId, searchTerm) => {},

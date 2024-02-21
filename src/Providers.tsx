@@ -7,7 +7,7 @@ import type { Provider } from 'hooks/withProviders';
 import { withProviders } from 'hooks/withProviders';
 import { MenuProvider } from 'contexts/Menu';
 import { TagsProvider } from 'contexts/Tags';
-import { ChainSearchProvider } from 'contexts/ChainSearch';
+import { ChainFilterProvider } from 'contexts/ChainFilter';
 
 export const Providers = () => {
   // !! Provider order matters.
@@ -15,7 +15,7 @@ export const Providers = () => {
     TabsProvider,
     TagsProvider,
     MenuProvider,
-    ChainSearchProvider,
+    ChainFilterProvider,
   ];
 
   return withProviders(providers, App);

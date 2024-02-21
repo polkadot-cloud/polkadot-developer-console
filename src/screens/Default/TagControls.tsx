@@ -4,12 +4,12 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { TagControlsWrapper } from './Wrappers';
 import { TagControl } from 'library/TagControl';
-import { useChainSearch } from 'contexts/ChainSearch';
+import { useChainFilter } from 'contexts/ChainFilter';
 import { useTabs } from 'contexts/Tabs';
 
 export const TagControls = () => {
   const { activeTabId } = useTabs();
-  const { getAppliedTags } = useChainSearch();
+  const { getAppliedTags } = useChainFilter();
 
   const tags = getAppliedTags(activeTabId);
 

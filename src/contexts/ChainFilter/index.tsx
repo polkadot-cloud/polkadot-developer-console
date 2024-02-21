@@ -3,20 +3,15 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
-import type {
-  AppliedTags,
-  ChainSearchContextInterface,
-  SearchTerms,
-} from './types';
-import { defaultAppliedTags, defaultChainSearchContext } from './defaults';
+import type { AppliedTags, ChainFilterInterface, SearchTerms } from './types';
+import { defaultAppliedTags, defaultChainFilter } from './defaults';
 
-export const ChainSearchContext = createContext<ChainSearchContextInterface>(
-  defaultChainSearchContext
-);
+export const ChainFilter =
+  createContext<ChainFilterInterface>(defaultChainFilter);
 
-export const useChainSearch = () => useContext(ChainSearchContext);
+export const useChainFilter = () => useContext(ChainFilter);
 
-export const ChainSearchProvider = ({ children }: { children: ReactNode }) => {
+export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
   // The current search terms.
   const [searchTerms, setSearchTerms] = useState<SearchTerms>({});
 
@@ -41,7 +36,7 @@ export const ChainSearchProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ChainSearchContext.Provider
+    <ChainFilter.Provider
       value={{
         searchTerms,
         getSearchTerm,
@@ -52,6 +47,6 @@ export const ChainSearchProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-    </ChainSearchContext.Provider>
+    </ChainFilter.Provider>
   );
 };
