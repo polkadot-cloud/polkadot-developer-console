@@ -11,6 +11,7 @@ export const defaultChainFilter: ChainFilterInterface = {
   appliedTags: {},
   getAppliedTags: (tabId) => [],
   applyTags: (tabId, tags) => {},
+  removeTag: (tabId, tag) => {},
 };
 
 export const defaultAppliedTags = {

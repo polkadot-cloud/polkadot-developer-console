@@ -9,7 +9,7 @@ import { useTabs } from 'contexts/Tabs';
 
 export const TagControls = () => {
   const { activeTabId } = useTabs();
-  const { getAppliedTags, applyTags } = useChainFilter();
+  const { getAppliedTags, applyTags, removeTag } = useChainFilter();
 
   const tags = getAppliedTags(activeTabId);
 
@@ -34,9 +34,7 @@ export const TagControls = () => {
               name={tag}
               icon={faClose}
               large
-              onClick={() => {
-                /* Do nothing */
-              }}
+              onClick={() => removeTag(activeTabId, tag)}
             />
           ))}
         </div>

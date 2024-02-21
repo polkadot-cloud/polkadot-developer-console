@@ -8,6 +8,7 @@ export interface ChainFilterInterface {
   appliedTags: AppliedTags;
   getAppliedTags: (tabId: number) => string[];
   applyTags: (tabId: number, tags: string[]) => void;
+  removeTag: (tabId: number, tag: string) => void;
 }
 
 export type SearchTerms = Record<number, string>;

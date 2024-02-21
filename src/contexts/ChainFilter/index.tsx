@@ -35,6 +35,14 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
     setAppliedTags((prev) => ({ ...prev, [tabId]: tags }));
   };
 
+  // Removes a tag for a given key.
+  const removeTag = (tabId: number, tag: string) => {
+    setAppliedTags((prev) => ({
+      ...prev,
+      [tabId]: prev[tabId].filter((item) => item !== tag),
+    }));
+  };
+
   return (
     <ChainFilter.Provider
       value={{
@@ -44,6 +52,7 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
         getAppliedTags,
         appliedTags,
         applyTags,
+        removeTag,
       }}
     >
       {children}
