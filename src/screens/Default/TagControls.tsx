@@ -9,7 +9,7 @@ import { useTabs } from 'contexts/Tabs';
 
 export const TagControls = () => {
   const { activeTabId } = useTabs();
-  const { getAppliedTags } = useChainFilter();
+  const { getAppliedTags, applyTags } = useChainFilter();
 
   const tags = getAppliedTags(activeTabId);
 
@@ -17,13 +17,26 @@ export const TagControls = () => {
     <TagControlsWrapper>
       <div className="controls">
         <h5>Tags</h5>
-        <TagControl name="Add" icon={faPlus} />
-        <TagControl name="Clear" />
+        <TagControl
+          name="Add"
+          icon={faPlus}
+          onClick={() => {
+            /* Do nothing */
+          }}
+        />
+        <TagControl name="Clear" onClick={() => applyTags(activeTabId, [])} />
       </div>
       {tags ? (
         <div className="applied">
           {tags.map((tag) => (
-            <TagControl key={`applied_tag_${tag}`} name={tag} large />
+            <TagControl
+              key={`applied_tag_${tag}`}
+              name={tag}
+              large
+              onClick={() => {
+                /* Do nothing */
+              }}
+            />
           ))}
         </div>
       ) : null}

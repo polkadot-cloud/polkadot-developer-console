@@ -30,7 +30,7 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
   // Gets the applied tags for a given key.
   const getAppliedTags = (tabId: number) => appliedTags[tabId] || [];
 
-  // Sets applioed tags for a given key.
+  // Sets applied tags for a given key.
   const applyTags = (tabId: number, tags: string[]) => {
     setAppliedTags((prev) => ({ ...prev, [tabId]: tags }));
   };
