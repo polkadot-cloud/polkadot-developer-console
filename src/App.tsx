@@ -3,7 +3,6 @@
 
 import { Entry } from '@polkadot-cloud/react';
 import { Header } from 'library/Header';
-import { Footer } from 'library/Footer';
 import { Menu } from 'library/Menu';
 import { Tabs } from 'library/Tabs';
 import { ChainMenu } from 'library/ChainMenu';
@@ -20,6 +19,5 @@ export const App = () => (
     <Body>
       <Default />
     </Body>
-    <Footer />
   </Entry>
 );
