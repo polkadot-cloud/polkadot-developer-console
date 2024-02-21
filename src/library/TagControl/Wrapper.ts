@@ -24,8 +24,16 @@ export const TagControlWrapper = styled.button`
     padding: 0.45rem 0.65rem;
     border-radius: 0.45rem;
 
+    > .icon {
+      opacity: 0.3;
+    }
+
     &:hover {
       background-color: var(--button-hover-background);
+
+      > .icon {
+        opacity: 0.6;
+      }
     }
   }
 
