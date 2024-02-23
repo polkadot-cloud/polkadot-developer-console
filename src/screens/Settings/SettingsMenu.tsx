@@ -2,13 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { ChainMenuWrapper } from 'library/ChainMenu/Wrappers';
-import { TabsToggle } from 'library/ChainMenu/TabsToggle';
 
-export const Menu = () => (
+export const SettingsMenu = () => (
   <ChainMenuWrapper>
     <div className="menu">
       <div>Settings</div>
     </div>
-    <TabsToggle />
   </ChainMenuWrapper>
 );

@@ -7,7 +7,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useLocation } from 'react-router-dom';
 import { ChainMenuWrapper, ButtonWrapper } from 'library/ChainMenu/Wrappers';
 
-export const Menu = () => {
+export const ChainMenu = () => {
   const { pathname } = useLocation();
   const { tabsHidden, setTabsHidden } = useTabs();
 
