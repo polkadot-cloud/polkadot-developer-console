@@ -3,8 +3,8 @@
 
 import styled from 'styled-components';
 
-export const ChainMenuWrapper = styled.div`
-  --chain-menu-button-height: 1.75rem;
+export const HeaderMenuWrapper = styled.div`
+  --chain-menu-button-height: 1.65rem;
   --chain-menu-button-border-radius: 0.35rem;
 
   background-color: var(--background-primary);
@@ -44,7 +44,7 @@ export const ChainMenuWrapper = styled.div`
     align-items: center;
     flex-grow: 1;
     justify-content: flex-end;
-    padding-right: 0.4rem;
+    padding-right: 0.45rem;
 
     .icon {
       color: var(--text-color-secondary);
@@ -56,6 +56,7 @@ export const ButtonWrapper = styled.button`
   border-radius: var(--chain-menu-button-border-radius);
   height: var(--chain-menu-button-height);
   color: var(--text-color-secondary);
+  font-family: InterSemiBold, sans-serif;
   font-size: 0.8rem;
   display: flex;
   align-items: center;
@@ -63,6 +64,19 @@ export const ButtonWrapper = styled.button`
   margin-left: 0.2rem;
   padding: 0 0.75rem;
   transition: background-color 0.15s;
+
+  &.button {
+    color: var(--text-color-primary);
+    background-color: var(--button-secondary-background);
+
+    &:hover {
+      color: var(--accent-color-secondary);
+    }
+
+    > svg {
+      margin-right: 0.55rem;
+    }
+  }
 
   &:hover {
     background-color: var(--button-hover-background);

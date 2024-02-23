@@ -5,14 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
 import { useLocation } from 'react-router-dom';
-import { ChainMenuWrapper, ButtonWrapper } from 'library/ChainMenu/Wrappers';
+import { HeaderMenuWrapper, ButtonWrapper } from 'library/HeaderMenu/Wrappers';
 
 export const ChainMenu = () => {
   const { pathname } = useLocation();
   const { tabsHidden, setTabsHidden } = useTabs();
 
   return (
-    <ChainMenuWrapper>
+    <HeaderMenuWrapper>
       <div className="menu">
         <div className="label">Not Connected</div>
       </div>
@@ -28,6 +28,6 @@ export const ChainMenu = () => {
           />
         </ButtonWrapper>
       </div>
-    </ChainMenuWrapper>
+    </HeaderMenuWrapper>
   );
 };
