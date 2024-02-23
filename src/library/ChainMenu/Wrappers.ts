@@ -20,6 +20,11 @@ export const ChainMenuWrapper = styled.div`
       color: var(--text-color-tertiary);
       padding: 0.7rem 0.5rem 0.7rem 1.1rem;
       font-size: 0.8rem;
+
+      &.label {
+        border-right: 1px solid var(--border-primary-color);
+        padding-right: 1rem;
+      }
     }
   }
 

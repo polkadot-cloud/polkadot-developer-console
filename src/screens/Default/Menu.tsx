@@ -14,7 +14,7 @@ export const ChainMenu = () => {
   return (
     <ChainMenuWrapper>
       <div className="menu">
-        <div>Not Connected</div>
+        <div className="label">Not Connected</div>
       </div>
       <div className="config">
         <ButtonWrapper

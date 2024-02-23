@@ -6,11 +6,8 @@ import { Header } from 'library/Header';
 import { ContextMenu } from 'library/ContextMenu';
 import { Tabs } from 'library/Tabs';
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { Default } from 'screens/Default';
-import { Settings } from 'screens/Settings';
-import { ChainMenu } from 'screens/Default/ChainMenu';
-import { pageWithMenu } from 'screens/Utils';
-import { SettingsMenu } from 'screens/Settings/SettingsMenu';
+import { DefaultRoute } from 'screens/Default/Route';
+import { SettingsRoute } from 'screens/Settings/Route';
 
 const AppInner = () => (
   // TODO: Get accent theme from active network, if any, otherwise default to `polkadot-relay`.
@@ -20,15 +17,11 @@ const AppInner = () => (
     <Tabs />
 
     <Routes>
-      <Route
-        key={`route_chain`}
-        path={'/'}
-        element={pageWithMenu(<Default />, <ChainMenu />)}
-      />
+      <Route key={`route_chain`} path={'/'} element={<DefaultRoute />} />
       <Route
         key={`route_settings`}
         path={'/settings'}
-        element={pageWithMenu(<Settings />, <SettingsMenu />)}
+        element={<SettingsRoute />}
       />
       {/* Fallback route to chain */}
       <Route

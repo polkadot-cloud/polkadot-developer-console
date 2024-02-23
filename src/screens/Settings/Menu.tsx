@@ -6,7 +6,8 @@ import { ChainMenuWrapper } from 'library/ChainMenu/Wrappers';
 export const SettingsMenu = () => (
   <ChainMenuWrapper>
     <div className="menu">
-      <div>Settings</div>
+      <div className="label">Settings</div>
+      <div>Tags</div>
     </div>
   </ChainMenuWrapper>
 );
