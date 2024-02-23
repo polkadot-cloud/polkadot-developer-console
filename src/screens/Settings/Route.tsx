@@ -4,5 +4,10 @@
 import { pageWithMenu } from 'screens/Utils';
 import { SettingsMenu } from './Menu';
 import { Settings } from '.';
+import { SettingsProvider } from './provider';
 
-export const SettingsRoute = () => pageWithMenu(<Settings />, <SettingsMenu />);
+export const SettingsRoute = () => (
+  <SettingsProvider>
+    {pageWithMenu(<Settings />, <SettingsMenu />)}
+  </SettingsProvider>
+);

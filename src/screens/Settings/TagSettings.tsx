@@ -3,6 +3,6 @@
 
 export const TagSettings = () => (
   <div>
-    <h3>Tag Settings</h3>
+    <h2>Tag Settings</h2>
   </div>
 );
