@@ -4,7 +4,7 @@
 import { useTabs } from 'contexts/Tabs';
 import { ControlsWrapper, TabWrapper } from './Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlug, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faPlug, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { TAB_TRANSITION_DURATION_MS } from 'contexts/Tabs/defaults';
 import type { ControlsProps } from './types';
 
@@ -44,9 +44,17 @@ export const Controls = ({ tabContainerRef }: ControlsProps) => {
           onClick={() => {
             /* Do nothing. */
           }}
-          className="action last"
+          className="action"
         >
           <FontAwesomeIcon icon={faPlug} />
+        </TabWrapper>
+        <TabWrapper
+          onClick={() => {
+            /* Do nothing. */
+          }}
+          className="action last"
+        >
+          <FontAwesomeIcon icon={faGear} />
         </TabWrapper>
       </div>
     </ControlsWrapper>
