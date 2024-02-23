@@ -6,7 +6,7 @@ import { useMenu } from 'contexts/Menu';
 import { Wrapper } from './Wrappers';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 
-export const Menu = () => {
+export const ContextMenu = () => {
   const {
     open,
     show,

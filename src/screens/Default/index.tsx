@@ -4,12 +4,19 @@
 import { RenameTab } from './RenameTab';
 import { SearchChain } from './SearchChain';
 import { ChainList } from './ChainList';
-import { Wrapper } from './Wrappers';
+import { Wrapper } from '../Wrappers';
+import { Menu } from './Menu';
+import { Body } from 'library/Body';
 
 export const Default = () => (
-  <Wrapper>
-    <RenameTab />
-    <SearchChain />
-    <ChainList />
-  </Wrapper>
+  <>
+    <Menu />
+    <Body>
+      <Wrapper>
+        <RenameTab />
+        <SearchChain />
+        <ChainList />
+      </Wrapper>
+    </Body>
+  </>
 );

@@ -7,8 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faPlug, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { TAB_TRANSITION_DURATION_MS } from 'contexts/Tabs/defaults';
 import type { ControlsProps } from './types';
+import { useNavigate } from 'react-router-dom';
 
 export const Controls = ({ tabContainerRef }: ControlsProps) => {
+  const navigate = useNavigate();
   const { createTab } = useTabs();
 
   return (
@@ -50,7 +52,7 @@ export const Controls = ({ tabContainerRef }: ControlsProps) => {
         </TabWrapper>
         <TabWrapper
           onClick={() => {
-            /* Do nothing. */
+            navigate('/settings');
           }}
           className="action last"
         >

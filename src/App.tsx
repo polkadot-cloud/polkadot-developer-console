@@ -3,21 +3,34 @@
 
 import { Entry } from '@polkadot-cloud/react';
 import { Header } from 'library/Header';
-import { Menu } from 'library/Menu';
+import { ContextMenu } from 'library/ContextMenu';
 import { Tabs } from 'library/Tabs';
-import { ChainMenu } from 'library/ChainMenu';
-import { Body } from 'library/Body';
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Default } from 'screens/Default';
+import { Settings } from 'screens/Settings';
 
-export const App = () => (
+const AppInner = () => (
   // TODO: Get accent theme from active network, if any, otherwise default to `polkadot-relay`.
   <Entry mode="light" theme={`polkadot-relay`}>
-    <Menu />
+    <ContextMenu />
     <Header />
     <Tabs />
-    <ChainMenu />
-    <Body>
-      <Default />
-    </Body>
+
+    <Routes>
+      <Route key={`route_chain`} path={'/'} element={<Default />} />
+      <Route key={`route_settings`} path={'/settings'} element={<Settings />} />
+      {/* Fallback route to chain */}
+      <Route
+        key="route_default"
+        path="*"
+        element={<Navigate to="/overview" />}
+      />
+    </Routes>
   </Entry>
+);
+
+export const App = () => (
+  <HashRouter basename="/">
+    <AppInner />
+  </HashRouter>
 );

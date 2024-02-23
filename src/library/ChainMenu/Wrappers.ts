@@ -52,4 +52,12 @@ export const ButtonWrapper = styled.button`
     background-color: var(--button-hover-background);
     color: var(--text-color-primary);
   }
+
+  &:disabled {
+    opacity: 0.5;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
 `;

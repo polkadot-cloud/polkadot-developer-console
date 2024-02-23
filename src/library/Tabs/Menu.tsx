@@ -1,6 +1,6 @@
 import { faCheck, faCode } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ListWrapper } from 'library/Menu/Wrappers';
+import { ListWrapper } from 'library/ContextMenu/Wrappers';
 
 export const Menu = () => (
   <ListWrapper>

@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ButtonWrapper, ChainMenuWrapper } from './Wrappers';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
+import { useLocation } from 'react-router-dom';
+import { ChainMenuWrapper, ButtonWrapper } from 'library/ChainMenu/Wrappers';
 
-export const ChainMenu = () => {
+export const Menu = () => {
+  const { pathname } = useLocation();
   const { tabsHidden, setTabsHidden } = useTabs();
 
   return (
@@ -18,6 +20,7 @@ export const ChainMenu = () => {
         <ButtonWrapper
           onClick={() => setTabsHidden(!tabsHidden)}
           className="action"
+          disabled={pathname !== '/'}
         >
           <FontAwesomeIcon
             icon={tabsHidden ? faAngleDown : faAngleUp}

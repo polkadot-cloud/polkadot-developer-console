@@ -3,7 +3,7 @@
 
 import { TabsWrapper } from 'library/Tabs/Wrappers';
 import { useTabs } from 'contexts/Tabs';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import {
   DndContext,
@@ -25,6 +25,7 @@ import { TabOverlay } from './TabOverlay';
 import { Tab } from './Tab';
 import { defaultEemptyTab } from 'contexts/Tabs/defaults';
 import { Controls } from './Controls';
+import { useLocation } from 'react-router-dom';
 
 export const Tabs = () => {
   const {
@@ -34,8 +35,10 @@ export const Tabs = () => {
     setDragId,
     tabsHidden,
     activeTabId,
+    setTabsHidden,
     setActiveTabIndex,
   } = useTabs();
+  const { pathname } = useLocation();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -77,12 +80,24 @@ export const Tabs = () => {
   // Ref for tabs container.
   const tabContainerRef = useRef<HTMLDivElement>(null);
 
+  // Whether to hide the tab menu initially.
+  const hideTabs = isInitial && pathname !== '/';
+
+  // If the current path is not the home page, hide the tabs.
+  useEffect(() => {
+    if (pathname !== '/') {
+      setTabsHidden(true);
+    } else {
+      setTabsHidden(false);
+    }
+  }, [pathname]);
+
   return (
     <TabsWrapper
       ref={tabContainerRef}
       className={tabsHidden ? 'hidden' : undefined}
-      initial={'show'}
-      animate={!tabsHidden ? 'show' : 'hidden'}
+      initial={hideTabs ? 'hidden' : 'show'}
+      animate={!tabsHidden && !hideTabs ? 'show' : 'hidden'}
       variants={{
         hidden: {
           height: 0,
