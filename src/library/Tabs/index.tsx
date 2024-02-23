@@ -1,13 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import {
-  ControlsWrapper,
-  TabWrapper,
-  TabsWrapper,
-} from 'library/Tabs/Wrappers';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlug, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { TabsWrapper } from 'library/Tabs/Wrappers';
 import { useTabs } from 'contexts/Tabs';
 import { useRef } from 'react';
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
@@ -29,10 +23,8 @@ import {
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
 import { TabOverlay } from './TabOverlay';
 import { Tab } from './Tab';
-import {
-  TAB_TRANSITION_DURATION_MS,
-  defaultEemptyTab,
-} from 'contexts/Tabs/defaults';
+import { defaultEemptyTab } from 'contexts/Tabs/defaults';
+import { Controls } from './Controls';
 
 export const Tabs = () => {
   const {
@@ -40,7 +32,6 @@ export const Tabs = () => {
     dragId,
     setTabs,
     setDragId,
-    createTab,
     tabsHidden,
     activeTabId,
     setActiveTabIndex,
@@ -133,44 +124,7 @@ export const Tabs = () => {
           ) : null}
         </DragOverlay>
       </DndContext>
-      <ControlsWrapper>
-        <div>
-          <TabWrapper
-            onClick={() => {
-              createTab();
-              setTimeout(() => {
-                if (tabContainerRef.current) {
-                  tabContainerRef.current?.scrollTo({
-                    left: tabContainerRef.current.scrollWidth,
-                    behavior: 'smooth',
-                  });
-                }
-              }, TAB_TRANSITION_DURATION_MS);
-            }}
-            className="action"
-          >
-            <FontAwesomeIcon icon={faPlus} className="icon" /> New
-          </TabWrapper>
-        </div>
-        <div>
-          <TabWrapper
-            onClick={() => {
-              /* Do nothing. */
-            }}
-            className="action"
-          >
-            Accounts
-          </TabWrapper>
-          <TabWrapper
-            onClick={() => {
-              /* Do nothing. */
-            }}
-            className="action last"
-          >
-            <FontAwesomeIcon icon={faPlug} />
-          </TabWrapper>
-        </div>
-      </ControlsWrapper>
+      <Controls tabContainerRef={tabContainerRef} />
     </TabsWrapper>
   );
 };
