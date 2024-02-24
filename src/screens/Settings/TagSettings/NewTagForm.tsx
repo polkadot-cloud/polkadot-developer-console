@@ -24,7 +24,8 @@ export const NewTagForm = ({
 
   return (
     <NewTagWrapper>
-      <div className="input">
+      <div className="form">
+        <h5>Tag Name</h5>
         <input
           type="text"
           value={newTagValue}
@@ -33,12 +34,14 @@ export const NewTagForm = ({
         />
       </div>
       <div className="controls">
-        <button className="cancel" onClick={() => cancelNewTag()}>
-          Cancel
-        </button>
-        <HeaderButtonWrapper onClick={() => setNewTagOpen(!newTagOpen)}>
-          Create Tag
-        </HeaderButtonWrapper>
+        <span>
+          <button className="cancel" onClick={() => cancelNewTag()}>
+            Cancel
+          </button>
+          <HeaderButtonWrapper onClick={() => setNewTagOpen(!newTagOpen)}>
+            Create Tag
+          </HeaderButtonWrapper>
+        </span>
       </div>
     </NewTagWrapper>
   );

@@ -7,7 +7,7 @@ export const NewTagWrapper = styled.div`
   border: 1px solid var(--border-primary-color);
   background-color: var(--background-primary);
   border-radius: 0.45rem;
-  padding: 0.75rem 0.85rem;
+  padding: 0.75rem 0.65rem 0.5rem 0.75rem;
   flex-grow: 1;
   display: flex;
   margin: 0.5rem 0;
@@ -16,20 +16,35 @@ export const NewTagWrapper = styled.div`
     display: flex;
     align-items: flex-end;
 
-    &.input {
+    &.form {
+      flex-direction: column;
+      align-items: flex-start;
       flex-grow: 1;
       margin-bottom: 0.25rem;
+
+      > input {
+        border: 1px solid var(--border-primary-color);
+        border-radius: 0.35rem;
+        margin-top: 0.4rem;
+        padding: 0.5rem 0.65rem;
+        width: 100%;
+      }
     }
     &.controls {
       flex-shrink: 1;
       justify-content: flex-end;
-      align-items: center;
 
-      > button {
-        margin-left: 1.1rem;
+      > span {
+        display: flex;
+        margin-bottom: 0.4rem;
+        margin-left: 0.4rem;
 
-        &.cancel {
-          color: var(--text-color-tertiary);
+        > button {
+          margin-left: 0.85rem;
+
+          &.cancel {
+            color: var(--text-color-tertiary);
+          }
         }
       }
     }
