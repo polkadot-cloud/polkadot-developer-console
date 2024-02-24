@@ -14,11 +14,16 @@ export const ManageTagForm = ({
 }: ManageTagFormProps) => {
   const { tags, setTags, getLargesTagId } = useTags();
 
-  // The formatted tag value.
-  const formattedTagValue = value.trim();
+  const formatValue = (str: string): string => {
+    // Remove extra spaces.
+    str = str.replace(/\s{2,}/g, ' ');
+    // Trim.
+    str = str.trim();
+    return str;
+  };
 
   // Check if tag form is valid.
-  const valid = formattedTagValue !== '';
+  const valid = formatValue(value) !== '';
 
   // Handler to cancel the tag form.
   const cancel = () => {
@@ -40,7 +45,7 @@ export const ManageTagForm = ({
       setTags({
         ...tags,
         [getLargesTagId() + 1]: {
-          name: formattedTagValue,
+          name: formatValue(value),
           locked: false,
         },
       });
@@ -50,9 +55,10 @@ export const ManageTagForm = ({
         ...tags,
         [tagId]: {
           ...tags[tagId],
-          name: formattedTagValue,
+          name: formatValue(value),
         },
       });
+      setValue(formatValue(value));
     }
 
     cancel();
