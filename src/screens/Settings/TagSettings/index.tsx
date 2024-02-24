@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useTags } from 'contexts/Tags';
-import { NewTagWrapper, TagItemWrapper } from './Wrappers';
+import { TagItemWrapper } from './Wrappers';
 import { Tag } from 'library/Tag';
 import {
   HeaderButtonWrapper,
@@ -12,22 +12,17 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { NewTagForm } from './NewTagForm';
 
 export const TagSettings = () => {
   const { tags, getChainsForTag } = useTags();
   const totalTags = Object.keys(tags).length;
 
-  // Whether the new tag form is open.
-  const [newTagOpen, setNewTagOpen] = useState<boolean>(false);
-
   // The current value of the new tag input.
   const [newTagValue, setNewTagValue] = useState<string>('');
 
-  // Handler to cancel the new tag form.
-  const cancelNewTag = () => {
-    setNewTagOpen(false);
-    setNewTagValue('');
-  };
+  // Whether the new tag form is open.
+  const [newTagOpen, setNewTagOpen] = useState<boolean>(false);
 
   return (
     <>
@@ -45,24 +40,12 @@ export const TagSettings = () => {
       </SettingsHeaderWrapper>
 
       {newTagOpen && (
-        <NewTagWrapper>
-          <div className="input">
-            <input
-              type="text"
-              value={newTagValue}
-              placeholder="Tag Name"
-              onChange={(ev) => setNewTagValue(ev.target.value)}
-            />
-          </div>
-          <div className="controls">
-            <button className="cancel" onClick={() => cancelNewTag()}>
-              Cancel
-            </button>
-            <HeaderButtonWrapper onClick={() => setNewTagOpen(!newTagOpen)}>
-              Create Tag
-            </HeaderButtonWrapper>
-          </div>
-        </NewTagWrapper>
+        <NewTagForm
+          newTagValue={newTagValue}
+          setNewTagValue={setNewTagValue}
+          newTagOpen={newTagOpen}
+          setNewTagOpen={setNewTagOpen}
+        />
       )}
 
       <SettingsSubheadingWrapper>
