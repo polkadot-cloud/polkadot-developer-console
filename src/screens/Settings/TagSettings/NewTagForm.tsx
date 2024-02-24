@@ -1,25 +1,45 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { Dispatch, SetStateAction } from 'react';
 import { NewTagWrapper } from './Wrappers';
 import { HeaderButtonWrapper } from '../Wrappers';
+import { useTags } from 'contexts/Tags';
+import type { NewTagFormProps } from './types';
 
 export const NewTagForm = ({
   newTagValue,
   setNewTagValue,
-  newTagOpen,
   setNewTagOpen,
-}: {
-  newTagValue: string;
-  setNewTagValue: Dispatch<SetStateAction<string>>;
-  newTagOpen: boolean;
-  setNewTagOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
+}: NewTagFormProps) => {
+  const { tags, setTags, getLargesTagId } = useTags();
+
+  // The formatted tag value.
+  const formattedTagValue = newTagValue.trim();
+
+  // Check if new tag form is valid.
+  const valid = formattedTagValue !== '';
+
   // Handler to cancel the new tag form.
   const cancelNewTag = () => {
     setNewTagOpen(false);
     setNewTagValue('');
+  };
+
+  // Handler to create tag.
+  const createTag = () => {
+    if (!valid) {
+      return;
+    }
+
+    setTags({
+      ...tags,
+      [getLargesTagId() + 1]: {
+        name: formattedTagValue,
+        locked: false,
+      },
+    });
+    setNewTagOpen(false);
+    cancelNewTag();
   };
 
   return (
@@ -31,6 +51,7 @@ export const NewTagForm = ({
           value={newTagValue}
           placeholder="Tag Name"
           onChange={(ev) => setNewTagValue(ev.target.value)}
+          maxLength={25}
         />
       </div>
       <div className="controls">
@@ -38,7 +59,7 @@ export const NewTagForm = ({
           <button className="cancel" onClick={() => cancelNewTag()}>
             Cancel
           </button>
-          <HeaderButtonWrapper onClick={() => setNewTagOpen(!newTagOpen)}>
+          <HeaderButtonWrapper onClick={() => createTag()} disabled={!valid}>
             Create Tag
           </HeaderButtonWrapper>
         </span>

@@ -10,6 +10,7 @@ export interface TagsContextInterface {
   setTagsConfig: Dispatch<SetStateAction<TagsConfig>>;
   getTagsForChain: (chain: string) => string[];
   getChainsForTag: (tag: number) => string[];
+  getLargesTagId: () => number;
 }
 
 export interface TagItem {

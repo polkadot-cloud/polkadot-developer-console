@@ -23,4 +23,5 @@ export const defaultTagsContext: TagsContextInterface = {
   setTagsConfig: (newTagsConfig) => {},
   getTagsForChain: (chain) => [],
   getChainsForTag: (tagId) => [],
+  getLargesTagId: () => 0,
 };

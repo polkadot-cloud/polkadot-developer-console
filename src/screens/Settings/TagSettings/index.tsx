@@ -43,7 +43,6 @@ export const TagSettings = () => {
         <NewTagForm
           newTagValue={newTagValue}
           setNewTagValue={setNewTagValue}
-          newTagOpen={newTagOpen}
           setNewTagOpen={setNewTagOpen}
         />
       )}
@@ -53,7 +52,7 @@ export const TagSettings = () => {
       </SettingsSubheadingWrapper>
 
       {Object.entries(tags).map(([id, { name, locked }]) => {
-        const chainCount = getChainsForTag(Number(id)).length;
+        const chainCount = getChainsForTag(Number(id))?.length || 0;
 
         return (
           <TagItemWrapper key={`tag_${id}`}>

@@ -18,6 +18,13 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   // Initial tags config, mapping a tag to chain names.
   const [tagsConfig, setTagsConfig] = useState<TagsConfig>(defaultTagsConfig);
 
+  // Get the largest tag id existing in `tags`.
+  const getLargesTagId = () => {
+    const largestId =
+      [...Object.keys(tags)].sort((a, b) => Number(b) - Number(a))?.[0] || 0;
+    return Number(largestId);
+  };
+
   // Gets the tags config of a chain.
   const getTagsForChain = (chain: string): string[] =>
     Object.entries(tagsConfig)
@@ -36,6 +43,7 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
         setTagsConfig,
         getTagsForChain,
         getChainsForTag,
+        getLargesTagId,
       }}
     >
       {children}

@@ -43,7 +43,7 @@ export const NewTagWrapper = styled.div`
           margin-left: 0.85rem;
 
           &.cancel {
-            color: var(--text-color-tertiary);
+            color: var(--text-color-secondary);
           }
         }
       }
@@ -76,7 +76,7 @@ export const TagItemWrapper = styled.div`
 
       > .lock {
         color: var(--text-color-tertiary);
-        margin-right: 1rem;
+        margin-left: 1rem;
       }
     }
   }
