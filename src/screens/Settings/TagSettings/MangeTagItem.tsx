@@ -54,11 +54,11 @@ export const MangeTagItem = ({
       </div>
       {/* {!locked && (
         <NewTagForm
-          newTagValue={'value_to_edit'}
-          setNewTagValue={() => {
+          value={'value_to_edit'}
+          setValue={() => {
             // Do nothing
           }}
-          setNewTagOpen={() => {
+          setOpen={() => {
           // Do nothing
           }}
         />

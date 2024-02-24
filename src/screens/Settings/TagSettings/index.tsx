@@ -40,9 +40,9 @@ export const TagSettings = () => {
 
       {newTagOpen && (
         <NewTagForm
-          newTagValue={newTagValue}
-          setNewTagValue={setNewTagValue}
-          setNewTagOpen={setNewTagOpen}
+          value={newTagValue}
+          setValue={setNewTagValue}
+          setOpen={setNewTagOpen}
         />
       )}
 

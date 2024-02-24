@@ -6,23 +6,19 @@ import { HeaderButtonWrapper } from '../Wrappers';
 import { useTags } from 'contexts/Tags';
 import type { NewTagFormProps } from './types';
 
-export const NewTagForm = ({
-  newTagValue,
-  setNewTagValue,
-  setNewTagOpen,
-}: NewTagFormProps) => {
+export const NewTagForm = ({ value, setValue, setOpen }: NewTagFormProps) => {
   const { tags, setTags, getLargesTagId } = useTags();
 
   // The formatted tag value.
-  const formattedTagValue = newTagValue.trim();
+  const formattedTagValue = value.trim();
 
   // Check if new tag form is valid.
   const valid = formattedTagValue !== '';
 
   // Handler to cancel the new tag form.
   const cancelNewTag = () => {
-    setNewTagOpen(false);
-    setNewTagValue('');
+    setOpen(false);
+    setValue('');
   };
 
   // Handler to create tag.
@@ -38,7 +34,7 @@ export const NewTagForm = ({
         locked: false,
       },
     });
-    setNewTagOpen(false);
+    setOpen(false);
     cancelNewTag();
   };
 
@@ -48,9 +44,9 @@ export const NewTagForm = ({
         <h5>Tag Name</h5>
         <input
           type="text"
-          value={newTagValue}
+          value={value}
           placeholder="Tag Name"
-          onChange={(ev) => setNewTagValue(ev.target.value)}
+          onChange={(ev) => setValue(ev.target.value)}
           maxLength={25}
         />
       </div>

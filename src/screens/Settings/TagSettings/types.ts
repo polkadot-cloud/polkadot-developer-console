@@ -4,9 +4,9 @@
 import type { TagItem } from 'contexts/Tags/types';
 
 export interface NewTagFormProps {
-  newTagValue: string;
-  setNewTagValue: (value: string) => void;
-  setNewTagOpen: (value: boolean) => void;
+  value: string;
+  setValue: (value: string) => void;
+  setOpen: (value: boolean) => void;
 }
 
 export interface ManageTagItemProps {
