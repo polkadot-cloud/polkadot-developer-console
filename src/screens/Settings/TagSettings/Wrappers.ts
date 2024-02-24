@@ -25,7 +25,7 @@ export const NewTagWrapper = styled.div`
       > input {
         border: 1px solid var(--border-primary-color);
         border-radius: 0.35rem;
-        margin-top: 0.4rem;
+        margin-top: 0.5rem;
         padding: 0.5rem 0.65rem;
         width: 100%;
       }
