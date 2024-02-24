@@ -31,6 +31,8 @@ export const ManageTagForm = ({
 
     if (!tagId) {
       setValue('');
+    } else {
+      setValue(tags[tagId].name);
     }
   };
 
@@ -61,7 +63,7 @@ export const ManageTagForm = ({
       setValue(formatValue(value));
     }
 
-    cancel();
+    setOpen(false);
   };
 
   return (
