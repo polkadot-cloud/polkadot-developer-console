@@ -17,9 +17,10 @@ export const defaultTagsConfig: TagsConfig = {
 };
 
 export const defaultTagsContext: TagsContextInterface = {
+  tags: {},
+  setTags: (newTags) => {},
   tagsConfig: defaultTagsConfig,
   setTagsConfig: (newTagsConfig) => {},
   getTagsForChain: (chain) => [],
-  tags: {},
-  setTags: (newTags) => {},
+  getChainsForTag: (tagId) => [],
 };

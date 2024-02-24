@@ -24,9 +24,19 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
       .filter(([, chains]) => chains.includes(chain))
       .map(([tag]) => tags[Number(tag)]) || [];
 
+  // Gets the chains currently applied to a tag.
+  const getChainsForTag = (tag: number): string[] => tagsConfig[tag];
+
   return (
     <TagsContext.Provider
-      value={{ tags, setTags, tagsConfig, setTagsConfig, getTagsForChain }}
+      value={{
+        tags,
+        setTags,
+        tagsConfig,
+        setTagsConfig,
+        getTagsForChain,
+        getChainsForTag,
+      }}
     >
       {children}
     </TagsContext.Provider>

@@ -4,11 +4,12 @@
 import type { Dispatch, SetStateAction } from 'react';
 
 export interface TagsContextInterface {
+  tags: TagsList;
+  setTags: Dispatch<SetStateAction<TagsList>>;
   tagsConfig: TagsConfig;
   setTagsConfig: Dispatch<SetStateAction<TagsConfig>>;
   getTagsForChain: (chain: string) => string[];
-  tags: TagsList;
-  setTags: Dispatch<SetStateAction<TagsList>>;
+  getChainsForTag: (tag: number) => string[];
 }
 
 export type TagsList = Record<number, string>;
