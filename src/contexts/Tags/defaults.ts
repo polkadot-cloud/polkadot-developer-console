@@ -25,4 +25,5 @@ export const defaultTagsContext: TagsContextInterface = {
   getTagsForChain: (chain) => [],
   getChainsForTag: (tagId) => [],
   getLargesTagId: () => 0,
+  removeTag: (tagId) => {},
 };

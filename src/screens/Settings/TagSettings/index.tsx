@@ -15,7 +15,8 @@ import { useState } from 'react';
 import { NewTagForm } from './NewTagForm';
 
 export const TagSettings = () => {
-  const { tags, getChainsForTag } = useTags();
+  const { tags, getChainsForTag, removeTag } = useTags();
+
   const totalTags = Object.keys(tags).length;
 
   // The current value of the new tag input.
@@ -81,11 +82,7 @@ export const TagSettings = () => {
                   >
                     Edit
                   </HeaderButtonWrapper>
-                  <HeaderButtonWrapper
-                    onClick={() => {
-                      /* Do nothing */
-                    }}
-                  >
+                  <HeaderButtonWrapper onClick={() => removeTag(Number(id))}>
                     Delete
                   </HeaderButtonWrapper>
                 </>

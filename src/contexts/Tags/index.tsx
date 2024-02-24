@@ -34,6 +34,18 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   // Gets the chains currently applied to a tag.
   const getChainsForTag = (tag: number): string[] => tagsConfig[tag];
 
+  // Removes a tag by its id, along with configs tied to it.
+  const removeTag = (tagId: number) => {
+    const newTags = { ...tags };
+    const newTagsConfig = { ...tagsConfig };
+
+    delete newTags[tagId];
+    delete newTagsConfig[tagId];
+
+    setTags(newTags);
+    setTagsConfig(newTagsConfig);
+  };
+
   return (
     <TagsContext.Provider
       value={{
@@ -44,6 +56,7 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
         getTagsForChain,
         getChainsForTag,
         getLargesTagId,
+        removeTag,
       }}
     >
       {children}
