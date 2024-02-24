@@ -57,30 +57,37 @@ export const TagItemWrapper = styled.div`
   padding-bottom: 1rem;
   display: flex;
   width: 100%;
+  flex-direction: column;
 
-  > div {
+  > .inner {
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    width: 100%;
 
-    &.details {
-      flex-grow: 1;
+    > div {
+      display: flex;
+      align-items: center;
 
-      > .tag {
-        margin-right: 1rem;
-      }
-    }
+      &.details {
+        flex-grow: 1;
 
-    &.controls {
-      flex-shrink: 1;
-      justify-content: flex-end;
-
-      > .lock {
-        color: var(--text-color-tertiary);
-        opacity: 0.5;
+        > .tag {
+          margin-right: 1rem;
+        }
       }
 
-      > button {
-        margin-left: 0.5rem;
+      &.controls {
+        flex-shrink: 1;
+        justify-content: flex-end;
+
+        > .lock {
+          color: var(--text-color-tertiary);
+          opacity: 0.5;
+        }
+
+        > button {
+          margin-left: 0.5rem;
+        }
       }
     }
   }
