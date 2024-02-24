@@ -53,8 +53,8 @@ export const NewTagWrapper = styled.div`
 
 export const TagItemWrapper = styled.div`
   border-bottom: 1px solid var(--border-secondary-color);
-  margin-bottom: 1rem;
-  padding: 0.75rem 0;
+  margin: 1rem 0;
+  padding-bottom: 1rem;
   display: flex;
   width: 100%;
 
@@ -76,7 +76,12 @@ export const TagItemWrapper = styled.div`
 
       > .lock {
         color: var(--text-color-tertiary);
-        margin-left: 1rem;
+        margin-left: 0.85rem;
+      }
+
+      > button {
+        color: var(--text-color-seconary);
+        margin-left: 0.85rem;
       }
     }
   }

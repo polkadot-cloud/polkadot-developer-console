@@ -8,6 +8,7 @@ export const defaultTags: TagsList = {
   0: { name: 'Relay Chain', locked: true },
   1: { name: 'Canary Network', locked: true },
   2: { name: 'Test Network', locked: true },
+  3: { name: 'Test Tag', locked: false },
 };
 
 export const defaultTagsConfig: TagsConfig = {

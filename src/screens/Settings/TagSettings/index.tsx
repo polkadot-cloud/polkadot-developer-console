@@ -72,7 +72,24 @@ export const TagSettings = () => {
                   className="lock"
                 />
               )}
-              {!locked && <button disabled={locked}>Edit</button>}
+              {!locked && (
+                <>
+                  <button
+                    onClick={() => {
+                      /* Do nothing */
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => {
+                      /* Do nothing */
+                    }}
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
             </div>
           </TagItemWrapper>
         );
