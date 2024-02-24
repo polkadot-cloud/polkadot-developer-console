@@ -30,7 +30,7 @@ export const TagSettings = () => {
 
         return (
           <TagItemWrapper key={`tag_${id}`}>
-            <div>
+            <div className="details">
               <span className="tag">
                 <Tag name={name} />
               </span>
@@ -38,7 +38,7 @@ export const TagSettings = () => {
                 Applied to {chainCount} {chainCount === 1 ? 'chain' : 'chains'}
               </h5>
             </div>
-            <div>
+            <div className="controls">
               <button>Edit</button>
             </div>
           </TagItemWrapper>

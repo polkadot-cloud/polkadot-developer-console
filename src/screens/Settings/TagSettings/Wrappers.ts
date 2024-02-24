@@ -14,7 +14,7 @@ export const TagItemWrapper = styled.div`
     display: flex;
     align-items: center;
 
-    &:first-child {
+    &.details {
       flex-grow: 1;
 
       > .tag {
@@ -22,7 +22,7 @@ export const TagItemWrapper = styled.div`
       }
     }
 
-    &:last-child {
+    &.controls {
       flex-shrink: 1;
       justify-content: flex-end;
     }
