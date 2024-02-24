@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 export const TagItemWrapper = styled.div`
   border-bottom: 1px solid var(--border-secondary-color);
-  margin: 1rem 0;
+  margin-bottom: 1rem;
   padding: 0.75rem 0;
   display: flex;
   width: 100%;

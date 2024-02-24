@@ -25,6 +25,12 @@ export const SettingsHeaderWrapper = styled.div`
   }
 `;
 
+export const SettingsSubheadingWrapper = styled.h4`
+  border-bottom: 1px solid var(--border-primary-color);
+  margin: 1.2rem 0 0.6rem 0;
+  padding-bottom: 0.5rem;
+`;
+
 export const HeaderButtonWrapper = styled.button`
   color: var(--text-color-primary);
   border: 1px solid var(--border-secondary-color);

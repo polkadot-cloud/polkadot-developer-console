@@ -4,12 +4,17 @@
 import { useTags } from 'contexts/Tags';
 import { TagItemWrapper } from './Wrappers';
 import { Tag } from 'library/Tag';
-import { HeaderButtonWrapper, SettingsHeaderWrapper } from '../Wrappers';
+import {
+  HeaderButtonWrapper,
+  SettingsHeaderWrapper,
+  SettingsSubheadingWrapper,
+} from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 export const TagSettings = () => {
   const { tags, getChainsForTag } = useTags();
+  const totalTags = Object.keys(tags).length;
 
   return (
     <>
@@ -26,6 +31,10 @@ export const TagSettings = () => {
           </HeaderButtonWrapper>
         </div>
       </SettingsHeaderWrapper>
+
+      <SettingsSubheadingWrapper>
+        {totalTags} {totalTags === 1 ? 'tag' : 'tags'}
+      </SettingsSubheadingWrapper>
 
       {Object.entries(tags).map(([id, { name, locked }]) => {
         const chainCount = getChainsForTag(Number(id)).length;

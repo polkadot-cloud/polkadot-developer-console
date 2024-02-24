@@ -54,7 +54,8 @@ h3 {
 }
 
 h4 {
-  font-family: InterSemiBold, sans-serif;
+  color: var(--text-color-secondary);
+  font-family: Inter, sans-serif;
   font-size: 0.86rem;
   line-height: 1.35rem;
   font-weight: 500;
