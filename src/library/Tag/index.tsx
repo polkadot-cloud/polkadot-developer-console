@@ -4,4 +4,6 @@
 import { TagWrapper } from './Wrapper';
 import type { TagProps } from './types';
 
-export const Tag = ({ name }: TagProps) => <TagWrapper>{name}</TagWrapper>;
+export const Tag = ({ name, large }: TagProps) => (
+  <TagWrapper className={large ? 'large' : undefined}>{name}</TagWrapper>
+);

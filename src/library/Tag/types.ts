@@ -3,4 +3,5 @@
 
 export interface TagProps {
   name: string;
+  large?: boolean;
 }

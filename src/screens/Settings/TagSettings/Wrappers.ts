@@ -25,6 +25,11 @@ export const TagItemWrapper = styled.div`
     &.controls {
       flex-shrink: 1;
       justify-content: flex-end;
+
+      > .lock {
+        color: var(--text-color-tertiary);
+        margin-right: 1rem;
+      }
     }
   }
 `;

@@ -5,6 +5,8 @@ import { useTags } from 'contexts/Tags';
 import { TagItemWrapper } from './Wrappers';
 import { Tag } from 'library/Tag';
 import { HeaderButtonWrapper, SettingsHeaderWrapper } from '../Wrappers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLock, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 export const TagSettings = () => {
   const { tags, getChainsForTag } = useTags();
@@ -18,28 +20,35 @@ export const TagSettings = () => {
             onClick={() => {
               /* Do nothing */
             }}
-            disabled
           >
-            Revert Changes
+            <FontAwesomeIcon icon={faPlus} transform="shrink-1" />
+            New Tag
           </HeaderButtonWrapper>
         </div>
       </SettingsHeaderWrapper>
 
-      {Object.entries(tags).map(([id, name]) => {
+      {Object.entries(tags).map(([id, { name, locked }]) => {
         const chainCount = getChainsForTag(Number(id)).length;
 
         return (
           <TagItemWrapper key={`tag_${id}`}>
             <div className="details">
               <span className="tag">
-                <Tag name={name} />
+                <Tag name={name} large />
               </span>
               <h5>
                 Applied to {chainCount} {chainCount === 1 ? 'chain' : 'chains'}
               </h5>
             </div>
             <div className="controls">
-              <button>Edit</button>
+              {locked && (
+                <FontAwesomeIcon
+                  icon={faLock}
+                  transform="shrink-4"
+                  className="lock"
+                />
+              )}
+              {!locked && <button disabled={locked}>Edit</button>}
             </div>
           </TagItemWrapper>
         );

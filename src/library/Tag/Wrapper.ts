@@ -10,4 +10,9 @@ export const TagWrapper = styled.div`
   font-size: 0.68rem;
   padding: 0.35rem 0.45rem;
   border-radius: 0.35rem;
+
+  &.large {
+    font-size: 0.75rem;
+    padding: 0.45rem 0.6rem;
+  }
 `;

@@ -13,6 +13,7 @@ export const SettingsHeaderWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  margin-bottom: 0.75rem;
 
   > h2 {
     flex-grow: 1;

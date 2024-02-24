@@ -12,7 +12,12 @@ export interface TagsContextInterface {
   getChainsForTag: (tag: number) => string[];
 }
 
-export type TagsList = Record<number, string>;
+export interface TagItem {
+  name: string;
+  locked: boolean;
+}
+
+export type TagsList = Record<number, TagItem>;
 
 export type TagsConfig = Record<number, TagConfigItem>;
 

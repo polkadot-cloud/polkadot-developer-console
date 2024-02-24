@@ -22,7 +22,7 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   const getTagsForChain = (chain: string): string[] =>
     Object.entries(tagsConfig)
       .filter(([, chains]) => chains.includes(chain))
-      .map(([tag]) => tags[Number(tag)]) || [];
+      .map(([tag]) => tags[Number(tag)].name) || [];
 
   // Gets the chains currently applied to a tag.
   const getChainsForTag = (tag: number): string[] => tagsConfig[tag];

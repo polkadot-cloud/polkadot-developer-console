@@ -5,9 +5,9 @@
 import type { TagsConfig, TagsContextInterface, TagsList } from './types';
 
 export const defaultTags: TagsList = {
-  0: 'Relay Chain',
-  1: 'Canary Network',
-  2: 'Test Network',
+  0: { name: 'Relay Chain', locked: true },
+  1: { name: 'Canary Network', locked: true },
+  2: { name: 'Test Network', locked: true },
 };
 
 export const defaultTagsConfig: TagsConfig = {
