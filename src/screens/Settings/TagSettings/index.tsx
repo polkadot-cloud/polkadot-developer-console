@@ -74,20 +74,20 @@ export const TagSettings = () => {
               )}
               {!locked && (
                 <>
-                  <button
+                  <HeaderButtonWrapper
                     onClick={() => {
                       /* Do nothing */
                     }}
                   >
                     Edit
-                  </button>
-                  <button
+                  </HeaderButtonWrapper>
+                  <HeaderButtonWrapper
                     onClick={() => {
                       /* Do nothing */
                     }}
                   >
                     Delete
-                  </button>
+                  </HeaderButtonWrapper>
                 </>
               )}
             </div>

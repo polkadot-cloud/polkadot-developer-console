@@ -76,13 +76,11 @@ export const TagItemWrapper = styled.div`
 
       > .lock {
         color: var(--text-color-tertiary);
-        margin-left: 0.85rem;
         opacity: 0.5;
       }
 
       > button {
-        color: var(--text-color-seconary);
-        margin-left: 0.85rem;
+        margin-left: 0.5rem;
       }
     }
   }
