@@ -3,7 +3,7 @@
 
 import styled from 'styled-components';
 
-export const NewTagWrapper = styled.div`
+export const ManageTagWrapper = styled.div`
   border: 1px solid var(--border-primary-color);
   background-color: var(--background-primary);
   border-radius: 0.45rem;
@@ -24,6 +24,7 @@ export const NewTagWrapper = styled.div`
 
       > input {
         border: 1px solid var(--border-primary-color);
+        color: var(--text-color-secondary);
         border-radius: 0.35rem;
         margin-top: 0.5rem;
         padding: 0.5rem 0.65rem;

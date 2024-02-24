@@ -3,7 +3,8 @@
 
 import type { TagItem } from 'contexts/Tags/types';
 
-export interface NewTagFormProps {
+export interface ManageTagFormProps {
+  tagId?: number;
   value: string;
   setValue: (value: string) => void;
   setOpen: (value: boolean) => void;

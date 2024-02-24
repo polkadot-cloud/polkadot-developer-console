@@ -10,8 +10,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { NewTagForm } from './NewTagForm';
 import { MangeTagItem } from './MangeTagItem';
+import { ManageTagForm } from './ManageTagForm';
 
 export const TagSettings = () => {
   const { tags } = useTags();
@@ -39,7 +39,7 @@ export const TagSettings = () => {
       </SettingsHeaderWrapper>
 
       {newTagOpen && (
-        <NewTagForm
+        <ManageTagForm
           value={newTagValue}
           setValue={setNewTagValue}
           setOpen={setNewTagOpen}
