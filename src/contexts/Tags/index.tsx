@@ -3,8 +3,8 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
-import { defaultTagsConfig, defaultTagsContext } from './defaults';
-import type { TagsConfig, TagsContextInterface } from './types';
+import { defaultTags, defaultTagsConfig, defaultTagsContext } from './defaults';
+import type { TagsConfig, TagsContextInterface, TagsList } from './types';
 
 export const TagsContext =
   createContext<TagsContextInterface>(defaultTagsContext);
@@ -12,6 +12,9 @@ export const TagsContext =
 export const useTags = () => useContext(TagsContext);
 
 export const TagsProvider = ({ children }: { children: ReactNode }) => {
+  // Tags currently present in the system.
+  const [tags, setTags] = useState<TagsList>(defaultTags);
+
   // Initial tags config, mapping a tag to chain names.
   const [tagsConfig, setTagsConfig] = useState<TagsConfig>(defaultTagsConfig);
 
@@ -19,11 +22,11 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   const getTagsForChain = (chain: string): string[] =>
     Object.entries(tagsConfig)
       .filter(([, chains]) => chains.includes(chain))
-      .map(([tag]) => tag) || [];
+      .map(([tag]) => tags[Number(tag)]) || [];
 
   return (
     <TagsContext.Provider
-      value={{ tagsConfig, setTagsConfig, getTagsForChain }}
+      value={{ tags, setTags, tagsConfig, setTagsConfig, getTagsForChain }}
     >
       {children}
     </TagsContext.Provider>

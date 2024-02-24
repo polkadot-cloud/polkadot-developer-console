@@ -2,20 +2,24 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
-import type { TagsContextInterface } from './types';
+import type { TagsConfig, TagsContextInterface, TagsList } from './types';
 
-export const defaultTagsConfig = {
-  'Relay Chain': [
-    'polkadot-relay-chain',
-    'kusama-relay-chain',
-    'westend-relay-chain',
-  ],
-  'Canary Network': ['kusama-relay-chain'],
-  'Test Network': ['westend-relay-chain'],
+export const defaultTags: TagsList = {
+  0: 'Relay Chain',
+  1: 'Canary Network',
+  2: 'Test Network',
+};
+
+export const defaultTagsConfig: TagsConfig = {
+  0: ['polkadot-relay-chain', 'kusama-relay-chain', 'westend-relay-chain'],
+  1: ['kusama-relay-chain'],
+  2: ['westend-relay-chain'],
 };
 
 export const defaultTagsContext: TagsContextInterface = {
   tagsConfig: defaultTagsConfig,
   setTagsConfig: (newTagsConfig) => {},
   getTagsForChain: (chain) => [],
+  tags: {},
+  setTags: (newTags) => {},
 };
