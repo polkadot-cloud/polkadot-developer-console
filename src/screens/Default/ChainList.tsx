@@ -1,8 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { Separator } from '@polkadot-cloud/react';
-import { ChainListWrapper } from './Wrappers';
+import { ChainListWrapper, Separator } from './Wrappers';
 import { NetworkDirectory } from 'config/networks';
 import { ChainListItem } from './ChainListItem';
 

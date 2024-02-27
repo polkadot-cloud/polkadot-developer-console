@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 // Network themes from Polkadot Cloud.
-import '@polkadot-cloud/core/accent/polkadot-relay.css';
+import 'theme/accents/polkadot-relay.css';
 
 // Default template fonts.
 import 'theme/fonts.css';

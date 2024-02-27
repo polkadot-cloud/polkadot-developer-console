@@ -1,13 +1,12 @@
-// Copyright 2023 @paritytech/polkadot-staking-dashboard authors & contributors
+// Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyFunction } from '@polkadot-cloud/react/types';
 import { useEffect, type RefObject } from 'react';
 
 // A hook that alerts clicks outside of the passed ref.
 export const useOutsideAlerter = (
   ref: RefObject<HTMLElement>,
-  callback: AnyFunction,
+  callback: () => void,
   ignore: string[] = []
 ) => {
   useEffect(() => {
