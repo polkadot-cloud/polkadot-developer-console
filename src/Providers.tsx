@@ -11,7 +11,8 @@ import { ChainFilterProvider } from 'contexts/ChainFilter';
 
 export const Providers = () => {
   // !! Provider order matters.
-  const providers: Provider[] = [
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const providers: Provider<any>[] = [
     TabsProvider,
     TagsProvider,
     MenuProvider,
