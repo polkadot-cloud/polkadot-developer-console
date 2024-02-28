@@ -30,12 +30,7 @@ export const ListWrapper = styled.ul`
     font-family: Inter, sans-serif;
     padding: 0.55rem 0.5rem;
     font-size: 0.85rem;
-
-    &:hover {
-      background: var(--button-tab-background);
-      border-radius: 0.35rem;
-      cursor: pointer;
-    }
+    margin: 0.12rem 0;
 
     > .inner {
       display: flex;
@@ -62,6 +57,29 @@ export const ListWrapper = styled.ul`
         &:nth-child(1),
         &:nth-child(3) {
           flex-shrink: 1;
+        }
+      }
+    }
+
+    &:hover {
+      background: var(--button-tab-background);
+      color: var(--text-color-primary);
+      border-radius: 0.35rem;
+      cursor: pointer;
+
+      > .inner {
+        > div,
+        > div > button {
+          color: var(--text-color-primary);
+        }
+      }
+    }
+
+    &.selected {
+      > .inner {
+        > div,
+        > div > button {
+          color: var(--text-color-primary);
         }
       }
     }
