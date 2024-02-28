@@ -40,6 +40,10 @@ export const ListWrapper = styled.ul`
       width: 100%;
       height: 100%;
       z-index: 3;
+
+      &:disabled {
+        cursor: default;
+      }
     }
 
     > .inner {
@@ -79,7 +83,7 @@ export const ListWrapper = styled.ul`
       cursor: pointer;
 
       > .inner {
-        > div,
+        > div > h3,
         > div > button {
           color: var(--text-color-primary);
         }
@@ -88,10 +92,25 @@ export const ListWrapper = styled.ul`
 
     &.selected {
       > .inner {
-        > div,
+        > div > h3,
         > div > h3 {
           color: var(--text-color-primary);
         }
+      }
+    }
+
+    &.disabled {
+      opacity: 0.5;
+
+      > .inner {
+        > div > h3,
+        > div > button {
+          color: var(--text-color-tertiary);
+        }
+      }
+
+      &:hover {
+        background-color: transparent;
       }
     }
   }

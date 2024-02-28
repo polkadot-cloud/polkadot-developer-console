@@ -8,7 +8,7 @@ import { useTags } from 'contexts/Tags';
 import { TagControl } from 'library/TagControl';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
-import { TagsMenu } from './TagsMenu';
+import { ConfigTagMenu } from './TagsMenu/ConfigTagMenu';
 import type { TagItem } from 'contexts/Tags/types';
 
 export interface ChainListItemProps {
@@ -28,6 +28,7 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
   );
 
   // Handle tag menu item select. Either add or remove a tag configs.
+  // TODO: add tag context functons for adding and removing tags from chains.
   const handleOnSelect = (
     current: string[],
     tag: TagItem,
@@ -62,7 +63,10 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
             name={'Add'}
             icon={faPlus}
             onClick={(ev) => {
-              openMenu(ev, <TagsMenu onSelect={handleOnSelect} />);
+              openMenu(
+                ev,
+                <ConfigTagMenu chainId={chain} onSelect={handleOnSelect} />
+              );
               /* Do nothing */
             }}
           />

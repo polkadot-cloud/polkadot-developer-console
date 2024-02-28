@@ -7,7 +7,7 @@ import { TagControl } from 'library/TagControl';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { useTabs } from 'contexts/Tabs';
 import { useMenu } from 'contexts/Menu';
-import { TagsMenu } from './TagsMenu';
+import { FilterTagMenu } from './TagsMenu/FilterTagMenu';
 import type { TagItem } from 'contexts/Tags/types';
 
 export const TagControls = () => {
@@ -37,7 +37,9 @@ export const TagControls = () => {
         <TagControl
           name="Add"
           icon={faPlus}
-          onClick={(ev) => openMenu(ev, <TagsMenu onSelect={handleOnSelect} />)}
+          onClick={(ev) =>
+            openMenu(ev, <FilterTagMenu onSelect={handleOnSelect} />)
+          }
         />
         <TagControl name="Clear" onClick={() => applyTags(activeTabId, [])} />
       </div>

@@ -4,41 +4,51 @@
 import { ListWrapper } from 'library/ContextMenu/Wrappers';
 import { Wrapper } from './Wrapper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useTags } from 'contexts/Tags';
-import { useTabs } from 'contexts/Tabs';
-import { useChainFilter } from 'contexts/ChainFilter';
 import type { TagItem } from 'contexts/Tags/types';
 
-export const TagsMenu = ({
+export const ConfigTagMenu = ({
   onSelect,
+  chainId,
 }: {
   onSelect: (current: string[], tag: TagItem, selected: boolean) => void;
+  chainId: string;
 }) => {
-  const { activeTabId } = useTabs();
-  const { getAppliedTags } = useChainFilter();
-  const { tags, getChainsForTag } = useTags();
+  const { tags, getChainsForTag, getTagsForChain } = useTags();
 
-  const appliedTags = getAppliedTags(activeTabId);
+  const appliedTags = getTagsForChain(chainId);
+
+  // Re-order tags so locked tags appear last.
+  const orderedEntries = Object.entries(tags).sort(
+    ([, a], [, b]) => Number(a.locked) - Number(b.locked)
+  );
 
   return (
     <Wrapper>
       <h5>Select Tags</h5>
       <ListWrapper>
-        {Object.entries(tags).map(([id, tag]) => {
+        {orderedEntries.map(([id, tag]) => {
           const selected = appliedTags.includes(tag.name);
           const chainCount = getChainsForTag(Number(id))?.length || 0;
 
           return (
             <li
               key={`tag_context_item_${Number(id)}`}
-              className={selected ? ` selected` : undefined}
+              className={`${selected ? ` selected` : ``}${tag.locked ? ` disabled` : ``}`}
             >
-              <button onClick={() => onSelect(appliedTags, tag, selected)} />
+              <button
+                disabled={tag.locked}
+                onClick={() => onSelect(appliedTags, tag, selected)}
+              />
               <div className="inner">
                 <div>
-                  {selected && (
-                    <FontAwesomeIcon icon={faCheck} transform="shrink-2" />
+                  {tag.locked ? (
+                    <FontAwesomeIcon icon={faLock} transform="shrink-5" />
+                  ) : (
+                    selected && (
+                      <FontAwesomeIcon icon={faCheck} transform="shrink-2" />
+                    )
                   )}
                 </div>
                 <div>
