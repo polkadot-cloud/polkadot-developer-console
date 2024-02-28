@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import { defaultTags, defaultTagsConfig, defaultTagsContext } from './defaults';
 import type { TagsConfig, TagsContextInterface, TagsList } from './types';
+import { setStateWithRef } from '@w3ux/utils';
 
 export const TagsContext =
   createContext<TagsContextInterface>(defaultTagsContext);
@@ -15,8 +16,10 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   // Tags currently present in the system.
   const [tags, setTags] = useState<TagsList>(defaultTags);
 
-  // Initial tags config, mapping a tag to chain names.
+  // Initial tags config, mapping a tag to chain names. NOTE: ref is used as tagsConfig is accessed
+  // in callbacks.
   const [tagsConfig, setTagsConfig] = useState<TagsConfig>(defaultTagsConfig);
+  const tagsConfigRef = useRef(tagsConfig);
 
   // Get the largest tag id existing in `tags`.
   const getLargesTagId = () => {
@@ -43,7 +46,26 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
     delete newTagsConfig[tagId];
 
     setTags(newTags);
-    setTagsConfig(newTagsConfig);
+    setStateWithRef(newTagsConfig, setTagsConfig, tagsConfigRef);
+  };
+
+  // Add a chain to a tag config.
+  const addChainToTag = (tagId: string, chain: string) => {
+    const newTagsConfig = { ...tagsConfigRef.current };
+    newTagsConfig[Number(tagId)] = [
+      ...(newTagsConfig?.[Number(tagId)] || []),
+      chain,
+    ];
+    setStateWithRef(newTagsConfig, setTagsConfig, tagsConfigRef);
+  };
+
+  // Remove a chain from a tab config.
+  const removeChainFromTag = (tagId: string, chain: string) => {
+    const newTagsConfig = { ...tagsConfigRef.current };
+    newTagsConfig[Number(tagId)] = newTagsConfig[Number(tagId)].filter(
+      (c) => c !== chain
+    );
+    setStateWithRef(newTagsConfig, setTagsConfig, tagsConfigRef);
   };
 
   return (
@@ -57,6 +79,8 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
         getChainsForTag,
         getLargesTagId,
         removeTag,
+        addChainToTag,
+        removeChainFromTag,
       }}
     >
       {children}

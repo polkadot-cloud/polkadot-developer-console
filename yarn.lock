@@ -1557,6 +1557,15 @@
   resolved "https://registry.yarnpkg.com/@w3ux/hooks/-/hooks-0.0.3.tgz#03622bc9d4b005d7a5e41a0d0da8a1cb98977978"
   integrity sha512-s9YR2HveY1n+P8g3Jppw/XXaygpeJfurMHpZXx7d6LMotgJsvVpyDU/tWp8ES7BHM5m12D6RVp1dcHu9JrK5xA==
 
+"@w3ux/utils@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@w3ux/utils/-/utils-0.0.2.tgz#d19b516a3b11feebf55b41ac017b5352e9d0035c"
+  integrity sha512-qjg2edbIQHA3DVBT8nU0iXvLpmr5Wr9xsRCJT76B9Xs9kyCpNhaN14T4OmDAUBIneXIE24mGnXpgpkOsgQE7LQ==
+  dependencies:
+    "@polkadot/keyring" "^12.6.2"
+    "@polkadot/util" "^12.6.2"
+    bignumber.js "^9.1.1"
+
 abbrev@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-2.0.0.tgz#cf59829b8b4f03f89dda2771cb7f3653828c89bf"
@@ -1768,6 +1777,11 @@ balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
+
+bignumber.js@^9.1.1:
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.2.tgz#b7c4242259c008903b13707983b5f4bbd31eda0c"
+  integrity sha512-2/mKyZH9K85bzOEfhXDBFZTGd1CTs+5IHpeFQo9luiBG7hghdC851Pj2WAhb6E3R6b9tZj/XKhbg4fum+Kepug==
 
 bin-links@^4.0.1:
   version "4.0.3"

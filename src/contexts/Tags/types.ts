@@ -12,6 +12,8 @@ export interface TagsContextInterface {
   getChainsForTag: (tag: number) => string[];
   getLargesTagId: () => number;
   removeTag: (tagId: number) => void;
+  addChainToTag: (tagId: string, chain: string) => void;
+  removeChainFromTag: (tagId: string, chain: string) => void;
 }
 
 export interface TagItem {

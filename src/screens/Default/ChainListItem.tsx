@@ -9,7 +9,6 @@ import { TagControl } from 'library/TagControl';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { ConfigTagMenu } from './TagsMenu/ConfigTagMenu';
-import type { TagItem } from 'contexts/Tags/types';
 
 export interface ChainListItemProps {
   chain: string;
@@ -18,7 +17,7 @@ export interface ChainListItemProps {
 
 export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
   const { openMenu } = useMenu();
-  const { getTagsForChain } = useTags();
+  const { getTagsForChain, addChainToTag, removeChainFromTag } = useTags();
   const tags = getTagsForChain(chain);
 
   // Lazily load the icon for the chain.
@@ -29,15 +28,11 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
 
   // Handle tag menu item select. Either add or remove a tag configs.
   // TODO: add tag context functons for adding and removing tags from chains.
-  const handleOnSelect = (
-    current: string[],
-    tag: TagItem,
-    selected: boolean
-  ) => {
+  const handleOnSelect = (tagId: string, selected: boolean) => {
     if (selected) {
-      console.log('remove tag from chain');
+      removeChainFromTag(tagId, chain);
     } else {
-      console.log('add tag to chain');
+      addChainToTag(tagId, chain);
     }
   };
 

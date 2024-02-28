@@ -6,13 +6,12 @@ import { Wrapper } from './Wrapper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useTags } from 'contexts/Tags';
-import type { TagItem } from 'contexts/Tags/types';
 
 export const ConfigTagMenu = ({
   onSelect,
   chainId,
 }: {
-  onSelect: (current: string[], tag: TagItem, selected: boolean) => void;
+  onSelect: (tag: string, selected: boolean) => void;
   chainId: string;
 }) => {
   const { tags, getChainsForTag, getTagsForChain } = useTags();
@@ -39,7 +38,7 @@ export const ConfigTagMenu = ({
             >
               <button
                 disabled={tag.locked}
-                onClick={() => onSelect(appliedTags, tag, selected)}
+                onClick={() => onSelect(id, selected)}
               />
               <div className="inner">
                 <div>

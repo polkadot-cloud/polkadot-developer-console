@@ -23,6 +23,7 @@
     "@polkadot/util": "^12.6.2",
     "@polkadot/util-crypto": "^12.6.2",
     "@w3ux/hooks": "^0.0.3",
+    "@w3ux/utils": "^0.0.2",
     "framer-motion": "^11.0.3",
     "install": "^0.13.0",
     "npm": "^10.4.0",
