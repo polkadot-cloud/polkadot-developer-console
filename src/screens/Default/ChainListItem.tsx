@@ -7,6 +7,9 @@ import { Tag } from 'library/Tag';
 import { useTags } from 'contexts/Tags';
 import { TagControl } from 'library/TagControl';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useMenu } from 'contexts/Menu';
+import { TagsMenu } from './TagsMenu';
+import type { TagItem } from 'contexts/Tags/types';
 
 export interface ChainListItemProps {
   chain: string;
@@ -14,6 +17,7 @@ export interface ChainListItemProps {
 }
 
 export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
+  const { openMenu } = useMenu();
   const { getTagsForChain } = useTags();
   const tags = getTagsForChain(chain);
 
@@ -22,6 +26,19 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
     () => lazy(() => import(`../../config/networks/icons/${chain}/Inline.tsx`)),
     []
   );
+
+  // Handle tag menu item select. Either add or remove a tag configs.
+  const handleOnSelect = (
+    current: string[],
+    tag: TagItem,
+    selected: boolean
+  ) => {
+    if (selected) {
+      console.log('remove tag from chain');
+    } else {
+      console.log('add tag to chain');
+    }
+  };
 
   return (
     <ChainListItemWrapper>
@@ -44,7 +61,8 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
             light
             name={'Add'}
             icon={faPlus}
-            onClick={() => {
+            onClick={(ev) => {
+              openMenu(ev, <TagsMenu onSelect={handleOnSelect} />);
               /* Do nothing */
             }}
           />

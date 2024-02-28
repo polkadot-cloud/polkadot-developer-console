@@ -10,21 +10,16 @@ import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
 import type { TagItem } from 'contexts/Tags/types';
 
-export const TagsMenu = () => {
+export const TagsMenu = ({
+  onSelect,
+}: {
+  onSelect: (current: string[], tag: TagItem, selected: boolean) => void;
+}) => {
   const { activeTabId } = useTabs();
+  const { getAppliedTags } = useChainFilter();
   const { tags, getChainsForTag } = useTags();
-  const { getAppliedTags, removeTag, applyTags } = useChainFilter();
 
   const appliedTags = getAppliedTags(activeTabId);
-
-  // Either add or remove a tag to chain filter based on current state.
-  const handleToggleTag = ([, tag]: [string, TagItem], selected: boolean) => {
-    if (selected) {
-      removeTag(activeTabId, tag.name);
-    } else {
-      applyTags(activeTabId, [...appliedTags, tag.name]);
-    }
-  };
 
   return (
     <Wrapper>
@@ -39,7 +34,7 @@ export const TagsMenu = () => {
               key={`tag_context_item_${Number(id)}`}
               className={selected ? ` selected` : undefined}
             >
-              <button onClick={() => handleToggleTag([id, tag], selected)} />
+              <button onClick={() => onSelect(appliedTags, tag, selected)} />
               <div className="inner">
                 <div>
                   {selected && (
