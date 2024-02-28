@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMenu } from 'contexts/Menu';
 import { Wrapper } from './Wrappers';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
@@ -16,16 +16,27 @@ export const ContextMenu = () => {
     checkMenuPosition,
   } = useMenu();
 
+  // Menu ref for position access.
   const menuRef = useRef(null);
+
+  // Store whether the menu is hidden.
+  const [hidden, setHidden] = useState<boolean>(false);
 
   // Handler for closing the menu on window resize.
   const resizeCallback = () => {
     closeMenu();
   };
 
+  // Duration of transition.
+  const TRANSITION_DURATION_MS = 180;
+
   // Close the menu if clicked outside of its container.
   useOutsideAlerter(menuRef, () => {
-    closeMenu();
+    setHidden(true);
+    setTimeout(() => {
+      closeMenu();
+      setHidden(false);
+    }, TRANSITION_DURATION_MS);
   });
 
   // Check position and show the menu if menu has been opened.
@@ -47,6 +58,21 @@ export const ContextMenu = () => {
     open && (
       <Wrapper
         ref={menuRef}
+        animate={!hidden ? 'show' : 'hidden'}
+        variants={{
+          hidden: {
+            opacity: 0,
+            transform: 'scale(0.9)',
+          },
+          show: {
+            opacity: 1,
+            transform: 'scale(1)',
+          },
+        }}
+        transition={{
+          duration: TRANSITION_DURATION_MS * 0.001,
+          ease: [0.1, 1, 0.1, 1],
+        }}
         style={{
           position: 'absolute',
           left: `${x}px`,
