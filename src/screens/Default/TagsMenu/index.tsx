@@ -38,6 +38,7 @@ export const TagsMenu = () => {
               key={`tag_context_item_${Number(id)}`}
               className={selected ? ` selected` : undefined}
             >
+              <button onClick={() => handleToggleTag([id, tag], selected)} />
               <div className="inner">
                 <div>
                   {selected && (
@@ -45,9 +46,7 @@ export const TagsMenu = () => {
                   )}
                 </div>
                 <div>
-                  <button onClick={() => handleToggleTag([id, tag], selected)}>
-                    {tag.name}
-                  </button>
+                  <h3>{tag.name}</h3>
                 </div>
                 <div></div>
               </div>

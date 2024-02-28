@@ -31,6 +31,16 @@ export const ListWrapper = styled.ul`
     padding: 0.55rem 0.5rem;
     font-size: 0.85rem;
     margin: 0.12rem 0;
+    position: relative;
+
+    > button {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+    }
 
     > .inner {
       display: flex;
@@ -48,8 +58,9 @@ export const ListWrapper = styled.ul`
         &:nth-child(2) {
           flex-grow: 1;
 
-          > button {
+          > h3 {
             color: var(--text-color-secondary);
+            font-size: 0.8rem;
             text-align: left;
             width: 100%;
           }
@@ -64,7 +75,7 @@ export const ListWrapper = styled.ul`
     &:hover {
       background: var(--button-tab-background);
       color: var(--text-color-primary);
-      border-radius: 0.35rem;
+      border-radius: 0.3rem;
       cursor: pointer;
 
       > .inner {
@@ -78,7 +89,7 @@ export const ListWrapper = styled.ul`
     &.selected {
       > .inner {
         > div,
-        > div > button {
+        > div > h3 {
           color: var(--text-color-primary);
         }
       }
