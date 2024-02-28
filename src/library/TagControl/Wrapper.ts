@@ -40,4 +40,15 @@ export const TagControlWrapper = styled.button`
   > .icon {
     margin-right: 0.4rem;
   }
+
+  &.light {
+    border: 1px solid var(--border-primary-color);
+    color: var(--text-color-tertiary);
+    font-size: 0.7rem;
+
+    &:hover {
+      border: 1px solid var(--border-secondary-color);
+      color: var(--text-color-secondary);
+    }
+  }
 `;

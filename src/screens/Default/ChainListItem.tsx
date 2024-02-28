@@ -5,6 +5,8 @@ import { Suspense, lazy, useMemo } from 'react';
 import { ChainListItemWrapper } from './Wrappers';
 import { Tag } from 'library/Tag';
 import { useTags } from 'contexts/Tags';
+import { TagControl } from 'library/TagControl';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 export interface ChainListItemProps {
   chain: string;
@@ -34,13 +36,19 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
 
       <div className="footer">
         <h5>{chain}</h5>
-        {tags.length ? (
-          <div className="tags">
-            {tags.map((tag) => (
-              <Tag key={`tag_${tag}`} name={tag} />
-            ))}
-          </div>
-        ) : null}
+        <div className="tags">
+          {tags.length
+            ? tags.map((tag) => <Tag key={`tag_${tag}`} name={tag} />)
+            : null}
+          <TagControl
+            light
+            name={'Add'}
+            icon={faPlus}
+            onClick={() => {
+              /* Do nothing */
+            }}
+          />
+        </div>
       </div>
     </ChainListItemWrapper>
   );

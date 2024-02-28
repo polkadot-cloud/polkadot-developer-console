@@ -8,5 +8,6 @@ export interface TagControlProps {
   name: string;
   icon?: IconProp;
   large?: boolean;
+  light?: boolean;
   onClick: (ev: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
