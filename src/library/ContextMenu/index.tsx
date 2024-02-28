@@ -62,7 +62,7 @@ export const ContextMenu = () => {
         variants={{
           hidden: {
             opacity: 0,
-            transform: 'scale(0.9)',
+            transform: 'scale(0.93)',
           },
           show: {
             opacity: 1,
