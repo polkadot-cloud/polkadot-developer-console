@@ -11,8 +11,8 @@ import { useChainFilter } from 'contexts/ChainFilter';
 import type { TagItem } from 'contexts/Tags/types';
 
 export const TagsMenu = () => {
-  const { tags } = useTags();
   const { activeTabId } = useTabs();
+  const { tags, getChainsForTag } = useTags();
   const { getAppliedTags, removeTag, applyTags } = useChainFilter();
 
   const appliedTags = getAppliedTags(activeTabId);
@@ -32,6 +32,7 @@ export const TagsMenu = () => {
       <ListWrapper>
         {Object.entries(tags).map(([id, tag]) => {
           const selected = appliedTags.includes(tag.name);
+          const chainCount = getChainsForTag(Number(id))?.length || 0;
 
           return (
             <li
@@ -48,7 +49,9 @@ export const TagsMenu = () => {
                 <div>
                   <h3>{tag.name}</h3>
                 </div>
-                <div></div>
+                <div>
+                  <h5>{chainCount}</h5>
+                </div>
               </div>
             </li>
           );
