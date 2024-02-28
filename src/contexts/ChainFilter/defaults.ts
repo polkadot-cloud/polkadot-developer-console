@@ -16,6 +16,12 @@ export const defaultChainFilter: ChainFilterInterface = {
 
 export const defaultAppliedTags = {
   1: ['Relay Chain', 'Test Network', 'Canary Network'],
-  2: ['Relay Chain', 'Canary Network'],
-  3: ['Relay Chain', 'Test Network'],
+  2: ['Canary Network'],
+  3: ['Test Network'],
+};
+
+export const defaultSearchTerms = {
+  1: '',
+  2: 'Kusama',
+  3: 'Westend',
 };

@@ -4,7 +4,11 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
 import type { AppliedTags, ChainFilterInterface, SearchTerms } from './types';
-import { defaultAppliedTags, defaultChainFilter } from './defaults';
+import {
+  defaultAppliedTags,
+  defaultChainFilter,
+  defaultSearchTerms,
+} from './defaults';
 
 export const ChainFilter =
   createContext<ChainFilterInterface>(defaultChainFilter);
@@ -13,7 +17,8 @@ export const useChainFilter = () => useContext(ChainFilter);
 
 export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
   // The current search terms.
-  const [searchTerms, setSearchTerms] = useState<SearchTerms>({});
+  const [searchTerms, setSearchTerms] =
+    useState<SearchTerms>(defaultSearchTerms);
 
   // The current applied tags to a given key.
   const [appliedTags, setAppliedTags] =
