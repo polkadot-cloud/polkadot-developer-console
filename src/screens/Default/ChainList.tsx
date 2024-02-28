@@ -4,14 +4,52 @@
 import { ChainListWrapper, Separator } from './Wrappers';
 import { NetworkDirectory } from 'config/networks';
 import { ChainListItem } from './ChainListItem';
+import { useTabs } from 'contexts/Tabs';
+import { useChainFilter } from 'contexts/ChainFilter';
+import { useTags } from 'contexts/Tags';
 
-export const ChainList = () => (
-  <ChainListWrapper>
-    <Separator />
-    <h4>3 Chains Found</h4>
+export const ChainList = () => {
+  const { activeTabId } = useTabs();
+  const { getTagsForChain } = useTags();
+  const { getAppliedTags, getSearchTerm } = useChainFilter();
 
-    {Object.entries(NetworkDirectory).map(([key, { name }]) => (
-      <ChainListItem key={`chain_index_${key}`} chain={key} name={name} />
-    ))}
-  </ChainListWrapper>
-);
+  // NOTE: Currently naively filering simple chain list.
+
+  const results = NetworkDirectory;
+
+  // Filter chains based on applied tags.
+  const appliedTags = getAppliedTags(activeTabId);
+
+  let filtered = Object.fromEntries(
+    Object.entries(results).filter(([id]) =>
+      appliedTags.some((tag) => getTagsForChain(id).includes(tag))
+    )
+  );
+
+  // Filter chains based on search term.
+  const searchTerm = getSearchTerm(activeTabId);
+
+  if (searchTerm !== '') {
+    filtered = Object.fromEntries(
+      Object.entries(filtered).filter(([, { name }]) =>
+        name.includes(searchTerm)
+      )
+    );
+  }
+
+  // Get the total resulting chains.
+  const totalResults = Object.keys(filtered).length;
+
+  return (
+    <ChainListWrapper>
+      <Separator />
+      <h4>
+        {totalResults || 'No'} {totalResults === 1 ? 'Chain' : 'Chains'} Found
+      </h4>
+
+      {Object.entries(filtered).map(([key, { name }]) => (
+        <ChainListItem key={`chain_index_${key}`} chain={key} name={name} />
+      ))}
+    </ChainListWrapper>
+  );
+};
