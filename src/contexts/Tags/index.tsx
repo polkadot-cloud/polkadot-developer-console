@@ -13,6 +13,7 @@ import type {
 } from './types';
 import { setStateWithRef } from '@w3ux/utils';
 import type { ChainId } from 'config/networks';
+import * as local from './Local';
 
 export const TagsContext =
   createContext<TagsContextInterface>(defaultTagsContext);
@@ -21,12 +22,28 @@ export const useTags = () => useContext(TagsContext);
 
 export const TagsProvider = ({ children }: { children: ReactNode }) => {
   // Tags currently present in the system.
-  const [tags, setTags] = useState<TagsList>(defaultTags);
+  const [tags, setTagsState] = useState<TagsList>(
+    local.getTags() || defaultTags
+  );
 
   // Initial tags config, mapping a tag to chain names. NOTE: ref is used as tagsConfig is accessed
   // in callbacks.
-  const [tagsConfig, setTagsConfig] = useState<TagsConfig>(defaultTagsConfig);
+  const [tagsConfig, setTagsConfigState] = useState<TagsConfig>(
+    local.getTagsConfig() || defaultTagsConfig
+  );
   const tagsConfigRef = useRef(tagsConfig);
+
+  // Sets tags state, and updates local storage.
+  const setTags = (newTags: TagsList) => {
+    local.setTags(newTags);
+    setTagsState(newTags);
+  };
+
+  // Sets tags config state, and updates local storage.
+  const setTagsConfig = (newTagsConfig: TagsConfig) => {
+    local.setTagsConfig(newTagsConfig);
+    setTagsConfigState(newTagsConfig);
+  };
 
   // Get a new largest tag counter existing in `tags`.
   const getLargestTagCounter = () => {

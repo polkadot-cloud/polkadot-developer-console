@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ChainId } from 'config/networks';
-import type { Dispatch, SetStateAction } from 'react';
 
 export type ConcreteTagId =
   | 'tag_relay_chain'
@@ -15,9 +14,9 @@ export type TagId = ConcreteTagId | CustomTagId;
 
 export interface TagsContextInterface {
   tags: TagsList;
-  setTags: Dispatch<SetStateAction<TagsList>>;
+  setTags: (tags: TagsList) => void;
   tagsConfig: TagsConfig;
-  setTagsConfig: Dispatch<SetStateAction<TagsConfig>>;
+  setTagsConfig: (tagsConfig: TagsConfig) => void;
   getTagsForChain: (chain: ChainId) => TagId[];
   getChainsForTag: (tagId: TagId) => ChainId[];
   getLargestTagCounter: () => number;
