@@ -66,9 +66,10 @@ export const ManageTagForm = ({
       setValue('');
     } else {
       // Edit existing tag.
+      console.log(tagId);
       setTags({
         ...tags,
-        [`tag_${tagId}`]: {
+        [tagId]: {
           ...tags[tagId],
           name: formatValue(value),
         },
