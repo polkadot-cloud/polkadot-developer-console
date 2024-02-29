@@ -22,8 +22,17 @@ export const ManageTagForm = ({
     return str;
   };
 
+  // Maximum tag name length.
+  const MAX_TAG_NAME_LENGTH = 25;
+
+  // Gets current tag names.
+  const tagNames = Object.values(tags).map(({ name }) => name);
+
   // Check if tag form is valid.
-  const valid = formatValue(value) !== '';
+  const valid =
+    formatValue(value) !== '' &&
+    formatValue(value).length <= MAX_TAG_NAME_LENGTH &&
+    !tagNames.includes(formatValue(value));
 
   // Handler to cancel the tag form.
   const cancel = () => {
@@ -79,7 +88,7 @@ export const ManageTagForm = ({
           value={value}
           placeholder="Tag Name"
           onChange={(ev) => setValue(ev.target.value)}
-          maxLength={25}
+          maxLength={MAX_TAG_NAME_LENGTH}
         />
       </div>
       <div className="controls">
