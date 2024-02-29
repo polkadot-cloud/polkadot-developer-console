@@ -28,7 +28,7 @@ export const ConfigTagMenu = ({
       <h5>Select Tags</h5>
       <ListWrapper>
         {orderedEntries.map(([id, tag]) => {
-          const selected = appliedTags.includes(tag.name);
+          const selected = appliedTags.includes(id);
           const chainCount = getChainsForTag(id)?.length || 0;
 
           return (
