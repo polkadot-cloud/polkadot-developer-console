@@ -10,36 +10,34 @@ import type { Tabs } from './types';
 
 // Gets saved active tabs from local storage, or returns undefined otherwise.
 export const getTabs = (): Tabs | undefined => {
-  const localTabs = localStorageOrDefault('activeTabs', undefined, true) as
+  const result = localStorageOrDefault('activeTabs', undefined, true) as
     | Tabs
     | undefined;
 
-  if (localTabs) {
-    return localTabs as Tabs;
+  if (result) {
+    return result as Tabs;
   }
 };
 
 // Gets the active tab id from local storage, or returns undefined otherwise.
 export const getActiveTabId = (): number | undefined => {
-  const activeTabId = localStorageOrDefault('activeTabId', undefined, true) as
+  const result = localStorageOrDefault('activeTabId', undefined, true) as
     | number
     | undefined;
 
-  if (activeTabId) {
-    return activeTabId as number;
+  if (result) {
+    return result as number;
   }
 };
 
 // Gets the active tab index from local storage, or returns undefined otherwise.
 export const getActiveTabIndex = (): number | undefined => {
-  const activeTabIndex = localStorageOrDefault(
-    'activeTabIndex',
-    undefined,
-    true
-  ) as number | undefined;
+  const result = localStorageOrDefault('activeTabIndex', undefined, true) as
+    | number
+    | undefined;
 
-  if (activeTabIndex) {
-    return activeTabIndex as number;
+  if (result) {
+    return result as number;
   }
 };
 
