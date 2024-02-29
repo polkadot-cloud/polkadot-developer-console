@@ -29,11 +29,11 @@ export const ConfigTagMenu = ({
       <ListWrapper>
         {orderedEntries.map(([id, tag]) => {
           const selected = appliedTags.includes(tag.name);
-          const chainCount = getChainsForTag(Number(id))?.length || 0;
+          const chainCount = getChainsForTag(id)?.length || 0;
 
           return (
             <li
-              key={`tag_context_item_${Number(id)}`}
+              key={`tag_context_item_${id}`}
               className={`${selected ? ` selected` : ``}${tag.locked ? ` disabled` : ``}`}
             >
               <button

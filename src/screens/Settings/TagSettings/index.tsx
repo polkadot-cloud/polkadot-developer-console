@@ -51,7 +51,7 @@ export const TagSettings = () => {
       </SettingsSubheadingWrapper>
 
       {Object.entries(tags).map(([id, tag]) => (
-        <MangeTagItem key={`tag_${id}`} id={Number(id)} tag={tag} />
+        <MangeTagItem key={`tag_${id}`} id={id} tag={tag} />
       ))}
     </>
   );

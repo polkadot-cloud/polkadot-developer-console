@@ -21,8 +21,8 @@ export const ChainList = () => {
   const appliedTags = getAppliedTags(activeTabId);
 
   let filtered = Object.fromEntries(
-    Object.entries(results).filter(([id]) =>
-      appliedTags.some((tag) => getTagsForChain(id).includes(tag))
+    Object.entries(results).filter(([chain]) =>
+      appliedTags.some(([tagId]) => getTagsForChain(chain).includes(tagId))
     )
   );
 

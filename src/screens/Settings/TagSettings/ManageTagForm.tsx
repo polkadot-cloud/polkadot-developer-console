@@ -46,7 +46,7 @@ export const ManageTagForm = ({
       // Create new tag.
       setTags({
         ...tags,
-        [getLargesTagId() + 1]: {
+        [`tag_${getLargesTagId() + 1}`]: {
           name: formatValue(value),
           locked: false,
         },
@@ -55,7 +55,7 @@ export const ManageTagForm = ({
       // Edit existing tag.
       setTags({
         ...tags,
-        [tagId]: {
+        [`tag_${tagId}`]: {
           ...tags[tagId],
           name: formatValue(value),
         },

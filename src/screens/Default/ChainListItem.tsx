@@ -17,8 +17,9 @@ export interface ChainListItemProps {
 
 export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
   const { openMenu } = useMenu();
-  const { getTagsForChain, addChainToTag, removeChainFromTag } = useTags();
-  const tags = getTagsForChain(chain);
+  const { tags, getTagsForChain, addChainToTag, removeChainFromTag } =
+    useTags();
+  const chainTags = getTagsForChain(chain);
 
   // Lazily load the icon for the chain.
   const Icon = useMemo(
@@ -27,7 +28,6 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
   );
 
   // Handle tag menu item select. Either add or remove a tag configs.
-  // TODO: add tag context functons for adding and removing tags from chains.
   const handleOnSelect = (tagId: string, selected: boolean) => {
     if (selected) {
       removeChainFromTag(tagId, chain);
@@ -50,8 +50,10 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
       <div className="footer">
         <h5>{chain}</h5>
         <div className="tags">
-          {tags.length
-            ? tags.map((tag) => <Tag key={`tag_${tag}`} name={tag} />)
+          {chainTags.length
+            ? chainTags.map((tag) => (
+                <Tag key={`tag_${tag}`} name={tags[tag].name} />
+              ))
             : null}
           <TagControl
             light

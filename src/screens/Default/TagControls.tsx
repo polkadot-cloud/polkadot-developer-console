@@ -8,25 +8,24 @@ import { useChainFilter } from 'contexts/ChainFilter';
 import { useTabs } from 'contexts/Tabs';
 import { useMenu } from 'contexts/Menu';
 import { FilterTagMenu } from './TagsMenu/FilterTagMenu';
-import type { TagItem } from 'contexts/Tags/types';
 
 export const TagControls = () => {
   const { openMenu } = useMenu();
   const { activeTabId } = useTabs();
   const { getAppliedTags, applyTags, removeTag } = useChainFilter();
 
-  const tags = getAppliedTags(activeTabId);
+  const appliedTags = getAppliedTags(activeTabId);
 
   // Handle tag menu item select. Either add or remove a tag to chain filter based on current state.
   const handleOnSelect = (
     current: string[],
-    tag: TagItem,
+    tagId: string,
     selected: boolean
   ) => {
     if (selected) {
-      removeTag(activeTabId, tag.name);
+      removeTag(activeTabId, tagId);
     } else {
-      applyTags(activeTabId, [...current, tag.name]);
+      applyTags(activeTabId, [...current, tagId]);
     }
   };
 
@@ -43,15 +42,17 @@ export const TagControls = () => {
         />
         <TagControl name="Clear" onClick={() => applyTags(activeTabId, [])} />
       </div>
-      {tags ? (
+      {appliedTags ? (
         <div className="applied">
-          {tags.map((tag) => (
+          {appliedTags.map(([tagId, { name }]) => (
             <TagControl
-              key={`applied_tag_${tag}`}
-              name={tag}
+              key={`applied_tag_${tagId}`}
+              name={name}
               icon={faClose}
               large
-              onClick={() => removeTag(activeTabId, tag)}
+              onClick={() => {
+                removeTag(activeTabId, tagId);
+              }}
             />
           ))}
         </div>

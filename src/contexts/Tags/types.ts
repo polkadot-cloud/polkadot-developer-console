@@ -9,9 +9,9 @@ export interface TagsContextInterface {
   tagsConfig: TagsConfig;
   setTagsConfig: Dispatch<SetStateAction<TagsConfig>>;
   getTagsForChain: (chain: string) => string[];
-  getChainsForTag: (tag: number) => string[];
+  getChainsForTag: (tagId: string) => string[];
   getLargesTagId: () => number;
-  removeTag: (tagId: number) => void;
+  removeTag: (tagId: string) => void;
   addChainToTag: (tagId: string, chain: string) => void;
   removeChainFromTag: (tagId: string, chain: string) => void;
 }
@@ -21,8 +21,8 @@ export interface TagItem {
   locked: boolean;
 }
 
-export type TagsList = Record<number, TagItem>;
+export type TagsList = Record<string, TagItem>;
 
-export type TagsConfig = Record<number, TagConfigItem>;
+export type TagsConfig = Record<string, TagConfigItem>;
 
 export type TagConfigItem = string[];

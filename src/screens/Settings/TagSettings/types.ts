@@ -4,13 +4,13 @@
 import type { TagItem } from 'contexts/Tags/types';
 
 export interface ManageTagFormProps {
-  tagId?: number;
+  tagId?: string;
   value: string;
   setValue: (value: string) => void;
   setOpen: (value: boolean) => void;
 }
 
 export interface ManageTagItemProps {
-  id: number;
+  id: string;
   tag: TagItem;
 }

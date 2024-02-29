@@ -16,7 +16,7 @@ export const MangeTagItem = ({
   tag: { name, locked },
 }: ManageTagItemProps) => {
   const { getChainsForTag, removeTag } = useTags();
-  const chainCount = getChainsForTag(Number(id))?.length || 0;
+  const chainCount = getChainsForTag(id)?.length || 0;
 
   // The current value of the tag.
   const [editValue, setEditValue] = useState<string>(name);
@@ -48,7 +48,7 @@ export const MangeTagItem = ({
               <HeaderButtonWrapper onClick={() => setEditTagOpen(!editTagOpen)}>
                 Edit
               </HeaderButtonWrapper>
-              <HeaderButtonWrapper onClick={() => removeTag(Number(id))}>
+              <HeaderButtonWrapper onClick={() => removeTag(id)}>
                 Delete
               </HeaderButtonWrapper>
             </>
@@ -57,7 +57,7 @@ export const MangeTagItem = ({
       </div>
       {editTagOpen && (
         <ManageTagForm
-          tagId={Number(id)}
+          tagId={id}
           value={editValue}
           setValue={setEditValue}
           setOpen={setEditTagOpen}

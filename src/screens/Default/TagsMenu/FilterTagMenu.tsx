@@ -8,33 +8,35 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useTags } from 'contexts/Tags';
 import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
-import type { TagItem } from 'contexts/Tags/types';
 
 export const FilterTagMenu = ({
   onSelect,
 }: {
-  onSelect: (current: string[], tag: TagItem, selected: boolean) => void;
+  onSelect: (current: string[], tagId: string, selected: boolean) => void;
 }) => {
   const { activeTabId } = useTabs();
   const { getAppliedTags } = useChainFilter();
   const { tags, getChainsForTag } = useTags();
 
   const appliedTags = getAppliedTags(activeTabId);
+  const appliedTagIds = appliedTags.map(([id]) => id);
 
   return (
     <Wrapper>
       <h5>Select Tags</h5>
       <ListWrapper>
         {Object.entries(tags).map(([id, tag]) => {
-          const selected = appliedTags.includes(tag.name);
-          const chainCount = getChainsForTag(Number(id))?.length || 0;
+          const selected = !!appliedTags.find(
+            ([, { name }]) => name === tag.name
+          );
+          const chainCount = getChainsForTag(id)?.length || 0;
 
           return (
             <li
-              key={`tag_context_item_${Number(id)}`}
+              key={`tag_context_item_${id}`}
               className={selected ? ` selected` : undefined}
             >
-              <button onClick={() => onSelect(appliedTags, tag, selected)} />
+              <button onClick={() => onSelect(appliedTagIds, id, selected)} />
               <div className="inner">
                 <div>
                   {selected && (

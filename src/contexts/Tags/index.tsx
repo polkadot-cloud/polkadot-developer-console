@@ -22,6 +22,7 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   const tagsConfigRef = useRef(tagsConfig);
 
   // Get the largest tag id existing in `tags`.
+  // TODO: refactor - no longer works.
   const getLargesTagId = () => {
     const largestId =
       [...Object.keys(tags)].sort((a, b) => Number(b) - Number(a))?.[0] || 0;
@@ -32,13 +33,13 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   const getTagsForChain = (chain: string): string[] =>
     Object.entries(tagsConfig)
       .filter(([, chains]) => chains.includes(chain))
-      .map(([tag]) => tags[Number(tag)].name) || [];
+      .map(([tag]) => tag);
 
   // Gets the chains currently applied to a tag.
-  const getChainsForTag = (tag: number): string[] => tagsConfig[tag];
+  const getChainsForTag = (tagId: string): string[] => tagsConfig[tagId];
 
   // Removes a tag by its id, along with configs tied to it.
-  const removeTag = (tagId: number) => {
+  const removeTag = (tagId: string) => {
     const newTags = { ...tags };
     const newTagsConfig = { ...tagsConfig };
 
@@ -52,19 +53,14 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   // Add a chain to a tag config.
   const addChainToTag = (tagId: string, chain: string) => {
     const newTagsConfig = { ...tagsConfigRef.current };
-    newTagsConfig[Number(tagId)] = [
-      ...(newTagsConfig?.[Number(tagId)] || []),
-      chain,
-    ];
+    newTagsConfig[tagId] = [...(newTagsConfig?.[tagId] || []), chain];
     setStateWithRef(newTagsConfig, setTagsConfig, tagsConfigRef);
   };
 
   // Remove a chain from a tab config.
   const removeChainFromTag = (tagId: string, chain: string) => {
     const newTagsConfig = { ...tagsConfigRef.current };
-    newTagsConfig[Number(tagId)] = newTagsConfig[Number(tagId)].filter(
-      (c) => c !== chain
-    );
+    newTagsConfig[tagId] = newTagsConfig[tagId].filter((c) => c !== chain);
     setStateWithRef(newTagsConfig, setTagsConfig, tagsConfigRef);
   };
 
