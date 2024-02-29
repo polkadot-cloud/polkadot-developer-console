@@ -21,12 +21,12 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   const [tagsConfig, setTagsConfig] = useState<TagsConfig>(defaultTagsConfig);
   const tagsConfigRef = useRef(tagsConfig);
 
-  // Get the largest tag id existing in `tags`.
-  // TODO: refactor - no longer works.
-  const getLargesTagId = () => {
-    const largestId =
-      [...Object.keys(tags)].sort((a, b) => Number(b) - Number(a))?.[0] || 0;
-    return Number(largestId);
+  // Get a new largest tag counter existing in `tags`.
+  const getLargestTagCounter = () => {
+    const newLargest =
+      [...Object.values(tags)].sort((a, b) => b.counter - a.counter)?.[0]
+        .counter || 0;
+    return Number(newLargest);
   };
 
   // Gets the tags config of a chain.
@@ -73,7 +73,7 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
         setTagsConfig,
         getTagsForChain,
         getChainsForTag,
-        getLargesTagId,
+        getLargestTagCounter,
         removeTag,
         addChainToTag,
         removeChainFromTag,

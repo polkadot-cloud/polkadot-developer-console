@@ -12,7 +12,7 @@ export const ManageTagForm = ({
   setValue,
   setOpen,
 }: ManageTagFormProps) => {
-  const { tags, setTags, getLargesTagId } = useTags();
+  const { tags, setTags, getLargestTagCounter } = useTags();
 
   const formatValue = (str: string): string => {
     // Remove extra spaces.
@@ -43,12 +43,15 @@ export const ManageTagForm = ({
     }
 
     if (!tagId) {
+      const counter = getLargestTagCounter() + 1;
+
       // Create new tag.
       setTags({
         ...tags,
-        [`tag_${getLargesTagId() + 1}`]: {
+        [`tag_${counter}`]: {
           name: formatValue(value),
           locked: false,
+          counter,
         },
       });
     } else {

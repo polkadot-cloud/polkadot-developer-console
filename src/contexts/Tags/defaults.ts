@@ -5,10 +5,10 @@
 import type { TagsConfig, TagsContextInterface, TagsList } from './types';
 
 export const defaultTags: TagsList = {
-  tag_0: { name: 'Relay Chain', locked: true },
-  tag_1: { name: 'Canary Network', locked: true },
-  tag_2: { name: 'Test Network', locked: true },
-  tag_3: { name: 'Test Tag', locked: false },
+  tag_0: { name: 'Relay Chain', locked: true, counter: 0 },
+  tag_1: { name: 'Canary Network', locked: true, counter: 1 },
+  tag_2: { name: 'Test Network', locked: true, counter: 2 },
+  tag_3: { name: 'Test Tag', locked: false, counter: 3 },
 };
 
 export const defaultTagsConfig: TagsConfig = {
@@ -24,7 +24,7 @@ export const defaultTagsContext: TagsContextInterface = {
   setTagsConfig: (newTagsConfig) => {},
   getTagsForChain: (chain) => [],
   getChainsForTag: (tagId) => [],
-  getLargesTagId: () => 0,
+  getLargestTagCounter: () => 0,
   removeTag: (tagId) => {},
   addChainToTag: (tagId, chain) => {},
   removeChainFromTag: (tagId, chain) => {},

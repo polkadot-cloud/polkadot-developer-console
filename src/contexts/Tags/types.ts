@@ -10,7 +10,7 @@ export interface TagsContextInterface {
   setTagsConfig: Dispatch<SetStateAction<TagsConfig>>;
   getTagsForChain: (chain: string) => string[];
   getChainsForTag: (tagId: string) => string[];
-  getLargesTagId: () => number;
+  getLargestTagCounter: () => number;
   removeTag: (tagId: string) => void;
   addChainToTag: (tagId: string, chain: string) => void;
   removeChainFromTag: (tagId: string, chain: string) => void;
@@ -19,6 +19,7 @@ export interface TagsContextInterface {
 export interface TagItem {
   name: string;
   locked: boolean;
+  counter: number;
 }
 
 export type TagsList = Record<string, TagItem>;
