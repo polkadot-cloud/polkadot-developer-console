@@ -4,8 +4,15 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
 import { defaultTags, defaultTagsConfig, defaultTagsContext } from './defaults';
-import type { TagsConfig, TagsContextInterface, TagsList } from './types';
+import type {
+  CustomTagId,
+  TagId,
+  TagsConfig,
+  TagsContextInterface,
+  TagsList,
+} from './types';
 import { setStateWithRef } from '@w3ux/utils';
+import type { ChainId } from 'config/networks';
 
 export const TagsContext =
   createContext<TagsContextInterface>(defaultTagsContext);
@@ -30,16 +37,16 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Gets the tags config of a chain.
-  const getTagsForChain = (chain: string): string[] =>
+  const getTagsForChain = (chain: ChainId) =>
     Object.entries(tagsConfig)
       .filter(([, chains]) => chains.includes(chain))
       .map(([tag]) => tag);
 
   // Gets the chains currently applied to a tag.
-  const getChainsForTag = (tagId: string): string[] => tagsConfig[tagId];
+  const getChainsForTag = (tagId: TagId) => tagsConfig[tagId];
 
   // Removes a tag by its id, along with configs tied to it.
-  const removeTag = (tagId: string) => {
+  const removeTag = (tagId: CustomTagId) => {
     const newTags = { ...tags };
     const newTagsConfig = { ...tagsConfig };
 
@@ -51,14 +58,14 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Add a chain to a tag config.
-  const addChainToTag = (tagId: string, chain: string) => {
+  const addChainToTag = (tagId: TagId, chain: ChainId) => {
     const newTagsConfig = { ...tagsConfigRef.current };
     newTagsConfig[tagId] = [...(newTagsConfig?.[tagId] || []), chain];
     setStateWithRef(newTagsConfig, setTagsConfig, tagsConfigRef);
   };
 
   // Remove a chain from a tab config.
-  const removeChainFromTag = (tagId: string, chain: string) => {
+  const removeChainFromTag = (tagId: TagId, chain: string) => {
     const newTagsConfig = { ...tagsConfigRef.current };
     newTagsConfig[tagId] = newTagsConfig[tagId].filter((c) => c !== chain);
     setStateWithRef(newTagsConfig, setTagsConfig, tagsConfigRef);

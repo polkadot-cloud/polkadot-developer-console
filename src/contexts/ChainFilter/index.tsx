@@ -10,7 +10,8 @@ import {
   defaultSearchTerms,
 } from './defaults';
 import { useTags } from 'contexts/Tags';
-import type { TagItem } from 'contexts/Tags/types';
+import type { TagId, TagItem } from 'contexts/Tags/types';
+import type { ChainId } from 'config/networks';
 
 export const ChainFilter =
   createContext<ChainFilterInterface>(defaultChainFilter);
@@ -37,18 +38,18 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Gets the applied tags for a given key.
-  const getAppliedTags = (tabId: number): [string, TagItem][] => {
+  const getAppliedTags = (tabId: number): [ChainId, TagItem][] => {
     const tagIds = appliedTags[tabId] || [];
-    return tagIds.map((id) => [id, tags[id]]);
+    return tagIds.map((id: TagId) => [id as ChainId, tags[id]]);
   };
 
   // Sets applied tags for a given key.
-  const applyTags = (tabId: number, tagIds: string[]) => {
+  const applyTags = (tabId: number, tagIds: TagId[]) => {
     setAppliedTags((prev) => ({ ...prev, [tabId]: tagIds }));
   };
 
   // Removes a tag for a given key.
-  const removeAppliedTag = (tabId: number | '*', tagId: string) => {
+  const removeAppliedTag = (tabId: number | '*', tagId: TagId) => {
     // If a tabId is provided as a number, only remove the tag from that tab.
     if (typeof tabId === 'number') {
       setAppliedTags((prev) => ({

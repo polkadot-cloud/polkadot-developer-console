@@ -6,13 +6,15 @@ import { Wrapper } from './Wrapper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useTags } from 'contexts/Tags';
+import type { ChainId } from 'config/networks';
+import type { TagId } from 'contexts/Tags/types';
 
 export const ConfigTagMenu = ({
   onSelect,
   chainId,
 }: {
-  onSelect: (tag: string, selected: boolean) => void;
-  chainId: string;
+  onSelect: (tag: TagId, selected: boolean) => void;
+  chainId: ChainId;
 }) => {
   const { tags, getChainsForTag, getTagsForChain } = useTags();
 

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
-import type { ChainFilterInterface } from './types';
+import type { AppliedTags, ChainFilterInterface } from './types';
 
 export const defaultChainFilter: ChainFilterInterface = {
   searchTerms: {},
@@ -14,7 +14,7 @@ export const defaultChainFilter: ChainFilterInterface = {
   removeAppliedTag: (tabId, tagId) => {},
 };
 
-export const defaultAppliedTags = {
+export const defaultAppliedTags: AppliedTags = {
   1: ['tag_relay_chain', 'tag_canary_network', 'tag_test_network'],
   2: ['tag_canary_network'],
   3: ['tag_test_network'],

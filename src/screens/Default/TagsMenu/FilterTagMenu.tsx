@@ -8,11 +8,12 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useTags } from 'contexts/Tags';
 import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
+import type { TagId } from 'contexts/Tags/types';
 
 export const FilterTagMenu = ({
   onSelect,
 }: {
-  onSelect: (current: string[], tagId: string, selected: boolean) => void;
+  onSelect: (current: string[], tagId: TagId, selected: boolean) => void;
 }) => {
   const { activeTabId } = useTabs();
   const { getAppliedTags } = useChainFilter();

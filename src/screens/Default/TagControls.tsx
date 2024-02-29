@@ -8,6 +8,7 @@ import { useChainFilter } from 'contexts/ChainFilter';
 import { useTabs } from 'contexts/Tabs';
 import { useMenu } from 'contexts/Menu';
 import { FilterTagMenu } from './TagsMenu/FilterTagMenu';
+import type { TagId } from 'contexts/Tags/types';
 
 export const TagControls = () => {
   const { openMenu } = useMenu();
@@ -19,7 +20,7 @@ export const TagControls = () => {
   // Handle tag menu item select. Either add or remove a tag to chain filter based on current state.
   const handleOnSelect = (
     current: string[],
-    tagId: string,
+    tagId: TagId,
     selected: boolean
   ) => {
     if (selected) {

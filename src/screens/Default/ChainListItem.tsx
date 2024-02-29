@@ -9,9 +9,11 @@ import { TagControl } from 'library/TagControl';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { ConfigTagMenu } from './TagsMenu/ConfigTagMenu';
+import type { TagId } from 'contexts/Tags/types';
+import type { ChainId } from 'config/networks';
 
 export interface ChainListItemProps {
-  chain: string;
+  chain: ChainId;
   name: string;
 }
 
@@ -28,7 +30,7 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
   );
 
   // Handle tag menu item select. Either add or remove a tag configs.
-  const handleOnSelect = (tagId: string, selected: boolean) => {
+  const handleOnSelect = (tagId: TagId, selected: boolean) => {
     if (selected) {
       removeChainFromTag(tagId, chain);
     } else {

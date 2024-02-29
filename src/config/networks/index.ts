@@ -4,7 +4,7 @@
 // NOTE: This file is temporary until the @polkadot-cloud/network-directory package is ready to be
 // used.
 
-export type NetworkDirectoryName =
+export type ChainId =
   | 'polkadot-relay-chain'
   | 'kusama-relay-chain'
   | 'westend-relay-chain';
@@ -14,10 +14,7 @@ export interface NetworkDirectoryItem {
   unit: string;
 }
 
-export type NetworkDirectory = Record<
-  NetworkDirectoryName,
-  NetworkDirectoryItem
->;
+export type NetworkDirectory = Record<ChainId, NetworkDirectoryItem>;
 
 // The currently supported networks.
 export const NetworkDirectory: NetworkDirectory = {
