@@ -19,6 +19,7 @@ export const useChainFilter = () => useContext(ChainFilter);
 
 export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
   const { tags } = useTags();
+
   // The current search terms.
   const [searchTerms, setSearchTerms] =
     useState<SearchTerms>(defaultSearchTerms);
@@ -47,11 +48,23 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Removes a tag for a given key.
-  const removeTag = (tabId: number, tagId: string) => {
-    setAppliedTags((prev) => ({
-      ...prev,
-      [tabId]: prev[tabId].filter((item) => item !== tagId),
-    }));
+  const removeAppliedTag = (tabId: number | '*', tagId: string) => {
+    // If a tabId is provided as a number, only remove the tag from that tab.
+    if (typeof tabId === 'number') {
+      setAppliedTags((prev) => ({
+        ...prev,
+        [tabId]: prev[tabId].filter((item) => item !== tagId),
+      }));
+    } else {
+      // If a wildcard tabId is provided, remove the tag from all tabs.
+      setAppliedTags((prev) => {
+        const updated: AppliedTags = {};
+        for (const key in prev) {
+          updated[key] = prev[key].filter((item) => item !== tagId);
+        }
+        return updated;
+      });
+    }
   };
 
   return (
@@ -63,7 +76,7 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
         getAppliedTags,
         appliedTags,
         applyTags,
-        removeTag,
+        removeAppliedTag,
       }}
     >
       {children}

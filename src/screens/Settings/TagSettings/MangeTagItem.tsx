@@ -10,11 +10,13 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 import type { ManageTagItemProps } from './types';
 import { useState } from 'react';
 import { ManageTagForm } from './ManageTagForm';
+import { useChainFilter } from 'contexts/ChainFilter';
 
 export const MangeTagItem = ({
   id,
   tag: { name, locked },
 }: ManageTagItemProps) => {
+  const { removeAppliedTag } = useChainFilter();
   const { getChainsForTag, removeTag } = useTags();
   const chainCount = getChainsForTag(id)?.length || 0;
 
@@ -27,6 +29,9 @@ export const MangeTagItem = ({
   // Handle tag removal. Prompt confirmation before state change.
   const handleRemoveTag = () => {
     if (window.confirm('Are you sure you want to delete this tag?')) {
+      // Remove the tag from all chain filters.
+      removeAppliedTag('*', id);
+      // Remove tag from the global tags list.
       removeTag(id);
     }
   };

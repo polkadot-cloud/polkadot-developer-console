@@ -15,8 +15,8 @@ export const Providers = () => {
   const providers: Provider<any>[] = [
     TabsProvider,
     TagsProvider,
-    MenuProvider,
     ChainFilterProvider,
+    MenuProvider,
   ];
 
   return withProviders(providers, App);

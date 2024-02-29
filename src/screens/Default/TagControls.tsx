@@ -12,7 +12,7 @@ import { FilterTagMenu } from './TagsMenu/FilterTagMenu';
 export const TagControls = () => {
   const { openMenu } = useMenu();
   const { activeTabId } = useTabs();
-  const { getAppliedTags, applyTags, removeTag } = useChainFilter();
+  const { getAppliedTags, applyTags, removeAppliedTag } = useChainFilter();
 
   const appliedTags = getAppliedTags(activeTabId);
 
@@ -23,7 +23,7 @@ export const TagControls = () => {
     selected: boolean
   ) => {
     if (selected) {
-      removeTag(activeTabId, tagId);
+      removeAppliedTag(activeTabId, tagId);
     } else {
       applyTags(activeTabId, [...current, tagId]);
     }
@@ -50,9 +50,7 @@ export const TagControls = () => {
               name={name}
               icon={faClose}
               large
-              onClick={() => {
-                removeTag(activeTabId, tagId);
-              }}
+              onClick={() => removeAppliedTag(activeTabId, tagId)}
             />
           ))}
         </div>
