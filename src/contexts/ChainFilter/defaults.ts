@@ -15,9 +15,9 @@ export const defaultChainFilter: ChainFilterInterface = {
 };
 
 export const defaultAppliedTags = {
-  1: ['tag_0', 'tag_1', 'tag_2'],
-  2: ['tag_1'],
-  3: ['tag_2'],
+  1: ['tag_relay_chain', 'tag_canary_network', 'tag_test_network'],
+  2: ['tag_canary_network'],
+  3: ['tag_test_network'],
 };
 
 export const defaultSearchTerms = {

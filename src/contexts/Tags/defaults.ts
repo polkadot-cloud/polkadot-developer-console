@@ -5,16 +5,20 @@
 import type { TagsConfig, TagsContextInterface, TagsList } from './types';
 
 export const defaultTags: TagsList = {
-  tag_0: { name: 'Relay Chain', locked: true, counter: 0 },
-  tag_1: { name: 'Canary Network', locked: true, counter: 1 },
-  tag_2: { name: 'Test Network', locked: true, counter: 2 },
+  tag_relay_chain: { name: 'Relay Chain', locked: true, counter: 0 },
+  tag_canary_network: { name: 'Canary Network', locked: true, counter: 1 },
+  tag_test_network: { name: 'Test Network', locked: true, counter: 2 },
   tag_3: { name: 'Test Tag', locked: false, counter: 3 },
 };
 
 export const defaultTagsConfig: TagsConfig = {
-  tag_0: ['polkadot-relay-chain', 'kusama-relay-chain', 'westend-relay-chain'],
-  tag_1: ['kusama-relay-chain'],
-  tag_2: ['westend-relay-chain'],
+  tag_relay_chain: [
+    'polkadot-relay-chain',
+    'kusama-relay-chain',
+    'westend-relay-chain',
+  ],
+  tag_canary_network: ['kusama-relay-chain'],
+  tag_test_network: ['westend-relay-chain'],
 };
 
 export const defaultTagsContext: TagsContextInterface = {
