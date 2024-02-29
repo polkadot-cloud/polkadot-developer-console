@@ -12,6 +12,7 @@ import {
 import { useTags } from 'contexts/Tags';
 import type { TagId, TagItem } from 'contexts/Tags/types';
 import type { ChainId } from 'config/networks';
+import * as local from './Local';
 
 export const ChainFilter =
   createContext<ChainFilterInterface>(defaultChainFilter);
@@ -22,19 +23,33 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
   const { tags } = useTags();
 
   // The current search terms.
-  const [searchTerms, setSearchTerms] =
-    useState<SearchTerms>(defaultSearchTerms);
+  const [searchTerms, setSearchTermsState] = useState<SearchTerms>(
+    local.getSearchTerms() || defaultSearchTerms
+  );
 
   // The current applied tags to a given key.
-  const [appliedTags, setAppliedTags] =
-    useState<AppliedTags>(defaultAppliedTags);
+  const [appliedTags, setAppliedTagsState] = useState<AppliedTags>(
+    local.getAppliedTags() || defaultAppliedTags
+  );
+
+  // Sets search terms state, and updates local storage.
+  const setSearchTerms = (value: SearchTerms) => {
+    local.setSearchTerms(value);
+    setSearchTermsState(value);
+  };
+
+  // Sets applied tags state, and updates local storage.
+  const setAppliedTags = (value: AppliedTags) => {
+    local.setAppliedTags(value);
+    setAppliedTagsState(value);
+  };
 
   // Gets a search term for a given key.
   const getSearchTerm = (tabId: number) => searchTerms[tabId] || '';
 
   // Sets a search term for a given key.
   const setSearchTerm = (tabId: number, value: string) => {
-    setSearchTerms((prev) => ({ ...prev, [tabId]: value }));
+    setSearchTerms({ ...searchTerms, [tabId]: value });
   };
 
   // Gets the applied tags for a given key.
@@ -45,26 +60,24 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
 
   // Sets applied tags for a given key.
   const applyTags = (tabId: number, tagIds: TagId[]) => {
-    setAppliedTags((prev) => ({ ...prev, [tabId]: tagIds }));
+    setAppliedTags({ ...appliedTags, [tabId]: tagIds });
   };
 
   // Removes a tag for a given key.
   const removeAppliedTag = (tabId: number | '*', tagId: TagId) => {
     // If a tabId is provided as a number, only remove the tag from that tab.
     if (typeof tabId === 'number') {
-      setAppliedTags((prev) => ({
-        ...prev,
-        [tabId]: prev[tabId].filter((item) => item !== tagId),
-      }));
+      setAppliedTags({
+        ...appliedTags,
+        [tabId]: appliedTags[tabId].filter((item) => item !== tagId),
+      });
     } else {
       // If a wildcard tabId is provided, remove the tag from all tabs.
-      setAppliedTags((prev) => {
-        const updated: AppliedTags = {};
-        for (const key in prev) {
-          updated[key] = prev[key].filter((item) => item !== tagId);
-        }
-        return updated;
-      });
+      const newAppliedTags: AppliedTags = {};
+      for (const key in appliedTags) {
+        newAppliedTags[key] = appliedTags[key].filter((item) => item !== tagId);
+      }
+      setAppliedTags(newAppliedTags);
     }
   };
 
