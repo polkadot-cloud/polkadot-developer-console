@@ -24,6 +24,13 @@ export const MangeTagItem = ({
   // Whether the edit tag form is open.
   const [editTagOpen, setEditTagOpen] = useState<boolean>(false);
 
+  // Handle tag removal. Prompt confirmation before state change.
+  const handleRemoveTag = () => {
+    if (window.confirm('Are you sure you want to delete this tag?')) {
+      removeTag(id);
+    }
+  };
+
   return (
     <TagItemWrapper key={`tag_${id}`}>
       <div className="inner">
@@ -48,7 +55,7 @@ export const MangeTagItem = ({
               <HeaderButtonWrapper onClick={() => setEditTagOpen(!editTagOpen)}>
                 Edit
               </HeaderButtonWrapper>
-              <HeaderButtonWrapper onClick={() => removeTag(id)}>
+              <HeaderButtonWrapper onClick={() => handleRemoveTag()}>
                 Delete
               </HeaderButtonWrapper>
             </>
