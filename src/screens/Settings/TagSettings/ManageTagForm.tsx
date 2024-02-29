@@ -54,6 +54,7 @@ export const ManageTagForm = ({
           counter,
         },
       });
+      setValue('');
     } else {
       // Edit existing tag.
       setTags({
