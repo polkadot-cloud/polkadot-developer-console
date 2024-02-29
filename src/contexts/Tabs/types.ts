@@ -14,16 +14,16 @@ export interface Tab {
 
 export interface TabsContextInterface {
   tabs: Tabs;
-  setTabs: Dispatch<SetStateAction<Tabs>>;
+  setTabs: (tabs: Tabs) => void;
   createTab: () => void;
   activeTabId: number;
   getActiveTab: () => Tab | undefined;
   destroyTab: (index: number, id: number) => void;
-  setActiveTabId: Dispatch<SetStateAction<number>>;
+  setActiveTabId: (index: number) => void;
   tabHoverIndex: number;
   setTabHoverIndex: Dispatch<SetStateAction<number>>;
   activeTabIndex: number;
-  setActiveTabIndex: Dispatch<SetStateAction<number>>;
+  setActiveTabIndex: (index: number) => void;
   addInstantiatedId: (id: number) => void;
   setDragId: Dispatch<SetStateAction<number | null>>;
   dragId: number | null;

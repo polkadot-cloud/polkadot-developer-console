@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
 import type { Tabs, TabsContextInterface } from './types';
 import { defaultTabs, defaultTabsContext } from './defaults';
+import * as local from './Local';
 
 export const TabsContext =
   createContext<TabsContextInterface>(defaultTabsContext);
@@ -15,13 +16,17 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // TODO: Connect to the Polkadot Relay chain (first tab).
 
   // Created tabs.
-  const [tabs, setTabs] = useState<Tabs>(defaultTabs);
+  const [tabs, setTabsState] = useState<Tabs>(local.getTabs() || defaultTabs);
 
   // Current active tab id.
-  const [activeTabId, setActiveTabId] = useState<number>(1);
+  const [activeTabId, setActiveTabIdState] = useState<number>(
+    local.getActiveTabId() || 1
+  );
 
   // Current active tab index.
-  const [activeTabIndex, setActiveTabIndex] = useState<number>(1);
+  const [activeTabIndex, setActiveTabIndexState] = useState<number>(
+    local.getActiveTabIndex() || 1
+  );
 
   // Current hovered tab index.
   const [tabHoverIndex, setTabHoverIndex] = useState<number>(-1);
@@ -40,6 +45,24 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     instantiatedIds.current = [
       ...new Set(instantiatedIds.current.concat(index)),
     ];
+  };
+
+  // Sets tabs state, and updates local storage.
+  const setTabs = (newTabs: Tabs) => {
+    local.setTabs(newTabs);
+    setTabsState(newTabs);
+  };
+
+  // Sets active tab id, and updates local storage.
+  const setActiveTabId = (id: number) => {
+    local.setActiveTabId(id);
+    setActiveTabIdState(id);
+  };
+
+  // Sets active tab index, and updates local storage.
+  const setActiveTabIndex = (index: number) => {
+    local.setActiveTabIndex(index);
+    setActiveTabIndexState(index);
   };
 
   // Remove an id from destroying tabs.
