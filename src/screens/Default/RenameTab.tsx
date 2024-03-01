@@ -16,7 +16,7 @@ export const RenameTab = () => {
   const [editableValue, setEditableValue] = useState<string>(initialValue);
 
   // Whether auto connect is turned on.
-  const [autoConnect, setAutoConnect] = useState<boolean>(false);
+  const [autoConnect, setAutoConnect] = useState<boolean>(true);
 
   // Handle tab name form submission.
   const onSubmit = (value: string) => {
@@ -55,7 +55,13 @@ export const RenameTab = () => {
         onSubmit={onSubmit}
       />
       <div className="controls">
-        <h4>Auto Connect</h4>
+        <h4
+          style={{
+            color: autoConnect ? 'var(--accent-color-secondary)' : undefined,
+          }}
+        >
+          Auto Connect
+        </h4>
         <Switch
           scale={0.85}
           active={autoConnect}
