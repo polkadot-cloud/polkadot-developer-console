@@ -29,13 +29,25 @@ export const Switch = ({
   // used.
   const borderColor = 'transparent';
 
+  // Determine the switch width and height based on scale.
+  const baseWidth = '3rem';
+  const baseHeight = '1.5rem';
+
+  const width = scale ? `calc(${scale} * ${baseWidth})` : baseWidth;
+  const height = scale ? `calc(${scale} * ${baseHeight})` : baseHeight;
+
   return (
-    <Wrapper>
+    <Wrapper
+      style={{
+        width,
+        height,
+      }}
+    >
       <label
         style={{
           background: bgColor,
           border: `1px solid ${borderColor}`,
-          transform: scale ? `scale(${scale})` : undefined,
+          // transform: scale ? `scale(${scale})` : undefined,
         }}
         className={`${className || ''}${disabled ? `is-disabled` : `is-enabled`}`}
       >
@@ -52,7 +64,16 @@ export const Switch = ({
           type="checkbox"
         />
         <span
-          style={{ backgroundColor: buttonColor }}
+          style={{
+            backgroundColor: buttonColor,
+            width: `calc(${scale} * 1.1rem)`,
+            height: `calc(${scale} * 1.1rem)`,
+            top: `calc(${scale} * 0.13rem)`,
+            left: active
+              ? `calc(100% - calc(${scale} * 0.2rem))`
+              : `calc(${scale} * 0.23rem)`,
+            transform: active ? `translateX(-100%)` : undefined,
+          }}
           className={`btn ${
             disabled ? `is-disabled` : ``
           } is-clicked${active ? `` : `-not`}`}

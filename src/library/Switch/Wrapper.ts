@@ -3,16 +3,16 @@
 
 import styled from 'styled-components';
 
-export const Wrapper = styled.span`
+export const Wrapper = styled.div`
   > label {
+    border-radius: 100rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 100rem;
     position: relative;
     transition: background-color 0.2s;
-    width: 3rem;
-    height: 1.5rem;
+    width: inherit;
+    height: inherit;
 
     &.is-disabled {
       transition:
@@ -57,11 +57,6 @@ export const Wrapper = styled.span`
         cursor: default;
       }
     }
-  }
-
-  > label > input:checked + .btn {
-    left: calc(100% - 0.2rem);
-    transform: translateX(-100%);
   }
 
   > label:active > .btn {
