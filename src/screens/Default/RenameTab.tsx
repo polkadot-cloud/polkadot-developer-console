@@ -54,12 +54,15 @@ export const RenameTab = () => {
         onChange={onChange}
         onSubmit={onSubmit}
       />
-      <Switch
-        scale={0.75}
-        active={autoConnect}
-        disabled={false}
-        onSwitch={handleOnSwitch}
-      />
+      <div className="controls">
+        <h4>Auto Connect</h4>
+        <Switch
+          scale={0.85}
+          active={autoConnect}
+          disabled={false}
+          onSwitch={handleOnSwitch}
+        />
+      </div>
     </RenameTabWrapper>
   );
 };
