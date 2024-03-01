@@ -4,3 +4,7 @@ export interface ComponentBase {
   children?: ReactNode;
   style?: CSSProperties;
 }
+
+export type ComponentBaseWithClassName = ComponentBase & {
+  className?: string;
+};
