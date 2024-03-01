@@ -4,7 +4,7 @@
 import type { ComponentBaseWithClassName } from 'types';
 
 export type SwitchProps = ComponentBaseWithClassName & {
-  size?: 'sm' | 'lg';
+  scale?: number;
   active: boolean;
   disabled?: boolean;
   onSwitch?: (val: boolean) => void;

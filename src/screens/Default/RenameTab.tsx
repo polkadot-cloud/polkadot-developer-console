@@ -6,6 +6,7 @@ import { useTabs } from 'contexts/Tabs';
 import { TextInput } from 'library/TextInput';
 import { useState } from 'react';
 import { RenameTabWrapper } from './Wrappers';
+import { Switch } from 'library/Switch';
 
 export const RenameTab = () => {
   const { activeTabId, getActiveTab, renameTab } = useTabs();
@@ -13,6 +14,9 @@ export const RenameTab = () => {
   // The editable value of the input.
   const initialValue = getActiveTab()?.name || '';
   const [editableValue, setEditableValue] = useState<string>(initialValue);
+
+  // Whether auto connect is turned on.
+  const [autoConnect, setAutoConnect] = useState<boolean>(false);
 
   // Handle tab name form submission.
   const onSubmit = (value: string) => {
@@ -30,6 +34,11 @@ export const RenameTab = () => {
     }
   };
 
+  // Handle auto connect toggle.
+  const handleOnSwitch = (val: boolean) => {
+    setAutoConnect(val);
+  };
+
   // Update tab value when active tab changes.
   useEffectIgnoreInitial(() => {
     setEditableValue(initialValue);
@@ -44,6 +53,12 @@ export const RenameTab = () => {
         label="Tab Name"
         onChange={onChange}
         onSubmit={onSubmit}
+      />
+      <Switch
+        scale={0.75}
+        active={autoConnect}
+        disabled={false}
+        onSwitch={handleOnSwitch}
       />
     </RenameTabWrapper>
   );

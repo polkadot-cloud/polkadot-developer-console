@@ -11,6 +11,8 @@ export const Wrapper = styled.span`
     border-radius: 100rem;
     position: relative;
     transition: background-color 0.2s;
+    width: 3rem;
+    height: 1.5rem;
 
     &.is-disabled {
       transition:
@@ -26,16 +28,6 @@ export const Wrapper = styled.span`
     &.is-enabled {
       cursor: pointer;
     }
-
-    &.sm {
-      width: 3rem;
-      height: 1.5rem;
-    }
-
-    &.lg {
-      width: 4.5rem;
-      height: 2.25rem;
-    }
   }
 
   > label > input {
@@ -50,10 +42,10 @@ export const Wrapper = styled.span`
     border-radius: 100rem;
     transition: 0.3s;
     box-shadow: 0 0 0.1rem 0 rgb(10 10 10 / 10%);
-    top: 0.15rem;
-    left: 0.2rem;
-    width: 1.6rem;
-    height: 1.6rem;
+    top: 0.13rem;
+    left: 0.23rem;
+    width: 1.1rem;
+    height: 1.1rem;
 
     &.is-disabled {
       transition:
@@ -64,20 +56,6 @@ export const Wrapper = styled.span`
         opacity: 0.3;
         cursor: default;
       }
-    }
-
-    &.sm {
-      top: 0.13rem;
-      left: 0.23rem;
-      width: 1.1rem;
-      height: 1.1rem;
-    }
-
-    &.lg {
-      top: 0.16rem;
-      left: 0.25rem;
-      width: 1.8rem;
-      height: 1.8rem;
     }
   }
 

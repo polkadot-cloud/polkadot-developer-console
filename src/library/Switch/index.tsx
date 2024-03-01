@@ -5,7 +5,7 @@ import { Wrapper } from './Wrapper';
 import type { SwitchProps } from './types';
 
 export const Switch = ({
-  size = 'sm',
+  scale,
   active,
   disabled,
   onSwitch,
@@ -32,8 +32,12 @@ export const Switch = ({
   return (
     <Wrapper>
       <label
-        style={{ background: bgColor, border: `1px solid ${borderColor}` }}
-        className={`${size} ${className || ''}${disabled ? `is-disabled` : `is-enabled`}`}
+        style={{
+          background: bgColor,
+          border: `1px solid ${borderColor}`,
+          transform: scale ? `scale(${scale})` : undefined,
+        }}
+        className={`${className || ''}${disabled ? `is-disabled` : `is-enabled`}`}
       >
         <input
           disabled={disabled}
@@ -49,7 +53,7 @@ export const Switch = ({
         />
         <span
           style={{ backgroundColor: buttonColor }}
-          className={`btn ${size || ''} ${
+          className={`btn ${
             disabled ? `is-disabled` : ``
           } is-clicked${active ? `` : `-not`}`}
         />
