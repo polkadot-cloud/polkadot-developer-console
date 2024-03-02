@@ -11,6 +11,7 @@ export const Wrapper = styled.div`
     justify-content: space-between;
     position: relative;
     transition: background-color 0.2s;
+    cursor: pointer;
     width: inherit;
     height: inherit;
 

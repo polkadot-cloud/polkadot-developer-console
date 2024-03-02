@@ -20,6 +20,12 @@ export const SettingsMenu = () => {
             className={activeSection === 0 ? 'active' : undefined}
             onClick={() => setActiveSection(0)}
           >
+            Tabs
+          </button>
+          <button
+            className={activeSection === 1 ? 'active' : undefined}
+            onClick={() => setActiveSection(1)}
+          >
             Tags
           </button>
         </section>

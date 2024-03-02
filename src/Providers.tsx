@@ -8,11 +8,13 @@ import { withProviders } from 'hooks/withProviders';
 import { MenuProvider } from 'contexts/Menu';
 import { TagsProvider } from 'contexts/Tags';
 import { ChainFilterProvider } from 'contexts/ChainFilter';
+import { SettingsProvider } from 'contexts/Settings';
 
 export const Providers = () => {
   // !! Provider order matters.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const providers: Provider<any>[] = [
+    SettingsProvider,
     TabsProvider,
     TagsProvider,
     ChainFilterProvider,

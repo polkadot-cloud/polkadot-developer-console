@@ -4,11 +4,15 @@
 import { SettingsWrapper } from 'library/Settings/Wrappers';
 import { TagSettings } from './TagSettings';
 import { useSection } from 'library/Page/provider';
+import { TabSettings } from './TabSettings';
 
 export const Settings = () => {
   const { activeSection } = useSection();
 
   return (
-    <SettingsWrapper>{activeSection === 0 && <TagSettings />}</SettingsWrapper>
+    <SettingsWrapper>
+      {activeSection === 0 && <TabSettings />}
+      {activeSection === 1 && <TagSettings />}
+    </SettingsWrapper>
   );
 };

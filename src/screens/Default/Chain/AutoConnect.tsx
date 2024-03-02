@@ -7,25 +7,29 @@ import { Switch } from 'library/Switch';
 
 export const AutoConnect = () => {
   // Whether auto connect is turned on.
-  const [autoConnect, setAutoConnect] = useState<boolean>(true);
+
+  // TODO: make settings:autoConnect as default value, or use last local saved value.
+  const [autoConnectEnabled, setAutoConnectEnabled] = useState<boolean>(true);
 
   // Handle auto connect toggle.
   const handleOnSwitch = (val: boolean) => {
-    setAutoConnect(val);
+    setAutoConnectEnabled(val);
   };
 
   return (
     <AutoConnectWrapper>
       <h4
         style={{
-          color: autoConnect ? 'var(--accent-color-secondary)' : undefined,
+          color: autoConnectEnabled
+            ? 'var(--accent-color-secondary)'
+            : undefined,
         }}
       >
         Auto Connect
       </h4>
       <Switch
         scale={0.85}
-        active={autoConnect}
+        active={autoConnectEnabled}
         disabled={false}
         onSwitch={handleOnSwitch}
       />
