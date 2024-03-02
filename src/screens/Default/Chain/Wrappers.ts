@@ -3,30 +3,23 @@
 
 import styled from 'styled-components';
 
-export const RenameTabWrapper = styled.div`
+export const AutoConnectWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  max-width: 400px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 0.45rem;
+  padding: 0 0.2rem;
+  max-width: 750px;
   width: 100%;
 
-  > .controls {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 0.45rem;
-    padding: 0 0.2rem;
-    width: 100%;
-
-    > h4 {
-      color: var(--text-color-tertiary);
-      margin-right: 0.5rem;
-      transition: color 0.25s;
-    }
+  > h4 {
+    color: var(--text-color-tertiary);
+    margin-right: 0.5rem;
+    transition: color 0.25s;
   }
 `;
 
 export const SearchChainWrapper = styled.div`
-  margin-top: 1.25rem;
   max-width: 750px;
   width: 100%;
 `;

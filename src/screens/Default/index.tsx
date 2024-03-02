@@ -3,10 +3,11 @@
 
 import type { PageProps } from 'screens/Utils';
 import { Chain } from './Chain';
+import { ManageTab } from './ManageTab';
 
 export const Default = ({ section }: PageProps) => (
   <>
     {section === 0 && <Chain />}
-    {section === 1 && <>Section 1</>}
+    {section === 1 && <ManageTab />}
   </>
 );
