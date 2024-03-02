@@ -10,6 +10,7 @@ export interface Tab {
   id: number;
   chain: ChainId | undefined;
   name: string;
+  autoConnect: boolean;
 }
 
 export interface TabsContextInterface {

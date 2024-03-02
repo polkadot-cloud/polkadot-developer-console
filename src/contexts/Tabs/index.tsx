@@ -6,6 +6,7 @@ import { createContext, useContext, useRef, useState } from 'react';
 import type { Tabs, TabsContextInterface } from './types';
 import { defaultTabs, defaultTabsContext } from './defaults';
 import * as local from './Local';
+import { useSettings } from 'contexts/Settings';
 
 export const TabsContext =
   createContext<TabsContextInterface>(defaultTabsContext);
@@ -13,6 +14,8 @@ export const TabsContext =
 export const useTabs = () => useContext(TabsContext);
 
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
+  const { autoConnect } = useSettings();
+
   // TODO: Connect to the Polkadot Relay chain (first tab).
 
   // Created tabs.
@@ -90,6 +93,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         id: newTabId,
         chain: undefined,
         name: 'New Tab',
+        autoConnect,
       },
     ];
 

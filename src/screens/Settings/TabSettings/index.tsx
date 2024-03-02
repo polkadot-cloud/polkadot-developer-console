@@ -25,7 +25,7 @@ export const TabSettings = () => {
 
       <SettingsToggleWrapper>
         <div className="text">
-          <h4>Default Auto Connect Setting</h4>
+          <h4>Default Auto Connect</h4>
           <h3>Turn on auto connect by default when opening new tabs.</h3>
         </div>
 

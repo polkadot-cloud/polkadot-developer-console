@@ -35,16 +35,19 @@ export const defaultTabs: Tabs = [
     id: 1,
     chain: 'polkadot-relay-chain',
     name: 'Polkadot Relay',
+    autoConnect: true,
   },
   {
     id: 2,
     chain: 'kusama-relay-chain',
     name: 'Kusama Relay',
+    autoConnect: true,
   },
   {
     id: 3,
     chain: 'westend-relay-chain',
     name: 'Westend Relay Long Name',
+    autoConnect: true,
   },
 ];
 
@@ -52,4 +55,5 @@ export const defaultEemptyTab: Tab = {
   id: -1,
   chain: undefined,
   name: '',
+  autoConnect: true,
 };

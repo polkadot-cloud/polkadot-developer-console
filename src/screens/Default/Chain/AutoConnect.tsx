@@ -1,19 +1,32 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useState } from 'react';
 import { AutoConnectWrapper } from './Wrappers';
 import { Switch } from 'library/Switch';
+import { useTabs } from 'contexts/Tabs';
 
 export const AutoConnect = () => {
-  // Whether auto connect is turned on.
+  const { getActiveTab, tabs, setTabs } = useTabs();
 
-  // TODO: make settings:autoConnect as default value, or use last local saved value.
-  const [autoConnectEnabled, setAutoConnectEnabled] = useState<boolean>(true);
+  let autoConnectEnabled = getActiveTab()?.autoConnect;
+  if (autoConnectEnabled == undefined) {
+    autoConnectEnabled = true;
+  }
 
-  // Handle auto connect toggle.
-  const handleOnSwitch = (val: boolean) => {
-    setAutoConnectEnabled(val);
+  // Handle auto connect toggle. Updates tab settings.
+  const handleOnSwitch = (checked: boolean) => {
+    console.log('checked: ', checked);
+    setTabs(
+      tabs.map((tab) => {
+        if (tab.id === getActiveTab()?.id) {
+          return {
+            ...tab,
+            autoConnect: checked,
+          };
+        }
+        return tab;
+      })
+    );
   };
 
   return (
