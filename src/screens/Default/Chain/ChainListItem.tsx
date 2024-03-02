@@ -25,7 +25,8 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
 
   // Lazily load the icon for the chain.
   const Icon = useMemo(
-    () => lazy(() => import(`../../config/networks/icons/${chain}/Inline.tsx`)),
+    () =>
+      lazy(() => import(`../../../config/networks/icons/${chain}/Inline.tsx`)),
     []
   );
 

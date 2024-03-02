@@ -1,14 +1,12 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { ChainList } from './ChainList';
-import { RenameTab } from './RenameTab';
-import { SearchChain } from './SearchChain';
+import type { PageProps } from 'screens/Utils';
+import { Chain } from './Chain';
 
-export const Default = () => (
+export const Default = ({ section }: PageProps) => (
   <>
-    <RenameTab />
-    <SearchChain />
-    <ChainList />
+    {section === 0 && <Chain />}
+    {section === 1 && <>Section 1</>}
   </>
 );

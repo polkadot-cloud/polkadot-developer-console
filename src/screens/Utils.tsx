@@ -7,8 +7,8 @@ import type { FC } from 'react';
 import { useState } from 'react';
 
 export interface PageProps {
-  active: number;
-  setActive: (active: number) => void;
+  section: number;
+  setSection: (section: number) => void;
 }
 export interface PageWithMenuProps {
   Page: FC<PageProps>;
@@ -17,15 +17,15 @@ export interface PageWithMenuProps {
 
 // Renders a page and menu, with state controlling the active section of the page.
 export const PageWithMenu = ({ Page, Menu }: PageWithMenuProps) => {
-  // The active section of the page.
-  const [active, setActive] = useState<number>(0);
+  // The section section of the page.
+  const [section, setSection] = useState<number>(0);
 
   return (
     <>
-      <Menu active={active} setActive={setActive} />
+      <Menu section={section} setSection={setSection} />
       <Body>
         <Wrapper>
-          <Page active={active} setActive={setActive} />
+          <Page section={section} setSection={setSection} />
         </Wrapper>
       </Body>
     </>

@@ -6,8 +6,9 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
 import { useLocation } from 'react-router-dom';
 import { HeaderMenuWrapper, ButtonWrapper } from 'library/HeaderMenu/Wrappers';
+import type { PageProps } from 'screens/Utils';
 
-export const ChainMenu = () => {
+export const ChainMenu = ({ setSection }: PageProps) => {
   const { pathname } = useLocation();
   const { tabsHidden, setTabsHidden } = useTabs();
 
@@ -16,22 +17,10 @@ export const ChainMenu = () => {
       <div className="menu">
         <section className="main">
           <div className="label">Not Connected</div>
-
-          <button
-            onClick={() => {
-              /* Do nothing */
-            }}
-          >
-            Chain
-          </button>
+          <button onClick={() => setSection(0)}>Chain</button>
         </section>
         <section className="other">
-          <button
-            className="label"
-            onClick={() => {
-              /* Do nothing */
-            }}
-          >
+          <button className="label" onClick={() => setSection(1)}>
             Manage Tab
           </button>
         </section>
