@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Body } from 'library/Body';
-import { Wrapper } from './Wrappers';
+import { Page as PageWrapper } from 'library/Page';
 import type { FC } from 'react';
 import { useState } from 'react';
 
@@ -24,9 +24,9 @@ export const PageWithMenu = ({ Page, Menu }: PageWithMenuProps) => {
     <>
       <Menu section={section} setSection={setSection} />
       <Body>
-        <Wrapper>
+        <PageWrapper>
           <Page section={section} setSection={setSection} />
-        </Wrapper>
+        </PageWrapper>
       </Body>
     </>
   );

@@ -34,6 +34,7 @@ export const SettingsSubheadingWrapper = styled.h4`
   padding-bottom: 0.5rem;
 `;
 
+/* TODO: abstract into general settings page wrapper. */
 export const SettingsHeaderButton = styled.button`
   color: var(--text-color-primary);
   border: 1px solid var(--border-secondary-color);
