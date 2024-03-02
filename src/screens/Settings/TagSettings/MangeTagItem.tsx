@@ -5,12 +5,12 @@ import { TagItemWrapper } from './Wrappers';
 import { Tag } from 'library/Tag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTags } from 'contexts/Tags';
-import { SettingsHeaderButton } from '../Wrappers';
 import { faLock, faMinus } from '@fortawesome/free-solid-svg-icons';
 import type { ManageTagItemProps } from './types';
 import { useState } from 'react';
 import { ManageTagForm } from './ManageTagForm';
 import { useChainFilter } from 'contexts/ChainFilter';
+import { SettingsHeaderButton } from 'library/Settings/Wrappers';
 
 export const MangeTagItem = ({
   id,

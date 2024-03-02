@@ -6,7 +6,7 @@ import {
   SettingsHeaderButton,
   SettingsHeaderWrapper,
   SettingsSubheadingWrapper,
-} from '../Wrappers';
+} from 'library/Settings/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';

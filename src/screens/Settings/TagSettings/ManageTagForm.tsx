@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { ManageTagWrapper } from './Wrappers';
-import { SettingsHeaderButton } from '../Wrappers';
 import { useTags } from 'contexts/Tags';
 import type { ManageTagFormProps } from './types';
+import { SettingsHeaderButton } from 'library/Settings/Wrappers';
 
 export const ManageTagForm = ({
   tagId,
