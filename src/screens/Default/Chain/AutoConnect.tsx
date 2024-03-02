@@ -15,7 +15,6 @@ export const AutoConnect = () => {
 
   // Handle auto connect toggle. Updates tab settings.
   const handleOnSwitch = (checked: boolean) => {
-    console.log('checked: ', checked);
     setTabs(
       tabs.map((tab) => {
         if (tab.id === getActiveTab()?.id) {
