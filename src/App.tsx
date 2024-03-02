@@ -24,11 +24,7 @@ const AppInner = () => (
         element={<SettingsRoute />}
       />
       {/* Fallback route to chain */}
-      <Route
-        key="route_default"
-        path="*"
-        element={<Navigate to="/overview" />}
-      />
+      <Route key="route_default" path="*" element={<Navigate to="/" />} />
     </Routes>
   </Entry>
 );

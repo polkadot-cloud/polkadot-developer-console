@@ -14,27 +14,42 @@ export const HeaderMenuWrapper = styled.div`
 
   > .menu {
     display: flex;
-    align-items: center;
+    flex-grow: 1;
 
-    > div {
+    > section {
       color: var(--text-color-tertiary);
+      display: flex;
+      align-items: center;
 
-      &.label {
+      &.main {
+        flex-grow: 1;
+      }
+
+      &.other {
+        border-left: 1px solid var(--border-primary-color);
+        padding-right: 0.25rem;
+        justify-content: flex-end;
+      }
+
+      > .label {
         border-right: 1px solid var(--border-primary-color);
         padding-right: 1rem;
       }
-    }
 
-    > div,
-    button {
-      padding: 0.7rem 0.5rem 0.7rem 1.1rem;
-      font-size: 0.8rem;
-    }
+      > div,
+      button {
+        padding: 0.7rem 0.5rem 0.7rem 1.1rem;
+        font-size: 0.8rem;
+      }
 
-    > button {
-      color: var(--text-color-secondary);
-      &.active {
-        color: var(--accent-color-secondary);
+      > button {
+        color: var(--text-color-secondary);
+        &:hover {
+          color: var(--accent-color-secondary);
+        }
+        &.active {
+          color: var(--accent-color-secondary);
+        }
       }
     }
   }
@@ -42,7 +57,7 @@ export const HeaderMenuWrapper = styled.div`
   > .config {
     display: flex;
     align-items: center;
-    flex-grow: 1;
+    flex-shrink: 1;
     justify-content: flex-end;
     padding-right: 0.45rem;
 

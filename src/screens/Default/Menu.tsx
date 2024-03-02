@@ -14,12 +14,31 @@ export const ChainMenu = () => {
   return (
     <HeaderMenuWrapper>
       <div className="menu">
-        <div className="label">Not Connected</div>
+        <section className="main">
+          <div className="label">Not Connected</div>
+
+          <button
+            onClick={() => {
+              /* Do nothing */
+            }}
+          >
+            Chain
+          </button>
+        </section>
+        <section className="other">
+          <button
+            className="label"
+            onClick={() => {
+              /* Do nothing */
+            }}
+          >
+            Manage Tab
+          </button>
+        </section>
       </div>
       <div className="config">
         <ButtonWrapper
           onClick={() => setTabsHidden(!tabsHidden)}
-          className="action"
           disabled={pathname !== '/'}
         >
           <FontAwesomeIcon

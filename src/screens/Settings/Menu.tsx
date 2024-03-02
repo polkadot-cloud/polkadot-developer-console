@@ -14,13 +14,15 @@ export const SettingsMenu = () => {
   return (
     <HeaderMenuWrapper>
       <div className="menu">
-        <div className="label">Settings</div>
-        <button
-          className={activeSection === 0 ? 'active' : undefined}
-          onClick={() => setActiveSection(0)}
-        >
-          Tags
-        </button>
+        <section>
+          <div className="label">Settings</div>
+          <button
+            className={activeSection === 0 ? 'active' : undefined}
+            onClick={() => setActiveSection(0)}
+          >
+            Tags
+          </button>
+        </section>
       </div>
       <div className="config">
         <ButtonWrapper onClick={() => navigate('/')} className="button">
