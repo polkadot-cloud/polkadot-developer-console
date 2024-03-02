@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { ButtonWrapper, HeaderMenuWrapper } from 'library/HeaderMenu/Wrappers';
-import { useSettings } from './provider';
+import { useSection } from '../../library/Page/provider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
 export const SettingsMenu = () => {
   const navigate = useNavigate();
-  const { activeSection, setActiveSection } = useSettings();
+  const { activeSection, setActiveSection } = useSection();
 
   return (
     <HeaderMenuWrapper>

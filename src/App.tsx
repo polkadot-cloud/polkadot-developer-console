@@ -9,6 +9,9 @@ import { DefaultRoute } from 'screens/Default/Route';
 import { SettingsRoute } from 'screens/Settings/Route';
 import { Entry } from 'library/Entry';
 
+// The currently supported pages.
+export type PageId = 'default' | 'settings';
+
 const AppInner = () => (
   // TODO: Get accent theme from active network, if any, otherwise default to `polkadot-relay`.
   <Entry mode="light" theme={`polkadot-relay`}>
@@ -17,14 +20,14 @@ const AppInner = () => (
     <Tabs />
 
     <Routes>
-      <Route key={`route_chain`} path={'/'} element={<DefaultRoute />} />
+      <Route key={`route_default`} path={'/'} element={<DefaultRoute />} />
       <Route
         key={`route_settings`}
         path={'/settings'}
         element={<SettingsRoute />}
       />
       {/* Fallback route to chain */}
-      <Route key="route_default" path="*" element={<Navigate to="/" />} />
+      <Route key="route_fallback" path="*" element={<Navigate to="/" />} />
     </Routes>
   </Entry>
 );

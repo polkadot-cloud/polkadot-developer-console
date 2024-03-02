@@ -6,11 +6,12 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
 import { useLocation } from 'react-router-dom';
 import { HeaderMenuWrapper, ButtonWrapper } from 'library/HeaderMenu/Wrappers';
-import type { PageProps } from 'screens/Utils';
+import { useSection } from 'library/Page/provider';
 
-export const ChainMenu = ({ section, setSection }: PageProps) => {
+export const ChainMenu = () => {
   const { pathname } = useLocation();
   const { tabsHidden, setTabsHidden } = useTabs();
+  const { activeSection, setActiveSection } = useSection();
 
   return (
     <HeaderMenuWrapper>
@@ -18,16 +19,16 @@ export const ChainMenu = ({ section, setSection }: PageProps) => {
         <section className="main">
           <div className="label">Not Connected</div>
           <button
-            onClick={() => setSection(0)}
-            className={section === 0 ? 'active' : undefined}
+            onClick={() => setActiveSection(0)}
+            className={activeSection === 0 ? 'active' : undefined}
           >
             Connect
           </button>
         </section>
         <section className="other">
           <button
-            onClick={() => setSection(1)}
-            className={`label${section === 1 ? ` active` : ``}`}
+            onClick={() => setActiveSection(1)}
+            className={`label${activeSection === 1 ? ` active` : ``}`}
           >
             Manage Tab
           </button>

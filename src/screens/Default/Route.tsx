@@ -3,8 +3,8 @@
 
 import { ChainMenu } from './Menu';
 import { Default } from '.';
-import { PageWithMenu } from 'screens/Utils';
+import { PageWithMenu } from 'screens/Common/PageWithMenu';
 
 export const DefaultRoute = () => (
-  <PageWithMenu Page={Default} Menu={ChainMenu} />
+  <PageWithMenu pageId="default" Page={Default} Menu={ChainMenu} />
 );

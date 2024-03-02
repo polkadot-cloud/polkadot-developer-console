@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { SettingsWrapper } from 'library/Settings/Wrappers';
-import { useSettings } from './provider';
 import { TagSettings } from './TagSettings';
+import { useSection } from 'library/Page/provider';
 
 export const Settings = () => {
-  const { activeSection } = useSettings();
+  const { activeSection } = useSection();
 
   return (
     <SettingsWrapper>{activeSection === 0 && <TagSettings />}</SettingsWrapper>
