@@ -5,7 +5,7 @@ import { TagItemWrapper } from './Wrappers';
 import { Tag } from 'library/Tag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTags } from 'contexts/Tags';
-import { HeaderButtonWrapper } from '../Wrappers';
+import { SettingsHeaderButton } from '../Wrappers';
 import { faLock, faMinus } from '@fortawesome/free-solid-svg-icons';
 import type { ManageTagItemProps } from './types';
 import { useState } from 'react';
@@ -57,15 +57,17 @@ export const MangeTagItem = ({
           )}
           {!locked && (
             <>
-              <HeaderButtonWrapper onClick={() => setEditTagOpen(!editTagOpen)}>
+              <SettingsHeaderButton
+                onClick={() => setEditTagOpen(!editTagOpen)}
+              >
                 {editTagOpen && (
                   <FontAwesomeIcon icon={faMinus} transform="shrink-1" />
                 )}
                 Edit
-              </HeaderButtonWrapper>
-              <HeaderButtonWrapper onClick={() => handleRemoveTag()}>
+              </SettingsHeaderButton>
+              <SettingsHeaderButton onClick={() => handleRemoveTag()}>
                 Delete
-              </HeaderButtonWrapper>
+              </SettingsHeaderButton>
             </>
           )}
         </div>

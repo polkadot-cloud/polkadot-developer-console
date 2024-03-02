@@ -3,7 +3,7 @@
 
 import { useTags } from 'contexts/Tags';
 import {
-  HeaderButtonWrapper,
+  SettingsHeaderButton,
   SettingsHeaderWrapper,
   SettingsSubheadingWrapper,
 } from '../Wrappers';
@@ -28,13 +28,13 @@ export const TagSettings = () => {
       <SettingsHeaderWrapper>
         <h2>Manage Tags</h2>
         <div>
-          <HeaderButtonWrapper onClick={() => setNewTagOpen(!newTagOpen)}>
+          <SettingsHeaderButton onClick={() => setNewTagOpen(!newTagOpen)}>
             <FontAwesomeIcon
               icon={newTagOpen ? faMinus : faPlus}
               transform="shrink-1"
             />
             New Tag
-          </HeaderButtonWrapper>
+          </SettingsHeaderButton>
         </div>
       </SettingsHeaderWrapper>
 

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { ManageTagWrapper } from './Wrappers';
-import { HeaderButtonWrapper } from '../Wrappers';
+import { SettingsHeaderButton } from '../Wrappers';
 import { useTags } from 'contexts/Tags';
 import type { ManageTagFormProps } from './types';
 
@@ -96,9 +96,9 @@ export const ManageTagForm = ({
           <button className="cancel" onClick={() => cancel()}>
             Cancel
           </button>
-          <HeaderButtonWrapper onClick={() => submit()} disabled={!valid}>
+          <SettingsHeaderButton onClick={() => submit()} disabled={!valid}>
             {!tagId ? 'Create Tag' : 'Save Changes'}
-          </HeaderButtonWrapper>
+          </SettingsHeaderButton>
         </span>
       </div>
     </ManageTagWrapper>

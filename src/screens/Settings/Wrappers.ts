@@ -3,12 +3,14 @@
 
 import styled from 'styled-components';
 
+/* TODO: abstract into general settings page wrapper. */
 export const SettingsWrapper = styled.div`
   margin-top: 0.5rem;
   max-width: 750px;
   width: 100%;
 `;
 
+/* TODO: abstract into general settings page wrapper. */
 export const SettingsHeaderWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -25,13 +27,14 @@ export const SettingsHeaderWrapper = styled.div`
   }
 `;
 
+/* TODO: abstract into general settings page wrapper. */
 export const SettingsSubheadingWrapper = styled.h4`
   border-bottom: 1px solid var(--border-primary-color);
   margin: 1.2rem 0 0.6rem 0;
   padding-bottom: 0.5rem;
 `;
 
-export const HeaderButtonWrapper = styled.button`
+export const SettingsHeaderButton = styled.button`
   color: var(--text-color-primary);
   border: 1px solid var(--border-secondary-color);
   font-family: InterSemiBold, sans-serif;
