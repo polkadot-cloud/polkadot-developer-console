@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:pages": "tsc && vite build --base '/polkadot-developer-console/'",
     "lint": "eslint . --fix && npx prettier --write .",
     "preview": "vite preview"
   },
