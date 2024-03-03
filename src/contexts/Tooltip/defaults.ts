@@ -26,7 +26,7 @@ export const TooltipDocumentPadding = 20;
 export const TooltipCursorPadding = 20;
 
 // Time threshold for instant open after last close in seconds.
-export const TooltipInstantThreshold = 1;
+export const TooltipInstantThreshold = 1.5;
 
 export const defaultTooltipContext: TooltipContextInterface = {
   open: false,
