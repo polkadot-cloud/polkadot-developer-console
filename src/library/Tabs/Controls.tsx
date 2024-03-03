@@ -8,15 +8,11 @@ import { faGear, faPlug, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { TAB_TRANSITION_DURATION_MS } from 'contexts/Tabs/defaults';
 import type { ControlsProps } from './types';
 import { useNavigate } from 'react-router-dom';
-import { useTooltip } from 'contexts/Tooltip';
-import { useRef } from 'react';
+import { ControlWithTooltip } from './ControlWithTooltip';
 
 export const Controls = ({ tabContainerRef }: ControlsProps) => {
   const navigate = useNavigate();
   const { createTab } = useTabs();
-  const { openTooltip } = useTooltip();
-
-  const tooltipBoundRef = useRef(null);
 
   return (
     <ControlsWrapper>
@@ -47,26 +43,19 @@ export const Controls = ({ tabContainerRef }: ControlsProps) => {
         >
           Accounts
         </TabWrapper>
-        <TabWrapper
-          ref={tooltipBoundRef}
-          onPointerOver={(ev) =>
-            openTooltip(ev, 'Connect Wallets', tooltipBoundRef)
-          }
+        <ControlWithTooltip
+          icon={faPlug}
+          tooltipText="Connect Wallets"
           onClick={() => {
-            /* Do nothing. */
+            /* Do nothing */
           }}
-          className="action"
-        >
-          <FontAwesomeIcon icon={faPlug} />
-        </TabWrapper>
-        <TabWrapper
-          onClick={() => {
-            navigate('/settings');
-          }}
-          className="action last"
-        >
-          <FontAwesomeIcon icon={faGear} />
-        </TabWrapper>
+        />
+        <ControlWithTooltip
+          icon={faGear}
+          tooltipText="Settings"
+          onClick={() => navigate('/settings')}
+          last
+        />
       </div>
     </ControlsWrapper>
   );
