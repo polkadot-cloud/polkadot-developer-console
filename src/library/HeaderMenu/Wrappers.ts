@@ -44,11 +44,16 @@ export const HeaderMenuWrapper = styled.div`
 
       > button {
         color: var(--text-color-secondary);
+
         &:hover {
           color: var(--accent-color-secondary);
         }
         &.active {
           color: var(--accent-color-secondary);
+        }
+
+        > .icon {
+          margin-right: 0.4rem;
         }
       }
     }

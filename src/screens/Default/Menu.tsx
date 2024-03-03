@@ -2,7 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleDown,
+  faAngleUp,
+  faBarsProgress,
+} from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
 import { useLocation } from 'react-router-dom';
 import { HeaderMenuWrapper, ButtonWrapper } from 'library/HeaderMenu/Wrappers';
@@ -25,16 +29,16 @@ export const ChainMenu = () => {
             Connect
           </button>
         </section>
-        <section className="other">
-          <button
-            onClick={() => setActiveSection(1, false)}
-            className={`label${activeSection === 1 ? ` active` : ``}`}
-          >
-            Manage Tab
-          </button>
-        </section>
+        <section className="other">{/* Additional links right side */}</section>
       </div>
       <div className="config">
+        <ButtonWrapper
+          onClick={() => setActiveSection(1, false)}
+          disabled={pathname !== '/'}
+        >
+          <FontAwesomeIcon icon={faBarsProgress} transform="shrink-1" />
+        </ButtonWrapper>
+
         <ButtonWrapper
           onClick={() => setTabsHidden(!tabsHidden)}
           disabled={pathname !== '/'}
