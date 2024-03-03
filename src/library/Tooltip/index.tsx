@@ -6,6 +6,7 @@ import { Wrapper } from './Wrappers';
 import { useTooltip } from 'contexts/Tooltip';
 import type { TooltipMouseEvent } from 'contexts/Tooltip/types';
 import { TooltipDelay } from 'contexts/Tooltip/defaults';
+import { motion } from 'framer-motion';
 
 export const Tooltip = () => {
   const {
@@ -101,20 +102,6 @@ export const Tooltip = () => {
     open && (
       <Wrapper
         ref={tooltipRef}
-        initial="hidden"
-        animate={showTooltip ? 'show' : 'hidden'}
-        variants={{
-          hidden: {
-            opacity: 0,
-          },
-          show: {
-            opacity: 1,
-          },
-        }}
-        transition={{
-          duration: 1,
-          ease: [0.1, 1, 0.1, 1],
-        }}
         style={{
           position: 'absolute',
           left: `${positionRef?.current?.[0] || 0}px`,
@@ -122,7 +109,27 @@ export const Tooltip = () => {
           zIndex: 99,
         }}
       >
-        {text}
+        <motion.div
+          className="inner"
+          initial="hidden"
+          animate={showTooltip ? 'show' : 'hidden'}
+          variants={{
+            hidden: {
+              opacity: 0,
+              transform: 'scale(0.9)',
+            },
+            show: {
+              opacity: 1,
+              transform: 'scale(1)',
+            },
+          }}
+          transition={{
+            duration: 1,
+            ease: [0.1, 1, 0.1, 1],
+          }}
+        >
+          {text}
+        </motion.div>
       </Wrapper>
     )
   );
