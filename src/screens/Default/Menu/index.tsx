@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAngleDown,
   faAngleUp,
@@ -9,8 +8,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
 import { useLocation } from 'react-router-dom';
-import { HeaderMenuWrapper, ButtonWrapper } from 'library/HeaderMenu/Wrappers';
+import { HeaderMenuWrapper } from 'library/HeaderMenu/Wrappers';
 import { useSection } from 'library/Page/provider';
+import { ButtonWithTooltip } from './ButtonWithTooltip';
 
 export const ChainMenu = () => {
   const { pathname } = useLocation();
@@ -32,23 +32,23 @@ export const ChainMenu = () => {
         <section className="other">{/* Additional links right side */}</section>
       </div>
       <div className="config">
-        <ButtonWrapper
-          className={activeSection === 1 ? 'active' : undefined}
+        <ButtonWithTooltip
+          tooltipText="Manage Tab"
+          active={activeSection === 1}
           onClick={() => setActiveSection(1, false)}
-          disabled={pathname !== '/'}
-        >
-          <FontAwesomeIcon icon={faBarsProgress} transform="shrink-1" />
-        </ButtonWrapper>
+          icon={faBarsProgress}
+          disabled={false}
+          iconTransform="shrink-1"
+        />
 
-        <ButtonWrapper
+        <ButtonWithTooltip
+          tooltipText={tabsHidden ? 'Show Tabs' : 'Hide Tabs'}
+          active={false}
           onClick={() => setTabsHidden(!tabsHidden)}
+          icon={tabsHidden ? faAngleDown : faAngleUp}
           disabled={pathname !== '/'}
-        >
-          <FontAwesomeIcon
-            icon={tabsHidden ? faAngleDown : faAngleUp}
-            transform="shrink-3"
-          />
-        </ButtonWrapper>
+          iconTransform="shrink-3"
+        />
       </div>
     </HeaderMenuWrapper>
   );

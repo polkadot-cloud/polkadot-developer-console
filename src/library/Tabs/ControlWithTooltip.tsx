@@ -21,8 +21,8 @@ export const ControlWithTooltip = ({
   last = false,
 }: ControlWithTooltipProps) => {
   const { openTooltip } = useTooltip();
-
   const ref = useRef(null);
+
   return (
     <TabWrapper
       ref={ref}
