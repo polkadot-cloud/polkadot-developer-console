@@ -49,7 +49,7 @@ export const Controls = ({ tabContainerRef }: ControlsProps) => {
         </TabWrapper>
         <TabWrapper
           ref={tooltipBoundRef}
-          onHoverStart={(ev) =>
+          onPointerOver={(ev) =>
             openTooltip(ev, 'Connect Wallets', tooltipBoundRef)
           }
           onClick={() => {

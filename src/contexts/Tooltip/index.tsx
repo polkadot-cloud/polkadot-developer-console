@@ -6,7 +6,7 @@ import { createContext, useContext, useRef, useState } from 'react';
 import type {
   BoundingBox,
   TooltipContextInterface,
-  TooltipMouseEvent,
+  TooltipPointerEvent,
 } from './types';
 import {
   TooltipCursorPadding,
@@ -54,7 +54,7 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
   // Sets the tooltip position and opens it. Only succeeds if the tooltip has been instantiated and
   // is not currently open.
   const openTooltip = (
-    ev: TooltipMouseEvent,
+    ev: TooltipPointerEvent,
     newText: string,
     boundBoxRef: RefObject<HTMLElement> | null
   ) => {

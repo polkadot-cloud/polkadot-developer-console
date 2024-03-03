@@ -4,7 +4,7 @@
 import { useEffect, useRef } from 'react';
 import { Wrapper } from './Wrappers';
 import { useTooltip } from 'contexts/Tooltip';
-import type { TooltipMouseEvent } from 'contexts/Tooltip/types';
+import type { TooltipPointerEvent } from 'contexts/Tooltip/types';
 import { TooltipDelay } from 'contexts/Tooltip/defaults';
 import { motion } from 'framer-motion';
 
@@ -36,7 +36,7 @@ export const Tooltip = () => {
   };
 
   // Handler for closing the menu on mouse move.
-  const mouseMoveCallback = (ev: TooltipMouseEvent) => {
+  const mouseMoveCallback = (ev: TooltipPointerEvent) => {
     if (!openRef?.current || false) {
       return;
     }

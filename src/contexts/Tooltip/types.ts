@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { MouseEvent as ReactMouseEvent, RefObject } from 'react';
+import type { PointerEvent as ReactPointerEvent, RefObject } from 'react';
 
 export interface TooltipContextInterface {
   open: boolean;
@@ -17,7 +17,7 @@ export interface TooltipContextInterface {
   boundingBox: BoundingBox;
   closeTooltip: () => void;
   openTooltip: (
-    ev: TooltipMouseEvent,
+    ev: TooltipPointerEvent,
     newText: string,
     ref: RefObject<HTMLElement> | null
   ) => void;
@@ -33,6 +33,6 @@ export interface BoundingBox {
   x: number;
   y: number;
 }
-export type TooltipMouseEvent =
-  | MouseEvent
-  | ReactMouseEvent<HTMLButtonElement, MouseEvent>;
+export type TooltipPointerEvent =
+  | PointerEvent
+  | ReactPointerEvent<HTMLDivElement>;
