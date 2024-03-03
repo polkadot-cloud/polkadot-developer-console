@@ -98,6 +98,12 @@ export const ButtonWrapper = styled.button`
     }
   }
 
+  &.active {
+    > svg {
+      color: var(--accent-color-secondary);
+    }
+  }
+
   &:hover {
     background-color: var(--button-hover-background);
     color: var(--text-color-primary);

@@ -33,6 +33,7 @@ export const ChainMenu = () => {
       </div>
       <div className="config">
         <ButtonWrapper
+          className={activeSection === 1 ? 'active' : undefined}
           onClick={() => setActiveSection(1, false)}
           disabled={pathname !== '/'}
         >
