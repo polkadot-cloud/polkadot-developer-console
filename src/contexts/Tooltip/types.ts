@@ -8,6 +8,8 @@ export interface TooltipContextInterface {
   openRef: RefObject<boolean> | null;
   ready: boolean;
   setReady: (ready: boolean) => void;
+  delayed: boolean;
+  setDelayed: (delayed: boolean) => void;
   text: string;
   position: [number, number];
   positionRef: RefObject<[number, number]> | null;

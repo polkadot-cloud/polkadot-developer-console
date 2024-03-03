@@ -8,7 +8,12 @@ import type {
   TooltipContextInterface,
   TooltipMouseEvent,
 } from './types';
-import { defaultBoundingBox, defaultTooltipContext } from './defaults';
+import {
+  TooltipCursorPadding,
+  TooltipDocumentPadding,
+  defaultBoundingBox,
+  defaultTooltipContext,
+} from './defaults';
 import { setStateWithRef } from '@w3ux/utils';
 
 export const TooltipContext = createContext<TooltipContextInterface>(
@@ -17,12 +22,6 @@ export const TooltipContext = createContext<TooltipContextInterface>(
 
 export const useTooltip = () => useContext(TooltipContext);
 
-// Document padding.
-const DocumentPadding = 20;
-
-// Cursor padding.
-const CursorPadding = 20;
-
 export const TooltipProvider = ({ children }: { children: ReactNode }) => {
   // Whether the tooltip is currently open. This initiates tooltip state but does not reflect
   // whether the tooltip is being displayed. NOTE: Needs a ref as it is referenced in event
@@ -30,8 +29,11 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState<boolean>(false);
   const openRef = useRef(open);
 
-  // Whether the tooltip is ready to be shown.
+  // Whether the tooltip is ready to start delay timer and be displayed.
   const [ready, setReady] = useState<boolean>(false);
+
+  // Whether the tooltip's delay timeout has surpassed.
+  const [delayed, setDelayed] = useState<boolean>(true);
 
   // The inner text of the tooltip.
   const [text, setText] = useState<string>('');
@@ -78,6 +80,7 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
   // Hides the menu and closes.
   const closeTooltip = () => {
     setReady(false);
+    setDelayed(true);
     setStateWithRef(false, setOpen, openRef);
     setBoundingBox(defaultBoundingBox);
   };
@@ -97,17 +100,19 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
     const tooltipRect = ref.current.getBoundingClientRect();
 
     const hiddenRight =
-      currentPos[0] + tooltipRect.width > bodyRect.right - DocumentPadding;
+      currentPos[0] + tooltipRect.width >
+      bodyRect.right - TooltipDocumentPadding;
     const hiddenBottom =
-      currentPos[1] + tooltipRect.height > bodyRect.bottom + CursorPadding;
+      currentPos[1] + tooltipRect.height >
+      bodyRect.bottom + TooltipCursorPadding;
 
     const x = hiddenRight
-      ? window.innerWidth - tooltipRect.width - DocumentPadding
+      ? window.innerWidth - tooltipRect.width - TooltipDocumentPadding
       : currentPos?.[0] || 0;
 
     const y = hiddenBottom
       ? window.innerHeight - tooltipRect.height
-      : currentPos?.[1] + CursorPadding || 0;
+      : currentPos?.[1] + TooltipCursorPadding || 0;
 
     return [x, y];
   };
@@ -120,6 +125,8 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
         openRef,
         ready,
         setReady,
+        delayed,
+        setDelayed,
         text,
         position,
         positionRef,

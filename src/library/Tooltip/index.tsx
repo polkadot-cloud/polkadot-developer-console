@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 import { Wrapper } from './Wrappers';
 import { useTooltip } from 'contexts/Tooltip';
 import type { TooltipMouseEvent } from 'contexts/Tooltip/types';
+import { TooltipDelay } from 'contexts/Tooltip/defaults';
 
 export const Tooltip = () => {
   const {
@@ -12,6 +13,8 @@ export const Tooltip = () => {
     openRef,
     ready,
     setReady,
+    delayed,
+    setDelayed,
     text,
     boundingBox,
     closeTooltip,
@@ -22,6 +25,9 @@ export const Tooltip = () => {
 
   // Tooltip ref for position access.
   const tooltipRef = useRef<HTMLDivElement>(null);
+
+  // Timeout for delaying showing the tooltip.
+  let delayTimeout: ReturnType<typeof setTimeout>;
 
   // Handler for closing the menu on window resize.
   const resizeCallback = () => {
@@ -44,6 +50,7 @@ export const Tooltip = () => {
       mouseY > boundingBox.y + boundingBox.height
     ) {
       closeTooltip();
+      clearTimeout(delayTimeout);
     } else {
       const [newX, newY] = calculateTooltipPosition(
         [mouseX, mouseY],
@@ -62,17 +69,22 @@ export const Tooltip = () => {
   const tooltipRightX = tooltipX + tooltipWidth;
 
   // Don't show tooltip if it's leaking out of the window.
-  const showTooltip = ready && tooltipRightX <= tooltipMaxX;
+  const showTooltip = ready && !delayed && tooltipRightX <= tooltipMaxX;
 
-  // Check position and show the tooltip if tooltip has been opened. Listen to mouse move events and
-  // close the tooltip if the mouse moves outside its bounding box.
+  // Check position and start tooltip delay timeout when it has been opened. Listen to mouse move
+  // events and close the tooltip if the mouse moves outside its bounding box.
   useEffect(() => {
     if (open) {
+      delayTimeout = setTimeout(() => {
+        setDelayed(false);
+      }, TooltipDelay);
+
       window.addEventListener('pointermove', mouseMoveCallback);
     } else {
       window.removeEventListener('pointermove', mouseMoveCallback);
     }
     return () => {
+      clearTimeout(delayTimeout);
       window.removeEventListener('pointermove', mouseMoveCallback);
     };
   }, [open]);

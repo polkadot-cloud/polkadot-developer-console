@@ -16,6 +16,8 @@ export const defaultTooltipContext: TooltipContextInterface = {
   openRef: null,
   ready: false,
   setReady: (ready) => {},
+  delayed: true,
+  setDelayed: (delayed) => {},
   text: '',
   position: [0, 0],
   positionRef: null,
@@ -25,3 +27,12 @@ export const defaultTooltipContext: TooltipContextInterface = {
   openTooltip: (ev, newInner) => {},
   calculateTooltipPosition: (currentPos, tooltipRef) => [0, 0],
 };
+
+// Delay before showing tooltip.
+export const TooltipDelay = 1000;
+
+// Document padding.
+export const TooltipDocumentPadding = 20;
+
+// Cursor padding.
+export const TooltipCursorPadding = 20;
