@@ -9,6 +9,7 @@ import { MenuProvider } from 'contexts/Menu';
 import { TagsProvider } from 'contexts/Tags';
 import { ChainFilterProvider } from 'contexts/ChainFilter';
 import { SettingsProvider } from 'contexts/Settings';
+import { TooltipProvider } from 'contexts/Tooltip';
 
 export const Providers = () => {
   // !! Provider order matters.
@@ -19,6 +20,7 @@ export const Providers = () => {
     TagsProvider,
     ChainFilterProvider,
     MenuProvider,
+    TooltipProvider,
   ];
 
   return withProviders(providers, App);

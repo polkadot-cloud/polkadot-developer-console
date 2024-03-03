@@ -8,6 +8,7 @@ import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { DefaultRoute } from 'screens/Default/Route';
 import { SettingsRoute } from 'screens/Settings/Route';
 import { Entry } from 'library/Entry';
+import { Tooltip } from 'library/Tooltip';
 
 // The currently supported pages.
 export type PageId = 'default' | 'settings';
@@ -16,6 +17,7 @@ const AppInner = () => (
   // TODO: Get accent theme from active network, if any, otherwise default to `polkadot-relay`.
   <Entry mode="light" theme={`polkadot-relay`}>
     <ContextMenu />
+    <Tooltip />
     <Header />
     <Tabs />
 
