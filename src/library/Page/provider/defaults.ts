@@ -8,5 +8,5 @@ export const defaultActiveSection = 0;
 
 export const defaultSectionContext: SectionContextInterface = {
   activeSection: defaultActiveSection,
-  setActiveSection: (section) => {},
+  setActiveSection: (section, persist) => {},
 };

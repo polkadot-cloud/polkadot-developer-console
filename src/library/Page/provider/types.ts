@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 
 export interface SectionContextInterface {
   activeSection: number;
-  setActiveSection: (section: number) => void;
+  setActiveSection: (section: number, persist?: boolean) => void;
 }
 
 export interface SectionContextProps {

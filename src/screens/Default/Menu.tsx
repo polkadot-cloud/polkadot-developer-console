@@ -27,7 +27,7 @@ export const ChainMenu = () => {
         </section>
         <section className="other">
           <button
-            onClick={() => setActiveSection(1)}
+            onClick={() => setActiveSection(1, false)}
             className={`label${activeSection === 1 ? ` active` : ``}`}
           >
             Manage Tab

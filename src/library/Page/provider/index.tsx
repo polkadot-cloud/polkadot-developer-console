@@ -22,9 +22,11 @@ export const SectionProvider = ({ pageId, children }: SectionContextProps) => {
     local.getActiveSection(pageId, activeTabId) || defaultActiveSection
   );
 
-  // Sets active section, and updates local storage.
-  const setActiveSection = (section: number) => {
-    local.setActiveSection(pageId, activeTabId, section);
+  // Sets active section, and updates local storage if persisted.
+  const setActiveSection = (section: number, persist = true) => {
+    if (persist) {
+      local.setActiveSection(pageId, activeTabId, section);
+    }
     setActiveSectionState(section);
   };
 
