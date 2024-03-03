@@ -9,6 +9,7 @@ import {
   TooltipDocumentPadding,
   defaultBoundingBox,
   defaultTooltipContext,
+  defaultTooltipPosition,
 } from './defaults';
 import { setStateWithRef } from '@w3ux/utils';
 
@@ -35,7 +36,9 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
   const [text, setText] = useState<string>('');
 
   // The tooltip position coordinates. NOTE: Needs a ref as it is referenced in event listeners.
-  const [position, setPositionState] = useState<[number, number]>([0, 0]);
+  const [position, setPositionState] = useState<[number, number]>(
+    defaultTooltipPosition
+  );
   const positionRef = useRef(position);
 
   // Setter for the tooltip position.
@@ -72,7 +75,7 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
     setDelayed(true);
     setBoundingBox(defaultBoundingBox);
     setStateWithRef(false, setOpen, openRef);
-    setStateWithRef([0, 0], setPositionState, positionRef);
+    setStateWithRef(defaultTooltipPosition, setPositionState, positionRef);
   };
 
   // Calculates tooltip x and y, preventing it to be hidden.
