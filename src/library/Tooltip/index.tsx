@@ -5,8 +5,12 @@ import { useEffect, useRef } from 'react';
 import { Wrapper } from './Wrappers';
 import { useTooltip } from 'contexts/Tooltip';
 import type { TooltipPointerEvent } from 'contexts/Tooltip/types';
-import { TooltipDelay } from 'contexts/Tooltip/defaults';
+import {
+  TooltipDelay,
+  TooltipInstantThreshold,
+} from 'contexts/Tooltip/defaults';
 import { motion } from 'framer-motion';
+import { getUnixTime } from 'date-fns';
 
 export const Tooltip = () => {
   const {
@@ -15,7 +19,10 @@ export const Tooltip = () => {
     ready,
     setReady,
     delayed,
+    delayedRef,
     setDelayed,
+    lastCloseRef,
+    setLastClose,
     text,
     boundingBox,
     closeTooltip,
@@ -50,6 +57,10 @@ export const Tooltip = () => {
       mouseY < boundingBox.y ||
       mouseY > boundingBox.y + boundingBox.height
     ) {
+      if (delayedRef?.current === false) {
+        setLastClose(getUnixTime(new Date()));
+      }
+
       closeTooltip();
       clearTimeout(delayTimeout.current);
       delayTimeout.current = undefined;
@@ -77,10 +88,17 @@ export const Tooltip = () => {
   // events and close the tooltip if the mouse moves outside its bounding box.
   useEffect(() => {
     if (open) {
-      delayTimeout.current = setTimeout(() => {
+      // If current time is within `TooltipInstantThreshold` of last close, open instantly.
+      if (
+        getUnixTime(new Date()) - (lastCloseRef?.current || 0) <
+        TooltipInstantThreshold
+      ) {
         setDelayed(false);
-      }, TooltipDelay);
-
+      } else {
+        delayTimeout.current = setTimeout(() => {
+          setDelayed(false);
+        }, TooltipDelay);
+      }
       window.addEventListener('pointermove', mouseMoveCallback);
     } else {
       window.removeEventListener('pointermove', mouseMoveCallback);

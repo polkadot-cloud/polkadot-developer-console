@@ -29,8 +29,10 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
   // Whether the tooltip is ready to start delay timer and be displayed.
   const [ready, setReady] = useState<boolean>(false);
 
-  // Whether the tooltip's delay timeout has surpassed.
-  const [delayed, setDelayed] = useState<boolean>(true);
+  // Whether the tooltip's delay timeout has surpassed. NOTE: Needs a ref as it is referenced in
+  // event listeners.
+  const [delayed, setDelayedState] = useState<boolean>(true);
+  const delayedRef = useRef(delayed);
 
   // The inner text of the tooltip.
   const [text, setText] = useState<string>('');
@@ -40,6 +42,21 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
     defaultTooltipPosition
   );
   const positionRef = useRef(position);
+
+  // Persist the last time the tooltip was closed. NOTE: Needs a ref as it is referenced in event
+  // listeners.
+  const [lastClose, setLastCosedState] = useState<number>(0);
+  const lastCloseRef = useRef(lastClose);
+
+  // Setter for tooltip delayed status.
+  const setDelayed = (newDelayed: boolean) => {
+    setStateWithRef(newDelayed, setDelayedState, delayedRef);
+  };
+
+  // Setter for tooltip last closed.
+  const setLastClose = (newTime: number) => {
+    setStateWithRef(newTime, setLastCosedState, lastCloseRef);
+  };
 
   // Setter for the tooltip position.
   const setPosition = (newPosition: [number, number]) => {
@@ -110,7 +127,6 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
     return [x, y];
   };
 
-  // Adjusts tooltip position and shows the menu.
   return (
     <TooltipContext.Provider
       value={{
@@ -119,11 +135,15 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
         ready,
         setReady,
         delayed,
+        delayedRef,
         setDelayed,
         text,
         position,
         positionRef,
         setPosition,
+        lastClose,
+        lastCloseRef,
+        setLastClose,
         boundingBox,
         closeTooltip,
         openTooltip,

@@ -25,17 +25,24 @@ export const TooltipDocumentPadding = 20;
 // Cursor padding.
 export const TooltipCursorPadding = 20;
 
+// Time threshold for instant open after last close in seconds.
+export const TooltipInstantThreshold = 1;
+
 export const defaultTooltipContext: TooltipContextInterface = {
   open: false,
   openRef: null,
   ready: false,
   setReady: (ready) => {},
   delayed: true,
+  delayedRef: null,
   setDelayed: (delayed) => {},
   text: '',
   position: defaultTooltipPosition,
   positionRef: null,
   setPosition: (position) => {},
+  lastClose: 0,
+  lastCloseRef: null,
+  setLastClose: (lastClose) => {},
   boundingBox: defaultBoundingBox,
   closeTooltip: () => {},
   openTooltip: (ev, newInner) => {},

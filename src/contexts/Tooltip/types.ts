@@ -9,11 +9,15 @@ export interface TooltipContextInterface {
   ready: boolean;
   setReady: (ready: boolean) => void;
   delayed: boolean;
+  delayedRef: RefObject<boolean> | null;
   setDelayed: (delayed: boolean) => void;
   text: string;
   position: [number, number];
   positionRef: RefObject<[number, number]> | null;
   setPosition: (position: [number, number]) => void;
+  lastClose: number;
+  setLastClose: (lastClose: number) => void;
+  lastCloseRef: RefObject<number> | null;
   boundingBox: BoundingBox;
   closeTooltip: () => void;
   openTooltip: (newText: string, ref: RefObject<HTMLElement> | null) => void;
