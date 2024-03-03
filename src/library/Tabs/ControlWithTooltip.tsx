@@ -26,7 +26,7 @@ export const ControlWithTooltip = ({
   return (
     <TabWrapper
       ref={ref}
-      onPointerOver={(ev) => openTooltip(ev, tooltipText, ref)}
+      onPointerOver={() => openTooltip(tooltipText, ref)}
       onClick={() => onClick()}
       className={`action${last ? ` last` : ``}`}
     >

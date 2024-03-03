@@ -28,7 +28,7 @@ export const Tooltip = () => {
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   // Timeout for delaying showing the tooltip.
-  let delayTimeout: ReturnType<typeof setTimeout>;
+  const delayTimeout = useRef<ReturnType<typeof setTimeout>>();
 
   // Handler for closing the menu on window resize.
   const resizeCallback = () => {
@@ -51,7 +51,8 @@ export const Tooltip = () => {
       mouseY > boundingBox.y + boundingBox.height
     ) {
       closeTooltip();
-      clearTimeout(delayTimeout);
+      clearTimeout(delayTimeout.current);
+      delayTimeout.current = undefined;
     } else {
       const [newX, newY] = calculateTooltipPosition(
         [mouseX, mouseY],
@@ -76,7 +77,7 @@ export const Tooltip = () => {
   // events and close the tooltip if the mouse moves outside its bounding box.
   useEffect(() => {
     if (open) {
-      delayTimeout = setTimeout(() => {
+      delayTimeout.current = setTimeout(() => {
         setDelayed(false);
       }, TooltipDelay);
 
@@ -85,7 +86,7 @@ export const Tooltip = () => {
       window.removeEventListener('pointermove', mouseMoveCallback);
     }
     return () => {
-      clearTimeout(delayTimeout);
+      clearTimeout(delayTimeout.current);
       window.removeEventListener('pointermove', mouseMoveCallback);
     };
   }, [open]);

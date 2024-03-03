@@ -3,11 +3,7 @@
 
 import type { ReactNode, RefObject } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
-import type {
-  BoundingBox,
-  TooltipContextInterface,
-  TooltipPointerEvent,
-} from './types';
+import type { BoundingBox, TooltipContextInterface } from './types';
 import {
   TooltipCursorPadding,
   TooltipDocumentPadding,
@@ -54,15 +50,9 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
   // Sets the tooltip position and opens it. Only succeeds if the tooltip has been instantiated and
   // is not currently open.
   const openTooltip = (
-    ev: TooltipPointerEvent,
     newText: string,
     boundBoxRef: RefObject<HTMLElement> | null
   ) => {
-    const bodyRect = document.body.getBoundingClientRect();
-
-    const x = ev.clientX - bodyRect.left;
-    const y = ev.clientY - bodyRect.top;
-
     // Set summoning element bounding box.
     setBoundingBox({
       width: boundBoxRef?.current?.offsetWidth || 0,
@@ -74,15 +64,15 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
     // Set text and mouse position of the tooltip, then open.
     setText(newText);
     setStateWithRef(true, setOpen, openRef);
-    setStateWithRef([x, y], setPosition, positionRef);
   };
 
   // Hides the menu and closes.
   const closeTooltip = () => {
     setReady(false);
     setDelayed(true);
-    setStateWithRef(false, setOpen, openRef);
     setBoundingBox(defaultBoundingBox);
+    setStateWithRef(false, setOpen, openRef);
+    setStateWithRef([0, 0], setPositionState, positionRef);
   };
 
   // Calculates tooltip x and y, preventing it to be hidden.

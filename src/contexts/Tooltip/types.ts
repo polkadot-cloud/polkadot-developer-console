@@ -16,11 +16,7 @@ export interface TooltipContextInterface {
   setPosition: (position: [number, number]) => void;
   boundingBox: BoundingBox;
   closeTooltip: () => void;
-  openTooltip: (
-    ev: TooltipPointerEvent,
-    newText: string,
-    ref: RefObject<HTMLElement> | null
-  ) => void;
+  openTooltip: (newText: string, ref: RefObject<HTMLElement> | null) => void;
   calculateTooltipPosition: (
     currentPos: [number, number],
     tooltipRef: RefObject<HTMLDivElement>
