@@ -64,7 +64,7 @@ export const HeaderMenuWrapper = styled.div`
     align-items: center;
     flex-shrink: 1;
     justify-content: flex-end;
-    padding-right: 0.45rem;
+    padding-right: 0.5rem;
 
     .icon {
       color: var(--text-color-secondary);
@@ -82,7 +82,7 @@ export const ButtonWrapper = styled.button`
   align-items: center;
   cursor: pointer;
   margin-left: 0.2rem;
-  padding: 0 0.75rem;
+  padding: 0 0.68rem;
   transition: background-color 0.15s;
 
   &.button {
