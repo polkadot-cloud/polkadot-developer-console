@@ -1,22 +1,23 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { ListWrapper } from 'library/ContextMenu/Wrappers';
-import { Wrapper } from './Wrapper';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useTags } from 'contexts/Tags';
 import type { ChainId } from 'config/networks';
 import type { TagId } from 'contexts/Tags/types';
+import { useState } from 'react';
+import { TagsMenuInner } from './Inner';
 
 export const ConfigTagMenu = ({
   onSelect,
   chainId,
 }: {
-  onSelect: (tag: TagId, selected: boolean) => void;
+  onSelect: (tagId: TagId, selected: boolean, current?: string[]) => void;
   chainId: ChainId;
 }) => {
-  const { tags, getChainsForTag, getTagsForChain } = useTags();
+  const { tags, getTagsForChain } = useTags();
+
+  // The tag search term.
+  const [tagSearchTerm, setTagSearchTerm] = useState<string>('');
 
   const appliedTags = getTagsForChain(chainId);
 
@@ -25,44 +26,19 @@ export const ConfigTagMenu = ({
     ([, a], [, b]) => Number(a.locked) - Number(b.locked)
   );
 
-  return (
-    <Wrapper>
-      <h5>Select Tags</h5>
-      <ListWrapper>
-        {orderedEntries.map(([id, tag]) => {
-          const selected = appliedTags.includes(id);
-          const chainCount = getChainsForTag(id)?.length || 0;
+  // Handle tag search change.
+  const handleOnChange = (value: string) => {
+    setTagSearchTerm(value);
+  };
 
-          return (
-            <li
-              key={`tag_context_item_${id}`}
-              className={`${selected ? ` selected` : ``}${tag.locked ? ` disabled` : ``}`}
-            >
-              <button
-                disabled={tag.locked}
-                onClick={() => onSelect(id, selected)}
-              />
-              <div className="inner">
-                <div>
-                  {tag.locked ? (
-                    <FontAwesomeIcon icon={faLock} transform="shrink-5" />
-                  ) : (
-                    selected && (
-                      <FontAwesomeIcon icon={faCheck} transform="shrink-2" />
-                    )
-                  )}
-                </div>
-                <div>
-                  <h3>{tag.name}</h3>
-                </div>
-                <div>
-                  <h5>{chainCount}</h5>
-                </div>
-              </div>
-            </li>
-          );
-        })}
-      </ListWrapper>
-    </Wrapper>
+  return (
+    <TagsMenuInner
+      tagEntries={orderedEntries}
+      appliedTags={appliedTags}
+      tagSearchTerm={tagSearchTerm}
+      onSelect={onSelect}
+      handleOnChange={handleOnChange}
+      selectLocked={false}
+    />
   );
 };

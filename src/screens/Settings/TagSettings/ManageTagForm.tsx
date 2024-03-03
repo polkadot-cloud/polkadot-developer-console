@@ -5,6 +5,7 @@ import { ManageTagWrapper } from './Wrappers';
 import { useTags } from 'contexts/Tags';
 import type { ManageTagFormProps } from './types';
 import { SettingsHeaderButton } from 'library/Settings/Wrappers';
+import { formatInputString } from 'Utils';
 
 export const ManageTagForm = ({
   tagId,
@@ -14,14 +15,6 @@ export const ManageTagForm = ({
 }: ManageTagFormProps) => {
   const { tags, setTags, getLargestTagCounter } = useTags();
 
-  const formatValue = (str: string): string => {
-    // Remove extra spaces.
-    str = str.replace(/\s{2,}/g, ' ');
-    // Trim.
-    str = str.trim();
-    return str;
-  };
-
   // Maximum tag name length.
   const MAX_TAG_NAME_LENGTH = 25;
 
@@ -30,9 +23,9 @@ export const ManageTagForm = ({
 
   // Check if tag form is valid.
   const valid =
-    formatValue(value) !== '' &&
-    formatValue(value).length <= MAX_TAG_NAME_LENGTH &&
-    !tagNames.includes(formatValue(value));
+    formatInputString(value) !== '' &&
+    formatInputString(value).length <= MAX_TAG_NAME_LENGTH &&
+    !tagNames.includes(formatInputString(value));
 
   // Handler to cancel the tag form.
   const cancel = () => {
@@ -58,7 +51,7 @@ export const ManageTagForm = ({
       setTags({
         ...tags,
         [`tag_${counter}`]: {
-          name: formatValue(value),
+          name: formatInputString(value),
           locked: false,
           counter,
         },
@@ -70,10 +63,10 @@ export const ManageTagForm = ({
         ...tags,
         [tagId]: {
           ...tags[tagId],
-          name: formatValue(value),
+          name: formatInputString(value),
         },
       });
-      setValue(formatValue(value));
+      setValue(formatInputString(value));
     }
 
     setOpen(false);
@@ -89,6 +82,16 @@ export const ManageTagForm = ({
           placeholder="Tag Name"
           onChange={(ev) => setValue(ev.target.value)}
           maxLength={MAX_TAG_NAME_LENGTH}
+          onKeyDown={(ev) => {
+            // Submit on enter key.
+            if (ev.key === 'Enter') {
+              submit();
+            }
+            // Canel on escape key.
+            if (ev.key === 'Escape') {
+              cancel();
+            }
+          }}
         />
       </div>
       <div className="controls">

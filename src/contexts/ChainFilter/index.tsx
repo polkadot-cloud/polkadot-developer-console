@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import type { AppliedTags, ChainFilterInterface, SearchTerms } from './types';
 import {
   defaultAppliedTags,
@@ -27,10 +27,12 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
     local.getSearchTerms() || defaultSearchTerms
   );
 
-  // The current applied tags to a given key.
+  // The current applied tags to a given key. NOTE: needs a ref for up to date state updates in
+  // context menu.
   const [appliedTags, setAppliedTagsState] = useState<AppliedTags>(
     local.getAppliedTags() || defaultAppliedTags
   );
+  const appliedTagsRef = useRef(appliedTags);
 
   // Sets search terms state, and updates local storage.
   const setSearchTerms = (value: SearchTerms) => {
@@ -42,6 +44,7 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
   const setAppliedTags = (value: AppliedTags) => {
     local.setAppliedTags(value);
     setAppliedTagsState(value);
+    appliedTagsRef.current = value;
   };
 
   // Gets a search term for a given key.
@@ -66,10 +69,11 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
   // Removes a tag for a given key.
   const removeAppliedTag = (tabId: number | '*', tagId: TagId) => {
     // If a tabId is provided as a number, only remove the tag from that tab.
+
     if (typeof tabId === 'number') {
       setAppliedTags({
-        ...appliedTags,
-        [tabId]: appliedTags[tabId].filter((item) => item !== tagId),
+        ...appliedTagsRef.current,
+        [tabId]: appliedTagsRef.current[tabId].filter((item) => item !== tagId),
       });
     } else {
       // If a wildcard tabId is provided, remove the tag from all tabs.

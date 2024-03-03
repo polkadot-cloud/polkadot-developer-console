@@ -19,9 +19,9 @@ export const TagControls = () => {
 
   // Handle tag menu item select. Either add or remove a tag to chain filter based on current state.
   const handleOnSelect = (
-    current: string[],
     tagId: TagId,
-    selected: boolean
+    selected: boolean,
+    current: string[]
   ) => {
     if (selected) {
       removeAppliedTag(activeTabId, tagId);

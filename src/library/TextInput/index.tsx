@@ -4,6 +4,7 @@
 import { useRef, useState } from 'react';
 import { Wrapper } from '../../library/TextInput/Wrapper';
 import type { TextInputProps } from './types';
+import { formatInputString } from 'Utils';
 
 export const TextInput = ({
   name,
@@ -22,15 +23,6 @@ export const TextInput = ({
   // Whether the current value is valid.
   const valid = value.length > 0;
 
-  // Format submitted value.
-  const formatSubmitted = (str: string): string => {
-    // Remove extra spaces.
-    str = str.replace(/\s{2,}/g, ' ');
-    // Trim.
-    str = str.trim();
-    return str;
-  };
-
   return (
     <Wrapper>
       {label && <h5 className={`${focus ? 'focus' : undefined}`}>{label}</h5>}
@@ -46,9 +38,9 @@ export const TextInput = ({
           onKeyDown={(ev) => {
             // Submit on enter key.
             if (ev.key === 'Enter') {
-              onSubmit(formatSubmitted(value));
+              onSubmit(formatInputString(value));
             }
-            // Blue on escape key.
+            // Blur escape key.
             if (ev.key === 'Escape') {
               inputRef.current?.blur();
               setFocus(false);
@@ -57,7 +49,7 @@ export const TextInput = ({
         />
         <div className="controls">
           <button
-            onClick={() => onSubmit(formatSubmitted(value))}
+            onClick={() => onSubmit(formatInputString(value))}
             disabled={!valid}
           >
             Save
