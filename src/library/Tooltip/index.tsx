@@ -101,11 +101,24 @@ export const Tooltip = () => {
     open && (
       <Wrapper
         ref={tooltipRef}
+        initial="hidden"
+        animate={showTooltip ? 'show' : 'hidden'}
+        variants={{
+          hidden: {
+            opacity: 0,
+          },
+          show: {
+            opacity: 1,
+          },
+        }}
+        transition={{
+          duration: 1,
+          ease: [0.1, 1, 0.1, 1],
+        }}
         style={{
           position: 'absolute',
           left: `${positionRef?.current?.[0] || 0}px`,
           top: `${positionRef?.current?.[1] || 0}px`,
-          opacity: showTooltip ? 1 : 0,
           zIndex: 99,
         }}
       >

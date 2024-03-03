@@ -29,7 +29,7 @@ export const defaultTooltipContext: TooltipContextInterface = {
 };
 
 // Delay before showing tooltip.
-export const TooltipDelay = 1000;
+export const TooltipDelay = 2000;
 
 // Document padding.
 export const TooltipDocumentPadding = 20;
