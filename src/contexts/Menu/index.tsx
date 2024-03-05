@@ -67,8 +67,8 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
     // position.
     const bodyRect = document.body.getBoundingClientRect();
     const menuRect = ref.current.getBoundingClientRect();
-    const hiddenRight = menuRect.right > bodyRect.right;
-    const hiddenBottom = menuRect.bottom > bodyRect.bottom;
+    const hiddenRight = menuRect.right > bodyRect.right - DocumentPadding;
+    const hiddenBottom = menuRect.bottom > bodyRect.bottom - DocumentPadding;
 
     const x = hiddenRight
       ? window.innerWidth - menuRect.width - DocumentPadding

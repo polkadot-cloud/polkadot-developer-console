@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useMenu } from 'contexts/Menu';
 import { Wrapper } from './Wrappers';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
+import { motion } from 'framer-motion';
 
 export const ContextMenu = () => {
   const {
@@ -58,30 +59,35 @@ export const ContextMenu = () => {
     open && (
       <Wrapper
         ref={menuRef}
-        animate={!hidden ? 'show' : 'hidden'}
-        variants={{
-          hidden: {
-            opacity: 0,
-            transform: 'scale(0.93)',
-          },
-          show: {
-            opacity: 1,
-            transform: 'scale(1)',
-          },
-        }}
-        transition={{
-          duration: TRANSITION_DURATION_MS * 0.001,
-          ease: [0.1, 1, 0.1, 1],
-        }}
+        onAnimationComplete={() => checkMenuPosition(menuRef)}
         style={{
           position: 'absolute',
           left: `${x}px`,
           top: `${y}px`,
-          zIndex: 999,
           opacity: show ? 1 : 0,
+          zIndex: 99,
         }}
       >
-        {inner}
+        <motion.div
+          animate={!hidden ? 'show' : 'hidden'}
+          variants={{
+            hidden: {
+              opacity: 0,
+              transform: 'scale(0.93)',
+            },
+            show: {
+              opacity: 1,
+              transform: 'scale(1)',
+            },
+          }}
+          transition={{
+            duration: TRANSITION_DURATION_MS * 0.001,
+            ease: [0.1, 1, 0.1, 1],
+          }}
+          className="inner"
+        >
+          {inner}
+        </motion.div>
       </Wrapper>
     )
   );
