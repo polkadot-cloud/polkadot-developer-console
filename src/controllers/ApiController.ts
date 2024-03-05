@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ApiPromise } from '@polkadot/api';
+import type { Api } from 'model/Api';
 
 export class ApiController {
   // ------------------------------------------------------
@@ -9,5 +9,5 @@ export class ApiController {
   // ------------------------------------------------------
 
   // The currently instantiated API instances.
-  static instances: Record<string, ApiPromise> = {};
+  static instances: Record<string, Api> = {};
 }
