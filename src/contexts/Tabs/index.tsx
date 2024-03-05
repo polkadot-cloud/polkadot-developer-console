@@ -91,7 +91,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       ...tabs,
       {
         id: newTabId,
-        chain: undefined,
+        chainId: undefined,
         name: 'New Tab',
         autoConnect,
       },

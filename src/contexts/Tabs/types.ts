@@ -8,7 +8,7 @@ export type Tabs = Tab[];
 
 export interface Tab {
   id: number;
-  chain: ChainId | undefined;
+  chainId: ChainId | undefined;
   name: string;
   autoConnect: boolean;
 }
