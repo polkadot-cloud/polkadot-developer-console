@@ -34,19 +34,28 @@ export const TAB_TRANSITION_DURATION_MS = 300;
 export const defaultTabs: Tabs = [
   {
     id: 1,
-    chainId: 'polkadot-relay-chain',
+    chain: {
+      id: 'polkadot-relay-chain',
+      provider: 'IBP-GeoDNS1',
+    },
     name: 'Polkadot Relay',
     autoConnect: true,
   },
   {
     id: 2,
-    chainId: 'kusama-relay-chain',
+    chain: {
+      id: 'kusama-relay-chain',
+      provider: 'IBP-GeoDNS1',
+    },
     name: 'Kusama Relay',
     autoConnect: true,
   },
   {
     id: 3,
-    chainId: 'westend-relay-chain',
+    chain: {
+      id: 'westend-relay-chain',
+      provider: 'IBP-GeoDNS1',
+    },
     name: 'Westend Relay Long Name',
     autoConnect: true,
   },
@@ -54,7 +63,7 @@ export const defaultTabs: Tabs = [
 
 export const defaultEemptyTab: Tab = {
   id: -1,
-  chainId: undefined,
+  chain: undefined,
   name: '',
   autoConnect: true,
 };

@@ -11,17 +11,33 @@ import { useLocation } from 'react-router-dom';
 import { HeaderMenuWrapper } from 'library/HeaderMenu/Wrappers';
 import { useSection } from 'library/Page/provider';
 import { ButtonWithTooltip } from './ButtonWithTooltip';
+import { useApi } from 'contexts/Api';
 
 export const ChainMenu = () => {
+  const { getApiStatus } = useApi();
   const { pathname } = useLocation();
-  const { tabsHidden, setTabsHidden } = useTabs();
   const { activeSection, setActiveSection } = useSection();
+  const { tabsHidden, setTabsHidden, activeTabId } = useTabs();
+
+  const apiStatus = getApiStatus(activeTabId);
+  let statusLabel;
+  switch (apiStatus) {
+    case 'connecting':
+      statusLabel = 'Connecting';
+      break;
+    case 'ready':
+    case 'connected':
+      statusLabel = 'Connected';
+      break;
+    default:
+      statusLabel = 'Not Connected';
+  }
 
   return (
     <HeaderMenuWrapper>
       <div className="menu">
         <section className="main">
-          <div className="label">Not Connected</div>
+          <div className="label"> {statusLabel}</div>
           <button
             onClick={() => setActiveSection(0)}
             className={activeSection === 0 ? 'active' : undefined}

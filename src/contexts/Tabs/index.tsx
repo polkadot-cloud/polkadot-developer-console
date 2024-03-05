@@ -81,7 +81,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Gets a tab by chain id.
   const getChainTab = (chainId: ChainId) =>
-    tabs.find((tab) => tab.chainId === chainId);
+    tabs.find((tab) => tab.chain?.id === chainId);
 
   // Get the largest id from a list of tabs.
   const getLargestId = (list: Tabs) =>
@@ -97,7 +97,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       ...tabs,
       {
         id: newTabId,
-        chainId: undefined,
+        chain: undefined,
         name: 'New Tab',
         autoConnect,
       },

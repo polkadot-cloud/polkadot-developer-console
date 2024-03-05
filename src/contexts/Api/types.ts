@@ -7,5 +7,5 @@ import type { ApiStatus } from 'model/Api/types';
 export interface ApiContextInterface {
   isReady: boolean;
   getTabApi: () => Api | undefined;
-  apiStatus: Record<string, ApiStatus>;
+  getApiStatus: (tabId: number) => ApiStatus;
 }

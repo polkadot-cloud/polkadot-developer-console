@@ -10,13 +10,14 @@ import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import type { ApiStatus } from 'model/Api/types';
+import { NetworkDirectory } from 'config/networks';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
 export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
-  const { getActiveTab, getChainTab } = useTabs();
+  const { getActiveTab, getChainTab, tabs } = useTabs();
 
   // Store API connection status of each tab. NOTE: requires ref as it is used in event listener.
   const [apiStatus, setApiStatusState] = useState<Record<number, ApiStatus>>(
@@ -30,11 +31,14 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     setApiStatusState(status);
   };
 
-  // Gets the Api instance of the active tab, if present.
+  // Gets an api status based on a tab id.
+  const getApiStatus = (tabId: number): ApiStatus => apiStatus[tabId];
+
+  // Gets the `Api` instance of the active tab, if present.
   const getTabApi = () => {
-    const chainId = getActiveTab()?.chainId;
-    if (chainId) {
-      return ApiController.instances[chainId];
+    const activeTab = getActiveTab();
+    if (activeTab?.chain) {
+      return ApiController.instances[activeTab.id];
     }
   };
 
@@ -83,14 +87,21 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
   // Initialisation of Api instances.
   useEffect(() => {
-    // TOOD: implement.
+    console.log('initialise tab instances');
+    tabs.forEach((tab) => {
+      if (tab?.chain && tab.autoConnect) {
+        const { id, provider } = tab.chain;
+        const endpoint = NetworkDirectory[id].providers[provider];
+        ApiController.instantiate(tab.id, id, endpoint);
+      }
+    });
   }, []);
 
   return (
     <Api.Provider
       value={{
         isReady: false,
-        apiStatus,
+        getApiStatus,
         getTabApi,
       }}
     >
