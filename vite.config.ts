@@ -16,4 +16,18 @@ export default defineConfig({
       typescript: true,
     }),
   ],
+  build: {
+    outDir: 'build',
+  }, 
+  server: {
+    fs: {
+      strict: false,
+    },
+  },
+  optimizeDeps: {
+    include: ['react/jsx-runtime'],
+  },
+  worker: {
+    format: 'es',
+  },
 });

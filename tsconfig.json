@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
+    "outDir": "build",
 
     "target": "ESNext",
     "useDefineForClassFields": true,
