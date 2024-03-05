@@ -48,7 +48,7 @@ export const defaultTabs: Tabs = [
       provider: 'IBP-GeoDNS1',
     },
     name: 'Kusama Relay',
-    autoConnect: true,
+    autoConnect: false,
   },
   {
     id: 3,
@@ -56,8 +56,8 @@ export const defaultTabs: Tabs = [
       id: 'westend-relay-chain',
       provider: 'IBP-GeoDNS1',
     },
-    name: 'Westend Relay Long Name',
-    autoConnect: true,
+    name: 'Westend Relay',
+    autoConnect: false,
   },
 ];
 
@@ -65,5 +65,5 @@ export const defaultEemptyTab: Tab = {
   id: -1,
   chain: undefined,
   name: '',
-  autoConnect: true,
+  autoConnect: false,
 };
