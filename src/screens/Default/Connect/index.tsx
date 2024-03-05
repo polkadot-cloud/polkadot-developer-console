@@ -5,7 +5,7 @@ import { ChainList } from './ChainList';
 import { AutoConnect } from './AutoConnect';
 import { SearchChain } from './SearchChain';
 
-export const ConnectChain = () => (
+export const Connect = () => (
   <>
     <AutoConnect />
     <SearchChain />
