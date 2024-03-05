@@ -1,9 +1,9 @@
-import type { EventDetail } from 'model/Api/types';
+import type { APIStatusEventDetail } from 'model/Api/types';
 import type { CSSProperties, ReactNode } from 'react';
 
 declare global {
   interface DocumentEventMap {
-    'api-status': CustomEvent<EventDetail>;
+    'api-status': CustomEvent<APIStatusEventDetail>;
   }
 }
 

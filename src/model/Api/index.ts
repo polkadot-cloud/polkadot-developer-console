@@ -5,7 +5,7 @@ import { ApiPromise } from '@polkadot/api';
 import type { VoidFn } from '@polkadot/api/types';
 import { WsProvider } from '@polkadot/rpc-provider';
 import type { ChainId } from 'config/networks';
-import type { EventDetail, EventStatus } from './types';
+import type { APIStatusEventDetail, EventStatus } from './types';
 
 export class Api {
   // ------------------------------------------------------
@@ -109,7 +109,7 @@ export class Api {
       err?: string;
     }
   ) {
-    const detail: EventDetail = { event };
+    const detail: APIStatusEventDetail = { event, chainId: this.chainId };
     if (options?.err) {
       detail['err'] = options.err;
     }
