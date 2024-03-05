@@ -116,14 +116,14 @@ export const ChainListItemWrapper = styled.div`
         /* Header connect button display */
         &:last-child {
           flex-shrink: 1;
-          padding: 0 0.5rem;
+          padding: 0 0.15rem 0 0.5rem;
 
           > button {
             color: var(--text-color-tertiary);
-            font-family: InterBold, sans-serif;
+            font-family: InterSemiBold, sans-serif;
             display: flex;
             align-items: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
 
             > svg {
               margin-left: 0.4rem;
