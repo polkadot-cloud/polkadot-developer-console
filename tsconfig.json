@@ -24,6 +24,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "strictPropertyInitialization": false,
     "noUnusedLocals": true,
   },
   "include": [
