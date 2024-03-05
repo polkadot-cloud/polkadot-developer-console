@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { TagId, TagItem } from 'contexts/Tags/types';
-import { Wrapper } from './Wrapper';
-import { ListWrapper } from 'library/ContextMenu/Wrappers';
+import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useTags } from 'contexts/Tags';
@@ -35,7 +34,7 @@ export const TagsMenuInner = ({
       : tagEntries;
 
   return (
-    <Wrapper>
+    <SelectListWrapper>
       <h5>Select Tags</h5>
       <div className="search">
         <input
@@ -87,6 +86,6 @@ export const TagsMenuInner = ({
           );
         })}
       </ListWrapper>
-    </Wrapper>
+    </SelectListWrapper>
   );
 };

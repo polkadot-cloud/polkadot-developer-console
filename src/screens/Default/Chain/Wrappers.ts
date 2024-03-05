@@ -91,32 +91,75 @@ export const ChainListItemWrapper = styled.div`
       border-top-left-radius: var(--chain-list-item-border-radius);
       border-top-right-radius: var(--chain-list-item-border-radius);
       padding: 0.7rem 0.75rem 0.7rem 0.75rem;
-      cursor: pointer;
 
-      h3 {
-        color: var(--text-color-primary);
-        font-family: InterBold, sans-serif;
-        transition: color 0.25s;
-      }
+      > section {
+        display: flex;
+        align-items: center;
 
-      > h5 {
-        margin-top: 0.15rem;
-      }
+        /* Header network name and icon display */
+        &:first-child {
+          flex-grow: 1;
 
-      > .icon {
-        width: 1.25rem;
-        height: 1.25rem;
-        margin-right: 0.55rem;
+          h3 {
+            color: var(--text-color-secondary);
+            font-family: InterBold, sans-serif;
+            transition: color 0.25s;
+          }
+
+          > .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.55rem;
+          }
+        }
+
+        /* Header connect button display */
+        &:last-child {
+          flex-shrink: 1;
+          padding: 0 0.5rem;
+
+          > button {
+            color: var(--text-color-tertiary);
+            font-family: InterBold, sans-serif;
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+
+            > svg {
+              margin-left: 0.4rem;
+            }
+          }
+        }
       }
 
       &:hover {
-        background-color: var(--background-default);
-        > h3 {
-          color: var(--accent-color-secondary);
+        > section {
+          &:first-child {
+            > h3 {
+              color: var(--text-color-primary);
+            }
+          }
+          &:last-child {
+            > button {
+              color: var(--text-color-primary);
+              &:hover {
+                color: var(--accent-color-secondary);
+              }
+            }
+          }
         }
       }
     }
 
+    /* Chain metadata display. */
+    &.body {
+      padding: 0.4rem 0.75rem 0rem 0.75rem;
+      > h5 {
+        margin-top: 0.15rem;
+      }
+    }
+
+    /* Chain tags and config controls. */
     &.footer {
       padding: 0.3rem 0.75em 0.6rem 0.75rem;
       display: flex;
@@ -138,6 +181,6 @@ export const ChainListItemWrapper = styled.div`
     }
   }
   &:hover {
-    transform: scale(1.01);
+    transform: scale(1.008);
   }
 `;

@@ -51,6 +51,8 @@ export const ListWrapper = styled.ul`
       align-items: center;
 
       > div {
+        overflow: hidden;
+
         &:nth-child(1) {
           color: var(--text-color-tertiary);
           margin-left: 0.25rem;
@@ -58,20 +60,39 @@ export const ListWrapper = styled.ul`
           display: flex;
           align-items: center;
           width: 1rem;
+
+          &.none {
+            width: 0;
+          }
         }
         &:nth-child(2) {
           flex-grow: 1;
+          flex-basis: 60%;
 
           > h3 {
             color: var(--text-color-secondary);
             font-size: 0.8rem;
             text-align: left;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
             width: 100%;
           }
         }
         &:nth-child(1),
         &:nth-child(3) {
           flex-shrink: 1;
+        }
+
+        &:nth-child(3) {
+          justify-content: flex-end;
+          padding-left: 0.5rem;
+
+          h5 {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+          }
         }
       }
     }
@@ -112,6 +133,39 @@ export const ListWrapper = styled.ul`
       &:hover {
         background-color: transparent;
       }
+    }
+  }
+`;
+
+export const SelectListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 450px;
+  width: 100%;
+
+  > h5 {
+    padding: 0.75rem 0.75rem 0 0.75rem;
+  }
+
+  > .search {
+    background-color: var(--background-default);
+    position: sticky;
+    padding: 0.2rem 0.5rem;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+
+    > input {
+      background-color: var(--background-primary);
+      border: 1px solid var(--border-primary-color);
+      padding: 0.3rem 0.4rem;
+      border-radius: 0.25rem;
+      margin: 0.3rem 0;
+      font-size: 0.7rem;
+      width: 100%;
     }
   }
 `;
