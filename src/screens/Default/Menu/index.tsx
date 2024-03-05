@@ -26,7 +26,7 @@ export const ChainMenu = () => {
             onClick={() => setActiveSection(0)}
             className={activeSection === 0 ? 'active' : undefined}
           >
-            Connect
+            Connect Chain
           </button>
         </section>
         <section className="other">{/* Additional links right side */}</section>
