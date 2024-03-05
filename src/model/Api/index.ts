@@ -54,7 +54,6 @@ export class Api {
   constructor(chainId: ChainId, endpoint: string) {
     this.#rpcEndpoint = endpoint;
     this.#chainId = chainId;
-    this.initialize();
   }
 
   // ------------------------------------------------------
@@ -65,9 +64,6 @@ export class Api {
   async initialize() {
     // Initialize provider.
     this.#provider = new WsProvider(this.#rpcEndpoint);
-
-    // Tell UI api is connecting.
-    this.dispatchEvent(this.ensureEventStatus('connecting'));
 
     // Tell UI api is connecting.
     this.dispatchEvent(this.ensureEventStatus('connecting'));
