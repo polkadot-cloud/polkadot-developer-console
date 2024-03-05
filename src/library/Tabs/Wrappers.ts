@@ -93,7 +93,7 @@ export const TabWrapper = styled(motion.div)`
   /* Main tab elements. */
 
   .connection {
-    --connection-icon-size: 0.74rem;
+    --connection-icon-size: 0.78rem;
     height: var(--tab-height);
     position: absolute;
     top: 0;
@@ -103,9 +103,9 @@ export const TabWrapper = styled(motion.div)`
     align-items: center;
 
     > svg {
-      fill: var(--text-color-tertiary);
       width: var(--connection-icon-size);
       height: var(--connection-icon-size);
+      fill: var(--text-color-tertiary);
     }
   }
   > .icon {

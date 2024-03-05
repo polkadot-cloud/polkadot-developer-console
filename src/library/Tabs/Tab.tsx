@@ -18,6 +18,8 @@ import {
   TAB_TRANSITION_DURATION_MS,
 } from 'contexts/Tabs/defaults';
 import DisconnectSVG from 'svg/Disconnect.svg?react';
+import ConnectSVG from 'svg/Connect.svg?react';
+import { useApi } from 'contexts/Api';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -34,6 +36,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     addInstantiatedId,
   } = useTabs();
   const { openMenu } = useMenu();
+  const { getApiStatus } = useApi();
 
   const {
     listeners,
@@ -43,6 +46,9 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     transition,
     setActivatorNodeRef,
   } = useSortable({ id });
+
+  // Get any api status for the tab, if present.
+  const apiStatus = getApiStatus(id);
 
   // Update the tab to instantiated.
   addInstantiatedId(id);
@@ -131,8 +137,12 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
         {...attributes}
         {...listeners}
       />
-      <div className="connection">
-        <DisconnectSVG />
+      <div className={`connection`}>
+        {['ready', 'connected', 'connecting'].includes(apiStatus) ? (
+          <ConnectSVG />
+        ) : (
+          <DisconnectSVG />
+        )}
       </div>
       <div className="name">{name}</div>
       <div className="fade" />

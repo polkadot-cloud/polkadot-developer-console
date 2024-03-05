@@ -20,29 +20,27 @@ export const ChainMenu = () => {
   const { tabsHidden, setTabsHidden, activeTabId } = useTabs();
 
   const apiStatus = getApiStatus(activeTabId);
-  let statusLabel;
+  let screenLabel;
   switch (apiStatus) {
     case 'connecting':
-      statusLabel = 'Connecting';
-      break;
     case 'ready':
     case 'connected':
-      statusLabel = 'Connected';
+      screenLabel = 'Chain';
       break;
     default:
-      statusLabel = 'Not Connected';
+      screenLabel = 'Connect';
   }
 
   return (
     <HeaderMenuWrapper>
       <div className="menu">
         <section className="main">
-          <div className="label"> {statusLabel}</div>
+          <div className="label"> {screenLabel}</div>
           <button
             onClick={() => setActiveSection(0)}
             className={activeSection === 0 ? 'active' : undefined}
           >
-            {!apiStatus ? 'Connect Chain' : 'Overview'}
+            {!apiStatus ? 'Search Chain' : 'Overview'}
           </button>
         </section>
         <section className="other">{/* Additional links right side */}</section>

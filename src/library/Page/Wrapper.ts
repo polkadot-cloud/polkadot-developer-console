@@ -11,3 +11,14 @@ export const Wrapper = styled.div`
   align-items: center;
   width: 100%;
 `;
+
+export const PageContentWrapper = styled.div`
+  margin-top: 0.5rem;
+  max-width: 1100px;
+  width: 100%;
+
+  > h2 {
+    color: var(--text-color-secondary);
+    margin-bottom: 0.6rem;
+  }
+`;
