@@ -138,4 +138,22 @@ export class Api {
     }
     return 'error' as EventStatus;
   };
+
+  // ------------------------------------------------------
+  // Disconnect
+  // ------------------------------------------------------
+
+  // Remove API event listeners if they exist.
+  unsubscribeProvider() {
+    this.#providerUnsubs.forEach((unsub) => {
+      unsub();
+    });
+  }
+
+  // Disconnect gracefully from API and provider.
+  async disconnect() {
+    this.unsubscribeProvider();
+    this.provider?.disconnect();
+    await this.api?.disconnect();
+  }
 }
