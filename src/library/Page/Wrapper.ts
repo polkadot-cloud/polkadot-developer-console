@@ -14,11 +14,11 @@ export const Wrapper = styled.div`
 
 export const PageContentWrapper = styled.div`
   margin-top: 0.5rem;
-  max-width: 1100px;
+  max-width: 750px;
   width: 100%;
 
   > h2 {
-    color: var(--text-color-secondary);
+    color: var(--text-color-primary);
     margin-bottom: 0.6rem;
   }
 `;

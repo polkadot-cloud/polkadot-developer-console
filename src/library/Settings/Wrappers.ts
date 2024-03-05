@@ -3,12 +3,6 @@
 
 import styled from 'styled-components';
 
-export const SettingsWrapper = styled.div`
-  margin-top: 0.5rem;
-  max-width: 750px;
-  width: 100%;
-`;
-
 export const SettingsHeaderWrapper = styled.div`
   width: 100%;
   display: flex;

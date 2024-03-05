@@ -9,7 +9,6 @@ export const AutoConnectWrapper = styled.div`
   align-items: center;
   margin-top: 0.45rem;
   padding: 0 0.2rem;
-  max-width: 750px;
   width: 100%;
 
   > h4 {
@@ -20,7 +19,6 @@ export const AutoConnectWrapper = styled.div`
 `;
 
 export const SearchChainWrapper = styled.div`
-  max-width: 750px;
   width: 100%;
 `;
 
@@ -30,7 +28,6 @@ export const ChainListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 0.5rem;
-  max-width: 750px;
   width: 100%;
 
   > h4 {
