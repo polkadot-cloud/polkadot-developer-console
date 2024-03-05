@@ -18,6 +18,7 @@ export interface TabsContextInterface {
   setTabs: (tabs: Tabs) => void;
   createTab: () => void;
   activeTabId: number;
+  getChainTab: (chainId: ChainId) => Tab | undefined;
   getActiveTab: () => Tab | undefined;
   destroyTab: (index: number, id: number) => void;
   setActiveTabId: (index: number) => void;

@@ -9,28 +9,28 @@ export class ApiController {
   // Class members.
   // ------------------------------------------------------
 
-  // The currently instantiated API instances.
+  // The currently instantiated API instances, keyed by tab id.
   static instances: Record<string, Api> = {};
 
   // ------------------------------------------------------
   // Api instance methods.
   // ------------------------------------------------------
 
-  // Instantiate a new Api instance with the supplied chain id and endpoint.
-  static async instantiate(chainId: ChainId, endpoint: string) {
-    if (!ApiController.instances[chainId]) {
-      ApiController.instances[chainId] = new Api(chainId, endpoint);
-      await ApiController.instances[chainId].initialize();
+  // Instantiate a new `Api` instance with the supplied chain id and endpoint.
+  static async instantiate(tabId: number, chainId: ChainId, endpoint: string) {
+    if (!ApiController.instances[tabId]) {
+      ApiController.instances[tabId] = new Api(chainId, endpoint);
+      await ApiController.instances[tabId].initialize();
     }
   }
 
   // Gracefully disconnect and then destroy an api instance.
-  static async destroy(chainId: ChainId) {
-    const api = ApiController.instances[chainId];
+  static async destroy(tabId: number) {
+    const api = ApiController.instances[tabId];
 
     if (api) {
       await api.disconnect();
-      delete ApiController.instances[chainId];
+      delete this.instances[tabId];
     }
   }
 }

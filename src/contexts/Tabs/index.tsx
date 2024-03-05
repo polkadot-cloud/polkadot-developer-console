@@ -7,6 +7,7 @@ import type { Tabs, TabsContextInterface } from './types';
 import { defaultTabs, defaultTabsContext } from './defaults';
 import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
+import type { ChainId } from 'config/networks';
 
 export const TabsContext =
   createContext<TabsContextInterface>(defaultTabsContext);
@@ -74,8 +75,13 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       (item) => item !== id
     );
   };
+
   // Gets the active tab.
   const getActiveTab = () => tabs.find((tab) => tab.id === activeTabId);
+
+  // Gets a tab by chain id.
+  const getChainTab = (chainId: ChainId) =>
+    tabs.find((tab) => tab.chainId === chainId);
 
   // Get the largest id from a list of tabs.
   const getLargestId = (list: Tabs) =>
@@ -135,6 +141,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         setTabs,
         createTab,
         activeTabId,
+        getChainTab,
         getActiveTab,
         destroyTab,
         setActiveTabId,

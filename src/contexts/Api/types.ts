@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { Api } from 'model/Api';
+import type { ApiStatus } from 'model/Api/types';
 
 export interface ApiContextInterface {
   isReady: boolean;
   getTabApi: () => Api | undefined;
+  apiStatus: Record<string, ApiStatus>;
 }

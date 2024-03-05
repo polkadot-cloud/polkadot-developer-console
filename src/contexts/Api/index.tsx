@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { defaultApiContext } from './defaults';
 import type { ApiContextInterface } from './types';
 import { ApiController } from 'controllers/ApiController';
@@ -16,16 +16,16 @@ export const Api = createContext<ApiContextInterface>(defaultApiContext);
 export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
-  const { getActiveTab } = useTabs();
+  const { getActiveTab, getChainTab } = useTabs();
 
   // Store API connection status of each tab. NOTE: requires ref as it is used in event listener.
-  const [apiStatus, setApiStatusState] = useState<Record<string, ApiStatus>>(
+  const [apiStatus, setApiStatusState] = useState<Record<number, ApiStatus>>(
     {}
   );
   const apiStatusRef = useRef(apiStatus);
 
   // Setter for api status.
-  const setApiStatus = (status: Record<string, ApiStatus>) => {
+  const setApiStatus = (status: Record<number, ApiStatus>) => {
     apiStatusRef.current = status;
     setApiStatusState(status);
   };
@@ -42,37 +42,55 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const handleNewApiStatus = (e: Event): void => {
     if (isCustomEvent(e)) {
       const { chainId, event } = e.detail;
+      const tab = getChainTab(chainId);
 
-      switch (event) {
-        case 'ready':
-          setApiStatus({ ...apiStatusRef.current, [chainId]: 'ready' });
-          break;
-        case 'connecting':
-          setApiStatus({ ...apiStatusRef.current, [chainId]: 'connecting' });
-          break;
-        case 'connected':
-          setApiStatus({ ...apiStatusRef.current, [chainId]: 'connected' });
-          break;
-        case 'disconnected':
-          setApiStatus({ ...apiStatusRef.current, [chainId]: 'disconnected' });
-          break;
-        case 'error':
-          setApiStatus({ ...apiStatusRef.current, [chainId]: 'disconnected' });
-          break;
+      if (tab) {
+        const tabId = tab.id;
+
+        switch (event) {
+          case 'ready':
+            setApiStatus({
+              ...apiStatusRef.current,
+              [tabId]: 'ready',
+            });
+            break;
+          case 'connecting':
+            setApiStatus({ ...apiStatusRef.current, [tabId]: 'connecting' });
+            break;
+          case 'connected':
+            setApiStatus({ ...apiStatusRef.current, [tabId]: 'connected' });
+            break;
+          case 'disconnected':
+            setApiStatus({
+              ...apiStatusRef.current,
+              [tabId]: 'disconnected',
+            });
+            break;
+          case 'error':
+            setApiStatus({
+              ...apiStatusRef.current,
+              [tabId]: 'disconnected',
+            });
+            break;
+        }
       }
     }
   };
 
+  // Listen for api status updates.
   const documentRef = useRef<Document>(document);
-
   useEventListener('api-status', handleNewApiStatus, documentRef);
+
+  // Initialisation of Api instances.
+  useEffect(() => {
+    // TOOD: implement.
+  }, []);
 
   return (
     <Api.Provider
       value={{
         isReady: false,
-        // TODO: apiStatus,
-        // TODO: setRpcEndpoint,
+        apiStatus,
         getTabApi,
       }}
     >
