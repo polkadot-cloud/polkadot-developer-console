@@ -87,7 +87,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
   // Initialisation of Api instances.
   useEffect(() => {
-    console.log('initialise tab instances');
     tabs.forEach((tab) => {
       if (tab?.chain && tab.autoConnect) {
         const { id, provider } = tab.chain;

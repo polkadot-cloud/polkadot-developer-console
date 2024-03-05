@@ -42,7 +42,7 @@ export const ChainMenu = () => {
             onClick={() => setActiveSection(0)}
             className={activeSection === 0 ? 'active' : undefined}
           >
-            Connect Chain
+            {!apiStatus ? 'Connect Chain' : 'Overview'}
           </button>
         </section>
         <section className="other">{/* Additional links right side */}</section>
