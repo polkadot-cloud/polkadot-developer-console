@@ -5,7 +5,12 @@ import { ApiPromise } from '@polkadot/api';
 import type { VoidFn } from '@polkadot/api/types';
 import { WsProvider } from '@polkadot/rpc-provider';
 import type { ChainId } from 'config/networks';
-import type { APIStatusEventDetail, EventStatus } from './types';
+import type {
+  APIChainState,
+  APIStatusEventDetail,
+  ApiChainStateVersion,
+  EventStatus,
+} from './types';
 
 export class Api {
   // ------------------------------------------------------
@@ -29,6 +34,9 @@ export class Api {
 
   // The current RPC endpoint.
   #rpcEndpoint: string;
+
+  // The current chain spec.
+  chainSpec: APIChainState;
 
   // ------------------------------------------------------
   // Getters.
@@ -82,8 +90,31 @@ export class Api {
     // Initialise api.
     this.#api = await ApiPromise.create({ provider: this.provider });
 
+    // Fetch chain spec.
+    await this.fetchChainSpec();
+
     // Tell UI api is ready.
     this.dispatchEvent(this.ensureEventStatus('ready'));
+  }
+
+  async fetchChainSpec() {
+    const newChainSpec = await Promise.all([
+      this.api.rpc.system.chain(),
+      this.api.consts.system.version,
+      this.api.consts.system.ss58Prefix,
+    ]);
+
+    // Check that chain values have been fetched before committing to state.
+    if (newChainSpec.every((c) => !!c?.toHuman())) {
+      const chain = newChainSpec[0].toString();
+      const version =
+        newChainSpec[1].toJSON() as unknown as ApiChainStateVersion;
+      const ss58Prefix = Number(newChainSpec[2].toString());
+
+      if (version) {
+        this.chainSpec = { chain, version, ss58Prefix };
+      }
+    }
   }
 
   // ------------------------------------------------------
