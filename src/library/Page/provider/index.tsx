@@ -8,7 +8,6 @@ import * as local from './Local';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { useTabs } from 'contexts/Tabs';
 import { extractUrlValue, removeVarFromUrlHash } from '@w3ux/utils';
-import { useLocation } from 'react-router-dom';
 import { useMenu } from 'contexts/Menu';
 
 export const SectionContext = createContext<SectionContextInterface>(
@@ -18,9 +17,8 @@ export const SectionContext = createContext<SectionContextInterface>(
 export const useSection = () => useContext(SectionContext);
 
 export const SectionProvider = ({ pageId, children }: SectionContextProps) => {
-  const { open: menuOpen } = useMenu();
-  const { hash } = useLocation();
   const { activeTabId } = useTabs();
+  const { open: menuOpen } = useMenu();
 
   // The active section of the page.
   const [activeSection, setActiveSectionState] = useState<number>(
@@ -39,13 +37,16 @@ export const SectionProvider = ({ pageId, children }: SectionContextProps) => {
   const redirectHash = extractUrlValue('redirect');
 
   useEffectIgnoreInitial(() => {
+    let redirected = false;
     if (redirectHash === 'manage-tab') {
       if (!menuOpen) {
-        console.log(redirectHash, hash);
         setActiveSection(1, false);
         removeVarFromUrlHash('redirect');
+        redirected = true;
       }
-    } else {
+    }
+
+    if (!redirected) {
       setActiveSection(
         local.getActiveSection(pageId, activeTabId) || defaultActiveSection
       );
