@@ -129,7 +129,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       setActiveTabIndex(activeTabIndex - 1);
     }
 
-    // Destroy Api instance associated with tab.
+    // Destroy any Api instance associated with tab.
     ApiController.destroy(id);
   };
 

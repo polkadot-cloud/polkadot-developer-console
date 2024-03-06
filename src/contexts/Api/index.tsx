@@ -102,9 +102,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     });
   }, []);
 
-  console.log(ApiController.instances);
-  console.log(apiStatus);
-
   return (
     <Api.Provider
       value={{
