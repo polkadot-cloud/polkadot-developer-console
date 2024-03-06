@@ -1,6 +1,5 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
-/* eslint-disable react/display-name */
 
 import { useRef, useState } from 'react';
 import { TabWrapper } from './Wrappers';
@@ -17,9 +16,8 @@ import {
   DEFAULT_TAB_WIDTH_PX,
   TAB_TRANSITION_DURATION_MS,
 } from 'contexts/Tabs/defaults';
-import DisconnectSVG from 'svg/Disconnect.svg?react';
-import ConnectSVG from 'svg/Connect.svg?react';
 import { useApi } from 'contexts/Api';
+import { ConnectionIcon } from './ConectionIcon';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -137,14 +135,8 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
         {...attributes}
         {...listeners}
       />
-      <div className={`connection`}>
-        {['ready', 'connected', 'connecting'].includes(apiStatus) ? (
-          <ConnectSVG />
-        ) : (
-          <DisconnectSVG />
-        )}
-      </div>
-      <div className="name">{name}</div>
+      <ConnectionIcon status={apiStatus} />
+      <div className={`name ${apiStatus}`}>{name}</div>
       <div className="fade" />
 
       {tabs.length > 1 && (

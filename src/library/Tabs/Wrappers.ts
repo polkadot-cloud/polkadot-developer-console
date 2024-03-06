@@ -102,6 +102,13 @@ export const TabWrapper = styled(motion.div)`
     display: flex;
     align-items: center;
 
+    &.connected,
+    &.ready {
+      > svg {
+        fill: var(--accent-color-secondary);
+      }
+    }
+
     > svg {
       width: var(--connection-icon-size);
       height: var(--connection-icon-size);
@@ -120,7 +127,7 @@ export const TabWrapper = styled(motion.div)`
     top: 0;
     left: 0;
     width: 100%;
-    padding: 0 0.75rem 0 1.5rem;
+    padding: 0 0.75rem 0 1.6rem;
     display: flex;
     align-items: center;
     /* Handle text overflow */
