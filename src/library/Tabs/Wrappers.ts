@@ -93,26 +93,31 @@ export const TabWrapper = styled(motion.div)`
   /* Main tab elements. */
 
   .connection {
-    --connection-icon-size: 0.78rem;
+    --connection-icon-size: 0.95rem;
     height: var(--tab-height);
     position: absolute;
     top: 0;
-    left: 0.4rem;
+    left: 0.3rem;
     width: var(--connection-icon-size);
     display: flex;
     align-items: center;
-
-    &.connected,
-    &.ready {
-      > svg {
-        fill: var(--accent-color-secondary);
-      }
-    }
 
     > svg {
       width: var(--connection-icon-size);
       height: var(--connection-icon-size);
       fill: var(--text-color-tertiary);
+      opacity: 0.6;
+    }
+
+    &.connected,
+    &.ready {
+      --connection-icon-size: 0.82rem;
+      left: 0.4rem;
+
+      > svg {
+        fill: var(--accent-color-secondary);
+        opacity: 1;
+      }
     }
   }
   > .icon {

@@ -19,7 +19,7 @@ export const TabsContext =
 export const useTabs = () => useContext(TabsContext);
 
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
-  const { autoConnect } = useSettings();
+  const { autoConnect, autoTabNaming } = useSettings();
 
   // Created tabs.
   const [tabs, setTabsState] = useState<Tabs>(local.getTabs() || defaultTabs);
@@ -128,6 +128,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     if (activeTabIndex > index) {
       setActiveTabIndex(activeTabIndex - 1);
     }
+
+    // Destroy Api instance associated with tab.
+    ApiController.destroy(id);
   };
 
   // Rename a tab.
@@ -151,18 +154,20 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Connect tab to an Api instance and update its chain data.
-  const connectTab = (tabId: number, chainId: ChainId, endpoint: string) => {
-    setTabs(
-      [...tabs].map((tab) =>
-        tab.id === tabId
-          ? {
-              ...tab,
-              chain: { id: chainId, provider: endpoint },
-            }
-          : tab
-      )
+  const connectTab = (tabId: number, chainId: ChainId, provider: string) => {
+    const newTabs = [...tabs].map((tab) =>
+      tab.id === tabId
+        ? {
+            ...tab,
+            name: autoTabNaming ? getAutoTabName(chainId) : tab.name,
+            chain: { id: chainId, provider },
+          }
+        : tab
     );
 
+    const endpoint = NetworkDirectory[chainId].providers[provider];
+
+    setTabs(newTabs);
     ApiController.instantiate(tabId, chainId, endpoint);
   };
 

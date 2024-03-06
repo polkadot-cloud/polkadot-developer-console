@@ -13,7 +13,6 @@ import type { TagId } from 'contexts/Tags/types';
 import { type ChainId } from 'config/networks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConnectMenu } from './ConnectMenu';
-import { useSettings } from 'contexts/Settings';
 import { useTabs } from 'contexts/Tabs';
 
 export interface ChainListItemProps {
@@ -22,11 +21,10 @@ export interface ChainListItemProps {
 }
 
 export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
-  const { openMenu } = useMenu();
-  const { autoTabNaming } = useSettings();
+  const { openMenu, closeMenu } = useMenu();
   const { tags, getTagsForChain, addChainToTag, removeChainFromTag } =
     useTags();
-  const { activeTabId, getAutoTabName, renameTab, connectTab } = useTabs();
+  const { activeTabId, connectTab } = useTabs();
   const chainTags = getTagsForChain(chainId);
 
   // Lazily load the icon for the chain.
@@ -39,14 +37,11 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   );
 
   // Handle tag provider select. Connect to chain on successful selection.
-  const handleOnProviderSelect = (endpoint: string) => {
+  const handleOnProviderSelect = (provider: string) => {
     // Update tab data and connect to Api instance.
-    connectTab(activeTabId, chainId, endpoint);
-
-    // If auto-renaming is turned on, rename tab to automated name.
-    if (autoTabNaming) {
-      renameTab(activeTabId, getAutoTabName(chainId));
-    }
+    connectTab(activeTabId, chainId, provider);
+    // Close menu.
+    closeMenu();
   };
 
   // Handle tag menu item select. Either add or remove a tag configs.

@@ -22,13 +22,15 @@ export const ChainList = () => {
   // Filter chains based on applied tags.
   const appliedTags: [ChainId, TagItem][] = getAppliedTags(activeTabId);
 
-  let filtered = Object.fromEntries(
-    Object.entries(results).filter(([chain]) =>
-      appliedTags.some(([tagId]) =>
-        getTagsForChain(chain as ChainId).includes(tagId)
+  let filtered = appliedTags.length
+    ? Object.fromEntries(
+        Object.entries(results).filter(([chain]) =>
+          appliedTags.some(([tagId]) =>
+            getTagsForChain(chain as ChainId).includes(tagId)
+          )
+        )
       )
-    )
-  );
+    : results;
 
   // Filter chains based on search term.
   const searchTerm = getSearchTerm(activeTabId);

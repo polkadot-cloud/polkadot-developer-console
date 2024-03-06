@@ -12,7 +12,7 @@ export const ConnectMenu = ({
   onSelect,
 }: {
   chainId: ChainId;
-  onSelect: (providerId: string) => void;
+  onSelect: (provider: string) => void;
 }) => {
   // Provider search term.
   const [providerSearchTerm, setProviderSearchTerm] = useState<string>('');
@@ -53,7 +53,7 @@ export const ConnectMenu = ({
       <ListWrapper>
         {filteredProviders.map(([name, url], index) => (
           <li key={`provider_context_item_${index}`}>
-            <button onClick={() => onSelect(url)} />
+            <button onClick={() => onSelect(name)} />
 
             <div className="inner">
               <div className="none"></div>

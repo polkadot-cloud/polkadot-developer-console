@@ -12,6 +12,9 @@ export class Api {
   // Class members.
   // ------------------------------------------------------
 
+  // The associated tab id for this api instance.
+  #tabId: number;
+
   // The supplied chain id.
   #chainId: ChainId;
 
@@ -30,6 +33,10 @@ export class Api {
   // ------------------------------------------------------
   // Getters.
   // ------------------------------------------------------
+
+  get tabId() {
+    return this.#tabId;
+  }
 
   get chainId() {
     return this.#chainId;
@@ -51,9 +58,10 @@ export class Api {
   // Constructor
   // ------------------------------------------------------
 
-  constructor(chainId: ChainId, endpoint: string) {
-    this.#rpcEndpoint = endpoint;
+  constructor(tabId: number, chainId: ChainId, endpoint: string) {
+    this.#tabId = tabId;
     this.#chainId = chainId;
+    this.#rpcEndpoint = endpoint;
   }
 
   // ------------------------------------------------------
@@ -109,7 +117,11 @@ export class Api {
       err?: string;
     }
   ) {
-    const detail: APIStatusEventDetail = { event, chainId: this.chainId };
+    const detail: APIStatusEventDetail = {
+      event,
+      tabId: this.tabId,
+      chainId: this.chainId,
+    };
     if (options?.err) {
       detail['err'] = options.err;
     }
@@ -128,6 +140,7 @@ export class Api {
       'disconnected',
       'ready',
       'error',
+      'destroyed',
     ];
     if (eventStatus.includes(status)) {
       return status as EventStatus;
@@ -151,5 +164,6 @@ export class Api {
     this.unsubscribeProvider();
     this.provider?.disconnect();
     await this.api?.disconnect();
+    this.dispatchEvent(this.ensureEventStatus('destroyed'));
   }
 }

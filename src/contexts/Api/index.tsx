@@ -17,7 +17,7 @@ export const Api = createContext<ApiContextInterface>(defaultApiContext);
 export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
-  const { getActiveTab, getChainTab, tabs } = useTabs();
+  const { getActiveTab, tabs } = useTabs();
 
   // Store API connection status of each tab. NOTE: requires ref as it is used in event listener.
   const [apiStatus, setApiStatusState] = useState<Record<number, ApiStatus>>(
@@ -29,6 +29,13 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const setApiStatus = (status: Record<number, ApiStatus>) => {
     apiStatusRef.current = status;
     setApiStatusState(status);
+  };
+
+  // Remove api status on tab close.
+  const removeApiStatus = (tabId: number) => {
+    const newApiStatus = { ...apiStatusRef.current };
+    delete newApiStatus[tabId];
+    setApiStatus(newApiStatus);
   };
 
   // Gets an api status based on a tab id.
@@ -45,38 +52,36 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {
     if (isCustomEvent(e)) {
-      const { chainId, event } = e.detail;
-      const tab = getChainTab(chainId);
+      const { tabId, event } = e.detail;
 
-      if (tab) {
-        const tabId = tab.id;
-
-        switch (event) {
-          case 'ready':
-            setApiStatus({
-              ...apiStatusRef.current,
-              [tabId]: 'ready',
-            });
-            break;
-          case 'connecting':
-            setApiStatus({ ...apiStatusRef.current, [tabId]: 'connecting' });
-            break;
-          case 'connected':
-            setApiStatus({ ...apiStatusRef.current, [tabId]: 'connected' });
-            break;
-          case 'disconnected':
-            setApiStatus({
-              ...apiStatusRef.current,
-              [tabId]: 'disconnected',
-            });
-            break;
-          case 'error':
-            setApiStatus({
-              ...apiStatusRef.current,
-              [tabId]: 'disconnected',
-            });
-            break;
-        }
+      switch (event) {
+        case 'ready':
+          setApiStatus({
+            ...apiStatusRef.current,
+            [tabId]: 'ready',
+          });
+          break;
+        case 'connecting':
+          setApiStatus({ ...apiStatusRef.current, [tabId]: 'connecting' });
+          break;
+        case 'connected':
+          setApiStatus({ ...apiStatusRef.current, [tabId]: 'connected' });
+          break;
+        case 'disconnected':
+          setApiStatus({
+            ...apiStatusRef.current,
+            [tabId]: 'disconnected',
+          });
+          break;
+        case 'error':
+          setApiStatus({
+            ...apiStatusRef.current,
+            [tabId]: 'disconnected',
+          });
+          break;
+        case 'destroyed':
+          removeApiStatus(tabId);
+          break;
       }
     }
   };
@@ -90,11 +95,15 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     tabs.forEach((tab) => {
       if (tab?.chain && tab.autoConnect) {
         const { id, provider } = tab.chain;
+
         const endpoint = NetworkDirectory[id].providers[provider];
         ApiController.instantiate(tab.id, id, endpoint);
       }
     });
   }, []);
+
+  console.log(ApiController.instances);
+  console.log(apiStatus);
 
   return (
     <Api.Provider

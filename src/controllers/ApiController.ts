@@ -18,15 +18,15 @@ export class ApiController {
 
   // Instantiate a new `Api` instance with the supplied chain id and endpoint.
   static async instantiate(tabId: number, chainId: ChainId, endpoint: string) {
-    if (!ApiController.instances[tabId]) {
-      ApiController.instances[tabId] = new Api(chainId, endpoint);
-      await ApiController.instances[tabId].initialize();
+    if (!this.instances[tabId]) {
+      this.instances[tabId] = new Api(tabId, chainId, endpoint);
+      await this.instances[tabId].initialize();
     }
   }
 
   // Gracefully disconnect and then destroy an api instance.
   static async destroy(tabId: number) {
-    const api = ApiController.instances[tabId];
+    const api = this.instances[tabId];
 
     if (api) {
       await api.disconnect();
