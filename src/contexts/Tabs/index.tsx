@@ -7,7 +7,7 @@ import type { Tabs, TabsContextInterface } from './types';
 import { defaultTabs, defaultTabsContext } from './defaults';
 import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
-import type { ChainId } from 'config/networks';
+import { NetworkDirectory, type ChainId } from 'config/networks';
 import { checkLocalTabs } from 'IntegrityChecks';
 
 checkLocalTabs();
@@ -135,6 +135,19 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
+  // Gets the amount of tab names starting with the provided string.
+  const getTabNameCount = (name: string) =>
+    tabs.filter((tab) => tab.name.startsWith(name)).length;
+
+  // Generate tab name for chain.
+  const getAutoTabName = (chainId: ChainId) => {
+    const chainName = NetworkDirectory[chainId].name;
+    const existingNames = getTabNameCount(chainName);
+    const tabName =
+      existingNames === 0 ? chainName : `${chainName} ${existingNames + 1}`;
+
+    return tabName;
+  };
   return (
     <TabsContext.Provider
       value={{
@@ -156,6 +169,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         tabsHidden,
         setTabsHidden,
         renameTab,
+        getAutoTabName,
         instantiatedIds: instantiatedIds.current,
       }}
     >

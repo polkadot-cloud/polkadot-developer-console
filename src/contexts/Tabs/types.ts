@@ -38,4 +38,5 @@ export interface TabsContextInterface {
   setTabsHidden: (hidden: boolean) => void;
   instantiatedIds: number[];
   renameTab: (id: number, name: string) => void;
+  getAutoTabName: (chainId: ChainId) => string;
 }

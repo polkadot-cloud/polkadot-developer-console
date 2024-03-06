@@ -10,30 +10,40 @@ import { faCircleRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { ConfigTagMenu } from './TagsMenu/ConfigTagMenu';
 import type { TagId } from 'contexts/Tags/types';
-import type { ChainId } from 'config/networks';
+import { type ChainId } from 'config/networks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConnectMenu } from './ConnectMenu';
+import { useSettings } from 'contexts/Settings';
+import { useTabs } from 'contexts/Tabs';
 
 export interface ChainListItemProps {
-  chain: ChainId;
+  chainId: ChainId;
   name: string;
 }
 
-export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
+export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   const { openMenu } = useMenu();
+  const { autoTabNaming } = useSettings();
+  const { activeTabId, getAutoTabName, renameTab } = useTabs();
   const { tags, getTagsForChain, addChainToTag, removeChainFromTag } =
     useTags();
-  const chainTags = getTagsForChain(chain);
+  const chainTags = getTagsForChain(chainId);
 
   // Lazily load the icon for the chain.
   const Icon = useMemo(
     () =>
-      lazy(() => import(`../../../config/networks/icons/${chain}/Inline.tsx`)),
+      lazy(
+        () => import(`../../../config/networks/icons/${chainId}/Inline.tsx`)
+      ),
     []
   );
 
   // Handle tag provider select. Connect to chain on successful selection.
   const handleOnProviderSelect = (providerUrl: string) => {
+    // If auto-renaming is turned on, rename tab to automated name.
+    if (autoTabNaming) {
+      renameTab(activeTabId, getAutoTabName(chainId));
+    }
     // TODO: update tab data and connect to Api instance.
     console.log(providerUrl);
   };
@@ -41,9 +51,9 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
   // Handle tag menu item select. Either add or remove a tag configs.
   const handleOnTagSelect = (tagId: TagId, selected: boolean) => {
     if (selected) {
-      removeChainFromTag(tagId, chain);
+      removeChainFromTag(tagId, chainId);
     } else {
-      addChainToTag(tagId, chain);
+      addChainToTag(tagId, chainId);
     }
   };
 
@@ -64,7 +74,7 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
               openMenu(
                 ev,
                 <ConnectMenu
-                  chainId={chain}
+                  chainId={chainId}
                   onSelect={handleOnProviderSelect}
                 />
               );
@@ -77,7 +87,7 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
       </div>
 
       <div className="body">
-        <h5>{chain}</h5>
+        <h5>{chainId}</h5>
       </div>
 
       <div className="footer">
@@ -94,7 +104,7 @@ export const ChainListItem = ({ chain, name }: ChainListItemProps) => {
             onClick={(ev) => {
               openMenu(
                 ev,
-                <ConfigTagMenu chainId={chain} onSelect={handleOnTagSelect} />
+                <ConfigTagMenu chainId={chainId} onSelect={handleOnTagSelect} />
               );
             }}
           />

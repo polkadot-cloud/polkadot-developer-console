@@ -24,6 +24,7 @@ export const defaultTabsContext: TabsContextInterface = {
   setTabsHidden: (hidden) => {},
   instantiatedIds: [],
   renameTab: (id, name) => {},
+  getAutoTabName: (chainId) => '',
 };
 
 export const DEFAULT_TAB_WIDTH_PX = 145;
@@ -38,7 +39,7 @@ export const defaultTabs: Tabs = [
       id: 'polkadot-relay-chain',
       provider: 'IBP-GeoDNS1',
     },
-    name: 'Polkadot Relay',
+    name: 'Polkadot Relay Chain',
     autoConnect: true,
   },
   {
@@ -47,7 +48,7 @@ export const defaultTabs: Tabs = [
       id: 'kusama-relay-chain',
       provider: 'IBP-GeoDNS1',
     },
-    name: 'Kusama Relay',
+    name: 'Kusama Relay Chain',
     autoConnect: false,
   },
   {
@@ -56,7 +57,7 @@ export const defaultTabs: Tabs = [
       id: 'westend-relay-chain',
       provider: 'IBP-GeoDNS1',
     },
-    name: 'Westend Relay',
+    name: 'Westend Relay Chain',
     autoConnect: false,
   },
 ];

@@ -54,7 +54,7 @@ export const ChainList = () => {
       {Object.entries(filtered).map(([key, { name }]) => (
         <ChainListItem
           key={`chain_index_${key}`}
-          chain={key as ChainId}
+          chainId={key as ChainId}
           name={name}
         />
       ))}
