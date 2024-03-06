@@ -37,11 +37,11 @@ export const RenameTab = () => {
 
   return (
     <RenameTabWrapper>
+      <h4>Rename Tab</h4>
       <TextInput
         name="tab_name"
         value={editableValue}
         placeholder="Tab Name"
-        label="Tab Name"
         onChange={onChange}
         onSubmit={onSubmit}
       />

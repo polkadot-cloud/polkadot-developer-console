@@ -30,3 +30,18 @@ export const SettingsToggleWrapper = styled.div`
     flex: 0;
   }
 `;
+export const SettingsSubmitWrapper = styled.div`
+  width: 100%;
+
+  > .buttons {
+    display: flex;
+    margin-top: 0.75rem;
+
+    > button {
+      border: 1px solid var(--accent-color-secondary);
+      color: var(--accent-color-secondary);
+      padding: 0.35rem 0.75rem;
+      border-radius: 0.4rem;
+    }
+  }
+`;

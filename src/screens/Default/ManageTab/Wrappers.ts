@@ -5,4 +5,8 @@ export const RenameTabWrapper = styled.div`
   flex-direction: column;
   margin-top: 1rem;
   width: 100%;
+
+  > h4 {
+    margin-bottom: 0.3rem;
+  }
 `;

@@ -24,10 +24,6 @@ export const TabMenu = ({
       ? 'Connecting..'
       : 'Not Connected';
 
-  const handleDisconnect = () => {
-    ApiController.destroy(tabId);
-  };
-
   return (
     <SelectListWrapper>
       <ListWrapper>
@@ -50,7 +46,7 @@ export const TabMenu = ({
           <button
             onClick={() => {
               if (showDisconnect) {
-                handleDisconnect();
+                ApiController.destroy(tabId);
                 closeMenu();
               }
             }}
