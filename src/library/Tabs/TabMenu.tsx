@@ -24,6 +24,10 @@ export const TabMenu = ({
       ? 'Connecting..'
       : 'Not Connected';
 
+  const apiStatusInactive = ['ready', 'connected', 'disconnected'].includes(
+    apiStatus
+  );
+
   return (
     <SelectListWrapper>
       <ListWrapper>
@@ -42,7 +46,7 @@ export const TabMenu = ({
       </ListWrapper>
       <h5 className="inline">API</h5>
       <ListWrapper>
-        <li>
+        <li className={`${apiStatusInactive ? `` : ` inactive`}`}>
           <button
             onClick={() => {
               if (showDisconnect) {
@@ -58,13 +62,7 @@ export const TabMenu = ({
               )}
             </div>
             <div>
-              <h3
-                className={
-                  ['ready', 'connected', 'disconnected'].includes(apiStatus)
-                    ? undefined
-                    : 'inactive'
-                }
-              >
+              <h3 className={apiStatusInactive ? undefined : 'inactive'}>
                 {apiStatusText}
               </h3>
             </div>

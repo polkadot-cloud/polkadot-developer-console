@@ -117,6 +117,14 @@ export const ListWrapper = styled.ul`
       border-radius: 0.3rem;
       cursor: pointer;
 
+      &.inactive {
+        background: none;
+        cursor: default;
+        > button {
+          cursor: default;
+        }
+      }
+
       > .inner {
         > div > h3,
         > div > button {
