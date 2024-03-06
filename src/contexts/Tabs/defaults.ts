@@ -52,7 +52,7 @@ export const defaultTabs: Tabs = [
       provider: 'IBP-GeoDNS1',
     },
     name: 'Kusama Relay Chain',
-    autoConnect: false,
+    autoConnect: true,
   },
   {
     id: 3,
