@@ -9,6 +9,7 @@ import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
 import { NetworkDirectory, type ChainId } from 'config/networks';
 import { checkLocalTabs } from 'IntegrityChecks';
+import { ApiController } from 'controllers/ApiController';
 
 checkLocalTabs();
 
@@ -148,6 +149,23 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
     return tabName;
   };
+
+  // Connect tab to an Api instance and update its chain data.
+  const connectTab = (tabId: number, chainId: ChainId, endpoint: string) => {
+    setTabs(
+      [...tabs].map((tab) =>
+        tab.id === tabId
+          ? {
+              ...tab,
+              chain: { id: chainId, provider: endpoint },
+            }
+          : tab
+      )
+    );
+
+    ApiController.instantiate(tabId, chainId, endpoint);
+  };
+
   return (
     <TabsContext.Provider
       value={{
@@ -170,6 +188,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         setTabsHidden,
         renameTab,
         getAutoTabName,
+        connectTab,
         instantiatedIds: instantiatedIds.current,
       }}
     >

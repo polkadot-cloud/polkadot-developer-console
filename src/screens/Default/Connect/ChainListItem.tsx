@@ -24,9 +24,9 @@ export interface ChainListItemProps {
 export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   const { openMenu } = useMenu();
   const { autoTabNaming } = useSettings();
-  const { activeTabId, getAutoTabName, renameTab } = useTabs();
   const { tags, getTagsForChain, addChainToTag, removeChainFromTag } =
     useTags();
+  const { activeTabId, getAutoTabName, renameTab, connectTab } = useTabs();
   const chainTags = getTagsForChain(chainId);
 
   // Lazily load the icon for the chain.
@@ -39,13 +39,14 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   );
 
   // Handle tag provider select. Connect to chain on successful selection.
-  const handleOnProviderSelect = (providerUrl: string) => {
+  const handleOnProviderSelect = (endpoint: string) => {
+    // Update tab data and connect to Api instance.
+    connectTab(activeTabId, chainId, endpoint);
+
     // If auto-renaming is turned on, rename tab to automated name.
     if (autoTabNaming) {
       renameTab(activeTabId, getAutoTabName(chainId));
     }
-    // TODO: update tab data and connect to Api instance.
-    console.log(providerUrl);
   };
 
   // Handle tag menu item select. Either add or remove a tag configs.

@@ -39,4 +39,5 @@ export interface TabsContextInterface {
   instantiatedIds: number[];
   renameTab: (id: number, name: string) => void;
   getAutoTabName: (chainId: ChainId) => string;
+  connectTab: (tabId: number, chainId: ChainId, endpoint: string) => void;
 }

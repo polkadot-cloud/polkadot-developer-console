@@ -25,6 +25,7 @@ export const defaultTabsContext: TabsContextInterface = {
   instantiatedIds: [],
   renameTab: (id, name) => {},
   getAutoTabName: (chainId) => '',
+  connectTab: (tabId, chainId, endpoint) => {},
 };
 
 export const DEFAULT_TAB_WIDTH_PX = 145;
