@@ -10,6 +10,9 @@ export type ChainId =
   | 'westend-relay-chain';
 
 export interface NetworkDirectoryItem {
+  system: {
+    chain: string;
+  };
   name: string;
   unit: string;
   providers: Record<string, string>;
@@ -20,6 +23,9 @@ export type NetworkDirectory = Record<ChainId, NetworkDirectoryItem>;
 // The currently supported networks.
 export const NetworkDirectory: NetworkDirectory = {
   'polkadot-relay-chain': {
+    system: {
+      chain: 'Polkadot',
+    },
     name: 'Polkadot Relay Chain',
     unit: 'DOT',
     providers: {
@@ -35,6 +41,9 @@ export const NetworkDirectory: NetworkDirectory = {
     },
   },
   'kusama-relay-chain': {
+    system: {
+      chain: 'Kusama',
+    },
     name: 'Kusama Relay Chain',
     unit: 'KSM',
     providers: {
@@ -50,6 +59,9 @@ export const NetworkDirectory: NetworkDirectory = {
     },
   },
   'westend-relay-chain': {
+    system: {
+      chain: 'Westend',
+    },
     name: 'Westend Relay Chain',
     unit: 'WND',
     providers: {
