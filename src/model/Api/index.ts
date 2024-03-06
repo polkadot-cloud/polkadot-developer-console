@@ -6,9 +6,9 @@ import type { VoidFn } from '@polkadot/api/types';
 import { WsProvider } from '@polkadot/rpc-provider';
 import type { ChainId } from 'config/networks';
 import type {
-  APIChainState,
+  APIChainSpec,
   APIStatusEventDetail,
-  ApiChainStateVersion,
+  APIChainSpecVersion,
   EventStatus,
 } from './types';
 
@@ -36,7 +36,7 @@ export class Api {
   #rpcEndpoint: string;
 
   // The current chain spec.
-  chainSpec: APIChainState;
+  chainSpec: APIChainSpec | undefined;
 
   // ------------------------------------------------------
   // Getters.
@@ -108,7 +108,7 @@ export class Api {
     if (newChainSpec.every((c) => !!c?.toHuman())) {
       const chain = newChainSpec[0].toString();
       const version =
-        newChainSpec[1].toJSON() as unknown as ApiChainStateVersion;
+        newChainSpec[1].toJSON() as unknown as APIChainSpecVersion;
       const ss58Prefix = Number(newChainSpec[2].toString());
 
       if (version) {
@@ -192,9 +192,17 @@ export class Api {
 
   // Disconnect gracefully from API and provider.
   async disconnect() {
+    // Remove class state.
+    this.chainSpec = undefined;
+
+    // Unsubscribe provider events.
     this.unsubscribeProvider();
+
+    // Disconnect provider and api.
     this.provider?.disconnect();
     await this.api?.disconnect();
+
+    // Tell UI api is destroyed.
     this.dispatchEvent(this.ensureEventStatus('destroyed'));
   }
 }

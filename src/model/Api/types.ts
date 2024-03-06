@@ -15,13 +15,13 @@ export interface APIStatusEventDetail {
   err?: string;
 }
 
-export interface APIChainState {
+export interface APIChainSpec {
   chain: string | null;
-  version: ApiChainStateVersion;
+  version: APIChainSpecVersion;
   ss58Prefix: number;
 }
 
-export interface ApiChainStateVersion {
+export interface APIChainSpecVersion {
   apis: AnyJson;
   authoringVersion: number;
   implName: string;
