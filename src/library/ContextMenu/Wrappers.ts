@@ -81,6 +81,11 @@ export const ListWrapper = styled.ul`
             overflow: hidden;
             white-space: nowrap;
             width: 100%;
+
+            &.inactive {
+              color: var(--text-color-tertiary);
+              opacity: 0.6;
+            }
           }
         }
         &:nth-child(1),
@@ -91,6 +96,11 @@ export const ListWrapper = styled.ul`
         &:nth-child(3) {
           justify-content: flex-end;
           padding-left: 0.5rem;
+
+          &.inactive {
+            color: var(--text-color-tertiary);
+            opacity: 0.6;
+          }
 
           h5 {
             text-overflow: ellipsis;
@@ -152,6 +162,10 @@ export const SelectListWrapper = styled.div`
 
   > h5 {
     padding: 0.75rem 0.75rem 0 0.75rem;
+
+    &.inline {
+      padding: 0.25rem 0.75rem 0 0.75rem;
+    }
   }
 
   > .search {
