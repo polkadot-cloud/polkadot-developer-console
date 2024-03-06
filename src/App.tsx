@@ -1,41 +1,21 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { Header } from 'library/Header';
-import { ContextMenu } from 'library/ContextMenu';
-import { Tabs } from 'library/Tabs';
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { DefaultRoute } from 'screens/Default/Route';
-import { SettingsRoute } from 'screens/Settings/Route';
+import { HashRouter } from 'react-router-dom';
 import { Entry } from 'library/Entry';
-import { Tooltip } from 'library/Tooltip';
+import { Router } from 'Router';
 
 // The currently supported pages.
 export type PageId = 'default' | 'settings';
 
-const AppInner = () => (
-  // TODO: Get accent theme from active network, if any, otherwise default to `polkadot-relay`.
+export const App = () => (
+  // TODO: Get accent theme from active network, if any, otherwise default to a new
+  // `developer-console` accent.
   <Entry mode="light" theme={`polkadot-relay`}>
-    <ContextMenu />
-    <Tooltip />
-    <Header />
-    <Tabs />
-
-    <Routes>
-      <Route key={`route_default`} path={'/'} element={<DefaultRoute />} />
-      <Route
-        key={`route_settings`}
-        path={'/settings'}
-        element={<SettingsRoute />}
-      />
-      {/* Fallback route to chain */}
-      <Route key="route_fallback" path="*" element={<Navigate to="/" />} />
-    </Routes>
+    <HashRouter basename="/">
+      <Router />
+    </HashRouter>
   </Entry>
 );
 
-export const App = () => (
-  <HashRouter basename="/">
-    <AppInner />
-  </HashRouter>
-);
+export default App;

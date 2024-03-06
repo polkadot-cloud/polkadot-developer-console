@@ -14,6 +14,9 @@ import type {
 import { setStateWithRef } from '@w3ux/utils';
 import type { ChainId } from 'config/networks';
 import * as local from './Local';
+import { checkLocalTags } from 'IntegrityChecks';
+
+checkLocalTags();
 
 export const TagsContext =
   createContext<TagsContextInterface>(defaultTagsContext);
