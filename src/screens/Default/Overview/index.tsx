@@ -12,23 +12,22 @@ export const Overview = () => {
 
   const apiStatus = getApiStatus(activeTabId);
   const chainSpec = getChainSpec(activeTabId);
+  const chainSpecReady = !!chainSpec;
 
-  const activeTab = getActiveTab();
-  const id = activeTab?.chain?.id;
-
-  const name = id
-    ? NetworkDirectory[id].system?.chain === chainSpec?.chain
-      ? NetworkDirectory[id].name
-      : 'Unknown'
-    : 'Unknown';
+  // NOTE: we know for certain there is an active tab and an associated API instance here, so we can
+  // safely use the non-null assertion.
+  const chainId = getActiveTab()!.chain!.id;
 
   return (
     <PageContentWrapper>
       <h2>
         {apiStatus === 'connecting'
           ? 'Connecting...'
-          : chainSpec && ['ready'].includes(apiStatus)
-            ? name
+          : chainSpecReady
+            ? // Ensure the chain name matches system.chain in the chain spec before displaying it.
+              NetworkDirectory[chainId].system?.chain === chainSpec?.chain
+              ? NetworkDirectory[chainId].name
+              : 'Unknown'
             : 'Fetching Chain Spec...'}
       </h2>
       <h4>
