@@ -4,21 +4,20 @@
 import { NetworkDirectory } from 'config/networks';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
-import { ApiController } from 'controllers/ApiController';
 import { PageContentWrapper } from 'library/Page/Wrapper';
 
 export const Overview = () => {
-  const { getApiStatus } = useApi();
+  const { getApiStatus, getChainSpec } = useApi();
   const { getActiveTab, activeTabId } = useTabs();
 
   const apiStatus = getApiStatus(activeTabId);
+  const chainSpec = getChainSpec(activeTabId);
 
   const activeTab = getActiveTab();
   const id = activeTab?.chain?.id;
 
-  const spec = ApiController.instances[activeTabId].chainSpec;
   const name = id
-    ? NetworkDirectory[id].system?.chain === spec?.chain
+    ? NetworkDirectory[id].system?.chain === chainSpec?.chain
       ? NetworkDirectory[id].name
       : 'Unknown'
     : 'Unknown';
@@ -28,14 +27,14 @@ export const Overview = () => {
       <h2>
         {apiStatus === 'connecting'
           ? 'Connecting...'
-          : apiStatus === 'ready'
+          : chainSpec && ['ready'].includes(apiStatus)
             ? name
             : 'Fetching Chain Spec...'}
       </h2>
       <h4>
         {apiStatus !== 'ready'
           ? ''
-          : `Connected to ${spec?.chain} / ${spec?.version.specName} ${spec?.version.specVersion}`}
+          : `Connected to ${chainSpec?.chain} / ${chainSpec?.version.specName} ${chainSpec?.version.specVersion}`}
       </h4>
     </PageContentWrapper>
   );

@@ -15,6 +15,11 @@ export interface APIStatusEventDetail {
   err?: string;
 }
 
+export interface APIChainSpecEventDetail {
+  spec: APIChainSpec;
+  tabId: number;
+}
+
 export interface APIChainSpec {
   chain: string | null;
   version: APIChainSpecVersion;

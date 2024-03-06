@@ -9,8 +9,9 @@ import { ApiController } from 'controllers/ApiController';
 import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
-import type { ApiStatus } from 'model/Api/types';
+import type { APIChainSpec, ApiStatus } from 'model/Api/types';
 import { NetworkDirectory } from 'config/networks';
+import { setStateWithRef } from '@w3ux/utils';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -24,6 +25,10 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     {}
   );
   const apiStatusRef = useRef(apiStatus);
+
+  // Store chain spec of each tab. NOTE: requires ref as it is used in event listener.
+  const [chainSpec, setChainSpec] = useState<Record<number, APIChainSpec>>({});
+  const chainSpecRef = useRef(chainSpec);
 
   // Setter for api status.
   const setApiStatus = (status: Record<number, ApiStatus>) => {
@@ -41,12 +46,28 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   // Gets an api status based on a tab id.
   const getApiStatus = (tabId: number): ApiStatus => apiStatus[tabId];
 
+  // Gets a chain spec based on a tab id.
+  const getChainSpec = (tabId: number): APIChainSpec => chainSpec[tabId];
+
   // Gets the `Api` instance of the active tab, if present.
   const getTabApi = () => {
     const activeTab = getActiveTab();
     if (activeTab?.chain) {
       return ApiController.instances[activeTab.id];
     }
+  };
+
+  // Handle a chain disconnect.
+  const handleDisconnect = (tabId: number) => {
+    // Delete api status for the tab.
+    const newApiStatus = { ...apiStatusRef.current };
+    delete newApiStatus[tabId];
+    setApiStatus(newApiStatus);
+
+    // Delete chain spec for the tab.
+    const newChainSpec = { ...chainSpecRef.current };
+    delete newChainSpec[tabId];
+    setStateWithRef(newChainSpec, setChainSpec, chainSpecRef);
   };
 
   // Handle incoming api status updates.
@@ -68,16 +89,10 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
           setApiStatus({ ...apiStatusRef.current, [tabId]: 'connected' });
           break;
         case 'disconnected':
-          setApiStatus({
-            ...apiStatusRef.current,
-            [tabId]: 'disconnected',
-          });
+          handleDisconnect(tabId);
           break;
         case 'error':
-          setApiStatus({
-            ...apiStatusRef.current,
-            [tabId]: 'disconnected',
-          });
+          handleDisconnect(tabId);
           break;
         case 'destroyed':
           removeApiStatus(tabId);
@@ -86,9 +101,29 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Listen for api status updates.
+  // Handle incoming chain spec updates.
+  const handleNewChainSpec = (e: Event): void => {
+    if (isCustomEvent(e)) {
+      const { tabId, spec } = e.detail;
+
+      setStateWithRef(
+        {
+          ...chainSpecRef.current,
+          [tabId]: spec,
+        },
+        setChainSpec,
+        chainSpecRef
+      );
+    }
+  };
+
   const documentRef = useRef<Document>(document);
+
+  // Listen for api status updates.
   useEventListener('api-status', handleNewApiStatus, documentRef);
+
+  // Listen for new chain spec updates.
+  useEventListener('new-chain-spec', handleNewChainSpec, documentRef);
 
   // Initialisation of Api instances.
   useEffect(() => {
@@ -108,6 +143,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
         isReady: false,
         getApiStatus,
         getTabApi,
+        getChainSpec,
       }}
     >
       {children}

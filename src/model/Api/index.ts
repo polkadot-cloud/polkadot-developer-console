@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { ApiPromise } from '@polkadot/api';
-import type { VoidFn } from '@polkadot/api/types';
 import { WsProvider } from '@polkadot/rpc-provider';
 import type { ChainId } from 'config/networks';
 import type {
@@ -25,9 +24,6 @@ export class Api {
 
   // API provider.
   #provider: WsProvider;
-
-  // API provider unsubs.
-  #providerUnsubs: VoidFn[] = [];
 
   // API instance.
   #api: ApiPromise;
@@ -63,7 +59,7 @@ export class Api {
   }
 
   // ------------------------------------------------------
-  // Constructor
+  // Constructor.
   // ------------------------------------------------------
 
   constructor(tabId: number, chainId: ChainId, endpoint: string) {
@@ -73,7 +69,7 @@ export class Api {
   }
 
   // ------------------------------------------------------
-  // Initialization
+  // Initialization.
   // ------------------------------------------------------
 
   // Initialize the API.
@@ -84,17 +80,13 @@ export class Api {
     // Tell UI api is connecting.
     this.dispatchEvent(this.ensureEventStatus('connecting'));
 
-    // Initialise provider events.
+    // Initialise api.
+    this.#api = new ApiPromise({ provider: this.provider });
+
+    // Initialise api events.
     this.initProviderEvents();
 
-    // Initialise api.
-    this.#api = await ApiPromise.create({ provider: this.provider });
-
-    // Fetch chain spec.
-    await this.fetchChainSpec();
-
-    // Tell UI api is ready.
-    this.dispatchEvent(this.ensureEventStatus('ready'));
+    await this.#api.isReady;
   }
 
   async fetchChainSpec() {
@@ -123,22 +115,35 @@ export class Api {
 
   // Set up API event listeners. Relays information to `document` for the UI to handle.
   async initProviderEvents() {
-    this.#providerUnsubs.push(
-      this.#provider.on('connected', () => {
-        this.dispatchEvent(this.ensureEventStatus('connected'));
-      })
-    );
+    this.#api.on('ready', async () => {
+      this.dispatchEvent(this.ensureEventStatus('ready'));
 
-    this.#providerUnsubs.push(
-      this.#provider.on('disconnected', () => {
-        this.dispatchEvent(this.ensureEventStatus('disconnected'));
-      })
-    );
-    this.#providerUnsubs.push(
-      this.#provider.on('error', (err: string) => {
-        this.dispatchEvent(this.ensureEventStatus('error'), { err });
-      })
-    );
+      // Fetch chain spec.
+      await this.fetchChainSpec();
+
+      if (this.chainSpec) {
+        document.dispatchEvent(
+          new CustomEvent('new-chain-spec', {
+            detail: {
+              spec: this.chainSpec,
+              tabId: this.tabId,
+            },
+          })
+        );
+      }
+    });
+
+    this.#api.on('connected', () => {
+      this.dispatchEvent(this.ensureEventStatus('connected'));
+    });
+
+    this.#api.on('disconnected', () => {
+      this.dispatchEvent(this.ensureEventStatus('disconnected'));
+    });
+
+    this.#api.on('error', (err: string) => {
+      this.dispatchEvent(this.ensureEventStatus('error'), { err });
+    });
   }
 
   // Handler for dispatching events.
@@ -180,23 +185,13 @@ export class Api {
   };
 
   // ------------------------------------------------------
-  // Disconnect
+  // Disconnect.
   // ------------------------------------------------------
-
-  // Remove API event listeners if they exist.
-  unsubscribeProvider() {
-    this.#providerUnsubs.forEach((unsub) => {
-      unsub();
-    });
-  }
 
   // Disconnect gracefully from API and provider.
   async disconnect() {
     // Remove class state.
     this.chainSpec = undefined;
-
-    // Unsubscribe provider events.
-    this.unsubscribeProvider();
 
     // Disconnect provider and api.
     this.provider?.disconnect();
