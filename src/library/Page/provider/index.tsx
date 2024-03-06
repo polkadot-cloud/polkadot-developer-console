@@ -7,6 +7,9 @@ import type { SectionContextInterface, SectionContextProps } from './types';
 import * as local from './Local';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { useTabs } from 'contexts/Tabs';
+import { extractUrlValue, removeVarFromUrlHash } from '@w3ux/utils';
+import { useLocation } from 'react-router-dom';
+import { useMenu } from 'contexts/Menu';
 
 export const SectionContext = createContext<SectionContextInterface>(
   defaultSectionContext
@@ -15,6 +18,8 @@ export const SectionContext = createContext<SectionContextInterface>(
 export const useSection = () => useContext(SectionContext);
 
 export const SectionProvider = ({ pageId, children }: SectionContextProps) => {
+  const { open: menuOpen } = useMenu();
+  const { hash } = useLocation();
   const { activeTabId } = useTabs();
 
   // The active section of the page.
@@ -31,11 +36,21 @@ export const SectionProvider = ({ pageId, children }: SectionContextProps) => {
   };
 
   // Updates active section when active tab changes.
+  const redirectHash = extractUrlValue('redirect');
+
   useEffectIgnoreInitial(() => {
-    setActiveSection(
-      local.getActiveSection(pageId, activeTabId) || defaultActiveSection
-    );
-  }, [pageId, activeTabId]);
+    if (redirectHash === 'manage-tab') {
+      if (!menuOpen) {
+        console.log(redirectHash, hash);
+        setActiveSection(1, false);
+        removeVarFromUrlHash('redirect');
+      }
+    } else {
+      setActiveSection(
+        local.getActiveSection(pageId, activeTabId) || defaultActiveSection
+      );
+    }
+  }, [pageId, activeTabId, menuOpen]);
 
   return (
     <SectionContext.Provider

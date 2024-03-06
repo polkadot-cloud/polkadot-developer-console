@@ -26,7 +26,7 @@ export const ListWrapper = styled.ul`
   list-style: none;
   display: flex;
   flex-direction: column;
-  padding: 0 0.35rem 0.35rem 0.35rem;
+  padding: 0.2rem 0.35rem 0.2rem 0.35rem;
   margin: 0;
   width: 100%;
 

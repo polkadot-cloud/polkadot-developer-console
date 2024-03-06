@@ -8,7 +8,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useMenu } from 'contexts/Menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-import { Menu } from './Menu';
+import { TabMenu } from './TabMenu';
 import type { TabProps } from './types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -18,6 +18,7 @@ import {
 } from 'contexts/Tabs/defaults';
 import { useApi } from 'contexts/Api';
 import { ConnectionIcon } from './ConectionIcon';
+import { useNavigate } from 'react-router-dom';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -33,8 +34,9 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     setActiveTabIndex,
     addInstantiatedId,
   } = useTabs();
-  const { openMenu } = useMenu();
+  const navigate = useNavigate();
   const { getApiStatus } = useApi();
+  const { openMenu, closeMenu } = useMenu();
 
   const {
     listeners,
@@ -84,7 +86,17 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   // Handle context menu when tab is right clicked.
   const handleTabContextMenu = (ev: MouseEvent): void => {
     ev.preventDefault();
-    openMenu(ev, <Menu />);
+    openMenu(
+      ev,
+      <TabMenu
+        tabId={id}
+        onSettings={() => {
+          setActiveTabId(id);
+          navigate(`?redirect=manage-tab`);
+          closeMenu();
+        }}
+      />
+    );
   };
 
   // Context menu ref.
