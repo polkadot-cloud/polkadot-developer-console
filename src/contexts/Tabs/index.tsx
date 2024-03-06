@@ -46,6 +46,14 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Instantiated tab ids.
   const instantiatedIds = useRef<number[]>([]);
 
+  // Redirect counter to trigger redirect effects.
+  const [redirectCounter, setRedirectCounter] = useState<number>(0);
+
+  // Increment redirect counter.
+  const incrementRedirectCounter = () => {
+    setRedirectCounter(redirectCounter + 1);
+  };
+
   // Adds an id to instantiated tabs.
   const addInstantiatedId = (index: number) => {
     instantiatedIds.current = [
@@ -194,6 +202,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         renameTab,
         getAutoTabName,
         connectTab,
+        redirectCounter,
+        incrementRedirectCounter,
         instantiatedIds: instantiatedIds.current,
       }}
     >

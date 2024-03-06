@@ -7,8 +7,6 @@ import type { SectionContextInterface, SectionContextProps } from './types';
 import * as local from './Local';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { useTabs } from 'contexts/Tabs';
-import { extractUrlValue, removeVarFromUrlHash } from '@w3ux/utils';
-import { useMenu } from 'contexts/Menu';
 
 export const SectionContext = createContext<SectionContextInterface>(
   defaultSectionContext
@@ -18,7 +16,7 @@ export const useSection = () => useContext(SectionContext);
 
 export const SectionProvider = ({ pageId, children }: SectionContextProps) => {
   const { activeTabId } = useTabs();
-  const { open: menuOpen } = useMenu();
+  const { redirectCounter } = useTabs();
 
   // The active section of the page.
   const [activeSection, setActiveSectionState] = useState<number>(
@@ -33,25 +31,17 @@ export const SectionProvider = ({ pageId, children }: SectionContextProps) => {
     setActiveSectionState(section);
   };
 
-  // Updates active section when active tab changes.
-  const redirectHash = extractUrlValue('redirect');
-
   useEffectIgnoreInitial(() => {
-    let redirected = false;
-    if (redirectHash === 'manage-tab') {
-      if (!menuOpen) {
-        setActiveSection(1, false);
-        removeVarFromUrlHash('redirect');
-        redirected = true;
-      }
-    }
+    // Get a temporary redirect from local storage, if present.
+    const redirect = local.getSectionRedirect(pageId, activeTabId);
 
-    if (!redirected) {
-      setActiveSection(
-        local.getActiveSection(pageId, activeTabId) || defaultActiveSection
-      );
-    }
-  }, [pageId, activeTabId, menuOpen]);
+    setActiveSection(
+      redirect ||
+        local.getActiveSection(pageId, activeTabId) ||
+        defaultActiveSection,
+      false
+    );
+  }, [pageId, activeTabId, redirectCounter]);
 
   return (
     <SectionContext.Provider

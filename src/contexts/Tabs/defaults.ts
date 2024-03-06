@@ -25,6 +25,8 @@ export const defaultTabsContext: TabsContextInterface = {
   instantiatedIds: [],
   renameTab: (id, name) => {},
   getAutoTabName: (chainId) => '',
+  redirectCounter: 0,
+  incrementRedirectCounter: () => {},
   connectTab: (tabId, chainId, endpoint) => {},
 };
 

@@ -18,7 +18,7 @@ import {
 } from 'contexts/Tabs/defaults';
 import { useApi } from 'contexts/Api';
 import { ConnectionIcon } from './ConectionIcon';
-import { useNavigate } from 'react-router-dom';
+import * as localSections from 'library/Page/provider/Local';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -33,8 +33,9 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     setTabHoverIndex,
     setActiveTabIndex,
     addInstantiatedId,
+    incrementRedirectCounter,
   } = useTabs();
-  const navigate = useNavigate();
+
   const { getApiStatus } = useApi();
   const { openMenu, closeMenu } = useMenu();
 
@@ -92,7 +93,8 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
         tabId={id}
         onSettings={() => {
           setActiveTabId(id);
-          navigate(`?redirect=manage-tab`);
+          localSections.setSectionRedirect('default', id, 1);
+          incrementRedirectCounter();
           closeMenu();
         }}
       />
