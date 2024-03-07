@@ -24,6 +24,7 @@ export interface APIChainSpec {
   chain: string | null;
   version: APIChainSpecVersion;
   ss58Prefix: number;
+  metadata: Record<string, AnyJson>;
 }
 
 export interface APIChainSpecVersion {

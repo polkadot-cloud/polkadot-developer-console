@@ -90,11 +90,15 @@ export class Api {
   }
 
   async fetchChainSpec() {
+    // Fetch chain specs.
     const newChainSpec = await Promise.all([
       this.api.rpc.system.chain(),
       this.api.consts.system.version,
       this.api.consts.system.ss58Prefix,
     ]);
+
+    // Also retreive the JSON formatted metadata here for the UI to construct from.
+    const metadata = this.api.runtimeMetadata.toJSON();
 
     // Check that chain values have been fetched before committing to state.
     if (newChainSpec.every((c) => !!c?.toHuman())) {
@@ -104,7 +108,7 @@ export class Api {
       const ss58Prefix = Number(newChainSpec[2].toString());
 
       if (version) {
-        this.chainSpec = { chain, version, ss58Prefix };
+        this.chainSpec = { chain, version, ss58Prefix, metadata };
       }
     }
   }
