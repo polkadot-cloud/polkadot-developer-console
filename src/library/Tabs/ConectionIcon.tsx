@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ApiStatus } from 'model/Api/types';
-import DisconnectSVG from 'svg/Disconnect.svg?react';
-import ConnectSVG from 'svg/Connect.svg?react';
+import DisconnectedSVG from 'svg/Disconnected.svg?react';
+import ConnectedSVG from 'svg/Connected.svg?react';
 
 export const ConnectionIcon = ({ status }: { status: ApiStatus }) => (
   <div className={`connection ${status}`}>
-    {['ready', 'connected', 'connecting'].includes(status) ? (
-      <ConnectSVG />
+    {['ready', 'connected'].includes(status) ? (
+      <ConnectedSVG />
     ) : (
-      <DisconnectSVG />
+      <DisconnectedSVG />
     )}
   </div>
 );
