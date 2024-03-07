@@ -21,7 +21,7 @@ export const Overview = () => {
   return (
     <PageContentWrapper>
       <h2>
-        {apiStatus === 'connecting'
+        {!chainSpecReady && apiStatus === 'connecting'
           ? 'Connecting...'
           : chainSpecReady
             ? // Ensure the chain name matches system.chain in the chain spec before displaying it.
@@ -31,9 +31,9 @@ export const Overview = () => {
             : 'Fetching Chain Spec...'}
       </h2>
       <h4>
-        {apiStatus !== 'ready'
-          ? ''
-          : `Connected to ${chainSpec?.chain} / ${chainSpec?.version.specName} ${chainSpec?.version.specVersion}`}
+        {chainSpecReady
+          ? `Connected to ${chainSpec?.chain} / ${chainSpec?.version.specName} ${chainSpec?.version.specVersion}`
+          : ''}
       </h4>
     </PageContentWrapper>
   );

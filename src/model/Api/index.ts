@@ -118,10 +118,11 @@ export class Api {
     this.#api.on('ready', async () => {
       this.dispatchEvent(this.ensureEventStatus('ready'));
 
-      // Fetch chain spec.
-      await this.fetchChainSpec();
+      // Fetch chain spec. NOTE: This is a one-time fetch. It's currently not possible to update the
+      // chain spec without a refresh.
+      if (!this.chainSpec) {
+        await this.fetchChainSpec();
 
-      if (this.chainSpec) {
         document.dispatchEvent(
           new CustomEvent('new-chain-spec', {
             detail: {
@@ -189,15 +190,14 @@ export class Api {
   // ------------------------------------------------------
 
   // Disconnect gracefully from API and provider.
-  async disconnect() {
-    // Remove class state.
-    this.chainSpec = undefined;
-
+  async disconnect(destroy = false) {
     // Disconnect provider and api.
     this.provider?.disconnect();
     await this.api?.disconnect();
 
     // Tell UI api is destroyed.
-    this.dispatchEvent(this.ensureEventStatus('destroyed'));
+    if (destroy) {
+      this.dispatchEvent(this.ensureEventStatus('destroyed'));
+    }
   }
 }

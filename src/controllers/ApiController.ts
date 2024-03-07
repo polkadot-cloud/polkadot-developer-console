@@ -29,7 +29,7 @@ export class ApiController {
     const api = this.instances[tabId];
 
     if (api) {
-      await api.disconnect();
+      await api.disconnect(true);
       delete this.instances[tabId];
     }
   }
