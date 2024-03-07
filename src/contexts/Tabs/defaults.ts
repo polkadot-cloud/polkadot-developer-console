@@ -28,6 +28,7 @@ export const defaultTabsContext: TabsContextInterface = {
   redirectCounter: 0,
   incrementRedirectCounter: () => {},
   connectTab: (tabId, chainId, endpoint) => {},
+  getStoredChain: (tabId) => undefined,
 };
 
 export const DEFAULT_TAB_WIDTH_PX = 145;
@@ -65,10 +66,7 @@ export const defaultTabs: Tabs = [
   },
   {
     id: 4,
-    chain: {
-      id: 'westend',
-      provider: 'IBP-GeoDNS1',
-    },
+    chain: undefined,
     name: 'Westend Relay Chain',
     autoConnect: false,
   },

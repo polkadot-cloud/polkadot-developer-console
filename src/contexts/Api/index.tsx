@@ -147,8 +147,10 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
       if (tab?.chain && tab.autoConnect) {
         const { id, provider } = tab.chain;
 
-        const endpoint = NetworkDirectory[id].providers[provider];
-        ApiController.instantiate(tab.id, id, endpoint);
+        const endpoint = NetworkDirectory[id]?.providers[provider];
+        if (endpoint) {
+          ApiController.instantiate(tab.id, id, endpoint);
+        }
       }
     });
   }, []);

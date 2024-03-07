@@ -93,6 +93,17 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const getChainTab = (chainId: ChainId) =>
     tabs.find((tab) => tab.chain?.id === chainId);
 
+  // Gets the previously connected to chain, if present.
+  const getStoredChain = (tabId: number) => {
+    const tab = tabs.find(({ id }) => id === tabId);
+
+    if (!tab?.chain?.id) {
+      return undefined;
+    }
+
+    return { id: tab.chain.id, chain: NetworkDirectory[tab.chain.id] };
+  };
+
   // Get the largest id from a list of tabs.
   const getLargestId = (list: Tabs) =>
     [...list].sort((a, b) => b.id - a.id)?.[0].id || 0;
@@ -167,6 +178,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       tab.id === tabId
         ? {
             ...tab,
+            // Auto rename the tab here if the setting is turned on.
             name: autoTabNaming ? getAutoTabName(chainId) : tab.name,
             chain: { id: chainId, provider },
           }
@@ -204,6 +216,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         connectTab,
         redirectCounter,
         incrementRedirectCounter,
+        getStoredChain,
         instantiatedIds: instantiatedIds.current,
       }}
     >

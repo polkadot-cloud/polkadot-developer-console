@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainId } from 'config/networks';
+import type { ChainId, NetworkDirectoryItem } from 'config/networks';
 import type { Dispatch, SetStateAction } from 'react';
 
 export type Tabs = Tab[];
@@ -42,4 +42,7 @@ export interface TabsContextInterface {
   redirectCounter: number;
   incrementRedirectCounter: () => void;
   connectTab: (tabId: number, chainId: ChainId, endpoint: string) => void;
+  getStoredChain: (
+    tabId: number
+  ) => { id: ChainId; chain: NetworkDirectoryItem } | undefined;
 }

@@ -11,11 +11,12 @@ import { useTags } from 'contexts/Tags';
 import type { TagItem } from 'contexts/Tags/types';
 
 export const ChainList = () => {
-  const { activeTabId } = useTabs();
   const { getTagsForChain } = useTags();
+  const { activeTabId, getStoredChain } = useTabs();
   const { getAppliedTags, getSearchTerm } = useChainFilter();
+  const tabStoredChain = getStoredChain(activeTabId);
 
-  // NOTE: Currently naively filering simple chain list.
+  // NOTE: Currently naively filtering simple chain list.
 
   const results = NetworkDirectory;
 
@@ -34,6 +35,13 @@ export const ChainList = () => {
 
   // Filter chains based on search term.
   const searchTerm = getSearchTerm(activeTabId);
+
+  // Remove the currently stored chain from results if it exists.
+  if (tabStoredChain) {
+    filtered = Object.fromEntries(
+      Object.entries(filtered).filter(([key]) => key !== tabStoredChain.id)
+    );
+  }
 
   if (searchTerm !== '') {
     filtered = Object.fromEntries(

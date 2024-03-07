@@ -5,11 +5,13 @@ import { ChainList } from './ChainList';
 import { AutoConnect } from '../AutoConnect';
 import { SearchChain } from './SearchChain';
 import { PageContentWrapper } from 'library/Page/Wrapper';
+import { RecentChain } from './RecentChain';
 
 export const Connect = () => (
   <PageContentWrapper>
     <AutoConnect />
     <SearchChain />
+    <RecentChain />
     <ChainList />
   </PageContentWrapper>
 );
