@@ -12,6 +12,7 @@ export const defaultTabsContext: TabsContextInterface = {
   createTab: () => {},
   destroyTab: (index, id) => {},
   getChainTab: (chainId) => undefined,
+  getTab: (id) => undefined,
   getActiveTab: () => undefined,
   tabHoverIndex: 0,
   setTabHoverIndex: (id) => {},
@@ -28,6 +29,7 @@ export const defaultTabsContext: TabsContextInterface = {
   redirectCounter: 0,
   incrementRedirectCounter: () => {},
   connectTab: (tabId, chainId, endpoint) => {},
+  instantiateApiFromTab: (tabId) => {},
   getStoredChain: (tabId) => undefined,
   forgetTabChain: (tabId) => {},
 };

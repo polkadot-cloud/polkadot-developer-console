@@ -1,7 +1,12 @@
-import { faBarsProgress, faLinkSlash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBarsProgress,
+  faLink,
+  faLinkSlash,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useApi } from 'contexts/Api';
 import { useMenu } from 'contexts/Menu';
+import { useTabs } from 'contexts/Tabs';
 import { ApiController } from 'controllers/ApiController';
 import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
 
@@ -14,19 +19,26 @@ export const TabMenu = ({
 }) => {
   const { closeMenu } = useMenu();
   const { getApiStatus } = useApi();
+  const { getTab, instantiateApiFromTab } = useTabs();
+
+  const tab = getTab(tabId);
   const apiStatus = getApiStatus(tabId);
 
-  const showDisconnect = ['ready', 'connected'].includes(apiStatus);
+  const apiStatusActive = ['ready', 'connected', 'connecting'].includes(
+    apiStatus
+  );
+  const canDisconenct = ['ready', 'connected'].includes(apiStatus);
+  const canReconnect = !!tab?.chain?.id && !canDisconenct && !apiStatusActive;
 
-  const apiStatusText = showDisconnect
+  const apiStatusText = canDisconenct
     ? 'Disconnect'
     : apiStatus === 'connecting'
       ? 'Connecting..'
-      : 'Not Connected';
+      : canReconnect
+        ? 'Reconnect'
+        : 'Not Connected';
 
-  const apiStatusInactive = ['ready', 'connected', 'connecting'].includes(
-    apiStatus
-  );
+  const apiButtonInactive = apiStatusActive || canReconnect;
 
   return (
     <SelectListWrapper>
@@ -46,23 +58,31 @@ export const TabMenu = ({
       </ListWrapper>
       <h5 className="inline">API</h5>
       <ListWrapper>
-        <li className={`${apiStatusInactive ? `` : ` inactive`}`}>
+        <li className={`${apiButtonInactive ? `` : ` inactive`}`}>
           <button
             onClick={() => {
-              if (showDisconnect) {
+              if (canDisconenct) {
                 ApiController.destroy(tabId);
+                closeMenu();
+              } else if (canReconnect) {
+                instantiateApiFromTab(tabId);
                 closeMenu();
               }
             }}
           ></button>
           <div className="inner">
-            <div className={!showDisconnect ? 'none' : undefined}>
-              {showDisconnect && (
+            <div
+              className={!canDisconenct && !canReconnect ? 'none' : undefined}
+            >
+              {canDisconenct && (
                 <FontAwesomeIcon icon={faLinkSlash} transform="shrink-4" />
+              )}
+              {canReconnect && (
+                <FontAwesomeIcon icon={faLink} transform="shrink-3" />
               )}
             </div>
             <div>
-              <h3 className={apiStatusInactive ? undefined : 'inactive'}>
+              <h3 className={apiButtonInactive ? undefined : 'inactive'}>
                 {apiStatusText}
               </h3>
             </div>

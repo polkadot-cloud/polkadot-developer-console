@@ -86,8 +86,11 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
+  // Gets a tab by its id.
+  const getTab = (tabId: number) => tabs.find((tab) => tab.id === tabId);
+
   // Gets the active tab.
-  const getActiveTab = () => tabs.find((tab) => tab.id === activeTabId);
+  const getActiveTab = () => getTab(activeTabId);
 
   // Gets a tab by chain id.
   const getChainTab = (chainId: ChainId) =>
@@ -95,7 +98,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Gets the previously connected to chain, if present.
   const getStoredChain = (tabId: number) => {
-    const tab = tabs.find(({ id }) => id === tabId);
+    const tab = getTab(tabId);
 
     if (!tab?.chain?.id) {
       return undefined;
@@ -192,11 +195,22 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
           }
         : tab
     );
+    setTabs(newTabs);
 
     const endpoint = NetworkDirectory[chainId].providers[provider];
-
-    setTabs(newTabs);
     ApiController.instantiate(tabId, chainId, endpoint);
+  };
+
+  // Instantiate an Api instance from tab chain data.
+  const instantiateApiFromTab = (tabId: number) => {
+    const tab = getTab(tabId);
+    if (tab?.chain) {
+      const { id, provider } = tab.chain;
+      const endpoint = NetworkDirectory[id]?.providers[provider];
+      if (endpoint) {
+        ApiController.instantiate(tab.id, id, endpoint);
+      }
+    }
   };
 
   return (
@@ -206,6 +220,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         setTabs,
         createTab,
         activeTabId,
+        getTab,
         getChainTab,
         getActiveTab,
         destroyTab,
@@ -222,6 +237,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         renameTab,
         getAutoTabName,
         connectTab,
+        instantiateApiFromTab,
         redirectCounter,
         incrementRedirectCounter,
         getStoredChain,

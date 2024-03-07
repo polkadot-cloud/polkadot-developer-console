@@ -10,14 +10,13 @@ import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import type { APIChainSpec, ApiStatus } from 'model/Api/types';
-import { NetworkDirectory } from 'config/networks';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
 export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
-  const { getActiveTab, tabs } = useTabs();
+  const { getActiveTab, tabs, instantiateApiFromTab } = useTabs();
 
   // Store API connection status of each tab. NOTE: requires ref as it is used in event listener.
   const [apiStatus, setApiStatusState] = useState<Record<number, ApiStatus>>(
@@ -144,13 +143,8 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   // Initialisation of Api instances.
   useEffect(() => {
     tabs.forEach((tab) => {
-      if (tab?.chain && tab.autoConnect) {
-        const { id, provider } = tab.chain;
-
-        const endpoint = NetworkDirectory[id]?.providers[provider];
-        if (endpoint) {
-          ApiController.instantiate(tab.id, id, endpoint);
-        }
+      if (tab.autoConnect) {
+        instantiateApiFromTab(tab.id);
       }
     });
   }, []);

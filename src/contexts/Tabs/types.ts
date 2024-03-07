@@ -24,6 +24,7 @@ export interface TabsContextInterface {
   createTab: () => void;
   activeTabId: number;
   getChainTab: (chainId: ChainId) => Tab | undefined;
+  getTab: (id: number) => Tab | undefined;
   getActiveTab: () => Tab | undefined;
   destroyTab: (index: number, id: number) => void;
   setActiveTabId: (index: number) => void;
@@ -42,6 +43,7 @@ export interface TabsContextInterface {
   redirectCounter: number;
   incrementRedirectCounter: () => void;
   connectTab: (tabId: number, chainId: ChainId, endpoint: string) => void;
+  instantiateApiFromTab: (tabId: number) => void;
   getStoredChain: (
     tabId: number
   ) => { id: ChainId; chain: NetworkDirectoryItem } | undefined;
