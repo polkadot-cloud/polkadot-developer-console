@@ -11,9 +11,9 @@ export const defaultTags: TagsList = {
 };
 
 export const defaultTagsConfig: TagsConfig = {
-  tag_relay_chain: ['polkadot', 'kusama', 'westend'],
+  tag_relay_chain: ['polkadot', 'kusama', 'rococo', 'westend'],
   tag_canary_network: ['kusama'],
-  tag_test_network: ['westend'],
+  tag_test_network: ['rococo', 'westend'],
 };
 
 export const defaultTagsContext: TagsContextInterface = {
