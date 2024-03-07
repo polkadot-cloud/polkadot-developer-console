@@ -7,6 +7,7 @@ import { ManageTab } from './ManageTab';
 import { useSection } from 'library/Page/provider';
 import { Overview } from './Overview';
 import { ChainState } from './ChainState';
+import { Extrinsics } from './Extrinsics';
 
 export const Default = () => {
   const { getTabApi } = useApi();
@@ -19,6 +20,7 @@ export const Default = () => {
     <>
       {activeSection === 0 && firstSection}
       {activeSection === 2 && <ChainState />}
+      {activeSection === 3 && <Extrinsics />}
       {activeSection === 1 && <ManageTab />}
     </>
   );

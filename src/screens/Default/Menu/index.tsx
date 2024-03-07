@@ -49,12 +49,20 @@ export const ChainMenu = () => {
             {!apiActive ? 'Search Chain' : 'Overview'}
           </button>
           {apiActive && (
-            <button
-              onClick={() => setActiveSection(2)}
-              className={activeSection === 2 ? 'active' : undefined}
-            >
-              Chain State
-            </button>
+            <>
+              <button
+                onClick={() => setActiveSection(2)}
+                className={activeSection === 2 ? 'active' : undefined}
+              >
+                Chain State
+              </button>
+              <button
+                onClick={() => setActiveSection(3)}
+                className={activeSection === 3 ? 'active' : undefined}
+              >
+                Extrinsics
+              </button>
+            </>
           )}
         </section>
         <section className="other">{/* Additional links right side */}</section>
