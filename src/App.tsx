@@ -12,8 +12,6 @@ import * as integrityChecks from 'IntegrityChecks';
 export type PageId = 'default' | 'settings';
 
 export const App = () => (
-  // TODO: Get accent theme from active network, if any, otherwise default to a new
-  // `developer-console` accent.
   <Entry mode="light" accent={`developer-console`}>
     <HashRouter basename="/">
       <ErrorBoundary
