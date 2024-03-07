@@ -11,13 +11,9 @@ export const defaultTags: TagsList = {
 };
 
 export const defaultTagsConfig: TagsConfig = {
-  tag_relay_chain: [
-    'polkadot-relay-chain',
-    'kusama-relay-chain',
-    'westend-relay-chain',
-  ],
-  tag_canary_network: ['kusama-relay-chain'],
-  tag_test_network: ['westend-relay-chain'],
+  tag_relay_chain: ['polkadot', 'kusama', 'westend'],
+  tag_canary_network: ['kusama'],
+  tag_test_network: ['westend'],
 };
 
 export const defaultTagsContext: TagsContextInterface = {

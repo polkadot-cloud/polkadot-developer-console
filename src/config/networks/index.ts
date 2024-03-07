@@ -4,11 +4,7 @@
 // NOTE: This file is temporary until the @polkadot-cloud/network-directory package is ready to be
 // used.
 
-export type ChainId =
-  | 'polkadot-relay-chain'
-  | 'kusama-relay-chain'
-  | 'rococo-relay-chain'
-  | 'westend-relay-chain';
+export type ChainId = 'polkadot' | 'kusama' | 'rococo' | 'westend';
 
 export interface NetworkDirectoryItem {
   system: {
@@ -23,7 +19,7 @@ export type NetworkDirectory = Record<ChainId, NetworkDirectoryItem>;
 
 // The currently supported networks.
 export const NetworkDirectory: NetworkDirectory = {
-  'polkadot-relay-chain': {
+  polkadot: {
     system: {
       chain: 'Polkadot',
     },
@@ -41,7 +37,7 @@ export const NetworkDirectory: NetworkDirectory = {
       Parity: 'wss://apps-rpc.polkadot.io',
     },
   },
-  'kusama-relay-chain': {
+  kusama: {
     system: {
       chain: 'Kusama',
     },
@@ -59,7 +55,7 @@ export const NetworkDirectory: NetworkDirectory = {
       Parity: 'wss://kusama-rpc.polkadot.io',
     },
   },
-  'westend-relay-chain': {
+  westend: {
     system: {
       chain: 'Westend',
     },
@@ -76,7 +72,7 @@ export const NetworkDirectory: NetworkDirectory = {
       Parity: 'wss://westend-rpc.polkadot.io',
     },
   },
-  'rococo-relay-chain': {
+  rococo: {
     system: {
       chain: 'Rococo',
     },

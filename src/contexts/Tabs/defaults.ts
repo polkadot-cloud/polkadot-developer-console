@@ -39,7 +39,7 @@ export const defaultTabs: Tabs = [
   {
     id: 1,
     chain: {
-      id: 'polkadot-relay-chain',
+      id: 'polkadot',
       provider: 'IBP-GeoDNS1',
     },
     name: 'Polkadot Relay Chain',
@@ -48,7 +48,7 @@ export const defaultTabs: Tabs = [
   {
     id: 2,
     chain: {
-      id: 'kusama-relay-chain',
+      id: 'kusama',
       provider: 'IBP-GeoDNS1',
     },
     name: 'Kusama Relay Chain',
@@ -57,7 +57,7 @@ export const defaultTabs: Tabs = [
   {
     id: 3,
     chain: {
-      id: 'rococo-relay-chain',
+      id: 'rococo',
       provider: 'Parity',
     },
     name: 'Rococo Relay Chain',
@@ -66,7 +66,7 @@ export const defaultTabs: Tabs = [
   {
     id: 4,
     chain: {
-      id: 'westend-relay-chain',
+      id: 'westend',
       provider: 'IBP-GeoDNS1',
     },
     name: 'Westend Relay Chain',
