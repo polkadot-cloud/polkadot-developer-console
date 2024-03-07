@@ -26,7 +26,7 @@ export const ChainList = () => {
   let filtered = appliedTags.length
     ? Object.fromEntries(
         Object.entries(results).filter(([chain]) =>
-          appliedTags.some(([tagId]) =>
+          appliedTags.every(([tagId]) =>
             getTagsForChain(chain as ChainId).includes(tagId)
           )
         )
