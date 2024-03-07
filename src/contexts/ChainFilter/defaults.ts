@@ -18,10 +18,12 @@ export const defaultAppliedTags: AppliedTags = {
   1: ['tag_relay_chain', 'tag_canary_network', 'tag_test_network'],
   2: ['tag_canary_network'],
   3: ['tag_test_network'],
+  4: ['tag_test_network'],
 };
 
 export const defaultSearchTerms = {
   1: '',
   2: 'Kusama',
-  3: 'Westend',
+  3: 'Rococo',
+  4: 'Westend',
 };
