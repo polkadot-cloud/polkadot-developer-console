@@ -34,7 +34,7 @@ export const defaultTabsContext: TabsContextInterface = {
   forgetTabChain: (tabId) => {},
 };
 
-export const DEFAULT_TAB_WIDTH_PX = 145;
+export const DEFAULT_TAB_WIDTH_PX = 160;
 
 export const TAB_TRANSITION_DURATION_MS = 300;
 
