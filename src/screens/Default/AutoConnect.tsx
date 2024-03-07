@@ -32,9 +32,7 @@ export const AutoConnect = () => {
     <AutoConnectWrapper>
       <h4
         style={{
-          color: autoConnectEnabled
-            ? 'var(--accent-color-secondary)'
-            : undefined,
+          color: autoConnectEnabled ? 'var(--accent-color-primary)' : undefined,
         }}
       >
         Auto Connect

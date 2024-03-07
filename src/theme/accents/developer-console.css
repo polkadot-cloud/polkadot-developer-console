@@ -10,8 +10,8 @@ SPDX-License-Identifier: GPL-3.0-only */
 
   /* NOTE: Below colors are currently not in use. */
 
-  --accent-color-primary-light: #dedae8;
-  --accent-color-primary-dark: #32264c;
+  --accent-color-tertiary-light: #dedae8;
+  --accent-color-tertiary-dark: #32264c;
 
   --accent-color-stroke-light: rgb(211 48 121);
   --accent-color-stroke-dark: rgb(211 48 121);

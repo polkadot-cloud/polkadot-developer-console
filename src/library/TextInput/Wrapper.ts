@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     margin-bottom: 0.25rem;
 
     &.focus {
-      color: var(--accent-color-secondary);
+      color: var(--accent-color-primary);
     }
   }
 
@@ -50,7 +50,7 @@ export const Wrapper = styled.div`
         transition: color 0.15s;
 
         &:hover {
-          color: var(--accent-color-secondary);
+          color: var(--accent-color-primary);
         }
 
         &:disabled {
@@ -61,10 +61,10 @@ export const Wrapper = styled.div`
     }
 
     &.focus {
-      border-color: var(--accent-color-secondary);
+      border-color: var(--accent-color-primary);
 
       > .controls > button {
-        color: var(--accent-color-secondary);
+        color: var(--accent-color-primary);
         &:disabled {
           color: var(--text-color-tertiary);
         }

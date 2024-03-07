@@ -40,8 +40,8 @@ export const SettingsHeaderButton = styled.button`
   }
 
   &:hover {
-    border-color: var(--accent-color-secondary);
-    color: var(--accent-color-secondary);
+    border-color: var(--accent-color-primary);
+    color: var(--accent-color-primary);
   }
 
   &:disabled {

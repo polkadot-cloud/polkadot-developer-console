@@ -47,7 +47,7 @@ export const ChainListWrapper = styled.div`
         font-size: 0.75rem;
 
         &:hover {
-          color: var(--accent-color-secondary);
+          color: var(--accent-color-primary);
         }
         > svg {
           margin-right: 0.25rem;
@@ -166,7 +166,7 @@ export const ChainListItemWrapper = styled.div`
             > button {
               color: var(--text-color-primary);
               &:hover {
-                color: var(--accent-color-secondary);
+                color: var(--accent-color-primary);
               }
             }
           }

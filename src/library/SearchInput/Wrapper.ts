@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     margin-bottom: 0.35rem;
 
     &.focus {
-      color: var(--accent-color-secondary);
+      color: var(--accent-color-primary);
     }
   }
 
@@ -28,7 +28,7 @@ export const Wrapper = styled.div`
     width: 100%;
 
     &.focus {
-      border-color: var(--accent-color-secondary);
+      border-color: var(--accent-color-primary);
     }
 
     > .icon {

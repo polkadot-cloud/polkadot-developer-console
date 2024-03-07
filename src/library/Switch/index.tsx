@@ -15,7 +15,7 @@ export const Switch = ({
   const bgColor = disabled
     ? 'var(--button-hover-background)'
     : active
-      ? 'var(--accent-color-secondary)'
+      ? 'var(--accent-color-primary)'
       : 'var(--border-secondary-color)';
 
   // Determine toggle button color based on switch config.

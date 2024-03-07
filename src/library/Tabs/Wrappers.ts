@@ -115,7 +115,7 @@ export const TabWrapper = styled(motion.div)`
       left: 0.4rem;
 
       > svg {
-        fill: var(--accent-color-secondary);
+        fill: var(--accent-color-primary);
         opacity: 1;
       }
     }

@@ -21,7 +21,7 @@ export default defineConfig({
   ],
   build: {
     outDir: 'build',
-  }, 
+  },
   server: {
     fs: {
       strict: false,

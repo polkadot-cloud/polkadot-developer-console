@@ -16,7 +16,7 @@ export const HeaderWrapper = styled.div`
 
     &:first-child {
       > h1 {
-        color: var(--accent-color-primary);
+        color: var(--accent-color-secondary);
         font-family: Inter, sans-serif;
         font-size: 0.72rem;
         text-transform: uppercase;
@@ -24,9 +24,9 @@ export const HeaderWrapper = styled.div`
         browsers. */
         background: linear-gradient(
           90deg,
-          var(--accent-color-secondary) 0%,
-          var(--accent-color-secondary) 40%,
-          var(--accent-color-primary) 100%
+          var(--accent-color-primary) 0%,
+          var(--accent-color-primary) 40%,
+          var(--accent-color-secondary) 100%
         );
         -webkit-text-fill-color: transparent;
         background-clip: text;

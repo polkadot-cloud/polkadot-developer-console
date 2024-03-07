@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
   }
 
   > h2 > button {
-    color: var(--accent-color-primary);
+    color: var(--accent-color-secondary);
     font-size: 0.9rem;
   }
 `;

@@ -33,7 +33,7 @@ export const Header = () => {
             style={{
               width: '100%',
               height: '100%',
-              fill: 'var(--accent-color-secondary)',
+              fill: 'var(--accent-color-primary)',
             }}
           />
         </span>
