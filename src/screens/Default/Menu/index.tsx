@@ -12,6 +12,7 @@ import { HeaderMenuWrapper } from 'library/HeaderMenu/Wrappers';
 import { useSection } from 'library/Page/provider';
 import { ButtonWithTooltip } from './ButtonWithTooltip';
 import { useApi } from 'contexts/Api';
+import { useRedirectOnInactive } from 'hooks/useRedirectOnInactive';
 
 export const ChainMenu = () => {
   const { getApiStatus } = useApi();
@@ -19,7 +20,12 @@ export const ChainMenu = () => {
   const { activeSection, setActiveSection } = useSection();
   const { tabsHidden, setTabsHidden, activeTabId } = useTabs();
 
+  // Redirect to section 0 if api becomes inactive.
+  useRedirectOnInactive(activeTabId);
+
   const apiStatus = getApiStatus(activeTabId);
+  let apiActive = true;
+
   let screenLabel;
   switch (apiStatus) {
     case 'connecting':
@@ -29,6 +35,7 @@ export const ChainMenu = () => {
       break;
     default:
       screenLabel = 'Connect';
+      apiActive = false;
   }
 
   return (
@@ -40,8 +47,16 @@ export const ChainMenu = () => {
             onClick={() => setActiveSection(0)}
             className={activeSection === 0 ? 'active' : undefined}
           >
-            {!apiStatus ? 'Search Chain' : 'Overview'}
+            {!apiActive ? 'Search Chain' : 'Overview'}
           </button>
+          {apiActive && (
+            <button
+              onClick={() => setActiveSection(2)}
+              className={activeSection === 2 ? 'active' : undefined}
+            >
+              Chain State
+            </button>
+          )}
         </section>
         <section className="other">{/* Additional links right side */}</section>
       </div>

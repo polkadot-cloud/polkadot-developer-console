@@ -24,7 +24,7 @@ export const TabMenu = ({
       ? 'Connecting..'
       : 'Not Connected';
 
-  const apiStatusInactive = ['ready', 'connected', 'disconnected'].includes(
+  const apiStatusInactive = ['ready', 'connected', 'connecting'].includes(
     apiStatus
   );
 

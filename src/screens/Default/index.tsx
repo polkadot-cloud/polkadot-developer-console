@@ -6,6 +6,7 @@ import { Connect } from './Connect';
 import { ManageTab } from './ManageTab';
 import { useSection } from 'library/Page/provider';
 import { Overview } from './Overview';
+import { ChainState } from './ChainState';
 
 export const Default = () => {
   const { getTabApi } = useApi();
@@ -17,6 +18,7 @@ export const Default = () => {
   return (
     <>
       {activeSection === 0 && firstSection}
+      {activeSection === 2 && <ChainState />}
       {activeSection === 1 && <ManageTab />}
     </>
   );
