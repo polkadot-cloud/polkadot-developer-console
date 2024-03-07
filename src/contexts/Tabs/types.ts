@@ -45,4 +45,5 @@ export interface TabsContextInterface {
   getStoredChain: (
     tabId: number
   ) => { id: ChainId; chain: NetworkDirectoryItem } | undefined;
+  forgetTabChain: (tabId: number) => void;
 }

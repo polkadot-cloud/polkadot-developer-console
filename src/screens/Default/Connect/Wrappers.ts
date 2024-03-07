@@ -33,6 +33,27 @@ export const ChainListWrapper = styled.div`
   > h4 {
     color: var(--text-color-secondary);
     margin-top: 0.75rem;
+    display: flex;
+    align-items: center;
+    padding-left: 0.25rem;
+
+    > span {
+      flex-grow: 1;
+      text-align: right;
+      padding-right: 0.5rem;
+
+      > button {
+        color: var(--text-color-tertiary);
+        font-size: 0.75rem;
+
+        &:hover {
+          color: var(--accent-color-secondary);
+        }
+        > svg {
+          margin-right: 0.25rem;
+        }
+      }
+    }
   }
 `;
 

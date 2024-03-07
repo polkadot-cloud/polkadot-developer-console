@@ -29,6 +29,7 @@ export const defaultTabsContext: TabsContextInterface = {
   incrementRedirectCounter: () => {},
   connectTab: (tabId, chainId, endpoint) => {},
   getStoredChain: (tabId) => undefined,
+  forgetTabChain: (tabId) => {},
 };
 
 export const DEFAULT_TAB_WIDTH_PX = 145;

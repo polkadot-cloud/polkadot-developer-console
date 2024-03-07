@@ -158,6 +158,14 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
+  // Forget a tab's chain.
+  const forgetTabChain = (id: number) => {
+    const newTabs = tabs.map((tab) =>
+      tab.id === id ? { ...tab, chain: undefined } : tab
+    );
+    setTabs(newTabs);
+  };
+
   // Gets the amount of tab names starting with the provided string.
   const getTabNameCount = (name: string) =>
     tabs.filter((tab) => tab.name.startsWith(name)).length;
@@ -217,6 +225,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         redirectCounter,
         incrementRedirectCounter,
         getStoredChain,
+        forgetTabChain,
         instantiatedIds: instantiatedIds.current,
       }}
     >
