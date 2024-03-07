@@ -14,7 +14,7 @@ export type PageId = 'default' | 'settings';
 export const App = () => (
   // TODO: Get accent theme from active network, if any, otherwise default to a new
   // `developer-console` accent.
-  <Entry mode="light" theme={`polkadot-relay`}>
+  <Entry mode="light" accent={`polkadot-relay`}>
     <HashRouter basename="/">
       <ErrorBoundary
         FallbackComponent={AppErrorBoundary}

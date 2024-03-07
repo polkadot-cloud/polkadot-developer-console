@@ -6,11 +6,11 @@ import { Wrapper } from './Wrapper';
 
 export type EntryProps = ComponentBase & {
   mode: 'light' | 'dark';
-  theme: string;
+  accent: string;
 };
 
-export const Entry = ({ children, style, mode, theme }: EntryProps) => (
-  <Wrapper className={`theme-${mode} theme-${theme}`} style={style}>
+export const Entry = ({ children, style, mode, accent }: EntryProps) => (
+  <Wrapper className={`theme-${mode} accent-${accent}`} style={style}>
     {children}
   </Wrapper>
 );
