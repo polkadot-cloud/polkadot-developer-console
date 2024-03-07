@@ -57,6 +57,15 @@ export const defaultTabs: Tabs = [
   {
     id: 3,
     chain: {
+      id: 'rococo-relay-chain',
+      provider: 'Parity',
+    },
+    name: 'Rococo Relay Chain',
+    autoConnect: true,
+  },
+  {
+    id: 4,
+    chain: {
       id: 'westend-relay-chain',
       provider: 'IBP-GeoDNS1',
     },

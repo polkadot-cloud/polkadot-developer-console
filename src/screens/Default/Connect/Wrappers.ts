@@ -107,6 +107,11 @@ export const ChainListItemWrapper = styled.div`
             width: 1.25rem;
             height: 1.25rem;
             margin-right: 0.55rem;
+
+            > svg {
+              width: 100%;
+              height: 100%;
+            }
           }
         }
 

@@ -7,6 +7,7 @@
 export type ChainId =
   | 'polkadot-relay-chain'
   | 'kusama-relay-chain'
+  | 'rococo-relay-chain'
   | 'westend-relay-chain';
 
 export interface NetworkDirectoryItem {
@@ -73,6 +74,16 @@ export const NetworkDirectory: NetworkDirectory = {
       RadiumBlock: 'wss://westend.public.curie.radiumblock.co/ws',
       Stakeworld: 'wss://wnd-rpc.stakeworld.io',
       Parity: 'wss://westend-rpc.polkadot.io',
+    },
+  },
+  'rococo-relay-chain': {
+    system: {
+      chain: 'Rococo',
+    },
+    name: 'Rococo Relay Chain',
+    unit: 'ROC',
+    providers: {
+      Parity: 'wss://rococo-rpc.polkadot.io',
     },
   },
 };
