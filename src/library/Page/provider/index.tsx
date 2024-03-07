@@ -7,6 +7,7 @@ import type { SectionContextInterface, SectionContextProps } from './types';
 import * as local from './Local';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { useTabs } from 'contexts/Tabs';
+import { useApi } from 'contexts/Api';
 
 export const SectionContext = createContext<SectionContextInterface>(
   defaultSectionContext
@@ -15,8 +16,11 @@ export const SectionContext = createContext<SectionContextInterface>(
 export const useSection = () => useContext(SectionContext);
 
 export const SectionProvider = ({ pageId, children }: SectionContextProps) => {
+  const { getApiActive } = useApi();
   const { activeTabId } = useTabs();
   const { redirectCounter } = useTabs();
+
+  const apiActive = getApiActive(activeTabId);
 
   // The active section of the page.
   const [activeSection, setActiveSectionState] = useState<number>(
@@ -31,17 +35,16 @@ export const SectionProvider = ({ pageId, children }: SectionContextProps) => {
     setActiveSectionState(section);
   };
 
+  // Handle redirects from local storage, if present.
   useEffectIgnoreInitial(() => {
-    // Get a temporary redirect from local storage, if present.
     const redirect = local.getSectionRedirect(pageId, activeTabId);
-
-    setActiveSection(
-      redirect ||
-        local.getActiveSection(pageId, activeTabId) ||
-        defaultActiveSection,
-      false
-    );
-  }, [pageId, activeTabId, redirectCounter]);
+    const localActive = local.getActiveSection(pageId, activeTabId);
+    if (redirect) {
+      setActiveSection(redirect || localActive || defaultActiveSection, false);
+    } else {
+      setActiveSection(localActive || defaultActiveSection);
+    }
+  }, [pageId, activeTabId, redirectCounter, apiActive]);
 
   return (
     <SectionContext.Provider

@@ -15,7 +15,7 @@ import { useApi } from 'contexts/Api';
 import { useRedirectOnInactive } from 'hooks/useRedirectOnInactive';
 
 export const ChainMenu = () => {
-  const { getApiStatus } = useApi();
+  const { getApiStatus, getApiActive } = useApi();
   const { pathname } = useLocation();
   const { activeSection, setActiveSection } = useSection();
   const { tabsHidden, setTabsHidden, activeTabId } = useTabs();
@@ -24,7 +24,7 @@ export const ChainMenu = () => {
   useRedirectOnInactive(activeTabId);
 
   const apiStatus = getApiStatus(activeTabId);
-  let apiActive = true;
+  const apiActive = getApiActive(activeTabId);
 
   let screenLabel;
   switch (apiStatus) {
@@ -35,7 +35,6 @@ export const ChainMenu = () => {
       break;
     default:
       screenLabel = 'Connect';
-      apiActive = false;
   }
 
   return (

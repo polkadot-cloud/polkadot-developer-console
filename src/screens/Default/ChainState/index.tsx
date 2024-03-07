@@ -6,6 +6,6 @@ import { PageContentWrapper } from 'library/Page/Wrapper';
 export const ChainState = () => (
   <PageContentWrapper>
     <h2>Chain State</h2>
-    <h4>In Development</h4>
+    <h4>In development</h4>
   </PageContentWrapper>
 );
