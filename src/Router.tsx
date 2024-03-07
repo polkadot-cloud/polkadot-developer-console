@@ -8,10 +8,12 @@ import { Header } from 'library/Header';
 import { ContextMenu } from 'library/ContextMenu';
 import { Tabs } from 'library/Tabs';
 import { Tooltip } from 'library/Tooltip';
+import { Notifications } from 'library/Notifications';
 
 export const Router = () => (
   <>
     <ContextMenu />
+    <Notifications />
     <Tooltip />
     <Header />
     <Tabs />

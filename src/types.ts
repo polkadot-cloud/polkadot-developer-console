@@ -1,3 +1,4 @@
+import type { NotificationItem } from 'controllers/NotificationsController/types';
 import type {
   APIChainSpecEventDetail,
   APIStatusEventDetail,
@@ -8,6 +9,7 @@ declare global {
   interface DocumentEventMap {
     'api-status': CustomEvent<APIStatusEventDetail>;
     'new-chain-spec': CustomEvent<APIChainSpecEventDetail>;
+    notification: CustomEvent<NotificationItem>;
   }
 }
 

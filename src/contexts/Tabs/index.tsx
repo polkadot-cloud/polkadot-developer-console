@@ -202,13 +202,13 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Instantiate an Api instance from tab chain data.
-  const instantiateApiFromTab = (tabId: number) => {
+  const instantiateApiFromTab = async (tabId: number) => {
     const tab = getTab(tabId);
     if (tab?.chain) {
       const { id, provider } = tab.chain;
       const endpoint = NetworkDirectory[id]?.providers[provider];
       if (endpoint) {
-        ApiController.instantiate(tab.id, id, endpoint);
+        await ApiController.instantiate(tab.id, id, endpoint);
       }
     }
   };
