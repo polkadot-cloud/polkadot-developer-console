@@ -8,5 +8,6 @@ export interface ApiContextInterface {
   isReady: boolean;
   getTabApi: () => Api | undefined;
   getApiStatus: (tabId: number) => ApiStatus;
+  getApiActive: (tabId: number) => boolean;
   getChainSpec: (tabId: number) => APIChainSpec | null;
 }

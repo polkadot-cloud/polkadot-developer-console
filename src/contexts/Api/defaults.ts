@@ -8,5 +8,6 @@ export const defaultApiContext: ApiContextInterface = {
   isReady: false,
   getTabApi: () => undefined,
   getApiStatus: (tabId) => 'disconnected',
+  getApiActive: (tabId) => false,
   getChainSpec: (tabId) => null,
 };

@@ -60,6 +60,14 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   // Gets an api status based on a tab id.
   const getApiStatus = (tabId: number): ApiStatus => apiStatus[tabId];
 
+  // Gets whether an api is active (not disconnected or undefined).
+  const getApiActive = (tabId: number): boolean => {
+    const status = getApiStatus(tabId);
+    return (
+      status === 'ready' || status === 'connected' || status === 'connecting'
+    );
+  };
+
   // Gets a chain spec based on a tab id.
   const getChainSpec = (tabId: number): APIChainSpec => chainSpec[tabId];
 
@@ -150,6 +158,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
       value={{
         isReady: false,
         getApiStatus,
+        getApiActive,
         getTabApi,
         getChainSpec,
       }}
