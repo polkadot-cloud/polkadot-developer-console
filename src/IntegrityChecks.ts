@@ -9,6 +9,7 @@ import { defaultTags, defaultTagsConfig } from 'contexts/Tags/defaults';
 import { defaultTabs } from 'contexts/Tabs/defaults';
 import {
   defaultAppliedTags,
+  defaultCustomNodeUrls,
   defaultSearchTerms,
 } from 'contexts/ChainFilter/defaults';
 
@@ -102,7 +103,7 @@ export const checkLocalChainFilter = () => {
   const tags = localTags.getTags() || defaultTags;
   const searchTerms = localChainFilter.getSearchTerms() || defaultSearchTerms;
   const customNodeUrls =
-    localChainFilter.getCustomNodeUrls() || defaultSearchTerms;
+    localChainFilter.getCustomNodeUrls() || defaultCustomNodeUrls;
   const appliedTags = localChainFilter.getAppliedTags() || defaultAppliedTags;
 
   // Check if tabs exist for each search term, and remove the entry otherwise. Also remove empty
