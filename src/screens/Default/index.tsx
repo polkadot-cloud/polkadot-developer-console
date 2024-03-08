@@ -8,13 +8,22 @@ import { useSection } from 'library/Page/provider';
 import { Overview } from './Overview';
 import { ChainState } from './ChainState';
 import { Extrinsics } from './Extrinsics';
+import { useTabs } from 'contexts/Tabs';
 
 export const Default = () => {
-  const { getTabApi } = useApi();
+  const { getApiStatus } = useApi();
+  const { activeTabId } = useTabs();
   const { activeSection } = useSection();
+  const apiStatus = getApiStatus(activeTabId);
 
   // If `Api` instance does not yet exist for the tab, display the connect chain UI.
-  const firstSection = getTabApi() ? <Overview /> : <Connect />;
+  const firstSection = ['ready', 'connected', 'connecting'].includes(
+    apiStatus
+  ) ? (
+    <Overview />
+  ) : (
+    <Connect />
+  );
 
   return (
     <>

@@ -74,19 +74,23 @@ export class Api {
 
   // Initialize the API.
   async initialize() {
-    // Initialize provider.
-    this.#provider = new WsProvider(this.#rpcEndpoint);
+    try {
+      // Initialize provider.
+      this.#provider = new WsProvider(this.#rpcEndpoint);
 
-    // Tell UI api is connecting.
-    this.dispatchEvent(this.ensureEventStatus('connecting'));
+      // Tell UI api is connecting.
+      this.dispatchEvent(this.ensureEventStatus('connecting'));
 
-    // Initialise api.
-    this.#api = new ApiPromise({ provider: this.provider });
+      // Initialise api.
+      this.#api = new ApiPromise({ provider: this.provider });
 
-    // Initialise api events.
-    this.initProviderEvents();
+      // Initialise api events.
+      this.initProviderEvents();
 
-    await this.#api.isReady;
+      await this.#api.isReady;
+    } catch (e) {
+      this.dispatchEvent(this.ensureEventStatus('error'));
+    }
   }
 
   async fetchChainSpec() {

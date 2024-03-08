@@ -29,7 +29,7 @@ export const LocalNodeInput = () => {
   return (
     <ChainInputWrapper>
       <SearchInput
-        placeholder="ws://"
+        placeholder="wss://"
         value={customNodeUrl}
         onChange={onChange}
         icon={faChevronRight}

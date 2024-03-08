@@ -31,7 +31,6 @@ export class ApiController {
   // Gracefully disconnect and then destroy an api instance.
   static async destroy(tabId: number) {
     const api = this.instances[tabId];
-
     if (api) {
       await api.disconnect(true);
       delete this.instances[tabId];
