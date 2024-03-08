@@ -55,6 +55,16 @@ export const NetworkDirectory: NetworkDirectory = {
       Parity: 'wss://kusama-rpc.polkadot.io',
     },
   },
+  rococo: {
+    system: {
+      chain: 'Rococo',
+    },
+    name: 'Rococo Relay Chain',
+    unit: 'ROC',
+    providers: {
+      Parity: 'wss://rococo-rpc.polkadot.io',
+    },
+  },
   westend: {
     system: {
       chain: 'Westend',
@@ -70,16 +80,6 @@ export const NetworkDirectory: NetworkDirectory = {
       RadiumBlock: 'wss://westend.public.curie.radiumblock.co/ws',
       Stakeworld: 'wss://wnd-rpc.stakeworld.io',
       Parity: 'wss://westend-rpc.polkadot.io',
-    },
-  },
-  rococo: {
-    system: {
-      chain: 'Rococo',
-    },
-    name: 'Rococo Relay Chain',
-    unit: 'ROC',
-    providers: {
-      Parity: 'wss://rococo-rpc.polkadot.io',
     },
   },
 };
