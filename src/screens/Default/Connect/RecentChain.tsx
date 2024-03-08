@@ -4,9 +4,9 @@
 import { useTabs } from 'contexts/Tabs';
 import { ChainListWrapper, Separator } from './Wrappers';
 import { ChainListItem } from './ChainListItem';
-import type { ChainId } from 'config/networks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
+import type { DirectoryId } from 'config/networks';
 
 export const RecentChain = () => {
   const { activeTabId, getStoredChain, getActiveTab, forgetTabChain } =
@@ -39,7 +39,10 @@ export const RecentChain = () => {
           </button>
         </span>
       </h4>
-      <ChainListItem chainId={result.id as ChainId} name={result.chain.name} />
+      <ChainListItem
+        chainId={result.id as DirectoryId}
+        name={result.chain.name}
+      />
     </ChainListWrapper>
   );
 };

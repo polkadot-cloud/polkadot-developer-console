@@ -4,9 +4,9 @@
 // NOTE: This file is temporary until the @polkadot-cloud/network-directory package is ready to be
 // used.
 
-export type ChainId = 'polkadot' | 'kusama' | 'rococo' | 'westend';
+export type DirectoryId = 'polkadot' | 'kusama' | 'rococo' | 'westend';
 
-export type ChainIdOrCustom = ChainId | 'custom';
+export type ChainId = DirectoryId | 'custom';
 
 export interface NetworkDirectoryItem {
   system: {
@@ -17,7 +17,7 @@ export interface NetworkDirectoryItem {
   providers: Record<string, string>;
 }
 
-export type NetworkDirectory = Record<ChainId, NetworkDirectoryItem>;
+export type NetworkDirectory = Record<DirectoryId, NetworkDirectoryItem>;
 
 // The currently supported networks.
 export const NetworkDirectory: NetworkDirectory = {

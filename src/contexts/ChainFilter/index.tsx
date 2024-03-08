@@ -17,7 +17,7 @@ import {
 } from './defaults';
 import { useTags } from 'contexts/Tags';
 import type { TagId, TagItem } from 'contexts/Tags/types';
-import type { ChainId } from 'config/networks';
+import type { DirectoryId } from 'config/networks';
 import * as local from './Local';
 import { checkLocalChainFilter } from 'IntegrityChecks';
 
@@ -84,9 +84,9 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Gets the applied tags for a given key.
-  const getAppliedTags = (tabId: number): [ChainId, TagItem][] => {
+  const getAppliedTags = (tabId: number): [DirectoryId, TagItem][] => {
     const tagIds = appliedTags[tabId] || [];
-    return tagIds.map((id: TagId) => [id as ChainId, tags[id]]);
+    return tagIds.map((id: TagId) => [id as DirectoryId, tags[id]]);
   };
 
   // Sets applied tags for a given key.

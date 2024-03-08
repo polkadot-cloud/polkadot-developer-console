@@ -10,13 +10,13 @@ import { faCircleRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { ConfigTagMenu } from './TagsMenu/ConfigTagMenu';
 import type { TagId } from 'contexts/Tags/types';
-import { type ChainId } from 'config/networks';
+import { type DirectoryId } from 'config/networks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConnectMenu } from './ConnectMenu';
 import { useTabs } from 'contexts/Tabs';
 
 export interface ChainListItemProps {
-  chainId: ChainId;
+  chainId: DirectoryId;
   name: string;
 }
 

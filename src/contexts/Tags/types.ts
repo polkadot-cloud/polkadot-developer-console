@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainId } from 'config/networks';
+import type { DirectoryId } from 'config/networks';
 
 export type ConcreteTagId =
   | 'tag_relay_chain'
@@ -17,12 +17,12 @@ export interface TagsContextInterface {
   setTags: (tags: TagsList) => void;
   tagsConfig: TagsConfig;
   setTagsConfig: (tagsConfig: TagsConfig) => void;
-  getTagsForChain: (chain: ChainId) => TagId[];
-  getChainsForTag: (tagId: TagId) => ChainId[];
+  getTagsForChain: (chain: DirectoryId) => TagId[];
+  getChainsForTag: (tagId: TagId) => DirectoryId[];
   getLargestTagCounter: () => number;
   removeTag: (tagId: TagId) => void;
-  addChainToTag: (tagId: TagId, chain: ChainId) => void;
-  removeChainFromTag: (tagId: TagId, chain: ChainId) => void;
+  addChainToTag: (tagId: TagId, chain: DirectoryId) => void;
+  removeChainFromTag: (tagId: TagId, chain: DirectoryId) => void;
 }
 
 export interface TagItem {
@@ -35,4 +35,4 @@ export type TagsList = Record<TagId, TagItem>;
 
 export type TagsConfig = Record<TagId, TagConfigItem>;
 
-export type TagConfigItem = ChainId[];
+export type TagConfigItem = DirectoryId[];

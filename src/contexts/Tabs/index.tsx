@@ -8,7 +8,7 @@ import { defaultTabs, defaultTabsContext } from './defaults';
 import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
 import { NetworkDirectory } from 'config/networks';
-import type { ChainIdOrCustom, ChainId } from 'config/networks';
+import type { ChainId, DirectoryId } from 'config/networks';
 import { checkLocalTabs } from 'IntegrityChecks';
 import { ApiController } from 'controllers/ApiController';
 import { isDirectoryId } from 'config/networks/Utils';
@@ -186,7 +186,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     tabs.filter((tab) => tab.name.startsWith(name)).length;
 
   // Generate tab name for chain.
-  const getAutoTabName = (chainId: ChainId) => {
+  const getAutoTabName = (chainId: DirectoryId) => {
     const chainName = NetworkDirectory[chainId].name;
     const existingNames = getTabNameCount(chainName);
     const tabName =
@@ -196,11 +196,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Connect tab to an Api instance and update its chain data.
-  const connectTab = (
-    tabId: number,
-    chainId: ChainIdOrCustom,
-    endpoint: string
-  ) => {
+  const connectTab = (tabId: number, chainId: ChainId, endpoint: string) => {
     const newTabs = [...tabs].map((tab) =>
       tab.id === tabId
         ? {
@@ -248,7 +244,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         tabsHidden,
         setTabsHidden,
         renameTab,
-        getAutoTabName,
         connectTab,
         instantiateApiFromTab,
         redirectCounter,
