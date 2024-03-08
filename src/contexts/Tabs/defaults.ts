@@ -38,7 +38,6 @@ export const DEFAULT_TAB_WIDTH_PX = 160;
 
 export const TAB_TRANSITION_DURATION_MS = 300;
 
-// TODO: derive this default value from `NetworkDirectory`.
 export const defaultTabs: Tabs = [
   {
     id: 1,
