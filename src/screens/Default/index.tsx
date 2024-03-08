@@ -17,9 +17,8 @@ export const Default = () => {
   const apiStatus = getApiStatus(activeTabId);
 
   // If `Api` instance does not yet exist for the tab, display the connect chain UI.
-  const firstSection = ['ready', 'connected', 'connecting'].includes(
-    apiStatus
-  ) ? (
+  const API_STATUSES = ['ready', 'connected', 'connecting'];
+  const firstSection = API_STATUSES.includes(apiStatus) ? (
     <Overview />
   ) : (
     <Connect />
