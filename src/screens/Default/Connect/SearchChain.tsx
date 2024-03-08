@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { SearchInput } from 'library/SearchInput';
-import { SearchChainWrapper } from './Wrappers';
+import { ChainInputWrapper } from './Wrappers';
 import { useTabs } from 'contexts/Tabs';
 import { TagControls } from './TagControls';
 import { useChainFilter } from 'contexts/ChainFilter';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 export const SearchChain = () => {
   const { activeTabId } = useTabs();
@@ -23,13 +24,14 @@ export const SearchChain = () => {
   };
 
   return (
-    <SearchChainWrapper>
+    <ChainInputWrapper>
       <SearchInput
         placeholder="Chain Name"
         value={searchTerm}
         onChange={onChange}
+        icon={faSearch}
       />
       <TagControls />
-    </SearchChainWrapper>
+    </ChainInputWrapper>
   );
 };

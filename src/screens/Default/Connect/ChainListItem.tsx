@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Suspense, lazy, useMemo } from 'react';
-import { ChainListItemWrapper } from './Wrappers';
+import { ChainListItemWrapper, ConnectButton } from './Wrappers';
 import { Tag } from 'library/Tag';
 import { useTags } from 'contexts/Tags';
 import { TagControl } from 'library/TagControl';
@@ -65,7 +65,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
           <h3>{name}</h3>
         </section>
         <section>
-          <button
+          <ConnectButton
             onClick={(ev) => {
               openMenu(
                 ev,
@@ -78,7 +78,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
           >
             Connect
             <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
-          </button>
+          </ConnectButton>
         </section>
       </div>
 

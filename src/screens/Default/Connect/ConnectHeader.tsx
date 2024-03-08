@@ -19,10 +19,10 @@ export const ConnectHeader = () => {
           Directory
         </button>
         <button
-          className={tab?.connectFrom === 'localNode' ? 'active' : undefined}
-          onClick={() => setTabConnectFrom(activeTabId, 'localNode')}
+          className={tab?.connectFrom === 'customNode' ? 'active' : undefined}
+          onClick={() => setTabConnectFrom(activeTabId, 'customNode')}
         >
-          Local Node
+          Custom Endpoint
         </button>
       </ConnectMethodWrapper>
 

@@ -50,8 +50,16 @@ export const ConnectMethodWrapper = styled.div`
   }
 `;
 
-export const SearchChainWrapper = styled.div`
+export const ChainInputWrapper = styled.div`
   width: 100%;
+
+  /* Footer is used for local node. */
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0.75rem 0;
+    padding: 0 0.25rem;
+  }
 `;
 
 export const ChainListWrapper = styled.div`
@@ -173,18 +181,6 @@ export const ChainListItemWrapper = styled.div`
         &:last-child {
           flex-shrink: 1;
           padding: 0 0.15rem 0 0.5rem;
-
-          > button {
-            color: var(--text-color-tertiary);
-            font-family: InterSemiBold, sans-serif;
-            display: flex;
-            align-items: center;
-            font-size: 0.8rem;
-
-            > svg {
-              margin-left: 0.4rem;
-            }
-          }
         }
       }
 
@@ -238,5 +234,21 @@ export const ChainListItemWrapper = styled.div`
   }
   &:hover {
     transform: scale(1.008);
+  }
+`;
+
+export const ConnectButton = styled.button`
+  color: var(--text-color-tertiary);
+  font-family: InterSemiBold, sans-serif;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+
+  &:hover {
+    color: var(--accent-color-primary);
+  }
+
+  > svg {
+    margin-left: 0.4rem;
   }
 `;

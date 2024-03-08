@@ -6,12 +6,25 @@ import { SearchChain } from './SearchChain';
 import { PageContentWrapper } from 'library/Page/Wrapper';
 import { RecentChain } from './RecentChain';
 import { ConnectHeader } from './ConnectHeader';
+import { useTabs } from 'contexts/Tabs';
+import { LocalNodeInput } from './LocaNodeInput';
 
-export const Connect = () => (
-  <PageContentWrapper>
-    <ConnectHeader />
-    <SearchChain />
-    <RecentChain />
-    <ChainList />
-  </PageContentWrapper>
-);
+export const Connect = () => {
+  const { getActiveTab } = useTabs();
+  const tab = getActiveTab();
+  const connectFrom = tab?.connectFrom;
+
+  return (
+    <PageContentWrapper>
+      <ConnectHeader />
+      {connectFrom === 'customNode' && <LocalNodeInput />}
+      {connectFrom === 'directory' && (
+        <>
+          <SearchChain />
+          <RecentChain />
+          <ChainList />
+        </>
+      )}
+    </PageContentWrapper>
+  );
+};
