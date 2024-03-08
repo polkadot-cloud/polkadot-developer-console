@@ -36,7 +36,7 @@ export const checkLocalTabs = () => {
       }
     });
   } catch (e) {
-    localStorage.removeItem('activeTabs');
+    removeOnInvalidTabs();
     activeTabsValid = false;
   }
 
@@ -154,4 +154,18 @@ export const checkLocalChainFilter = () => {
       }
     }
   }
+};
+
+// ------------------------------------------------------
+// Utils.
+// ------------------------------------------------------
+
+// Tidy up local storage on invalid active tabs. Requires any local storage dependent on tabs config
+// to be removed.
+const removeOnInvalidTabs = () => {
+  localStorage.removeItem('activeTabs');
+  localStorage.removeItem('activeTabId');
+  localStorage.removeItem('activeTabIndex');
+  localStorage.removeItem('searchTerms');
+  localStorage.removeItem('appliedTags');
 };
