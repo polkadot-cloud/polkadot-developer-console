@@ -39,7 +39,8 @@ export const LocalNodeInput = () => {
       <div className="footer">
         <ConnectButton
           onClick={() => {
-            /* Do nothing */
+            // TODO: connect tab to custom node.
+            // connectTab(activeTabId, 'custom', customNodeUrl);
           }}
         >
           Connect

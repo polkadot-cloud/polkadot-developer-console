@@ -11,7 +11,6 @@ export const defaultTabsContext: TabsContextInterface = {
   setActiveTabId: (id) => {},
   createTab: () => {},
   destroyTab: (index, id) => {},
-  getChainTab: (chainId) => undefined,
   getTab: (id) => undefined,
   getActiveTab: () => undefined,
   tabHoverIndex: 0,

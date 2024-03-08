@@ -9,6 +9,7 @@ export type Tabs = Tab[];
 export interface Tab {
   id: number;
   connectFrom: ConnectFrom;
+  // TODO: abstract into directory or custom node url.
   chain:
     | {
         id: ChainId;
@@ -26,7 +27,6 @@ export interface TabsContextInterface {
   setTabs: (tabs: Tabs) => void;
   createTab: () => void;
   activeTabId: number;
-  getChainTab: (chainId: ChainId) => Tab | undefined;
   getTab: (id: number) => Tab | undefined;
   getActiveTab: () => Tab | undefined;
   destroyTab: (index: number, id: number) => void;

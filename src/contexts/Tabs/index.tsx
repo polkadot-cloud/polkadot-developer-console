@@ -92,10 +92,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Gets the active tab.
   const getActiveTab = () => getTab(activeTabId);
 
-  // Gets a tab by chain id.
-  const getChainTab = (chainId: ChainId) =>
-    tabs.find((tab) => tab.chain?.id === chainId);
-
   // Gets the previously connected to chain, if present.
   const getStoredChain = (tabId: number) => {
     const tab = getTab(tabId);
@@ -230,7 +226,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         createTab,
         activeTabId,
         getTab,
-        getChainTab,
         getActiveTab,
         destroyTab,
         setActiveTabId,
