@@ -8,6 +8,9 @@ export interface ChainFilterInterface {
   searchTerms: SearchTerms;
   getSearchTerm: (tabId: number) => string;
   setSearchTerm: (tabId: number, searchTerm: string) => void;
+  customNodeUrls: CustomNodeUrls;
+  getCustomNodeUrl: (tabId: number) => string;
+  setCustomNodeUrl: (tabId: number, url: string) => void;
   appliedTags: AppliedTags;
   getAppliedTags: (tabId: number) => [ChainId, TagItem][];
   applyTags: (tabId: number, tagIds: TagId[]) => void;
@@ -15,5 +18,7 @@ export interface ChainFilterInterface {
 }
 
 export type SearchTerms = Record<number, string>;
+
+export type CustomNodeUrls = Record<number, string>;
 
 export type AppliedTags = Record<number, TagId[]>;

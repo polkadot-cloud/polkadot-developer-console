@@ -101,6 +101,8 @@ export const checkLocalChainFilter = () => {
   const activeTabs = localTabs.getTabs() || defaultTabs;
   const tags = localTags.getTags() || defaultTags;
   const searchTerms = localChainFilter.getSearchTerms() || defaultSearchTerms;
+  const customNodeUrls =
+    localChainFilter.getCustomNodeUrls() || defaultSearchTerms;
   const appliedTags = localChainFilter.getAppliedTags() || defaultAppliedTags;
 
   // Check if tabs exist for each search term, and remove the entry otherwise. Also remove empty
@@ -123,6 +125,27 @@ export const checkLocalChainFilter = () => {
     } else {
       if (updated) {
         localChainFilter.setSearchTerms(maybeUpdatedSearchTerms);
+      }
+    }
+  }
+
+  // Check if tabs exist for each custom node url, and remove the entry otherwise. Also remove empty
+  // strings.
+  if (customNodeUrls) {
+    const maybeUpdatedCustomNodeUrls = customNodeUrls;
+    let updated = false;
+    Object.entries(customNodeUrls).forEach(([tabId, url]) => {
+      if (!activeTabs?.find(({ id }) => id === Number(tabId)) || url === '') {
+        delete maybeUpdatedCustomNodeUrls[Number(tabId)];
+        updated = true;
+      }
+    });
+
+    if (JSON.stringify(maybeUpdatedCustomNodeUrls) === '{}') {
+      localStorage.removeItem('customNodeUrls');
+    } else {
+      if (updated) {
+        localChainFilter.setCustomNodeUrls(maybeUpdatedCustomNodeUrls);
       }
     }
   }

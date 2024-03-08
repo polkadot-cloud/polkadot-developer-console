@@ -2,12 +2,20 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
-import type { AppliedTags, ChainFilterInterface, SearchTerms } from './types';
+import type {
+  AppliedTags,
+  ChainFilterInterface,
+  CustomNodeUrls,
+  SearchTerms,
+} from './types';
 
 export const defaultChainFilter: ChainFilterInterface = {
   searchTerms: {},
   getSearchTerm: (tabId) => '',
   setSearchTerm: (tabId, searchTerm) => {},
+  customNodeUrls: {},
+  getCustomNodeUrl: (tabId) => '',
+  setCustomNodeUrl: (tabId, url) => {},
   appliedTags: {},
   getAppliedTags: (tabId) => [],
   applyTags: (tabId, tagIds) => {},
@@ -27,3 +35,5 @@ export const defaultSearchTerms: SearchTerms = {
   3: 'Rococo',
   4: 'Westend',
 };
+
+export const defaultCustomNodeUrls: CustomNodeUrls = {};
