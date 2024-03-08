@@ -3,7 +3,7 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
-import type { Tabs, TabsContextInterface } from './types';
+import type { ConnectFrom, Tabs, TabsContextInterface } from './types';
 import { defaultTabs, defaultTabsContext } from './defaults';
 import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
@@ -121,6 +121,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       ...tabs,
       {
         id: newTabId,
+        connectFrom: 'directory' as ConnectFrom,
         chain: undefined,
         name: 'New Tab',
         autoConnect,

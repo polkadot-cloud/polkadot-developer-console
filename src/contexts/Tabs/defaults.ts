@@ -42,6 +42,7 @@ export const TAB_TRANSITION_DURATION_MS = 300;
 export const defaultTabs: Tabs = [
   {
     id: 1,
+    connectFrom: 'directory',
     chain: {
       id: 'polkadot',
       provider: 'IBP-GeoDNS1',
@@ -51,6 +52,7 @@ export const defaultTabs: Tabs = [
   },
   {
     id: 2,
+    connectFrom: 'directory',
     chain: {
       id: 'kusama',
       provider: 'IBP-GeoDNS1',
@@ -60,6 +62,7 @@ export const defaultTabs: Tabs = [
   },
   {
     id: 3,
+    connectFrom: 'directory',
     chain: {
       id: 'rococo',
       provider: 'Parity',
@@ -69,6 +72,7 @@ export const defaultTabs: Tabs = [
   },
   {
     id: 4,
+    connectFrom: 'directory',
     chain: undefined,
     name: 'Westend Relay Chain',
     autoConnect: false,
@@ -77,6 +81,7 @@ export const defaultTabs: Tabs = [
 
 export const defaultEemptyTab: Tab = {
   id: -1,
+  connectFrom: 'directory',
   chain: undefined,
   name: '',
   autoConnect: false,

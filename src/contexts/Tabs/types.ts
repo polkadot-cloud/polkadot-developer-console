@@ -8,6 +8,7 @@ export type Tabs = Tab[];
 
 export interface Tab {
   id: number;
+  connectFrom: ConnectFrom;
   chain:
     | {
         id: ChainId;
@@ -17,6 +18,8 @@ export interface Tab {
   name: string;
   autoConnect: boolean;
 }
+
+export type ConnectFrom = 'directory' | 'localNode';
 
 export interface TabsContextInterface {
   tabs: Tabs;
