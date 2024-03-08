@@ -55,7 +55,7 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Sets custom node urls state, and updates local storage.
-  const setCustomNodeUrls = (value: SearchTerms) => {
+  const setCustomNodeUrls = (value: CustomNodeUrls) => {
     local.setCustomNodeUrls(value);
     setCustomNodeUrlsState(value);
   };
