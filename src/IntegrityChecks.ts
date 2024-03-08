@@ -5,8 +5,12 @@ import { NetworkDirectory } from 'config/networks';
 import * as localTabs from 'contexts/Tabs/Local';
 import * as localTags from 'contexts/Tags/Local';
 import * as localChainFilter from 'contexts/ChainFilter/Local';
-import { defaultTagsConfig } from 'contexts/Tags/defaults';
+import { defaultTags, defaultTagsConfig } from 'contexts/Tags/defaults';
 import { defaultTabs } from 'contexts/Tabs/defaults';
+import {
+  defaultAppliedTags,
+  defaultSearchTerms,
+} from 'contexts/ChainFilter/defaults';
 
 // ------------------------------------------------------
 // Tabs.
@@ -96,9 +100,9 @@ export const checkLocalTags = () => {
 export const checkLocalChainFilter = () => {
   // Use default tabs if activeTabs is empty.
   const activeTabs = localTabs.getTabs() || defaultTabs;
-  const tags = localTags.getTags();
-  const searchTerms = localChainFilter.getSearchTerms();
-  const appliedTags = localChainFilter.getAppliedTags();
+  const tags = localTags.getTags() || defaultTags;
+  const searchTerms = localChainFilter.getSearchTerms() || defaultSearchTerms;
+  const appliedTags = localChainFilter.getAppliedTags() || defaultAppliedTags;
 
   // Check if tabs exist for each search term, and remove the entry otherwise. Also remove empty
   // strings.

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
-import type { AppliedTags, ChainFilterInterface } from './types';
+import type { AppliedTags, ChainFilterInterface, SearchTerms } from './types';
 
 export const defaultChainFilter: ChainFilterInterface = {
   searchTerms: {},
@@ -21,7 +21,7 @@ export const defaultAppliedTags: AppliedTags = {
   4: ['tag_test_network'],
 };
 
-export const defaultSearchTerms = {
+export const defaultSearchTerms: SearchTerms = {
   1: '',
   2: 'Kusama',
   3: 'Rococo',
