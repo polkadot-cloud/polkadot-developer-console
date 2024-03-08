@@ -32,6 +32,7 @@ export const defaultTabsContext: TabsContextInterface = {
   instantiateApiFromTab: (tabId) => {},
   getStoredChain: (tabId) => undefined,
   forgetTabChain: (tabId) => {},
+  setTabConnectFrom: (tabId, connectFrom) => {},
 };
 
 export const DEFAULT_TAB_WIDTH_PX = 160;

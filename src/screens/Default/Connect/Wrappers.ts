@@ -30,13 +30,13 @@ export const ConnectMethodWrapper = styled.div`
   flex-grow: 1;
 
   > button {
-    border: 1px solid var(--border-secondary-color);
+    border: 1px solid var(--border-primary-color);
     color: var(--text-color-tertiary);
     font-family: InterSemiBold, sans-serif;
     border-radius: 0.4rem;
     font-size: 0.75rem;
     margin-right: 0.5rem;
-    padding: 0.35rem 0.6rem;
+    padding: 0.3rem 0.65rem;
 
     &.active {
       border: 1px solid var(--button-tab-background);
@@ -112,7 +112,8 @@ export const TagControlsWrapper = styled.div`
     }
 
     &.applied {
-      margin-top: 0.5rem;
+      margin-top: 0.65rem;
+      margin-bottom: 0.4rem;
     }
     > button {
       margin-right: 0.5rem;

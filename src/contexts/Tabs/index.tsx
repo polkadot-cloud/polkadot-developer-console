@@ -170,6 +170,14 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
+  // Set a tab's `connectFrom` property.
+  const setTabConnectFrom = (id: number, connectFrom: ConnectFrom) => {
+    const newTabs = tabs.map((tab) =>
+      tab.id === id ? { ...tab, connectFrom } : tab
+    );
+    setTabs(newTabs);
+  };
+
   // Gets the amount of tab names starting with the provided string.
   const getTabNameCount = (name: string) =>
     tabs.filter((tab) => tab.name.startsWith(name)).length;
@@ -243,6 +251,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         incrementRedirectCounter,
         getStoredChain,
         forgetTabChain,
+        setTabConnectFrom,
         instantiatedIds: instantiatedIds.current,
       }}
     >

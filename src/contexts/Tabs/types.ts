@@ -51,4 +51,5 @@ export interface TabsContextInterface {
     tabId: number
   ) => { id: ChainId; chain: NetworkDirectoryItem } | undefined;
   forgetTabChain: (tabId: number) => void;
+  setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
 }
