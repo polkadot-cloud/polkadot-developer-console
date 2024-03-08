@@ -10,16 +10,14 @@ import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import type { APIChainSpec, ApiStatus } from 'model/Api/types';
-import type { ChainId } from 'config/networks';
-import { NetworkDirectory } from 'config/networks';
-import { NotificationsController } from 'controllers/NotificationsController';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
 export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
-  const { getActiveTab, tabs, instantiateApiFromTab } = useTabs();
+  const { getActiveTab, tabs, instantiateApiFromTab, forgetTabChain } =
+    useTabs();
 
   // Store API connection status of each tab. NOTE: requires ref as it is used in event listener.
   const [apiStatus, setApiStatusState] = useState<Record<number, ApiStatus>>(
@@ -92,10 +90,17 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Handle a chain error.
+  const handleChainError = (tabId: number) => {
+    removeApiStatus(tabId);
+    removeChainSpec(tabId);
+    forgetTabChain(tabId);
+  };
+
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {
     if (isCustomEvent(e)) {
-      const { tabId, chainId, event } = e.detail;
+      const { tabId, event } = e.detail;
 
       switch (event) {
         case 'ready':
@@ -112,15 +117,9 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
           break;
         case 'disconnected':
           handleDisconnect(tabId);
-
-          NotificationsController.emit({
-            title: 'Disconnect',
-            subtitle: `Disconnected from ${NetworkDirectory[chainId as ChainId].name}.`,
-          });
-
           break;
         case 'error':
-          handleDisconnect(tabId);
+          handleChainError(tabId);
           break;
         case 'destroyed':
           handleDisconnect(tabId, true);
