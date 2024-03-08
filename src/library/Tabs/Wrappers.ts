@@ -53,7 +53,9 @@ export const TabWrapper = styled(motion.div)`
     background-color 0.15s,
     border 0.3s,
     position 0.2s;
-
+  &.inactive {
+    opacity: 0.5;
+  }
   &:hover,
   &.active,
   &:active {

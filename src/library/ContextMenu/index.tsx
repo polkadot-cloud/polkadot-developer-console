@@ -1,18 +1,22 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useMenu } from 'contexts/Menu';
 import { Wrapper } from './Wrappers';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { motion } from 'framer-motion';
+import { TAB_TRANSITION_DURATION_MS } from 'contexts/Tabs/defaults';
 
 export const ContextMenu = () => {
   const {
     open,
     show,
     inner,
+    hidden,
+    config,
     closeMenu,
+    dismissMenu,
     position: [x, y],
     checkMenuPosition,
   } = useMenu();
@@ -20,24 +24,14 @@ export const ContextMenu = () => {
   // Menu ref for position access.
   const menuRef = useRef(null);
 
-  // Store whether the menu is hidden.
-  const [hidden, setHidden] = useState<boolean>(false);
-
   // Handler for closing the menu on window resize.
   const resizeCallback = () => {
     closeMenu();
   };
 
-  // Duration of transition.
-  const TRANSITION_DURATION_MS = 180;
-
   // Close the menu if clicked outside of its container.
   useOutsideAlerter(menuRef, () => {
-    setHidden(true);
-    setTimeout(() => {
-      closeMenu();
-      setHidden(false);
-    }, TRANSITION_DURATION_MS);
+    dismissMenu();
   });
 
   // Check position and show the menu if menu has been opened.
@@ -60,6 +54,7 @@ export const ContextMenu = () => {
       <Wrapper
         ref={menuRef}
         onAnimationComplete={() => checkMenuPosition(menuRef)}
+        className={config.size === 'small' ? 'small' : 'large'}
         style={{
           position: 'absolute',
           left: `${x}px`,
@@ -81,7 +76,7 @@ export const ContextMenu = () => {
             },
           }}
           transition={{
-            duration: TRANSITION_DURATION_MS * 0.001,
+            duration: TAB_TRANSITION_DURATION_MS * 0.001,
             ease: [0.1, 1, 0.1, 1],
           }}
           className="inner"

@@ -9,10 +9,13 @@ import { TAB_TRANSITION_DURATION_MS } from 'contexts/Tabs/defaults';
 import type { ControlsProps } from './types';
 import { useNavigate } from 'react-router-dom';
 import { ControlWithTooltip } from './ControlWithTooltip';
+import { useMenu } from 'contexts/Menu';
+import { InDevelopment } from 'library/HelpMenu/InDevelopment';
 
 export const Controls = ({ tabContainerRef }: ControlsProps) => {
   const navigate = useNavigate();
   const { createTab } = useTabs();
+  const { openMenu } = useMenu();
 
   return (
     <ControlsWrapper>
@@ -36,19 +39,20 @@ export const Controls = ({ tabContainerRef }: ControlsProps) => {
       </div>
       <div>
         <TabWrapper
-          onClick={() => {
-            /* Do nothing. */
+          className="action inactive"
+          onClick={(ev) => {
+            openMenu(ev, <InDevelopment />, { size: 'large' });
           }}
-          className="action"
         >
           Accounts
         </TabWrapper>
         <ControlWithTooltip
           icon={faPlug}
           tooltipText="Connect Wallets"
-          onClick={() => {
-            /* Do nothing */
+          onClick={(ev) => {
+            openMenu(ev, <InDevelopment />, { size: 'large' });
           }}
+          inactive
         />
         <ControlWithTooltip
           icon={faGear}
