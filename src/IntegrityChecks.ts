@@ -15,13 +15,34 @@ import { defaultTabs } from 'contexts/Tabs/defaults';
 export const checkLocalTabs = () => {
   // Use default tabs if activeTabs is empty.
   const activeTabs = localTabs.getTabs() || defaultTabs;
-
   const activeTabId = localTabs.getActiveTabId();
   const activeTabIndex = localTabs.getActiveTabIndex();
 
+  // Check if activeTabs are valid, and clear activeTabs otherwise.
+  let activeTabsValid = true;
+  try {
+    // Check if each tab has its required properties.
+    activeTabs.forEach((tab) => {
+      if (
+        !(
+          'id' in tab &&
+          'connectFrom' in tab &&
+          'chain' in tab &&
+          'name' in tab &&
+          'autoConnect' in tab
+        )
+      ) {
+        throw new Error('Invalid tab');
+      }
+    });
+  } catch (e) {
+    localStorage.removeItem('activeTabs');
+    activeTabsValid = false;
+  }
+
   // Check if `activeTabId` is among `activeTabs`, and clear `activeTabId` otherwise.
   if (
-    activeTabs &&
+    activeTabsValid &&
     activeTabId &&
     !activeTabs.find(({ id }) => id === activeTabId)
   ) {
@@ -29,7 +50,7 @@ export const checkLocalTabs = () => {
   }
 
   // Check if `activeTabIndex` is a valid tab index, and clear `activeTabIndex` otherwise.
-  if (activeTabs && activeTabIndex && !activeTabs[activeTabIndex]) {
+  if (activeTabsValid && activeTabIndex && !activeTabs[activeTabIndex]) {
     localStorage.removeItem('activeTabIndex');
   }
 };
