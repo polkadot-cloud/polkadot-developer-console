@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { ChainList } from './ChainList';
-import { AutoConnect } from '../AutoConnect';
 import { SearchChain } from './SearchChain';
 import { PageContentWrapper } from 'library/Page/Wrapper';
 import { RecentChain } from './RecentChain';
+import { ConnectHeader } from './ConnectHeader';
 
 export const Connect = () => (
   <PageContentWrapper>
-    <AutoConnect />
+    <ConnectHeader />
     <SearchChain />
     <RecentChain />
     <ChainList />

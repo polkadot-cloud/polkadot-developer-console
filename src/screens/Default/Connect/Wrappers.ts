@@ -9,12 +9,44 @@ export const AutoConnectWrapper = styled.div`
   align-items: center;
   margin-top: 0.45rem;
   padding: 0 0.2rem;
-  width: 100%;
 
   > h4 {
     color: var(--text-color-tertiary);
     margin-right: 0.5rem;
     transition: color 0.25s;
+  }
+`;
+
+export const ConnectHeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--border-primary-color);
+`;
+
+export const ConnectMethodWrapper = styled.div`
+  display: flex;
+  flex-grow: 1;
+
+  > button {
+    border: 1px solid var(--border-secondary-color);
+    color: var(--text-color-tertiary);
+    font-family: InterSemiBold, sans-serif;
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+    padding: 0.35rem 0.6rem;
+
+    &.active {
+      border: 1px solid var(--button-tab-background);
+      background-color: var(--button-tab-background);
+      color: var(--text-color-secondary);
+    }
+
+    &:hover {
+      color: var(--text-color-secondary);
+    }
   }
 `;
 

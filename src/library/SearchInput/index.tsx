@@ -11,13 +11,16 @@ export const SearchInput = ({
   placeholder,
   value,
   onChange,
+  label,
 }: SearchInputProps) => {
   // Whether the input is in focus.
   const [focus, setFocus] = useState<boolean>(false);
 
   return (
     <Wrapper>
-      <h5 className={`${focus ? ' focus' : undefined}`}>Search Chain</h5>
+      {!!label && (
+        <h5 className={`${focus ? ' focus' : undefined}`}>{label}</h5>
+      )}
       <div className={`inner ${focus ? ' focus' : undefined}`}>
         <FontAwesomeIcon icon={faSearch} className="icon" />
         <input

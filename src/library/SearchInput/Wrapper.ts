@@ -38,7 +38,7 @@ export const Wrapper = styled.div`
     }
 
     > input {
-      color: var(--text-color-secondary);
+      color: var(--text-color-primary);
       font-family: InterBold, sans-serif;
       font-size: 0.95rem;
       flex-grow: 1;
