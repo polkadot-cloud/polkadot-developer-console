@@ -5,8 +5,12 @@ import { NetworkDirectory } from 'config/networks';
 import * as localTabs from 'contexts/Tabs/Local';
 import * as localTags from 'contexts/Tags/Local';
 import * as localChainFilter from 'contexts/ChainFilter/Local';
-import { defaultTagsConfig } from 'contexts/Tags/defaults';
+import { defaultTags, defaultTagsConfig } from 'contexts/Tags/defaults';
 import { defaultTabs } from 'contexts/Tabs/defaults';
+import {
+  defaultAppliedTags,
+  defaultSearchTerms,
+} from 'contexts/ChainFilter/defaults';
 
 // ------------------------------------------------------
 // Tabs.
@@ -15,13 +19,33 @@ import { defaultTabs } from 'contexts/Tabs/defaults';
 export const checkLocalTabs = () => {
   // Use default tabs if activeTabs is empty.
   const activeTabs = localTabs.getTabs() || defaultTabs;
-
   const activeTabId = localTabs.getActiveTabId();
   const activeTabIndex = localTabs.getActiveTabIndex();
 
+  // Check if activeTabs are valid, and clear activeTabs otherwise.
+  let activeTabsValid = true;
+  try {
+    // Check if each tab has its required properties.
+    activeTabs.forEach((tab) => {
+      if (
+        !(
+          'id' in tab &&
+          'connectFrom' in tab &&
+          'name' in tab &&
+          'autoConnect' in tab
+        )
+      ) {
+        throw new Error('Invalid tab');
+      }
+    });
+  } catch (e) {
+    removeOnInvalidTabs();
+    activeTabsValid = false;
+  }
+
   // Check if `activeTabId` is among `activeTabs`, and clear `activeTabId` otherwise.
   if (
-    activeTabs &&
+    activeTabsValid &&
     activeTabId &&
     !activeTabs.find(({ id }) => id === activeTabId)
   ) {
@@ -29,7 +53,7 @@ export const checkLocalTabs = () => {
   }
 
   // Check if `activeTabIndex` is a valid tab index, and clear `activeTabIndex` otherwise.
-  if (activeTabs && activeTabIndex && !activeTabs[activeTabIndex]) {
+  if (activeTabsValid && activeTabIndex && !activeTabs[activeTabIndex]) {
     localStorage.removeItem('activeTabIndex');
   }
 };
@@ -75,9 +99,11 @@ export const checkLocalTags = () => {
 export const checkLocalChainFilter = () => {
   // Use default tabs if activeTabs is empty.
   const activeTabs = localTabs.getTabs() || defaultTabs;
-  const tags = localTags.getTags();
-  const searchTerms = localChainFilter.getSearchTerms();
-  const appliedTags = localChainFilter.getAppliedTags();
+  const tags = localTags.getTags() || defaultTags;
+  const searchTerms = localChainFilter.getSearchTerms() || defaultSearchTerms;
+  const customNodeUrls =
+    localChainFilter.getCustomNodeUrls() || defaultSearchTerms;
+  const appliedTags = localChainFilter.getAppliedTags() || defaultAppliedTags;
 
   // Check if tabs exist for each search term, and remove the entry otherwise. Also remove empty
   // strings.
@@ -99,6 +125,27 @@ export const checkLocalChainFilter = () => {
     } else {
       if (updated) {
         localChainFilter.setSearchTerms(maybeUpdatedSearchTerms);
+      }
+    }
+  }
+
+  // Check if tabs exist for each custom node url, and remove the entry otherwise. Also remove empty
+  // strings.
+  if (customNodeUrls) {
+    const maybeUpdatedCustomNodeUrls = customNodeUrls;
+    let updated = false;
+    Object.entries(customNodeUrls).forEach(([tabId, url]) => {
+      if (!activeTabs?.find(({ id }) => id === Number(tabId)) || url === '') {
+        delete maybeUpdatedCustomNodeUrls[Number(tabId)];
+        updated = true;
+      }
+    });
+
+    if (JSON.stringify(maybeUpdatedCustomNodeUrls) === '{}') {
+      localStorage.removeItem('customNodeUrls');
+    } else {
+      if (updated) {
+        localChainFilter.setCustomNodeUrls(maybeUpdatedCustomNodeUrls);
       }
     }
   }
@@ -133,4 +180,18 @@ export const checkLocalChainFilter = () => {
       }
     }
   }
+};
+
+// ------------------------------------------------------
+// Utils.
+// ------------------------------------------------------
+
+// Tidy up local storage on invalid active tabs. Requires any local storage dependent on tabs config
+// to be removed.
+const removeOnInvalidTabs = () => {
+  localStorage.removeItem('activeTabs');
+  localStorage.removeItem('activeTabId');
+  localStorage.removeItem('activeTabIndex');
+  localStorage.removeItem('searchTerms');
+  localStorage.removeItem('appliedTags');
 };

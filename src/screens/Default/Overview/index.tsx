@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { NetworkDirectory } from 'config/networks';
+import { isDirectoryId } from 'config/networks/Utils';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
 import { PageContentWrapper } from 'library/Page/Wrapper';
@@ -17,6 +18,19 @@ export const Overview = () => {
   // NOTE: we know for certain there is an active tab and an associated API instance here, so we can
   // safely use the non-null assertion.
   const chainId = getActiveTab()!.chain!.id;
+  const isDirectory = isDirectoryId(chainId);
+  const chainSpecChain = chainSpec?.chain || 'Unknown';
+
+  // Determine chain name based on chain spec.
+  let displayName;
+  if (isDirectory) {
+    // Display directory name if the chain name matches that of directory.
+    const match = NetworkDirectory[chainId].system?.chain === chainSpec?.chain;
+    displayName = match ? NetworkDirectory[chainId].name : chainSpecChain;
+  } else {
+    // Custom endpoint: Default to chain spec chain name or 'Unknown' otherwise.
+    displayName = chainSpecChain;
+  }
 
   return (
     <PageContentWrapper>
@@ -24,10 +38,7 @@ export const Overview = () => {
         {!chainSpecReady && apiStatus === 'connecting'
           ? 'Connecting...'
           : chainSpecReady
-            ? // Ensure the chain name matches system.chain in the chain spec before displaying it.
-              NetworkDirectory[chainId].system?.chain === chainSpec?.chain
-              ? NetworkDirectory[chainId].name
-              : 'Unknown'
+            ? displayName
             : 'Fetching Chain Spec...'}
       </h2>
       <h4>

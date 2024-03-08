@@ -3,13 +3,15 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
-import type { Tabs, TabsContextInterface } from './types';
+import type { ConnectFrom, Tabs, TabsContextInterface } from './types';
 import { defaultTabs, defaultTabsContext } from './defaults';
 import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
-import { NetworkDirectory, type ChainId } from 'config/networks';
+import { NetworkDirectory } from 'config/networks';
+import type { ChainId, DirectoryId } from 'config/networks';
 import { checkLocalTabs } from 'IntegrityChecks';
 import { ApiController } from 'controllers/ApiController';
+import { isDirectoryId } from 'config/networks/Utils';
 
 checkLocalTabs();
 
@@ -92,15 +94,11 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Gets the active tab.
   const getActiveTab = () => getTab(activeTabId);
 
-  // Gets a tab by chain id.
-  const getChainTab = (chainId: ChainId) =>
-    tabs.find((tab) => tab.chain?.id === chainId);
-
-  // Gets the previously connected to chain, if present.
+  // Gets the previously connected to chain from network directory, if present.
   const getStoredChain = (tabId: number) => {
     const tab = getTab(tabId);
 
-    if (!tab?.chain?.id) {
+    if (!tab?.chain?.id || !isDirectoryId(tab.chain.id)) {
       return undefined;
     }
 
@@ -121,6 +119,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       ...tabs,
       {
         id: newTabId,
+        connectFrom: 'directory' as ConnectFrom,
         chain: undefined,
         name: 'New Tab',
         autoConnect,
@@ -163,8 +162,21 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Forget a tab's chain.
   const forgetTabChain = (id: number) => {
+    // Disconnect from Api instance if present.
+    if (getTab(id)?.chain) {
+      ApiController.destroy(id);
+    }
+    // Update tab state.
     const newTabs = tabs.map((tab) =>
       tab.id === id ? { ...tab, chain: undefined } : tab
+    );
+    setTabs(newTabs);
+  };
+
+  // Set a tab's `connectFrom` property.
+  const setTabConnectFrom = (id: number, connectFrom: ConnectFrom) => {
+    const newTabs = tabs.map((tab) =>
+      tab.id === id ? { ...tab, connectFrom } : tab
     );
     setTabs(newTabs);
   };
@@ -174,7 +186,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     tabs.filter((tab) => tab.name.startsWith(name)).length;
 
   // Generate tab name for chain.
-  const getAutoTabName = (chainId: ChainId) => {
+  const getAutoTabName = (chainId: DirectoryId) => {
     const chainName = NetworkDirectory[chainId].name;
     const existingNames = getTabNameCount(chainName);
     const tabName =
@@ -184,20 +196,21 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Connect tab to an Api instance and update its chain data.
-  const connectTab = (tabId: number, chainId: ChainId, provider: string) => {
+  const connectTab = (tabId: number, chainId: ChainId, endpoint: string) => {
     const newTabs = [...tabs].map((tab) =>
       tab.id === tabId
         ? {
             ...tab,
             // Auto rename the tab here if the setting is turned on.
-            name: autoTabNaming ? getAutoTabName(chainId) : tab.name,
-            chain: { id: chainId, provider },
+            name:
+              autoTabNaming && isDirectoryId(chainId)
+                ? getAutoTabName(chainId)
+                : tab.name,
+            chain: { id: chainId, endpoint },
           }
         : tab
     );
     setTabs(newTabs);
-
-    const endpoint = NetworkDirectory[chainId].providers[provider];
     ApiController.instantiate(tabId, chainId, endpoint);
   };
 
@@ -205,11 +218,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const instantiateApiFromTab = async (tabId: number) => {
     const tab = getTab(tabId);
     if (tab?.chain) {
-      const { id, provider } = tab.chain;
-      const endpoint = NetworkDirectory[id]?.providers[provider];
-      if (endpoint) {
-        await ApiController.instantiate(tab.id, id, endpoint);
-      }
+      const { id, endpoint } = tab.chain;
+      await ApiController.instantiate(tab.id, id, endpoint);
     }
   };
 
@@ -221,7 +231,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         createTab,
         activeTabId,
         getTab,
-        getChainTab,
         getActiveTab,
         destroyTab,
         setActiveTabId,
@@ -235,13 +244,13 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         tabsHidden,
         setTabsHidden,
         renameTab,
-        getAutoTabName,
         connectTab,
         instantiateApiFromTab,
         redirectCounter,
         incrementRedirectCounter,
         getStoredChain,
         forgetTabChain,
+        setTabConnectFrom,
         instantiatedIds: instantiatedIds.current,
       }}
     >

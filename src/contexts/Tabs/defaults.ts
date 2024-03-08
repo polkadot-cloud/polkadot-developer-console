@@ -11,7 +11,6 @@ export const defaultTabsContext: TabsContextInterface = {
   setActiveTabId: (id) => {},
   createTab: () => {},
   destroyTab: (index, id) => {},
-  getChainTab: (chainId) => undefined,
   getTab: (id) => undefined,
   getActiveTab: () => undefined,
   tabHoverIndex: 0,
@@ -25,50 +24,53 @@ export const defaultTabsContext: TabsContextInterface = {
   setTabsHidden: (hidden) => {},
   instantiatedIds: [],
   renameTab: (id, name) => {},
-  getAutoTabName: (chainId) => '',
   redirectCounter: 0,
   incrementRedirectCounter: () => {},
   connectTab: (tabId, chainId, endpoint) => {},
   instantiateApiFromTab: (tabId) => {},
   getStoredChain: (tabId) => undefined,
   forgetTabChain: (tabId) => {},
+  setTabConnectFrom: (tabId, connectFrom) => {},
 };
 
 export const DEFAULT_TAB_WIDTH_PX = 160;
 
 export const TAB_TRANSITION_DURATION_MS = 300;
 
-// TODO: derive this default value from `NetworkDirectory`.
 export const defaultTabs: Tabs = [
   {
     id: 1,
+    connectFrom: 'directory',
     chain: {
       id: 'polkadot',
-      provider: 'IBP-GeoDNS1',
+      endpoint: 'wss://rpc.ibp.network/polkadot',
     },
     name: 'Polkadot Relay Chain',
     autoConnect: true,
   },
   {
     id: 2,
+    connectFrom: 'directory',
     chain: {
       id: 'kusama',
-      provider: 'IBP-GeoDNS1',
+      endpoint: 'wss://rpc.ibp.network/kusama',
     },
     name: 'Kusama Relay Chain',
     autoConnect: true,
   },
   {
     id: 3,
+    connectFrom: 'directory',
     chain: {
       id: 'rococo',
-      provider: 'Parity',
+      endpoint: 'wss://rococo-rpc.polkadot.io',
     },
     name: 'Rococo Relay Chain',
     autoConnect: true,
   },
   {
     id: 4,
+    connectFrom: 'directory',
     chain: undefined,
     name: 'Westend Relay Chain',
     autoConnect: false,
@@ -77,6 +79,7 @@ export const defaultTabs: Tabs = [
 
 export const defaultEemptyTab: Tab = {
   id: -1,
+  connectFrom: 'directory',
   chain: undefined,
   name: '',
   autoConnect: false,

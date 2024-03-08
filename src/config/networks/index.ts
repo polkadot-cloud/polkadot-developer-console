@@ -4,7 +4,9 @@
 // NOTE: This file is temporary until the @polkadot-cloud/network-directory package is ready to be
 // used.
 
-export type ChainId = 'polkadot' | 'kusama' | 'rococo' | 'westend';
+export type DirectoryId = 'polkadot' | 'kusama' | 'rococo' | 'westend';
+
+export type ChainId = DirectoryId | 'custom';
 
 export interface NetworkDirectoryItem {
   system: {
@@ -15,7 +17,7 @@ export interface NetworkDirectoryItem {
   providers: Record<string, string>;
 }
 
-export type NetworkDirectory = Record<ChainId, NetworkDirectoryItem>;
+export type NetworkDirectory = Record<DirectoryId, NetworkDirectoryItem>;
 
 // The currently supported networks.
 export const NetworkDirectory: NetworkDirectory = {
@@ -55,6 +57,16 @@ export const NetworkDirectory: NetworkDirectory = {
       Parity: 'wss://kusama-rpc.polkadot.io',
     },
   },
+  rococo: {
+    system: {
+      chain: 'Rococo',
+    },
+    name: 'Rococo Relay Chain',
+    unit: 'ROC',
+    providers: {
+      Parity: 'wss://rococo-rpc.polkadot.io',
+    },
+  },
   westend: {
     system: {
       chain: 'Westend',
@@ -70,16 +82,6 @@ export const NetworkDirectory: NetworkDirectory = {
       RadiumBlock: 'wss://westend.public.curie.radiumblock.co/ws',
       Stakeworld: 'wss://wnd-rpc.stakeworld.io',
       Parity: 'wss://westend-rpc.polkadot.io',
-    },
-  },
-  rococo: {
-    system: {
-      chain: 'Rococo',
-    },
-    name: 'Rococo Relay Chain',
-    unit: 'ROC',
-    providers: {
-      Parity: 'wss://rococo-rpc.polkadot.io',
     },
   },
 };

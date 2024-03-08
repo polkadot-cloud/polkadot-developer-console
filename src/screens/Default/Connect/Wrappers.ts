@@ -9,7 +9,6 @@ export const AutoConnectWrapper = styled.div`
   align-items: center;
   margin-top: 0.45rem;
   padding: 0 0.2rem;
-  width: 100%;
 
   > h4 {
     color: var(--text-color-tertiary);
@@ -18,8 +17,49 @@ export const AutoConnectWrapper = styled.div`
   }
 `;
 
-export const SearchChainWrapper = styled.div`
+export const ConnectHeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--border-primary-color);
+`;
+
+export const ConnectMethodWrapper = styled.div`
+  display: flex;
+  flex-grow: 1;
+
+  > button {
+    border: 1px solid var(--border-primary-color);
+    color: var(--text-color-tertiary);
+    font-family: InterSemiBold, sans-serif;
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+    padding: 0.3rem 0.65rem;
+
+    &.active {
+      border: 1px solid var(--button-tab-background);
+      background-color: var(--button-tab-background);
+      color: var(--text-color-secondary);
+    }
+
+    &:hover {
+      color: var(--text-color-secondary);
+    }
+  }
+`;
+
+export const ChainInputWrapper = styled.div`
   width: 100%;
+
+  /* Footer is used for local node. */
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0.75rem 0;
+    padding: 0 0.25rem;
+  }
 `;
 
 export const ChainListWrapper = styled.div`
@@ -80,10 +120,11 @@ export const TagControlsWrapper = styled.div`
     }
 
     &.applied {
-      margin-top: 0.5rem;
+      margin-top: 0.65rem;
+      margin-bottom: 0.4rem;
     }
     > button {
-      margin-right: 0.6rem;
+      margin-right: 0.5rem;
     }
   }
 `;
@@ -140,18 +181,6 @@ export const ChainListItemWrapper = styled.div`
         &:last-child {
           flex-shrink: 1;
           padding: 0 0.15rem 0 0.5rem;
-
-          > button {
-            color: var(--text-color-tertiary);
-            font-family: InterSemiBold, sans-serif;
-            display: flex;
-            align-items: center;
-            font-size: 0.8rem;
-
-            > svg {
-              margin-left: 0.4rem;
-            }
-          }
         }
       }
 
@@ -205,5 +234,21 @@ export const ChainListItemWrapper = styled.div`
   }
   &:hover {
     transform: scale(1.008);
+  }
+`;
+
+export const ConnectButton = styled.button`
+  color: var(--text-color-tertiary);
+  font-family: InterSemiBold, sans-serif;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+
+  &:hover {
+    color: var(--accent-color-primary);
+  }
+
+  > svg {
+    margin-left: 0.4rem;
   }
 `;

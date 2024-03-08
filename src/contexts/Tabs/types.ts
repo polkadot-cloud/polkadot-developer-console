@@ -8,22 +8,25 @@ export type Tabs = Tab[];
 
 export interface Tab {
   id: number;
+  connectFrom: ConnectFrom;
+  // TODO: abstract into directory or custom node url.
   chain:
     | {
         id: ChainId;
-        provider: string;
+        endpoint: string;
       }
     | undefined;
   name: string;
   autoConnect: boolean;
 }
 
+export type ConnectFrom = 'directory' | 'customNode';
+
 export interface TabsContextInterface {
   tabs: Tabs;
   setTabs: (tabs: Tabs) => void;
   createTab: () => void;
   activeTabId: number;
-  getChainTab: (chainId: ChainId) => Tab | undefined;
   getTab: (id: number) => Tab | undefined;
   getActiveTab: () => Tab | undefined;
   destroyTab: (index: number, id: number) => void;
@@ -39,7 +42,6 @@ export interface TabsContextInterface {
   setTabsHidden: (hidden: boolean) => void;
   instantiatedIds: number[];
   renameTab: (id: number, name: string) => void;
-  getAutoTabName: (chainId: ChainId) => string;
   redirectCounter: number;
   incrementRedirectCounter: () => void;
   connectTab: (tabId: number, chainId: ChainId, endpoint: string) => void;
@@ -48,4 +50,5 @@ export interface TabsContextInterface {
     tabId: number
   ) => { id: ChainId; chain: NetworkDirectoryItem } | undefined;
   forgetTabChain: (tabId: number) => void;
+  setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
 }

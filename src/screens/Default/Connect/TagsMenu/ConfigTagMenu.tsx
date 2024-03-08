@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useTags } from 'contexts/Tags';
-import type { ChainId } from 'config/networks';
+import type { DirectoryId } from 'config/networks';
 import type { TagId } from 'contexts/Tags/types';
 import { useState } from 'react';
 import { TagsMenuInner } from './Inner';
@@ -12,7 +12,7 @@ export const ConfigTagMenu = ({
   chainId,
 }: {
   onSelect: (tagId: TagId, selected: boolean, current?: string[]) => void;
-  chainId: ChainId;
+  chainId: DirectoryId;
 }) => {
   const { tags, getTagsForChain } = useTags();
 

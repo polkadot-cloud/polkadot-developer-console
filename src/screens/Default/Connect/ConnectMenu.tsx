@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { formatInputString } from 'Utils';
-import type { ChainId } from 'config/networks';
+import type { DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
 import { useState } from 'react';
@@ -11,7 +11,7 @@ export const ConnectMenu = ({
   chainId,
   onSelect,
 }: {
-  chainId: ChainId;
+  chainId: DirectoryId;
   onSelect: (provider: string) => void;
 }) => {
   // Provider search term.
@@ -53,7 +53,7 @@ export const ConnectMenu = ({
       <ListWrapper>
         {filteredProviders.map(([name, url], index) => (
           <li key={`provider_context_item_${index}`}>
-            <button onClick={() => onSelect(name)} />
+            <button onClick={() => onSelect(url)} />
 
             <div className="inner">
               <div className="none"></div>

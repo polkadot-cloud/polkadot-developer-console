@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Suspense, lazy, useMemo } from 'react';
-import { ChainListItemWrapper } from './Wrappers';
+import { ChainListItemWrapper, ConnectButton } from './Wrappers';
 import { Tag } from 'library/Tag';
 import { useTags } from 'contexts/Tags';
 import { TagControl } from 'library/TagControl';
@@ -10,13 +10,13 @@ import { faCircleRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { ConfigTagMenu } from './TagsMenu/ConfigTagMenu';
 import type { TagId } from 'contexts/Tags/types';
-import { type ChainId } from 'config/networks';
+import { type DirectoryId } from 'config/networks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConnectMenu } from './ConnectMenu';
 import { useTabs } from 'contexts/Tabs';
 
 export interface ChainListItemProps {
-  chainId: ChainId;
+  chainId: DirectoryId;
   name: string;
 }
 
@@ -37,9 +37,9 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   );
 
   // Handle tag provider select. Connect to chain on successful selection.
-  const handleOnProviderSelect = (provider: string) => {
+  const handleOnProviderSelect = (endpoint: string) => {
     // Update tab data and connect to Api instance.
-    connectTab(activeTabId, chainId, provider);
+    connectTab(activeTabId, chainId, endpoint);
     // Close menu.
     closeMenu();
   };
@@ -65,7 +65,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
           <h3>{name}</h3>
         </section>
         <section>
-          <button
+          <ConnectButton
             onClick={(ev) => {
               openMenu(
                 ev,
@@ -78,7 +78,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
           >
             Connect
             <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
-          </button>
+          </ConnectButton>
         </section>
       </div>
 

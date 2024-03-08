@@ -12,7 +12,7 @@ import type {
   TagsList,
 } from './types';
 import { setStateWithRef } from '@w3ux/utils';
-import type { ChainId } from 'config/networks';
+import type { DirectoryId } from 'config/networks';
 import * as local from './Local';
 import { checkLocalTags } from 'IntegrityChecks';
 
@@ -57,7 +57,7 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Gets the tags config of a chain.
-  const getTagsForChain = (chain: ChainId) =>
+  const getTagsForChain = (chain: DirectoryId) =>
     Object.entries(tagsConfig)
       .filter(([, chains]) => chains.includes(chain))
       .map(([tag]) => tag);
@@ -78,7 +78,7 @@ export const TagsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Add a chain to a tag config.
-  const addChainToTag = (tagId: TagId, chain: ChainId) => {
+  const addChainToTag = (tagId: TagId, chain: DirectoryId) => {
     const newTagsConfig = { ...tagsConfigRef.current };
     newTagsConfig[tagId] = [...(newTagsConfig?.[tagId] || []), chain];
     setStateWithRef(newTagsConfig, setTagsConfig, tagsConfigRef);

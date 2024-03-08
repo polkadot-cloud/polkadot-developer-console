@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { ChainListWrapper, Separator } from './Wrappers';
-import type { ChainId } from 'config/networks';
+import type { DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { ChainListItem } from './ChainListItem';
 import { useTabs } from 'contexts/Tabs';
@@ -21,13 +21,13 @@ export const ChainList = () => {
   const results = NetworkDirectory;
 
   // Filter chains based on applied tags.
-  const appliedTags: [ChainId, TagItem][] = getAppliedTags(activeTabId);
+  const appliedTags: [DirectoryId, TagItem][] = getAppliedTags(activeTabId);
 
   let filtered = appliedTags.length
     ? Object.fromEntries(
         Object.entries(results).filter(([chain]) =>
           appliedTags.every(([tagId]) =>
-            getTagsForChain(chain as ChainId).includes(tagId)
+            getTagsForChain(chain as DirectoryId).includes(tagId)
           )
         )
       )
@@ -64,7 +64,7 @@ export const ChainList = () => {
       {Object.entries(filtered).map(([key, { name }]) => (
         <ChainListItem
           key={`chain_index_${key}`}
-          chainId={key as ChainId}
+          chainId={key as DirectoryId}
           name={name}
         />
       ))}

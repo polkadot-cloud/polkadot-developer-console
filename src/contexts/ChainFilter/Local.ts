@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { localStorageOrDefault } from '@w3ux/utils';
-import type { AppliedTags, SearchTerms } from './types';
+import type { AppliedTags, CustomNodeUrls, SearchTerms } from './types';
 
 // ------------------------------------------------------
 // Getters.
@@ -16,6 +16,17 @@ export const getSearchTerms = (): SearchTerms | undefined => {
 
   if (result) {
     return result as SearchTerms;
+  }
+};
+
+// Gets saved custom node urls from local storage, or returns undefined otherwise.
+export const getCustomNodeUrls = (): CustomNodeUrls | undefined => {
+  const result = localStorageOrDefault('customNodeUrls', undefined, true) as
+    | CustomNodeUrls
+    | undefined;
+
+  if (result) {
+    return result as CustomNodeUrls;
   }
 };
 
@@ -37,6 +48,11 @@ export const getAppliedTags = (): AppliedTags | undefined => {
 // Sets search terms to local storage.
 export const setSearchTerms = (value: SearchTerms) => {
   localStorage.setItem('searchTerms', JSON.stringify(value));
+};
+
+// Sets custom node urls to local storage.
+export const setCustomNodeUrls = (value: CustomNodeUrls) => {
+  localStorage.setItem('customNodeUrls', JSON.stringify(value));
 };
 
 // Sets applied tags to local storage.

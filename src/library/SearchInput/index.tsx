@@ -4,22 +4,32 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Wrapper } from './Wrapper';
 import type { SearchInputProps } from './types';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
 export const SearchInput = ({
   placeholder,
   value,
   onChange,
+  label,
+  icon,
+  iconTransform,
 }: SearchInputProps) => {
   // Whether the input is in focus.
   const [focus, setFocus] = useState<boolean>(false);
 
   return (
     <Wrapper>
-      <h5 className={`${focus ? ' focus' : undefined}`}>Search Chain</h5>
+      {!!label && (
+        <h5 className={`${focus ? ' focus' : undefined}`}>{label}</h5>
+      )}
       <div className={`inner ${focus ? ' focus' : undefined}`}>
-        <FontAwesomeIcon icon={faSearch} className="icon" />
+        {icon && (
+          <FontAwesomeIcon
+            icon={icon}
+            className="icon"
+            transform={iconTransform || undefined}
+          />
+        )}
         <input
           placeholder={placeholder}
           value={value}
