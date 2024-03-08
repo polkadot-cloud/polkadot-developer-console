@@ -7,6 +7,10 @@ import styled from 'styled-components';
 export const Wrapper = styled(motion.div)`
   width: 256px;
 
+  &.large {
+    width: 320px;
+  }
+
   > .inner {
     border: 1px solid var(--border-secondary-color);
     background: var(--background-default);
@@ -193,5 +197,41 @@ export const SelectListWrapper = styled.div`
       font-size: 0.7rem;
       width: 100%;
     }
+  }
+`;
+
+export const HelpWrapper = styled.div`
+  width: 100%;
+  padding: 0.75rem;
+
+  h4 {
+    color: var(--accent-color-primary);
+    font-family: InterSemiBold, sans-serif;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+
+    > svg {
+      margin-right: 0.35rem;
+    }
+  }
+
+  p {
+    color: var(--text-color-primary);
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+    margin: 0;
+  }
+
+  > button {
+    background: var(--accent-color-primary);
+    color: var(--text-color-invert);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 0.75rem;
   }
 `;

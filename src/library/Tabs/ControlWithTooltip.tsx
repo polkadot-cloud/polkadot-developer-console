@@ -6,12 +6,14 @@ import { TabWrapper } from './Wrappers';
 import { useTooltip } from 'contexts/Tooltip';
 import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { MenuMouseEvent } from 'contexts/Menu/types';
 
 interface ControlWithTooltipProps {
   icon: IconProp;
   tooltipText: string;
-  onClick: () => void;
+  onClick: (ev: MenuMouseEvent) => void;
   last?: boolean;
+  inactive?: boolean;
 }
 
 export const ControlWithTooltip = ({
@@ -19,6 +21,7 @@ export const ControlWithTooltip = ({
   tooltipText,
   onClick,
   last = false,
+  inactive = false,
 }: ControlWithTooltipProps) => {
   const { openTooltip } = useTooltip();
   const ref = useRef(null);
@@ -27,8 +30,8 @@ export const ControlWithTooltip = ({
     <TabWrapper
       ref={ref}
       onPointerOver={() => openTooltip(tooltipText, ref)}
-      onClick={() => onClick()}
-      className={`action${last ? ` last` : ``}`}
+      onClick={(ev) => onClick(ev)}
+      className={`action${last ? ` last` : ``}${inactive ? ` inactive` : ``}`}
     >
       <FontAwesomeIcon icon={icon} />
     </TabWrapper>
