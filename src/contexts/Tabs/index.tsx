@@ -160,6 +160,11 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Forget a tab's chain.
   const forgetTabChain = (id: number) => {
+    // Disconnect from Api instance if present.
+    if (getTab(id)?.chain) {
+      ApiController.destroy(id);
+    }
+    // Update tab state.
     const newTabs = tabs.map((tab) =>
       tab.id === id ? { ...tab, chain: undefined } : tab
     );
@@ -189,20 +194,18 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Connect tab to an Api instance and update its chain data.
-  const connectTab = (tabId: number, chainId: ChainId, provider: string) => {
+  const connectTab = (tabId: number, chainId: ChainId, endpoint: string) => {
     const newTabs = [...tabs].map((tab) =>
       tab.id === tabId
         ? {
             ...tab,
             // Auto rename the tab here if the setting is turned on.
             name: autoTabNaming ? getAutoTabName(chainId) : tab.name,
-            chain: { id: chainId, provider },
+            chain: { id: chainId, endpoint },
           }
         : tab
     );
     setTabs(newTabs);
-
-    const endpoint = NetworkDirectory[chainId].providers[provider];
     ApiController.instantiate(tabId, chainId, endpoint);
   };
 
@@ -210,11 +213,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const instantiateApiFromTab = async (tabId: number) => {
     const tab = getTab(tabId);
     if (tab?.chain) {
-      const { id, provider } = tab.chain;
-      const endpoint = NetworkDirectory[id]?.providers[provider];
-      if (endpoint) {
-        await ApiController.instantiate(tab.id, id, endpoint);
-      }
+      const { id, endpoint } = tab.chain;
+      await ApiController.instantiate(tab.id, id, endpoint);
     }
   };
 

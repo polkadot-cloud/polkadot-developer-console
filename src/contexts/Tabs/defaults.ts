@@ -44,7 +44,7 @@ export const defaultTabs: Tabs = [
     connectFrom: 'directory',
     chain: {
       id: 'polkadot',
-      provider: 'IBP-GeoDNS1',
+      endpoint: 'wss://rpc.ibp.network/polkadot',
     },
     name: 'Polkadot Relay Chain',
     autoConnect: true,
@@ -54,7 +54,7 @@ export const defaultTabs: Tabs = [
     connectFrom: 'directory',
     chain: {
       id: 'kusama',
-      provider: 'IBP-GeoDNS1',
+      endpoint: 'wss://rpc.ibp.network/kusama',
     },
     name: 'Kusama Relay Chain',
     autoConnect: true,
@@ -64,7 +64,7 @@ export const defaultTabs: Tabs = [
     connectFrom: 'directory',
     chain: {
       id: 'rococo',
-      provider: 'Parity',
+      endpoint: 'wss://rococo-rpc.polkadot.io',
     },
     name: 'Rococo Relay Chain',
     autoConnect: true,

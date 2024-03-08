@@ -13,7 +13,7 @@ export interface Tab {
   chain:
     | {
         id: ChainId;
-        provider: string;
+        endpoint: string;
       }
     | undefined;
   name: string;

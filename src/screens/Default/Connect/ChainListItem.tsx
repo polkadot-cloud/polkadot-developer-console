@@ -37,9 +37,9 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   );
 
   // Handle tag provider select. Connect to chain on successful selection.
-  const handleOnProviderSelect = (provider: string) => {
+  const handleOnProviderSelect = (endpoint: string) => {
     // Update tab data and connect to Api instance.
-    connectTab(activeTabId, chainId, provider);
+    connectTab(activeTabId, chainId, endpoint);
     // Close menu.
     closeMenu();
   };

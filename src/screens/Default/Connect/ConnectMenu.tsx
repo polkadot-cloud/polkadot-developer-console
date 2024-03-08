@@ -53,7 +53,7 @@ export const ConnectMenu = ({
       <ListWrapper>
         {filteredProviders.map(([name, url], index) => (
           <li key={`provider_context_item_${index}`}>
-            <button onClick={() => onSelect(name)} />
+            <button onClick={() => onSelect(url)} />
 
             <div className="inner">
               <div className="none"></div>
