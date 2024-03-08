@@ -31,7 +31,6 @@ export const checkLocalTabs = () => {
         !(
           'id' in tab &&
           'connectFrom' in tab &&
-          'chain' in tab &&
           'name' in tab &&
           'autoConnect' in tab
         )
