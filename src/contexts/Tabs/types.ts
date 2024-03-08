@@ -1,7 +1,11 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainId, NetworkDirectoryItem } from 'config/networks';
+import type {
+  ChainId,
+  ChainIdOrCustom,
+  NetworkDirectoryItem,
+} from 'config/networks';
 import type { Dispatch, SetStateAction } from 'react';
 
 export type Tabs = Tab[];
@@ -12,7 +16,7 @@ export interface Tab {
   // TODO: abstract into directory or custom node url.
   chain:
     | {
-        id: ChainId;
+        id: ChainIdOrCustom;
         endpoint: string;
       }
     | undefined;
@@ -49,7 +53,7 @@ export interface TabsContextInterface {
   instantiateApiFromTab: (tabId: number) => void;
   getStoredChain: (
     tabId: number
-  ) => { id: ChainId; chain: NetworkDirectoryItem } | undefined;
+  ) => { id: ChainIdOrCustom; chain: NetworkDirectoryItem } | undefined;
   forgetTabChain: (tabId: number) => void;
   setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
 }

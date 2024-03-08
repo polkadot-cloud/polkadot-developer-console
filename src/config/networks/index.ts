@@ -6,6 +6,8 @@
 
 export type ChainId = 'polkadot' | 'kusama' | 'rococo' | 'westend';
 
+export type ChainIdOrCustom = ChainId | 'custom';
+
 export interface NetworkDirectoryItem {
   system: {
     chain: string;

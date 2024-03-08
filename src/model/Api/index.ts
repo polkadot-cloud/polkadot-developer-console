@@ -3,7 +3,7 @@
 
 import { ApiPromise } from '@polkadot/api';
 import { WsProvider } from '@polkadot/rpc-provider';
-import type { ChainId } from 'config/networks';
+import type { ChainIdOrCustom } from 'config/networks';
 import type {
   APIChainSpec,
   APIStatusEventDetail,
@@ -20,7 +20,7 @@ export class Api {
   #tabId: number;
 
   // The supplied chain id.
-  #chainId: ChainId;
+  #chainId: ChainIdOrCustom;
 
   // API provider.
   #provider: WsProvider;
@@ -62,7 +62,7 @@ export class Api {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(tabId: number, chainId: ChainId, endpoint: string) {
+  constructor(tabId: number, chainId: ChainIdOrCustom, endpoint: string) {
     this.#tabId = tabId;
     this.#chainId = chainId;
     this.#rpcEndpoint = endpoint;

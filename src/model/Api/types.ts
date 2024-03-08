@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
-import type { ChainId } from 'config/networks';
+import type { ChainIdOrCustom } from 'config/networks';
 
 export type ApiStatus = 'connecting' | 'connected' | 'disconnected' | 'ready';
 
@@ -11,7 +11,7 @@ export type EventStatus = ApiStatus | 'error' | 'destroyed' | 'fetchedSpec';
 export interface APIStatusEventDetail {
   event: EventStatus;
   tabId: number;
-  chainId: ChainId;
+  chainId: ChainIdOrCustom;
   err?: string;
 }
 

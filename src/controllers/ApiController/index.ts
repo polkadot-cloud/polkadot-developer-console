@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainId } from 'config/networks';
+import type { ChainIdOrCustom } from 'config/networks';
 import { Api } from 'model/Api';
 
 export class ApiController {
@@ -17,7 +17,11 @@ export class ApiController {
   // ------------------------------------------------------
 
   // Instantiate a new `Api` instance with the supplied chain id and endpoint.
-  static async instantiate(tabId: number, chainId: ChainId, endpoint: string) {
+  static async instantiate(
+    tabId: number,
+    chainId: ChainIdOrCustom,
+    endpoint: string
+  ) {
     if (!this.instances[tabId]) {
       this.instances[tabId] = new Api(tabId, chainId, endpoint);
       await this.instances[tabId].initialize();

@@ -10,6 +10,7 @@ import { useSettings } from 'contexts/Settings';
 import { NetworkDirectory, type ChainId } from 'config/networks';
 import { checkLocalTabs } from 'IntegrityChecks';
 import { ApiController } from 'controllers/ApiController';
+import { isDirectoryId } from 'config/networks/Utils';
 
 checkLocalTabs();
 
@@ -92,11 +93,11 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Gets the active tab.
   const getActiveTab = () => getTab(activeTabId);
 
-  // Gets the previously connected to chain, if present.
+  // Gets the previously connected to chain from network directory, if present.
   const getStoredChain = (tabId: number) => {
     const tab = getTab(tabId);
 
-    if (!tab?.chain?.id) {
+    if (!tab?.chain?.id || !isDirectoryId(tab.chain.id)) {
       return undefined;
     }
 
