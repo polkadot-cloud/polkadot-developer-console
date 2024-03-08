@@ -49,7 +49,11 @@ export interface TabsContextInterface {
   getAutoTabName: (chainId: ChainId) => string;
   redirectCounter: number;
   incrementRedirectCounter: () => void;
-  connectTab: (tabId: number, chainId: ChainId, endpoint: string) => void;
+  connectTab: (
+    tabId: number,
+    chainId: ChainIdOrCustom,
+    endpoint: string
+  ) => void;
   instantiateApiFromTab: (tabId: number) => void;
   getStoredChain: (
     tabId: number

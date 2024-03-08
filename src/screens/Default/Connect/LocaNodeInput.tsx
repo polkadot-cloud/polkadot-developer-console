@@ -12,7 +12,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
 
 export const LocalNodeInput = () => {
-  const { activeTabId } = useTabs();
+  const { activeTabId, connectTab } = useTabs();
   const { getCustomNodeUrl, setCustomNodeUrl } = useChainFilter();
 
   // The editable value of the input.
@@ -39,8 +39,7 @@ export const LocalNodeInput = () => {
       <div className="footer">
         <ConnectButton
           onClick={() => {
-            // TODO: connect tab to custom node.
-            // connectTab(activeTabId, 'custom', customNodeUrl);
+            connectTab(activeTabId, 'custom', customNodeUrl);
           }}
         >
           Connect

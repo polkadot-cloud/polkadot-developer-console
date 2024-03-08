@@ -7,7 +7,8 @@ import type { ConnectFrom, Tabs, TabsContextInterface } from './types';
 import { defaultTabs, defaultTabsContext } from './defaults';
 import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
-import { NetworkDirectory, type ChainId } from 'config/networks';
+import { NetworkDirectory } from 'config/networks';
+import type { ChainIdOrCustom, ChainId } from 'config/networks';
 import { checkLocalTabs } from 'IntegrityChecks';
 import { ApiController } from 'controllers/ApiController';
 import { isDirectoryId } from 'config/networks/Utils';
@@ -195,13 +196,20 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Connect tab to an Api instance and update its chain data.
-  const connectTab = (tabId: number, chainId: ChainId, endpoint: string) => {
+  const connectTab = (
+    tabId: number,
+    chainId: ChainIdOrCustom,
+    endpoint: string
+  ) => {
     const newTabs = [...tabs].map((tab) =>
       tab.id === tabId
         ? {
             ...tab,
             // Auto rename the tab here if the setting is turned on.
-            name: autoTabNaming ? getAutoTabName(chainId) : tab.name,
+            name:
+              autoTabNaming && isDirectoryId(chainId)
+                ? getAutoTabName(chainId)
+                : tab.name,
             chain: { id: chainId, endpoint },
           }
         : tab
