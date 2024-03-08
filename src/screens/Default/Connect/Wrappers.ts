@@ -115,7 +115,7 @@ export const TagControlsWrapper = styled.div`
       margin-top: 0.5rem;
     }
     > button {
-      margin-right: 0.6rem;
+      margin-right: 0.5rem;
     }
   }
 `;
