@@ -20,7 +20,7 @@ export const LocalNodeInput = () => {
 
   // Handle input change.
   const onChange = (value: string) => {
-    //  If trimmed value and the current value is empty, don't update.
+    //  If trimmed value or the current value is empty, don't update.
     if (!(!value.trim().length && customNodeUrl === '')) {
       setCustomNodeUrl(activeTabId, value);
     }
