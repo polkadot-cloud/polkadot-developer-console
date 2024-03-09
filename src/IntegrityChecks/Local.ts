@@ -116,8 +116,29 @@ export const checkLocalChainFilter = () => {
 // Utils.
 // ------------------------------------------------------
 
-// Tidy up local storage on invalid active tabs. Requires any local storage dependent on tabs config
-// to be removed.
+// Remove or update local data depending on resulting updated state.
+export const removeOrSetLocalData = <T>(
+  key: string,
+  { updated, result }: RemoveOrSetInput<T>
+) => {
+  if (!result || JSON.stringify(result) === '{}') {
+    localStorage.removeItem(key);
+  } else {
+    if (updated) {
+      localChainFilter.setCustomNodeUrls(result);
+    }
+  }
+};
+
+// Call all local integrity checks.
+export const performLocalIntegrityChecks = () => {
+  checkLocalTabs();
+  checkLocalTags();
+  checkLocalChainFilter();
+};
+
+// Remove all local storage state tied to tabs config, or remove all workspace state entirely if
+// `includeTags` is set to true.
 export const removeLocalStorageState = (includeTags = false) => {
   localStorage.removeItem('activeTabs');
   localStorage.removeItem('activeTabId');
@@ -131,26 +152,5 @@ export const removeLocalStorageState = (includeTags = false) => {
   if (includeTags) {
     localStorage.removeItem('tags');
     localStorage.removeItem('tagsConfig');
-  }
-};
-
-// Call all local integrity checks.
-export const performLocalIntegrityChecks = () => {
-  checkLocalTabs();
-  checkLocalTags();
-  checkLocalChainFilter();
-};
-
-// Remove or update local data depending on resulting updated state.
-export const removeOrSetLocalData = <T>(
-  key: string,
-  { updated, result }: RemoveOrSetInput<T>
-) => {
-  if (!result || JSON.stringify(result) === '{}') {
-    localStorage.removeItem(key);
-  } else {
-    if (updated) {
-      localChainFilter.setCustomNodeUrls(result);
-    }
   }
 };
