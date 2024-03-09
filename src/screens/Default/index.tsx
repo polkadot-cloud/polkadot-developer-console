@@ -27,9 +27,9 @@ export const Default = () => {
   return (
     <>
       {activeSection === 0 && firstSection}
-      {activeSection === 2 && <ChainState />}
-      {activeSection === 3 && <Extrinsics />}
-      {activeSection === 1 && <ManageTab />}
+      {activeSection === 1 && <ChainState />}
+      {activeSection === 2 && <Extrinsics />}
+      {activeSection === 3 && <ManageTab />}
     </>
   );
 };

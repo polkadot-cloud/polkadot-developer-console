@@ -13,14 +13,15 @@ export const getActiveSection = (
   pageId: PageId,
   tabId: number
 ): number | undefined => {
-  const result = localStorageOrDefault(
-    `pageSection:${tabId}:${pageId}`,
-    undefined,
-    true
-  ) as number | undefined;
+  const result = localStorageOrDefault(`pageSections`, undefined, true) as
+    | Record<string, number>
+    | undefined;
 
   if (result) {
-    return result as number;
+    const maybePageSection = result[`${tabId}:${pageId}`];
+    if (maybePageSection) {
+      return maybePageSection as number;
+    }
   }
 };
 
@@ -30,15 +31,25 @@ export const getSectionRedirect = (
   pageId: PageId,
   tabId: number
 ): number | undefined => {
-  const result = localStorageOrDefault(
-    `pageRedirect:${tabId}:${pageId}`,
-    undefined,
-    true
-  ) as number | undefined;
+  const result = localStorageOrDefault(`pageRedirects`, undefined, true) as
+    | Record<string, number>
+    | undefined;
 
   if (result) {
-    localStorage.removeItem(`pageRedirect:${tabId}:${pageId}`);
-    return result as number;
+    const maybePageRedirect = result[`${tabId}:${pageId}`];
+    // If page redirect exists, remove it before returning.
+    if (maybePageRedirect) {
+      const updated = { ...result };
+      delete updated[`${tabId}:${pageId}`];
+
+      if (Object.keys(updated).length === 0) {
+        localStorage.removeItem(`pageRedirects`);
+      } else {
+        localStorage.setItem(`pageRedirects`, JSON.stringify(updated));
+      }
+
+      return maybePageRedirect as number;
+    }
   }
 };
 
@@ -52,7 +63,16 @@ export const setActiveSection = (
   tabId: number,
   value: number
 ) => {
-  localStorage.setItem(`pageSection:${tabId}:${pageId}`, JSON.stringify(value));
+  const current =
+    (localStorageOrDefault(`pageSections`, undefined, true) as
+      | Record<string, number>
+      | undefined) || {};
+
+  const updated = {
+    ...current,
+    [`${tabId}:${pageId}`]: value,
+  };
+  localStorage.setItem(`pageSections`, JSON.stringify(updated));
 };
 
 // Sets a temporary redirect to local storage.
@@ -61,8 +81,14 @@ export const setSectionRedirect = (
   tabId: number,
   value: number
 ) => {
-  localStorage.setItem(
-    `pageRedirect:${tabId}:${pageId}`,
-    JSON.stringify(value)
-  );
+  const current =
+    (localStorageOrDefault(`pageRedirects`, undefined, true) as
+      | Record<string, number>
+      | undefined) || {};
+
+  const updated = {
+    ...current,
+    [`${tabId}:${pageId}`]: value,
+  };
+  localStorage.setItem(`pageRedirects`, JSON.stringify(updated));
 };

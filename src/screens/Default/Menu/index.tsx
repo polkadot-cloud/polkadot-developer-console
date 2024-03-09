@@ -43,8 +43,8 @@ export const ChainMenu = () => {
       <div className="config">
         <ButtonWithTooltip
           tooltipText="Manage Tab"
-          active={activeSection === 1}
-          onClick={() => setActiveSection(1, false)}
+          active={activeSection === 3}
+          onClick={() => setActiveSection(3, false)}
           icon={faBarsProgress}
           disabled={false}
           iconTransform="shrink-1"
