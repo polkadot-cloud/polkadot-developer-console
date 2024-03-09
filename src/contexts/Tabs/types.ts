@@ -9,7 +9,6 @@ export type Tabs = Tab[];
 export interface Tab {
   id: number;
   connectFrom: ConnectFrom;
-  // TODO: abstract into directory or custom node url.
   chain:
     | {
         id: ChainId;
