@@ -17,9 +17,11 @@ import { InDevelopment } from 'library/HelpMenu/InDevelopment';
 import { exportWorkspace } from './Utils';
 import { NotificationsController } from 'controllers/NotificationsController';
 import { removeLocalStorageState } from 'IntegrityChecks/Local';
+import { useNavigate } from 'react-router-dom';
 
 export const WorkspaceSettings = () => {
   const { openMenu } = useMenu();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -100,7 +102,8 @@ export const WorkspaceSettings = () => {
                 )
               ) {
                 removeLocalStorageState(true);
-                window.location.href = '/';
+                navigate('/');
+                window.location.reload();
               }
             }}
           >
