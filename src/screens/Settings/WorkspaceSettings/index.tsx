@@ -53,7 +53,7 @@ export const WorkspaceSettings = () => {
             <FontAwesomeIcon icon={faTriangleExclamation} />
             &nbsp; Importing a workspace will replace your current workspace -
             all current state, including your current tabs and custom tag
-            settings, will be lost. Back up your workspace first if you wish to
+            settings, will be lost. Export your workspace first if you wish to
             restore it later.
           </h3>
         </div>
