@@ -13,6 +13,7 @@ import {
   defaultCustomNodeUrls,
   defaultSearchTerms,
 } from 'contexts/ChainFilter/defaults';
+import type { TagsConfig, TagsList } from 'contexts/Tags/types';
 
 // ------------------------------------------------------
 // Tabs.
@@ -100,32 +101,53 @@ export const performTabsCheck = ({
 // ------------------------------------------------------
 
 export const checkLocalTags = () => {
-  const tags = localTags.getTags();
-  const tagsConfig = localTags.getTagsConfig();
+  const tags = localTags.getTags() || defaultTags;
+  const tagsConfig = localTags.getTagsConfig() || defaultTagsConfig;
+
+  const { updated, tagsConfigResult } = sanitizeTags({ tags, tagsConfig });
+
+  // If `tagsConfig` is empty, clear it from local storage.
+  if (JSON.stringify(tagsConfigResult) === '{}') {
+    localStorage.removeItem('tagsConfig');
+  } else {
+    // Update local storage if `tagsConfig` was updated.
+    if (updated) {
+      localTags.setTagsConfig(tagsConfigResult);
+    }
+  }
+};
+
+// Sanitize provided tags and tagsConfig data and return the sanitized data.
+export const sanitizeTags = ({
+  tags,
+  tagsConfig,
+}: {
+  tags: TagsList;
+  tagsConfig: TagsConfig;
+}) => {
+  let updated = false;
+  const tagsConfigResult = tagsConfig;
 
   // Check that each tag id in `tagsConfig` is present in `tags`, and delete the config otherwise.
   if (tags && tagsConfig) {
-    const maybeUpdatedConfig = tagsConfig;
-    let updated = false;
     Object.entries(tagsConfig).forEach(([tagId, chains]) => {
       for (const chain of chains) {
         if (!NetworkDirectory[chain]) {
           // If error, fallback to defaults if exist, otherwise filter out the chain.
-          maybeUpdatedConfig[tagId] =
+          tagsConfigResult[tagId] =
             defaultTagsConfig[tagId] || chains.filter((c) => c !== chain);
           updated = true;
         }
       }
     });
-
-    if (JSON.stringify(maybeUpdatedConfig) === '{}') {
-      localStorage.removeItem('tagsConfig');
-    } else {
-      if (updated) {
-        localTags.setTagsConfig(maybeUpdatedConfig);
-      }
-    }
   }
+
+  // NOTE: Tags are not currently being checked for integrity. Could be checked for data structure,
+  // as with other data too.
+  return {
+    updated,
+    tagsConfigResult,
+  };
 };
 
 // ------------------------------------------------------
