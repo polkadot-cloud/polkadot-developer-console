@@ -85,7 +85,7 @@ export class Api {
       this.#api = new ApiPromise({ provider: this.provider });
 
       // Initialise api events.
-      this.initProviderEvents();
+      this.initApiEvents();
 
       await this.#api.isReady;
     } catch (e) {
@@ -95,7 +95,8 @@ export class Api {
 
   async fetchChainSpec() {
     // Fetch chain specs.
-    const newChainSpec = await Promise.all([
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const newChainSpec = await Promise.all<any>([
       this.api.rpc.system.chain(),
       this.api.consts.system.version,
       this.api.consts.system.ss58Prefix,
@@ -122,7 +123,7 @@ export class Api {
   // ------------------------------------------------------
 
   // Set up API event listeners. Relays information to `document` for the UI to handle.
-  async initProviderEvents() {
+  async initApiEvents() {
     this.#api.on('ready', async () => {
       this.dispatchEvent(this.ensureEventStatus('ready'));
 
