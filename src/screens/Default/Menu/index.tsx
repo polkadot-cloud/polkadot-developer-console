@@ -11,59 +11,32 @@ import { useLocation } from 'react-router-dom';
 import { HeaderMenuWrapper } from 'library/HeaderMenu/Wrappers';
 import { useSection } from 'library/Page/provider';
 import { ButtonWithTooltip } from './ButtonWithTooltip';
-import { useApi } from 'contexts/Api';
 import { useRedirectOnInactive } from 'hooks/useRedirectOnInactive';
+import { useScreenSections } from '../Route';
 
 export const ChainMenu = () => {
-  const { getApiStatus, getApiActive } = useApi();
   const { pathname } = useLocation();
+  const { label, sections } = useScreenSections();
   const { activeSection, setActiveSection } = useSection();
   const { tabsHidden, setTabsHidden, activeTabId } = useTabs();
 
-  // Redirect to section 0 if api becomes inactive.
+  // Redirect to section 0 if Api becomes inactive.
   useRedirectOnInactive(activeTabId);
-
-  const apiStatus = getApiStatus(activeTabId);
-  const apiActive = getApiActive(activeTabId);
-
-  let screenLabel;
-  switch (apiStatus) {
-    case 'connecting':
-    case 'ready':
-    case 'connected':
-      screenLabel = 'Chain';
-      break;
-    default:
-      screenLabel = 'Connect';
-  }
 
   return (
     <HeaderMenuWrapper>
       <div className="menu">
         <section className="main">
-          <div className="label"> {screenLabel}</div>
-          <button
-            onClick={() => setActiveSection(0)}
-            className={activeSection === 0 ? 'active' : undefined}
-          >
-            {!apiActive ? 'Search Chain' : 'Overview'}
-          </button>
-          {apiActive && (
-            <>
-              <button
-                onClick={() => setActiveSection(2)}
-                className={activeSection === 2 ? 'active' : undefined}
-              >
-                Chain State
-              </button>
-              <button
-                onClick={() => setActiveSection(3)}
-                className={activeSection === 3 ? 'active' : undefined}
-              >
-                Extrinsics
-              </button>
-            </>
-          )}
+          <div className="label">{label}</div>
+          {Object.entries(sections).map(([key, section], index) => (
+            <button
+              key={`menu-section-${key}-${index}`}
+              onClick={() => setActiveSection(Number(key))}
+              className={activeSection === Number(key) ? 'active' : undefined}
+            >
+              {section.label}
+            </button>
+          ))}
         </section>
         <section className="other">{/* Additional links right side */}</section>
       </div>
