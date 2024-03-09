@@ -1,12 +1,13 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { NetworkDirectory } from 'config/networks';
 import * as localTabs from 'contexts/Tabs/Local';
 import * as localTags from 'contexts/Tags/Local';
 import * as localChainFilter from 'contexts/ChainFilter/Local';
-import { defaultTags, defaultTagsConfig } from 'contexts/Tags/defaults';
 import { defaultTabs } from 'contexts/Tabs/defaults';
+import type { Tabs } from 'contexts/Tabs/types';
+import { NetworkDirectory } from 'config/networks';
+import { defaultTags, defaultTagsConfig } from 'contexts/Tags/defaults';
 import {
   defaultAppliedTags,
   defaultCustomNodeUrls,
@@ -17,16 +18,49 @@ import {
 // Tabs.
 // ------------------------------------------------------
 
+// Check local tabs data.
 export const checkLocalTabs = () => {
   // Use default tabs if activeTabs is empty.
   const activeTabs = localTabs.getTabs() || defaultTabs;
-  const activeTabId = localTabs.getActiveTabId();
-  const activeTabIndex = localTabs.getActiveTabIndex();
+  const activeTabId = localTabs.getActiveTabId() || 0;
+  const activeTabIndex = localTabs.getActiveTabIndex() || 0;
 
-  // Check if activeTabs are valid, and clear activeTabs otherwise.
-  let activeTabsValid = true;
+  const { activeTabsValid, activeTabIdValid, activeTabIndexValid } =
+    performTabsCheck({
+      activeTabs,
+      activeTabId,
+      activeTabIndex,
+    });
+
+  // Clear all tab data if active tabs are invalid.
+  if (!activeTabsValid) {
+    removeOnInvalidTabs();
+  }
+
+  // Clear activeTabId if it is not valid.
+  if (!activeTabIdValid) {
+    localStorage.removeItem('activeTabId');
+  }
+
+  // Clear `activeTabIndex` if not valid.
+  if (!activeTabIndexValid) {
+    localStorage.removeItem('activeTabIndex');
+  }
+};
+
+// Perform integrity check on active tabs data.
+export const performTabsCheck = ({
+  activeTabs,
+  activeTabId,
+  activeTabIndex,
+}: {
+  activeTabs: Tabs;
+  activeTabId: number;
+  activeTabIndex: number;
+}) => {
+  // Check if each tab has its required properties.
+  let activeTabsValid: boolean;
   try {
-    // Check if each tab has its required properties.
     activeTabs.forEach((tab) => {
       if (
         !(
@@ -39,24 +73,26 @@ export const checkLocalTabs = () => {
         throw new Error('Invalid tab');
       }
     });
+    activeTabsValid = true;
   } catch (e) {
-    removeOnInvalidTabs();
     activeTabsValid = false;
   }
 
-  // Check if `activeTabId` is among `activeTabs`, and clear `activeTabId` otherwise.
-  if (
+  // Check if `activeTabId` is among `activeTabs`.
+  const activeTabIdValid =
     activeTabsValid &&
     activeTabId &&
-    !activeTabs.find(({ id }) => id === activeTabId)
-  ) {
-    localStorage.removeItem('activeTabId');
-  }
+    activeTabs.find(({ id }) => id === activeTabId);
 
-  // Check if `activeTabIndex` is a valid tab index, and clear `activeTabIndex` otherwise.
-  if (activeTabsValid && activeTabIndex && !activeTabs[activeTabIndex]) {
-    localStorage.removeItem('activeTabIndex');
-  }
+  // Check if `activeTabIndex` is a valid tab index.
+  const activeTabIndexValid =
+    activeTabsValid && activeTabIndex && !!activeTabs[activeTabIndex];
+
+  return {
+    activeTabsValid,
+    activeTabIdValid,
+    activeTabIndexValid,
+  };
 };
 
 // ------------------------------------------------------
@@ -195,4 +231,11 @@ const removeOnInvalidTabs = () => {
   localStorage.removeItem('activeTabIndex');
   localStorage.removeItem('searchTerms');
   localStorage.removeItem('appliedTags');
+};
+
+// Call all integrity checks.
+export const performIntegrityChecks = () => {
+  checkLocalTabs();
+  checkLocalTags();
+  checkLocalChainFilter();
 };

@@ -53,3 +53,30 @@ export const exportWorkspace = () => {
     return false;
   }
 };
+
+// Importing workspace settings.
+// TODO: Implement once integrity checks are abstracted into data source specific checks.
+// export const importWorkspace = async (file) => {
+//   const reader = new FileReader();
+
+//   reader.onload = async (e) => {
+//     const text = e.target.result;
+//     const importData = JSON.parse(text);
+
+//     // Assuming `performIntegrityChecks` is a function from `IntegrityChecks.ts` that returns a boolean
+//     const isDataValid = performIntegrityChecks(importData);
+
+//     if (isDataValid) {
+//       Object.entries(importData).forEach(([key, value]) => {
+//         localStorage.setItem(key, value); // Persist each item from the import data to localStorage
+//       });
+//       alert('Workspace settings imported successfully.');
+//     } else {
+//       alert(
+//         'Failed to import workspace settings due to integrity check failure.'
+//       );
+//     }
+//   };
+
+//   reader.readAsText(file);
+// };

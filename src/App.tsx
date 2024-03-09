@@ -16,12 +16,10 @@ export const App = () => (
     <HashRouter basename="/">
       <ErrorBoundary
         FallbackComponent={AppErrorBoundary}
-        onReset={() => {
+        onReset={() =>
           // Check local storage for integrity & upate if necessary.
-          integrityChecks.checkLocalTabs();
-          integrityChecks.checkLocalTags();
-          integrityChecks.checkLocalChainFilter();
-        }}
+          integrityChecks.performIntegrityChecks()
+        }
       >
         <Router />
       </ErrorBoundary>
