@@ -118,7 +118,7 @@ export const checkLocalChainFilter = () => {
 
 // Tidy up local storage on invalid active tabs. Requires any local storage dependent on tabs config
 // to be removed.
-export const removeLocalStorageState = () => {
+export const removeLocalStorageState = (includeTags = false) => {
   localStorage.removeItem('activeTabs');
   localStorage.removeItem('activeTabId');
   localStorage.removeItem('activeTabIndex');
@@ -127,6 +127,11 @@ export const removeLocalStorageState = () => {
   localStorage.removeItem('appliedTags');
   localStorage.removeItem('pageSections');
   localStorage.removeItem('pageRedirects');
+
+  if (includeTags) {
+    localStorage.removeItem('tags');
+    localStorage.removeItem('tagsConfig');
+  }
 };
 
 // Call all local integrity checks.

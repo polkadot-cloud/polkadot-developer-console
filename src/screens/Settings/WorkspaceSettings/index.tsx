@@ -16,6 +16,7 @@ import { useMenu } from 'contexts/Menu';
 import { InDevelopment } from 'library/HelpMenu/InDevelopment';
 import { exportWorkspace } from './Utils';
 import { NotificationsController } from 'controllers/NotificationsController';
+import { removeLocalStorageState } from 'IntegrityChecks/Local';
 
 export const WorkspaceSettings = () => {
   const { openMenu } = useMenu();
@@ -30,8 +31,8 @@ export const WorkspaceSettings = () => {
         <div className="text">
           <h4>Export Workspace</h4>
           <h3>
-            Back up your current workspace state. Exports your tabs, tags, and
-            chain search settings.
+            Back up your current workspace state. Exports your tabs, tags, chain
+            search, and active page settings.
           </h3>
         </div>
       </SettingsToggleWrapper>
@@ -57,8 +58,7 @@ export const WorkspaceSettings = () => {
       <SettingsToggleWrapper>
         <div className="text">
           <h4>Import Workspace</h4>
-          <h3>Import a workspace configuration.</h3>
-          <h3 className="inline danger">
+          <h3 className="danger">
             <FontAwesomeIcon icon={faTriangleExclamation} />
             &nbsp; Importing a workspace will replace your current workspace -
             all current state, including your current tabs and custom tag
@@ -75,6 +75,37 @@ export const WorkspaceSettings = () => {
           >
             <FontAwesomeIcon icon={faFileImport} />
             Import Workspace
+          </button>
+        </div>
+      </SettingsSubmitWrapper>
+
+      <SettingsToggleWrapper>
+        <div className="text">
+          <h4>Reset Workspace</h4>
+          <h3 className="danger">
+            <FontAwesomeIcon icon={faTriangleExclamation} />
+            &nbsp; Your workspace will be reset. Export your current workspace
+            first if you wish to restore it later.
+          </h3>
+        </div>
+      </SettingsToggleWrapper>
+
+      <SettingsSubmitWrapper>
+        <div className="buttons">
+          <button
+            onClick={() => {
+              if (
+                confirm(
+                  'Are you sure you want to reset your workspace? Confirming will reload the console.'
+                )
+              ) {
+                removeLocalStorageState(true);
+                window.location.href = '/';
+              }
+            }}
+          >
+            <FontAwesomeIcon icon={faFileImport} />
+            Reset Workspace
           </button>
         </div>
       </SettingsSubmitWrapper>
