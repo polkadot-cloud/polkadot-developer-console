@@ -95,7 +95,7 @@ export const sanitizeTags = ({
   tagsConfig: TagsConfig;
 }) => {
   let updated = false;
-  const tagsConfigResult = tagsConfig;
+  const result = tagsConfig;
 
   // Check that each tag id in `tagsConfig` is present in `tags`, and delete the config otherwise.
   if (tags && tagsConfig) {
@@ -103,7 +103,7 @@ export const sanitizeTags = ({
       for (const chain of chains) {
         if (!NetworkDirectory[chain]) {
           // If error, fallback to defaults if exist, otherwise filter out the chain.
-          tagsConfigResult[tagId] =
+          result[tagId] =
             defaultTagsConfig[tagId] || chains.filter((c) => c !== chain);
           updated = true;
         }
@@ -115,7 +115,7 @@ export const sanitizeTags = ({
   // as with other data too.
   return {
     updated,
-    tagsConfigResult,
+    result,
   };
 };
 
@@ -133,19 +133,19 @@ export const sanitizeAppliedTags = ({
   tags: TagsList;
   appliedTags: AppliedTags;
 }) => {
-  const newAppliedTags = appliedTags;
+  const result = appliedTags;
   let updated = false;
 
-  if (newAppliedTags) {
+  if (result) {
     Object.entries(appliedTags).forEach(([tabId, applied]) => {
       if (!activeTabs?.find(({ id }) => id === Number(tabId))) {
-        delete newAppliedTags[Number(tabId)];
+        delete result[Number(tabId)];
         updated = true;
       } else {
         // Check if each `applied` value is a valid tag id, and remove otherwise.
         applied.forEach((tagId) => {
           if (!tags?.[tagId]) {
-            newAppliedTags[Number(tabId)].splice(applied.indexOf(tagId), 1);
+            result[Number(tabId)].splice(applied.indexOf(tagId), 1);
             updated = true;
           }
         });
@@ -155,6 +155,6 @@ export const sanitizeAppliedTags = ({
 
   return {
     updated,
-    newAppliedTags,
+    result,
   };
 };

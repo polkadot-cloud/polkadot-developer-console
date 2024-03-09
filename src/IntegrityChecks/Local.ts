@@ -60,15 +60,15 @@ export const checkLocalTags = () => {
   const tags = localTags.getTags() || defaultTags;
   const tagsConfig = localTags.getTagsConfig() || defaultTagsConfig;
 
-  const { updated, tagsConfigResult } = sanitizeTags({ tags, tagsConfig });
+  const { updated, result } = sanitizeTags({ tags, tagsConfig });
 
-  // If `tagsConfig` is empty, clear it from local storage.
-  if (JSON.stringify(tagsConfigResult) === '{}') {
+  // If result is empty, clear it from local storage.
+  if (JSON.stringify(result) === '{}') {
     localStorage.removeItem('tagsConfig');
   } else {
     // Update local storage if `tagsConfig` was updated.
     if (updated) {
-      localTags.setTagsConfig(tagsConfigResult);
+      localTags.setTagsConfig(result);
     }
   }
 };
@@ -87,47 +87,28 @@ export const checkLocalChainFilter = () => {
     localChainFilter.getCustomNodeUrls() || defaultCustomNodeUrls;
   const appliedTags = localChainFilter.getAppliedTags() || defaultAppliedTags;
 
-  // Check if tabs exist for each search term, and remove the entry otherwise. Also remove empty
-  // strings.
-  const { updated: searchTermsUpdated, result: searchTermsResult } =
-    sanitizeKeysForTabExistence(activeTabs, searchTerms);
+  // Check if tabs exist for each search term, and remove the entry otherwise.
+  removeOrSetLocalData(
+    'searchTerms',
+    sanitizeKeysForTabExistence(activeTabs, searchTerms)
+  );
 
-  if (!searchTermsResult || JSON.stringify(searchTermsResult) === '{}') {
-    localStorage.removeItem('searchTerms');
-  } else {
-    if (searchTermsUpdated) {
-      localChainFilter.setSearchTerms(searchTermsResult);
-    }
-  }
-
-  // Check if tabs exist for each custom node url, and remove the entry otherwise. Also remove empty
-  // strings.
-  const { updated: customNodesUpdated, result: customNodesResult } =
-    sanitizeKeysForTabExistence(activeTabs, customNodeUrls);
-
-  if (!customNodesResult || JSON.stringify(customNodesResult) === '{}') {
-    localStorage.removeItem('customNodeUrls');
-  } else {
-    if (customNodesUpdated) {
-      localChainFilter.setCustomNodeUrls(customNodesResult);
-    }
-  }
+  // Check if tabs exist for each custom node url, and remove the entry otherwise.
+  removeOrSetLocalData(
+    'customNodeUrls',
+    sanitizeKeysForTabExistence(activeTabs, customNodeUrls)
+  );
 
   // Check if tab index exists for each applied tag key, and that the corresponding tag entry also
   // exists. Remove otherwise.
-  const { updated: appliedTagsUpdated, newAppliedTags } = sanitizeAppliedTags({
-    activeTabs,
-    tags,
-    appliedTags,
-  });
-
-  if (!newAppliedTags || JSON.stringify(newAppliedTags) === '{}') {
-    localStorage.removeItem('appliedTags');
-  } else {
-    if (appliedTagsUpdated) {
-      localChainFilter.setAppliedTags(newAppliedTags);
-    }
-  }
+  removeOrSetLocalData(
+    'appliedTags',
+    sanitizeAppliedTags({
+      activeTabs,
+      tags,
+      appliedTags,
+    })
+  );
 };
 
 // ------------------------------------------------------
@@ -149,4 +130,24 @@ export const performLocalIntegrityChecks = () => {
   checkLocalTabs();
   checkLocalTags();
   checkLocalChainFilter();
+};
+
+// Remove or update local data depending on resulting updated state.
+export const removeOrSetLocalData = <T>(
+  key: string,
+  {
+    updated,
+    result,
+  }: {
+    updated: boolean;
+    result: T;
+  }
+) => {
+  if (!result || JSON.stringify(result) === '{}') {
+    localStorage.removeItem(key);
+  } else {
+    if (updated) {
+      localChainFilter.setCustomNodeUrls(result);
+    }
+  }
 };
