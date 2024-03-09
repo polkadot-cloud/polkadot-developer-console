@@ -20,29 +20,37 @@ export const exportWorkspace = () => {
   const storageKeys = SUPPORTED_WORKSPACE_LOCAL_STORAGE_KEYS;
   const exportData = storageKeys.reduce(
     (acc: Record<string, AnyJson>, key: string) => {
-      acc[key] = localStorage.getItem(key); // Fetch each item and add to the export object
-      return acc;
+      try {
+        const data = localStorage.getItem(key);
+        // Add local storage item if not falsy.
+        if (data) {
+          acc[key] = JSON.parse(data);
+        }
+        return acc;
+      } catch (e) {
+        // Continue accumulating on error.
+        return acc;
+      }
     },
     {}
   );
 
-  //Remove falsy values.
-  Object.keys(exportData).forEach((key) => {
-    if (!exportData[key]) {
-      delete exportData[key];
-    }
-  });
+  try {
+    // Convert to JSON and create a data URI to download the file.
+    const dataStr = JSON.stringify(exportData, undefined);
+    const dataUri =
+      'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
-  // Convert to JSON and create a data URI to download the file.
-  const dataStr = JSON.stringify(exportData, undefined);
-  const dataUri =
-    'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+    const exportFileDefaultName = 'workspace-settings.json';
 
-  const exportFileDefaultName = 'workspace-settings.json';
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+    linkElement.remove();
 
-  const linkElement = document.createElement('a');
-  linkElement.setAttribute('href', dataUri);
-  linkElement.setAttribute('download', exportFileDefaultName);
-  linkElement.click();
-  linkElement.remove();
+    return true;
+  } catch (e) {
+    return false;
+  }
 };

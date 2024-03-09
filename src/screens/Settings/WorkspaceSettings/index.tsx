@@ -15,6 +15,7 @@ import {
 import { useMenu } from 'contexts/Menu';
 import { InDevelopment } from 'library/HelpMenu/InDevelopment';
 import { exportWorkspace } from './Utils';
+import { NotificationsController } from 'controllers/NotificationsController';
 
 export const WorkspaceSettings = () => {
   const { openMenu } = useMenu();
@@ -37,7 +38,16 @@ export const WorkspaceSettings = () => {
 
       <SettingsSubmitWrapper>
         <div className="buttons">
-          <button onClick={() => exportWorkspace()}>
+          <button
+            onClick={() => {
+              if (!exportWorkspace()) {
+                NotificationsController.emit({
+                  title: 'Export Failed',
+                  subtitle: 'There was an issue exporting your workspace.',
+                });
+              }
+            }}
+          >
             <FontAwesomeIcon icon={faDownload} />
             Export Workspace
           </button>
