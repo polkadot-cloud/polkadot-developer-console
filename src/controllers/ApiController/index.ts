@@ -20,7 +20,7 @@ export class ApiController {
   static async instantiate(tabId: number, chainId: ChainId, endpoint: string) {
     // NOTE: This method should only be called to connect to a new instance. We therefore assume we
     // want to disconnect from existing instances for this tab. The following condition will only be
-    // met if there is an exsiting stale instnace in class state, of if this method is used
+    // met if there is an existing stale instance in class state, or if this method is used
     // incorrectly.
     if (this.instances[tabId]) {
       await this.destroy(tabId);
