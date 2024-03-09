@@ -63,8 +63,8 @@ export const exportWorkspace = () => {
 //     const text = e.target.result;
 //     const importData = JSON.parse(text);
 
-//     // Assuming `performIntegrityChecks` is a function from `IntegrityChecks.ts` that returns a boolean
-//     const isDataValid = performIntegrityChecks(importData);
+//     // Assuming `performLocalIntegrityChecks` is a function from `IntegrityChecks.ts` that returns a boolean
+//     const isDataValid = performLocalIntegrityChecks(importData);
 
 //     if (isDataValid) {
 //       Object.entries(importData).forEach(([key, value]) => {

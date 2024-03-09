@@ -9,7 +9,7 @@ import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
 import { NetworkDirectory } from 'config/networks';
 import type { ChainId, DirectoryId } from 'config/networks';
-import { checkLocalTabs } from 'IntegrityChecks';
+import { checkLocalTabs } from 'IntegrityChecks/Local';
 import { ApiController } from 'controllers/ApiController';
 import { isDirectoryId } from 'config/networks/Utils';
 

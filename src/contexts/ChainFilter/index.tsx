@@ -19,7 +19,7 @@ import { useTags } from 'contexts/Tags';
 import type { TagId, TagItem } from 'contexts/Tags/types';
 import type { DirectoryId } from 'config/networks';
 import * as local from './Local';
-import { checkLocalChainFilter } from 'IntegrityChecks';
+import { checkLocalChainFilter } from 'IntegrityChecks/Local';
 
 checkLocalChainFilter();
 
