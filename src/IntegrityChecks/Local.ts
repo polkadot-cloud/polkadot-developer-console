@@ -39,7 +39,7 @@ export const checkLocalTabs = () => {
 
   // Clear all tab data if active tabs are invalid.
   if (!activeTabsValid) {
-    removeOnInvalidLocalTabs();
+    removeLocalStorageState();
   }
 
   // Clear activeTabId if it is not valid.
@@ -118,12 +118,15 @@ export const checkLocalChainFilter = () => {
 
 // Tidy up local storage on invalid active tabs. Requires any local storage dependent on tabs config
 // to be removed.
-export const removeOnInvalidLocalTabs = () => {
+export const removeLocalStorageState = () => {
   localStorage.removeItem('activeTabs');
   localStorage.removeItem('activeTabId');
   localStorage.removeItem('activeTabIndex');
   localStorage.removeItem('searchTerms');
+  localStorage.removeItem('customNodeUrls');
   localStorage.removeItem('appliedTags');
+  localStorage.removeItem('pageSections');
+  localStorage.removeItem('pageRedirects');
 };
 
 // Call all local integrity checks.
