@@ -166,50 +166,32 @@ export const checkLocalChainFilter = () => {
 
   // Check if tabs exist for each search term, and remove the entry otherwise. Also remove empty
   // strings.
-  if (searchTerms) {
-    const maybeUpdatedSearchTerms = searchTerms;
-    let updated = false;
-    Object.entries(searchTerms).forEach(([tabId, searchTerm]) => {
-      if (
-        !activeTabs?.find(({ id }) => id === Number(tabId)) ||
-        searchTerm === ''
-      ) {
-        delete maybeUpdatedSearchTerms[Number(tabId)];
-        updated = true;
-      }
-    });
+  const { updated: searchTermsUpdated, result: searchTermsResult } =
+    sanitizeTabExistence(activeTabs, searchTerms);
 
-    if (JSON.stringify(maybeUpdatedSearchTerms) === '{}') {
-      localStorage.removeItem('searchTerms');
-    } else {
-      if (updated) {
-        localChainFilter.setSearchTerms(maybeUpdatedSearchTerms);
-      }
+  if (!searchTermsResult || JSON.stringify(searchTermsResult) === '{}') {
+    localStorage.removeItem('searchTerms');
+  } else {
+    if (searchTermsUpdated) {
+      localChainFilter.setSearchTerms(searchTermsResult);
     }
   }
 
   // Check if tabs exist for each custom node url, and remove the entry otherwise. Also remove empty
   // strings.
-  if (customNodeUrls) {
-    const maybeUpdatedCustomNodeUrls = customNodeUrls;
-    let updated = false;
-    Object.entries(customNodeUrls).forEach(([tabId, url]) => {
-      if (!activeTabs?.find(({ id }) => id === Number(tabId)) || url === '') {
-        delete maybeUpdatedCustomNodeUrls[Number(tabId)];
-        updated = true;
-      }
-    });
+  const { updated: customNodesUpdated, result: customNodesResult } =
+    sanitizeTabExistence(activeTabs, customNodeUrls);
 
-    if (JSON.stringify(maybeUpdatedCustomNodeUrls) === '{}') {
-      localStorage.removeItem('customNodeUrls');
-    } else {
-      if (updated) {
-        localChainFilter.setCustomNodeUrls(maybeUpdatedCustomNodeUrls);
-      }
+  if (!customNodesResult || JSON.stringify(customNodesResult) === '{}') {
+    localStorage.removeItem('customNodeUrls');
+  } else {
+    if (customNodesUpdated) {
+      localChainFilter.setCustomNodeUrls(customNodesResult);
     }
   }
 
-  // Check if tab index exists for each applied tag key, and remove otherwise.
+  // Check if tab index exists for each applied tag key, and that the corresponding tag entry also
+  // exists. Remove otherwise.
   if (appliedTags) {
     const maybeUpdatedAppliedTags = appliedTags;
     let updated = false;
@@ -260,4 +242,27 @@ export const performIntegrityChecks = () => {
   checkLocalTabs();
   checkLocalTags();
   checkLocalChainFilter();
+};
+
+// Checks if a tabId exists for each key of the provided string data.
+const sanitizeTabExistence = (
+  activeTabs: Tabs,
+  entries?: Record<number, string>
+) => {
+  const result = entries;
+  let updated = false;
+
+  if (result) {
+    Object.entries(result).forEach(([tabId, entry]) => {
+      if (!activeTabs?.find(({ id }) => id === Number(tabId)) || entry === '') {
+        delete result[Number(tabId)];
+        updated = true;
+      }
+    });
+  }
+
+  return {
+    updated,
+    result,
+  };
 };
