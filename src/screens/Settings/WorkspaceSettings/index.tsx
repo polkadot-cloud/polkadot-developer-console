@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { InDevelopment } from 'library/HelpMenu/InDevelopment';
+import { exportWorkspace } from './Utils';
 
 export const WorkspaceSettings = () => {
   const { openMenu } = useMenu();
@@ -36,9 +37,7 @@ export const WorkspaceSettings = () => {
 
       <SettingsSubmitWrapper>
         <div className="buttons">
-          <button
-            onClick={(ev) => openMenu(ev, <InDevelopment />, { size: 'large' })}
-          >
+          <button onClick={() => exportWorkspace()}>
             <FontAwesomeIcon icon={faDownload} />
             Export Workspace
           </button>
