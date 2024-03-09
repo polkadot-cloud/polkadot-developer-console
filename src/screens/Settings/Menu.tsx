@@ -6,6 +6,7 @@ import { useSection } from '../../library/Page/provider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { SettingsSections, ScreenLabel } from './Route';
 
 export const SettingsMenu = () => {
   const navigate = useNavigate();
@@ -15,19 +16,16 @@ export const SettingsMenu = () => {
     <HeaderMenuWrapper>
       <div className="menu">
         <section>
-          <div className="label">Settings</div>
-          <button
-            className={activeSection === 0 ? 'active' : undefined}
-            onClick={() => setActiveSection(0)}
-          >
-            Tabs
-          </button>
-          <button
-            className={activeSection === 1 ? 'active' : undefined}
-            onClick={() => setActiveSection(1)}
-          >
-            Tags
-          </button>
+          <div className="label">{ScreenLabel}</div>
+          {Object.entries(SettingsSections).map(([key, { label }], index) => (
+            <button
+              key={`menu-section-${key}-${index}`}
+              className={activeSection === Number(key) ? 'active' : undefined}
+              onClick={() => setActiveSection(Number(key))}
+            >
+              {label}
+            </button>
+          ))}
         </section>
       </div>
       <div className="config">
