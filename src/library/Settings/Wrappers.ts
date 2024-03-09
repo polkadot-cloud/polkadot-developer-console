@@ -8,6 +8,7 @@ export const SettingsHeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0.75rem;
+  min-height: 2.5rem;
 
   > h2 {
     flex-grow: 1;

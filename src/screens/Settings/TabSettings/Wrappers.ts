@@ -22,7 +22,15 @@ export const SettingsToggleWrapper = styled.div`
 
     > h3 {
       color: var(--text-color-primary);
+      line-height: 1.3rem;
       flex: 0;
+
+      &.inline {
+        margin-top: 0.75rem;
+      }
+      &.danger {
+        color: var(--status-danger-color);
+      }
     }
   }
 
@@ -42,6 +50,10 @@ export const SettingsSubmitWrapper = styled.div`
       color: var(--accent-color-primary);
       padding: 0.35rem 0.75rem;
       border-radius: 0.4rem;
+
+      > svg {
+        margin-right: 0.5rem;
+      }
     }
   }
 `;

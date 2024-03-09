@@ -13,16 +13,16 @@ export const ScreenLabel = 'Settings';
 
 export const SettingsSections: ScreenSections = {
   0: {
-    label: 'Workspace',
-    Component: WorkspaceSettings,
-  },
-  1: {
     label: 'Tabs',
     Component: TabSettings,
   },
-  2: {
+  1: {
     label: 'Tags',
     Component: TagSettings,
+  },
+  2: {
+    label: 'Workspace',
+    Component: WorkspaceSettings,
   },
 };
 
