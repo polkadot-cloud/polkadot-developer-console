@@ -4,7 +4,6 @@
 import type { AnyJson } from '@w3ux/utils/types';
 
 // The supported localStorage keys for import and export.
-// TODO: Reformat local pageSection keys to host in one `pageSections` key.
 const SUPPORTED_WORKSPACE_LOCAL_STORAGE_KEYS = [
   'activeTabs',
   'activeTabId',

@@ -93,7 +93,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
         tabId={id}
         onSettings={() => {
           setActiveTabId(id);
-          localSections.setSectionRedirect('default', id, 1);
+          localSections.setSectionRedirect('default', id, 3);
           incrementRedirectCounter();
           closeMenu();
         }}
