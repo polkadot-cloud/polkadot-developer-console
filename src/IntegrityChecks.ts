@@ -14,6 +14,7 @@ import {
   defaultSearchTerms,
 } from 'contexts/ChainFilter/defaults';
 import type { TagsConfig, TagsList } from 'contexts/Tags/types';
+import type { AppliedTags } from 'contexts/ChainFilter/types';
 
 // ------------------------------------------------------
 // Tabs.
@@ -192,35 +193,55 @@ export const checkLocalChainFilter = () => {
 
   // Check if tab index exists for each applied tag key, and that the corresponding tag entry also
   // exists. Remove otherwise.
-  if (appliedTags) {
-    const maybeUpdatedAppliedTags = appliedTags;
-    let updated = false;
+  const { updated: appliedTagsUpdated, newAppliedTags } = sanitizeAppliedTags({
+    activeTabs,
+    tags,
+    appliedTags,
+  });
+
+  if (!newAppliedTags || JSON.stringify(newAppliedTags) === '{}') {
+    localStorage.removeItem('appliedTags');
+  } else {
+    if (appliedTagsUpdated) {
+      localChainFilter.setAppliedTags(newAppliedTags);
+    }
+  }
+};
+
+// Sanitize applied tags data and return the sanitized data.
+const sanitizeAppliedTags = ({
+  activeTabs,
+  tags,
+  appliedTags,
+}: {
+  activeTabs: Tabs;
+  tags: TagsList;
+  appliedTags: AppliedTags;
+}) => {
+  const newAppliedTags = appliedTags;
+  let updated = false;
+
+  if (newAppliedTags) {
     Object.entries(appliedTags).forEach(([tabId, applied]) => {
       if (!activeTabs?.find(({ id }) => id === Number(tabId))) {
-        delete maybeUpdatedAppliedTags[Number(tabId)];
+        delete newAppliedTags[Number(tabId)];
         updated = true;
       } else {
         // Check if each `applied` value is a valid tag id, and remove otherwise.
         applied.forEach((tagId) => {
           if (!tags?.[tagId]) {
-            maybeUpdatedAppliedTags[Number(tabId)].splice(
-              applied.indexOf(tagId),
-              1
-            );
+            newAppliedTags[Number(tabId)].splice(applied.indexOf(tagId), 1);
             updated = true;
           }
         });
       }
     });
-
-    if (JSON.stringify(maybeUpdatedAppliedTags) === '{}') {
-      localStorage.removeItem('appliedTags');
-    } else {
-      if (updated) {
-        localChainFilter.setAppliedTags(maybeUpdatedAppliedTags);
-      }
-    }
   }
+
+  return {
+    updated,
+    newAppliedTags,
+  };
 };
 
 // ------------------------------------------------------
