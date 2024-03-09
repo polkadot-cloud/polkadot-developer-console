@@ -17,6 +17,7 @@ import {
   defaultCustomNodeUrls,
   defaultSearchTerms,
 } from 'contexts/ChainFilter/defaults';
+import type { RemoveOrSetInput } from './types';
 
 // ------------------------------------------------------
 // Tabs.
@@ -135,13 +136,7 @@ export const performLocalIntegrityChecks = () => {
 // Remove or update local data depending on resulting updated state.
 export const removeOrSetLocalData = <T>(
   key: string,
-  {
-    updated,
-    result,
-  }: {
-    updated: boolean;
-    result: T;
-  }
+  { updated, result }: RemoveOrSetInput<T>
 ) => {
   if (!result || JSON.stringify(result) === '{}') {
     localStorage.removeItem(key);
