@@ -30,8 +30,8 @@ export const WorkspaceSettings = () => {
         <div className="text">
           <h4>Export Workspace</h4>
           <h3>
-            Back up your current workspace state. Exports your tabs, tags, chain
-            search settings.
+            Back up your current workspace state. Exports your tabs, tags, and
+            chain search settings.
           </h3>
         </div>
       </SettingsToggleWrapper>
