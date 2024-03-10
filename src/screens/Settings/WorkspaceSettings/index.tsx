@@ -8,6 +8,7 @@ import {
 } from '../TabSettings/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faArrowRotateLeft,
   faDownload,
   faFileImport,
   faTriangleExclamation,
@@ -123,7 +124,7 @@ export const WorkspaceSettings = () => {
               }
             }}
           >
-            <FontAwesomeIcon icon={faFileImport} />
+            <FontAwesomeIcon icon={faArrowRotateLeft} />
             Reset Workspace
           </button>
         </div>
