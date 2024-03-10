@@ -44,13 +44,19 @@ export const performTabsCheck = ({
 
   // Check if `activeTabId` is among `activeTabs`.
   const activeTabIdValid =
-    activeTabsValid &&
-    activeTabId &&
-    activeTabs.find(({ id }) => id === activeTabId);
+    activeTabId === 0
+      ? true
+      : activeTabsValid &&
+        activeTabId &&
+        activeTabs.find(({ id }) => id === activeTabId) !== undefined;
 
   // Check if `activeTabIndex` is a valid tab index.
   const activeTabIndexValid =
-    activeTabsValid && activeTabIndex && !!activeTabs[activeTabIndex];
+    activeTabIndex === 0
+      ? true
+      : activeTabsValid &&
+        activeTabIndex &&
+        activeTabs[activeTabIndex] !== undefined;
 
   return {
     activeTabsValid,
