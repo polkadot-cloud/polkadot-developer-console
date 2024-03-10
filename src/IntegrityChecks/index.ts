@@ -4,7 +4,6 @@
 import type { Tabs } from 'contexts/Tabs/types';
 import { NetworkDirectory } from 'config/networks';
 import { defaultTagsConfig } from 'contexts/Tags/defaults';
-
 import type { TagsConfig, TagsList } from 'contexts/Tags/types';
 import type { AppliedTags } from 'contexts/ChainFilter/types';
 
@@ -68,19 +67,21 @@ export const performTabsCheck = ({
 // Checks if a tabId exists for each key of the provided string data.
 export const sanitizeKeysForTabExistence = (
   activeTabs: Tabs,
-  entries?: Record<number, string>
+  entries?: Record<string, string>
 ) => {
-  const result = entries;
-  let updated = false;
+  const updated = false;
 
-  if (result) {
-    Object.entries(result).forEach(([tabId, entry]) => {
-      if (!activeTabs?.find(({ id }) => id === Number(tabId)) || entry === '') {
-        delete result[Number(tabId)];
-        updated = true;
-      }
-    });
-  }
+  const result = Object.fromEntries(
+    Object.entries(entries || {}).reduce(
+      (acc: [string, string][], [tabId, entry]) => {
+        if (activeTabs.find(({ id }) => id === Number(tabId)) && entry !== '') {
+          return acc.concat([[tabId, entry]]);
+        }
+        return acc;
+      },
+      []
+    )
+  );
 
   return {
     updated,
@@ -109,7 +110,7 @@ export const sanitizeTags = ({
       for (const chain of chains) {
         if (!NetworkDirectory[chain]) {
           // If error, fallback to defaults if exist, otherwise filter out the chain.
-          result[tagId] =
+          result.tagId =
             defaultTagsConfig[tagId] || chains.filter((c) => c !== chain);
           updated = true;
         }
@@ -139,25 +140,27 @@ export const sanitizeAppliedTags = ({
   tags: TagsList;
   appliedTags: AppliedTags;
 }) => {
-  const result = appliedTags;
-  let updated = false;
+  const updated = false;
 
-  if (result) {
-    Object.entries(appliedTags).forEach(([tabId, applied]) => {
-      if (!activeTabs?.find(({ id }) => id === Number(tabId))) {
-        delete result[Number(tabId)];
-        updated = true;
-      } else {
+  const result = Object.fromEntries(
+    Object.entries(appliedTags || {}).reduce(
+      (acc: [string, string[]][], [tabId, applied]) => {
+        if (!activeTabs?.find(({ id }) => id === Number(tabId))) {
+          return acc;
+        }
         // Check if each `applied` value is a valid tag id, and remove otherwise.
-        applied.forEach((tagId) => {
+        applied = applied.reduce((acc2: string[], tagId) => {
           if (!tags?.[tagId]) {
-            result[Number(tabId)].splice(applied.indexOf(tagId), 1);
-            updated = true;
+            return acc2;
           }
-        });
-      }
-    });
-  }
+          return acc2.concat(tagId);
+        }, []);
+
+        return acc.concat([[tabId, applied]]);
+      },
+      []
+    )
+  );
 
   return {
     updated,

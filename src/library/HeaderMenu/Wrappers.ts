@@ -46,10 +46,10 @@ export const HeaderMenuWrapper = styled.div`
         color: var(--text-color-secondary);
 
         &:hover {
-          color: var(--accent-color-primary);
+          color: var(--accent-color-secondary);
         }
         &.active {
-          color: var(--accent-color-primary);
+          color: var(--accent-color-secondary);
         }
 
         > .icon {
@@ -90,7 +90,7 @@ export const ButtonWrapper = styled.button`
     background-color: var(--button-secondary-background);
 
     &:hover {
-      color: var(--accent-color-primary);
+      color: var(--accent-color-secondary);
     }
 
     > svg {
@@ -100,7 +100,7 @@ export const ButtonWrapper = styled.button`
 
   &.active {
     > svg {
-      color: var(--accent-color-primary);
+      color: var(--accent-color-secondary);
     }
   }
 
