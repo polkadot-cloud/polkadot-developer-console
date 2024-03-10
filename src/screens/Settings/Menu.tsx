@@ -7,13 +7,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { SettingsSections, ScreenLabel } from './Route';
+import { accentColors } from 'theme/accents/developer-console';
 
 export const SettingsMenu = () => {
   const navigate = useNavigate();
   const { activeSection, setActiveSection } = useSection();
 
   return (
-    <HeaderMenuWrapper>
+    <HeaderMenuWrapper
+      /* Overriding tab colors to be the same as primary color here. */
+      style={Object.fromEntries([
+        ['--accent-color-secondary', accentColors.primary.light],
+      ])}
+    >
       <div className="menu">
         <section>
           <div className="label">{ScreenLabel}</div>

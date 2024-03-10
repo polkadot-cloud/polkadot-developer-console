@@ -17,14 +17,17 @@ export const PageWithMenu = ({ pageId, Page, Menu }: PageWithMenuProps) => {
   const chainId: DirectoryId | undefined =
     (tab?.chain?.id as DirectoryId) || undefined;
 
-  // Whether to override the accent colors on this page.
-  const overrideCss = chainId && pageId !== 'settings';
-
-  // NOTE: hardcoding the developer console purple color as fallback for now.
-  const color = overrideCss ? NetworkDirectory[chainId]?.color : '#552bbf';
+  // Get chain color, if present.
+  const color = NetworkDirectory[chainId]?.color;
 
   return (
-    <div style={Object.fromEntries([['--accent-color-secondary', color]])}>
+    <div
+      style={
+        color
+          ? Object.fromEntries([['--accent-color-secondary', color]])
+          : undefined
+      }
+    >
       <SectionProvider pageId={pageId}>
         <Menu />
         <Body>
