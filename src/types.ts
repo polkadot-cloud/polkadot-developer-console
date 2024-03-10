@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { NotificationItem } from 'controllers/NotificationsController/types';
+import type { OnlineStatusEvent } from 'controllers/OnlineStatusController/types';
 import type {
   APIChainSpecEventDetail,
   APIStatusEventDetail,
@@ -12,6 +13,7 @@ declare global {
   interface DocumentEventMap {
     'api-status': CustomEvent<APIStatusEventDetail>;
     'new-chain-spec': CustomEvent<APIChainSpecEventDetail>;
+    'online-status': CustomEvent<OnlineStatusEvent>;
     notification: CustomEvent<NotificationItem>;
   }
 }

@@ -5,6 +5,7 @@ import type { Api } from 'model/Api';
 import type { APIChainSpec, ApiStatus } from 'model/Api/types';
 
 export interface ApiContextInterface {
+  offline: boolean;
   isReady: boolean;
   getTabApi: () => Api | undefined;
   getApiStatus: (tabId: number) => ApiStatus;

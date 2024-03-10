@@ -10,6 +10,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import type { APIChainSpec, ApiStatus } from 'model/Api/types';
+import { OnlineStatusController } from 'controllers/OnlineStatusController';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -18,6 +19,9 @@ export const useApi = () => useContext(Api);
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const { getActiveTab, tabs, instantiateApiFromTab, forgetTabChain } =
     useTabs();
+
+  // Whether the app is offline.
+  const [offline, setOffline] = useState(false);
 
   // Store API connection status of each tab. NOTE: requires ref as it is used in event listener.
   const [apiStatus, setApiStatusState] = useState<Record<number, ApiStatus>>(
@@ -97,6 +101,13 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     forgetTabChain(tabId);
   };
 
+  // Handle incoming online status updates.
+  const handleOnlineStatus = (e: Event): void => {
+    if (isCustomEvent(e)) {
+      const { online } = e.detail;
+      setOffline(!online);
+    }
+  };
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {
     if (isCustomEvent(e)) {
@@ -142,14 +153,21 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
   const documentRef = useRef<Document>(document);
 
+  // Listen for online status updates.
+  useEventListener('online-status', handleOnlineStatus, documentRef);
+
   // Listen for api status updates.
   useEventListener('api-status', handleNewApiStatus, documentRef);
 
   // Listen for new chain spec updates.
   useEventListener('new-chain-spec', handleNewChainSpec, documentRef);
 
-  // Initialisation of Api instances.
+  // Initialisation of Api.
   useEffect(() => {
+    // Start listening for online / offline events.
+    OnlineStatusController.initOnlineEvents();
+
+    // Instantiate Api instances from tabs.
     tabs.forEach((tab) => {
       if (tab.autoConnect) {
         instantiateApiFromTab(tab.id);
@@ -160,6 +178,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   return (
     <Api.Provider
       value={{
+        offline,
         isReady: false,
         getApiStatus,
         getApiActive,
