@@ -10,6 +10,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import type { APIChainSpec, ApiStatus } from 'model/Api/types';
+import { OnlineStatusController } from 'controllers/OnlineStatusController';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -148,8 +149,12 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   // Listen for new chain spec updates.
   useEventListener('new-chain-spec', handleNewChainSpec, documentRef);
 
-  // Initialisation of Api instances.
+  // Initialisation of Api.
   useEffect(() => {
+    // Start listening for online / offline events.
+    OnlineStatusController.initOnlineEvents();
+
+    // Instantiate Api instances from tabs.
     tabs.forEach((tab) => {
       if (tab.autoConnect) {
         instantiateApiFromTab(tab.id);
