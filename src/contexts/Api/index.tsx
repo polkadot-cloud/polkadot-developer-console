@@ -20,9 +20,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const { getActiveTab, tabs, instantiateApiFromTab, forgetTabChain } =
     useTabs();
 
-  // Whether the app is offline.
-  const [offline, setOffline] = useState(false);
-
   // Store API connection status of each tab. NOTE: requires ref as it is used in event listener.
   const [apiStatus, setApiStatusState] = useState<Record<number, ApiStatus>>(
     {}
@@ -101,13 +98,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     forgetTabChain(tabId);
   };
 
-  // Handle incoming online status updates.
-  const handleOnlineStatus = (e: Event): void => {
-    if (isCustomEvent(e)) {
-      const { online } = e.detail;
-      setOffline(!online);
-    }
-  };
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {
     if (isCustomEvent(e)) {
@@ -153,9 +143,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
   const documentRef = useRef<Document>(document);
 
-  // Listen for online status updates.
-  useEventListener('online-status', handleOnlineStatus, documentRef);
-
   // Listen for api status updates.
   useEventListener('api-status', handleNewApiStatus, documentRef);
 
@@ -178,7 +165,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   return (
     <Api.Provider
       value={{
-        offline,
         isReady: false,
         getApiStatus,
         getApiActive,
