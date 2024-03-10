@@ -7,7 +7,7 @@ import { PageContentWrapper } from 'library/Page/Wrapper';
 import { RecentChain } from './RecentChain';
 import { ConnectHeader } from './ConnectHeader';
 import { useTabs } from 'contexts/Tabs';
-import { LocalNodeInput } from './LocaNodeInput';
+import { CustomEndpointInput } from './CustomEndpointInput';
 
 export const Connect = () => {
   const { getActiveTab } = useTabs();
@@ -17,7 +17,7 @@ export const Connect = () => {
   return (
     <PageContentWrapper>
       <ConnectHeader />
-      {connectFrom === 'customNode' && <LocalNodeInput />}
+      {connectFrom === 'customEndpoint' && <CustomEndpointInput />}
       {connectFrom === 'directory' && (
         <>
           <SearchChain />

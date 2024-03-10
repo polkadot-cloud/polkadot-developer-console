@@ -19,7 +19,7 @@ const SUPPORTED_WORKSPACE_LOCAL_STORAGE_KEYS = [
   'tags',
   'tagsConfig',
   'searchTerms',
-  'customNodeUrls',
+  'customEndpoints',
   'appliedTags',
 ];
 
@@ -105,15 +105,15 @@ export const importWorkspace = (file: File) => {
         );
         json = deleteKeyOrOverwrite('searchTerms', searchTermsResult, json);
 
-        // Check if imported custom node urls are valid.
-        const customNodeUrls = json.customNodeUrls || {};
-        const { result: customNodeUrlsResult } = sanitizeKeysForTabExistence(
+        // Check if imported custom endpoints are valid.
+        const customEndpoints = json.customEndpoints || {};
+        const { result: customEndpointsResult } = sanitizeKeysForTabExistence(
           activeTabs || defaultTabs,
-          customNodeUrls
+          customEndpoints
         );
         json = deleteKeyOrOverwrite(
-          'customNodeUrls',
-          customNodeUrlsResult,
+          'customEndpoints',
+          customEndpointsResult,
           json
         );
 

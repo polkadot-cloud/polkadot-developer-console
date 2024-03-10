@@ -19,7 +19,7 @@ export interface Tab {
   autoConnect: boolean;
 }
 
-export type ConnectFrom = 'directory' | 'customNode';
+export type ConnectFrom = 'directory' | 'customEndpoint';
 
 export interface TabsContextInterface {
   tabs: Tabs;

@@ -19,8 +19,10 @@ export const ConnectHeader = () => {
           Directory
         </button>
         <button
-          className={tab?.connectFrom === 'customNode' ? 'active' : undefined}
-          onClick={() => setTabConnectFrom(activeTabId, 'customNode')}
+          className={
+            tab?.connectFrom === 'customEndpoint' ? 'active' : undefined
+          }
+          onClick={() => setTabConnectFrom(activeTabId, 'customEndpoint')}
         >
           Custom Endpoint
         </button>

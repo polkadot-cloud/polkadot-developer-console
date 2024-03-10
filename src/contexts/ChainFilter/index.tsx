@@ -6,13 +6,13 @@ import { createContext, useContext, useRef, useState } from 'react';
 import type {
   AppliedTags,
   ChainFilterInterface,
-  CustomNodeUrls,
+  CustomEndpoints,
   SearchTerms,
 } from './types';
 import {
   defaultAppliedTags,
   defaultChainFilter,
-  defaultCustomNodeUrls,
+  defaultCustomEndpoints,
   defaultSearchTerms,
 } from './defaults';
 import { useTags } from 'contexts/Tags';
@@ -36,9 +36,9 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
     local.getSearchTerms() || defaultSearchTerms
   );
 
-  // The current custom node urls.
-  const [customNodeUrls, setCustomNodeUrlsState] = useState<CustomNodeUrls>(
-    local.getCustomNodeUrls() || defaultCustomNodeUrls
+  // The current custom endpoints.
+  const [customEndpoints, setCustomEndpointsState] = useState<CustomEndpoints>(
+    local.getCustomEndpoints() || defaultCustomEndpoints
   );
 
   // The current applied tags to a given key. NOTE: needs a ref for up to date state updates in
@@ -54,10 +54,10 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
     setSearchTermsState(value);
   };
 
-  // Sets custom node urls state, and updates local storage.
-  const setCustomNodeUrls = (value: CustomNodeUrls) => {
-    local.setCustomNodeUrls(value);
-    setCustomNodeUrlsState(value);
+  // Sets custom endpoints state, and updates local storage.
+  const setCustomEndpoints = (value: CustomEndpoints) => {
+    local.setCustomEndpoints(value);
+    setCustomEndpointsState(value);
   };
 
   // Sets applied tags state, and updates local storage.
@@ -70,17 +70,17 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
   // Gets a search term for a given key.
   const getSearchTerm = (tabId: number) => searchTerms[tabId] || '';
 
-  // Gets a custom node url for a given key.
-  const getCustomNodeUrl = (tabId: number) => customNodeUrls[tabId] || '';
+  // Gets a custom endpoint for a given key.
+  const getCustomEndpoint = (tabId: number) => customEndpoints[tabId] || '';
 
   // Sets a search term for a given key.
   const setSearchTerm = (tabId: number, value: string) => {
     setSearchTerms({ ...searchTerms, [tabId]: value });
   };
 
-  // Sets a custom node url for a given key.
-  const setCustomNodeUrl = (tabId: number, value: string) => {
-    setCustomNodeUrls({ ...customNodeUrls, [tabId]: value });
+  // Sets a custom endpoint for a given key.
+  const setCustomEndpoint = (tabId: number, value: string) => {
+    setCustomEndpoints({ ...customEndpoints, [tabId]: value });
   };
 
   // Gets the applied tags for a given key.
@@ -119,9 +119,9 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
         searchTerms,
         getSearchTerm,
         setSearchTerm,
-        customNodeUrls,
-        getCustomNodeUrl,
-        setCustomNodeUrl,
+        customEndpoints,
+        getCustomEndpoint,
+        setCustomEndpoint,
         getAppliedTags,
         appliedTags,
         applyTags,

@@ -5,7 +5,7 @@
 import type {
   AppliedTags,
   ChainFilterInterface,
-  CustomNodeUrls,
+  CustomEndpoints,
   SearchTerms,
 } from './types';
 
@@ -13,9 +13,9 @@ export const defaultChainFilter: ChainFilterInterface = {
   searchTerms: {},
   getSearchTerm: (tabId) => '',
   setSearchTerm: (tabId, searchTerm) => {},
-  customNodeUrls: {},
-  getCustomNodeUrl: (tabId) => '',
-  setCustomNodeUrl: (tabId, url) => {},
+  customEndpoints: {},
+  getCustomEndpoint: (tabId) => '',
+  setCustomEndpoint: (tabId, url) => {},
   appliedTags: {},
   getAppliedTags: (tabId) => [],
   applyTags: (tabId, tagIds) => {},
@@ -36,4 +36,4 @@ export const defaultSearchTerms: SearchTerms = {
   4: 'Westend',
 };
 
-export const defaultCustomNodeUrls: CustomNodeUrls = {};
+export const defaultCustomEndpoints: CustomEndpoints = {};

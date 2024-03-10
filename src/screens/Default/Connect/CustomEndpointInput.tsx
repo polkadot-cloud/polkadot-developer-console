@@ -11,18 +11,18 @@ import {
 import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
 
-export const LocalNodeInput = () => {
+export const CustomEndpointInput = () => {
   const { activeTabId, connectTab } = useTabs();
-  const { getCustomNodeUrl, setCustomNodeUrl } = useChainFilter();
+  const { getCustomEndpoint, setCustomEndpoint } = useChainFilter();
 
   // The editable value of the input.
-  const customNodeUrl = getCustomNodeUrl(activeTabId);
+  const customEndpoint = getCustomEndpoint(activeTabId);
 
   // Handle input change.
   const onChange = (value: string) => {
     //  If trimmed value and the current value is empty, don't update.
-    if (!(!value.trim().length && customNodeUrl === '')) {
-      setCustomNodeUrl(activeTabId, value);
+    if (!(!value.trim().length && customEndpoint === '')) {
+      setCustomEndpoint(activeTabId, value);
     }
   };
 
@@ -30,7 +30,7 @@ export const LocalNodeInput = () => {
     <ChainInputWrapper>
       <SearchInput
         placeholder="wss://"
-        value={customNodeUrl}
+        value={customEndpoint}
         onChange={onChange}
         icon={faChevronRight}
         iconTransform="shrink-3"
@@ -39,7 +39,7 @@ export const LocalNodeInput = () => {
       <div className="footer">
         <ConnectButton
           onClick={() => {
-            connectTab(activeTabId, 'custom', customNodeUrl);
+            connectTab(activeTabId, 'custom', customEndpoint);
           }}
         >
           Connect

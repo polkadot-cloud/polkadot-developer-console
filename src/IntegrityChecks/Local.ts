@@ -14,7 +14,7 @@ import { defaultTabs } from 'contexts/Tabs/defaults';
 import { defaultTags, defaultTagsConfig } from 'contexts/Tags/defaults';
 import {
   defaultAppliedTags,
-  defaultCustomNodeUrls,
+  defaultCustomEndpoints,
   defaultSearchTerms,
 } from 'contexts/ChainFilter/defaults';
 import type { RemoveOrSetInput } from './types';
@@ -84,8 +84,8 @@ export const checkLocalChainFilter = () => {
   const activeTabs = localTabs.getTabs() || defaultTabs;
   const tags = localTags.getTags() || defaultTags;
   const searchTerms = localChainFilter.getSearchTerms() || defaultSearchTerms;
-  const customNodeUrls =
-    localChainFilter.getCustomNodeUrls() || defaultCustomNodeUrls;
+  const customEndpoints =
+    localChainFilter.getCustomEndpoints() || defaultCustomEndpoints;
   const appliedTags = localChainFilter.getAppliedTags() || defaultAppliedTags;
 
   // Check if tabs exist for each search term, and remove the entry otherwise.
@@ -94,10 +94,10 @@ export const checkLocalChainFilter = () => {
     sanitizeKeysForTabExistence(activeTabs, searchTerms)
   );
 
-  // Check if tabs exist for each custom node url, and remove the entry otherwise.
+  // Check if tabs exist for each custom endpoint, and remove the entry otherwise.
   removeOrSetLocalData(
-    'customNodeUrls',
-    sanitizeKeysForTabExistence(activeTabs, customNodeUrls)
+    'customEndpoints',
+    sanitizeKeysForTabExistence(activeTabs, customEndpoints)
   );
 
   // Check if tab index exists for each applied tag key, and that the corresponding tag entry also
@@ -125,7 +125,7 @@ export const removeOrSetLocalData = <T>(
     localStorage.removeItem(key);
   } else {
     if (updated) {
-      localChainFilter.setCustomNodeUrls(result);
+      localChainFilter.setCustomEndpoints(result);
     }
   }
 };
@@ -144,7 +144,7 @@ export const removeLocalStorageState = (includeTags = false) => {
   localStorage.removeItem('activeTabId');
   localStorage.removeItem('activeTabIndex');
   localStorage.removeItem('searchTerms');
-  localStorage.removeItem('customNodeUrls');
+  localStorage.removeItem('customEndpoints');
   localStorage.removeItem('appliedTags');
   localStorage.removeItem('pageSections');
   localStorage.removeItem('pageRedirects');

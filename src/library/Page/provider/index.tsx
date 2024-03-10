@@ -16,15 +16,18 @@ export const SectionContext = createContext<SectionContextInterface>(
 export const useSection = () => useContext(SectionContext);
 
 export const SectionProvider = ({ pageId, children }: SectionContextProps) => {
-  const { getApiActive } = useApi();
   const { activeTabId } = useTabs();
   const { redirectCounter } = useTabs();
+  const { getApiActive, getApiStatus } = useApi();
 
+  const apiStatus = getApiStatus(activeTabId);
   const apiActive = getApiActive(activeTabId);
 
-  // The active section of the page.
+  // The active section of the page. Falls back to default section if not connected.
   const [activeSection, setActiveSectionState] = useState<number>(
-    local.getActiveSection(pageId, activeTabId) || defaultActiveSection
+    !apiActive
+      ? defaultActiveSection
+      : local.getActiveSection(pageId, activeTabId) || defaultActiveSection
   );
 
   // Sets active section, and updates local storage if persisted.
@@ -35,16 +38,21 @@ export const SectionProvider = ({ pageId, children }: SectionContextProps) => {
     setActiveSectionState(section);
   };
 
-  // Handle redirects from local storage, if present.
+  // Handle redirects from local storage, if present. Also redirects back to default section if api
+  // is not active.
   useEffectIgnoreInitial(() => {
     const redirect = local.getSectionRedirect(pageId, activeTabId);
     const localActive = local.getActiveSection(pageId, activeTabId);
+
     if (redirect) {
       setActiveSection(redirect || localActive || defaultActiveSection, false);
     } else {
-      setActiveSection(localActive || defaultActiveSection);
+      setActiveSection(
+        !apiActive ? defaultActiveSection : localActive || defaultActiveSection,
+        false
+      );
     }
-  }, [pageId, activeTabId, redirectCounter, apiActive]);
+  }, [pageId, activeTabId, redirectCounter, apiActive, apiStatus]);
 
   return (
     <SectionContext.Provider
