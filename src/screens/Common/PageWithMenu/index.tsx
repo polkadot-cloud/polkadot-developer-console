@@ -7,18 +7,30 @@ import { SectionProvider } from 'library/Page/provider';
 import type { PageWithMenuProps } from './types';
 import { NetworkDirectory, type DirectoryId } from 'config/networks';
 import { useTabs } from 'contexts/Tabs';
+import { accentColors } from 'theme/accents/developer-console';
+import { useApi } from 'contexts/Api';
 
 // Renders a page and menu, with state controlling the active section of the page.
 export const PageWithMenu = ({ pageId, Page, Menu }: PageWithMenuProps) => {
-  const { getActiveTab } = useTabs();
+  const { getApiStatus } = useApi();
+  const { getActiveTab, activeTabId } = useTabs();
+
   const tab = getActiveTab();
+  const apiStatus = getApiStatus(activeTabId);
 
   // Get colors from active chain id.
   const chainId: DirectoryId | undefined =
     (tab?.chain?.id as DirectoryId) || undefined;
 
+  const apiConnected = ['ready', 'connected', 'connecting'].includes(apiStatus);
+  const networkColor = NetworkDirectory[chainId]?.color;
+
   // Get chain color, if present.
-  const color = NetworkDirectory[chainId]?.color;
+  const color = !apiConnected
+    ? accentColors.primary.light
+    : networkColor
+      ? networkColor
+      : accentColors.secondary.light;
 
   return (
     <div
