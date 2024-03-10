@@ -2,7 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
-import { performTabsCheck } from 'IntegrityChecks';
+import {
+  performTabsCheck,
+  sanitizeAppliedTags,
+  sanitizeKeysForTabExistence,
+  sanitizeTags,
+} from 'IntegrityChecks';
+import { defaultTabs } from 'contexts/Tabs/defaults';
+import { defaultTags } from 'contexts/Tags/defaults';
 
 // The supported localStorage keys for import and export.
 const SUPPORTED_WORKSPACE_LOCAL_STORAGE_KEYS = [
@@ -11,8 +18,8 @@ const SUPPORTED_WORKSPACE_LOCAL_STORAGE_KEYS = [
   'activeTabIndex',
   'tags',
   'tagsConfig',
-  'customNodeUrls',
   'searchTerms',
+  'customNodeUrls',
   'appliedTags',
 ];
 
@@ -58,7 +65,7 @@ export const exportWorkspace = () => {
 };
 
 // Importing workspace settings.
-export const importWorkspace = async (file: File) => {
+export const importWorkspace = (file: File) => {
   const reader = new FileReader();
 
   reader.readAsText(file);
@@ -67,10 +74,10 @@ export const importWorkspace = async (file: File) => {
     const text = reader.result;
     if (typeof text === 'string') {
       try {
-        const json = JSON.parse(text);
+        let json = JSON.parse(text);
 
         // Check if imported tabs data is valid.
-        const activeTabs = json.activeTabs;
+        const activeTabs = json?.activeTabs;
         const activeTabId = json?.activeTabId || 0;
         const activeTabIndex = json?.activeTabIndex || 0;
 
@@ -84,21 +91,69 @@ export const importWorkspace = async (file: File) => {
           throw 'Invalid Tabs Data';
         }
 
-        // TODO: check remaining supported import data.
+        // Check if imported tags are valid.
+        const tags = json.tags || defaultTags;
+        const tagsConfig = json.tagsConfig || {};
+        const { result: tagsConfigResult } = sanitizeTags({ tags, tagsConfig });
+        json = deleteKeyOrOverwrite('tagsConfig', tagsConfigResult, json);
+
+        // Check if imported search terms are valid.
+        const searchTerms = json.searchTerms || {};
+        const { result: searchTermsResult } = sanitizeKeysForTabExistence(
+          activeTabs || defaultTabs,
+          searchTerms
+        );
+        json = deleteKeyOrOverwrite('searchTerms', searchTermsResult, json);
+
+        // Check if imported custom node urls are valid.
+        const customNodeUrls = json.customNodeUrls || {};
+        const { result: customNodeUrlsResult } = sanitizeKeysForTabExistence(
+          activeTabs || defaultTabs,
+          customNodeUrls
+        );
+        json = deleteKeyOrOverwrite(
+          'customNodeUrls',
+          customNodeUrlsResult,
+          json
+        );
+
+        // Check if imported applied tags are valid.
+        const appliedTags = json.appliedTags || {};
+        const { result: appliedTagsResult } = sanitizeAppliedTags({
+          activeTabs: activeTabs || defaultTabs,
+          tags: tags || defaultTags,
+          appliedTags,
+        });
+        json = deleteKeyOrOverwrite('appliedTags', appliedTagsResult, json);
 
         // Persist each item from the import data to localStorage
-        // if (isDataValid) {
-        //     Object.entries(json).forEach(([key, value]) => {
-        //       localStorage.setItem(key, value);
-        //     });
-        // }
+        Object.entries(json).forEach(([key, value]) => {
+          try {
+            localStorage.setItem(key, JSON.stringify(value));
+          } catch (e) {
+            // Failed to persist item to localStorage. Silent error;
+          }
+        });
       } catch (e) {
-        // Provided workspace file is not a valid JSON object.
+        alert('Import failed: Invalid Workspace File');
       }
     }
   };
 
   reader.onerror = () => {
-    console.log(reader.error);
+    alert('Import failed: Invalid Workspace File');
   };
+};
+
+const deleteKeyOrOverwrite = <T>(
+  key: string,
+  value: T,
+  current: Record<string, AnyJson>
+) => {
+  if (value === undefined || JSON.stringify(value) === '{}') {
+    delete current[key];
+  } else {
+    current[key] = value;
+  }
+  return current;
 };
