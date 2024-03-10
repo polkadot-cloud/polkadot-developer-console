@@ -15,7 +15,7 @@ export const SettingsMenu = () => {
 
   return (
     <HeaderMenuWrapper
-      /* Overriding tab colors to be the same as primary color here. */
+      /* Overriding tab color to be the same as primary color. */
       style={Object.fromEntries([
         ['--accent-color-secondary', accentColors.primary.light],
       ])}
