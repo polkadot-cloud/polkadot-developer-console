@@ -45,15 +45,22 @@ export const SettingsSubmitWrapper = styled.div`
     display: flex;
     margin-top: 0.75rem;
 
-    > button {
+    > button,
+    label {
       border: 1px solid var(--accent-color-primary);
       color: var(--accent-color-primary);
       padding: 0.35rem 0.75rem;
       border-radius: 0.4rem;
+      font-size: 0.8rem;
+      cursor: pointer;
 
       > svg {
         margin-right: 0.5rem;
       }
+    }
+
+    > input[type='file'] {
+      display: none;
     }
   }
 `;

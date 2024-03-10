@@ -2,12 +2,15 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
+import { performTabsCheck } from 'IntegrityChecks';
 
 // The supported localStorage keys for import and export.
 const SUPPORTED_WORKSPACE_LOCAL_STORAGE_KEYS = [
   'activeTabs',
   'activeTabId',
   'activeTabIndex',
+  'tags',
+  'tagsConfig',
   'customNodeUrls',
   'searchTerms',
   'appliedTags',
@@ -55,28 +58,47 @@ export const exportWorkspace = () => {
 };
 
 // Importing workspace settings.
-// TODO: Implement once integrity checks are abstracted into data source specific checks.
-// export const importWorkspace = async (file) => {
-//   const reader = new FileReader();
+export const importWorkspace = async (file: File) => {
+  const reader = new FileReader();
 
-//   reader.onload = async (e) => {
-//     const text = e.target.result;
-//     const importData = JSON.parse(text);
+  reader.readAsText(file);
 
-//     // Assuming `performLocalIntegrityChecks` is a function from `IntegrityChecks.ts` that returns a boolean
-//     const isDataValid = performLocalIntegrityChecks(importData);
+  reader.onload = () => {
+    const text = reader.result;
+    if (typeof text === 'string') {
+      try {
+        const json = JSON.parse(text);
 
-//     if (isDataValid) {
-//       Object.entries(importData).forEach(([key, value]) => {
-//         localStorage.setItem(key, value); // Persist each item from the import data to localStorage
-//       });
-//       alert('Workspace settings imported successfully.');
-//     } else {
-//       alert(
-//         'Failed to import workspace settings due to integrity check failure.'
-//       );
-//     }
-//   };
+        // Check if imported tabs data is valid.
+        const activeTabs = json.activeTabs;
+        const activeTabId = json?.activeTabId || 0;
+        const activeTabIndex = json?.activeTabIndex || 0;
 
-//   reader.readAsText(file);
-// };
+        const tabsResult = performTabsCheck({
+          activeTabs,
+          activeTabId,
+          activeTabIndex,
+        });
+
+        if (!Object.values(tabsResult).every((result) => result === true)) {
+          throw 'Invalid Tabs Data';
+        }
+
+        // TODO: check remaining supported import data.
+
+        // Persist each item from the import data to localStorage
+        // if (isDataValid) {
+        //     Object.entries(json).forEach(([key, value]) => {
+        //       localStorage.setItem(key, value);
+        //     });
+        // }
+      } catch (e) {
+        // Provided workspace file is not a valid JSON object.
+      }
+    }
+  };
+
+  reader.onerror = () => {
+    console.log(reader.error);
+  };
+};

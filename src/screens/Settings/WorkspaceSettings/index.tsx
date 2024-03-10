@@ -12,16 +12,29 @@ import {
   faFileImport,
   faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
-import { useMenu } from 'contexts/Menu';
-import { InDevelopment } from 'library/HelpMenu/InDevelopment';
-import { exportWorkspace } from './Utils';
+import { exportWorkspace, importWorkspace } from './Utils';
 import { NotificationsController } from 'controllers/NotificationsController';
 import { removeLocalStorageState } from 'IntegrityChecks/Local';
 import { useNavigate } from 'react-router-dom';
+import type { ChangeEvent } from 'react';
 
 export const WorkspaceSettings = () => {
-  const { openMenu } = useMenu();
   const navigate = useNavigate();
+
+  // Handle import of workspace file.
+  const handleImportWorkspace = (ev: ChangeEvent<HTMLInputElement>) => {
+    const file = ev.target?.files?.[0] || null;
+    if (!file) {
+      alert('No file selected');
+      return;
+    }
+
+    if (file.type !== 'application/json') {
+      alert('Invalid file type. Workspace file must be a JSON file.');
+    }
+
+    importWorkspace(file);
+  };
 
   return (
     <>
@@ -72,12 +85,15 @@ export const WorkspaceSettings = () => {
 
       <SettingsSubmitWrapper>
         <div className="buttons">
-          <button
-            onClick={(ev) => openMenu(ev, <InDevelopment />, { size: 'large' })}
-          >
+          <input
+            type="file"
+            id="import-workspace"
+            onChange={(ev) => handleImportWorkspace(ev)}
+          />
+          <label htmlFor="import-workspace">
             <FontAwesomeIcon icon={faFileImport} />
             Import Workspace
-          </button>
+          </label>
         </div>
       </SettingsSubmitWrapper>
 
