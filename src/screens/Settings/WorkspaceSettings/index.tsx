@@ -22,6 +22,12 @@ import type { ChangeEvent } from 'react';
 export const WorkspaceSettings = () => {
   const navigate = useNavigate();
 
+  // Go back to index page and reload the console.
+  const reloadConsole = () => {
+    navigate('/');
+    window.location.reload();
+  };
+
   // Handle import of workspace file.
   const handleImportWorkspace = (ev: ChangeEvent<HTMLInputElement>) => {
     const file = ev.target?.files?.[0] || null;
@@ -35,6 +41,7 @@ export const WorkspaceSettings = () => {
     }
 
     importWorkspace(file);
+    reloadConsole();
   };
 
   return (
@@ -119,8 +126,7 @@ export const WorkspaceSettings = () => {
                 )
               ) {
                 removeLocalStorageState(true);
-                navigate('/');
-                window.location.reload();
+                reloadConsole();
               }
             }}
           >
