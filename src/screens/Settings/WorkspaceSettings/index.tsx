@@ -8,17 +8,41 @@ import {
 } from '../TabSettings/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faArrowRotateLeft,
   faDownload,
   faFileImport,
   faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
-import { useMenu } from 'contexts/Menu';
-import { InDevelopment } from 'library/HelpMenu/InDevelopment';
-import { exportWorkspace } from './Utils';
+import { exportWorkspace, importWorkspace } from './Utils';
 import { NotificationsController } from 'controllers/NotificationsController';
+import { removeLocalStorageState } from 'IntegrityChecks/Local';
+import { useNavigate } from 'react-router-dom';
+import type { ChangeEvent } from 'react';
 
 export const WorkspaceSettings = () => {
-  const { openMenu } = useMenu();
+  const navigate = useNavigate();
+
+  // Go back to index page and reload the console.
+  const reloadConsole = () => {
+    navigate('/');
+    window.location.reload();
+  };
+
+  // Handle import of workspace file.
+  const handleImportWorkspace = (ev: ChangeEvent<HTMLInputElement>) => {
+    const file = ev.target?.files?.[0] || null;
+    if (!file) {
+      alert('No file selected');
+      return;
+    }
+
+    if (file.type !== 'application/json') {
+      alert('Invalid file type. Workspace file must be a JSON file.');
+    }
+
+    importWorkspace(file);
+    reloadConsole();
+  };
 
   return (
     <>
@@ -30,8 +54,8 @@ export const WorkspaceSettings = () => {
         <div className="text">
           <h4>Export Workspace</h4>
           <h3>
-            Back up your current workspace state. Exports your tabs, tags, and
-            chain search settings.
+            Back up your current workspace state. Exports your tabs, tags, chain
+            search, and active page settings.
           </h3>
         </div>
       </SettingsToggleWrapper>
@@ -57,8 +81,7 @@ export const WorkspaceSettings = () => {
       <SettingsToggleWrapper>
         <div className="text">
           <h4>Import Workspace</h4>
-          <h3>Import a workspace configuration.</h3>
-          <h3 className="inline danger">
+          <h3 className="danger">
             <FontAwesomeIcon icon={faTriangleExclamation} />
             &nbsp; Importing a workspace will replace your current workspace -
             all current state, including your current tabs and custom tag
@@ -70,11 +93,45 @@ export const WorkspaceSettings = () => {
 
       <SettingsSubmitWrapper>
         <div className="buttons">
-          <button
-            onClick={(ev) => openMenu(ev, <InDevelopment />, { size: 'large' })}
-          >
+          <input
+            type="file"
+            id="import-workspace"
+            onChange={(ev) => handleImportWorkspace(ev)}
+          />
+          <label htmlFor="import-workspace">
             <FontAwesomeIcon icon={faFileImport} />
             Import Workspace
+          </label>
+        </div>
+      </SettingsSubmitWrapper>
+
+      <SettingsToggleWrapper>
+        <div className="text">
+          <h4>Reset Workspace</h4>
+          <h3 className="danger">
+            <FontAwesomeIcon icon={faTriangleExclamation} />
+            &nbsp; Your workspace will be reset. Export your current workspace
+            first if you wish to restore it later.
+          </h3>
+        </div>
+      </SettingsToggleWrapper>
+
+      <SettingsSubmitWrapper>
+        <div className="buttons">
+          <button
+            onClick={() => {
+              if (
+                confirm(
+                  'Are you sure you want to reset your workspace? Confirming will reload the console.'
+                )
+              ) {
+                removeLocalStorageState(true);
+                reloadConsole();
+              }
+            }}
+          >
+            <FontAwesomeIcon icon={faArrowRotateLeft} />
+            Reset Workspace
           </button>
         </div>
       </SettingsSubmitWrapper>

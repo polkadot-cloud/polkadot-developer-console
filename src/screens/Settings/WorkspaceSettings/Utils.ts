@@ -2,14 +2,24 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
+import {
+  performTabsCheck,
+  sanitizeAppliedTags,
+  sanitizeKeysForTabExistence,
+  sanitizeTags,
+} from 'IntegrityChecks';
+import { defaultTabs } from 'contexts/Tabs/defaults';
+import { defaultTags } from 'contexts/Tags/defaults';
 
 // The supported localStorage keys for import and export.
 const SUPPORTED_WORKSPACE_LOCAL_STORAGE_KEYS = [
   'activeTabs',
   'activeTabId',
   'activeTabIndex',
-  'customNodeUrls',
+  'tags',
+  'tagsConfig',
   'searchTerms',
+  'customNodeUrls',
   'appliedTags',
 ];
 
@@ -52,4 +62,98 @@ export const exportWorkspace = () => {
   } catch (e) {
     return false;
   }
+};
+
+// Importing workspace settings.
+export const importWorkspace = (file: File) => {
+  const reader = new FileReader();
+
+  reader.readAsText(file);
+
+  reader.onload = () => {
+    const text = reader.result;
+    if (typeof text === 'string') {
+      try {
+        let json = JSON.parse(text);
+
+        // Check if imported tabs data is valid.
+        const activeTabs = json?.activeTabs;
+        const activeTabId = json?.activeTabId || 0;
+        const activeTabIndex = json?.activeTabIndex || 0;
+
+        const tabsResult = performTabsCheck({
+          activeTabs,
+          activeTabId,
+          activeTabIndex,
+        });
+
+        if (!Object.values(tabsResult).every((result) => result === true)) {
+          throw 'Invalid Tabs Data';
+        }
+
+        // Check if imported tags are valid.
+        const tags = json.tags || defaultTags;
+        const tagsConfig = json.tagsConfig || {};
+        const { result: tagsConfigResult } = sanitizeTags({ tags, tagsConfig });
+        json = deleteKeyOrOverwrite('tagsConfig', tagsConfigResult, json);
+
+        // Check if imported search terms are valid.
+        const searchTerms = json.searchTerms || {};
+        const { result: searchTermsResult } = sanitizeKeysForTabExistence(
+          activeTabs || defaultTabs,
+          searchTerms
+        );
+        json = deleteKeyOrOverwrite('searchTerms', searchTermsResult, json);
+
+        // Check if imported custom node urls are valid.
+        const customNodeUrls = json.customNodeUrls || {};
+        const { result: customNodeUrlsResult } = sanitizeKeysForTabExistence(
+          activeTabs || defaultTabs,
+          customNodeUrls
+        );
+        json = deleteKeyOrOverwrite(
+          'customNodeUrls',
+          customNodeUrlsResult,
+          json
+        );
+
+        // Check if imported applied tags are valid.
+        const appliedTags = json.appliedTags || {};
+        const { result: appliedTagsResult } = sanitizeAppliedTags({
+          activeTabs: activeTabs || defaultTabs,
+          tags: tags || defaultTags,
+          appliedTags,
+        });
+        json = deleteKeyOrOverwrite('appliedTags', appliedTagsResult, json);
+
+        // Persist each item from the import data to localStorage
+        Object.entries(json).forEach(([key, value]) => {
+          try {
+            localStorage.setItem(key, JSON.stringify(value));
+          } catch (e) {
+            // Failed to persist item to localStorage. Silent error;
+          }
+        });
+      } catch (e) {
+        alert('Import failed: Invalid Workspace File');
+      }
+    }
+  };
+
+  reader.onerror = () => {
+    alert('Import failed: Invalid Workspace File');
+  };
+};
+
+const deleteKeyOrOverwrite = <T>(
+  key: string,
+  value: T,
+  current: Record<string, AnyJson>
+) => {
+  if (value === undefined || JSON.stringify(value) === '{}') {
+    delete current[key];
+  } else {
+    current[key] = value;
+  }
+  return current;
 };

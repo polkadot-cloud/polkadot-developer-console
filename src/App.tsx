@@ -6,7 +6,7 @@ import { Entry } from 'library/Entry';
 import { Router } from 'Router';
 import { ErrorBoundary } from 'react-error-boundary';
 import { AppErrorBoundary } from 'library/ErrorBoundaries/AppErrorBoundary';
-import * as integrityChecks from 'IntegrityChecks';
+import { performLocalIntegrityChecks } from 'IntegrityChecks/Local';
 
 // The currently supported pages.
 export type PageId = 'default' | 'settings';
@@ -16,12 +16,10 @@ export const App = () => (
     <HashRouter basename="/">
       <ErrorBoundary
         FallbackComponent={AppErrorBoundary}
-        onReset={() => {
+        onReset={() =>
           // Check local storage for integrity & upate if necessary.
-          integrityChecks.checkLocalTabs();
-          integrityChecks.checkLocalTags();
-          integrityChecks.checkLocalChainFilter();
-        }}
+          performLocalIntegrityChecks()
+        }
       >
         <Router />
       </ErrorBoundary>

@@ -14,7 +14,7 @@ import type {
 import { setStateWithRef } from '@w3ux/utils';
 import type { DirectoryId } from 'config/networks';
 import * as local from './Local';
-import { checkLocalTags } from 'IntegrityChecks';
+import { checkLocalTags } from 'IntegrityChecks/Local';
 
 checkLocalTags();
 
