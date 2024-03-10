@@ -9,6 +9,7 @@ import { ContextMenu } from 'library/ContextMenu';
 import { Tabs } from 'library/Tabs';
 import { Tooltip } from 'library/Tooltip';
 import { Notifications } from 'library/Notifications';
+import { Offline } from 'library/Offline';
 
 export const Router = () => (
   <>
@@ -27,5 +28,6 @@ export const Router = () => (
       {/* Fallback route to chain */}
       <Route key="route_fallback" path="*" element={<Navigate to="/" />} />
     </Routes>
+    <Offline />
   </>
 );
