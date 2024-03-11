@@ -10,7 +10,6 @@ import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import type { APIChainSpec, ApiStatus } from 'model/Api/types';
-import { OnlineStatusController } from 'controllers/OnlineStatusController';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -151,9 +150,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
   // Initialisation of Api.
   useEffect(() => {
-    // Start listening for online / offline events.
-    OnlineStatusController.initOnlineEvents();
-
     // Instantiate Api instances from tabs.
     tabs.forEach((tab) => {
       if (tab.autoConnect) {

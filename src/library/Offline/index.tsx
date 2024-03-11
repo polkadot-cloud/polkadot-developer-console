@@ -4,9 +4,10 @@
 import { Wrapper } from './Wrapper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWarning } from '@fortawesome/free-solid-svg-icons';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
+import { OnlineStatusController } from 'controllers/OnlineStatusController';
 
 export const Offline = () => {
   // Whether the app is offline.
@@ -21,6 +22,11 @@ export const Offline = () => {
   };
 
   // Listen for online status updates.
+  useEffect(() => {
+    // Start listening for online / offline events.
+    OnlineStatusController.initOnlineEvents();
+  }, []);
+
   const documentRef = useRef<Document>(document);
   useEventListener('online-status', handleOnlineStatus, documentRef);
 
