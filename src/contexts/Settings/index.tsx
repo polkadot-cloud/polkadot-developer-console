@@ -16,23 +16,23 @@ export const useSettings = () => useContext(SettingsContext);
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   // Whether to Turn on auto connect by default when opening new tabs.
   const [autoConnect, setAutoConnectState] = useState<boolean>(
-    local.getAutoConnect()
+    local.getSetting('autoConnect')
   );
 
   // Whether to automatically rename tabs based on chain being connected to.
   const [autoTabNaming, setAutoTabNamingState] = useState<boolean>(
-    local.getAutoTabNaming()
+    local.getSetting('autoTabNaming')
   );
 
   // Set auto connect state, to save to local storage.
   const setAutoConnect = (value: boolean) => {
-    local.setAutoConnect(value);
+    local.setSetting('autoConnect', value);
     setAutoConnectState(value);
   };
 
   // Set auto tab naming state, to save to local storage.
   const setAutoTabNaming = (value: boolean) => {
-    local.setAutoTabNaming(value);
+    local.setSetting('autoTabNaming', value);
     setAutoTabNamingState(value);
   };
 

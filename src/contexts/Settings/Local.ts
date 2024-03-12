@@ -2,49 +2,41 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { localStorageOrDefault } from '@w3ux/utils';
+import type { LocalSettings, SettingsKey } from './types';
 
 // ------------------------------------------------------
 // Getters.
 // ------------------------------------------------------
 
 // Gets saved auto connect setting from local storage, or return undefined otherwise.
-export const getAutoConnect = (): boolean => {
-  const result = localStorageOrDefault(
-    'settings:autoConnect',
-    undefined,
-    true
-  ) as boolean | undefined;
+export const getSetting = (key: SettingsKey): boolean => {
+  const result = localStorageOrDefault(`settings`, undefined, true) as
+    | LocalSettings
+    | undefined;
 
-  if (result !== undefined) {
-    return result as boolean;
+  if (result) {
+    const maybeValue = result[key];
+    if (maybeValue) {
+      return maybeValue as boolean;
+    }
   }
-  return true;
-};
-
-// Gets saved auto tab naming setting from local storage, or return undefined otherwise.
-export const getAutoTabNaming = (): boolean => {
-  const result = localStorageOrDefault(
-    'settings:autoTabNaming',
-    undefined,
-    true
-  ) as boolean | undefined;
-
-  if (result !== undefined) {
-    return result as boolean;
-  }
-  return true;
+  return false;
 };
 
 // ------------------------------------------------------
 // Setters.
 // ------------------------------------------------------
 
-// Sets auto connect state to local storage.
-export const setAutoConnect = (value: boolean) => {
-  localStorage.setItem('settings:autoConnect', JSON.stringify(value));
-};
+// Sets a setting value to local storage by the given key.
+export const setSetting = (key: SettingsKey, value: boolean) => {
+  const current =
+    (localStorageOrDefault(`settings`, undefined, true) as
+      | LocalSettings
+      | undefined) || {};
 
-// Sets tab naming state to local storage.
-export const setAutoTabNaming = (value: boolean) => {
-  localStorage.setItem('settings:autoTabNaming', JSON.stringify(value));
+  const updated = {
+    ...current,
+    [key]: value,
+  };
+  localStorage.setItem(`settings`, JSON.stringify(updated));
 };

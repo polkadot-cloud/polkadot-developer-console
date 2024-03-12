@@ -7,3 +7,10 @@ export interface SettingsContextInterface {
   setAutoConnect: (value: boolean) => void;
   setAutoTabNaming: (value: boolean) => void;
 }
+
+export interface LocalSettings {
+  autoConnect: boolean;
+  autoTabNaming: boolean;
+}
+
+export type SettingsKey = keyof LocalSettings;
