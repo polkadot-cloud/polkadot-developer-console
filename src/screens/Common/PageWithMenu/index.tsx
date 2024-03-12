@@ -9,9 +9,11 @@ import { NetworkDirectory, type DirectoryId } from 'config/networks';
 import { useTabs } from 'contexts/Tabs';
 import { accentColors } from 'theme/accents/developer-console';
 import { useApi } from 'contexts/Api';
+import { useSettings } from 'contexts/Settings';
 
 // Renders a page and menu, with state controlling the active section of the page.
 export const PageWithMenu = ({ pageId, Page, Menu }: PageWithMenuProps) => {
+  const { chainColorEnabled } = useSettings();
   const { getApiStatus } = useApi();
   const { getActiveTab, activeTabId } = useTabs();
 
@@ -26,11 +28,12 @@ export const PageWithMenu = ({ pageId, Page, Menu }: PageWithMenuProps) => {
   const networkColor = NetworkDirectory[chainId]?.color;
 
   // Get chain color, if present.
-  const color = !apiConnected
-    ? accentColors.primary.light
-    : networkColor
-      ? networkColor
-      : accentColors.secondary.light;
+  const color =
+    !apiConnected || !chainColorEnabled
+      ? accentColors.primary.light
+      : networkColor
+        ? networkColor
+        : accentColors.secondary.light;
 
   return (
     <div

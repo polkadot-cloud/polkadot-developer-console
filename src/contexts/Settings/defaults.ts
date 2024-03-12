@@ -7,6 +7,8 @@ import type { SettingsContextInterface } from './types';
 export const defaultSettingsContext: SettingsContextInterface = {
   autoConnect: true,
   autoTabNaming: true,
+  chainColorEnabled: true,
   setAutoConnect: (value) => {},
   setAutoTabNaming: (value) => {},
+  setChainColorEnabled: (value) => {},
 };

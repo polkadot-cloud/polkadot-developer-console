@@ -4,13 +4,16 @@
 export interface SettingsContextInterface {
   autoConnect: boolean;
   autoTabNaming: boolean;
+  chainColorEnabled: boolean;
   setAutoConnect: (value: boolean) => void;
   setAutoTabNaming: (value: boolean) => void;
+  setChainColorEnabled: (value: boolean) => void;
 }
 
 export interface LocalSettings {
-  autoConnect: boolean;
-  autoTabNaming: boolean;
+  autoConnect?: boolean;
+  autoTabNaming?: boolean;
+  chainColorEnabled?: boolean;
 }
 
 export type SettingsKey = keyof LocalSettings;

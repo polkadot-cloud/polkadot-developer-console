@@ -24,6 +24,10 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     local.getSetting('autoTabNaming')
   );
 
+  // Whether to use chain colors.
+  const [chainColorEnabled, setChainColorEnabledState] =
+    useState<boolean>(true);
+
   // Set auto connect state, to save to local storage.
   const setAutoConnect = (value: boolean) => {
     local.setSetting('autoConnect', value);
@@ -36,9 +40,22 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     setAutoTabNamingState(value);
   };
 
+  // Set chain color enabled state, to save to local storage.
+  const setChainColorEnabled = (value: boolean) => {
+    local.setSetting('chainColorEnabled', value);
+    setChainColorEnabledState(value);
+  };
+
   return (
     <SettingsContext.Provider
-      value={{ autoConnect, setAutoConnect, autoTabNaming, setAutoTabNaming }}
+      value={{
+        autoConnect,
+        setAutoConnect,
+        autoTabNaming,
+        setAutoTabNaming,
+        chainColorEnabled,
+        setChainColorEnabled,
+      }}
     >
       {children}
     </SettingsContext.Provider>

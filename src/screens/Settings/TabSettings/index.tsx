@@ -7,8 +7,14 @@ import { Switch } from 'library/Switch';
 import { useSettings } from 'contexts/Settings';
 
 export const TabSettings = () => {
-  const { autoConnect, setAutoConnect, autoTabNaming, setAutoTabNaming } =
-    useSettings();
+  const {
+    chainColorEnabled,
+    setChainColorEnabled,
+    autoConnect,
+    setAutoConnect,
+    autoTabNaming,
+    setAutoTabNaming,
+  } = useSettings();
 
   const handleAutoConnect = (checked: boolean) => {
     setAutoConnect(checked);
@@ -17,11 +23,30 @@ export const TabSettings = () => {
   const handleAutoNaming = (checked: boolean) => {
     setAutoTabNaming(checked);
   };
+
+  const handleChainColorEnabled = (checked: boolean) => {
+    setChainColorEnabled(checked);
+  };
+
   return (
     <>
       <SettingsHeaderWrapper>
         <h2>Tab Settings</h2>
       </SettingsHeaderWrapper>
+
+      <SettingsToggleWrapper>
+        <div className="text">
+          <h4>Chain Color Theming</h4>
+          <h3>Enable theming of chain colors if they are available.</h3>
+        </div>
+
+        <Switch
+          className="switch"
+          scale={0.85}
+          active={chainColorEnabled}
+          onSwitch={handleChainColorEnabled}
+        />
+      </SettingsToggleWrapper>
 
       <SettingsToggleWrapper>
         <div className="text">
