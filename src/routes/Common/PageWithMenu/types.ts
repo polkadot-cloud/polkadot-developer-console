@@ -3,7 +3,7 @@
 
 import type { Route } from 'App';
 import type { FC } from 'react';
-import type { RouteSectionProvider, PageSections } from 'routes/types';
+import type { RouteSectionProvider, PageSections } from 'routes/Common/types';
 
 export interface PageWithMenuProps {
   route: Route;

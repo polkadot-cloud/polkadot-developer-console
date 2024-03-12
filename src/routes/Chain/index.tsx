@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { PageWithMenu } from 'routes/Common/PageWithMenu';
-import type { PageSections, RouteSectionProvider } from 'routes/types';
+import type { PageSections, RouteSectionProvider } from 'routes/Common/types';
 import { Overview } from './Overview';
 import { Extrinsics } from './Extrinsics';
 import { ChainState } from './ChainState';

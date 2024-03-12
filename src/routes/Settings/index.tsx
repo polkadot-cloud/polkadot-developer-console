@@ -6,7 +6,7 @@ import { PageWithMenu } from 'routes/Common/PageWithMenu';
 import { WorkspaceSettings } from './WorkspaceSettings';
 import { TabSettings } from './TabSettings';
 import { TagSettings } from './TagSettings';
-import type { PageSections, RouteSectionProvider } from 'routes/types';
+import type { PageSections, RouteSectionProvider } from 'routes/Common/types';
 import { PageContent } from 'library/PageContent';
 
 export const useRouteSections = (): RouteSectionProvider => {

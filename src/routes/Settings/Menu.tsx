@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { accentColors } from 'theme/accents/developer-console';
-import type { RouteSectionProvider } from 'routes/types';
+import type { RouteSectionProvider } from 'routes/Common/types';
 
 export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
   const navigate = useNavigate();

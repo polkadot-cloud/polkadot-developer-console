@@ -12,7 +12,7 @@ import { HeaderMenuWrapper } from 'library/HeaderMenu/Wrappers';
 import { useRoute } from 'contexts/Route';
 import { ButtonWithTooltip } from '../ButtonWithTooltip';
 import { useRedirectOnInactive } from 'hooks/useRedirectOnInactive';
-import type { RouteSectionProvider } from 'routes/types';
+import type { RouteSectionProvider } from 'routes/Common/types';
 
 export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
   const { pathname } = useLocation();
