@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Suspense, lazy, useMemo } from 'react';
-import { ChainListItemWrapper, ConnectButton } from './Wrappers';
+import { ChainListItemWrapper, ConnectButton } from '../Wrappers';
 import { Tag } from 'library/Tag';
 import { useTags } from 'contexts/Tags';
 import { TagControl } from 'library/TagControl';
@@ -31,7 +31,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   const Icon = useMemo(
     () =>
       lazy(
-        () => import(`../../../config/networks/icons/${chainId}/Inline.tsx`)
+        () => import(`../../../../config/networks/icons/${chainId}/Inline.tsx`)
       ),
     []
   );

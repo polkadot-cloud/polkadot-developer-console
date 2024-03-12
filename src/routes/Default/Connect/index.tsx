@@ -1,12 +1,10 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { ChainList } from './ChainList';
-import { SearchChain } from './SearchChain';
-import { RecentChain } from './RecentChain';
-import { ConnectHeader } from './ConnectHeader';
+import { Header } from './Header';
 import { useTabs } from 'contexts/Tabs';
-import { CustomEndpointInput } from './CustomEndpointInput';
+import { CustomEndpointInput } from './CustomEndpoint';
+import { Directory } from './Directory';
 
 export const Connect = () => {
   const { getActiveTab } = useTabs();
@@ -15,14 +13,11 @@ export const Connect = () => {
 
   return (
     <>
-      <ConnectHeader />
-      {connectFrom === 'customEndpoint' && <CustomEndpointInput />}
-      {connectFrom === 'directory' && (
-        <>
-          <SearchChain />
-          <RecentChain />
-          <ChainList />
-        </>
+      <Header />
+      {connectFrom === 'customEndpoint' ? (
+        <CustomEndpointInput />
+      ) : (
+        <Directory />
       )}
     </>
   );

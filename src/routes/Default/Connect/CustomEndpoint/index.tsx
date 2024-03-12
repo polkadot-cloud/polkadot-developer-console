@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { SearchInput } from 'library/SearchInput';
-import { ConnectButton, ChainInputWrapper } from './Wrappers';
+import { ConnectButton, ChainInputWrapper } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronRight,

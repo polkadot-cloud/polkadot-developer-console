@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { SearchInput } from 'library/SearchInput';
-import { ChainInputWrapper } from './Wrappers';
+import { ChainInputWrapper } from '../Wrappers';
 import { useTabs } from 'contexts/Tabs';
 import { TagControls } from './TagControls';
 import { useChainFilter } from 'contexts/ChainFilter';

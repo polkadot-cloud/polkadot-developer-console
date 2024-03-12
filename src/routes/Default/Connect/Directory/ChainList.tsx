@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { ChainListWrapper, Separator } from './Wrappers';
+import { ChainListWrapper, Separator } from '../Wrappers';
 import type { DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { ChainListItem } from './ChainListItem';

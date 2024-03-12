@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useTabs } from 'contexts/Tabs';
-import { ChainListWrapper, Separator } from './Wrappers';
+import { ChainListWrapper, Separator } from '../Wrappers';
 import { ChainListItem } from './ChainListItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';

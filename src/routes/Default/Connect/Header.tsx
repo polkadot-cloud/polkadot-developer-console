@@ -5,7 +5,7 @@ import { useTabs } from 'contexts/Tabs';
 import { AutoConnect } from '../../../library/AutoConnect';
 import { ConnectHeaderWrapper, ConnectMethodWrapper } from './Wrappers';
 
-export const ConnectHeader = () => {
+export const Header = () => {
   const { activeTabId, setTabConnectFrom, getActiveTab } = useTabs();
   const tab = getActiveTab();
 

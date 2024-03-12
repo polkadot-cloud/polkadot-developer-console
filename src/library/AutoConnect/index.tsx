@@ -1,9 +1,9 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { AutoConnectWrapper } from '../../routes/Default/Connect/Wrappers';
 import { Switch } from 'library/Switch';
 import { useTabs } from 'contexts/Tabs';
+import { Wrapper } from './Wrapper';
 
 export const AutoConnect = () => {
   const { getActiveTab, tabs, setTabs } = useTabs();
@@ -29,7 +29,7 @@ export const AutoConnect = () => {
   };
 
   return (
-    <AutoConnectWrapper>
+    <Wrapper>
       <h4
         style={{
           color: autoConnectEnabled ? 'var(--accent-color-primary)' : undefined,
@@ -43,6 +43,6 @@ export const AutoConnect = () => {
         disabled={false}
         onSwitch={handleOnSwitch}
       />
-    </AutoConnectWrapper>
+    </Wrapper>
   );
 };
