@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Body } from 'library/Body';
-import { Page as PageWrapper } from 'library/Page';
 import { RouteProvider } from 'contexts/Route';
 import type { PageWithMenuProps } from './types';
 import { NetworkDirectory, type DirectoryId } from 'config/networks';
@@ -10,10 +9,17 @@ import { useTabs } from 'contexts/Tabs';
 import { accentColors } from 'theme/accents/developer-console';
 import { useApi } from 'contexts/Api';
 import { useSettings } from 'contexts/Settings';
+import { PageWrapper } from 'library/PageContent/Wrappers';
 
 // Renders a page and menu, with state controlling the active section of the page.
-export const PageWithMenu = ({ route, Page, Menu }: PageWithMenuProps) => {
+export const PageWithMenu = ({
+  route,
+  Page,
+  Menu,
+  routeProvider,
+}: PageWithMenuProps) => {
   const { getApiStatus } = useApi();
+  const { sections, label } = routeProvider();
   const { chainColorEnabled } = useSettings();
   const { getActiveTab, activeTabId } = useTabs();
 
@@ -44,10 +50,10 @@ export const PageWithMenu = ({ route, Page, Menu }: PageWithMenuProps) => {
       }
     >
       <RouteProvider route={route}>
-        <Menu />
+        <Menu sections={sections} label={label} />
         <Body>
           <PageWrapper>
-            <Page />
+            <Page sections={sections} />
           </PageWrapper>
         </Body>
       </RouteProvider>

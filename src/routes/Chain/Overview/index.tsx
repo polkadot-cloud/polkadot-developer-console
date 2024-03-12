@@ -5,7 +5,6 @@ import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
-import { PageContentWrapper } from 'library/Page/Wrapper';
 
 export const Overview = () => {
   const { getApiStatus, getChainSpec } = useApi();
@@ -33,7 +32,7 @@ export const Overview = () => {
   }
 
   return (
-    <PageContentWrapper>
+    <>
       <h2>
         {!chainSpecReady && apiStatus === 'connecting'
           ? 'Connecting...'
@@ -46,6 +45,6 @@ export const Overview = () => {
           ? `Connected to ${chainSpec?.chain} / ${chainSpec?.version.specName} ${chainSpec?.version.specVersion}`
           : ''}
       </h4>
-    </PageContentWrapper>
+    </>
   );
 };

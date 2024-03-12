@@ -6,10 +6,10 @@ import { useRoute } from '../../contexts/Route';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { SettingsSections, ScreenLabel } from './Route';
 import { accentColors } from 'theme/accents/developer-console';
+import type { RouteSectionProvider } from 'routes/types';
 
-export const SettingsMenu = () => {
+export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
   const navigate = useNavigate();
   const { activePage, setActivePage } = useRoute();
 
@@ -22,14 +22,14 @@ export const SettingsMenu = () => {
     >
       <div className="menu">
         <section>
-          <div className="label">{ScreenLabel}</div>
-          {Object.entries(SettingsSections).map(([key, { label }], index) => (
+          <div className="label">{label}</div>
+          {Object.entries(sections).map(([key, section], index) => (
             <button
               key={`menu-section-${key}-${index}`}
               className={activePage === Number(key) ? 'active' : undefined}
               onClick={() => setActivePage(Number(key))}
             >
-              {label}
+              {section.label}
             </button>
           ))}
         </section>

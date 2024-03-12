@@ -13,7 +13,7 @@ import { useTabs } from 'contexts/Tabs';
 import { ApiController } from 'controllers/ApiController';
 import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
 
-export const TabMenu = ({
+export const TabContextMenu = ({
   tabId,
   onSettings,
 }: {

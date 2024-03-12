@@ -3,7 +3,6 @@
 
 import { ChainList } from './ChainList';
 import { SearchChain } from './SearchChain';
-import { PageContentWrapper } from 'library/Page/Wrapper';
 import { RecentChain } from './RecentChain';
 import { ConnectHeader } from './ConnectHeader';
 import { useTabs } from 'contexts/Tabs';
@@ -15,7 +14,7 @@ export const Connect = () => {
   const connectFrom = tab?.connectFrom;
 
   return (
-    <PageContentWrapper>
+    <>
       <ConnectHeader />
       {connectFrom === 'customEndpoint' && <CustomEndpointInput />}
       {connectFrom === 'directory' && (
@@ -25,6 +24,6 @@ export const Connect = () => {
           <ChainList />
         </>
       )}
-    </PageContentWrapper>
+    </>
   );
 };

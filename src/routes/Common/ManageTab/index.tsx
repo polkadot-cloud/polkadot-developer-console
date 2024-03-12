@@ -3,8 +3,7 @@
 
 import { SettingsHeaderWrapper } from 'library/Settings/Wrappers';
 import { RenameTab } from './RenameTab';
-import { PageContentWrapper } from 'library/Page/Wrapper';
-import { AutoConnect } from '../AutoConnect';
+import { AutoConnect } from '../../../library/AutoConnect';
 import {
   SettingsSubmitWrapper,
   SettingsToggleWrapper,
@@ -25,7 +24,7 @@ export const ManageTab = () => {
   );
 
   return (
-    <PageContentWrapper>
+    <>
       <SettingsHeaderWrapper>
         <h2>Manage Tab</h2>
         <div>
@@ -64,6 +63,6 @@ export const ManageTab = () => {
           </SettingsSubmitWrapper>
         </>
       )}
-    </PageContentWrapper>
+    </>
   );
 };

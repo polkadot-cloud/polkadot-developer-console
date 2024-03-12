@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useTabs } from 'contexts/Tabs';
-import { AutoConnect } from '../AutoConnect';
+import { AutoConnect } from '../../../library/AutoConnect';
 import { ConnectHeaderWrapper, ConnectMethodWrapper } from './Wrappers';
 
 export const ConnectHeader = () => {

@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { AutoConnectWrapper } from './Connect/Wrappers';
+import { AutoConnectWrapper } from '../../routes/Default/Connect/Wrappers';
 import { Switch } from 'library/Switch';
 import { useTabs } from 'contexts/Tabs';
 

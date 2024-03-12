@@ -25,9 +25,9 @@ export const getActivePage = (
   }
 };
 
-// Gets a temporary redirect from local storage, or returns undefined otherwise. If a redirect is
+// Gets temporary redirect from local storage, or returns undefined otherwise. If a redirect is
 // found it is immediately removed from local storage.
-export const getSectionRedirect = (
+export const getPageRedirect = (
   route: Route,
   tabId: number
 ): number | undefined => {

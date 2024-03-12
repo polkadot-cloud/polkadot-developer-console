@@ -3,7 +3,7 @@
 
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const PageWrapper = styled.div`
   margin-top: 0.85rem;
   padding: 0 1rem;
   display: flex;

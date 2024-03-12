@@ -3,26 +3,36 @@
 
 import { PageWithMenu } from 'routes/Common/PageWithMenu';
 import type { PageSections, RouteSectionProvider } from 'routes/types';
-import { TabMenu } from 'library/TabMenu';
-import { Connect } from './Connect';
+import { Overview } from './Overview';
+import { Extrinsics } from './Extrinsics';
+import { ChainState } from './ChainState';
+import { TabMenu } from '../../library/TabMenu';
 import { PageContent } from 'library/PageContent';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
     0: {
-      label: 'Search Chain',
-      Component: Connect,
+      label: 'Overview',
+      Component: Overview,
+    },
+    1: {
+      label: 'Chain State',
+      Component: ChainState,
+    },
+    2: {
+      label: 'Extrinsics',
+      Component: Extrinsics,
     },
   };
 
-  return { label: 'Connect', sections };
+  return { label: 'Chain', sections };
 };
 
-export const Default = () => (
+export const Chain = () => (
   <PageWithMenu
     route="default"
-    routeProvider={useRouteSections}
     Page={PageContent}
     Menu={TabMenu}
+    routeProvider={useRouteSections}
   />
 );

@@ -3,10 +3,15 @@
 
 import type { FC } from 'react';
 
-export type ScreenSections = Record<
+export type PageSections = Record<
   number,
   {
     label: string;
     Component: FC;
   }
 >;
+
+export interface RouteSectionProvider {
+  label: string;
+  sections: PageSections;
+}

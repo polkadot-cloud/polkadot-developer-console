@@ -1,11 +1,10 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { defaultActivePage, defaultRouteContext } from './defaults';
 import type { RouteContextInterface, RouteContextProps } from './types';
 import * as local from './Local';
-import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { useTabs } from 'contexts/Tabs';
 import { useApi } from 'contexts/Api';
 
@@ -39,8 +38,8 @@ export const RouteProvider = ({ route, children }: RouteContextProps) => {
 
   // Handle redirects from local storage, if present. Also redirects back to default section if api
   // is not active.
-  useEffectIgnoreInitial(() => {
-    const redirect = local.getSectionRedirect(route, activeTabId);
+  useEffect(() => {
+    const redirect = local.getPageRedirect(route, activeTabId);
     const localActive = local.getActivePage(route, activeTabId);
 
     if (redirect) {

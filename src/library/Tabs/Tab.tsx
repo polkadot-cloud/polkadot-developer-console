@@ -8,7 +8,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useMenu } from 'contexts/Menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-import { TabMenu } from './TabMenu';
+import { TabContextMenu } from './TabMenu';
 import type { TabProps } from './types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -89,11 +89,11 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     ev.preventDefault();
     openMenu(
       ev,
-      <TabMenu
+      <TabContextMenu
         tabId={id}
         onSettings={() => {
+          localSections.setPageRedirect('default', id, 9);
           setActiveTabId(id);
-          localSections.setPageRedirect('default', id, 3);
           incrementRedirectCounter();
           closeMenu();
         }}

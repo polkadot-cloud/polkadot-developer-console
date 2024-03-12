@@ -10,13 +10,12 @@ import { useTabs } from 'contexts/Tabs';
 import { useLocation } from 'react-router-dom';
 import { HeaderMenuWrapper } from 'library/HeaderMenu/Wrappers';
 import { useRoute } from 'contexts/Route';
-import { ButtonWithTooltip } from './ButtonWithTooltip';
+import { ButtonWithTooltip } from '../ButtonWithTooltip';
 import { useRedirectOnInactive } from 'hooks/useRedirectOnInactive';
-import { useScreenSections } from '../Route';
+import type { RouteSectionProvider } from 'routes/types';
 
-export const ChainMenu = () => {
+export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
   const { pathname } = useLocation();
-  const { label, sections } = useScreenSections();
   const { activePage, setActivePage } = useRoute();
   const { tabsHidden, setTabsHidden, activeTabId } = useTabs();
 
@@ -43,8 +42,8 @@ export const ChainMenu = () => {
       <div className="config">
         <ButtonWithTooltip
           tooltipText="Manage Tab"
-          active={activePage === 3}
-          onClick={() => setActivePage(3, false)}
+          active={activePage === 9}
+          onClick={() => setActivePage(9, false)}
           icon={faBarsProgress}
           disabled={false}
           iconTransform="shrink-1"

@@ -1,17 +1,38 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useRoute } from 'contexts/Route';
-import { PageContentWrapper } from 'library/Page/Wrapper';
-import { SettingsSections } from './Route';
+import { SettingsMenu } from './Menu';
+import { PageWithMenu } from 'routes/Common/PageWithMenu';
+import { WorkspaceSettings } from './WorkspaceSettings';
+import { TabSettings } from './TabSettings';
+import { TagSettings } from './TagSettings';
+import type { PageSections, RouteSectionProvider } from 'routes/types';
+import { PageContent } from 'library/PageContent';
 
-export const Settings = () => {
-  const { activePage } = useRoute();
-  const { Component } = SettingsSections[activePage];
+export const useRouteSections = (): RouteSectionProvider => {
+  const sections: PageSections = {
+    0: {
+      label: 'Tabs',
+      Component: TabSettings,
+    },
+    1: {
+      label: 'Tags',
+      Component: TagSettings,
+    },
+    2: {
+      label: 'Workspace',
+      Component: WorkspaceSettings,
+    },
+  };
 
-  return (
-    <PageContentWrapper>
-      {Component !== undefined && <Component />}
-    </PageContentWrapper>
-  );
+  return { label: 'Settings', sections };
 };
+
+export const Settings = () => (
+  <PageWithMenu
+    route="settings"
+    routeProvider={useRouteSections}
+    Page={PageContent}
+    Menu={SettingsMenu}
+  />
+);
