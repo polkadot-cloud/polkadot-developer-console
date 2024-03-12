@@ -12,7 +12,7 @@ import { Offline } from 'library/Offline';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
 import { Chain } from 'routes/Chain';
-import { Default } from 'routes/Default';
+import { Default } from 'routes/SearchChain';
 
 export const Router = () => {
   const { getApiStatus } = useApi();
