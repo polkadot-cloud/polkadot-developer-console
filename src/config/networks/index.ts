@@ -38,7 +38,6 @@ export const NetworkDirectory: NetworkDirectory = {
       LuckyFriday: 'wss://rpc-polkadot.luckyfriday.io',
       RadiumBlock: 'wss://polkadot.public.curie.radiumblock.co/ws',
       Stakeworld: 'wss://dot-rpc.stakeworld.io',
-      Parity: 'wss://apps-rpc.polkadot.io',
     },
   },
   kusama: {
@@ -57,7 +56,6 @@ export const NetworkDirectory: NetworkDirectory = {
       LuckyFriday: 'wss://rpc-kusama.luckyfriday.io',
       RadiumBlock: 'wss://kusama.public.curie.radiumblock.co/ws',
       Stakeworld: 'wss://ksm-rpc.stakeworld.io',
-      Parity: 'wss://kusama-rpc.polkadot.io',
     },
   },
   rococo: {
@@ -86,7 +84,6 @@ export const NetworkDirectory: NetworkDirectory = {
       LuckyFriday: 'wss://rpc-westend.luckyfriday.io',
       RadiumBlock: 'wss://westend.public.curie.radiumblock.co/ws',
       Stakeworld: 'wss://wnd-rpc.stakeworld.io',
-      Parity: 'wss://westend-rpc.polkadot.io',
     },
   },
 };
