@@ -21,6 +21,7 @@ const SUPPORTED_WORKSPACE_LOCAL_STORAGE_KEYS = [
   'searchTerms',
   'customEndpoints',
   'appliedTags',
+  'settings',
 ];
 
 // Exporting workspace settings.
