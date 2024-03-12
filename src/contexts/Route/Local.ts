@@ -2,25 +2,25 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { localStorageOrDefault } from '@w3ux/utils';
-import type { PageId } from 'App';
+import type { Route } from 'App';
 
 // ------------------------------------------------------
 // Getters.
 // ------------------------------------------------------
 
-// Gets saved page section from local storage, or returns undefined otherwise.
-export const getActiveSection = (
-  pageId: PageId,
+// Gets saved active page from local storage, or returns undefined otherwise.
+export const getActivePage = (
+  route: Route,
   tabId: number
 ): number | undefined => {
-  const result = localStorageOrDefault(`pageSections`, undefined, true) as
+  const result = localStorageOrDefault(`activePages`, undefined, true) as
     | Record<string, number>
     | undefined;
 
   if (result) {
-    const maybePageSection = result[`${tabId}:${pageId}`];
-    if (maybePageSection) {
-      return maybePageSection as number;
+    const value = result[`${tabId}:${route}`];
+    if (value) {
+      return value as number;
     }
   }
 };
@@ -28,7 +28,7 @@ export const getActiveSection = (
 // Gets a temporary redirect from local storage, or returns undefined otherwise. If a redirect is
 // found it is immediately removed from local storage.
 export const getSectionRedirect = (
-  pageId: PageId,
+  route: Route,
   tabId: number
 ): number | undefined => {
   const result = localStorageOrDefault(`pageRedirects`, undefined, true) as
@@ -36,11 +36,11 @@ export const getSectionRedirect = (
     | undefined;
 
   if (result) {
-    const maybePageRedirect = result[`${tabId}:${pageId}`];
+    const value = result[`${tabId}:${route}`];
     // If page redirect exists, remove it before returning.
-    if (maybePageRedirect) {
+    if (value) {
       const updated = { ...result };
-      delete updated[`${tabId}:${pageId}`];
+      delete updated[`${tabId}:${route}`];
 
       if (Object.keys(updated).length === 0) {
         localStorage.removeItem(`pageRedirects`);
@@ -48,7 +48,7 @@ export const getSectionRedirect = (
         localStorage.setItem(`pageRedirects`, JSON.stringify(updated));
       }
 
-      return maybePageRedirect as number;
+      return value as number;
     }
   }
 };
@@ -58,29 +58,21 @@ export const getSectionRedirect = (
 // ------------------------------------------------------
 
 // Sets page section to local storage.
-export const setActiveSection = (
-  pageId: PageId,
-  tabId: number,
-  value: number
-) => {
+export const setActivePage = (route: Route, tabId: number, value: number) => {
   const current =
-    (localStorageOrDefault(`pageSections`, undefined, true) as
+    (localStorageOrDefault(`activePages`, undefined, true) as
       | Record<string, number>
       | undefined) || {};
 
   const updated = {
     ...current,
-    [`${tabId}:${pageId}`]: value,
+    [`${tabId}:${route}`]: value,
   };
-  localStorage.setItem(`pageSections`, JSON.stringify(updated));
+  localStorage.setItem(`activePages`, JSON.stringify(updated));
 };
 
 // Sets a temporary redirect to local storage.
-export const setSectionRedirect = (
-  pageId: PageId,
-  tabId: number,
-  value: number
-) => {
+export const setPageRedirect = (route: Route, tabId: number, value: number) => {
   const current =
     (localStorageOrDefault(`pageRedirects`, undefined, true) as
       | Record<string, number>
@@ -88,7 +80,7 @@ export const setSectionRedirect = (
 
   const updated = {
     ...current,
-    [`${tabId}:${pageId}`]: value,
+    [`${tabId}:${route}`]: value,
   };
   localStorage.setItem(`pageRedirects`, JSON.stringify(updated));
 };

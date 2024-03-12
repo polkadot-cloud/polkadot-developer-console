@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { ButtonWrapper, HeaderMenuWrapper } from 'library/HeaderMenu/Wrappers';
-import { useSection } from '../../library/Page/provider';
+import { useRoute } from '../../contexts/Route';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +11,7 @@ import { accentColors } from 'theme/accents/developer-console';
 
 export const SettingsMenu = () => {
   const navigate = useNavigate();
-  const { activeSection, setActiveSection } = useSection();
+  const { activePage, setActivePage } = useRoute();
 
   return (
     <HeaderMenuWrapper
@@ -26,8 +26,8 @@ export const SettingsMenu = () => {
           {Object.entries(SettingsSections).map(([key, { label }], index) => (
             <button
               key={`menu-section-${key}-${index}`}
-              className={activeSection === Number(key) ? 'active' : undefined}
-              onClick={() => setActiveSection(Number(key))}
+              className={activePage === Number(key) ? 'active' : undefined}
+              onClick={() => setActivePage(Number(key))}
             >
               {label}
             </button>

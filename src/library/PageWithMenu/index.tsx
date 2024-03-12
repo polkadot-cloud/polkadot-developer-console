@@ -3,7 +3,7 @@
 
 import { Body } from 'library/Body';
 import { Page as PageWrapper } from 'library/Page';
-import { SectionProvider } from 'library/Page/provider';
+import { RouteProvider } from 'contexts/Route';
 import type { PageWithMenuProps } from './types';
 import { NetworkDirectory, type DirectoryId } from 'config/networks';
 import { useTabs } from 'contexts/Tabs';
@@ -12,9 +12,9 @@ import { useApi } from 'contexts/Api';
 import { useSettings } from 'contexts/Settings';
 
 // Renders a page and menu, with state controlling the active section of the page.
-export const PageWithMenu = ({ pageId, Page, Menu }: PageWithMenuProps) => {
-  const { chainColorEnabled } = useSettings();
+export const PageWithMenu = ({ route, Page, Menu }: PageWithMenuProps) => {
   const { getApiStatus } = useApi();
+  const { chainColorEnabled } = useSettings();
   const { getActiveTab, activeTabId } = useTabs();
 
   const tab = getActiveTab();
@@ -43,14 +43,14 @@ export const PageWithMenu = ({ pageId, Page, Menu }: PageWithMenuProps) => {
           : undefined
       }
     >
-      <SectionProvider pageId={pageId}>
+      <RouteProvider route={route}>
         <Menu />
         <Body>
           <PageWrapper>
             <Page />
           </PageWrapper>
         </Body>
-      </SectionProvider>
+      </RouteProvider>
     </div>
   );
 };

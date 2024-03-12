@@ -9,7 +9,7 @@ import { AppErrorBoundary } from 'library/ErrorBoundaries/AppErrorBoundary';
 import { performLocalIntegrityChecks } from 'IntegrityChecks/Local';
 
 // The currently supported pages.
-export type PageId = 'default' | 'settings';
+export type Route = 'default' | 'settings';
 
 export const App = () => (
   <Entry mode="light" accent={`developer-console`}>

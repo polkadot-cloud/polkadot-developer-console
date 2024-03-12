@@ -4,7 +4,7 @@
 import { useApi } from 'contexts/Api';
 import { Connect } from './Connect';
 import { ManageTab } from './ManageTab';
-import { useSection } from 'library/Page/provider';
+import { useRoute } from 'contexts/Route';
 import { Overview } from './Overview';
 import { ChainState } from './ChainState';
 import { Extrinsics } from './Extrinsics';
@@ -13,7 +13,7 @@ import { useTabs } from 'contexts/Tabs';
 export const Default = () => {
   const { getApiStatus } = useApi();
   const { activeTabId } = useTabs();
-  const { activeSection } = useSection();
+  const { activePage } = useRoute();
   const apiStatus = getApiStatus(activeTabId);
 
   // If `Api` instance does not yet exist for the tab, display the connect chain UI.
@@ -26,10 +26,10 @@ export const Default = () => {
 
   return (
     <>
-      {activeSection === 0 && firstSection}
-      {activeSection === 1 && <ChainState />}
-      {activeSection === 2 && <Extrinsics />}
-      {activeSection === 3 && <ManageTab />}
+      {activePage === 0 && firstSection}
+      {activePage === 1 && <ChainState />}
+      {activePage === 2 && <Extrinsics />}
+      {activePage === 3 && <ManageTab />}
     </>
   );
 };

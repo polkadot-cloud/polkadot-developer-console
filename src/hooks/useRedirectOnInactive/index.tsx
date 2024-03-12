@@ -3,14 +3,14 @@
 
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
-import { useSection } from 'library/Page/provider';
+import { useRoute } from 'contexts/Route';
 import { useEffect } from 'react';
 
-// NOTE: This hook can only be used within <Page> components, depending on SectionProvider.
+// NOTE: This hook can only be used within <Page> components, depending on RouteProvider.
 export const useRedirectOnInactive = (tabId: number) => {
   const { activeTabId } = useTabs();
   const { getApiStatus } = useApi();
-  const { setActiveSection } = useSection();
+  const { setActivePage } = useRoute();
 
   const apiStatus = getApiStatus(tabId);
   const INACTIVE_API_STATUSES = ['connected', 'disconnected', 'error'];
@@ -21,7 +21,7 @@ export const useRedirectOnInactive = (tabId: number) => {
   //  different section.
   useEffect(() => {
     if (apiInactive) {
-      setActiveSection(0, false);
+      setActivePage(0, false);
     }
   }, [apiStatus, activeTabId]);
 };

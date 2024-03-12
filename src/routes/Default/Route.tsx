@@ -3,8 +3,8 @@
 
 import { ChainMenu } from './Menu';
 import { Default } from '.';
-import { PageWithMenu } from 'screens/Common/PageWithMenu';
-import type { ScreenSections } from 'screens/types';
+import { PageWithMenu } from 'library/PageWithMenu';
+import type { ScreenSections } from 'routes/types';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
 import { Overview } from './Overview';
@@ -65,5 +65,5 @@ export const useScreenSections = (): {
 };
 
 export const DefaultRoute = () => (
-  <PageWithMenu pageId="default" Page={Default} Menu={ChainMenu} />
+  <PageWithMenu route="default" Page={Default} Menu={ChainMenu} />
 );

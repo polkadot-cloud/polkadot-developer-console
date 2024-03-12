@@ -146,7 +146,7 @@ export const removeLocalStorageState = (includeTags = false) => {
   localStorage.removeItem('searchTerms');
   localStorage.removeItem('customEndpoints');
   localStorage.removeItem('appliedTags');
-  localStorage.removeItem('pageSections');
+  localStorage.removeItem('activePages');
   localStorage.removeItem('pageRedirects');
 
   if (includeTags) {

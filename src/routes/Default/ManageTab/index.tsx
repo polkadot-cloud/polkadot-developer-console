@@ -8,16 +8,16 @@ import { AutoConnect } from '../AutoConnect';
 import {
   SettingsSubmitWrapper,
   SettingsToggleWrapper,
-} from 'screens/Settings/TabSettings/Wrappers';
+} from 'routes/Settings/TabSettings/Wrappers';
 import { ApiController } from 'controllers/ApiController';
 import { useTabs } from 'contexts/Tabs';
-import { useSection } from 'library/Page/provider';
+import { useRoute } from 'contexts/Route';
 import { useApi } from 'contexts/Api';
 
 export const ManageTab = () => {
   const { getApiStatus } = useApi();
   const { activeTabId } = useTabs();
-  const { setActiveSection } = useSection();
+  const { setActivePage } = useRoute();
 
   const apiStatus = getApiStatus(activeTabId);
   const showDisconnect = ['ready', 'connected', 'connecting'].includes(
@@ -54,7 +54,7 @@ export const ManageTab = () => {
                     )
                   ) {
                     ApiController.destroy(activeTabId);
-                    setActiveSection(0);
+                    setActivePage(0);
                   }
                 }}
               >

@@ -18,7 +18,7 @@ import {
 } from 'contexts/Tabs/defaults';
 import { useApi } from 'contexts/Api';
 import { ConnectionIcon } from './ConectionIcon';
-import * as localSections from 'library/Page/provider/Local';
+import * as localSections from 'contexts/Route/Local';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -93,7 +93,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
         tabId={id}
         onSettings={() => {
           setActiveTabId(id);
-          localSections.setSectionRedirect('default', id, 3);
+          localSections.setPageRedirect('default', id, 3);
           incrementRedirectCounter();
           closeMenu();
         }}

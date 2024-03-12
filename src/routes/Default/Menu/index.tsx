@@ -9,7 +9,7 @@ import {
 import { useTabs } from 'contexts/Tabs';
 import { useLocation } from 'react-router-dom';
 import { HeaderMenuWrapper } from 'library/HeaderMenu/Wrappers';
-import { useSection } from 'library/Page/provider';
+import { useRoute } from 'contexts/Route';
 import { ButtonWithTooltip } from './ButtonWithTooltip';
 import { useRedirectOnInactive } from 'hooks/useRedirectOnInactive';
 import { useScreenSections } from '../Route';
@@ -17,7 +17,7 @@ import { useScreenSections } from '../Route';
 export const ChainMenu = () => {
   const { pathname } = useLocation();
   const { label, sections } = useScreenSections();
-  const { activeSection, setActiveSection } = useSection();
+  const { activePage, setActivePage } = useRoute();
   const { tabsHidden, setTabsHidden, activeTabId } = useTabs();
 
   // Redirect to section 0 if Api becomes inactive.
@@ -31,8 +31,8 @@ export const ChainMenu = () => {
           {Object.entries(sections).map(([key, section], index) => (
             <button
               key={`menu-section-${key}-${index}`}
-              onClick={() => setActiveSection(Number(key))}
-              className={activeSection === Number(key) ? 'active' : undefined}
+              onClick={() => setActivePage(Number(key))}
+              className={activePage === Number(key) ? 'active' : undefined}
             >
               {section.label}
             </button>
@@ -43,8 +43,8 @@ export const ChainMenu = () => {
       <div className="config">
         <ButtonWithTooltip
           tooltipText="Manage Tab"
-          active={activeSection === 3}
-          onClick={() => setActiveSection(3, false)}
+          active={activePage === 3}
+          onClick={() => setActivePage(3, false)}
           icon={faBarsProgress}
           disabled={false}
           iconTransform="shrink-1"

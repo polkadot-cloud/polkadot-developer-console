@@ -3,11 +3,11 @@
 
 import { SettingsMenu } from './Menu';
 import { Settings } from '.';
-import { PageWithMenu } from 'screens/Common/PageWithMenu';
+import { PageWithMenu } from 'library/PageWithMenu';
 import { WorkspaceSettings } from './WorkspaceSettings';
 import { TabSettings } from './TabSettings';
 import { TagSettings } from './TagSettings';
-import type { ScreenSections } from 'screens/types';
+import type { ScreenSections } from 'routes/types';
 
 export const ScreenLabel = 'Settings';
 
@@ -27,5 +27,5 @@ export const SettingsSections: ScreenSections = {
 };
 
 export const SettingsRoute = () => (
-  <PageWithMenu pageId="settings" Page={Settings} Menu={SettingsMenu} />
+  <PageWithMenu route="settings" Page={Settings} Menu={SettingsMenu} />
 );
