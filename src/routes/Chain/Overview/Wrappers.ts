@@ -55,7 +55,7 @@ export const CardsWrapper = styled.div`
 
     > .inner {
       border: 1px solid var(--border-primary-color);
-      background-color: var(--button-tab-background);
+      background-color: var(--button-tertiary-background);
       border-radius: 0.4rem;
       padding: 0.6rem 0.8rem;
 
