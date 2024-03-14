@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     font-family: InterSemiBold, sans-serif;
     color: var(--text-color-secondary);
     display: flex;
-    margin-top: 0.8rem;
+    margin-top: 0.7rem;
     flex: 1;
 
     > div {
