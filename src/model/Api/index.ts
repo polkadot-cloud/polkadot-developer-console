@@ -10,6 +10,7 @@ import type {
   APIChainSpecVersion,
   EventStatus,
 } from './types';
+import { MetadataController } from 'controllers/Metadata';
 
 export class Api {
   // ------------------------------------------------------
@@ -102,9 +103,6 @@ export class Api {
       this.api.consts.system.ss58Prefix,
     ]);
 
-    // Also retreive the JSON formatted metadata here for the UI to construct from.
-    const metadata = this.api.runtimeMetadata.toJSON();
-
     // Check that chain values have been fetched before committing to state.
     if (newChainSpec.every((c) => !!c?.toHuman())) {
       const chain = newChainSpec[0].toString();
@@ -112,8 +110,20 @@ export class Api {
         newChainSpec[1].toJSON() as unknown as APIChainSpecVersion;
       const ss58Prefix = Number(newChainSpec[2].toString());
 
-      if (version) {
-        this.chainSpec = { chain, version, ss58Prefix, metadata };
+      // Also retreive the JSON formatted metadata here for the UI to construct from.
+      const metadataResult = this.api.runtimeMetadata.toJSON();
+
+      if (version && metadataResult) {
+        const metadataVersion = Object.keys(metadataResult?.metadata || {})[0];
+        const metadata = Object.values(metadataResult?.metadata || {})[0];
+
+        this.chainSpec = {
+          chain,
+          version,
+          ss58Prefix,
+          magicNumber: metadataResult.magicNumber as number,
+          metadata: MetadataController.instantiate(metadataVersion, metadata),
+        };
       }
     }
   }

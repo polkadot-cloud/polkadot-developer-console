@@ -3,6 +3,7 @@
 
 import type { AnyJson } from '@w3ux/utils/types';
 import type { ChainId } from 'config/networks';
+import type { MetadataVersion } from 'controllers/Metadata/types';
 
 export type ApiStatus = 'connecting' | 'connected' | 'disconnected' | 'ready';
 
@@ -24,7 +25,8 @@ export interface APIChainSpec {
   chain: string | null;
   version: APIChainSpecVersion;
   ss58Prefix: number;
-  metadata: Record<string, AnyJson>;
+  magicNumber: number;
+  metadata: MetadataVersion;
 }
 
 export interface APIChainSpecVersion {
