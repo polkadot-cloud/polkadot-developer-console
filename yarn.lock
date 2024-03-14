@@ -1899,6 +1899,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@w3ux/react-odometer@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "@w3ux/react-odometer@npm:0.0.3"
+  checksum: 10c0/87ca9ea19ad49eaca5c22016804bbf1d1b6864c93828499a948bfeac6607bc682dfb722d476dd16e7f3d4d821807ff54420a2194643fcc8ff1bc094dd0d9506e
+  languageName: node
+  linkType: hard
+
 "@w3ux/utils@npm:^0.0.2":
   version: 0.0.2
   resolution: "@w3ux/utils@npm:0.0.2"
@@ -2213,7 +2220,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bignumber.js@npm:^9.1.1":
+"bignumber.js@npm:^9.1.1, bignumber.js@npm:^9.1.2":
   version: 9.1.2
   resolution: "bignumber.js@npm:9.1.2"
   checksum: 10c0/e17786545433f3110b868725c449fa9625366a6e675cd70eb39b60938d6adbd0158cb4b3ad4f306ce817165d37e63f4aa3098ba4110db1d9a3b9f66abfbaf10d
@@ -2474,7 +2481,9 @@ __metadata:
     "@typescript-eslint/parser": "npm:^6.14.0"
     "@vitejs/plugin-react": "npm:^4.2.1"
     "@w3ux/hooks": "npm:^0.0.3"
+    "@w3ux/react-odometer": "npm:^0.0.3"
     "@w3ux/utils": "npm:^0.0.2"
+    bignumber.js: "npm:^9.1.2"
     date-fns: "npm:^3.3.1"
     eslint: "npm:^8.57.0"
     eslint-config-prettier: "npm:^9.1.0"

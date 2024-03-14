@@ -57,7 +57,29 @@ export const CardsWrapper = styled.div`
       border: 1px solid var(--border-primary-color);
       background-color: var(--button-tab-background);
       border-radius: 0.45rem;
-      padding: 0.5rem 0.8rem;
+      padding: 0.6rem 0.8rem;
+
+      > h4 {
+        color: var(--text-color-secondary);
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.25rem;
+
+        > svg {
+          margin-right: 0.3rem;
+        }
+      }
+
+      > h3 {
+        color: var(--text-color-primary);
+        font-family: InterBold, sans-serif;
+        font-size: 1rem;
+        margin-bottom: 0.2rem;
+
+        &.syncing {
+          opacity: 0.6;
+        }
+      }
     }
   }
 `;
