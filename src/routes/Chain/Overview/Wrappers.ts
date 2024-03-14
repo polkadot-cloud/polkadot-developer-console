@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     font-family: InterSemiBold, sans-serif;
     color: var(--text-color-secondary);
     display: flex;
-    margin-top: 0.7rem;
+    margin-top: 0.6rem;
     flex: 1;
 
     > div {
@@ -35,6 +35,29 @@ export const Wrapper = styled.div`
         font-size: 0.7rem;
         margin-right: 0.3rem;
       }
+    }
+  }
+`;
+
+export const CardsWrapper = styled.div`
+  flex: 1;
+  margin-top: 1.25rem;
+  display: flex;
+  flex-flow: row wrap;
+
+  > section {
+    padding: 0.25rem;
+    flex-basis: 50%;
+
+    @media (max-width: 600px) {
+      flex-basis: 100%;
+    }
+
+    > .inner {
+      border: 1px solid var(--border-primary-color);
+      background-color: var(--button-tab-background);
+      border-radius: 0.45rem;
+      padding: 0.6rem 0.8rem;
     }
   }
 `;

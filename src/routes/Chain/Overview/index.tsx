@@ -5,7 +5,7 @@ import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
-import { Wrapper } from './Wrapper';
+import { CardsWrapper, Wrapper } from './Wrappers';
 import ConnectedSVG from 'svg/Connected.svg?react';
 
 export const Overview = () => {
@@ -69,6 +69,18 @@ export const Overview = () => {
           ''
         )}
       </div>
+      <CardsWrapper>
+        <section>
+          <div className="inner">
+            <h3>Blocks</h3>
+          </div>
+        </section>
+        <section>
+          <div className="inner">
+            <h3>Config Snapshot</h3>
+          </div>
+        </section>
+      </CardsWrapper>
     </Wrapper>
   );
 };
