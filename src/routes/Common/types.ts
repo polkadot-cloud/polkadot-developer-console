@@ -9,6 +9,7 @@ export type PageSections = Record<
   {
     label: string;
     Component: FC;
+    pageWidth?: PageWidth;
   }
 >;
 
