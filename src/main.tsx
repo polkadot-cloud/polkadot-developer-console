@@ -2,16 +2,19 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 // Network themes from Polkadot Cloud.
-import 'theme/accents/developer-console.css';
+import 'styles/accents/developer-console.css';
 
 // Default template fonts.
-import 'theme/fonts.css';
+import 'styles/fonts.css';
 
 // Default template theme.
-import 'theme/theme.css';
+import 'styles/theme.css';
 
-// Polkadot Cloud core styles.
-import 'theme/index.css';
+// Core styles.
+import 'styles/index.css';
+
+// Animations
+import 'styles/animations.css';
 
 import ReactDOM from 'react-dom/client';
 import { Providers } from './Providers';

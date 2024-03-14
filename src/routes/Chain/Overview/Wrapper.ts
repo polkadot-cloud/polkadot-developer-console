@@ -4,7 +4,7 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  width: 100%;
+  flex: 1;
 
   > .stats {
     font-family: InterSemiBold, sans-serif;

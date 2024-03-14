@@ -33,6 +33,8 @@ export const Overview = () => {
     displayName = chainSpecChain;
   }
 
+  const syncing = !chainSpecReady;
+
   return (
     <Wrapper>
       <h2>
@@ -44,11 +46,16 @@ export const Overview = () => {
       </h2>
 
       <div className="stats">
+        <div className={`active${syncing ? ` shimmer` : ``}`}>
+          <ConnectedSVG className="icon" />{' '}
+          {apiStatus === 'connecting'
+            ? 'Connecting...'
+            : chainSpecReady
+              ? `Connected to ${chainSpec.chain}`
+              : 'Loading ...'}
+        </div>
         {chainSpecReady ? (
           <>
-            <div className="active">
-              <ConnectedSVG className="icon" /> Connected to {chainSpec.chain}
-            </div>
             <div>
               <span>Spec Name:</span>
               {chainSpec.version.specName}
