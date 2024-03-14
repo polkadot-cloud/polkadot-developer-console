@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { FC } from 'react';
+import type { PageWidth } from './PageWithMenu/types';
 
 export type PageSections = Record<
   number,
@@ -14,4 +15,5 @@ export type PageSections = Record<
 export interface RouteSectionProvider {
   label: string;
   sections: PageSections;
+  pageWidth: PageWidth;
 }

@@ -25,7 +25,7 @@ export const useRouteSections = (): RouteSectionProvider => {
     },
   };
 
-  return { label: 'Chain', sections };
+  return { label: 'Chain', sections, pageWidth: 'wide' };
 };
 
 export const Chain = () => (

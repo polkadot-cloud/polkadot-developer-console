@@ -19,7 +19,7 @@ export const PageWithMenu = ({
   routeProvider,
 }: PageWithMenuProps) => {
   const { getApiStatus } = useApi();
-  const { sections, label } = routeProvider();
+  const routeConfig = routeProvider();
   const { chainColorEnabled } = useSettings();
   const { getActiveTab, activeTabId } = useTabs();
 
@@ -50,10 +50,10 @@ export const PageWithMenu = ({
       }
     >
       <RouteProvider route={route}>
-        <Menu sections={sections} label={label} />
+        <Menu {...routeConfig} />
         <Body>
           <PageWrapper>
-            <Page sections={sections} />
+            <Page {...routeConfig} />
           </PageWrapper>
         </Body>
       </RouteProvider>

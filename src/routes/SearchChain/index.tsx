@@ -15,7 +15,7 @@ export const useRouteSections = (): RouteSectionProvider => {
     },
   };
 
-  return { label: 'Connect', sections };
+  return { label: 'Connect', sections, pageWidth: 'thin' };
 };
 
 export const Default = () => (

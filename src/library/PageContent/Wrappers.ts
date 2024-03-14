@@ -14,8 +14,14 @@ export const PageWrapper = styled.div`
 
 export const PageContentWrapper = styled.div`
   margin-top: 0.5rem;
-  max-width: 750px;
   width: 100%;
+
+  &.thin {
+    max-width: 750px;
+  }
+  &.wide {
+    max-width: 1000px;
+  }
 
   > h2 {
     color: var(--text-color-primary);

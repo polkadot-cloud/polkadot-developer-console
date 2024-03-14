@@ -25,7 +25,7 @@ export const useRouteSections = (): RouteSectionProvider => {
     },
   };
 
-  return { label: 'Settings', sections };
+  return { label: 'Settings', sections, pageWidth: 'thin' };
 };
 
 export const Settings = () => (
