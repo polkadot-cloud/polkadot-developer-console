@@ -9,7 +9,7 @@ import { useEventListener } from 'usehooks-ts';
 import type {
   NotificationInterface,
   NotificationItem,
-} from 'controllers/NotificationsController/types';
+} from 'controllers/Notifications/types';
 import { isCustomEvent } from 'Utils';
 
 export const Notifications = () => {

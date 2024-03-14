@@ -1,8 +1,8 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { NotificationItem } from 'controllers/NotificationsController/types';
-import type { OnlineStatusEvent } from 'controllers/OnlineStatusController/types';
+import type { NotificationItem } from 'controllers/Notifications/types';
+import type { OnlineStatusEvent } from 'controllers/OnlineStatus/types';
 import type {
   APIChainSpecEventDetail,
   APIStatusEventDetail,

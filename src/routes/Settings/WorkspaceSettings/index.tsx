@@ -14,7 +14,7 @@ import {
   faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 import { exportWorkspace, importWorkspace } from './Utils';
-import { NotificationsController } from 'controllers/NotificationsController';
+import { NotificationsController } from 'controllers/Notifications';
 import { removeLocalStorageState } from 'IntegrityChecks/Local';
 import { useNavigate } from 'react-router-dom';
 import type { ChangeEvent } from 'react';

@@ -10,7 +10,7 @@ import { useSettings } from 'contexts/Settings';
 import { NetworkDirectory } from 'config/networks';
 import type { ChainId, DirectoryId } from 'config/networks';
 import { checkLocalTabs } from 'IntegrityChecks/Local';
-import { ApiController } from 'controllers/ApiController';
+import { ApiController } from 'controllers/Api';
 import { isDirectoryId } from 'config/networks/Utils';
 
 checkLocalTabs();

@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useApi } from 'contexts/Api';
 import { useMenu } from 'contexts/Menu';
 import { useTabs } from 'contexts/Tabs';
-import { ApiController } from 'controllers/ApiController';
+import { ApiController } from 'controllers/Api';
 import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
 
 export const TabContextMenu = ({

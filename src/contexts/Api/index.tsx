@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { defaultApiContext } from './defaults';
 import type { ApiContextInterface } from './types';
-import { ApiController } from 'controllers/ApiController';
+import { ApiController } from 'controllers/Api';
 import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';

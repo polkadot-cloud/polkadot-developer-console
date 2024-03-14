@@ -8,7 +8,7 @@ import {
   SettingsSubmitWrapper,
   SettingsToggleWrapper,
 } from 'routes/Settings/TabSettings/Wrappers';
-import { ApiController } from 'controllers/ApiController';
+import { ApiController } from 'controllers/Api';
 import { useTabs } from 'contexts/Tabs';
 import { useRoute } from 'contexts/Route';
 import { useApi } from 'contexts/Api';
