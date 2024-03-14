@@ -57,7 +57,7 @@ export const CardsWrapper = styled.div`
       border: 1px solid var(--border-primary-color);
       background-color: var(--button-tab-background);
       border-radius: 0.45rem;
-      padding: 0.6rem 0.8rem;
+      padding: 0.5rem 0.8rem;
     }
   }
 `;
