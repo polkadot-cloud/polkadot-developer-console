@@ -5,6 +5,8 @@ import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
+import { Wrapper } from './Wrapper';
+import ConnectedSVG from 'svg/Connected.svg?react';
 
 export const Overview = () => {
   const { getApiStatus, getChainSpec } = useApi();
@@ -32,7 +34,7 @@ export const Overview = () => {
   }
 
   return (
-    <>
+    <Wrapper>
       <h2>
         {!chainSpecReady && apiStatus === 'connecting'
           ? 'Connecting...'
@@ -40,11 +42,26 @@ export const Overview = () => {
             ? displayName
             : 'Fetching Chain Spec...'}
       </h2>
-      <h4>
-        {chainSpecReady
-          ? `Connected to ${chainSpec?.chain} / ${chainSpec?.version.specName} ${chainSpec?.version.specVersion}`
-          : ''}
-      </h4>
-    </>
+
+      <div className="stats">
+        {chainSpecReady ? (
+          <>
+            <div className="active">
+              <ConnectedSVG className="icon" /> Connected to {chainSpec.chain}
+            </div>
+            <div>
+              <span>Spec Name:</span>
+              {chainSpec.version.specName}
+            </div>
+            <div>
+              <span>Runtime Version:</span>
+              {chainSpec.version.specVersion}
+            </div>
+          </>
+        ) : (
+          ''
+        )}
+      </div>
+    </Wrapper>
   );
 };
