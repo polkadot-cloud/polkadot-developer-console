@@ -5,6 +5,7 @@ import type { Route } from 'App';
 import type { FC } from 'react';
 import type { RouteSectionProvider, PageSections } from 'routes/Common/types';
 
+export type PageWidth = 'thin' | 'wide';
 export interface PageWithMenuProps {
   route: Route;
   Page: FC<PageProps>;
@@ -14,4 +15,5 @@ export interface PageWithMenuProps {
 
 export interface PageProps {
   sections: PageSections;
+  pageWidth: PageWidth;
 }

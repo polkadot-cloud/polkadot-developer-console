@@ -5,6 +5,13 @@ import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
+import { CardsWrapper, Wrapper } from './Wrappers';
+import ConnectedSVG from 'svg/Connected.svg?react';
+import Odometer from '@w3ux/react-odometer';
+import BigNumber from 'bignumber.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHive } from '@fortawesome/free-brands-svg-icons';
+import { faList } from '@fortawesome/free-solid-svg-icons';
 
 export const Overview = () => {
   const { getApiStatus, getChainSpec } = useApi();
@@ -31,8 +38,15 @@ export const Overview = () => {
     displayName = chainSpecChain;
   }
 
+  // Whether this component is still syncing.
+  const syncing = !chainSpecReady;
+
+  // The current block number.
+  // TODO: Replace with actual block number.
+  const blockNumber = new BigNumber(syncing ? '0' : '1000000');
+
   return (
-    <>
+    <Wrapper>
       <h2>
         {!chainSpecReady && apiStatus === 'connecting'
           ? 'Connecting...'
@@ -40,11 +54,53 @@ export const Overview = () => {
             ? displayName
             : 'Fetching Chain Spec...'}
       </h2>
-      <h4>
-        {chainSpecReady
-          ? `Connected to ${chainSpec?.chain} / ${chainSpec?.version.specName} ${chainSpec?.version.specVersion}`
-          : ''}
-      </h4>
-    </>
+
+      <div className="stats">
+        <div className={`active${syncing ? ` shimmer` : ``}`}>
+          <ConnectedSVG className="icon" />{' '}
+          {apiStatus === 'connecting'
+            ? 'Connecting...'
+            : chainSpecReady
+              ? `Connected to ${chainSpec.chain}`
+              : 'Loading ...'}
+        </div>
+        {chainSpecReady ? (
+          <>
+            <div>
+              <span>Spec Name:</span>
+              {chainSpec.version.specName}
+            </div>
+            <div>
+              <span>Runtime Version:</span>
+              {chainSpec.version.specVersion}
+            </div>
+          </>
+        ) : (
+          ''
+        )}
+      </div>
+      <CardsWrapper>
+        <section>
+          <div className="inner">
+            <h4>
+              <FontAwesomeIcon icon={faHive} transform="shrink-3" />
+              Latest Block
+            </h4>
+            <h3 className={chainSpecReady ? undefined : 'shimmer syncing'}>
+              <Odometer value={blockNumber.toFormat()} />
+            </h3>
+          </div>
+        </section>
+        <section>
+          <div className="inner">
+            <h4>
+              <FontAwesomeIcon icon={faList} transform="shrink-3" /> Config
+              Snapshot
+            </h4>
+            <h3>...</h3>
+          </div>
+        </section>
+      </CardsWrapper>
+    </Wrapper>
   );
 };

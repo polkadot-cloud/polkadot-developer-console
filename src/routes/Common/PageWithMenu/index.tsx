@@ -6,7 +6,7 @@ import { RouteProvider } from 'contexts/Route';
 import type { PageWithMenuProps } from './types';
 import { NetworkDirectory, type DirectoryId } from 'config/networks';
 import { useTabs } from 'contexts/Tabs';
-import { accentColors } from 'theme/accents/developer-console';
+import { accentColors } from 'styles/accents/developer-console';
 import { useApi } from 'contexts/Api';
 import { useSettings } from 'contexts/Settings';
 import { PageWrapper } from 'library/PageContent/Wrappers';
@@ -19,7 +19,7 @@ export const PageWithMenu = ({
   routeProvider,
 }: PageWithMenuProps) => {
   const { getApiStatus } = useApi();
-  const { sections, label } = routeProvider();
+  const routeConfig = routeProvider();
   const { chainColorEnabled } = useSettings();
   const { getActiveTab, activeTabId } = useTabs();
 
@@ -50,10 +50,10 @@ export const PageWithMenu = ({
       }
     >
       <RouteProvider route={route}>
-        <Menu sections={sections} label={label} />
+        <Menu {...routeConfig} />
         <Body>
           <PageWrapper>
-            <Page sections={sections} />
+            <Page {...routeConfig} />
           </PageWrapper>
         </Body>
       </RouteProvider>

@@ -4,7 +4,7 @@
 import styled from 'styled-components';
 
 export const PageWrapper = styled.div`
-  margin-top: 0.85rem;
+  margin-top: 0.9rem;
   padding: 0 1rem;
   display: flex;
   flex-direction: column;
@@ -14,8 +14,14 @@ export const PageWrapper = styled.div`
 
 export const PageContentWrapper = styled.div`
   margin-top: 0.5rem;
-  max-width: 750px;
   width: 100%;
+
+  &.thin {
+    max-width: 750px;
+  }
+  &.wide {
+    max-width: 1100px;
+  }
 
   > h2 {
     color: var(--text-color-primary);
