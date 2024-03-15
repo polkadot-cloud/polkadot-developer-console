@@ -8,9 +8,12 @@ export const Wrapper = styled.div`
 `;
 
 export const SelectChainStateWrapper = styled.div`
+  border-bottom: 1px solid var(--border-primary-color);
   flex: 1;
   display: flex;
   flex-flow: row wrap;
+  padding-bottom: 0.8rem;
+  margin-top: 1.5rem;
   width: 100%;
 
   > section {
@@ -27,7 +30,7 @@ export const SelectChainStateWrapper = styled.div`
     }
 
     > h5 {
-      margin-bottom: 0.15rem;
+      margin-bottom: 0.2rem;
     }
 
     > .input {

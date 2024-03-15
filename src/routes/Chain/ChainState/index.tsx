@@ -4,9 +4,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SelectChainStateWrapper, Wrapper } from './Wrapper';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { Header } from './Header';
 
 export const ChainState = () => (
   <Wrapper>
+    <Header />
     <SelectChainStateWrapper>
       <section>
         <h5>Pallet</h5>

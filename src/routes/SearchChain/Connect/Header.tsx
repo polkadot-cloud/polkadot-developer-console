@@ -3,7 +3,8 @@
 
 import { useTabs } from 'contexts/Tabs';
 import { AutoConnect } from '../../../library/AutoConnect';
-import { ConnectHeaderWrapper, ConnectMethodWrapper } from './Wrappers';
+import { ConnectHeaderWrapper } from './Wrappers';
+import { HeaderToggleWrapper } from 'library/HeaderToggle/Wrapper';
 
 export const Header = () => {
   const { activeTabId, setTabConnectFrom, getActiveTab } = useTabs();
@@ -11,7 +12,7 @@ export const Header = () => {
 
   return (
     <ConnectHeaderWrapper>
-      <ConnectMethodWrapper>
+      <HeaderToggleWrapper>
         <button
           className={tab?.connectFrom === 'directory' ? 'active' : undefined}
           onClick={() => setTabConnectFrom(activeTabId, 'directory')}
@@ -26,7 +27,7 @@ export const Header = () => {
         >
           Custom Endpoint
         </button>
-      </ConnectMethodWrapper>
+      </HeaderToggleWrapper>
 
       <AutoConnect />
     </ConnectHeaderWrapper>

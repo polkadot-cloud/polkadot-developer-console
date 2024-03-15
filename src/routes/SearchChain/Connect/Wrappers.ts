@@ -10,32 +10,6 @@ export const ConnectHeaderWrapper = styled.div`
   padding-bottom: 0.9rem;
   border-bottom: 1px solid var(--border-primary-color);
 `;
-
-export const ConnectMethodWrapper = styled.div`
-  display: flex;
-  flex-grow: 1;
-
-  > button {
-    border: 1px solid var(--border-primary-color);
-    color: var(--text-color-tertiary);
-    font-family: InterSemiBold, sans-serif;
-    border-radius: 0.4rem;
-    font-size: 0.75rem;
-    margin-right: 0.5rem;
-    padding: 0.3rem 0.65rem;
-
-    &.active {
-      border: 1px solid var(--button-tab-background);
-      background-color: var(--button-tab-background);
-      color: var(--text-color-secondary);
-    }
-
-    &:hover {
-      color: var(--text-color-secondary);
-    }
-  }
-`;
-
 export const ChainInputWrapper = styled.div`
   width: 100%;
 
