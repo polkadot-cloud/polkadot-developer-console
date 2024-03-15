@@ -13,7 +13,8 @@ export class MetadataVersion {
     this.metadata = metadata;
   }
 
-  // Attempts to fetch the list of pallet names with their indexes from metadata.
+  // Attempts to fetch a sorted list of pallet names with their indexes from metadata, ordered
+  // alphabetically by `name`.
   getPalletList(): PalletsListItem[] {
     return [];
   }

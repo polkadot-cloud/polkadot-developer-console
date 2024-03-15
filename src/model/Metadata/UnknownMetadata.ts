@@ -17,6 +17,19 @@ export class UnknownMetadata implements MetadataVersion {
         index,
         name,
       })) || []
+    ).sort(
+      (
+        { name: aName }: { name: string },
+        { name: bName }: { name: string }
+      ) => {
+        if (aName < bName) {
+          return -1;
+        }
+        if (aName > bName) {
+          return 1;
+        }
+        return 0;
+      }
     );
   }
 }
