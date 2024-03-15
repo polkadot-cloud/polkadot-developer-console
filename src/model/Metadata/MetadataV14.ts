@@ -2,12 +2,21 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
-import type { MetadataVersion } from './types';
+import type { MetadataVersion, PalletsListItem } from './types';
 
 export class MetadataV14 implements MetadataVersion {
   metadata: AnyJson;
 
   constructor(metadata: AnyJson) {
     this.metadata = metadata;
+  }
+
+  getPalletList(): PalletsListItem[] {
+    return (
+      this.metadata.pallets.map(({ index, name }: PalletsListItem) => ({
+        index,
+        name,
+      })) || []
+    );
   }
 }

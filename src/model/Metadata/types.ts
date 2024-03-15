@@ -12,4 +12,15 @@ export class MetadataVersion {
   constructor(metadata: AnyJson) {
     this.metadata = metadata;
   }
+
+  // Attempts to fetch the list of pallet names with their indexes from metadata.
+  getPalletList(): PalletsListItem[] {
+    return [];
+  }
+}
+
+// Supported properties for metadata pallet list.
+export interface PalletsListItem {
+  index: number;
+  name: string;
 }
