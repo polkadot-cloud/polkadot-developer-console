@@ -45,26 +45,6 @@ export const Overview = () => {
   // TODO: Replace with actual block number.
   const blockNumber = new BigNumber(syncing ? '0' : '1000000');
 
-  // console.log(chainSpec?.metadata?.metadata?.v14);
-  /*
-  metadata.v14 <- the key here is the version of the metadata. This could be displayed in head too.
-  */
-
-  // Storage:
-  // console.log(chainSpec?.metadata?.metadata?.v14?.pallets?.[1]?.storage.items);
-
-  // Constants
-  // console.log(chainSpec?.metadata?.metadata?.v14?.pallets?.[1]?.constants);
-
-  // Calls:
-  // console.log(chainSpec?.metadata?.metadata?.v14?.pallets?.[1]?.calls); // type
-
-  // Events and errors
-  // console.log(chainSpec?.metadata?.metadata?.v14?.pallets?.[1].events); // type
-  // console.log(chainSpec?.metadata?.metadata?.v14?.pallets?.[1].errors); // type
-
-  // console.log(chainSpec?.metadata?.metadata?.v14?.lookup?.types?.[93]); // def.variant.variants [ array of calls] . fields [array of fields]
-
   return (
     <Wrapper>
       <h2>
