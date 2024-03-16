@@ -2505,6 +2505,7 @@ __metadata:
     react-error-boundary: "npm:^4.0.13"
     react-powerglitch: "npm:^1.0.3"
     react-router-dom: "npm:^6.22.2"
+    scale-ts: "npm:^1.6.0"
     styled-components: "npm:^6.1.8"
     typescript: "npm:^5.2.2"
     usehooks-ts: "npm:^2.15.1"
@@ -5542,7 +5543,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scale-ts@npm:^1.4.3":
+"scale-ts@npm:^1.4.3, scale-ts@npm:^1.6.0":
   version: 1.6.0
   resolution: "scale-ts@npm:1.6.0"
   checksum: 10c0/ce4ea3559c6b6bdf2a62454aac83cc3151ae93d1a507ddb8e95e83ce1190085aed61c46901bd42d41d8f8ba58279d7e37057c68c2b674c2d39b8cf5d169e90dd
