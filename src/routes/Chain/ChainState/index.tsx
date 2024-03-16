@@ -6,6 +6,7 @@ import {
   ChainListItemWrapper,
   ChainActiveItemWrapper,
   SelectChainItemWrapper,
+  ChainListCallItem,
 } from '../Wrappers';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Header } from './Header';
@@ -66,7 +67,9 @@ export const ChainState = () => {
             onClick={() => setPalletsOpen(!palletsOpen)}
           >
             <span>
-              <h4>{palletList[0]?.name || 'No Pallets'}</h4>
+              <ChainListCallItem>
+                {palletList[0]?.name || 'No Pallets'}
+              </ChainListCallItem>
             </span>
             <span>
               <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
@@ -79,7 +82,9 @@ export const ChainState = () => {
           >
             <ChainListItemWrapper>
               <span>
-                <h4>{palletList[0]?.name || 'No Pallets'}</h4>
+                <ChainListCallItem>
+                  {palletList[0]?.name || 'No Pallets'}
+                </ChainListCallItem>
               </span>
               <span></span>
             </ChainListItemWrapper>
@@ -95,7 +100,7 @@ export const ChainState = () => {
             onClick={() => setStorageOpen(!storageOpen)}
           >
             <span>
-              <h4>Storage Item</h4>
+              <ChainListCallItem>Storage Item</ChainListCallItem>
             </span>
             <span>
               <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
@@ -108,7 +113,9 @@ export const ChainState = () => {
           >
             <ChainListItemWrapper>
               <span>
-                <h4>{palletList[0]?.name || 'No Pallets'}</h4>
+                <ChainListCallItem>
+                  {palletList[0]?.name || 'No Pallets'}
+                </ChainListCallItem>
               </span>
               <span>
                 <h5>Some docs with text overflow.</h5>

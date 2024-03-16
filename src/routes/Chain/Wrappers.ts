@@ -19,7 +19,7 @@ export const SelectChainItemWrapper = styled.div`
     position: relative;
 
     &:first-child {
-      flex-basis: 30%;
+      flex-basis: 25%;
       margin-right: 0.4rem;
     }
     &:last-child {
@@ -41,7 +41,7 @@ export const SelectChainItemWrapper = styled.div`
       left: 0;
       width: 100%;
       flex-direction: column;
-      max-height: 200px;
+      max-height: 250px;
       overflow-y: auto;
       overflow-x: hidden;
       z-index: 10;
@@ -59,7 +59,7 @@ export const ChainActiveItemWrapper = styled.button`
   border: 1px solid var(--border-primary-color);
   background-color: var(--background-primary);
   border-radius: 0.4rem;
-  padding: 0.6rem;
+  padding: 0.7rem;
   display: flex;
   align-items: center;
   transition: border 0.15s;
@@ -77,14 +77,6 @@ export const ChainActiveItemWrapper = styled.button`
     &:first-child {
       flex-grow: 1;
       flex-basis: 40%;
-
-      > h4 {
-        color: var(--text-color-primary);
-
-        font-family: InterSemiBold, sans-serif;
-        font-size: 0.85rem;
-        margin: 0;
-      }
     }
     &:last-child {
       color: var(--text-color-primary);
@@ -110,7 +102,7 @@ export const ChainActiveItemWrapper = styled.button`
 
 export const ChainListItemWrapper = styled.button`
   border-bottom: 1px solid var(--border-primary-color);
-  padding: 0.6rem;
+  padding: 0.7rem;
   display: flex;
   align-items: center;
   flex: 1;
@@ -123,13 +115,8 @@ export const ChainListItemWrapper = styled.button`
     &:first-child {
       flex-grow: 1;
       flex-basis: 40%;
-      > h4 {
-        color: var(--text-color-primary);
-
-        font-family: InterSemiBold, sans-serif;
-        font-size: 0.85rem;
-        margin: 0;
-      }
+      overflow: hidden;
+      padding-right: 1rem;
     }
     &:last-child {
       color: var(--text-color-primary);
@@ -147,5 +134,22 @@ export const ChainListItemWrapper = styled.button`
 
   &:hover {
     background-color: var(--background-default);
+  }
+`;
+
+export const ChainListCallItem = styled.h4`
+  color: var(--text-color-primary);
+
+  font-family: InterSemiBold, sans-serif;
+  font-size: 0.85rem;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+  > span {
+    color: var(--text-color-secondary);
+    font-family: Inter, sans-serif;
+    margin-left: 0.1rem;
   }
 `;

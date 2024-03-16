@@ -36,7 +36,6 @@ export class MetadataScraper {
 
     // Scrape pallet call types.
     const result = this.getType(pallet.calls.type);
-    console.log(result);
     return result;
   }
 

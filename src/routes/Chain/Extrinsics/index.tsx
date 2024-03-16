@@ -6,6 +6,7 @@ import {
   ChainListItemWrapper,
   ChainActiveItemWrapper,
   SelectChainItemWrapper,
+  ChainListCallItem,
 } from '../Wrappers';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useApi } from 'contexts/Api';
@@ -14,6 +15,7 @@ import type { PalletsListItem } from 'model/Metadata/types';
 import { MetadataScraper } from 'controllers/MetadataScraper';
 import { useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
+import type { AnyJson } from '@w3ux/utils/types';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
@@ -55,7 +57,57 @@ export const Extrinsics = () => {
 
   // Play with Metadata scraper.
   const scraper = new MetadataScraper(Metadata);
-  scraper.getPalletCalls('Staking');
+
+  // Get the calls for the `Staking` pallet.
+  // TODO: Get calls from selected pallet.
+  const calls = scraper.getPalletCalls('Staking');
+
+  // Calls type should aways be a variant, but checking to prevent errors.
+  // let selection: { docs: string[]; fields: string[] }[];
+
+  const selection: {
+    call: string;
+    docs: string[];
+    fieldNames: string | undefined;
+    fieldTypes: string | undefined;
+  }[] = [];
+  if (calls && calls.type === 'variant') {
+    const variant = Object.entries(calls.variant) as [string, AnyJson][];
+
+    variant.forEach(
+      ([call, { docs, fields }]: [
+        string,
+        { docs: string[]; fields: Record<string, string> },
+      ]) => {
+        const fieldNames =
+          JSON.stringify(fields) === '{}'
+            ? undefined
+            : Object.entries(fields).reduce(
+                (acc: string, [name], index: number) => {
+                  if (index > 0) {
+                    acc += ', ';
+                  }
+                  return (acc += `${name}`);
+                },
+                ''
+              );
+
+        const fieldTypes =
+          JSON.stringify(fields) === '{}'
+            ? undefined
+            : Object.entries(fields).reduce(
+                (acc: string, [name, value], index: number) => {
+                  if (index > 0) {
+                    acc += ', ';
+                  }
+                  return (acc += `${name}: ${value}`);
+                },
+                ''
+              );
+        selection.push({ call, docs, fieldNames, fieldTypes });
+      }
+    );
+  }
 
   // Convert lookup types to TypeScript types
   // const typescriptTypes: AnyJson = [];
@@ -79,7 +131,9 @@ export const Extrinsics = () => {
           onClick={() => setPalletsOpen(!palletsOpen)}
         >
           <span>
-            <h4>{palletList[0]?.name || 'No Pallets'}</h4>
+            <ChainListCallItem>
+              {palletList[0]?.name || 'No Pallets'}
+            </ChainListCallItem>
           </span>
           <span>
             <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
@@ -92,7 +146,9 @@ export const Extrinsics = () => {
         >
           <ChainListItemWrapper>
             <span>
-              <h4>{palletList[0]?.name || 'No Pallets'}</h4>
+              <ChainListCallItem>
+                {palletList[0]?.name || 'No Pallets'}
+              </ChainListCallItem>
             </span>
             <span></span>
           </ChainListItemWrapper>
@@ -108,7 +164,13 @@ export const Extrinsics = () => {
           onClick={() => setCallsOpen(!callsOpen)}
         >
           <span>
-            <h4>callName</h4>
+            <ChainListCallItem>
+              {selection[0]?.call || 'No Calls'}
+              <span>({selection[0]?.fieldNames})</span>
+              {selection[0]?.fieldNames && (
+                <span>({selection[0].fieldNames})</span>
+              )}
+            </ChainListCallItem>
           </span>
           <span>
             <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
@@ -119,14 +181,19 @@ export const Extrinsics = () => {
           ref={callsSelectRef}
           className={`options${callsOpen ? ` open` : ``}`}
         >
-          <ChainListItemWrapper>
-            <span>
-              <h4>{palletList[0]?.name || 'No Pallets'}</h4>
-            </span>
-            <span>
-              <h5>Some docs with text overflow.</h5>
-            </span>
-          </ChainListItemWrapper>
+          {selection.map(({ call, docs, fieldNames }) => (
+            <ChainListItemWrapper key={`call_select_${call}`}>
+              <span>
+                <ChainListCallItem>
+                  {call}
+                  {fieldNames && <span>({fieldNames})</span>}
+                </ChainListCallItem>
+              </span>
+              <span>
+                <h5>{docs[0]}</h5>
+              </span>
+            </ChainListItemWrapper>
+          ))}
         </div>
       </section>
     </SelectChainItemWrapper>
