@@ -12,8 +12,9 @@ export class MetadataV14 implements MetadataVersion {
     this.metadata = metadata;
   }
 
-  getMetadataJson(): AnyJson {
-    return this.metadata.toJSON().metadata;
+  getMetadataJson() {
+    const json: AnyJson = this.metadata.toJSON().metadata;
+    return json.v14;
   }
 
   getPalletList(): PalletsListItem[] {
