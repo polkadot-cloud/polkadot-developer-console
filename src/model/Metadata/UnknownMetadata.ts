@@ -3,17 +3,24 @@
 
 import type { AnyJson } from '@w3ux/utils/types';
 import type { MetadataVersion, PalletsListItem } from './types';
+import type { Metadata } from '@polkadot/types';
 
 export class UnknownMetadata implements MetadataVersion {
-  metadata: AnyJson;
+  metadata: Metadata;
 
-  constructor(metadata: AnyJson) {
-    this.metadata = metadata;
+  constructor(metadata: Metadata) {
+    this.metadata = metadata as AnyJson;
+  }
+
+  getMetadataJson(): AnyJson {
+    return this.metadata.toJSON().metadata;
   }
 
   getPalletList(): PalletsListItem[] {
+    const json = this.getMetadataJson();
+
     return (
-      this.metadata?.pallets?.map(({ index, name }: PalletsListItem) => ({
+      json.pallets.map(({ index, name }: PalletsListItem) => ({
         index,
         name,
       })) || []

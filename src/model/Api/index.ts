@@ -106,23 +106,29 @@ export class Api {
     // Check that chain values have been fetched before committing to state.
     if (newChainSpec.every((c) => !!c?.toHuman())) {
       const chain = newChainSpec[0].toString();
-      const version =
+      const specVersion =
         newChainSpec[1].toJSON() as unknown as APIChainSpecVersion;
       const ss58Prefix = Number(newChainSpec[2].toString());
 
       // Also retreive the JSON formatted metadata here for the UI to construct from.
-      const metadataResult = this.api.runtimeMetadata.toJSON();
+      const metadataPJs = this.api.runtimeMetadata;
+      const metadataJson = metadataPJs.toJSON();
 
-      if (version && metadataResult) {
-        const metadataVersion = Object.keys(metadataResult?.metadata || {})[0];
-        const metadata = Object.values(metadataResult?.metadata || {})[0];
+      // TODO: fallback if this fails.
+      if (specVersion && metadataJson) {
+        const metadataVersion = Object.keys(metadataJson?.metadata || {})[0];
+        const magicNumber = Object.values(metadataJson?.metadata || {})[0]
+          .magicNumber;
 
         this.chainSpec = {
           chain,
-          version,
+          version: specVersion,
           ss58Prefix,
-          magicNumber: metadataResult.magicNumber as number,
-          metadata: MetadataController.instantiate(metadataVersion, metadata),
+          magicNumber: magicNumber as number,
+          metadata: MetadataController.instantiate(
+            metadataVersion,
+            metadataPJs
+          ),
         };
       }
     }
