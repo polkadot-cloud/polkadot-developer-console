@@ -15,25 +15,17 @@ import { useTabs } from 'contexts/Tabs';
 import { useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { MetadataScraper } from 'controllers/MetadataScraper';
+import { PalletList } from '../Common/PalletList';
 
 export const ChainState = () => {
   const { getChainSpec } = useApi();
   const { activeTabId } = useTabs();
 
-  // Pallet selection open.
-  const [palletsOpen, setPalletsOpen] = useState<boolean>(false);
-
   // Storage selection open.
   const [storageOpen, setStorageOpen] = useState<boolean>(false);
 
   // Refs for the selection menus.
-  const palletSelectRef = useRef(null);
   const storageSelectRef = useRef(null);
-
-  // Close pallet selection if clicked outside of its container.
-  useOutsideAlerter(palletSelectRef, () => {
-    setPalletsOpen(false);
-  });
 
   // Close storage selection if clicked outside of its container.
   useOutsideAlerter(storageSelectRef, () => {
@@ -55,37 +47,7 @@ export const ChainState = () => {
       <Header />
       <SelectChainItemWrapper className="withHeader">
         {/* Pallet Selection */}
-
-        <section>
-          <h5>Pallet</h5>
-          <ChainActiveItemWrapper
-            className={palletsOpen ? ` open` : undefined}
-            onClick={() => setPalletsOpen(!palletsOpen)}
-          >
-            <span>
-              <ChainListCallItem>
-                {pallets[0]?.name || 'No Pallets'}
-              </ChainListCallItem>
-            </span>
-            <span>
-              <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
-            </span>
-          </ChainActiveItemWrapper>
-
-          <div
-            ref={palletSelectRef}
-            className={`options${palletsOpen ? ` open` : ``}`}
-          >
-            <ChainListItemWrapper>
-              <span>
-                <ChainListCallItem>
-                  {pallets[0]?.name || 'No Pallets'}
-                </ChainListCallItem>
-              </span>
-              <span></span>
-            </ChainListItemWrapper>
-          </div>
-        </section>
+        <PalletList pallets={pallets} />
 
         {/* Storage Item Selection */}
 

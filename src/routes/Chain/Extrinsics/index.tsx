@@ -15,25 +15,17 @@ import { MetadataScraper } from 'controllers/MetadataScraper';
 import { useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import type { AnyJson } from '@w3ux/utils/types';
+import { PalletList } from '../Common/PalletList';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
   const { activeTabId } = useTabs();
 
-  // Pallet selection open.
-  const [palletsOpen, setPalletsOpen] = useState<boolean>(false);
-
   // Call selection open.
   const [callsOpen, setCallsOpen] = useState<boolean>(false);
 
   // Refs for the selection menus.
-  const palletSelectRef = useRef(null);
   const callsSelectRef = useRef(null);
-
-  // Close pallet selection if clicked outside of its container.
-  useOutsideAlerter(palletSelectRef, () => {
-    setPalletsOpen(false);
-  });
 
   // Close call selection if clicked outside of its container.
   useOutsideAlerter(callsSelectRef, () => {
@@ -114,40 +106,9 @@ export const Extrinsics = () => {
   return (
     <SelectChainItemWrapper>
       {/* Pallet Selection */}
-
-      <section>
-        <h5>Pallet</h5>
-        <ChainActiveItemWrapper
-          className={palletsOpen ? ` open` : undefined}
-          onClick={() => setPalletsOpen(!palletsOpen)}
-        >
-          <span>
-            <ChainListCallItem>
-              {pallets[0]?.name || 'No Pallets'}
-            </ChainListCallItem>
-          </span>
-          <span>
-            <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
-          </span>
-        </ChainActiveItemWrapper>
-
-        <div
-          ref={palletSelectRef}
-          className={`options${palletsOpen ? ` open` : ``}`}
-        >
-          <ChainListItemWrapper>
-            <span>
-              <ChainListCallItem>
-                {pallets[0]?.name || 'No Pallets'}
-              </ChainListCallItem>
-            </span>
-            <span></span>
-          </ChainListItemWrapper>
-        </div>
-      </section>
+      <PalletList pallets={pallets} />
 
       {/* Call Selection */}
-
       <section>
         <h5>Call</h5>
         <ChainActiveItemWrapper

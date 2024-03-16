@@ -15,9 +15,3 @@ export abstract class MetadataVersion {
   // Returns the JSON representation of metadata.
   abstract getMetadataJson(): AnyJson;
 }
-
-// Supported properties for metadata pallet list.
-export interface PalletsListItem {
-  index: number;
-  name: string;
-}
