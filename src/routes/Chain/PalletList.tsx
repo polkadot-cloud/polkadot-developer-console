@@ -6,7 +6,7 @@ import {
   ChainActiveItemWrapper,
   ChainListCallItem,
   ChainListItemWrapper,
-} from '../Wrappers';
+} from './Wrappers';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';

@@ -15,7 +15,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { MetadataScraper } from 'controllers/MetadataScraper';
-import { PalletList } from '../Common/PalletList';
+import { PalletList } from '../PalletList';
 
 export const ChainState = () => {
   const { getChainSpec } = useApi();
