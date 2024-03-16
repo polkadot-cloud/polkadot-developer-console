@@ -4,6 +4,7 @@
 import type { AnyJson } from '@w3ux/utils/types';
 import type { MetadataVersion } from 'model/Metadata/types';
 import type { PalletListItem } from './types';
+import { Formatter } from './Formatter';
 
 // A class to scrape metadata and format it in various ways.
 
@@ -34,18 +35,8 @@ export class MetadataScraper {
         name,
       })) || []
     ).sort(
-      (
-        { name: aName }: { name: string },
-        { name: bName }: { name: string }
-      ) => {
-        if (aName < bName) {
-          return -1;
-        }
-        if (aName > bName) {
-          return 1;
-        }
-        return 0;
-      }
+      ({ name: aName }: { name: string }, { name: bName }: { name: string }) =>
+        aName < bName ? -1 : aName > bName ? 1 : 0
     );
   }
 
@@ -81,7 +72,7 @@ export class MetadataScraper {
 
     const { def, path, params }: AnyJson = lookup.type;
     const [type, value] = Object.entries(def).flat();
-    const label = this.typeToString(path, params);
+    const label = Formatter.typeToString(path, params);
 
     const result: AnyJson = {
       type,
@@ -116,46 +107,5 @@ export class MetadataScraper {
       {}
     );
     return variants;
-  }
-
-  // ------------------------------------------------------
-  // Class helpers.
-  // ------------------------------------------------------
-
-  // Format a string representation of the type using its path and params.
-  typeToString(path: string[], params: string[]): string {
-    const paramsStr = this.paramsToString(params);
-    const pathStr = this.pathToString(path);
-
-    let label = `${pathStr}`;
-    if (paramsStr) {
-      label += `${paramsStr}`;
-    }
-
-    return label;
-  }
-
-  // Format a type's params into a string.
-  paramsToString(params: AnyJson): string {
-    return params.reduce(
-      (formatted: string, { name }: { name: string }, index: number) => {
-        let str = index === 0 ? `<${name}` : `, ${name}`;
-        if (index === params.length - 1) {
-          str += `>`;
-        }
-        return (formatted += str);
-      },
-      ''
-    );
-  }
-
-  // Format a type's path into a string.
-  pathToString(path: string[]): string {
-    return path.reduce((formatted: string, item: string, index: number) => {
-      if (index === 0) {
-        return item;
-      }
-      return index === 0 ? item : `${formatted}::${item}`;
-    }, '');
   }
 }
