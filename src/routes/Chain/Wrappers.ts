@@ -9,9 +9,12 @@ export const SelectChainItemWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
   padding-bottom: 0.85rem;
-  margin-top: 1.5rem;
   width: 100%;
   overflow: visible;
+
+  &.withHeader {
+    margin-top: 1.5rem;
+  }
 
   > section {
     display: flex;

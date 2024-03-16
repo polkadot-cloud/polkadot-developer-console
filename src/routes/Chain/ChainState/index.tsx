@@ -57,7 +57,7 @@ export const ChainState = () => {
   return (
     <>
       <Header />
-      <SelectChainItemWrapper>
+      <SelectChainItemWrapper className="withHeader">
         {/* Pallet Selection */}
 
         <section>
