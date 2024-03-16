@@ -166,7 +166,6 @@ export const Extrinsics = () => {
           <span>
             <ChainListCallItem>
               {selection[0]?.call || 'No Calls'}
-              <span>({selection[0]?.fieldNames})</span>
               {selection[0]?.fieldNames && (
                 <span>({selection[0].fieldNames})</span>
               )}
