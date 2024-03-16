@@ -6,7 +6,7 @@ import {
   ChainListItemWrapper,
   ChainActiveItemWrapper,
   SelectChainItemWrapper,
-} from './Wrappers';
+} from '../Wrappers';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Header } from './Header';
 import { useApi } from 'contexts/Api';
@@ -22,21 +22,21 @@ export const ChainState = () => {
   // Pallet selection open.
   const [palletsOpen, setPalletsOpen] = useState<boolean>(false);
 
-  // Call selection open.
-  const [callsOpen, setCallsOpen] = useState<boolean>(false);
+  // Storage selection open.
+  const [storageOpen, setStorageOpen] = useState<boolean>(false);
 
   // Refs for the selection menus.
   const palletSelectRef = useRef(null);
-  const callsSelectRef = useRef(null);
+  const storageSelectRef = useRef(null);
 
   // Close pallet selection if clicked outside of its container.
   useOutsideAlerter(palletSelectRef, () => {
     setPalletsOpen(false);
   });
 
-  // Close call selection if clicked outside of its container.
-  useOutsideAlerter(callsSelectRef, () => {
-    setCallsOpen(false);
+  // Close storage selection if clicked outside of its container.
+  useOutsideAlerter(storageSelectRef, () => {
+    setStorageOpen(false);
   });
 
   const Metadata = getChainSpec(activeTabId)?.metadata;
@@ -86,13 +86,13 @@ export const ChainState = () => {
           </div>
         </section>
 
-        {/* Call Selection */}
+        {/* Storage Item Selection */}
 
         <section>
           <h5>Storage Item</h5>
           <ChainActiveItemWrapper
-            className={callsOpen ? ` open` : undefined}
-            onClick={() => setCallsOpen(!callsOpen)}
+            className={storageOpen ? ` open` : undefined}
+            onClick={() => setStorageOpen(!storageOpen)}
           >
             <span>
               <h4>Storage Item</h4>
@@ -103,8 +103,8 @@ export const ChainState = () => {
           </ChainActiveItemWrapper>
 
           <div
-            ref={callsSelectRef}
-            className={`options${callsOpen ? ` open` : ``}`}
+            ref={storageSelectRef}
+            className={`options${storageOpen ? ` open` : ``}`}
           >
             <ChainListItemWrapper>
               <span>
