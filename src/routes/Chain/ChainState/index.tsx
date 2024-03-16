@@ -12,9 +12,9 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Header } from './Header';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
-import type { PalletsListItem } from 'model/Metadata/types';
 import { useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
+import { MetadataScraper } from 'controllers/MetadataScraper';
 
 export const ChainState = () => {
   const { getChainSpec } = useApi();
@@ -46,13 +46,9 @@ export const ChainState = () => {
     return null;
   }
 
-  // Attempt to get pallet list from metadata.
-  let palletList: PalletsListItem[];
-  try {
-    palletList = Metadata.getPalletList();
-  } catch (e) {
-    palletList = [];
-  }
+  // Get pallet list from scraper.
+  const scraper = new MetadataScraper(Metadata);
+  const pallets = scraper.getPallets();
 
   return (
     <>
@@ -68,7 +64,7 @@ export const ChainState = () => {
           >
             <span>
               <ChainListCallItem>
-                {palletList[0]?.name || 'No Pallets'}
+                {pallets[0]?.name || 'No Pallets'}
               </ChainListCallItem>
             </span>
             <span>
@@ -83,7 +79,7 @@ export const ChainState = () => {
             <ChainListItemWrapper>
               <span>
                 <ChainListCallItem>
-                  {palletList[0]?.name || 'No Pallets'}
+                  {pallets[0]?.name || 'No Pallets'}
                 </ChainListCallItem>
               </span>
               <span></span>
@@ -114,7 +110,7 @@ export const ChainState = () => {
             <ChainListItemWrapper>
               <span>
                 <ChainListCallItem>
-                  {palletList[0]?.name || 'No Pallets'}
+                  {pallets[0]?.name || 'No Pallets'}
                 </ChainListCallItem>
               </span>
               <span>

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
-import type { MetadataVersion } from 'model/Metadata/types';
+import type { MetadataVersion, PalletsListItem } from 'model/Metadata/types';
 
 // A class to scrape metadata and format it in various ways.
 
@@ -22,6 +22,31 @@ export class MetadataScraper {
   // ------------------------------------------------------
   // Top level scrape methods.
   // ------------------------------------------------------
+
+  // Gets a sorted list of pallets from metadata.
+  getPallets(): PalletsListItem[] {
+    const json = this.metadata.getMetadataJson();
+
+    return (
+      json.pallets.map(({ index, name }: PalletsListItem) => ({
+        index,
+        name,
+      })) || []
+    ).sort(
+      (
+        { name: aName }: { name: string },
+        { name: bName }: { name: string }
+      ) => {
+        if (aName < bName) {
+          return -1;
+        }
+        if (aName > bName) {
+          return 1;
+        }
+        return 0;
+      }
+    );
+  }
 
   // Get a pallet's calls list from metadata.
   getPalletCalls(palletName: string) {

@@ -14,10 +14,6 @@ export abstract class MetadataVersion {
 
   // Returns the JSON representation of metadata.
   abstract getMetadataJson(): AnyJson;
-
-  // Attempts to fetch a sorted list of pallet names with their indexes from metadata, ordered
-  // alphabetically by `name`.
-  abstract getPalletList(): PalletsListItem[];
 }
 
 // Supported properties for metadata pallet list.

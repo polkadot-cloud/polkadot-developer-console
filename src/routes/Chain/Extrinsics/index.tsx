@@ -11,7 +11,6 @@ import {
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
-import type { PalletsListItem } from 'model/Metadata/types';
 import { MetadataScraper } from 'controllers/MetadataScraper';
 import { useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
@@ -47,16 +46,8 @@ export const Extrinsics = () => {
     return null;
   }
 
-  // Attempt to get pallet list from metadata.
-  let palletList: PalletsListItem[];
-  try {
-    palletList = Metadata.getPalletList();
-  } catch (e) {
-    palletList = [];
-  }
-
-  // Play with Metadata scraper.
   const scraper = new MetadataScraper(Metadata);
+  const pallets = scraper.getPallets();
 
   // Get the calls for the `Staking` pallet.
   // TODO: Get calls from selected pallet.
@@ -132,7 +123,7 @@ export const Extrinsics = () => {
         >
           <span>
             <ChainListCallItem>
-              {palletList[0]?.name || 'No Pallets'}
+              {pallets[0]?.name || 'No Pallets'}
             </ChainListCallItem>
           </span>
           <span>
@@ -147,7 +138,7 @@ export const Extrinsics = () => {
           <ChainListItemWrapper>
             <span>
               <ChainListCallItem>
-                {palletList[0]?.name || 'No Pallets'}
+                {pallets[0]?.name || 'No Pallets'}
               </ChainListCallItem>
             </span>
             <span></span>
