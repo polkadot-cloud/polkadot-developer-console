@@ -7,22 +7,20 @@ import type { MetadataVersion } from 'model/Metadata/types';
 // A class to scrape metadata and format it in various ways.
 
 export class MetadataScraper {
-  // The metadata class instance. Used to access and scrape metadata.
+  // The metadata class instance.
   metadata: MetadataVersion;
 
   // The metadata lookup.
   lookup: AnyJson = {};
 
-  // The cursor of the current type being scraped.
-  cursor: AnyJson = {};
-
+  // Initialize the class with metadata.
   constructor(metadata: MetadataVersion) {
     this.metadata = metadata;
     this.lookup = this.metadata.getMetadataJson().lookup;
   }
 
   // ------------------------------------------------------
-  // Accessors.
+  // Top level scrape methods.
   // ------------------------------------------------------
 
   // Get a pallet's calls list from metadata.
@@ -36,19 +34,14 @@ export class MetadataScraper {
       return;
     }
 
-    const callTypeId = pallet.calls.type;
-
-    // Get the type from lookup.
-    const result = this.getType(callTypeId);
+    // Scrape pallet call types.
+    const result = this.getType(pallet.calls.type);
     console.log(result);
     return result;
   }
 
-  // NOTE: reading of the types should be handled in another class as this will likely not change
-  // through metadata versions. switch type and handle them correctly.
-
   // ------------------------------------------------------
-  // Start scraping.
+  // Scrape types.
   // ------------------------------------------------------
 
   // Get a lookup type from metadata. Possible recursion when scraping type ids.
@@ -61,14 +54,9 @@ export class MetadataScraper {
       return undefined;
     }
 
-    // `path`, `docs`, `params` can be accessed here. May need to be referenced in the future when
-    // accumulating the type data into one object.
     const { def, path, params }: AnyJson = lookup.type;
-
-    const paramsFormatted = this.paramsToString(params);
-    const pathFormatted = this.pathToString(path);
-    const label = `${pathFormatted}${paramsFormatted}`;
     const [type, value] = Object.entries(def).flat();
+    const label = this.typeToString(path, params);
 
     const result: AnyJson = {
       type,
@@ -81,14 +69,14 @@ export class MetadataScraper {
         break;
 
       default:
-        result.unknown = true;
+        result.unknown;
         break;
     }
 
     return result;
   }
 
-  // Scrape variant type.
+  // Scrapes a variant type.
   scrapeVariant(variant: AnyJson) {
     const variants = variant.variants.reduce(
       (acc: AnyJson, { docs, fields, name }: AnyJson) => ({
@@ -96,10 +84,7 @@ export class MetadataScraper {
         [name]: {
           docs,
           fields: Object.fromEntries(
-            fields.map((field: AnyJson) =>
-              // console.log(field);
-              [field.name, field.typeName]
-            )
+            fields.map((field: AnyJson) => [field.name, field.typeName])
           ),
         },
       }),
@@ -112,38 +97,40 @@ export class MetadataScraper {
   // Class helpers.
   // ------------------------------------------------------
 
-  paramsToString(params: AnyJson) {
-    const paramsFormatted: string = params.reduce(
-      (formatted: string, { name }: { name: string }, index: number) => {
-        let str;
-        if (index === 0) {
-          str = `<${name}`;
-        } else {
-          str = `, ${name}`;
-        }
+  // Format a string representation of the type using its path and params.
+  typeToString(path: string[], params: string[]): string {
+    const paramsStr = this.paramsToString(params);
+    const pathStr = this.pathToString(path);
 
+    let label = `${pathStr}`;
+    if (paramsStr) {
+      label += `${paramsStr}`;
+    }
+
+    return label;
+  }
+
+  // Format a type's params into a string.
+  paramsToString(params: AnyJson): string {
+    return params.reduce(
+      (formatted: string, { name }: { name: string }, index: number) => {
+        let str = index === 0 ? `<${name}` : `, ${name}`;
         if (index === params.length - 1) {
           str += `>`;
         }
-
         return (formatted += str);
       },
       ''
     );
-    return paramsFormatted;
   }
 
-  pathToString(path: string[]) {
-    const pathFormatted = path.reduce(
-      (formatted: string, item: string, index: number) => {
-        if (index === 0) {
-          return item;
-        }
-        return `${formatted}::${item}`;
-      },
-      ''
-    );
-
-    return pathFormatted;
+  // Format a type's path into a string.
+  pathToString(path: string[]): string {
+    return path.reduce((formatted: string, item: string, index: number) => {
+      if (index === 0) {
+        return item;
+      }
+      return index === 0 ? item : `${formatted}::${item}`;
+    }, '');
   }
 }
