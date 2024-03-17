@@ -150,7 +150,10 @@ export class MetadataScraper {
         break;
 
       case 'array':
-        // TODO: Implement array type scraping next.
+        result.array = {
+          len: (value as AnyJson).len,
+          type: this.getType((value as AnyJson).type),
+        };
         break;
 
       case 'primitive':
