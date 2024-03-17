@@ -31,7 +31,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
     () => {
       setCallsOpen(false);
     },
-    ['ignore-outside-alerter']
+    ['ignore-outside-alerter-calls']
   );
 
   // Format calls into a new `selection` array for rendering.
@@ -67,7 +67,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
     <section>
       <h5>Call</h5>
       <SelectItemWrapper
-        className={`standalone${callsOpen ? ` open` : ``} ignore-outside-alerter`}
+        className={`standalone${callsOpen ? ` open` : ``} ignore-outside-alerter-calls`}
         onClick={() => {
           setCallsOpen(!callsOpen);
         }}

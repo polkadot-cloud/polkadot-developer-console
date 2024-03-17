@@ -42,7 +42,7 @@ export const ChainState = () => {
     () => {
       setStorageOpen(false);
     },
-    ['ignore-outside-alerter']
+    ['ignore-outside-alerter-storage']
   );
 
   const Metadata = getChainSpec(activeTabId)?.metadata;
@@ -83,7 +83,7 @@ export const ChainState = () => {
         <section>
           <h5>Storage Item</h5>
           <SelectItemWrapper
-            className={`standalone${storageOpen ? ` open` : ``} ignore-outside-alerter`}
+            className={`standalone${storageOpen ? ` open` : ``} ignore-outside-alerter-storage`}
             onClick={() => setStorageOpen(!storageOpen)}
           >
             <span>

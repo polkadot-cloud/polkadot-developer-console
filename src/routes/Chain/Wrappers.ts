@@ -43,6 +43,13 @@ export const SelectItemWrapper = styled.button`
     border-radius: 0.4rem;
     transition: border 0.15s;
 
+    &:hover {
+      border-color: var(--border-secondary-color);
+      > span:last-child {
+        color: var(--accent-color-secondary);
+      }
+    }
+
     &.open {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
@@ -52,6 +59,14 @@ export const SelectItemWrapper = styled.button`
   &.option {
     border-bottom: 1px solid var(--border-primary-color);
     transition: background-color 0.15s;
+
+    &.selected {
+      background-color: var(--button-primary-background);
+    }
+
+    &:hover {
+      background-color: var(--button-primary-background);
+    }
   }
 
   flex: 1;
@@ -80,13 +95,6 @@ export const SelectItemWrapper = styled.button`
         overflow: hidden;
         width: 100%;
       }
-    }
-  }
-
-  &:hover {
-    border-color: var(--border-secondary-color);
-    > span:last-child {
-      color: var(--accent-color-secondary);
     }
   }
 `;

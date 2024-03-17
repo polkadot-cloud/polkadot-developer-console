@@ -38,14 +38,14 @@ export const PalletList = ({
     () => {
       setPalletsOpen(false);
     },
-    ['ignore-outside-alerter']
+    ['ignore-outside-alerter-pallets']
   );
 
   return (
     <section>
       <h5>Pallet</h5>
       <SelectItemWrapper
-        className={`standalone${palletsOpen ? ` open` : ``} ignore-outside-alerter`}
+        className={`standalone${palletsOpen ? ` open` : ``} ignore-outside-alerter-pallets`}
         onClick={() => {
           setPalletsOpen(!palletsOpen);
         }}
@@ -65,7 +65,7 @@ export const PalletList = ({
         {pallets.map(({ index, name }) => (
           <SelectItemWrapper
             key={`pallet_${index}_${name}`}
-            className="option"
+            className={`option${selected === name ? ` selected` : ``}`}
             onClick={() => {
               setPalletsOpen(false);
               onSelect(name);
