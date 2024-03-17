@@ -26,15 +26,24 @@ export const ChainState = () => {
   const [selectedPallet, setSelectedPallet] = useState<string | null>(null);
 
   // Storage selection open.
-  const [storageOpen, setStorageOpen] = useState<boolean>(false);
+  const [storageOpen, setStorageOpenState] = useState<boolean>(false);
+
+  // Setter for storage item menu open state.
+  const setStorageOpen = (value: boolean) => {
+    setStorageOpenState(value);
+  };
 
   // Refs for the selection menus.
   const storageSelectRef = useRef(null);
 
   // Close storage selection if clicked outside of its container.
-  useOutsideAlerter(storageSelectRef, () => {
-    setStorageOpen(false);
-  });
+  useOutsideAlerter(
+    storageSelectRef,
+    () => {
+      setStorageOpen(false);
+    },
+    ['ignore-outside-alerter']
+  );
 
   const Metadata = getChainSpec(activeTabId)?.metadata;
   if (!Metadata) {
@@ -74,7 +83,7 @@ export const ChainState = () => {
         <section>
           <h5>Storage Item</h5>
           <SelectItemWrapper
-            className={`standalone ${storageOpen ? ` open` : ``}`}
+            className={`standalone${storageOpen ? ` open` : ``} ignore-outside-alerter`}
             onClick={() => setStorageOpen(!storageOpen)}
           >
             <span>
@@ -92,7 +101,11 @@ export const ChainState = () => {
             className={`${storageOpen ? ` open` : ``}`}
           >
             {selection.map(({ name, docs }) => (
-              <SelectItemWrapper className="option" key={`call_select_${name}`}>
+              <SelectItemWrapper
+                key={`storage_select_${name}`}
+                className="option"
+                onClick={() => setStorageOpen(false)}
+              >
                 <span>
                   <SelectTextWrapper>
                     {name}

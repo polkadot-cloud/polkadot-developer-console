@@ -22,22 +22,33 @@ export const PalletList = ({
   onSelect: (value: string) => void;
 }) => {
   // Pallet selection open.
-  const [palletsOpen, setPalletsOpen] = useState<boolean>(false);
+  const [palletsOpen, setPalletsOpenState] = useState<boolean>(false);
+
+  // Setter for pallet menu open state.
+  const setPalletsOpen = (value: boolean) => {
+    setPalletsOpenState(value);
+  };
 
   // Selection menu ref.
   const palletSelectRef = useRef<HTMLDivElement>(null);
 
   // Close pallet selection if clicked outside of its container.
-  useOutsideAlerter(palletSelectRef, () => {
-    setPalletsOpen(false);
-  });
+  useOutsideAlerter(
+    palletSelectRef,
+    () => {
+      setPalletsOpen(false);
+    },
+    ['ignore-outside-alerter']
+  );
 
   return (
     <section>
       <h5>Pallet</h5>
       <SelectItemWrapper
-        className={`standalone ${palletsOpen ? ` open` : ``}`}
-        onClick={() => setPalletsOpen(!palletsOpen)}
+        className={`standalone${palletsOpen ? ` open` : ``} ignore-outside-alerter`}
+        onClick={() => {
+          setPalletsOpen(!palletsOpen);
+        }}
       >
         <span>
           <SelectTextWrapper>{selected || 'No Pallets'}</SelectTextWrapper>
@@ -53,9 +64,12 @@ export const PalletList = ({
       >
         {pallets.map(({ index, name }) => (
           <SelectItemWrapper
-            className="option"
             key={`pallet_${index}_${name}`}
-            onClick={() => onSelect(name)}
+            className="option"
+            onClick={() => {
+              setPalletsOpen(false);
+              onSelect(name);
+            }}
           >
             <span>
               <SelectTextWrapper>{name}</SelectTextWrapper>

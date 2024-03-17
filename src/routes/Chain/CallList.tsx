@@ -15,15 +15,24 @@ import { Formatter } from 'controllers/MetadataScraper/Formatter';
 
 export const CallList = ({ calls }: { calls: AnyJson }) => {
   // Call selection open.
-  const [callsOpen, setCallsOpen] = useState<boolean>(false);
+  const [callsOpen, setCallsOpenState] = useState<boolean>(false);
+
+  // Setter for call menu open state.
+  const setCallsOpen = (value: boolean) => {
+    setCallsOpenState(value);
+  };
 
   // Refs for the selection menus.
   const callsSelectRef = useRef(null);
 
   // Close call selection if clicked outside of its container.
-  useOutsideAlerter(callsSelectRef, () => {
-    setCallsOpen(false);
-  });
+  useOutsideAlerter(
+    callsSelectRef,
+    () => {
+      setCallsOpen(false);
+    },
+    ['ignore-outside-alerter']
+  );
 
   // Format calls into a new `selection` array for rendering.
   const selection: {
@@ -58,8 +67,10 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
     <section>
       <h5>Call</h5>
       <SelectItemWrapper
-        className={`standalone ${callsOpen ? ` open` : ``}`}
-        onClick={() => setCallsOpen(!callsOpen)}
+        className={`standalone${callsOpen ? ` open` : ``} ignore-outside-alerter`}
+        onClick={() => {
+          setCallsOpen(!callsOpen);
+        }}
       >
         <span>
           <SelectTextWrapper>
@@ -79,7 +90,11 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
         className={`${callsOpen ? ` open` : ``}`}
       >
         {selection.map(({ call, docs, fieldNames }) => (
-          <SelectItemWrapper key={`call_select_${call}`} className="option">
+          <SelectItemWrapper
+            key={`call_select_${call}`}
+            className="option"
+            onClick={() => setCallsOpen(false)}
+          >
             <span>
               <SelectTextWrapper>
                 {call}
