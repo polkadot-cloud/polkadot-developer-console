@@ -4,9 +4,9 @@
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { useRef, useState } from 'react';
 import {
-  ChainActiveItemWrapper,
-  ChainListCallItem,
-  ChainListItemWrapper,
+  SelectItemWrapper,
+  SelectTextWrapper,
+  SelectDropdownWrapper,
 } from './Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -57,41 +57,41 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
   return (
     <section>
       <h5>Call</h5>
-      <ChainActiveItemWrapper
-        className={callsOpen ? ` open` : undefined}
+      <SelectItemWrapper
+        className={`standalone ${callsOpen ? ` open` : ``}`}
         onClick={() => setCallsOpen(!callsOpen)}
       >
         <span>
-          <ChainListCallItem>
+          <SelectTextWrapper>
             {selection[0]?.call || 'No Calls'}
             {selection[0]?.fieldNames && (
               <span>({selection[0].fieldNames})</span>
             )}
-          </ChainListCallItem>
+          </SelectTextWrapper>
         </span>
         <span>
           <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
         </span>
-      </ChainActiveItemWrapper>
+      </SelectItemWrapper>
 
-      <div
+      <SelectDropdownWrapper
         ref={callsSelectRef}
-        className={`options${callsOpen ? ` open` : ``}`}
+        className={`${callsOpen ? ` open` : ``}`}
       >
         {selection.map(({ call, docs, fieldNames }) => (
-          <ChainListItemWrapper key={`call_select_${call}`}>
+          <SelectItemWrapper key={`call_select_${call}`} className="option">
             <span>
-              <ChainListCallItem>
+              <SelectTextWrapper>
                 {call}
                 {fieldNames && <span>({fieldNames})</span>}
-              </ChainListCallItem>
+              </SelectTextWrapper>
             </span>
             <span>
               <h5>{docs[0]}</h5>
             </span>
-          </ChainListItemWrapper>
+          </SelectItemWrapper>
         ))}
-      </div>
+      </SelectDropdownWrapper>
     </section>
   );
 };

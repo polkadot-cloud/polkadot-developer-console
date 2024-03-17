@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { SelectChainItemWrapper } from '../Wrappers';
+import { SelectFormWrapper } from '../Wrappers';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
 import { MetadataScraper } from 'controllers/MetadataScraper';
@@ -40,7 +40,7 @@ export const Extrinsics = () => {
   // });
 
   return (
-    <SelectChainItemWrapper>
+    <SelectFormWrapper>
       {/* Pallet Selection */}
       <PalletList
         selected={activePallet}
@@ -50,6 +50,6 @@ export const Extrinsics = () => {
 
       {/* Call Selection */}
       <CallList calls={calls} />
-    </SelectChainItemWrapper>
+    </SelectFormWrapper>
   );
 };

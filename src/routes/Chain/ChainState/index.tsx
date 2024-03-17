@@ -3,10 +3,10 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  ChainListItemWrapper,
-  ChainActiveItemWrapper,
-  SelectChainItemWrapper,
-  ChainListCallItem,
+  SelectItemWrapper,
+  SelectFormWrapper,
+  SelectTextWrapper,
+  SelectDropdownWrapper,
 } from '../Wrappers';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Header } from './Header';
@@ -61,7 +61,7 @@ export const ChainState = () => {
   return (
     <>
       <Header />
-      <SelectChainItemWrapper className="withHeader">
+      <SelectFormWrapper className="withHeader">
         {/* Pallet Selection */}
         <PalletList
           pallets={pallets}
@@ -73,40 +73,40 @@ export const ChainState = () => {
 
         <section>
           <h5>Storage Item</h5>
-          <ChainActiveItemWrapper
-            className={storageOpen ? ` open` : undefined}
+          <SelectItemWrapper
+            className={`standalone ${storageOpen ? ` open` : ``}`}
             onClick={() => setStorageOpen(!storageOpen)}
           >
             <span>
-              <ChainListCallItem>
+              <SelectTextWrapper>
                 {selection[0]?.name || 'No Storage Items'}
-              </ChainListCallItem>
+              </SelectTextWrapper>
             </span>
             <span>
               <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
             </span>
-          </ChainActiveItemWrapper>
+          </SelectItemWrapper>
 
-          <div
+          <SelectDropdownWrapper
             ref={storageSelectRef}
-            className={`options${storageOpen ? ` open` : ``}`}
+            className={`${storageOpen ? ` open` : ``}`}
           >
             {selection.map(({ name, docs }) => (
-              <ChainListItemWrapper key={`call_select_${name}`}>
+              <SelectItemWrapper className="option" key={`call_select_${name}`}>
                 <span>
-                  <ChainListCallItem>
+                  <SelectTextWrapper>
                     {name}
                     {/* {fieldNames && <span>({fieldNames})</span>} */}
-                  </ChainListCallItem>
+                  </SelectTextWrapper>
                 </span>
                 <span>
                   <h5>{docs[0]}</h5>
                 </span>
-              </ChainListItemWrapper>
+              </SelectItemWrapper>
             ))}
-          </div>
+          </SelectDropdownWrapper>
         </section>
-      </SelectChainItemWrapper>
+      </SelectFormWrapper>
     </>
   );
 };

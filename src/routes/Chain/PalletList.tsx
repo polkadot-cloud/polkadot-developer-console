@@ -3,9 +3,9 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  ChainActiveItemWrapper,
-  ChainListCallItem,
-  ChainListItemWrapper,
+  SelectItemWrapper,
+  SelectTextWrapper,
+  SelectDropdownWrapper,
 } from './Wrappers';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useRef, useState } from 'react';
@@ -35,34 +35,35 @@ export const PalletList = ({
   return (
     <section>
       <h5>Pallet</h5>
-      <ChainActiveItemWrapper
-        className={palletsOpen ? ` open` : undefined}
+      <SelectItemWrapper
+        className={`standalone ${palletsOpen ? ` open` : ``}`}
         onClick={() => setPalletsOpen(!palletsOpen)}
       >
         <span>
-          <ChainListCallItem>{selected || 'No Pallets'}</ChainListCallItem>
+          <SelectTextWrapper>{selected || 'No Pallets'}</SelectTextWrapper>
         </span>
         <span>
           <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
         </span>
-      </ChainActiveItemWrapper>
+      </SelectItemWrapper>
 
-      <div
+      <SelectDropdownWrapper
         ref={palletSelectRef}
-        className={`options${palletsOpen ? ` open` : ``}`}
+        className={`${palletsOpen ? ` open` : ``}`}
       >
         {pallets.map(({ index, name }) => (
-          <ChainListItemWrapper
+          <SelectItemWrapper
+            className="option"
             key={`pallet_${index}_${name}`}
             onClick={() => onSelect(name)}
           >
             <span>
-              <ChainListCallItem>{name}</ChainListCallItem>
+              <SelectTextWrapper>{name}</SelectTextWrapper>
             </span>
             <span></span>
-          </ChainListItemWrapper>
+          </SelectItemWrapper>
         ))}
-      </div>
+      </SelectDropdownWrapper>
     </section>
   );
 };
