@@ -10,7 +10,7 @@ import {
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
-import type { PalletListItem } from 'controllers/MetadataScraper/types';
+import type { PalletListItem } from 'model/Metadata/Scraper/types';
 
 export const PalletList = ({
   pallets,

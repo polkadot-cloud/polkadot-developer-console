@@ -13,7 +13,7 @@ export class Format {
   // Format field names into a human readable comma separated string.
   //
   // E.g. <fieldName1>, <fieldName2>, etc...
-  static formatFieldNames(fields: Record<string, string>): string {
+  static fieldNames(fields: Record<string, string>): string {
     return JSON.stringify(fields) === '{}'
       ? ''
       : Object.entries(fields).reduce((acc: string, [name], index: number) => {
@@ -27,7 +27,7 @@ export class Format {
   // Format field names with their type info into a human readable, comma separated string.
   //
   // E.g. <fieldName1>: <fieldType1>, <fieldName2>: <fieldType2>, etc...
-  static formatFieldTypes(fields: Record<string, string>): string {
+  static fieldTypes(fields: Record<string, string>): string {
     return JSON.stringify(fields) === '{}'
       ? ''
       : Object.entries(fields).reduce(

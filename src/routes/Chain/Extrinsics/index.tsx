@@ -4,10 +4,10 @@
 import { SelectFormWrapper } from '../Wrappers';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
-import { MetadataScraper } from 'controllers/MetadataScraper';
 import { PalletList } from '../PalletList';
 import { CallList } from '../CallList';
 import { useState } from 'react';
+import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
@@ -22,13 +22,13 @@ export const Extrinsics = () => {
     return null;
   }
 
-  const scraper = new MetadataScraper(Metadata);
-  const pallets = scraper.getPallets(['calls']);
+  const scraper = new PalletScraper(Metadata);
+  const pallets = scraper.getList(['calls']);
 
   const activePallet = selectedPallet || pallets?.[0].name || null;
   let calls = [];
   if (activePallet) {
-    calls = scraper.getPalletCalls(activePallet);
+    calls = scraper.getCalls(activePallet);
   }
 
   // Convert lookup types to TypeScript types.

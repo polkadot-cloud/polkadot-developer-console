@@ -14,9 +14,9 @@ import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
 import { useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
-import { MetadataScraper } from 'controllers/MetadataScraper';
 import { PalletList } from '../PalletList';
 import type { AnyJson } from '@w3ux/utils/types';
+import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 
 export const ChainState = () => {
   const { getChainSpec } = useApi();
@@ -52,13 +52,13 @@ export const ChainState = () => {
   }
 
   // Get pallet list from scraper.
-  const scraper = new MetadataScraper(Metadata);
-  const pallets = scraper.getPallets(['storage']);
+  const scraper = new PalletScraper(Metadata);
+  const pallets = scraper.getList(['storage']);
 
   const activePallet = selectedPallet || pallets?.[0].name || null;
   let storage = [];
   if (activePallet) {
-    storage = scraper.getPalletStorage(activePallet);
+    storage = scraper.getStorage(activePallet);
   }
 
   let selection: {
