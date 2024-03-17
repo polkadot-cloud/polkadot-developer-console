@@ -145,13 +145,17 @@ export class MetadataScraper {
         };
         break;
 
+      case 'composite':
+        // TODO: implement composite next.
+        break;
+
       case 'primitive':
         result.primitive = value;
         result.label = (value as string).toLowerCase();
         break;
 
       case 'sequence':
-        // TODO: implement sequence type next.
+        result.sequence = this.getType((value as AnyJson).type);
         break;
 
       case 'tuple':
