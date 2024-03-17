@@ -35,7 +35,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
   );
 
   // Format calls into a new `selection` array for rendering.
-  const selection: {
+  let selection: {
     call: string;
     docs: string[];
     fieldNames: string | undefined;
@@ -62,6 +62,11 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
       }
     );
   }
+
+  // Sort calls alphabetically based on call name.
+  selection = selection.sort(({ call: callA }, { call: callB }) =>
+    callA < callB ? -1 : callA > callB ? 1 : 0
+  );
 
   return (
     <section>

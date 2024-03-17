@@ -61,11 +61,16 @@ export const ChainState = () => {
     storage = scraper.getPalletStorage(activePallet);
   }
 
-  const selection: {
+  let selection: {
     docs: string[];
     name: string;
     types: AnyJson;
   }[] = storage;
+
+  // Sort storage items alphabetically based on call name.
+  selection = selection.sort(({ name: nameA }, { name: nameB }) =>
+    nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+  );
 
   return (
     <>
