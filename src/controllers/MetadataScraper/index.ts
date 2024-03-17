@@ -146,7 +146,7 @@ export class MetadataScraper {
         break;
 
       case 'composite':
-        // TODO: implement composite next.
+        result.composite = this.scrapeComposite(value);
         break;
 
       case 'primitive':
@@ -171,6 +171,7 @@ export class MetadataScraper {
 
       default:
         result.unknown = true;
+        console.warn('Unknown type scraped: ', type, value);
         break;
     }
 
@@ -178,8 +179,8 @@ export class MetadataScraper {
   }
 
   // Scrapes a variant type.
-  scrapeVariant(variant: AnyJson) {
-    const variants = variant.variants.reduce(
+  scrapeVariant(input: AnyJson) {
+    const variants = input.variants.reduce(
       (acc: AnyJson, { docs, fields, name }: AnyJson) => ({
         ...acc,
         [name]: {
@@ -192,6 +193,19 @@ export class MetadataScraper {
       {}
     );
     return variants;
+  }
+
+  // Scrapes a composite type.
+  scrapeComposite(input: AnyJson) {
+    const composite = input.fields.map(
+      ({ docs, name, type, typeName }: AnyJson) => ({
+        docs,
+        name,
+        typeName,
+        type: this.getType(type),
+      })
+    );
+    return composite;
   }
 
   // ------------------------------------------------------
