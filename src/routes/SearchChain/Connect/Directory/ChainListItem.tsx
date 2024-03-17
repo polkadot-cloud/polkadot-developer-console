@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Suspense, lazy, useMemo } from 'react';
-import { ConnectButton } from '../Wrappers';
+import { ConnectButton, SelectOptionWrapper } from '../Wrappers';
 import { Tag } from 'library/Tag';
 import { useTags } from 'contexts/Tags';
 import { TagControl } from 'library/TagControl';
@@ -14,7 +14,6 @@ import { type DirectoryId } from 'config/networks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConnectMenu } from './ConnectMenu';
 import { useTabs } from 'contexts/Tabs';
-import { SelectFormWrapper } from 'routes/Chain/Wrappers';
 
 export interface ChainListItemProps {
   chainId: DirectoryId;
@@ -55,7 +54,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   };
 
   return (
-    <SelectFormWrapper>
+    <SelectOptionWrapper>
       <div className="header">
         <section>
           <Suspense fallback={<div />}>
@@ -107,6 +106,6 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
           />
         </div>
       </div>
-    </SelectFormWrapper>
+    </SelectOptionWrapper>
   );
 };
