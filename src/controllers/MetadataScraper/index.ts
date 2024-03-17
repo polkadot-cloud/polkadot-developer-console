@@ -57,7 +57,6 @@ export class MetadataScraper {
       return;
     }
     const { items } = pallet.storage;
-    const types: AnyJson = [];
     const result = items.map((item: AnyJson) => {
       const { name, docs, type } = item;
 
@@ -78,11 +77,11 @@ export class MetadataScraper {
         };
       }
 
-      types.push({
+      return {
         name,
         docs,
         type: scrapedType,
-      });
+      };
     });
 
     return result;
@@ -104,22 +103,26 @@ export class MetadataScraper {
 
     const { def, path, params }: AnyJson = lookup.type;
     const [type, value] = Object.entries(def).flat();
-    const label = Formatter.typeToString(path, params);
 
     const result: AnyJson = {
       type,
-      label,
     };
 
     switch (type) {
       case 'variant':
         result.variant = this.scrapeVariant(value);
+        result.label = Formatter.typeToString(path, params);
         break;
 
       case 'tuple':
         result.tuple = (value as number[]).map((id: number) =>
           this.getType(id)
         );
+        break;
+
+      case 'primitive':
+        result.primitive = value;
+        result.label = (value as string).toLowerCase();
         break;
 
       default:
