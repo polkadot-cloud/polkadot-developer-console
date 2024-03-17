@@ -116,6 +116,12 @@ export class MetadataScraper {
         result.variant = this.scrapeVariant(value);
         break;
 
+      case 'tuple':
+        result.tuple = (value as number[]).map((id: number) =>
+          this.getType(id)
+        );
+        break;
+
       default:
         result.unknown = true;
         break;
