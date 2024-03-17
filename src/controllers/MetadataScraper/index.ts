@@ -148,13 +148,26 @@ export class MetadataScraper {
         };
         break;
 
+      case 'bitSequence':
+        result.label = Format.typeToString(path, params);
+        result.bitsequence = {
+          bitOrderType: this.getType((value as AnyJson).bitOrderType),
+          bitStoreType: this.getType((value as AnyJson).bitStoreType),
+        };
+        break;
+
+      case 'compact':
+        result.compact = this.getType((value as AnyJson).type);
+        break;
+
       case 'composite':
+        result.label = Format.typeToString(path, params);
         result.composite = this.scrapeComposite(value);
         break;
 
       case 'primitive':
-        result.primitive = value;
         result.label = (value as string).toLowerCase();
+        result.primitive = value;
         break;
 
       case 'sequence':
@@ -168,8 +181,8 @@ export class MetadataScraper {
         break;
 
       case 'variant':
-        result.variant = this.scrapeVariant(value);
         result.label = Format.typeToString(path, params);
+        result.variant = this.scrapeVariant(value);
         break;
 
       default:
@@ -178,6 +191,7 @@ export class MetadataScraper {
         break;
     }
 
+    result.label = Format.typeToString(path, params);
     return result;
   }
 
