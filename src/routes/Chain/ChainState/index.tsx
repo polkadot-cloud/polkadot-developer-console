@@ -41,6 +41,8 @@ export const ChainState = () => {
   // Get pallet list from scraper.
   const scraper = new MetadataScraper(Metadata);
   const pallets = scraper.getPallets();
+  // TODO: use currently active pallet.
+  scraper.getPalletStorage('Staking');
 
   return (
     <>

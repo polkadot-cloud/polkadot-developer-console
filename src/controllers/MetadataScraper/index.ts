@@ -42,17 +42,49 @@ export class MetadataScraper {
 
   // Get a pallet's calls list from metadata.
   getPalletCalls(palletName: string) {
-    const json = this.metadata.getMetadataJson();
-    const pallet = json.pallets.find(
-      ({ name }: { name: string }) => name === palletName
-    );
-
+    const pallet = this.getPallet(palletName);
     if (!pallet) {
       return;
     }
-
-    // Scrape pallet call types.
     const result = this.getType(pallet.calls.type);
+    return result;
+  }
+
+  // Get a pallet's storage items from metadata.
+  getPalletStorage(palletName: string) {
+    const pallet = this.getPallet(palletName);
+    if (!pallet) {
+      return;
+    }
+    const { items } = pallet.storage;
+    const types: AnyJson = [];
+    const result = items.map((item: AnyJson) => {
+      const { name, docs, type } = item;
+
+      const typeKey = Object.keys(type)[0];
+
+      let scrapedType;
+      if (typeKey === 'plain') {
+        scrapedType = {
+          argTypes: undefined,
+          returnType: this.getType(type.plain),
+        };
+      } else {
+        scrapedType = undefined;
+        const { key, value } = type.map;
+        scrapedType = {
+          argTypes: this.getType(key),
+          returnType: this.getType(value),
+        };
+      }
+
+      types.push({
+        name,
+        docs,
+        type: scrapedType,
+      });
+    });
+
     return result;
   }
 
@@ -85,7 +117,7 @@ export class MetadataScraper {
         break;
 
       default:
-        result.unknown;
+        result.unknown = true;
         break;
     }
 
@@ -107,5 +139,17 @@ export class MetadataScraper {
       {}
     );
     return variants;
+  }
+
+  // ------------------------------------------------------
+  // Class helpers
+  // ------------------------------------------------------
+
+  getPallet(palletName: string) {
+    const json = this.metadata.getMetadataJson();
+    const pallet = json.pallets.find(
+      ({ name }: { name: string }) => name === palletName
+    );
+    return pallet;
   }
 }
