@@ -26,7 +26,7 @@ export class MetadataScraper {
   // ------------------------------------------------------
 
   // Gets a sorted list of pallets from metadata.
-  // TODO: move to `Pallet` class.
+  // TODO: move to `Pallet` class. (Metadata.metadata.asV14.pallets)
   getPallets(filters?: string[]): PalletListItem[] {
     const json = this.metadata.getMetadataJson();
     let pallets = json.pallets || [];
