@@ -4,7 +4,7 @@
 import type { AnyJson } from '@w3ux/utils/types';
 import type { MetadataVersion } from 'model/Metadata/types';
 import type { PalletListItem } from './types';
-import { Formatter } from './Formatter';
+import { Format } from './Format';
 
 // A class to scrape metadata and format it in various ways.
 
@@ -26,6 +26,7 @@ export class MetadataScraper {
   // ------------------------------------------------------
 
   // Gets a sorted list of pallets from metadata.
+  // TODO: move to `Pallet` class.
   getPallets(filters?: string[]): PalletListItem[] {
     const json = this.metadata.getMetadataJson();
     let pallets = json.pallets || [];
@@ -57,6 +58,7 @@ export class MetadataScraper {
   }
 
   // Get a pallet's calls list from metadata.
+  // TODO: move to `Pallet` class and rename to getCalls.
   getPalletCalls(palletName: string) {
     const pallet = this.getPallet(palletName);
     if (!pallet) {
@@ -74,6 +76,7 @@ export class MetadataScraper {
   }
 
   // Get a pallet's storage items from metadata.
+  // TODO: move to `Pallet` class and rename to getStorage.
   getPalletStorage(palletName: string) {
     const pallet = this.getPallet(palletName);
     if (!pallet) {
@@ -166,7 +169,7 @@ export class MetadataScraper {
 
       case 'variant':
         result.variant = this.scrapeVariant(value);
-        result.label = Formatter.typeToString(path, params);
+        result.label = Format.typeToString(path, params);
         break;
 
       default:
@@ -212,6 +215,7 @@ export class MetadataScraper {
   // Class helpers
   // ------------------------------------------------------
 
+  // TODO: move to `Pallet` class.
   getPallet(palletName: string) {
     const json = this.metadata.getMetadataJson();
     const pallet = json.pallets.find(

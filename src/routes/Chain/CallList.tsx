@@ -11,7 +11,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import type { AnyJson } from '@w3ux/utils/types';
-import { Formatter } from 'controllers/MetadataScraper/Formatter';
+import { Format } from 'controllers/MetadataScraper/Format';
 
 export const CallList = ({ calls }: { calls: AnyJson }) => {
   // Call selection open.
@@ -52,10 +52,10 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
         { docs: string[]; fields: Record<string, string> },
       ]) => {
         // Get string representations of field names only.
-        const fieldNames = Formatter.formatFieldNames(fields);
+        const fieldNames = Format.formatFieldNames(fields);
 
         // Get string representations of field names and their types.
-        const fieldTypes = Formatter.formatFieldTypes(fields);
+        const fieldTypes = Format.formatFieldTypes(fields);
 
         // Push the call, docs and formatted field values to `selection`.
         selection.push({ call, docs, fieldNames, fieldTypes });

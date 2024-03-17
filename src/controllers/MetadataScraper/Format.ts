@@ -5,7 +5,7 @@ import type { AnyJson } from '@w3ux/utils/types';
 
 // A static class for formatting values into string representation.
 
-export class Formatter {
+export class Format {
   // ------------------------------------------------------
   // Fields.
   // ------------------------------------------------------
