@@ -16,6 +16,7 @@ import { useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { MetadataScraper } from 'controllers/MetadataScraper';
 import { PalletList } from '../PalletList';
+import type { AnyJson } from '@w3ux/utils/types';
 
 export const ChainState = () => {
   const { getChainSpec } = useApi();
@@ -46,9 +47,16 @@ export const ChainState = () => {
   const pallets = scraper.getPallets(['storage']);
 
   const activePallet = selectedPallet || pallets?.[0].name || null;
+  let storage = [];
   if (activePallet) {
-    scraper.getPalletStorage(activePallet);
+    storage = scraper.getPalletStorage(activePallet);
   }
+
+  const selection: {
+    docs: string[];
+    name: string;
+    types: AnyJson;
+  }[] = storage;
 
   return (
     <>
@@ -70,7 +78,9 @@ export const ChainState = () => {
             onClick={() => setStorageOpen(!storageOpen)}
           >
             <span>
-              <ChainListCallItem>Storage Item</ChainListCallItem>
+              <ChainListCallItem>
+                {selection[0]?.name || 'No Storage Items'}
+              </ChainListCallItem>
             </span>
             <span>
               <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
@@ -81,16 +91,19 @@ export const ChainState = () => {
             ref={storageSelectRef}
             className={`options${storageOpen ? ` open` : ``}`}
           >
-            <ChainListItemWrapper>
-              <span>
-                <ChainListCallItem>
-                  {pallets[0]?.name || 'No Pallets'}
-                </ChainListCallItem>
-              </span>
-              <span>
-                <h5>Some docs with text overflow.</h5>
-              </span>
-            </ChainListItemWrapper>
+            {selection.map(({ name, docs }) => (
+              <ChainListItemWrapper key={`call_select_${name}`}>
+                <span>
+                  <ChainListCallItem>
+                    {name}
+                    {/* {fieldNames && <span>({fieldNames})</span>} */}
+                  </ChainListCallItem>
+                </span>
+                <span>
+                  <h5>{docs[0]}</h5>
+                </span>
+              </ChainListItemWrapper>
+            ))}
           </div>
         </section>
       </SelectChainItemWrapper>
