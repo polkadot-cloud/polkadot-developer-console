@@ -138,17 +138,6 @@ export class MetadataScraper {
     };
 
     switch (type) {
-      case 'variant':
-        result.variant = this.scrapeVariant(value);
-        result.label = Formatter.typeToString(path, params);
-        break;
-
-      case 'tuple':
-        result.tuple = (value as number[]).map((id: number) =>
-          this.getType(id)
-        );
-        break;
-
       case 'array':
         result.array = {
           len: (value as AnyJson).len,
@@ -159,6 +148,21 @@ export class MetadataScraper {
       case 'primitive':
         result.primitive = value;
         result.label = (value as string).toLowerCase();
+        break;
+
+      case 'sequence':
+        // TODO: implement sequence type next.
+        break;
+
+      case 'tuple':
+        result.tuple = (value as number[]).map((id: number) =>
+          this.getType(id)
+        );
+        break;
+
+      case 'variant':
+        result.variant = this.scrapeVariant(value);
+        result.label = Formatter.typeToString(path, params);
         break;
 
       default:
