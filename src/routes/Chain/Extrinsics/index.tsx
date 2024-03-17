@@ -34,7 +34,7 @@ export const Extrinsics = () => {
   // Convert lookup types to TypeScript types.
   // NOTE: (I think) scraper needs to accumulate all types for a call, e.g. replace typeIds and
   // replace them with actual raw types, for `toRawType` to work.
-  // const result = Metadata.metadata.asV14.lookup.types.mzp((value) => {
+  // const result = Metadata.metadata.asV14.lookup.types.map((value) => {
   //   // const type = value.type.def.type;
   //   return(value.type.def.toJSON());
   // });
