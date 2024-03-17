@@ -21,6 +21,9 @@ export const ChainState = () => {
   const { getChainSpec } = useApi();
   const { activeTabId } = useTabs();
 
+  // The currently selected pallet.
+  const [selectedPallet, setSelectedPallet] = useState<string | null>(null);
+
   // Storage selection open.
   const [storageOpen, setStorageOpen] = useState<boolean>(false);
 
@@ -40,16 +43,23 @@ export const ChainState = () => {
 
   // Get pallet list from scraper.
   const scraper = new MetadataScraper(Metadata);
-  const pallets = scraper.getPallets();
-  // TODO: use currently active pallet.
-  scraper.getPalletStorage('Staking');
+  const pallets = scraper.getPallets(['storage']);
+
+  const activePallet = selectedPallet || pallets?.[0].name || null;
+  if (activePallet) {
+    scraper.getPalletStorage(activePallet);
+  }
 
   return (
     <>
       <Header />
       <SelectChainItemWrapper className="withHeader">
         {/* Pallet Selection */}
-        <PalletList pallets={pallets} />
+        <PalletList
+          pallets={pallets}
+          selected={activePallet}
+          onSelect={(value) => setSelectedPallet(value)}
+        />
 
         {/* Storage Item Selection */}
 

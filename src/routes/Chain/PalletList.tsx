@@ -12,7 +12,15 @@ import { useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import type { PalletListItem } from 'controllers/MetadataScraper/types';
 
-export const PalletList = ({ pallets }: { pallets: PalletListItem[] }) => {
+export const PalletList = ({
+  pallets,
+  selected,
+  onSelect,
+}: {
+  pallets: PalletListItem[];
+  selected: string | null;
+  onSelect: (value: string) => void;
+}) => {
   // Pallet selection open.
   const [palletsOpen, setPalletsOpen] = useState<boolean>(false);
 
@@ -32,9 +40,7 @@ export const PalletList = ({ pallets }: { pallets: PalletListItem[] }) => {
         onClick={() => setPalletsOpen(!palletsOpen)}
       >
         <span>
-          <ChainListCallItem>
-            {pallets[0]?.name || 'No Pallets'}
-          </ChainListCallItem>
+          <ChainListCallItem>{selected || 'No Pallets'}</ChainListCallItem>
         </span>
         <span>
           <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
@@ -46,7 +52,10 @@ export const PalletList = ({ pallets }: { pallets: PalletListItem[] }) => {
         className={`options${palletsOpen ? ` open` : ``}`}
       >
         {pallets.map(({ index, name }) => (
-          <ChainListItemWrapper key={`pallet_${index}_${name}`}>
+          <ChainListItemWrapper
+            key={`pallet_${index}_${name}`}
+            onClick={() => onSelect(name)}
+          >
             <span>
               <ChainListCallItem>{name}</ChainListCallItem>
             </span>

@@ -26,18 +26,34 @@ export class MetadataScraper {
   // ------------------------------------------------------
 
   // Gets a sorted list of pallets from metadata.
-  getPallets(): PalletListItem[] {
+  getPallets(filters?: string[]): PalletListItem[] {
     const json = this.metadata.getMetadataJson();
+    let pallets = json.pallets || [];
 
-    return (
-      json.pallets.map(({ index, name }: PalletListItem) => ({
+    // Filter the pallets with no calls.
+    if (filters?.includes('calls')) {
+      pallets = pallets.filter((pallet: AnyJson) => !!pallet.calls?.type);
+    }
+
+    // Filter pallets with no storage items.
+    if (filters?.includes('storage')) {
+      pallets = pallets.filter((pallet: AnyJson) => !!pallet.storage?.items);
+    }
+
+    // Narrow down the pallets to just the index and name.
+    pallets =
+      pallets.map(({ index, name }: PalletListItem) => ({
         index,
         name,
-      })) || []
-    ).sort(
+      })) || [];
+
+    // Sort the pallets by name.
+    pallets = pallets.sort(
       ({ name: aName }: { name: string }, { name: bName }: { name: string }) =>
         aName < bName ? -1 : aName > bName ? 1 : 0
     );
+
+    return pallets;
   }
 
   // Get a pallet's calls list from metadata.
@@ -46,8 +62,15 @@ export class MetadataScraper {
     if (!pallet) {
       return;
     }
-    const result = this.getType(pallet.calls.type);
-    return result;
+
+    // Defensive: Check if calls are defined for this pallet.
+    const callType = pallet.calls?.type;
+    if (callType) {
+      const result = this.getType(pallet.calls.type);
+      return result;
+    } else {
+      return null;
+    }
   }
 
   // Get a pallet's storage items from metadata.
@@ -56,33 +79,39 @@ export class MetadataScraper {
     if (!pallet) {
       return;
     }
-    const { items } = pallet.storage;
-    const result = items.map((item: AnyJson) => {
-      const { name, docs, type } = item;
 
-      const typeKey = Object.keys(type)[0];
+    let result = [];
+    // Defensive: Check if storage items are defined for this pallet.
+    const items = pallet.storage?.items;
 
-      let scrapedType;
-      if (typeKey === 'plain') {
-        scrapedType = {
-          argTypes: undefined,
-          returnType: this.getType(type.plain),
+    if (items) {
+      result = items.map((item: AnyJson) => {
+        const { name, docs, type } = item;
+
+        const typeKey = Object.keys(type)[0];
+
+        let scrapedType;
+        if (typeKey === 'plain') {
+          scrapedType = {
+            argTypes: undefined,
+            returnType: this.getType(type.plain),
+          };
+        } else {
+          scrapedType = undefined;
+          const { key, value } = type.map;
+          scrapedType = {
+            argTypes: this.getType(key),
+            returnType: this.getType(value),
+          };
+        }
+
+        return {
+          name,
+          docs,
+          type: scrapedType,
         };
-      } else {
-        scrapedType = undefined;
-        const { key, value } = type.map;
-        scrapedType = {
-          argTypes: this.getType(key),
-          returnType: this.getType(value),
-        };
-      }
-
-      return {
-        name,
-        docs,
-        type: scrapedType,
-      };
-    });
+      });
+    }
 
     return result;
   }
