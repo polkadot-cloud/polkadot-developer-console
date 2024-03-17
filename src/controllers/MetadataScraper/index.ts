@@ -120,6 +120,10 @@ export class MetadataScraper {
         );
         break;
 
+      case 'array':
+        // TODO: Implement array type scraping next.
+        break;
+
       case 'primitive':
         result.primitive = value;
         result.label = (value as string).toLowerCase();
