@@ -3,7 +3,6 @@
 
 import type { AnyJson } from '@w3ux/utils/types';
 import type { MetadataVersion } from 'model/Metadata/types';
-import { Format } from './Format';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -41,7 +40,11 @@ export class MetadataScraper {
 
     const result: AnyJson = {
       type,
+      path,
+      params,
     };
+
+    // TODO: only calculate label if this is a provided job.
 
     switch (type) {
       case 'array':
@@ -52,7 +55,7 @@ export class MetadataScraper {
         break;
 
       case 'bitSequence':
-        result.label = Format.typeToString(path, params);
+        result.label = path.length ? path[path.length - 1] : '';
         result.bitsequence = {
           bitOrderType: this.getType((value as AnyJson).bitOrderType),
           bitStoreType: this.getType((value as AnyJson).bitStoreType),
@@ -64,7 +67,7 @@ export class MetadataScraper {
         break;
 
       case 'composite':
-        result.label = Format.typeToString(path, params);
+        result.label = path.length ? path[path.length - 1] : '';
         result.composite = this.scrapeComposite(value);
         break;
 
@@ -84,7 +87,7 @@ export class MetadataScraper {
         break;
 
       case 'variant':
-        result.label = Format.typeToString(path, params);
+        result.label = path.length ? path[path.length - 1] : '';
         result.variant = this.scrapeVariant(value);
         break;
 
@@ -97,14 +100,26 @@ export class MetadataScraper {
   }
 
   // Scrapes a variant type.
+  // TODO: format in the same way as composite.
   scrapeVariant(input: AnyJson) {
     const variants = input.variants.reduce(
-      (acc: AnyJson, { docs, fields, name }: AnyJson) => ({
+      (
+        acc: AnyJson,
+        { docs: variantDocs, fields, name: variantName }: AnyJson
+      ) => ({
         ...acc,
-        [name]: {
-          docs,
+        [variantName]: {
+          docs: variantDocs,
           fields: Object.fromEntries(
-            fields.map((field: AnyJson) => [field.name, field.typeName])
+            fields.map(({ docs, name, type, typeName }: AnyJson) => [
+              name,
+              {
+                docs,
+                name,
+                typeName,
+                type: this.getType(type),
+              },
+            ])
           ),
         },
       }),
