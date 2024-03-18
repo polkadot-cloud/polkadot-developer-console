@@ -60,7 +60,7 @@ export class PalletScraper extends MetadataScraper {
 
     if (items) {
       result = items.map((item: AnyJson) => {
-        const { name, docs, type } = item;
+        const { name, docs, type, modifier, fallback } = item;
 
         const typeKey = Object.keys(type)[0];
 
@@ -82,6 +82,8 @@ export class PalletScraper extends MetadataScraper {
         return {
           name,
           docs,
+          modifier,
+          fallback,
           type: scrapedType,
         };
       });
