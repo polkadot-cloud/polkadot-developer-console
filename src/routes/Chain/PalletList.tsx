@@ -43,41 +43,43 @@ export const PalletList = ({
 
   return (
     <section>
-      <h5>Pallet</h5>
-      <SelectItemWrapper
-        className={`standalone${palletsOpen ? ` open` : ``} ignore-outside-alerter-pallets`}
-        onClick={() => {
-          setPalletsOpen(!palletsOpen);
-        }}
-      >
-        <span>
-          <SelectTextWrapper>{selected || 'No Pallets'}</SelectTextWrapper>
-        </span>
-        <span>
-          <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
-        </span>
-      </SelectItemWrapper>
+      <div className="inner">
+        <h5>Pallet</h5>
+        <SelectItemWrapper
+          className={`standalone${palletsOpen ? ` open` : ``} ignore-outside-alerter-pallets`}
+          onClick={() => {
+            setPalletsOpen(!palletsOpen);
+          }}
+        >
+          <span>
+            <SelectTextWrapper>{selected || 'No Pallets'}</SelectTextWrapper>
+          </span>
+          <span>
+            <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
+          </span>
+        </SelectItemWrapper>
 
-      <SelectDropdownWrapper
-        ref={palletSelectRef}
-        className={`${palletsOpen ? ` open` : ``}`}
-      >
-        {pallets.map(({ index, name }) => (
-          <SelectItemWrapper
-            key={`pallet_${index}_${name}`}
-            className={`option${selected === name ? ` selected` : ``}`}
-            onClick={() => {
-              setPalletsOpen(false);
-              onSelect(name);
-            }}
-          >
-            <span>
-              <SelectTextWrapper>{name}</SelectTextWrapper>
-            </span>
-            <span></span>
-          </SelectItemWrapper>
-        ))}
-      </SelectDropdownWrapper>
+        <SelectDropdownWrapper
+          ref={palletSelectRef}
+          className={`${palletsOpen ? ` open` : ``}`}
+        >
+          {pallets.map(({ index, name }) => (
+            <SelectItemWrapper
+              key={`pallet_${index}_${name}`}
+              className={`option${selected === name ? ` selected` : ``}`}
+              onClick={() => {
+                setPalletsOpen(false);
+                onSelect(name);
+              }}
+            >
+              <span>
+                <SelectTextWrapper>{name}</SelectTextWrapper>
+              </span>
+              <span></span>
+            </SelectItemWrapper>
+          ))}
+        </SelectDropdownWrapper>
+      </div>
     </section>
   );
 };

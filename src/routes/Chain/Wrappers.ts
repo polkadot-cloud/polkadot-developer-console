@@ -21,17 +21,27 @@ export const SelectFormWrapper = styled.div`
     flex-direction: column;
     position: relative;
 
-    &:first-child {
-      flex-basis: 25%;
-      margin-right: 0.4rem;
-    }
-    &:last-child {
-      margin-left: 0.4rem;
-      flex-grow: 1;
+    > .inner {
+      display: flex;
+      flex-direction: column;
+
+      > h5 {
+        margin-bottom: 0.25rem;
+      }
     }
 
-    > h5 {
-      margin-bottom: 0.25rem;
+    &:first-child {
+      flex-basis: 25%;
+      > .inner,
+      > .inner > div {
+        width: calc(100% - 0.75rem);
+      }
+    }
+
+    &:last-child {
+      width: 100%;
+      max-width: 75%;
+      flex-grow: 1;
     }
   }
 `;

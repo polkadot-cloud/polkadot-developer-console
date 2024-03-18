@@ -3,6 +3,7 @@
 
 import type { AnyJson } from '@w3ux/utils/types';
 import type { MetadataVersion } from 'model/Metadata/types';
+import { Format } from './Format';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -55,7 +56,7 @@ export class MetadataScraper {
         break;
 
       case 'bitSequence':
-        result.label = path.length ? path[path.length - 1] : '';
+        result.label = Format.typeToString(path, params);
         result.bitsequence = {
           bitOrderType: this.getType((value as AnyJson).bitOrderType),
           bitStoreType: this.getType((value as AnyJson).bitStoreType),
@@ -67,7 +68,7 @@ export class MetadataScraper {
         break;
 
       case 'composite':
-        result.label = path.length ? path[path.length - 1] : '';
+        result.label = Format.typeToString(path, params);
         result.composite = this.scrapeComposite(value);
         break;
 
@@ -87,7 +88,7 @@ export class MetadataScraper {
         break;
 
       case 'variant':
-        result.label = path.length ? path[path.length - 1] : '';
+        result.label = Format.typeToString(path, params);
         result.variant = this.scrapeVariant(value);
         break;
 

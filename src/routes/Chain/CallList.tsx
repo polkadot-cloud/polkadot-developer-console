@@ -69,49 +69,51 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
 
   return (
     <section>
-      <h5>Call</h5>
-      <SelectItemWrapper
-        className={`standalone${callsOpen ? ` open` : ``} ignore-outside-alerter-calls`}
-        onClick={() => {
-          setCallsOpen(!callsOpen);
-        }}
-      >
-        <span>
-          <SelectTextWrapper>
-            {selection[0]?.call || 'No Calls'}
-            {selection[0]?.fieldNames && (
-              <span>({selection[0].fieldNames})</span>
-            )}
-          </SelectTextWrapper>
-        </span>
-        <span>
-          <h5>{selection[0]?.docs?.[0] || ''}</h5>
-          <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
-        </span>
-      </SelectItemWrapper>
+      <div className="inner">
+        <h5>Call</h5>
+        <SelectItemWrapper
+          className={`standalone${callsOpen ? ` open` : ``} ignore-outside-alerter-calls`}
+          onClick={() => {
+            setCallsOpen(!callsOpen);
+          }}
+        >
+          <span>
+            <SelectTextWrapper>
+              {selection[0]?.call || 'No Calls'}
+              {selection[0]?.fieldNames && (
+                <span>({selection[0].fieldNames})</span>
+              )}
+            </SelectTextWrapper>
+          </span>
+          <span>
+            <h5>{selection[0]?.docs?.[0] || ''}</h5>
+            <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
+          </span>
+        </SelectItemWrapper>
 
-      <SelectDropdownWrapper
-        ref={callsSelectRef}
-        className={`${callsOpen ? ` open` : ``}`}
-      >
-        {selection.map(({ call, docs, fieldNames }) => (
-          <SelectItemWrapper
-            key={`call_select_${call}`}
-            className="option"
-            onClick={() => setCallsOpen(false)}
-          >
-            <span>
-              <SelectTextWrapper>
-                {call}
-                {fieldNames && <span>({fieldNames})</span>}
-              </SelectTextWrapper>
-            </span>
-            <span>
-              <h5>{docs[0]}</h5>
-            </span>
-          </SelectItemWrapper>
-        ))}
-      </SelectDropdownWrapper>
+        <SelectDropdownWrapper
+          ref={callsSelectRef}
+          className={`${callsOpen ? ` open` : ``}`}
+        >
+          {selection.map(({ call, docs, fieldNames }) => (
+            <SelectItemWrapper
+              key={`call_select_${call}`}
+              className="option"
+              onClick={() => setCallsOpen(false)}
+            >
+              <span>
+                <SelectTextWrapper>
+                  {call}
+                  {fieldNames && <span>({fieldNames})</span>}
+                </SelectTextWrapper>
+              </span>
+              <span>
+                <h5>{docs[0]}</h5>
+              </span>
+            </SelectItemWrapper>
+          ))}
+        </SelectDropdownWrapper>
+      </div>
     </section>
   );
 };

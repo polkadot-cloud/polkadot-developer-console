@@ -61,10 +61,55 @@ export const ChainState = () => {
     storage = scraper.getStorage(activePallet);
   }
 
+  // Go through `storage` and format for list rendering.
+  storage = storage.map((storageItem: AnyJson) => {
+    const {
+      type: { argTypes, returnType },
+    } = storageItem;
+
+    // Format arguments and return types
+    const sigTypes: [string, string] = ['', ''];
+    //               ^^^^^^  ^^^^^^
+    //               args,   return
+
+    [argTypes, returnType].forEach((section, index) => {
+      let typeStr = '';
+      switch (section?.type) {
+        case 'composite':
+          typeStr = section.label;
+          break;
+
+        case 'variant':
+          typeStr = section.label;
+          break;
+
+        // TODO: handle rest of metadata types.
+      }
+      sigTypes[index] = typeStr;
+    });
+
+    let callSig = '';
+    if (sigTypes[0] !== '') {
+      callSig = `(${sigTypes[0]}`;
+    } else {
+      callSig = '()';
+    }
+
+    if (sigTypes[1] !== '') {
+      callSig += `: ${sigTypes[1]}`;
+    }
+
+    return {
+      ...storageItem,
+      callSig,
+    };
+  });
+
   let selection: {
     docs: string[];
     name: string;
     types: AnyJson;
+    callSig: string;
   }[] = storage;
 
   // Sort storage items alphabetically based on call name.
@@ -86,43 +131,47 @@ export const ChainState = () => {
         {/* Storage Item Selection */}
 
         <section>
-          <h5>Storage Item</h5>
-          <SelectItemWrapper
-            className={`standalone${storageOpen ? ` open` : ``} ignore-outside-alerter-storage`}
-            onClick={() => setStorageOpen(!storageOpen)}
-          >
-            <span>
-              <SelectTextWrapper>
-                {selection[0]?.name || 'No Storage Items'}
-              </SelectTextWrapper>
-            </span>
-            <span>
-              <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
-            </span>
-          </SelectItemWrapper>
+          <div className="inner">
+            <h5>Storage Item</h5>
+            <SelectItemWrapper
+              className={`standalone${storageOpen ? ` open` : ``} ignore-outside-alerter-storage`}
+              onClick={() => setStorageOpen(!storageOpen)}
+            >
+              <span>
+                <SelectTextWrapper>
+                  {selection[0]?.name || 'No Storage Items'}
+                  <span>{selection[0]?.callSig || ''}</span>
+                </SelectTextWrapper>
+              </span>
+              <span>
+                <h5>{selection[0]?.docs?.[0] || ''}</h5>
+                <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
+              </span>
+            </SelectItemWrapper>
 
-          <SelectDropdownWrapper
-            ref={storageSelectRef}
-            className={`${storageOpen ? ` open` : ``}`}
-          >
-            {selection.map(({ name, docs }) => (
-              <SelectItemWrapper
-                key={`storage_select_${name}`}
-                className="option"
-                onClick={() => setStorageOpen(false)}
-              >
-                <span>
-                  <SelectTextWrapper>
-                    {name}
-                    {/* {fieldNames && <span>({fieldNames})</span>} */}
-                  </SelectTextWrapper>
-                </span>
-                <span>
-                  <h5>{docs[0]}</h5>
-                </span>
-              </SelectItemWrapper>
-            ))}
-          </SelectDropdownWrapper>
+            <SelectDropdownWrapper
+              ref={storageSelectRef}
+              className={`${storageOpen ? ` open` : ``}`}
+            >
+              {selection.map(({ name, docs, callSig }) => (
+                <SelectItemWrapper
+                  key={`storage_select_${name}`}
+                  className="option"
+                  onClick={() => setStorageOpen(false)}
+                >
+                  <span>
+                    <SelectTextWrapper>
+                      {name}
+                      <span>{callSig}</span>
+                    </SelectTextWrapper>
+                  </span>
+                  <span>
+                    <h5>{docs[0]}</h5>
+                  </span>
+                </SelectItemWrapper>
+              ))}
+            </SelectDropdownWrapper>
+          </div>
         </section>
       </SelectFormWrapper>
     </>
