@@ -48,7 +48,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
     variant.forEach(
       ([call, { docs, fields }]: [
         string,
-        { docs: string[]; fields: Record<string, string> },
+        { docs: string[]; fields: AnyJson[] },
       ]) => {
         // Get string representations of field names only.
         const fieldNames = Format.fieldNames(fields);

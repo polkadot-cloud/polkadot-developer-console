@@ -110,17 +110,12 @@ export class MetadataScraper {
         ...acc,
         [variantName]: {
           docs: variantDocs,
-          fields: Object.fromEntries(
-            fields.map(({ docs, name, type, typeName }: AnyJson) => [
-              name,
-              {
-                docs,
-                name,
-                typeName,
-                type: this.getType(type),
-              },
-            ])
-          ),
+          fields: fields.map(({ docs, name, type, typeName }: AnyJson) => ({
+            docs,
+            name,
+            typeName,
+            type: this.getType(type),
+          })),
         },
       }),
       {}
