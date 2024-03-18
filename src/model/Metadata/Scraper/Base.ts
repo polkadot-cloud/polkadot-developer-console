@@ -93,8 +93,6 @@ export class MetadataScraper {
         console.warn('Unknown type scraped: ', type, value);
         break;
     }
-
-    result.label = Format.typeToString(path, params);
     return result;
   }
 
