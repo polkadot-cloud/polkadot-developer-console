@@ -45,7 +45,6 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
   // Calls type should aways be a variant, but checking to prevent errors.
   if (calls && calls.type === 'variant') {
     const variant = Object.entries(calls.variant) as [string, AnyJson][];
-
     variant.forEach(
       ([call, { docs, fields }]: [
         string,
@@ -86,6 +85,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
           </SelectTextWrapper>
         </span>
         <span>
+          <h5>{selection[0]?.docs?.[0] || ''}</h5>
           <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
         </span>
       </SelectItemWrapper>
