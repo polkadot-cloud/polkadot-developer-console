@@ -96,7 +96,9 @@ export const ChainState = () => {
         break;
       case 'composite':
         // Expand type if short label is not defined, or if basic types.
-        if (['', 'BoundedVec'].includes(section.label.short)) {
+        if (
+          ['', 'BoundedVec', 'WeakBoundedVec'].includes(section.label.short)
+        ) {
           typeStr += section.composite.reduce(
             (acc: string, field: AnyJson, index: number) => {
               let str = acc + getSigType(field.type);
