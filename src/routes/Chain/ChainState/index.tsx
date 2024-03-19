@@ -17,6 +17,7 @@ import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { PalletList } from '../PalletList';
 import type { AnyJson } from '@w3ux/utils/types';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
+import { getShortLabel } from '../Utils';
 
 export const ChainState = () => {
   const { getChainSpec } = useApi();
@@ -61,9 +62,84 @@ export const ChainState = () => {
     storage = scraper.getStorage(activePallet);
   }
 
+  // A function that can be called recursively to format a callSig argument and return types.
+  const getSigType = (section: AnyJson) => {
+    let typeStr = '';
+
+    switch (section?.type) {
+      case 'array':
+        typeStr = getSigType(section.array.type);
+        break;
+
+      case 'compact':
+        typeStr = getSigType(section.sequence);
+        break;
+      case 'sequence':
+        typeStr = `Vec<${getSigType(section.sequence)}>`;
+        break;
+      case 'tuple':
+        typeStr = `(${section.tuple.reduce(
+          (acc: string, subSection: AnyJson, index: number) => {
+            const sigType = getSigType(subSection);
+            acc += sigType;
+            if (index !== section.tuple.length - 1) {
+              acc += ', ';
+            }
+            return acc;
+          },
+          ''
+        )})`;
+        break;
+      case 'bitSequence':
+      case 'primitive':
+        typeStr = getShortLabel(section.label);
+        break;
+      case 'composite':
+        // Expand type if short label is not defined, or if basic types.
+        if (['', 'BoundedVec'].includes(section.label.short)) {
+          typeStr += section.composite.reduce(
+            (acc: string, field: AnyJson, index: number) => {
+              let str = acc + getSigType(field.type);
+              if (index < section.composite.length - 1) {
+                str += ', ';
+              }
+              return str;
+            },
+            ''
+          );
+        } else {
+          typeStr = `${section.label.short}`;
+        }
+
+        break;
+      case 'variant':
+        typeStr = `${section.label.short}`;
+        // If variant is `Option`, expand signature with its `Some` type.
+        if (section.label.short === 'Option') {
+          // TODO: expand to check if this variant is actually an option of `Some` and `None`, where
+          // `None` has no fields.
+          typeStr +=
+            section.variant[1].fields.reduce(
+              (acc: string, field: AnyJson, index: number) => {
+                let str = acc + getSigType(field.type);
+                if (index < section.variant[1].fields.length - 1) {
+                  str += ', ';
+                }
+                return str;
+              },
+              `<`
+            ) + `>`;
+        }
+        break;
+    }
+
+    return typeStr;
+  };
+
   // Go through `storage` and format for list rendering.
   storage = storage.map((storageItem: AnyJson) => {
     const {
+      modifier,
       type: { argTypes, returnType },
     } = storageItem;
 
@@ -71,32 +147,30 @@ export const ChainState = () => {
     const sigTypes: [string, string] = ['', ''];
     //               ^^^^^^  ^^^^^^
     //               args,   return
-
     [argTypes, returnType].forEach((section, index) => {
-      let typeStr = '';
-      switch (section?.type) {
-        case 'composite':
-          typeStr = section.label;
-          break;
-
-        case 'variant':
-          typeStr = section.label;
-          break;
-
-        // TODO: handle rest of metadata types.
-      }
-      sigTypes[index] = typeStr;
+      sigTypes[index] = getSigType(section);
     });
 
     let callSig = '';
     if (sigTypes[0] !== '') {
-      callSig = `(${sigTypes[0]}`;
+      // Regex to check if `sigTypes[0] is already wrapped in parens, and to do so if not.
+      if (!/^\(.*\)$/.test(sigTypes[0])) {
+        callSig = `(${sigTypes[0]})`;
+      } else {
+        callSig = `${sigTypes[0]}`;
+      }
     } else {
       callSig = '()';
     }
 
     if (sigTypes[1] !== '') {
-      callSig += `: ${sigTypes[1]}`;
+      callSig += `: `;
+      // Handle modifiers.
+      if (modifier === 'Optional') {
+        callSig += `Option<${sigTypes[1]}>`;
+      } else {
+        callSig += sigTypes[1];
+      }
     }
 
     return {
@@ -105,6 +179,7 @@ export const ChainState = () => {
     };
   });
 
+  // Sort storage items alphabetically based on call name.
   let selection: {
     docs: string[];
     name: string;
@@ -112,7 +187,6 @@ export const ChainState = () => {
     callSig: string;
   }[] = storage;
 
-  // Sort storage items alphabetically based on call name.
   selection = selection.sort(({ name: nameA }, { name: nameB }) =>
     nameA < nameB ? -1 : nameA > nameB ? 1 : 0
   );

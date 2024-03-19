@@ -57,7 +57,6 @@ export class PalletScraper extends MetadataScraper {
     let result = [];
     // Defensive: Check if storage items are defined for this pallet.
     const items = pallet.storage?.items;
-
     if (items) {
       result = items.map((item: AnyJson) => {
         const { name, docs, type, modifier, fallback } = item;
