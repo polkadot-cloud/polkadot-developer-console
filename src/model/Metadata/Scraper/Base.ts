@@ -45,8 +45,6 @@ export class MetadataScraper {
       params,
     };
 
-    // TODO: only calculate label if this is a provided job.
-
     switch (type) {
       case 'array':
         result.array = {
@@ -56,7 +54,10 @@ export class MetadataScraper {
         break;
 
       case 'bitSequence':
-        result.label = Format.typeToString(path, params);
+        result.label = {
+          long: Format.typeToString(path, params),
+          short: path[path.length - 1],
+        };
         result.bitsequence = {
           bitOrderType: this.getType((value as AnyJson).bitOrderType),
           bitStoreType: this.getType((value as AnyJson).bitStoreType),
@@ -68,7 +69,10 @@ export class MetadataScraper {
         break;
 
       case 'composite':
-        result.label = Format.typeToString(path, params);
+        result.label = {
+          long: Format.typeToString(path, params),
+          short: path[path.length - 1],
+        };
         result.composite = this.scrapeComposite(value);
         break;
 
@@ -88,7 +92,10 @@ export class MetadataScraper {
         break;
 
       case 'variant':
-        result.label = Format.typeToString(path, params);
+        result.label = {
+          long: Format.typeToString(path, params),
+          short: path[path.length - 1],
+        };
         result.variant = this.scrapeVariant(value);
         break;
 
@@ -101,25 +108,18 @@ export class MetadataScraper {
   }
 
   // Scrapes a variant type.
-  // TODO: format in the same way as composite.
   scrapeVariant(input: AnyJson) {
-    const variants = input.variants.reduce(
-      (
-        acc: AnyJson,
-        { docs: variantDocs, fields, name: variantName }: AnyJson
-      ) => ({
-        ...acc,
-        [variantName]: {
-          docs: variantDocs,
-          fields: fields.map(({ docs, name, type, typeName }: AnyJson) => ({
-            docs,
-            name,
-            typeName,
-            type: this.getType(type),
-          })),
-        },
-      }),
-      {}
+    const variants = input.variants.map(
+      ({ docs: variantDocs, fields, name: variantName }: AnyJson) => ({
+        name: variantName,
+        docs: variantDocs,
+        fields: fields.map(({ docs, name, type, typeName }: AnyJson) => ({
+          docs,
+          name,
+          typeName,
+          type: this.getType(type),
+        })),
+      })
     );
     return variants;
   }

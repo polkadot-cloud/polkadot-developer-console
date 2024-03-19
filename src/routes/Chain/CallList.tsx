@@ -36,7 +36,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
 
   // Format calls into a new `selection` array for rendering.
   let selection: {
-    call: string;
+    name: string;
     docs: string[];
     fieldNames: string | undefined;
     fieldTypes: string | undefined;
@@ -44,12 +44,16 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
 
   // Calls type should aways be a variant, but checking to prevent errors.
   if (calls && calls.type === 'variant') {
-    const variant = Object.entries(calls.variant) as [string, AnyJson][];
-    variant.forEach(
-      ([call, { docs, fields }]: [
-        string,
-        { docs: string[]; fields: AnyJson[] },
-      ]) => {
+    calls.variant.forEach(
+      ({
+        name,
+        docs,
+        fields,
+      }: {
+        name: string;
+        docs: string[];
+        fields: AnyJson[];
+      }) => {
         // Get string representations of field names only.
         const fieldNames = Format.fieldNames(fields);
 
@@ -57,14 +61,14 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
         const fieldTypes = Format.fieldTypes(fields);
 
         // Push the call, docs and formatted field values to `selection`.
-        selection.push({ call, docs, fieldNames, fieldTypes });
+        selection.push({ name, docs, fieldNames, fieldTypes });
       }
     );
   }
 
   // Sort calls alphabetically based on call name.
-  selection = selection.sort(({ call: callA }, { call: callB }) =>
-    callA < callB ? -1 : callA > callB ? 1 : 0
+  selection = selection.sort(({ name: nameA }, { name: nameB }) =>
+    nameA < nameB ? -1 : nameA > nameB ? 1 : 0
   );
 
   return (
@@ -79,7 +83,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
         >
           <span>
             <SelectTextWrapper>
-              {selection[0]?.call || 'No Calls'}
+              {selection[0]?.name || 'No Calls'}
               {selection[0]?.fieldNames && (
                 <span>({selection[0].fieldNames})</span>
               )}
@@ -95,15 +99,15 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
           ref={callsSelectRef}
           className={`${callsOpen ? ` open` : ``}`}
         >
-          {selection.map(({ call, docs, fieldNames }) => (
+          {selection.map(({ name, docs, fieldNames }) => (
             <SelectItemWrapper
-              key={`call_select_${call}`}
+              key={`call_select_${name}`}
               className="option"
               onClick={() => setCallsOpen(false)}
             >
               <span>
                 <SelectTextWrapper>
-                  {call}
+                  {name}
                   {fieldNames && <span>({fieldNames})</span>}
                 </SelectTextWrapper>
               </span>
