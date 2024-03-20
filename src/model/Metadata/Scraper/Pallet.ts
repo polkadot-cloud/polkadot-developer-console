@@ -14,7 +14,7 @@ export class PalletScraper extends MetadataScraper {
   constructor(
     metadata: MetadataVersion,
     config: ScraperConfig = {
-      maxDepth: 7,
+      maxDepth: 5,
     }
   ) {
     super(metadata, config);
