@@ -15,7 +15,6 @@ import { useTabs } from 'contexts/Tabs';
 import { useMemo, useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { PalletList } from '../PalletList';
-import type { AnyJson } from '@w3ux/utils/types';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { FormatCallSignature } from 'model/Metadata/Format/CallSignature';
 import type { PalletScrapedWithSig } from 'model/Metadata/Scraper/types';
@@ -78,7 +77,7 @@ export const ChainState = () => {
   const storageList: PalletScrapedWithSig[] = useMemo(
     () =>
       storageItems
-        .map((storageItem: AnyJson) => ({
+        .map((storageItem) => ({
           ...storageItem,
           callSig: new FormatCallSignature(storageItem).format(),
         }))
