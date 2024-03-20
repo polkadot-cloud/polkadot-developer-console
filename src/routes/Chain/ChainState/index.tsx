@@ -18,13 +18,7 @@ import { PalletList } from '../PalletList';
 import type { AnyJson } from '@w3ux/utils/types';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { FormatCallSignature } from 'model/Metadata/Format/CallSignature';
-
-interface StorgeListItem {
-  docs: string[];
-  name: string;
-  types: AnyJson;
-  callSig: string;
-}
+import type { PalletScrapedWithSig } from 'model/Metadata/Scraper/types';
 
 export const ChainState = () => {
   const { activeTabId } = useTabs();
@@ -81,7 +75,7 @@ export const ChainState = () => {
   const { pallets, activePallet, storageItems } = storageData;
 
   // Inject call signature into storage items.
-  const storageList: StorgeListItem[] = useMemo(
+  const storageList: PalletScrapedWithSig[] = useMemo(
     () =>
       storageItems
         .map((storageItem: AnyJson) => ({

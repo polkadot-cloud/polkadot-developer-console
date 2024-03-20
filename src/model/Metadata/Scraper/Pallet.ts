@@ -1,14 +1,20 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/utils/types';
-import type { PalletListItem, ScraperConfig } from './types';
+import type {
+  PalleStorageMap,
+  Pallet,
+  PalletListItem,
+  PalletScraped,
+  PalletStoragePlain,
+  ScraperConfig,
+} from './types';
 import { MetadataScraper } from './Base';
 import type { MetadataVersion } from 'model/Metadata/types';
 
 export class PalletScraper extends MetadataScraper {
   // The pallet metadata in JSON format.
-  pallets: AnyJson;
+  pallets: Pallet[];
 
   // Initialize the class with pallet.
   constructor(
@@ -28,42 +34,40 @@ export class PalletScraper extends MetadataScraper {
 
     // Filter the pallets with no calls.
     if (filters?.includes('calls')) {
-      filtered = filtered.filter((pallet: AnyJson) => !!pallet.calls?.type);
+      filtered = filtered.filter((pallet) => !!pallet.calls?.type);
     }
 
     // Filter pallets with no storage items.
     if (filters?.includes('storage')) {
-      filtered = filtered.filter((pallet: AnyJson) => !!pallet.storage?.items);
+      filtered = filtered.filter((pallet) => !!pallet.storage?.items);
     }
 
-    // Narrow down the pallets to just the index and name.
-    filtered =
+    // Narrow down the pallets to just the index and name, and sort alphabitically by name.
+    const filteredList = (
       filtered.map(({ index, name }: PalletListItem) => ({
         index,
         name,
-      })) || [];
-
-    // Sort the pallets by name.
-    filtered = filtered.sort(
+      })) || []
+    ).sort(
       ({ name: aName }: { name: string }, { name: bName }: { name: string }) =>
         aName < bName ? -1 : aName > bName ? 1 : 0
     );
-    return filtered;
+    return filteredList;
   }
 
   // Get a pallet's storage items from metadata.
-  getStorage(palletName: string): AnyJson[] {
+  getStorage(palletName: string) {
     const pallet = this.getPallet(palletName);
     if (!pallet) {
       return [];
     }
 
-    let result: AnyJson[] = [];
+    let result: PalletScraped[] = [];
     // Defensive: Check if storage items are defined for this pallet.
     const items = pallet.storage?.items;
 
     if (items) {
-      result = items.map((item: AnyJson) => {
+      result = items.map((item) => {
         const { name, docs, type, modifier, fallback } = item;
         const typeKey = Object.keys(type)[0];
 
@@ -71,10 +75,10 @@ export class PalletScraper extends MetadataScraper {
         if (typeKey === 'plain') {
           scrapedType = {
             argTypes: undefined,
-            returnType: this.start(type.plain),
+            returnType: this.start((type as PalletStoragePlain).plain),
           };
         } else {
-          const { key, value } = type.map;
+          const { key, value } = (type as PalleStorageMap).map;
           scrapedType = {
             argTypes: this.start(key),
             returnType: this.start(value),
