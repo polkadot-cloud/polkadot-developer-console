@@ -18,6 +18,7 @@ export class MetadataScraper {
   #maxDepth = 10;
 
   // Initialize the class with metadata.
+  // TODO: pass a debug flag in an `options` arg to enable console logs.
   constructor(metadata: MetadataVersion) {
     this.metadata = metadata;
 
@@ -28,6 +29,11 @@ export class MetadataScraper {
   // ------------------------------------------------------
   // Scrape types.
   // ------------------------------------------------------
+
+  // Start scraping a type from metadata. Entry should be made from here.
+  startScrape(typeId: number) {
+    this.getType(typeId, 0);
+  }
 
   // Get a lookup type from metadata. Possible recursion when scraping type ids.
   getType(typeId: number, depth: number) {

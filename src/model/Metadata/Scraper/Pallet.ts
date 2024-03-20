@@ -67,13 +67,13 @@ export class PalletScraper extends MetadataScraper {
         if (typeKey === 'plain') {
           scrapedType = {
             argTypes: undefined,
-            returnType: this.getType(type.plain, 0),
+            returnType: this.startScrape(type.plain),
           };
         } else {
           const { key, value } = type.map;
           scrapedType = {
-            argTypes: this.getType(key, 0),
-            returnType: this.getType(value, 0),
+            argTypes: this.startScrape(key),
+            returnType: this.startScrape(value),
           };
         }
 
@@ -100,7 +100,7 @@ export class PalletScraper extends MetadataScraper {
     // Defensive: Check if calls are defined for this pallet.
     const callType = pallet.calls?.type;
     if (callType) {
-      const result = this.getType(pallet.calls.type, 0);
+      const result = this.startScrape(pallet.calls.type);
       return result;
     } else {
       return null;

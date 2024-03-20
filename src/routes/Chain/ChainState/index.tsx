@@ -98,14 +98,12 @@ export const ChainState = () => {
     <>
       <Header />
       <SelectFormWrapper className="withHeader">
-        {/* Pallet Selection */}
         <PalletList
           pallets={pallets}
           selected={activePallet}
           onSelect={(value) => setSelectedPallet(value)}
         />
 
-        {/* Storage Item Selection */}
         <section>
           <div className="inner">
             <h5>Storage Item</h5>
