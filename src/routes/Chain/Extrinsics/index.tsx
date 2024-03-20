@@ -22,7 +22,7 @@ export const Extrinsics = () => {
     return null;
   }
 
-  const scraper = new PalletScraper(Metadata);
+  const scraper = new PalletScraper(Metadata, { maxDepth: 2 });
   const pallets = scraper.getList(['calls']);
 
   const activePallet = selectedPallet || pallets?.[0].name || null;
