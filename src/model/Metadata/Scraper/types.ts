@@ -5,3 +5,16 @@ export interface PalletListItem {
   name: string;
   index: number;
 }
+
+export interface ScraperConfig {
+  maxDepth: number;
+}
+
+export type TrailId = number;
+
+export type TrailParentId = number | null;
+
+export interface TrailParam {
+  trailId: TrailId;
+  parent: TrailParentId;
+}

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
-import type { PalletListItem } from './types';
+import type { PalletListItem, ScraperConfig } from './types';
 import { MetadataScraper } from './Base';
 import type { MetadataVersion } from 'model/Metadata/types';
 
@@ -11,10 +11,14 @@ export class PalletScraper extends MetadataScraper {
   pallets: AnyJson;
 
   // Initialize the class with pallet.
-  constructor(metadata: MetadataVersion) {
-    super(metadata);
+  constructor(
+    metadata: MetadataVersion,
+    config: ScraperConfig = {
+      maxDepth: 7,
+    }
+  ) {
+    super(metadata, config);
     const { pallets } = this.metadata.getMetadataJson();
-
     this.pallets = pallets || [];
   }
 
