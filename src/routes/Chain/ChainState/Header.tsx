@@ -9,7 +9,6 @@ export const Header = () => {
 
   return (
     <HeaderToggleWrapper>
-      <h5>Query from:</h5>
       <button
         className={activeChainState === 'storage' ? 'active' : undefined}
         onClick={() => {
