@@ -12,16 +12,24 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Header } from './Header';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
-import { useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { PalletList } from '../PalletList';
 import type { AnyJson } from '@w3ux/utils/types';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { getShortLabel } from '../Utils';
 
+interface StorgeListItem {
+  docs: string[];
+  name: string;
+  types: AnyJson;
+  callSig: string;
+}
+
 export const ChainState = () => {
-  const { getChainSpec } = useApi();
   const { activeTabId } = useTabs();
+  const { getChainSpec } = useApi();
+  const Metadata = getChainSpec(activeTabId)?.metadata;
 
   // The currently selected pallet.
   const [selectedPallet, setSelectedPallet] = useState<string | null>(null);
@@ -46,21 +54,32 @@ export const ChainState = () => {
     ['ignore-outside-alerter-storage']
   );
 
-  const Metadata = getChainSpec(activeTabId)?.metadata;
-  if (!Metadata) {
-    // TODO: handle UI where metadata has not yet been fetched.
-    return null;
-  }
+  // Scrapes storage items from metadata for a selected pallet and returns them in a formatted list.
+  const getStorageItems = () => {
+    if (!Metadata) {
+      return {
+        pallets: [],
+        activePallet: null,
+        storageItems: [],
+      };
+    }
+    // Get pallet list from scraper.
+    const scraper = new PalletScraper(Metadata);
+    const pallets = scraper.getList(['storage']);
+    const activePallet = selectedPallet || pallets?.[0].name || null;
 
-  // Get pallet list from scraper.
-  const scraper = new PalletScraper(Metadata);
-  const pallets = scraper.getList(['storage']);
+    let storageItems = [];
+    if (activePallet) {
+      storageItems = scraper.getStorage(activePallet);
+    }
+    return { storageItems, activePallet, pallets };
+  };
 
-  const activePallet = selectedPallet || pallets?.[0].name || null;
-  let storage = [];
-  if (activePallet) {
-    storage = scraper.getStorage(activePallet);
-  }
+  // Fetch storage when metadata or the select pallet changes.
+  const { pallets, activePallet, storageItems } = useMemo(
+    () => getStorageItems(),
+    [selectedPallet, Metadata?.metadata]
+  );
 
   // A function that can be called recursively to format a callSig argument and return types.
   const getSigType = (section: AnyJson) => {
@@ -134,12 +153,10 @@ export const ChainState = () => {
         }
         break;
     }
-
     return typeStr;
   };
 
-  // Go through `storage` and format for list rendering.
-  storage = storage.map((storageItem: AnyJson) => {
+  const storage = storageItems.map((storageItem: AnyJson) => {
     const {
       modifier,
       type: { argTypes, returnType },
@@ -181,17 +198,19 @@ export const ChainState = () => {
     };
   });
 
-  // Sort storage items alphabetically based on call name.
-  let selection: {
-    docs: string[];
-    name: string;
-    types: AnyJson;
-    callSig: string;
-  }[] = storage;
-
-  selection = selection.sort(({ name: nameA }, { name: nameB }) =>
-    nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+  // List of storage items alphabetically.
+  const orderSotrageItems = useCallback(
+    (selection: StorgeListItem[]) =>
+      selection.sort(({ name: nameA }, { name: nameB }) =>
+        nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+      ),
+    [storage]
   );
+
+  // Sort storage items alphabetically based on call name.
+  let selection: StorgeListItem[] = storage;
+
+  selection = useMemo(() => orderSotrageItems(selection), [orderSotrageItems]);
 
   return (
     <>
@@ -205,7 +224,6 @@ export const ChainState = () => {
         />
 
         {/* Storage Item Selection */}
-
         <section>
           <div className="inner">
             <h5>Storage Item</h5>

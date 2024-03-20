@@ -14,6 +14,9 @@ export class MetadataScraper {
   // The metadata lookup.
   lookup: AnyJson = {};
 
+  // Maximum recursion depth for scraping types.
+  #maxDepth = 10;
+
   // Initialize the class with metadata.
   constructor(metadata: MetadataVersion) {
     this.metadata = metadata;
@@ -27,13 +30,25 @@ export class MetadataScraper {
   // ------------------------------------------------------
 
   // Get a lookup type from metadata. Possible recursion when scraping type ids.
-  getType(typeId: number) {
+  getType(typeId: number, depth: number) {
     const lookup = this.lookup.types.find(
       ({ id }: { id: number }) => id === typeId
     );
 
+    depth++;
+
     if (!lookup) {
-      return undefined;
+      // console.warn('no lookup provided');
+      return {
+        unknown: true,
+      };
+    }
+
+    if (depth >= this.#maxDepth) {
+      // console.warn('max depth reached');
+      return {
+        unknown: true,
+      };
     }
 
     const { def, path, params }: AnyJson = lookup.type;
@@ -49,7 +64,7 @@ export class MetadataScraper {
       case 'array':
         result.array = {
           len: (value as AnyJson).len,
-          type: this.getType((value as AnyJson).type),
+          type: this.getType((value as AnyJson).type, depth),
         };
         break;
 
@@ -59,13 +74,13 @@ export class MetadataScraper {
           short: path[path.length - 1],
         };
         result.bitsequence = {
-          bitOrderType: this.getType((value as AnyJson).bitOrderType),
-          bitStoreType: this.getType((value as AnyJson).bitStoreType),
+          bitOrderType: this.getType((value as AnyJson).bitOrderType, depth),
+          bitStoreType: this.getType((value as AnyJson).bitStoreType, depth),
         };
         break;
 
       case 'compact':
-        result.compact = this.getType((value as AnyJson).type);
+        result.compact = this.getType((value as AnyJson).type, depth);
         break;
 
       case 'composite':
@@ -73,7 +88,7 @@ export class MetadataScraper {
           long: Format.typeToString(path, params),
           short: path[path.length - 1],
         };
-        result.composite = this.scrapeComposite(value);
+        result.composite = this.scrapeComposite(value, depth);
         break;
 
       case 'primitive':
@@ -82,12 +97,12 @@ export class MetadataScraper {
         break;
 
       case 'sequence':
-        result.sequence = this.getType((value as AnyJson).type);
+        result.sequence = this.getType((value as AnyJson).type, depth);
         break;
 
       case 'tuple':
         result.tuple = (value as number[]).map((id: number) =>
-          this.getType(id)
+          this.getType(id, depth)
         );
         break;
 
@@ -96,7 +111,7 @@ export class MetadataScraper {
           long: Format.typeToString(path, params),
           short: path[path.length - 1],
         };
-        result.variant = this.scrapeVariant(value);
+        result.variant = this.scrapeVariant(value, depth) || 'U128';
         break;
 
       default:
@@ -108,7 +123,7 @@ export class MetadataScraper {
   }
 
   // Scrapes a variant type.
-  scrapeVariant(input: AnyJson) {
+  scrapeVariant(input: AnyJson, depth: number) {
     const variants = input.variants.map(
       ({ docs: variantDocs, fields, name: variantName }: AnyJson) => ({
         name: variantName,
@@ -117,7 +132,7 @@ export class MetadataScraper {
           docs,
           name,
           typeName,
-          type: this.getType(type),
+          type: this.getType(type, depth),
         })),
       })
     );
@@ -125,13 +140,13 @@ export class MetadataScraper {
   }
 
   // Scrapes a composite type.
-  scrapeComposite(input: AnyJson) {
+  scrapeComposite(input: AnyJson, depth: number) {
     const composite = input.fields.map(
       ({ docs, name, type, typeName }: AnyJson) => ({
         docs,
         name,
         typeName,
-        type: this.getType(type),
+        type: this.getType(type, depth),
       })
     );
     return composite;
