@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
+import type { PalletScraped } from '../Scraper/types';
 
 export class FormatCallSignature {
   // The raw input config to format.
-  #rawConfig: AnyJson;
+  #rawConfig: PalletScraped;
 
-  constructor(rawConfig: AnyJson) {
+  constructor(rawConfig: PalletScraped) {
     this.#rawConfig = rawConfig;
   }
 

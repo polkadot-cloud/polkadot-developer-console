@@ -3,7 +3,6 @@
 
 import type { Metadata } from '@polkadot/types';
 import type { MetadataVersion } from './types';
-import type { AnyJson } from '@w3ux/utils/types';
 
 export class MetadataV15 implements MetadataVersion {
   metadata: Metadata;
@@ -13,7 +12,7 @@ export class MetadataV15 implements MetadataVersion {
   }
 
   getMetadataJson() {
-    const json: AnyJson = this.metadata.toJSON().metadata;
+    const json = this.metadata.toJSON().metadata as { v15: unknown };
     return json.v15;
   }
 }
