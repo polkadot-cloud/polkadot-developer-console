@@ -2,7 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { TagId, TagItem } from 'contexts/Tags/types';
-import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
+import {
+  ListWrapper,
+  SearchWrapper,
+  SelectListWrapper,
+} from 'library/ContextMenu/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useTags } from 'contexts/Tags';
@@ -36,7 +40,7 @@ export const TagsMenuInner = ({
   return (
     <SelectListWrapper>
       <h5>Select Tags</h5>
-      <div className="search">
+      <SearchWrapper>
         <input
           placeholder="Search"
           value={tagSearchTerm}
@@ -48,7 +52,7 @@ export const TagsMenuInner = ({
           }}
           onChange={(ev) => handleOnChange(ev.currentTarget.value)}
         />
-      </div>
+      </SearchWrapper>
       <ListWrapper>
         {filteredTags.map(([id, tag]) => {
           const selected = appliedTags.includes(id);

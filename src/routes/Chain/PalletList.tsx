@@ -16,6 +16,8 @@ import { xxhashAsHex } from '@polkadot/util-crypto';
 import type { ApiPromise } from '@polkadot/api';
 import type { AnyJson } from '@w3ux/utils/types';
 import { u16 } from 'scale-ts';
+import { SearchWrapper } from 'library/ContextMenu/Wrappers';
+import { formatInputString } from 'Utils';
 
 export const PalletList = ({
   pallets,
@@ -36,6 +38,9 @@ export const PalletList = ({
   const [palletVersions, setPalletVersions] = useState<Record<string, string>>(
     {}
   );
+
+  // Pallet search term.
+  const [palletSearchTerm, setPalletSearchTerm] = useState<string>('');
 
   // Setter for pallet menu open state.
   const setPalletsOpen = (value: boolean) => {
@@ -68,6 +73,19 @@ export const PalletList = ({
     setPalletVersions(newPalletVersions);
   };
 
+  // Handle pallet search change.
+  const handlePalletSearchChange = (value: string) => {
+    setPalletSearchTerm(value);
+  };
+
+  // Filter providers based on search term, if present.
+  const filteredPallets =
+    palletSearchTerm !== ''
+      ? pallets.filter(({ name }) =>
+          name.toLowerCase().includes(formatInputString(palletSearchTerm, true))
+        )
+      : pallets;
+
   // Fetch pallet version on fist render.
   //
   // TODO: only do this once when metadata changes and store in context state. Ensure that pallets
@@ -80,8 +98,18 @@ export const PalletList = ({
     }
   }, [!!api, pallets]);
 
+  // Focus the pallet search input when the pallets menu is opened.
+  useEffect(() => {
+    if (palletsOpen) {
+      searchInputRef.current?.focus();
+    }
+  }, [palletsOpen]);
+
   // Selection menu ref.
   const palletSelectRef = useRef<HTMLDivElement>(null);
+
+  // Pallet search input ref.
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Close pallet selection if clicked outside of its container.
   useOutsideAlerter(
@@ -120,7 +148,17 @@ export const PalletList = ({
           ref={palletSelectRef}
           className={`${palletsOpen ? ` open` : ``}`}
         >
-          {pallets.map(({ index, name }) => (
+          <SearchWrapper>
+            <input
+              ref={searchInputRef}
+              placeholder="Search"
+              value={palletSearchTerm}
+              onChange={(ev) =>
+                handlePalletSearchChange(ev.currentTarget.value)
+              }
+            />
+          </SearchWrapper>
+          {filteredPallets.map(({ index, name }) => (
             <SelectItemWrapper
               key={`pallet_${index}_${name}`}
               className={`option${selected === name ? ` selected` : ``}`}

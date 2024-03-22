@@ -4,7 +4,11 @@
 import { formatInputString } from 'Utils';
 import type { DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
-import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
+import {
+  ListWrapper,
+  SearchWrapper,
+  SelectListWrapper,
+} from 'library/ContextMenu/Wrappers';
 import { useState } from 'react';
 
 export const ConnectMenu = ({
@@ -37,7 +41,7 @@ export const ConnectMenu = ({
   return (
     <SelectListWrapper>
       <h5>Select Provider</h5>
-      <div className="search">
+      <SearchWrapper>
         <input
           placeholder="Search"
           value={providerSearchTerm}
@@ -49,7 +53,7 @@ export const ConnectMenu = ({
           }}
           onChange={(ev) => handleOnChange(ev.currentTarget.value)}
         />
-      </div>
+      </SearchWrapper>
       <ListWrapper>
         {filteredProviders.map(([name, url], index) => (
           <li key={`provider_context_item_${index}`}>

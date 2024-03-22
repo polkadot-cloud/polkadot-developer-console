@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   SelectItemWrapper,
   SelectTextWrapper,
@@ -12,6 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import type { AnyJson } from '@w3ux/utils/types';
 import { Format } from 'model/Metadata/Scraper/Format';
+import { SearchWrapper } from 'library/ContextMenu/Wrappers';
+import { formatInputString } from 'Utils';
 
 export const CallList = ({ calls }: { calls: AnyJson }) => {
   // Call selection open.
@@ -22,17 +24,19 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
     setCallsOpenState(value);
   };
 
+  // Pallet search term.
+  const [callSearchTerm, setCallSearchTerm] = useState<string>('');
+
+  // Handle pallet search change.
+  const handleCallSearchChange = (value: string) => {
+    setCallSearchTerm(value);
+  };
+
   // Refs for the selection menus.
   const callsSelectRef = useRef(null);
 
-  // Close call selection if clicked outside of its container.
-  useOutsideAlerter(
-    callsSelectRef,
-    () => {
-      setCallsOpen(false);
-    },
-    ['ignore-outside-alerter-calls']
-  );
+  // Call search input ref.
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Format calls into a new `selection` array for rendering.
   let selection: {
@@ -41,7 +45,6 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
     fieldNames: string | undefined;
     fieldTypes: string | undefined;
   }[] = [];
-
   // Calls type should aways be a variant, but checking to prevent errors.
   if (calls && calls.type === 'variant') {
     calls.variant.forEach(
@@ -69,6 +72,31 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
   // Sort calls alphabetically based on call name.
   selection = selection.sort(({ name: nameA }, { name: nameB }) =>
     nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+  );
+
+  // Filter selection based on search term.
+  // Filter providers based on search term, if present.
+  const filteredCalls =
+    selection.length > 0
+      ? selection.filter(({ name }) =>
+          name.toLowerCase().includes(formatInputString(callSearchTerm, true))
+        )
+      : selection;
+
+  // Focus the pallet search input when the pallets menu is opened.
+  useEffect(() => {
+    if (callsOpen) {
+      searchInputRef.current?.focus();
+    }
+  }, [callsOpen]);
+
+  // Close call selection if clicked outside of its container.
+  useOutsideAlerter(
+    callsSelectRef,
+    () => {
+      setCallsOpen(false);
+    },
+    ['ignore-outside-alerter-calls']
   );
 
   return (
@@ -99,7 +127,16 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
           ref={callsSelectRef}
           className={`${callsOpen ? ` open` : ``}`}
         >
-          {selection.map(({ name, docs, fieldNames }) => (
+          <SearchWrapper>
+            <input
+              ref={searchInputRef}
+              placeholder="Search"
+              value={callSearchTerm}
+              onChange={(ev) => handleCallSearchChange(ev.currentTarget.value)}
+            />
+          </SearchWrapper>
+
+          {filteredCalls.map(({ name, docs, fieldNames }) => (
             <SelectItemWrapper
               key={`call_select_${name}`}
               className="option"
