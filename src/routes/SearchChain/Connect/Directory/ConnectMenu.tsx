@@ -41,7 +41,7 @@ export const ConnectMenu = ({
   return (
     <SelectListWrapper>
       <h5>Select Provider</h5>
-      <SearchWrapper>
+      <SearchWrapper className="bg">
         <input
           placeholder="Search"
           value={providerSearchTerm}

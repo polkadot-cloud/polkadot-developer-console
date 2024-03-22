@@ -190,13 +190,18 @@ export const SearchWrapper = styled.div`
   z-index: 5;
 
   > input {
-    background-color: var(--background-primary);
     border: 1px solid var(--border-primary-color);
     padding: 0.3rem 0.4rem;
     border-radius: 0.25rem;
     margin: 0.3rem 0;
     font-size: 0.7rem;
     width: 100%;
+  }
+
+  &.bg {
+    > input {
+      background: var(--background-primary);
+    }
   }
 `;
 

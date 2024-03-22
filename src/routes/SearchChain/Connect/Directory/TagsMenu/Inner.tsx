@@ -40,7 +40,7 @@ export const TagsMenuInner = ({
   return (
     <SelectListWrapper>
       <h5>Select Tags</h5>
-      <SearchWrapper>
+      <SearchWrapper className="bg">
         <input
           placeholder="Search"
           value={tagSearchTerm}
