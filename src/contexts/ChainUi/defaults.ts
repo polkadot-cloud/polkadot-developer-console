@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
-import type { ChainUiState, ChainUiContextInterface } from './types';
+import type { ChainUiContextInterface, ChainUiItem } from './types';
 
-export const defaultChainUiState: ChainUiState = {
+export const defaultChainUiState = {};
+
+export const defaultChainUiItem: ChainUiItem = {
   storage: {
     selected: '',
     search: '',

@@ -15,13 +15,15 @@ export interface ChainUiContextInterface {
   ) => void;
 }
 
-export interface ChainUiState {
-  storage: ChainUiItem;
-  constants: ChainUiItem;
-  calls: ChainUiItem;
-}
+export type ChainUiState = Record<number, ChainUiItem>;
 
 export interface ChainUiItem {
+  storage: ChainUiItemInner;
+  constants: ChainUiItemInner;
+  calls: ChainUiItemInner;
+}
+
+export interface ChainUiItemInner {
   selected: string;
   search: string;
   pallet: string;
