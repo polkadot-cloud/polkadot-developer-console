@@ -123,7 +123,7 @@ export const SelectDropdownWrapper = styled.div`
   left: 0;
   width: 100%;
   flex-direction: column;
-  max-height: 250px;
+  max-height: 350px;
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 10;
