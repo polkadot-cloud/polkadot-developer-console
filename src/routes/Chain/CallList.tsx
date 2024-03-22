@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { useEffect, useRef, useState } from 'react';
 import {
   SelectItemWrapper,
@@ -14,6 +13,7 @@ import type { AnyJson } from '@w3ux/utils/types';
 import { Format } from 'model/Metadata/Scraper/Format';
 import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 import { formatInputString } from 'Utils';
+import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 
 export const CallList = ({ calls }: { calls: AnyJson }) => {
   // Call selection open.
@@ -31,12 +31,6 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
   const handleCallSearchChange = (value: string) => {
     setCallSearchTerm(value);
   };
-
-  // Refs for the selection menus.
-  const callsSelectRef = useRef(null);
-
-  // Call search input ref.
-  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Format calls into a new `selection` array for rendering.
   let selection: {
@@ -74,8 +68,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
     nameA < nameB ? -1 : nameA > nameB ? 1 : 0
   );
 
-  // Filter selection based on search term.
-  // Filter providers based on search term, if present.
+  // Filter calls based on search term, if selection is present.
   const filteredCalls =
     selection.length > 0
       ? selection.filter(({ name }) =>
@@ -83,12 +76,11 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
         )
       : selection;
 
-  // Focus the pallet search input when the pallets menu is opened.
-  useEffect(() => {
-    if (callsOpen) {
-      searchInputRef.current?.focus();
-    }
-  }, [callsOpen]);
+  // Refs for the selection menus.
+  const callsSelectRef = useRef(null);
+
+  // Call search input ref.
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Close call selection if clicked outside of its container.
   useOutsideAlerter(
@@ -98,6 +90,13 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
     },
     ['ignore-outside-alerter-calls']
   );
+
+  // Focus the call search input when the menu is opened.
+  useEffect(() => {
+    if (callsOpen) {
+      searchInputRef.current?.focus();
+    }
+  }, [callsOpen]);
 
   return (
     <section>

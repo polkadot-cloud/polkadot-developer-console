@@ -12,12 +12,14 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Header } from './Header';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { FormatCallSignature } from 'model/Metadata/Format/CallSignature';
 import type { PalletScrapedWithSig } from 'model/Metadata/Scraper/types';
+import { SearchWrapper } from 'library/ContextMenu/Wrappers';
+import { formatInputString } from 'Utils';
 
 export const ChainState = () => {
   const { activeTabId } = useTabs();
@@ -30,22 +32,18 @@ export const ChainState = () => {
   // Storage selection open.
   const [storageOpen, setStorageOpenState] = useState<boolean>(false);
 
+  // Storage item search term.
+  const [storageSearchTerm, setStorageSearchTerm] = useState<string>('');
+
   // Setter for storage item menu open state.
   const setStorageOpen = (value: boolean) => {
     setStorageOpenState(value);
   };
 
-  // Refs for the selection menus.
-  const storageSelectRef = useRef(null);
-
-  // Close storage selection if clicked outside of its container.
-  useOutsideAlerter(
-    storageSelectRef,
-    () => {
-      setStorageOpen(false);
-    },
-    ['ignore-outside-alerter-storage']
-  );
+  // Handle pallet search change.
+  const handleStorageSearchChange = (value: string) => {
+    setStorageSearchTerm(value);
+  };
 
   // Fetch storage data when metadata or the selected pallet changes.
   const storageData = useMemo(() => {
@@ -87,6 +85,38 @@ export const ChainState = () => {
     [storageItems]
   );
 
+  // Filter calls based on search term, if selection is present.
+  const filteredStorageList =
+    storageList.length > 0
+      ? storageList.filter(({ name }) =>
+          name
+            .toLowerCase()
+            .includes(formatInputString(storageSearchTerm, true))
+        )
+      : storageList;
+
+  // Refs for the selection menus.
+  const storageSelectRef = useRef(null);
+
+  // Storage search input ref.
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Close storage selection if clicked outside of its container.
+  useOutsideAlerter(
+    storageSelectRef,
+    () => {
+      setStorageOpen(false);
+    },
+    ['ignore-outside-alerter-storage']
+  );
+
+  // Focus the call search input when the menu is opened.
+  useEffect(() => {
+    if (storageOpen) {
+      searchInputRef.current?.focus();
+    }
+  }, [storageOpen]);
+
   return (
     <>
       <Header />
@@ -120,7 +150,18 @@ export const ChainState = () => {
               ref={storageSelectRef}
               className={`${storageOpen ? ` open` : ``}`}
             >
-              {storageList.map(({ name, docs, callSig }) => (
+              <SearchWrapper>
+                <input
+                  ref={searchInputRef}
+                  placeholder="Search"
+                  value={storageSearchTerm}
+                  onChange={(ev) =>
+                    handleStorageSearchChange(ev.currentTarget.value)
+                  }
+                />
+              </SearchWrapper>
+
+              {filteredStorageList.map(({ name, docs, callSig }) => (
                 <SelectItemWrapper
                   key={`storage_select_${name}`}
                   className="option"

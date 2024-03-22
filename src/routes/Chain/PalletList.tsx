@@ -91,19 +91,6 @@ export const PalletList = ({
   // TODO: only do this once when metadata changes and store in context state. Ensure that pallets
   // are fetched.
   const palletVersionsFetched = useRef<boolean>(false);
-  useEffect(() => {
-    if (api && pallets.length && !palletVersionsFetched.current) {
-      palletVersionsFetched.current = true;
-      fetchPalletVersions(api.api);
-    }
-  }, [!!api, pallets]);
-
-  // Focus the pallet search input when the pallets menu is opened.
-  useEffect(() => {
-    if (palletsOpen) {
-      searchInputRef.current?.focus();
-    }
-  }, [palletsOpen]);
 
   // Selection menu ref.
   const palletSelectRef = useRef<HTMLDivElement>(null);
@@ -119,6 +106,20 @@ export const PalletList = ({
     },
     ['ignore-outside-alerter-pallets']
   );
+
+  useEffect(() => {
+    if (api && pallets.length && !palletVersionsFetched.current) {
+      palletVersionsFetched.current = true;
+      fetchPalletVersions(api.api);
+    }
+  }, [!!api, pallets]);
+
+  // Focus the pallet search input when the menu is opened.
+  useEffect(() => {
+    if (palletsOpen) {
+      searchInputRef.current?.focus();
+    }
+  }, [palletsOpen]);
 
   return (
     <section>
