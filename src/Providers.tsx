@@ -11,7 +11,7 @@ import { ChainFilterProvider } from 'contexts/ChainFilter';
 import { SettingsProvider } from 'contexts/Settings';
 import { TooltipProvider } from 'contexts/Tooltip';
 import { ApiProvider } from 'contexts/Api';
-import { ChainProvider } from 'contexts/Chain';
+import { ChainUiProvider } from 'contexts/ChainUi';
 import type { ReactNode } from 'react';
 
 export const Providers = () => {
@@ -24,8 +24,8 @@ export const Providers = () => {
     ChainFilterProvider,
     MenuProvider,
     TooltipProvider,
+    ChainUiProvider,
     ApiProvider,
-    ChainProvider,
   ];
 
   return withProviders(providers, App);

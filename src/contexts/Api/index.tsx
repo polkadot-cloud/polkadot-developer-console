@@ -10,12 +10,14 @@ import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import type { APIChainSpec, ApiStatus } from 'model/Api/types';
+import { useChainUi } from 'contexts/ChainUi';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
 export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
+  const { fetchPalletVersions } = useChainUi();
   const { getActiveTab, tabs, instantiateApiFromTab } = useTabs();
 
   // Store API connection status of each tab. NOTE: requires ref as it is used in event listener.
@@ -135,6 +137,13 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
         ...chainSpecRef.current,
         [tabId]: spec,
       });
+
+      // Fetch pallet versions for ChainUi state.
+      fetchPalletVersions(
+        tabId,
+        spec.metadata,
+        ApiController.instances[tabId].api
+      );
     }
   };
 
