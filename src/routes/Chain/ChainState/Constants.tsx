@@ -59,7 +59,7 @@ export const Constants = () => {
         }}
       />
       <ChainStateList
-        subject="Constant Item"
+        subject="Runtime Constant"
         items={constantItems}
         chainUiSection={chainUiSection}
       />
