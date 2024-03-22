@@ -3,12 +3,18 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
-import { defaultChainContext, defaultChainUiState } from './defaults';
+import {
+  defaultChainContext,
+  defaultChainUiInner,
+  defaultChainUiItem,
+  defaultChainUiState,
+} from './defaults';
 import type {
   ChainUiState,
   ChainUiContextInterface,
   ChainUiItem,
   PalletVersions,
+  ChainUiItemInner,
 } from './types';
 import type { ApiPromise } from '@polkadot/api';
 import { xxhashAsHex } from '@polkadot/util-crypto';
@@ -29,15 +35,32 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   // Stores pallet versions of the chain.
   const [palletVersions, setPalletVersions] = useState<PalletVersions>({});
 
-  // Sets a ChainUi record for a key of the chain.
-  const setChainUiItem = (key: keyof ChainUiState, value: ChainUiItem) => {
-    setChainUi((prev) => ({
-      ...prev,
-      [key]: {
-        ...prev[key],
-        selected: value,
+  // Gets a ChainUi record by tabId.
+  const getChainUi = (
+    tabId: number,
+    section: keyof ChainUiItem
+  ): ChainUiItemInner => chainUi[tabId]?.[section] || defaultChainUiInner;
+
+  // Sets a ChainUi record for a tabId and inner key.
+  const setChainUiItem = (
+    tabId: number,
+    section: keyof ChainUiItem,
+    key: string,
+    value: string
+  ) => {
+    const currentChainUi = chainUi[tabId] || defaultChainUiItem;
+    const currentChainUiItem = currentChainUi[section] || defaultChainUiInner;
+
+    setChainUi({
+      ...chainUi,
+      [tabId]: {
+        ...currentChainUi,
+        [section]: {
+          ...currentChainUiItem,
+          [key]: value,
+        },
       },
-    }));
+    });
   };
 
   // Handle fetching of pallet versions.
@@ -87,6 +110,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     <ChainUi.Provider
       value={{
         chainUi,
+        getChainUi,
         setChainUiItem,
         getPalletVersions,
         fetchPalletVersions,

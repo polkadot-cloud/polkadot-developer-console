@@ -20,20 +20,19 @@ import { FormatCallSignature } from 'model/Metadata/Format/CallSignature';
 import type { PalletScrapedWithSig } from 'model/Metadata/Scraper/types';
 import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 import { formatInputString } from 'Utils';
+import { useChainUi } from 'contexts/ChainUi';
 
 export const ChainState = () => {
   const { activeTabId } = useTabs();
   const { getChainSpec } = useApi();
-  const Metadata = getChainSpec(activeTabId)?.metadata;
+  const { getChainUi, setChainUiItem } = useChainUi();
 
-  // The currently selected pallet.
-  const [selectedPallet, setSelectedPallet] = useState<string | null>(null);
+  const chainUiSection = 'storage';
+  const chainUi = getChainUi(activeTabId, chainUiSection);
+  const Metadata = getChainSpec(activeTabId)?.metadata;
 
   // Storage selection open.
   const [storageOpen, setStorageOpenState] = useState<boolean>(false);
-
-  // Storage item search term.
-  const [storageSearchTerm, setStorageSearchTerm] = useState<string>('');
 
   // Setter for storage item menu open state.
   const setStorageOpen = (value: boolean) => {
@@ -42,7 +41,7 @@ export const ChainState = () => {
 
   // Handle pallet search change.
   const handleStorageSearchChange = (value: string) => {
-    setStorageSearchTerm(value);
+    setChainUiItem(activeTabId, chainUiSection, 'search', value);
   };
 
   // Fetch storage data when metadata or the selected pallet changes.
@@ -59,7 +58,7 @@ export const ChainState = () => {
     const pallets = scraper.getList(['storage']);
 
     // If no pallet selected, get first one from scraper or fall back to null.
-    const activePallet = selectedPallet || pallets?.[0].name || null;
+    const activePallet = chainUi.pallet || pallets?.[0].name || null;
     const storageItems = activePallet ? scraper.getStorage(activePallet) : [];
 
     return {
@@ -67,7 +66,7 @@ export const ChainState = () => {
       activePallet,
       pallets,
     };
-  }, [selectedPallet, Metadata?.metadata]);
+  }, [chainUi.pallet, Metadata?.metadata]);
 
   const { pallets, activePallet, storageItems } = storageData;
 
@@ -89,9 +88,7 @@ export const ChainState = () => {
   const filteredStorageList =
     storageList.length > 0
       ? storageList.filter(({ name }) =>
-          name
-            .toLowerCase()
-            .includes(formatInputString(storageSearchTerm, true))
+          name.toLowerCase().includes(formatInputString(chainUi.search, true))
         )
       : storageList;
 
@@ -124,7 +121,10 @@ export const ChainState = () => {
         <PalletList
           pallets={pallets}
           selected={activePallet}
-          onSelect={(value) => setSelectedPallet(value)}
+          chainUiSection={chainUiSection}
+          onSelect={(value) => {
+            setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
+          }}
         />
 
         <section>
@@ -154,7 +154,7 @@ export const ChainState = () => {
                 <input
                   ref={searchInputRef}
                   placeholder="Search"
-                  value={storageSearchTerm}
+                  value={chainUi.search}
                   onChange={(ev) =>
                     handleStorageSearchChange(ev.currentTarget.value)
                   }

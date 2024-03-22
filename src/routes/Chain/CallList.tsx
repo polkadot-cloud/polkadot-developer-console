@@ -14,8 +14,16 @@ import { Format } from 'model/Metadata/Scraper/Format';
 import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 import { formatInputString } from 'Utils';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
+import { useChainUi } from 'contexts/ChainUi';
+import { useTabs } from 'contexts/Tabs';
 
 export const CallList = ({ calls }: { calls: AnyJson }) => {
+  const { activeTabId } = useTabs();
+  const { getChainUi, setChainUiItem } = useChainUi();
+
+  const chainUiSection = 'calls';
+  const chainUi = getChainUi(activeTabId, chainUiSection);
+
   // Call selection open.
   const [callsOpen, setCallsOpenState] = useState<boolean>(false);
 
@@ -24,12 +32,9 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
     setCallsOpenState(value);
   };
 
-  // Pallet search term.
-  const [callSearchTerm, setCallSearchTerm] = useState<string>('');
-
   // Handle pallet search change.
   const handleCallSearchChange = (value: string) => {
-    setCallSearchTerm(value);
+    setChainUiItem(activeTabId, chainUiSection, 'search', value);
   };
 
   // Format calls into a new `selection` array for rendering.
@@ -72,7 +77,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
   const filteredCalls =
     selection.length > 0
       ? selection.filter(({ name }) =>
-          name.toLowerCase().includes(formatInputString(callSearchTerm, true))
+          name.toLowerCase().includes(formatInputString(chainUi.search, true))
         )
       : selection;
 
@@ -130,7 +135,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
             <input
               ref={searchInputRef}
               placeholder="Search"
-              value={callSearchTerm}
+              value={chainUi.search}
               onChange={(ev) => handleCallSearchChange(ev.currentTarget.value)}
             />
           </SearchWrapper>

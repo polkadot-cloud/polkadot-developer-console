@@ -6,7 +6,13 @@ import type { MetadataVersion } from 'model/Metadata/types';
 
 export interface ChainUiContextInterface {
   chainUi: ChainUiState;
-  setChainUiItem: (key: keyof ChainUiState, value: ChainUiItem) => void;
+  getChainUi: (tabId: number, section: keyof ChainUiItem) => ChainUiItemInner;
+  setChainUiItem: (
+    tabId: number,
+    section: keyof ChainUiItem,
+    key: string,
+    value: string
+  ) => void;
   getPalletVersions: (tabId: number) => Record<string, string> | undefined;
   fetchPalletVersions: (
     tabId: number,

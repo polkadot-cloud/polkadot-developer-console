@@ -6,30 +6,23 @@ import type { ChainUiContextInterface, ChainUiItem } from './types';
 
 export const defaultChainUiState = {};
 
+export const defaultChainUiInner = {
+  selected: '',
+  search: '',
+  pallet: '',
+  palletSearch: '',
+};
+
 export const defaultChainUiItem: ChainUiItem = {
-  storage: {
-    selected: '',
-    search: '',
-    pallet: '',
-    palletSearch: '',
-  },
-  constants: {
-    selected: '',
-    search: '',
-    pallet: '',
-    palletSearch: '',
-  },
-  calls: {
-    selected: '',
-    search: '',
-    pallet: '',
-    palletSearch: '',
-  },
+  storage: defaultChainUiInner,
+  constants: defaultChainUiInner,
+  calls: defaultChainUiInner,
 };
 
 export const defaultChainContext: ChainUiContextInterface = {
   chainUi: defaultChainUiState,
-  setChainUiItem: (key, value) => {},
+  getChainUi: (tabId, section) => defaultChainUiInner,
+  setChainUiItem: (tabId, section, key, value) => {},
   getPalletVersions: (tabId) => undefined,
   fetchPalletVersions: async (tabId, metadata, apiInstance) => {},
 };

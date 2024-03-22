@@ -15,25 +15,27 @@ import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
 import { useTabs } from 'contexts/Tabs';
+import type { ChainUiItem } from 'contexts/ChainUi/types';
 
 export const PalletList = ({
   pallets,
   selected,
+  chainUiSection,
   onSelect,
 }: {
   pallets: PalletListItem[];
   selected: string | null;
+  chainUiSection: keyof ChainUiItem;
   onSelect: (value: string) => void;
 }) => {
   const { activeTabId } = useTabs();
-  const { getPalletVersions } = useChainUi();
+  const { getPalletVersions, getChainUi, setChainUiItem } = useChainUi();
   const palletVersions = getPalletVersions(activeTabId) || {};
+  const chainUi = getChainUi(activeTabId, chainUiSection);
+  const { palletSearch } = chainUi;
 
   // Pallet selection open.
   const [palletsOpen, setPalletsOpenState] = useState<boolean>(false);
-
-  // Pallet search term.
-  const [palletSearchTerm, setPalletSearchTerm] = useState<string>('');
 
   // Setter for pallet menu open state.
   const setPalletsOpen = (value: boolean) => {
@@ -42,14 +44,14 @@ export const PalletList = ({
 
   // Handle pallet search change.
   const handlePalletSearchChange = (value: string) => {
-    setPalletSearchTerm(value);
+    setChainUiItem(activeTabId, chainUiSection, 'palletSearch', value);
   };
 
   // Filter providers based on search term, if present.
   const filteredPallets =
-    palletSearchTerm !== ''
+    palletSearch !== ''
       ? pallets.filter(({ name }) =>
-          name.toLowerCase().includes(formatInputString(palletSearchTerm, true))
+          name.toLowerCase().includes(formatInputString(palletSearch, true))
         )
       : pallets;
 
@@ -107,7 +109,7 @@ export const PalletList = ({
             <input
               ref={searchInputRef}
               placeholder="Search"
-              value={palletSearchTerm}
+              value={palletSearch}
               onChange={(ev) =>
                 handlePalletSearchChange(ev.currentTarget.value)
               }
