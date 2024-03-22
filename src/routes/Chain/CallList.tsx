@@ -81,6 +81,12 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
         )
       : selection;
 
+  // Determine the currently selected item.
+  const selectedItem =
+    filteredCalls.find(({ name }) => name === chainUi.selected) ||
+    filteredCalls[0] ||
+    '';
+
   // Refs for the selection menus.
   const callsSelectRef = useRef(null);
 
@@ -115,14 +121,14 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
         >
           <span>
             <SelectTextWrapper>
-              {selection[0]?.name || 'No Calls'}
-              {selection[0]?.fieldNames && (
-                <span>({selection[0].fieldNames})</span>
+              {selectedItem?.name || 'No Calls'}
+              {selectedItem?.fieldNames && (
+                <span>({selectedItem.fieldNames})</span>
               )}
             </SelectTextWrapper>
           </span>
           <span>
-            <h5>{selection[0]?.docs?.[0] || ''}</h5>
+            <h5>{selectedItem?.docs?.[0] || ''}</h5>
             <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
           </span>
         </SelectItemWrapper>
@@ -144,7 +150,10 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
             <SelectItemWrapper
               key={`call_select_${name}`}
               className="option"
-              onClick={() => setCallsOpen(false)}
+              onClick={() => {
+                setChainUiItem(activeTabId, chainUiSection, 'selected', name);
+                setCallsOpen(false);
+              }}
             >
               <span>
                 <SelectTextWrapper>

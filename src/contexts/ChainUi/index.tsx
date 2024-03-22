@@ -51,14 +51,18 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     const currentChainUi = chainUi[tabId] || defaultChainUiItem;
     const currentChainUiItem = currentChainUi[section] || defaultChainUiInner;
 
+    const newChainUiInner = {
+      ...currentChainUiItem,
+      [key]: value,
+      // Reset selected value if the pallet is being changed.
+      selected: key === 'pallet' ? '' : value,
+    };
+
     setChainUi({
       ...chainUi,
       [tabId]: {
         ...currentChainUi,
-        [section]: {
-          ...currentChainUiItem,
-          [key]: value,
-        },
+        [section]: newChainUiInner,
       },
     });
   };

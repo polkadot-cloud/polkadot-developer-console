@@ -19,12 +19,12 @@ import type { ChainUiItem } from 'contexts/ChainUi/types';
 
 export const PalletList = ({
   pallets,
-  selected,
+  activePallet,
   chainUiSection,
   onSelect,
 }: {
   pallets: PalletListItem[];
-  selected: string | null;
+  activePallet: string | null;
   chainUiSection: keyof ChainUiItem;
   onSelect: (value: string) => void;
 }) => {
@@ -88,11 +88,13 @@ export const PalletList = ({
           }}
         >
           <span>
-            <SelectTextWrapper>{selected || 'No Pallets'}</SelectTextWrapper>
+            <SelectTextWrapper>
+              {activePallet || 'No Pallets'}
+            </SelectTextWrapper>
           </span>
           <span>
-            {selected && palletVersions[selected] ? (
-              <h5>v{palletVersions[selected]}</h5>
+            {activePallet && palletVersions[activePallet] ? (
+              <h5>v{palletVersions[activePallet]}</h5>
             ) : (
               ''
             )}
@@ -118,7 +120,7 @@ export const PalletList = ({
           {filteredPallets.map(({ index, name }) => (
             <SelectItemWrapper
               key={`pallet_${index}_${name}`}
-              className={`option${selected === name ? ` selected` : ``}`}
+              className={`option${activePallet === name ? ` selected` : ``}`}
               onClick={() => {
                 setPalletsOpen(false);
                 onSelect(name);

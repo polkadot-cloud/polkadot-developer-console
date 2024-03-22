@@ -92,6 +92,12 @@ export const ChainState = () => {
         )
       : storageList;
 
+  // Determine the currently selected item.
+  const selectedItem =
+    filteredStorageList.find(({ name }) => name === chainUi.selected) ||
+    filteredStorageList[0] ||
+    '';
+
   // Refs for the selection menus.
   const storageSelectRef = useRef(null);
 
@@ -120,7 +126,7 @@ export const ChainState = () => {
       <SelectFormWrapper className="withHeader">
         <PalletList
           pallets={pallets}
-          selected={activePallet}
+          activePallet={activePallet}
           chainUiSection={chainUiSection}
           onSelect={(value) => {
             setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
@@ -136,12 +142,12 @@ export const ChainState = () => {
             >
               <span>
                 <SelectTextWrapper>
-                  {storageList[0]?.name || 'No Storage Items'}
-                  <span>{storageList[0]?.callSig || ''}</span>
+                  {chainUi.selected || selectedItem.name || 'No Storage Items'}
+                  <span>{selectedItem?.callSig || ''}</span>
                 </SelectTextWrapper>
               </span>
               <span>
-                <h5>{storageList[0]?.docs?.[0] || ''}</h5>
+                <h5>{selectedItem?.docs?.[0] || ''}</h5>
                 <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
               </span>
             </SelectItemWrapper>
@@ -164,8 +170,16 @@ export const ChainState = () => {
               {filteredStorageList.map(({ name, docs, callSig }) => (
                 <SelectItemWrapper
                   key={`storage_select_${name}`}
-                  className="option"
-                  onClick={() => setStorageOpen(false)}
+                  className={`option${chainUi.selected === name ? ` selected` : ``}`}
+                  onClick={() => {
+                    setChainUiItem(
+                      activeTabId,
+                      chainUiSection,
+                      'selected',
+                      name
+                    );
+                    setStorageOpen(false);
+                  }}
                 >
                   <span>
                     <SelectTextWrapper>

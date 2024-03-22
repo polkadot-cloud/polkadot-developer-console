@@ -36,12 +36,12 @@ export const Extrinsics = () => {
     <SelectFormWrapper>
       {/* Pallet Selection */}
       <PalletList
-        selected={activePallet}
+        activePallet={activePallet}
         pallets={pallets}
         chainUiSection={chainUiSection}
-        onSelect={(value) =>
-          setChainUiItem(activeTabId, chainUiSection, 'pallet', value)
-        }
+        onSelect={(value) => {
+          setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
+        }}
       />
 
       {/* Call Selection */}
