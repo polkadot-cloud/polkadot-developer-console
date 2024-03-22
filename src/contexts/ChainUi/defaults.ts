@@ -25,4 +25,6 @@ export const defaultChainContext: ChainUiContextInterface = {
   setChainUiItem: (tabId, section, key, value) => {},
   getPalletVersions: (tabId) => undefined,
   fetchPalletVersions: async (tabId, metadata, apiInstance) => {},
+  getActiveChainStateSection: (tabId) => 'storage',
+  setActiveChainStateSection: (tabId, section) => {},
 };

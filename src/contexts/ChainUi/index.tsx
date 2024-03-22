@@ -15,6 +15,8 @@ import type {
   ChainUiItem,
   PalletVersions,
   ChainUiItemInner,
+  ChainStateSections,
+  ChainStateSection,
 } from './types';
 import type { ApiPromise } from '@polkadot/api';
 import { xxhashAsHex } from '@polkadot/util-crypto';
@@ -29,11 +31,30 @@ export const ChainUi =
 export const useChainUi = () => useContext(ChainUi);
 
 export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
-  // The UI state of the chain.
+  // The UI state of the chain, keyed by tab.
   const [chainUi, setChainUi] = useState<ChainUiState>(defaultChainUiState);
 
-  // Stores pallet versions of the chain.
+  // The active chain state section, keyed by tab.
+  const [activeChainStateSections, setActiveChainStateSections] =
+    useState<ChainStateSections>({});
+
+  // Stores pallet versions of a chain, keyed by tab.
   const [palletVersions, setPalletVersions] = useState<PalletVersions>({});
+
+  // Gets an active chain state section by tabId. Falls back to 'storage'.
+  const getActiveChainStateSection = (tabId: number): string =>
+    activeChainStateSections[tabId] || 'storage';
+
+  // Sets an active chain state section for a `tabId`.
+  const setActiveChainStateSection = (
+    tabId: number,
+    section: ChainStateSection
+  ) => {
+    setActiveChainStateSections({
+      ...activeChainStateSections,
+      [tabId]: section,
+    });
+  };
 
   // Gets a ChainUi record by tabId.
   const getChainUi = (
@@ -118,6 +139,8 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
         setChainUiItem,
         getPalletVersions,
         fetchPalletVersions,
+        getActiveChainStateSection,
+        setActiveChainStateSection,
       }}
     >
       {children}

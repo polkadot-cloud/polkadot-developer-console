@@ -19,6 +19,11 @@ export interface ChainUiContextInterface {
     metadata: MetadataVersion,
     apiInstance: ApiPromise
   ) => void;
+  getActiveChainStateSection: (tabId: number) => string;
+  setActiveChainStateSection: (
+    tabId: number,
+    section: ChainStateSection
+  ) => void;
 }
 
 export type ChainUiState = Record<number, ChainUiItem>;
@@ -37,3 +42,7 @@ export interface ChainUiItemInner {
 }
 
 export type PalletVersions = Record<string, Record<string, string>>;
+
+export type ChainStateSections = Record<number, ChainStateSection>;
+
+export type ChainStateSection = 'storage' | 'constants' | 'raw';
