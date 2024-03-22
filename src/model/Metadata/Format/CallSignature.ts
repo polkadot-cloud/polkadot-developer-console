@@ -8,6 +8,9 @@ export class FormatCallSignature {
   // The raw input config to format.
   #rawConfig: PalletScraped;
 
+  // Type labels to ignore when formatting call signatures.
+  #ignoreLabels = ['BoundedVec', 'WeakBoundedVec'];
+
   constructor(rawConfig: PalletScraped) {
     this.#rawConfig = rawConfig;
   }
@@ -106,10 +109,8 @@ export class FormatCallSignature {
         break;
 
       case 'composite':
-        // Expand type if short label is not defined, or if basic types.
-        if (
-          ['', 'BoundedVec', 'WeakBoundedVec'].includes(section.label.short)
-        ) {
+        // Expand type if short label is not defined, or if they've been defined in ignore list.
+        if (['', ...this.#ignoreLabels].includes(section.label.short)) {
           str += section.composite.reduce(
             (acc: string, field: AnyJson, index: number) => {
               acc = acc + this.getTypeString(field.type);
