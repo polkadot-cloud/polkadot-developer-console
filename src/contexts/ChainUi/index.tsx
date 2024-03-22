@@ -76,7 +76,12 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
       ...currentChainUiItem,
       [key]: value,
       // Reset selected value if the pallet is being changed.
-      selected: key === 'pallet' ? '' : value,
+      selected:
+        key === 'pallet'
+          ? ''
+          : key === 'selected'
+            ? value
+            : currentChainUiItem.selected,
     };
 
     setChainUi({
