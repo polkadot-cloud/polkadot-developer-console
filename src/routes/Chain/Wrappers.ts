@@ -105,6 +105,10 @@ export const SelectItemWrapper = styled.button`
         overflow: hidden;
         width: 100%;
       }
+
+      > svg {
+        margin-left: 0.4rem;
+      }
     }
   }
 `;

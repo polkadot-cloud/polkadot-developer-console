@@ -2472,6 +2472,7 @@ __metadata:
     "@fortawesome/react-fontawesome": "npm:^0.2.0"
     "@polkadot/api": "npm:^10.11.3"
     "@polkadot/rpc-provider": "npm:^10.12.1"
+    "@polkadot/util-crypto": "npm:^12.6.2"
     "@types/react": "npm:^18.2.61"
     "@types/react-dom": "npm:^18.2.21"
     "@types/styled-components": "npm:^5.1.34"
