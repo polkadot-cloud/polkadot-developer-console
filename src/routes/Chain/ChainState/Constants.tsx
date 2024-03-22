@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
-import { StorageList } from './StorageList';
+import { ChainStateList } from './ChainStateList';
 
 export const Constants = () => {
   const { activeTabId } = useTabs();
@@ -35,8 +35,9 @@ export const Constants = () => {
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
 
-    // TODO: Implement getConstants and replace getStorage with getConstants.
-    const constantItems = activePallet ? scraper.getStorage(activePallet) : [];
+    const constantItems = activePallet
+      ? scraper.getConstants(activePallet)
+      : [];
 
     return {
       constantItems,
@@ -57,9 +58,9 @@ export const Constants = () => {
           setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
         }}
       />
-      {/* TODO: replace with ConstantsList */}
-      <StorageList
-        storageItems={constantItems}
+      <ChainStateList
+        subject="Constant Item"
+        items={constantItems}
         chainUiSection={chainUiSection}
       />
     </SelectFormWrapper>

@@ -8,8 +8,8 @@ import { useTabs } from 'contexts/Tabs';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { FormatCallSignature } from 'model/Metadata/Format/CallSignature';
 import type {
-  PalletScraped,
-  PalletScrapedWithSig,
+  PalletItemScraped,
+  PalletItemScrapedWithSig,
 } from 'model/Metadata/Scraper/types';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -21,91 +21,88 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 
-export const StorageList = ({
-  storageItems,
+export const ChainStateList = ({
+  items,
   chainUiSection,
+  subject,
 }: {
-  storageItems: PalletScraped[];
+  subject: string;
+  items: PalletItemScraped[];
   chainUiSection: keyof ChainUiItem;
 }) => {
   const { activeTabId } = useTabs();
   const { getChainUi, setChainUiItem } = useChainUi();
   const chainUi = getChainUi(activeTabId, chainUiSection);
 
-  // Storage selection open.
-  const [storageOpen, setStorageOpenState] = useState<boolean>(false);
+  // Whether dropdown is open.
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
-  // Setter for storage item menu open state.
-  const setStorageOpen = (value: boolean) => {
-    setStorageOpenState(value);
-  };
-
-  // Handle pallet search change.
-  const handleStorageSearchChange = (value: string) => {
+  // Handle search change.
+  const handleSearchChange = (value: string) => {
     setChainUiItem(activeTabId, chainUiSection, 'search', value);
   };
 
-  // Inject call signature into storage items.
-  const storageList: PalletScrapedWithSig[] = useMemo(
+  // Inject call signature into items.
+  const list: PalletItemScrapedWithSig[] = useMemo(
     () =>
-      storageItems
-        .map((storageItem) => ({
-          ...storageItem,
-          callSig: new FormatCallSignature(storageItem).format(),
+      items
+        .map((item) => ({
+          ...item,
+          callSig: new FormatCallSignature(item).format(),
         }))
         .sort(({ name: nameA }, { name: nameB }) =>
           nameA < nameB ? -1 : nameA > nameB ? 1 : 0
         ),
-    [storageItems]
+    [items]
   );
 
-  // Filter calls based on search term, if selection is present.
-  const filteredStorageList =
-    storageList.length > 0
-      ? storageList.filter(({ name }) =>
+  // Filter items based on search term, if selection is present.
+  const filteredList =
+    list.length > 0
+      ? list.filter(({ name }) =>
           name.toLowerCase().includes(formatInputString(chainUi.search, true))
         )
-      : storageList;
+      : list;
 
   // Determine the currently selected item.
   const selectedItem =
-    filteredStorageList.find(({ name }) => name === chainUi.selected) ||
-    filteredStorageList[0] ||
+    filteredList.find(({ name }) => name === chainUi.selected) ||
+    filteredList[0] ||
     '';
 
   // Refs for the selection menus.
-  const storageSelectRef = useRef(null);
+  const dropdownRef = useRef(null);
 
-  // Storage search input ref.
+  // Dropdown search input ref.
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Close storage selection if clicked outside of its container.
+  // Close dropdown if clicked outside of its container.
   useOutsideAlerter(
-    storageSelectRef,
+    dropdownRef,
     () => {
-      setStorageOpen(false);
+      setDropdownOpen(false);
     },
-    ['ignore-outside-alerter-storage']
+    ['ignore-outside-alerter-chain-state']
   );
 
   // Focus the call search input when the menu is opened.
   useEffect(() => {
-    if (storageOpen) {
+    if (dropdownOpen) {
       searchInputRef.current?.focus();
     }
-  }, [storageOpen]);
+  }, [dropdownOpen]);
 
   return (
     <section>
       <div className="inner">
-        <h5>Storage Item</h5>
+        <h5>{subject}</h5>
         <SelectItemWrapper
-          className={`standalone${storageOpen ? ` open` : ``} ignore-outside-alerter-storage`}
-          onClick={() => setStorageOpen(!storageOpen)}
+          className={`standalone${dropdownOpen ? ` open` : ``} ignore-outside-alerter-chain-state`}
+          onClick={() => setDropdownOpen(!dropdownOpen)}
         >
           <span>
             <SelectTextWrapper>
-              {chainUi.selected || selectedItem.name || 'No Storage Items'}
+              {chainUi.selected || selectedItem.name || `No ${subject} Items`}
               <span>{selectedItem?.callSig || ''}</span>
             </SelectTextWrapper>
           </span>
@@ -116,27 +113,25 @@ export const StorageList = ({
         </SelectItemWrapper>
 
         <SelectDropdownWrapper
-          ref={storageSelectRef}
-          className={`${storageOpen ? ` open` : ``}`}
+          ref={dropdownRef}
+          className={`${dropdownOpen ? ` open` : ``}`}
         >
           <SearchWrapper>
             <input
               ref={searchInputRef}
               placeholder="Search"
               value={chainUi.search}
-              onChange={(ev) =>
-                handleStorageSearchChange(ev.currentTarget.value)
-              }
+              onChange={(ev) => handleSearchChange(ev.currentTarget.value)}
             />
           </SearchWrapper>
 
-          {filteredStorageList.map(({ name, docs, callSig }) => (
+          {filteredList.map(({ name, docs, callSig }) => (
             <SelectItemWrapper
-              key={`storage_select_${name}`}
+              key={`${chainUiSection}_select_${name}`}
               className={`option${chainUi.selected === name ? ` selected` : ``}`}
               onClick={() => {
                 setChainUiItem(activeTabId, chainUiSection, 'selected', name);
-                setStorageOpen(false);
+                setDropdownOpen(false);
               }}
             >
               <span>

@@ -24,7 +24,7 @@ export interface Pallet {
     name: string;
     type: number;
     value: string;
-  };
+  }[];
   events: {
     type: number;
   };
@@ -33,15 +33,16 @@ export interface Pallet {
   };
 }
 
-export interface PalletScraped {
+export interface PalletItemScraped {
   name: string;
   docs: string[];
   modifier: string;
-  fallback: string;
+  fallback?: string;
   type: AnyJson;
+  value?: string;
 }
 
-export interface PalletScrapedWithSig extends PalletScraped {
+export interface PalletItemScrapedWithSig extends PalletItemScraped {
   callSig: string;
 }
 

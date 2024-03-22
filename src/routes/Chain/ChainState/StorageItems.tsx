@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
-import { StorageList } from './StorageList';
+import { ChainStateList } from './ChainStateList';
 
 export const StorageItems = () => {
   const { activeTabId } = useTabs();
@@ -55,8 +55,9 @@ export const StorageItems = () => {
           setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
         }}
       />
-      <StorageList
-        storageItems={storageItems}
+      <ChainStateList
+        subject="Storage Item"
+        items={storageItems}
         chainUiSection={chainUiSection}
       />
     </SelectFormWrapper>

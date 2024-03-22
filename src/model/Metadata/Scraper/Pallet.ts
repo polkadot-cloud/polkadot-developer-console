@@ -5,7 +5,7 @@ import type {
   PalleStorageMap,
   Pallet,
   PalletListItem,
-  PalletScraped,
+  PalletItemScraped,
   PalletStoragePlain,
   ScraperConfig,
 } from './types';
@@ -42,6 +42,11 @@ export class PalletScraper extends MetadataScraper {
       filtered = filtered.filter((pallet) => !!pallet.storage?.items);
     }
 
+    // Filter pallets with no constants.
+    if (filters?.includes('constants')) {
+      filtered = filtered.filter((pallet) => !!pallet.constants.length);
+    }
+
     // Narrow down the pallets to just the index and name, and sort alphabitically by name.
     const filteredList = (
       filtered.map(({ index, name }: PalletListItem) => ({
@@ -62,7 +67,7 @@ export class PalletScraper extends MetadataScraper {
       return [];
     }
 
-    let result: PalletScraped[] = [];
+    let result: PalletItemScraped[] = [];
     // Defensive: Check if storage items are defined for this pallet.
     const items = pallet.storage?.items;
 
@@ -91,6 +96,39 @@ export class PalletScraper extends MetadataScraper {
           modifier,
           fallback,
           type: scrapedType,
+        };
+      });
+    }
+
+    return result;
+  }
+
+  // Get a pallet's constants from metadata.
+  getConstants(palletName: string) {
+    const pallet = this.getPallet(palletName);
+    if (!pallet) {
+      return [];
+    }
+
+    let result: PalletItemScraped[] = [];
+    // Defensive: Check if storage items are defined for this pallet.
+    const items = pallet.constants;
+
+    if (items) {
+      result = items.map((item) => {
+        const { name, docs, type, value } = item;
+
+        const scrapedType = {
+          argTypes: undefined,
+          returnType: this.start(type),
+        };
+
+        return {
+          name,
+          docs,
+          modifier: '', // NOTE: This could be `null`.
+          type: scrapedType,
+          value,
         };
       });
     }

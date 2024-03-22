@@ -2,16 +2,16 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
-import type { PalletScraped } from '../Scraper/types';
+import type { PalletItemScraped } from '../Scraper/types';
 
 export class FormatCallSignature {
   // The raw input config to format.
-  #rawConfig: PalletScraped;
+  #rawConfig: PalletItemScraped;
 
   // Type labels to ignore when formatting call signatures.
   #ignoreLabels = ['BoundedVec', 'WeakBoundedVec'];
 
-  constructor(rawConfig: PalletScraped) {
+  constructor(rawConfig: PalletItemScraped) {
     this.#rawConfig = rawConfig;
   }
 
@@ -39,6 +39,13 @@ export class FormatCallSignature {
   // Formats call argument type.
   formatArgType = (argType: string) => {
     let str = '';
+
+    // Return early if we are dealing with runtime constants to avoid wrapping in parens. NOTE: Only
+    // runtime constants have a `value` field.
+    if (this.#rawConfig.value !== undefined) {
+      return str;
+    }
+
     if (argType !== '') {
       // Check if arguments are already wrapped in parens, and to do so if not.
       if (!/^\(.*\)$/.test(argType)) {
