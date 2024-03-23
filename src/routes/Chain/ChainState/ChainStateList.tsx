@@ -20,6 +20,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { SearchWrapper } from 'library/ContextMenu/Wrappers';
+import { camelize } from '@w3ux/utils';
 
 export const ChainStateList = ({
   items,
@@ -102,7 +103,11 @@ export const ChainStateList = ({
         >
           <span>
             <SelectTextWrapper>
-              {chainUi.selected || selectedItem.name || `No ${subject} Items`}
+              {chainUi.selected
+                ? camelize(chainUi.selected)
+                : selectedItem.name
+                  ? camelize(selectedItem.name)
+                  : `No ${subject}s`}
               <span>{selectedItem?.callSig || ''}</span>
             </SelectTextWrapper>
           </span>
@@ -151,7 +156,7 @@ export const ChainStateList = ({
             >
               <span>
                 <SelectTextWrapper>
-                  {name}
+                  {camelize(name)}
                   <span>{callSig}</span>
                 </SelectTextWrapper>
               </span>

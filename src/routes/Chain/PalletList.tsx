@@ -16,6 +16,7 @@ import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
 import { useTabs } from 'contexts/Tabs';
 import type { ChainUiItem } from 'contexts/ChainUi/types';
+import { camelize } from '@w3ux/utils';
 
 export const PalletList = ({
   pallets,
@@ -89,7 +90,7 @@ export const PalletList = ({
         >
           <span>
             <SelectTextWrapper>
-              {activePallet || 'No Pallets'}
+              {activePallet ? camelize(activePallet) : 'No Pallets'}
             </SelectTextWrapper>
           </span>
           <span>
@@ -147,7 +148,7 @@ export const PalletList = ({
               }}
             >
               <span>
-                <SelectTextWrapper>{name}</SelectTextWrapper>
+                <SelectTextWrapper>{camelize(name)}</SelectTextWrapper>
               </span>
               <span>
                 {palletVersions[name] ? <h5>v{palletVersions[name]}</h5> : ''}

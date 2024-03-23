@@ -16,6 +16,7 @@ import { formatInputString } from 'Utils';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { useChainUi } from 'contexts/ChainUi';
 import { useTabs } from 'contexts/Tabs';
+import { camelize } from '@w3ux/utils';
 
 export const CallList = ({ calls }: { calls: AnyJson }) => {
   const { activeTabId } = useTabs();
@@ -121,7 +122,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
         >
           <span>
             <SelectTextWrapper>
-              {selectedItem?.name || 'No Calls'}
+              {selectedItem?.name ? camelize(selectedItem.name) : 'No Calls'}
               {selectedItem?.fieldNames && (
                 <span>({selectedItem.fieldNames})</span>
               )}
@@ -172,7 +173,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
             >
               <span>
                 <SelectTextWrapper>
-                  {name}
+                  {camelize(name)}
                   {fieldNames && <span>({fieldNames})</span>}
                 </SelectTextWrapper>
               </span>
