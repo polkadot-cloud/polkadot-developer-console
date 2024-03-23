@@ -94,7 +94,7 @@ export const Overview = () => {
         <section>
           <div className="inner">
             <h4>
-              <FontAwesomeIcon icon={faList} transform="shrink-3" /> Config
+              <FontAwesomeIcon icon={faList} transform="shrink-3" /> Runtime
               Snapshot
             </h4>
             <h3>...</h3>

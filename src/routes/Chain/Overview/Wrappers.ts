@@ -60,8 +60,8 @@ export const CardsWrapper = styled.div`
     }
 
     > .inner {
-      border: 1px solid var(--border-primary-color);
-      background-color: var(--button-tertiary-background);
+      border: 1px solid var(--border-secondary-color);
+      background-color: var(--background-default);
       border-radius: 0.4rem;
       padding: 0.6rem 0.8rem;
 
