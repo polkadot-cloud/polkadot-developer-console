@@ -11,17 +11,20 @@ import { ChainFilterProvider } from 'contexts/ChainFilter';
 import { SettingsProvider } from 'contexts/Settings';
 import { TooltipProvider } from 'contexts/Tooltip';
 import { ApiProvider } from 'contexts/Api';
+import { ChainUiProvider } from 'contexts/ChainUi';
+import type { ReactNode } from 'react';
 
 export const Providers = () => {
   // !! Provider order matters.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const providers: Provider<any>[] = [
+  const providers: Provider<{ children: ReactNode }>[] = [
     SettingsProvider,
     TabsProvider,
     TagsProvider,
     ChainFilterProvider,
     MenuProvider,
     TooltipProvider,
+    ChainUiProvider,
     ApiProvider,
   ];
 

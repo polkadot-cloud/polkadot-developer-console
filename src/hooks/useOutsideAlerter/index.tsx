@@ -14,9 +14,9 @@ export const useOutsideAlerter = (
       if (ev) {
         if (ref.current && !ref.current.contains(ev.target as Node)) {
           const target = ev.target as HTMLElement;
+          const invalid = ignore.some((i) => target.closest(`.${i}`) !== null);
 
-          const invalid = ignore.find((i) => target.classList.contains(i));
-          if (invalid === undefined) {
+          if (!invalid) {
             callback();
           }
         }

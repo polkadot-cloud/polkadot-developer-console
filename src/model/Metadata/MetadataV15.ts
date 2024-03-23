@@ -1,10 +1,10 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { MetadataVersion } from './types';
 import type { Metadata } from '@polkadot/types';
+import type { MetadataVersion } from './types';
 
-export class UnknownMetadata implements MetadataVersion {
+export class MetadataV15 implements MetadataVersion {
   metadata: Metadata;
 
   constructor(metadata: Metadata) {
@@ -12,6 +12,7 @@ export class UnknownMetadata implements MetadataVersion {
   }
 
   getMetadataJson() {
-    return this.metadata.toJSON().metadata;
+    const json = this.metadata.toJSON().metadata as { v15: unknown };
+    return json.v15;
   }
 }

@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     font-family: InterSemiBold, sans-serif;
     color: var(--text-color-secondary);
     display: flex;
-    margin-top: 0.6rem;
+    margin-top: 0.75rem;
     flex: 1;
 
     > div {
@@ -46,16 +46,22 @@ export const CardsWrapper = styled.div`
   flex-flow: row wrap;
 
   > section {
-    padding: 0.25rem;
     flex-basis: 50%;
+
+    &:nth-child(n) {
+      padding-right: 0.5rem;
+    }
+    &:nth-child(2n) {
+      padding-left: 0.5rem;
+    }
 
     @media (max-width: 600px) {
       flex-basis: 100%;
     }
 
     > .inner {
-      border: 1px solid var(--border-primary-color);
-      background-color: var(--button-tertiary-background);
+      border: 1px solid var(--border-secondary-color);
+      background-color: var(--background-default);
       border-radius: 0.4rem;
       padding: 0.6rem 0.8rem;
 

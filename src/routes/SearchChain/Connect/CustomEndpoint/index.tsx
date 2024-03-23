@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { SearchInput } from 'library/SearchInput';
-import { ConnectButton, ChainInputWrapper } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronRight,
@@ -10,6 +9,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
+import { ChainInputWrapper } from '../Wrappers';
+import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 
 export const CustomEndpointInput = () => {
   const { activeTabId, connectTab } = useTabs();
@@ -37,14 +38,14 @@ export const CustomEndpointInput = () => {
       />
 
       <div className="footer">
-        <ConnectButton
+        <ButtonSubmit
           onClick={() => {
             connectTab(activeTabId, 'custom', customEndpoint);
           }}
         >
           Connect
           <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
-        </ConnectButton>
+        </ButtonSubmit>
       </div>
     </ChainInputWrapper>
   );

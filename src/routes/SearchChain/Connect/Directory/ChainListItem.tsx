@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Suspense, lazy, useMemo } from 'react';
-import { ChainListItemWrapper, ConnectButton } from '../Wrappers';
+import { SelectOptionWrapper } from '../Wrappers';
 import { Tag } from 'library/Tag';
 import { useTags } from 'contexts/Tags';
 import { TagControl } from 'library/TagControl';
@@ -14,6 +14,7 @@ import { type DirectoryId } from 'config/networks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConnectMenu } from './ConnectMenu';
 import { useTabs } from 'contexts/Tabs';
+import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 
 export interface ChainListItemProps {
   chainId: DirectoryId;
@@ -54,7 +55,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   };
 
   return (
-    <ChainListItemWrapper>
+    <SelectOptionWrapper>
       <div className="header">
         <section>
           <Suspense fallback={<div />}>
@@ -65,7 +66,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
           <h3>{name}</h3>
         </section>
         <section>
-          <ConnectButton
+          <ButtonSubmit
             onClick={(ev) => {
               openMenu(
                 ev,
@@ -78,7 +79,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
           >
             Connect
             <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
-          </ConnectButton>
+          </ButtonSubmit>
         </section>
       </div>
 
@@ -106,6 +107,6 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
           />
         </div>
       </div>
-    </ChainListItemWrapper>
+    </SelectOptionWrapper>
   );
 };

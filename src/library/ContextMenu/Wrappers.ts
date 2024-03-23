@@ -179,23 +179,28 @@ export const SelectListWrapper = styled.div`
       padding: 0.25rem 0.75rem 0 0.75rem;
     }
   }
+`;
 
-  > .search {
-    background-color: var(--background-default);
-    position: sticky;
-    padding: 0.2rem 0.5rem;
-    top: 0;
+export const SearchWrapper = styled.div`
+  background-color: var(--background-default);
+  position: sticky;
+  padding: 0.2rem 0.5rem;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+
+  > input {
+    border: 1px solid var(--border-primary-color);
+    padding: 0.3rem 0.4rem;
+    border-radius: 0.25rem;
+    margin: 0.3rem 0;
+    font-size: 0.7rem;
     width: 100%;
-    z-index: 5;
+  }
 
+  &.bg {
     > input {
-      background-color: var(--background-primary);
-      border: 1px solid var(--border-primary-color);
-      padding: 0.3rem 0.4rem;
-      border-radius: 0.25rem;
-      margin: 0.3rem 0;
-      font-size: 0.7rem;
-      width: 100%;
+      background: var(--background-primary);
     }
   }
 `;
