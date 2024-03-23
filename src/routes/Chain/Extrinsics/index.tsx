@@ -8,6 +8,7 @@ import { PalletList } from '../PalletList';
 import { CallList } from '../CallList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
+import { Header } from './Header';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
@@ -33,19 +34,22 @@ export const Extrinsics = () => {
   }
 
   return (
-    <SelectFormWrapper>
-      {/* Pallet Selection */}
-      <PalletList
-        activePallet={activePallet}
-        pallets={pallets}
-        chainUiSection={chainUiSection}
-        onSelect={(value) => {
-          setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
-        }}
-      />
+    <>
+      <Header />
+      <SelectFormWrapper className="withHeader">
+        {/* Pallet Selection */}
+        <PalletList
+          activePallet={activePallet}
+          pallets={pallets}
+          chainUiSection={chainUiSection}
+          onSelect={(value) => {
+            setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
+          }}
+        />
 
-      {/* Call Selection */}
-      <CallList calls={calls} />
-    </SelectFormWrapper>
+        {/* Call Selection */}
+        <CallList calls={calls} />
+      </SelectFormWrapper>
+    </>
   );
 };
