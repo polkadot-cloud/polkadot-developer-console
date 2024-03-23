@@ -143,6 +143,21 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
               placeholder="Search"
               value={chainUi.search}
               onChange={(ev) => handleCallSearchChange(ev.currentTarget.value)}
+              onKeyDown={(ev) => {
+                // Close and retain search value on enter key.
+                if (ev.key === 'Enter') {
+                  setCallsOpen(false);
+                }
+                if (ev.key === 'Escape') {
+                  // If search value exists, first clear it.
+                  if (chainUi.search.length > 0) {
+                    setChainUiItem(activeTabId, chainUiSection, 'search', '');
+                  } else {
+                    // No search, go ahead and close dropdown.
+                    setCallsOpen(false);
+                  }
+                }
+              }}
             />
           </SearchWrapper>
 

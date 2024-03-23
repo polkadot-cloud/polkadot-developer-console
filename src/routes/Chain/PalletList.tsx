@@ -115,6 +115,26 @@ export const PalletList = ({
               onChange={(ev) =>
                 handlePalletSearchChange(ev.currentTarget.value)
               }
+              onKeyDown={(ev) => {
+                // Close and retain search value on enter key.
+                if (ev.key === 'Enter') {
+                  setPalletsOpen(false);
+                }
+                if (ev.key === 'Escape') {
+                  // If search value exists, first clear it.
+                  if (chainUi.palletSearch.length > 0) {
+                    setChainUiItem(
+                      activeTabId,
+                      chainUiSection,
+                      'palletSearch',
+                      ''
+                    );
+                  } else {
+                    // No search, go ahead and close dropdown.
+                    setPalletsOpen(false);
+                  }
+                }
+              }}
             />
           </SearchWrapper>
           {filteredPallets.map(({ index, name }) => (
