@@ -16,11 +16,18 @@ import { Default } from 'routes/SearchChain';
 
 export const Router = () => {
   const { getApiStatus } = useApi();
-  const { activeTabId } = useTabs();
+  const { activeTabId, getActiveTab } = useTabs();
   const apiStatus = getApiStatus(activeTabId);
+  const activeTab = getActiveTab();
 
-  // If `Api` instance is active, render `Overview` component, otherwise render `Connect` component.
+  // Non disconnected API statuses.
   const ACTIVE_API_STATUSES = ['ready', 'connected', 'connecting'];
+
+  // If the active tab is auto connect, & there is a `chain` property to connect to, also go to the
+  // Chain tab. Also go to the Chain tab if the API is in a non error / disconnected state.
+  const chainPageByDefault =
+    (activeTab?.autoConnect === true && activeTab?.chain) ||
+    ACTIVE_API_STATUSES.includes(apiStatus);
 
   return (
     <>
@@ -33,9 +40,7 @@ export const Router = () => {
         <Route
           key={`route_default`}
           path={'/'}
-          element={
-            ACTIVE_API_STATUSES.includes(apiStatus) ? <Chain /> : <Default />
-          }
+          element={chainPageByDefault ? <Chain /> : <Default />}
         />
         <Route
           key={`route_settings`}
