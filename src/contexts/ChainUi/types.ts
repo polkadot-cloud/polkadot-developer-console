@@ -32,6 +32,7 @@ export interface ChainUiItem {
   storage: ChainUiItemInner;
   constants: ChainUiItemInner;
   calls: ChainUiItemInner;
+  raw: ChainUiItemInner;
 }
 
 export interface ChainUiItemInner {

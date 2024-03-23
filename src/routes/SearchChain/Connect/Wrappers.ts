@@ -196,19 +196,3 @@ export const SelectOptionWrapper = styled.div`
     transform: scale(1.008);
   }
 `;
-
-export const ConnectButton = styled.button`
-  color: var(--text-color-tertiary);
-  font-family: InterSemiBold, sans-serif;
-  display: flex;
-  align-items: center;
-  font-size: 0.8rem;
-
-  &:hover {
-    color: var(--accent-color-primary);
-  }
-
-  > svg {
-    margin-left: 0.4rem;
-  }
-`;

@@ -17,6 +17,7 @@ export const defaultChainUiItem: ChainUiItem = {
   storage: defaultChainUiInner,
   constants: defaultChainUiInner,
   calls: defaultChainUiInner,
+  raw: defaultChainUiInner,
 };
 
 export const defaultChainContext: ChainUiContextInterface = {

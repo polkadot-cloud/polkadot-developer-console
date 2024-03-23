@@ -6,20 +6,23 @@ import { Constants } from './Constants';
 import { Header } from './Header';
 import { StorageItems } from './StorageItems';
 import { useChainUi } from 'contexts/ChainUi';
+import { Raw } from './Raw';
 
 export const ChainState = () => {
   const { activeTabId } = useTabs();
   const { getActiveChainStateSection } = useChainUi();
   const activeChainStateSection = getActiveChainStateSection(activeTabId);
 
-  // TODO: Expand for raw storage.
   let content: JSX.Element;
   switch (activeChainStateSection) {
     case 'constants':
       content = <Constants />;
       break;
 
+    case 'raw':
+      content = <Raw />;
       break;
+
     case 'storage':
     default:
       content = <StorageItems />;
