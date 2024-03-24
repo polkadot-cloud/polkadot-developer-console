@@ -92,29 +92,6 @@ export class FormatCallSignature {
         str = this.getTypeString(section.sequence);
         break;
 
-      case 'sequence':
-        str = `Vec<${this.getTypeString(section.sequence)}>`;
-        break;
-
-      case 'tuple':
-        str = `(${section.tuple.reduce(
-          (acc: string, subSection: AnyJson, index: number) => {
-            const sigType = this.getTypeString(subSection);
-            acc += sigType;
-            if (index !== section.tuple.length - 1) {
-              acc += ', ';
-            }
-            return acc;
-          },
-          ''
-        )})`;
-        break;
-
-      case 'bitSequence':
-      case 'primitive':
-        str = this.getShortLabel(section.label);
-        break;
-
       case 'composite':
         // Expand type if short label is not defined, or if they've been defined in ignore list.
         if (['', ...this.#ignoreLabels].includes(section.label.short)) {
@@ -133,6 +110,30 @@ export class FormatCallSignature {
         }
 
         break;
+
+      case 'primitive':
+      case 'bitSequence':
+        str = this.getShortLabel(section.label);
+        break;
+
+      case 'sequence':
+        str = `Vec<${this.getTypeString(section.sequence)}>`;
+        break;
+
+      case 'tuple':
+        str = `(${section.tuple.reduce(
+          (acc: string, subSection: AnyJson, index: number) => {
+            const sigType = this.getTypeString(subSection);
+            acc += sigType;
+            if (index !== section.tuple.length - 1) {
+              acc += ', ';
+            }
+            return acc;
+          },
+          ''
+        )})`;
+        break;
+
       case 'variant':
         str = `${section.label.short}`;
         // If variant is `Option`, expand signature with its `Some` type.
