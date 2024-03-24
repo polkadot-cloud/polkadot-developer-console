@@ -14,6 +14,7 @@ import type { AnyJson } from '@w3ux/utils/types';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { Textbox } from '../Inputs/Textbox';
 
 export const StorageItems = () => {
   const { activeTabId } = useTabs();
@@ -93,12 +94,24 @@ export const StorageItems = () => {
         />
       </SelectFormWrapper>
       <InputFormWrapper>
-        <section>
-          {!!inputForm &&
-            Object.entries(inputForm).map(([key]: AnyJson, index) => (
-              <h3 key={`input_index_${key}_${index}`}>item</h3>
-            ))}
-        </section>
+        {!!inputForm &&
+          Object.entries(inputForm).map(
+            ([key, { label, input }]: AnyJson, index) => {
+              const defaultValue = FormatInputFields.defaultValue(input);
+              console.log(input, defaultValue);
+
+              switch (input) {
+                case 'number':
+                default:
+                  return (
+                    <section key={`input_index_${key}_${index}`}>
+                      <h5>{label}</h5>
+                      <Textbox defaultValue={defaultValue || ''} />
+                    </section>
+                  );
+              }
+            }
+          )}
         <section className="footer">
           <ButtonSubmit
             onClick={() => {

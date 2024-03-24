@@ -60,10 +60,12 @@ export const CardsWrapper = styled.div`
     }
 
     > .inner {
-      border: 1px solid var(--border-secondary-color);
+      border: 1px solid var(--border-primary-color);
       background-color: var(--background-default);
-      border-radius: 0.4rem;
+      border-radius: 0.5rem;
       padding: 0.6rem 0.8rem;
+      /* TODO: make theme variable + dark mode support */
+      box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.1);
 
       > h4 {
         color: var(--text-color-secondary);

@@ -141,6 +141,8 @@ export const SelectDropdownWrapper = styled.div`
   z-index: 10;
   border-top: none;
   display: none;
+  /* TODO: make theme variable + dark mode support */
+  box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.1);
 
   &.open {
     display: flex;
@@ -166,12 +168,21 @@ export const SelectTextWrapper = styled.h4`
 
 export const TextInputWrapper = styled.div`
   height: var(--select-item-height);
-
   border: 1px solid var(--border-primary-color);
   background-color: var(--background-primary);
   border-radius: 0.4rem;
   transition: border 0.15s;
   display: flex;
+
+  &.input {
+    background-color: var(--background-default);
+    border: 1px solid var(--border-secondary-color);
+    border-radius: 0.25rem;
+
+    &:hover {
+      border-color: var(--accent-color-secondary);
+    }
+  }
 
   &:hover {
     border-color: var(--border-secondary-color);
@@ -189,21 +200,28 @@ export const TextInputWrapper = styled.div`
 `;
 
 export const InputFormWrapper = styled.div`
-  --select-item-height: 2.8rem;
+  --select-item-height: 2.5rem;
 
   border-bottom: 1px solid var(--border-primary-color);
   flex: 1;
   display: flex;
   flex-flow: column wrap;
+  margin-top: 0.5rem;
   padding: 0 0.25rem 0.75rem 0.25rem;
   overflow: visible;
   width: 100%;
 
-  > section {
+  section {
     flex: 1;
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column wrap;
     width: 100%;
+    padding: 0.2rem 0;
+
+    > h5 {
+      margin: 0.5rem 0 0.2rem 0;
+      padding: 0 0.25rem;
+    }
 
     &.footer {
       display: flex;

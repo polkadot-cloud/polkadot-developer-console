@@ -28,8 +28,8 @@ export class FormatInputFields {
     }
 
     const result = this.getTypeInput(argTypes);
-    console.log(argTypes);
-    console.log(result);
+    // console.log(argTypes);
+    // console.log(result);
     return result;
   };
 
@@ -72,8 +72,8 @@ export class FormatInputFields {
 
       case 'primitive':
         result.primitive = {
-          label: arg.label.short,
-          input: null,
+          label: arg.label,
+          input: 'number',
         };
         break;
 
@@ -98,7 +98,24 @@ export class FormatInputFields {
 
         break;
     }
-
     return result;
   };
+
+  // ------------------------------------------------------
+  // Default input values.
+  // ------------------------------------------------------
+
+  static defaultValue(type: string): string | number | null {
+    switch (type) {
+      case 'number':
+        return '0';
+
+      case 'char':
+      case 'str':
+        return '';
+
+      default:
+        return null;
+    }
+  }
 }
