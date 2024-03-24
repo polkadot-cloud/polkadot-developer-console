@@ -28,8 +28,6 @@ export class FormatInputFields {
     }
 
     const result = this.getTypeInput(argTypes);
-    // console.log(argTypes);
-    // console.log(result);
     return result;
   };
 
@@ -43,9 +41,8 @@ export class FormatInputFields {
 
     switch (arg?.type) {
       case 'array':
-        // TODO: implement.
         result.array = {
-          label: arg.label,
+          len: arg.array.len,
           form: this.getTypeInput(arg.array.type),
         };
         break;
@@ -67,11 +64,7 @@ export class FormatInputFields {
         break;
 
       case 'composite':
-        // TODO: implement.
-        result.composite = {
-          label: arg.label.short,
-          form: null,
-        };
+        result.composite = this.getCompositeInput(arg);
         break;
 
       case 'primitive':
@@ -112,6 +105,18 @@ export class FormatInputFields {
         acc[name] = fields.map((field: AnyJson) =>
           this.getTypeInput(field.type)
         );
+        return acc;
+      }, {}),
+    };
+  }
+
+  // Formats a composite form input.
+  getCompositeInput(arg: AnyJson) {
+    return {
+      label: arg.label.short,
+      form: null,
+      forms: arg.composite.reduce((acc: AnyJson, { name, type }: AnyJson) => {
+        acc[name] = this.getTypeInput(type);
         return acc;
       }, {}),
     };
