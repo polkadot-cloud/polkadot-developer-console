@@ -19,7 +19,7 @@ export class FormatCallSignature {
   // Call signature formatting.
   // ------------------------------------------------------
 
-  // Formats `rawConfig`` data into a string.
+  // Formats `rawConfig` data into a string.
   format = () => {
     const {
       modifier,
