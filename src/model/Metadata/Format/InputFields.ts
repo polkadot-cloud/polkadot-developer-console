@@ -44,7 +44,7 @@ export class FormatInputFields {
     switch (arg?.type) {
       case 'array':
         result.array = {
-          label: arg.label.short,
+          label: arg.label,
           form: this.getTypeInput(arg.array.type),
         };
         break;
@@ -58,7 +58,7 @@ export class FormatInputFields {
 
       case 'compact':
         result.compact = {
-          label: arg.label.short,
+          label: arg.label,
           form: this.getTypeInput(arg.compact.type),
         };
         break;
@@ -79,7 +79,7 @@ export class FormatInputFields {
 
       case 'sequence':
         result.sequence = {
-          label: arg.label.short,
+          label: arg.label,
           form: null,
         };
         break;
