@@ -77,6 +77,7 @@ export class FormatInputFields {
       case 'primitive':
         result.primitive = {
           label: arg.label,
+          // TODO: if char or str, set form to 'text'.
           form: 'number',
         };
         break;

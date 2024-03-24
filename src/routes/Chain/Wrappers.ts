@@ -234,7 +234,7 @@ export const InputFormWrapper = styled.div`
     }
 
     &.indent {
-      padding-left: 0.75rem;
+      padding-left: 1.25rem;
     }
     > .inner {
       display: flex;
