@@ -8,6 +8,7 @@ import type { ReactNode } from 'react';
 import { Fragment } from 'react';
 import { Select } from './Select';
 import { Section } from './Section';
+import type { InputArray } from './types';
 
 export const useInput = () => {
   // Reads input and returns input components based on the input type. Called recursively for types
@@ -38,7 +39,7 @@ export const useInput = () => {
   };
 
   // Renders an array input component.
-  const renderArray = (input: AnyJson, parentKey: string): ReactNode => {
+  const renderArray = (input: InputArray, parentKey: string): ReactNode => {
     const [type, arrayInput]: [string, AnyJson] = Object.entries(input.form)[0];
 
     // Attach length to the array input.
