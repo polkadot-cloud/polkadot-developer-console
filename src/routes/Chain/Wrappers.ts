@@ -200,7 +200,7 @@ export const TextInputWrapper = styled.div`
 `;
 
 export const InputFormWrapper = styled.div`
-  --select-item-height: 2.5rem;
+  --select-item-height: 2.65rem;
 
   border-bottom: 1px solid var(--border-primary-color);
   flex: 1;
@@ -217,6 +217,10 @@ export const InputFormWrapper = styled.div`
     flex-flow: column wrap;
     width: 100%;
     padding: 0.3rem 0;
+
+    &.indent {
+      padding-left: 0.5rem;
+    }
 
     > h5 {
       margin: 0rem 0 0.3rem 0;
