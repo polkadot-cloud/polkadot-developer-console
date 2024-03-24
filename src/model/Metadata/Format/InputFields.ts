@@ -114,10 +114,13 @@ export class FormatInputFields {
     return {
       label: arg.label.short,
       form: null,
-      forms: arg.composite.reduce((acc: AnyJson, { name, type }: AnyJson) => {
-        acc[name] = this.getTypeInput(type);
-        return acc;
-      }, {}),
+      forms: arg.composite.reduce(
+        (acc: AnyJson, { name, typeName, type }: AnyJson) => {
+          acc[name || typeName] = this.getTypeInput(type);
+          return acc;
+        },
+        {}
+      ),
     };
   }
 

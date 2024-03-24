@@ -71,10 +71,15 @@ export const useInput = () => {
           const subType = Object.keys(subInput)[0];
           const key = `${parentKey}_${label}_${index}`;
 
-          // Prepend this type's label into child input label.
+          const subInputLabel = subInput[subType].label;
+
+          // Prepend this type's label into child input label if they are different.
           const subInputWithLabel = {
             ...subInput[subType],
-            label: `${label}: ${subInput[subType].label}`,
+            label:
+              label !== subInputLabel
+                ? `${label}: ${subInput[subType].label}`
+                : label,
           };
 
           return (
