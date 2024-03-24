@@ -13,7 +13,7 @@ export class FormatInputFields {
   }
 
   // ------------------------------------------------------
-  // Call signature formatting.
+  // Form input formatting.
   // ------------------------------------------------------
 
   // Formats `rawConfig` data into an input structure.
@@ -43,6 +43,7 @@ export class FormatInputFields {
 
     switch (arg?.type) {
       case 'array':
+        // TODO: implement.
         result.array = {
           label: arg.label,
           form: this.getTypeInput(arg.array.type),
@@ -50,6 +51,7 @@ export class FormatInputFields {
         break;
 
       case 'bitSequence':
+        // TODO: implement.
         result.bitSequence = {
           label: arg.label.short,
           form: null,
@@ -57,6 +59,7 @@ export class FormatInputFields {
         break;
 
       case 'compact':
+        // TODO: implement.
         result.compact = {
           label: arg.label,
           form: this.getTypeInput(arg.compact.type),
@@ -64,6 +67,7 @@ export class FormatInputFields {
         break;
 
       case 'composite':
+        // TODO: implement.
         result.composite = {
           label: arg.label.short,
           form: null,
@@ -78,6 +82,7 @@ export class FormatInputFields {
         break;
 
       case 'sequence':
+        // TODO: implement.
         result.sequence = {
           label: arg.label,
           form: null,
@@ -91,15 +96,23 @@ export class FormatInputFields {
         break;
 
       case 'variant':
-        result.variant = {
-          label: arg.label.short,
-          form: this.getTypeInput(arg.variant),
-        };
-
+        result.variant = this.getVariantInput(arg);
         break;
     }
     return result;
   };
+
+  // Formats a variant form input.
+  getVariantInput(arg: AnyJson) {
+    return {
+      label: arg.label.short,
+      form: 'select',
+      forms: arg.variant.reduce((acc: AnyJson, { name, fields }: AnyJson) => {
+        acc[name] = fields.map((field: AnyJson) => this.getTypeInput(field));
+        return acc;
+      }, {}),
+    };
+  }
 
   // ------------------------------------------------------
   // Default input values.
