@@ -5,6 +5,7 @@ import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 import { Textbox } from './Textbox';
 import type { AnyJson } from '@w3ux/utils/types';
 import { Fragment } from 'react';
+import { Select } from './Select';
 
 export const useInput = () => {
   // Reads input and returns input components based on the input type. Called recursively for types
@@ -20,6 +21,7 @@ export const useInput = () => {
         return input.map((item: AnyJson, index: number) => {
           const [tupleType, tupleInput] = Object.entries(item)[0];
           const key = `${parentKey}_${tupleType}_${index}`;
+
           return (
             <Fragment key={key}>
               {readInput(tupleType, tupleInput, key, true)}
@@ -27,14 +29,38 @@ export const useInput = () => {
           );
         });
 
+      case 'variant':
+        // TODO: display correct variant input based on the selected value. For now, it is just
+        // displaying the first variant.
+        // eslint-disable-next-line no-case-declarations
+        const selectedVariant = Object.keys(input.forms)[0];
+
+        return (
+          <>
+            {renderInput(input, indent, Object.keys(input.forms))}
+            {input.forms[selectedVariant].map(
+              (subInput: AnyJson, index: number) => {
+                const subType = Object.keys(subInput)[0];
+                const key = `${parentKey}_${selectedVariant}_${subType}_${index}`;
+
+                return (
+                  <Fragment key={key}>
+                    {readInput(subType, subInput[subType], key, true)}
+                  </Fragment>
+                );
+              }
+            )}
+          </>
+        );
+
       case 'primitive':
       default:
-        return <>{getInput(input, indent)}</>;
+        return <>{renderInput(input, indent)}</>;
     }
   };
 
-  // Gets an input component based on the input type.
-  const getInput = (
+  // Renders an input component wrapped in an input section.
+  const renderInput = (
     {
       form,
       label,
@@ -42,24 +68,34 @@ export const useInput = () => {
       form: AnyJson;
       label: string | number;
     },
-    indent: boolean
+    indent: boolean,
+    values?: string[]
   ) => {
-    const defaultValue = FormatInputFields.defaultValue(form) || '';
+    // Renders an input component based on the input form.
+    const renderInputType = () => {
+      switch (form) {
+        case 'select':
+          return <Select values={values || []} label={label} />;
 
-    switch (form) {
-      case 'number':
-      default:
-        return (
-          <section className={indent ? 'indent' : undefined}>
-            <h5>{label}</h5>
-            <Textbox defaultValue={defaultValue} />
-          </section>
-        );
-    }
+        case 'number':
+        default:
+          return (
+            <Textbox defaultValue={FormatInputFields.defaultValue(form)} />
+          );
+      }
+    };
+
+    return (
+      <section className={indent ? 'indent' : undefined}>
+        <div className="inner">
+          <h5>{label}</h5>
+          {renderInputType()}
+        </div>
+      </section>
+    );
   };
 
   return {
     readInput,
-    getInput,
   };
 };

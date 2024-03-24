@@ -91,6 +91,16 @@ export const SelectItemWrapper = styled.button`
     }
   }
 
+  &.input {
+    background-color: var(--background-default);
+    border: 1px solid var(--border-secondary-color);
+    border-radius: 0.25rem;
+
+    &:hover {
+      border-color: var(--accent-color-secondary);
+    }
+  }
+
   flex: 1;
   display: flex;
   align-items: center;
@@ -213,25 +223,29 @@ export const InputFormWrapper = styled.div`
 
   section {
     flex: 1;
-    display: flex;
-    flex-flow: column wrap;
+    padding: 0.3rem 0 0 0;
     width: 100%;
-    padding: 0.3rem 0;
-
-    &.indent {
-      padding-left: 0.5rem;
-    }
-
-    > h5 {
-      margin: 0rem 0 0.3rem 0;
-      padding: 0 0.25rem;
-    }
 
     &.footer {
       display: flex;
       flex-direction: row;
       margin-top: 0.25rem;
       justify-content: flex-end;
+    }
+
+    &.indent {
+      padding-left: 0.5rem;
+    }
+    > .inner {
+      display: flex;
+      flex-flow: column wrap;
+      position: relative;
+      width: 100%;
+
+      > h5 {
+        margin: 0rem 0 0.3rem 0;
+        padding: 0 0.25rem;
+      }
     }
   }
 `;
