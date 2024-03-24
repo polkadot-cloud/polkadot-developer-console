@@ -9,7 +9,7 @@ import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { ChainStateList } from './ChainStateList';
-import type { AnyJson } from '@w3ux/utils/types';
+import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 
 export const StorageItems = () => {
   const { activeTabId } = useTabs();
@@ -59,13 +59,16 @@ export const StorageItems = () => {
   const { pallets, activePallet, storageItems, activeStorageItem } =
     storageData;
 
-  // Get input markup for the active storage item.
-  const inputForm: AnyJson[] = [];
-  if (activePallet !== null && activeStorageItem !== null) {
-    // TODO: construct input form.
-  }
+  // Get the whole active storage item record for input formatting.
+  const activeListItem = storageItems.find(
+    (item) => item.name === activeStorageItem
+  );
 
-  console.log(inputForm);
+  // Get input markup for the active storage item.
+  const inputForm =
+    activePallet !== null && activeStorageItem !== null && !!activeListItem
+      ? new FormatInputFields(activeListItem).format()
+      : null;
 
   return (
     <>
@@ -85,7 +88,12 @@ export const StorageItems = () => {
           chainUiSection={chainUiSection}
         />
       </SelectFormWrapper>
-      <InputFormWrapper>&nbsp;</InputFormWrapper>
+      <InputFormWrapper>
+        {!!inputForm &&
+          inputForm.map((input, index) => (
+            <h3 key={`input_index_${index}`}>{input}</h3>
+          ))}
+      </InputFormWrapper>
     </>
   );
 };
