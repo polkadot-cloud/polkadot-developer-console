@@ -108,7 +108,9 @@ export class FormatInputFields {
       label: arg.label.short,
       form: 'select',
       forms: arg.variant.reduce((acc: AnyJson, { name, fields }: AnyJson) => {
-        acc[name] = fields.map((field: AnyJson) => this.getTypeInput(field));
+        acc[name] = fields.map((field: AnyJson) =>
+          this.getTypeInput(field.type)
+        );
         return acc;
       }, {}),
     };
