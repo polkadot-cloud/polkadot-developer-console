@@ -7,6 +7,7 @@ import type { AnyJson } from '@w3ux/utils/types';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
 import { Select } from './Select';
+import { Section } from './Section';
 
 export const useInput = () => {
   // Reads input and returns input components based on the input type. Called recursively for types
@@ -113,9 +114,7 @@ export const useInput = () => {
 
   // Renders an inner input component.
   const renderInnerInput = (innerInput: ReactNode): ReactNode => (
-    <section>
-      <div className="inner">{innerInput}</div>
-    </section>
+    <Section>{innerInput}</Section>
   );
 
   // Renders a label with an inner input component.
@@ -123,12 +122,10 @@ export const useInput = () => {
     label: string | number,
     innerInput: ReactNode
   ) => (
-    <section className="indent">
-      <div className="inner">
-        <h5 style={{ marginTop: '0.25rem' }}>{label}</h5>
-        {innerInput}
-      </div>
-    </section>
+    <Section indent={true}>
+      <h5 style={{ marginTop: '0.25rem' }}>{label}</h5>
+      {innerInput}
+    </Section>
   );
 
   // Renders an input component wrapped in an input section.
@@ -142,30 +139,23 @@ export const useInput = () => {
     },
     indent: boolean,
     values?: string[]
-  ) => {
-    // Renders an input component based on the input form.
-    const renderInputType = () => {
-      switch (form) {
-        case 'select':
-          return <Select values={values || []} label={label} />;
+  ) => (
+    <Section indent={indent}>
+      <h5>{label}</h5>
+      {(() => {
+        switch (form) {
+          case 'select':
+            return <Select values={values || []} label={label} />;
 
-        case 'number':
-        default:
-          return (
-            <Textbox defaultValue={FormatInputFields.defaultValue(form)} />
-          );
-      }
-    };
-
-    return (
-      <section className={indent ? 'indent' : undefined}>
-        <div className="inner">
-          <h5>{label}</h5>
-          {renderInputType()}
-        </div>
-      </section>
-    );
-  };
+          case 'number':
+          default:
+            return (
+              <Textbox defaultValue={FormatInputFields.defaultValue(form)} />
+            );
+        }
+      })()}
+    </Section>
+  );
 
   return {
     readInput,
