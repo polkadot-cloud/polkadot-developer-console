@@ -120,7 +120,7 @@ export class FormatInputFields {
   // Default input values.
   // ------------------------------------------------------
 
-  static defaultValue(type: string): string | number | null {
+  static defaultValue(type: string): string {
     switch (type) {
       case 'number':
         return '0';
@@ -130,7 +130,7 @@ export class FormatInputFields {
         return '';
 
       default:
-        return null;
+        return '';
     }
   }
 }
