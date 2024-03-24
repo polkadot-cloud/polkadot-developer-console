@@ -41,6 +41,8 @@ export class FormatInputFields {
 
     switch (arg?.type) {
       case 'array':
+        // TODO: Implement fixed hash types and AccountId32. (AccountId32, like H256, is also [u8,
+        // 32]. Read label to determine which form / forms to display.)
         result.array = {
           len: arg.array.len,
           form: this.getTypeInput(arg.array.type),
@@ -48,9 +50,9 @@ export class FormatInputFields {
         break;
 
       case 'bitSequence':
-        // TODO: implement.
         result.bitSequence = {
           label: arg.label.short,
+          // TODO: fall back to scale encoded hex input. 0x placeholder.
           form: null,
         };
         break;
@@ -75,7 +77,7 @@ export class FormatInputFields {
         break;
 
       case 'sequence':
-        // TODO: implement.
+        // TODO: implement sequence input UI. Test with dummy data.
         result.sequence = {
           label: arg.label,
           form: null,
