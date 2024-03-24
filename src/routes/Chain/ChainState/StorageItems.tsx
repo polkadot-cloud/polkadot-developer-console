@@ -14,9 +14,10 @@ import type { AnyJson } from '@w3ux/utils/types';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
-import { Textbox } from '../Inputs/Textbox';
+import { useInput } from '../Inputs';
 
 export const StorageItems = () => {
+  const { getInput } = useInput();
   const { activeTabId } = useTabs();
   const { getChainSpec } = useApi();
   const { getChainUi, setChainUiItem } = useChainUi();
@@ -98,18 +99,13 @@ export const StorageItems = () => {
           Object.entries(inputForm).map(
             ([key, { label, input }]: AnyJson, index) => {
               const defaultValue = FormatInputFields.defaultValue(input);
-              console.log(input, defaultValue);
 
-              switch (input) {
-                case 'number':
-                default:
-                  return (
-                    <section key={`input_index_${key}_${index}`}>
-                      <h5>{label}</h5>
-                      <Textbox defaultValue={defaultValue || ''} />
-                    </section>
-                  );
-              }
+              return (
+                <section key={`input_index_${key}_${index}`}>
+                  <h5>{label}</h5>
+                  {getInput(input, defaultValue || '')}
+                </section>
+              );
             }
           )}
         <section className="footer">
