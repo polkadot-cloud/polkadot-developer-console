@@ -6,11 +6,10 @@ import styled from 'styled-components';
 export const SelectFormWrapper = styled.div`
   --select-item-height: 2.8rem;
 
-  border-bottom: 1px solid var(--border-primary-color);
   flex: 1;
   display: flex;
   flex-flow: row wrap;
-  padding-bottom: 0.85rem;
+  margin-bottom: 0.5rem;
   width: 100%;
   overflow: visible;
 
@@ -195,4 +194,16 @@ export const TextInputWrapper = styled.div`
     padding: 0 0.7rem;
     width: 100%;
   }
+`;
+
+export const InputFormWrapper = styled.div`
+  --select-item-height: 2.8rem;
+
+  border-bottom: 1px solid var(--border-primary-color);
+  flex: 1;
+  display: flex;
+  flex-flow: row wrap;
+  padding: 0 0.25rem 0.5rem 0.25rem;
+  overflow: visible;
+  width: 100%;
 `;
