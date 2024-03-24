@@ -45,42 +45,42 @@ export class FormatInputFields {
       case 'array':
         result.array = {
           label: arg.label.short,
-          input: this.getTypeInput(arg.array.type),
+          form: this.getTypeInput(arg.array.type),
         };
         break;
 
       case 'bitSequence':
         result.bitSequence = {
           label: arg.label.short,
-          input: null,
+          form: null,
         };
         break;
 
       case 'compact':
         result.compact = {
           label: arg.label.short,
-          input: this.getTypeInput(arg.compact.type),
+          form: this.getTypeInput(arg.compact.type),
         };
         break;
 
       case 'composite':
         result.composite = {
           label: arg.label.short,
-          input: null,
+          form: null,
         };
         break;
 
       case 'primitive':
         result.primitive = {
           label: arg.label,
-          input: 'number',
+          form: 'number',
         };
         break;
 
       case 'sequence':
         result.sequence = {
           label: arg.label.short,
-          input: null,
+          form: null,
         };
         break;
 
@@ -93,7 +93,7 @@ export class FormatInputFields {
       case 'variant':
         result.variant = {
           label: arg.label.short,
-          input: this.getTypeInput(arg.variant),
+          form: this.getTypeInput(arg.variant),
         };
 
         break;

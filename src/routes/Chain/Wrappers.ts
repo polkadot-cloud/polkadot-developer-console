@@ -216,17 +216,17 @@ export const InputFormWrapper = styled.div`
     display: flex;
     flex-flow: column wrap;
     width: 100%;
-    padding: 0.2rem 0;
+    padding: 0.3rem 0;
 
     > h5 {
-      margin: 0.5rem 0 0.2rem 0;
+      margin: 0rem 0 0.3rem 0;
       padding: 0 0.25rem;
     }
 
     &.footer {
       display: flex;
       flex-direction: row;
-      margin-top: 0.75rem;
+      margin-top: 0.25rem;
       justify-content: flex-end;
     }
   }

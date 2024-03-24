@@ -4,7 +4,7 @@
 import { InputFormWrapper, SelectFormWrapper } from '../Wrappers';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
-import { useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
@@ -17,7 +17,7 @@ import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useInput } from '../Inputs';
 
 export const StorageItems = () => {
-  const { getInput } = useInput();
+  const { readInput } = useInput();
   const { activeTabId } = useTabs();
   const { getChainSpec } = useApi();
   const { getChainUi, setChainUiItem } = useChainUi();
@@ -96,18 +96,10 @@ export const StorageItems = () => {
       </SelectFormWrapper>
       <InputFormWrapper>
         {!!inputForm &&
-          Object.entries(inputForm).map(
-            ([key, { label, input }]: AnyJson, index) => {
-              const defaultValue = FormatInputFields.defaultValue(input);
-
-              return (
-                <section key={`input_index_${key}_${index}`}>
-                  <h5>{label}</h5>
-                  {getInput(input, defaultValue || '')}
-                </section>
-              );
-            }
-          )}
+          Object.entries(inputForm).map(([type, input]: AnyJson, index) => {
+            const key = `input_${index}`;
+            return <Fragment key={key}>{readInput(type, input, key)}</Fragment>;
+          })}
         <section className="footer">
           <ButtonSubmit
             onClick={() => {
