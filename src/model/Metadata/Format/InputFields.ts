@@ -1,6 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
+import type { AnyJson } from '@w3ux/utils/types';
 import type { PalletItemScraped } from '../Scraper/types';
 
 export class FormatInputFields {
@@ -21,12 +22,83 @@ export class FormatInputFields {
       type: { argTypes },
     } = this.#rawConfig;
 
-    // if there are no arg types, (no args to format) return an empty array.
+    // if there are no arg types, (no args to format) return an empty object.
     if (!argTypes) {
-      return [];
+      return {};
     }
 
-    // TODO: Implement.
-    return [];
+    const result = this.getTypeInput(argTypes);
+    console.log(argTypes);
+    console.log(result);
+    return result;
+  };
+
+  // ------------------------------------------------------
+  // Recursive input formatting.
+  // ------------------------------------------------------
+
+  // A recursive function that formats a call inputs.
+  getTypeInput = (arg: AnyJson) => {
+    const result: AnyJson = {};
+
+    switch (arg?.type) {
+      case 'array':
+        result.array = {
+          label: arg.label.short,
+          input: this.getTypeInput(arg.array.type),
+        };
+        break;
+
+      case 'bitSequence':
+        result.bitSequence = {
+          label: arg.label.short,
+          input: null,
+        };
+        break;
+
+      case 'compact':
+        result.compact = {
+          label: arg.label.short,
+          input: this.getTypeInput(arg.compact.type),
+        };
+        break;
+
+      case 'composite':
+        result.composite = {
+          label: arg.label.short,
+          input: null,
+        };
+        break;
+
+      case 'primitive':
+        result.primitive = {
+          label: arg.label.short,
+          input: null,
+        };
+        break;
+
+      case 'sequence':
+        result.sequence = {
+          label: arg.label.short,
+          input: null,
+        };
+        break;
+
+      case 'tuple':
+        result.tuple = arg.tuple.map((item: AnyJson) =>
+          this.getTypeInput(item)
+        );
+        break;
+
+      case 'variant':
+        result.variant = {
+          label: arg.label.short,
+          input: this.getTypeInput(arg.variant),
+        };
+
+        break;
+    }
+
+    return result;
   };
 }

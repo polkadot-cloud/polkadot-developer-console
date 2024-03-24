@@ -10,6 +10,7 @@ import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { ChainStateList } from './ChainStateList';
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
+import type { AnyJson } from '@w3ux/utils/types';
 
 export const StorageItems = () => {
   const { activeTabId } = useTabs();
@@ -90,8 +91,8 @@ export const StorageItems = () => {
       </SelectFormWrapper>
       <InputFormWrapper>
         {!!inputForm &&
-          inputForm.map((input, index) => (
-            <h3 key={`input_index_${index}`}>{input}</h3>
+          Object.entries(inputForm).map(([key]: AnyJson, index) => (
+            <h3 key={`input_index_${key}_${index}`}>item</h3>
           ))}
       </InputFormWrapper>
     </>
