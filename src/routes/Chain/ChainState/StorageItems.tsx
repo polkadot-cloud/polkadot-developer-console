@@ -36,7 +36,13 @@ export const StorageItems = () => {
 
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
-    const storageItems = activePallet ? scraper.getStorage(activePallet) : [];
+
+    // Get storage items for the active pallet and sort by name.
+    const storageItems = (
+      activePallet ? scraper.getStorage(activePallet) : []
+    ).sort(({ name: nameA }, { name: nameB }) =>
+      nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+    );
 
     // If no storage item selected, select the first one from the list or fall back to null.
     const activeStorageItem =

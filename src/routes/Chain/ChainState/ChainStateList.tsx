@@ -48,14 +48,10 @@ export const ChainStateList = ({
   // Inject call signature into items.
   const list: PalletItemScrapedWithSig[] = useMemo(
     () =>
-      items
-        .map((item) => ({
-          ...item,
-          callSig: new FormatCallSignature(item).format(),
-        }))
-        .sort(({ name: nameA }, { name: nameB }) =>
-          nameA < nameB ? -1 : nameA > nameB ? 1 : 0
-        ),
+      items.map((item) => ({
+        ...item,
+        callSig: new FormatCallSignature(item).format(),
+      })),
     [items]
   );
 
