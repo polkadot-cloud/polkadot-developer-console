@@ -11,6 +11,9 @@ import { useChainUi } from 'contexts/ChainUi';
 import { ChainStateList } from './ChainStateList';
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 import type { AnyJson } from '@w3ux/utils/types';
+import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 
 export const StorageItems = () => {
   const { activeTabId } = useTabs();
@@ -90,10 +93,22 @@ export const StorageItems = () => {
         />
       </SelectFormWrapper>
       <InputFormWrapper>
-        {!!inputForm &&
-          Object.entries(inputForm).map(([key]: AnyJson, index) => (
-            <h3 key={`input_index_${key}_${index}`}>item</h3>
-          ))}
+        <section>
+          {!!inputForm &&
+            Object.entries(inputForm).map(([key]: AnyJson, index) => (
+              <h3 key={`input_index_${key}_${index}`}>item</h3>
+            ))}
+        </section>
+        <section className="footer">
+          <ButtonSubmit
+            onClick={() => {
+              /* Do nothing */
+            }}
+          >
+            Submit
+            <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
+          </ButtonSubmit>
+        </section>
       </InputFormWrapper>
     </>
   );

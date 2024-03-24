@@ -9,7 +9,6 @@ export const SelectFormWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-flow: row wrap;
-  margin-bottom: 0.5rem;
   width: 100%;
   overflow: visible;
 
@@ -53,13 +52,6 @@ export const SelectFormWrapper = styled.div`
       > .inner > div {
         width: 100%;
       }
-    }
-
-    &.footer {
-      display: flex;
-      flex-direction: row;
-      margin-top: 0.75rem;
-      justify-content: flex-end;
     }
   }
 `;
@@ -202,8 +194,22 @@ export const InputFormWrapper = styled.div`
   border-bottom: 1px solid var(--border-primary-color);
   flex: 1;
   display: flex;
-  flex-flow: row wrap;
-  padding: 0 0.25rem 0.5rem 0.25rem;
+  flex-flow: column wrap;
+  padding: 0 0.25rem 0.75rem 0.25rem;
   overflow: visible;
   width: 100%;
+
+  > section {
+    flex: 1;
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+
+    &.footer {
+      display: flex;
+      flex-direction: row;
+      margin-top: 0.75rem;
+      justify-content: flex-end;
+    }
+  }
 `;

@@ -9,6 +9,9 @@ import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { ChainStateList } from './ChainStateList';
+import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Constants = () => {
   const { activeTabId } = useTabs();
@@ -73,7 +76,18 @@ export const Constants = () => {
           chainUiSection={chainUiSection}
         />
       </SelectFormWrapper>
-      <InputFormWrapper>&nbsp;</InputFormWrapper>
+      <InputFormWrapper>
+        <section className="footer">
+          <ButtonSubmit
+            onClick={() => {
+              /* Do nothing */
+            }}
+          >
+            Submit
+            <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
+          </ButtonSubmit>
+        </section>
+      </InputFormWrapper>
     </>
   );
 };
