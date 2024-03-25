@@ -1906,6 +1906,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@w3ux/react-polkicon@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "@w3ux/react-polkicon@npm:0.0.2"
+  dependencies:
+    "@polkadot/util": "npm:^12.6.2"
+    "@w3ux/utils": "npm:0.0.1"
+    framer-motion: "npm:^11.0.6"
+  checksum: 10c0/f1566d84f9991a64bd97aabec1475a876c86017070590bf111779c6f2baa1194818d6162416758368a8902cbeb4c8da7ca8998a0a8251d161a79f75a77b952cc
+  languageName: node
+  linkType: hard
+
+"@w3ux/utils@npm:0.0.1":
+  version: 0.0.1
+  resolution: "@w3ux/utils@npm:0.0.1"
+  checksum: 10c0/a14823f3f0e3776a472ccaf6838745af077191fe3a004ceea3936c4d5767189de96eba9752b9cf8eb56a1aa24e38c6a05f673748a955671be761cb713108b8c4
+  languageName: node
+  linkType: hard
+
 "@w3ux/utils@npm:^0.0.2":
   version: 0.0.2
   resolution: "@w3ux/utils@npm:0.0.2"
@@ -2220,6 +2238,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"base64-js@npm:^1.3.1":
+  version: 1.5.1
+  resolution: "base64-js@npm:1.5.1"
+  checksum: 10c0/f23823513b63173a001030fae4f2dabe283b99a9d324ade3ad3d148e218134676f1ee8568c877cd79ec1c53158dcf2d2ba527a97c606618928ba99dd930102bf
+  languageName: node
+  linkType: hard
+
 "bignumber.js@npm:^9.1.1, bignumber.js@npm:^9.1.2":
   version: 9.1.2
   resolution: "bignumber.js@npm:9.1.2"
@@ -2280,6 +2305,16 @@ __metadata:
   bin:
     browserslist: cli.js
   checksum: 10c0/8e9cc154529062128d02a7af4d8adeead83ca1df8cd9ee65a88e2161039f3d68a4d40fea7353cab6bae4c16182dec2fdd9a1cf7dc2a2935498cee1af0e998943
+  languageName: node
+  linkType: hard
+
+"buffer@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "buffer@npm:6.0.3"
+  dependencies:
+    base64-js: "npm:^1.3.1"
+    ieee754: "npm:^1.2.1"
+  checksum: 10c0/2a905fbbcde73cc5d8bd18d1caa23715d5f83a5935867c2329f0ac06104204ba7947be098fe1317fbd8830e26090ff8e764f08cd14fefc977bb248c3487bcbd0
   languageName: node
   linkType: hard
 
@@ -2472,6 +2507,7 @@ __metadata:
     "@fortawesome/react-fontawesome": "npm:^0.2.0"
     "@polkadot/api": "npm:^10.11.3"
     "@polkadot/rpc-provider": "npm:^10.12.1"
+    "@polkadot/util": "npm:^12.6.2"
     "@polkadot/util-crypto": "npm:^12.6.2"
     "@types/react": "npm:^18.2.61"
     "@types/react-dom": "npm:^18.2.21"
@@ -2481,8 +2517,10 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.2.1"
     "@w3ux/hooks": "npm:^0.0.3"
     "@w3ux/react-odometer": "npm:^0.0.3"
+    "@w3ux/react-polkicon": "npm:^0.0.2"
     "@w3ux/utils": "npm:^0.0.2"
     bignumber.js: "npm:^9.1.2"
+    buffer: "npm:^6.0.3"
     date-fns: "npm:^3.3.1"
     eslint: "npm:^8.57.0"
     eslint-config-prettier: "npm:^9.1.0"
@@ -3519,6 +3557,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"framer-motion@npm:^11.0.6":
+  version: 11.0.20
+  resolution: "framer-motion@npm:11.0.20"
+  dependencies:
+    tslib: "npm:^2.4.0"
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10c0/863c209b6ae9a9e2dc852d004de2e2596171dbbf34684b665618f87087081fd2d9f73c9c0decea4f59daec18734776be75442c2e5c3885a204b338ce3899a4f6
+  languageName: node
+  linkType: hard
+
 "framer-motion@npm:^11.0.8":
   version: 11.0.8
   resolution: "framer-motion@npm:11.0.8"
@@ -3912,6 +3970,13 @@ __metadata:
   dependencies:
     safer-buffer: "npm:>= 2.1.2 < 3.0.0"
   checksum: 10c0/98102bc66b33fcf5ac044099d1257ba0b7ad5e3ccd3221f34dd508ab4070edff183276221684e1e0555b145fce0850c9f7d2b60a9fcac50fbb4ea0d6e845a3b1
+  languageName: node
+  linkType: hard
+
+"ieee754@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "ieee754@npm:1.2.1"
+  checksum: 10c0/b0782ef5e0935b9f12883a2e2aa37baa75da6e66ce6515c168697b42160807d9330de9a32ec1ed73149aea02e0d822e572bca6f1e22bdcbd2149e13b050b17bb
   languageName: node
   linkType: hard
 

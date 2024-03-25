@@ -183,6 +183,7 @@ export const TextInputWrapper = styled.div`
   border-radius: 0.4rem;
   transition: border 0.15s;
   display: flex;
+  align-items: center;
 
   &.input {
     background-color: var(--background-default);
@@ -199,6 +200,12 @@ export const TextInputWrapper = styled.div`
     > span:last-child {
       color: var(--accent-color-secondary);
     }
+  }
+
+  .polkicon {
+    position: relative;
+    left: 0.5rem;
+    padding-right: 0.15rem;
   }
 
   > input {

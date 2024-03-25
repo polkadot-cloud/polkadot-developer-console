@@ -39,6 +39,7 @@ export const Select = ({
 
   return (
     <>
+      <h5>{label}</h5>
       <SelectItemWrapper
         className={`standalone input${open ? ` open` : ``} ${ignoreClass}`}
         onClick={() => setOpen(!open)}

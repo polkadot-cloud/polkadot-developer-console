@@ -9,6 +9,7 @@ import { Fragment } from 'react';
 import { Select } from './Select';
 import { Section } from './Section';
 import type { InputArray } from './types';
+import { AccountId32 } from './AccountId32';
 
 export const useInput = () => {
   // Reads input and returns input components based on the input type. Called recursively for types
@@ -66,29 +67,31 @@ export const useInput = () => {
   const renderComposite = (input: AnyJson, parentKey: string) =>
     renderLabelWithInner(
       input.label,
-      Object.entries(input.forms).map(
-        ([label, subInput]: AnyJson, index: number) => {
-          const subType = Object.keys(subInput)[0];
-          const key = `${parentKey}_${label}_${index}`;
+      input.form !== null
+        ? renderInput(input, false)
+        : Object.entries(input.forms).map(
+            ([label, subInput]: AnyJson, index: number) => {
+              const subType = Object.keys(subInput)[0];
+              const key = `${parentKey}_${label}_${index}`;
 
-          const subInputLabel = subInput[subType].label;
+              const subInputLabel = subInput[subType].label;
 
-          // Prepend this type's label into child input label if they are different.
-          const subInputWithLabel = {
-            ...subInput[subType],
-            label:
-              label !== subInputLabel
-                ? `${label}: ${subInput[subType].label}`
-                : label,
-          };
+              // Prepend this type's label into child input label if they are different.
+              const subInputWithLabel = {
+                ...subInput[subType],
+                label:
+                  label !== subInputLabel
+                    ? `${label}: ${subInput[subType].label}`
+                    : label,
+              };
 
-          return (
-            <Fragment key={key}>
-              {readInput(subType, subInputWithLabel, key, true)}
-            </Fragment>
-          );
-        }
-      )
+              return (
+                <Fragment key={key}>
+                  {readInput(subType, subInputWithLabel, key, true)}
+                </Fragment>
+              );
+            }
+          )
     );
 
   // Renders a variant input component.
@@ -145,23 +148,35 @@ export const useInput = () => {
     },
     indent: boolean,
     values?: string[]
-  ) => (
-    <Section indent={indent}>
-      <h5>{label}</h5>
-      {(() => {
-        switch (form) {
-          case 'select':
-            return <Select values={values || []} label={label} />;
+  ) =>
+    (() => {
+      switch (form) {
+        // Input tailored for account addresses. Polkicon included. NOTE: `<Section>` is not needed
+        // as the parent composite container is already wrapped.
+        case 'AccountId32':
+          return <AccountId32 defaultValue={''} />;
 
-          case 'number':
-          default:
-            return (
-              <Textbox defaultValue={FormatInputFields.defaultValue(form)} />
-            );
-        }
-      })()}
-    </Section>
-  );
+        // A dropdown select input for multiple option enums.
+        case 'select':
+          return (
+            <Section indent={indent}>
+              <Select label={label} values={values || []} />
+            </Section>
+          );
+
+        // Primitive number input textbox. Also acts as the default.
+        case 'number':
+        default:
+          return (
+            <Section indent={indent}>
+              <Textbox
+                label={label}
+                defaultValue={FormatInputFields.defaultValue(form)}
+              />
+            </Section>
+          );
+      }
+    })();
 
   return {
     readInput,

@@ -5,8 +5,10 @@ import { useState } from 'react';
 import { TextInputWrapper } from '../Wrappers';
 
 export const Textbox = ({
+  label,
   defaultValue,
 }: {
+  label: string | number;
   defaultValue: string | number;
 }) => {
   const [value, setValue] = useState<string | number>(defaultValue || '');
@@ -17,12 +19,15 @@ export const Textbox = ({
   };
 
   return (
-    <TextInputWrapper className="input">
-      <input
-        type="text"
-        value={value || ''}
-        onChange={(ev) => handleTextboxChange(ev.currentTarget.value)}
-      />
-    </TextInputWrapper>
+    <>
+      <h5>{label}</h5>
+      <TextInputWrapper className="input">
+        <input
+          type="text"
+          value={value || ''}
+          onChange={(ev) => handleTextboxChange(ev.currentTarget.value)}
+        />
+      </TextInputWrapper>
+    </>
   );
 };

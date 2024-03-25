@@ -41,8 +41,7 @@ export class FormatInputFields {
 
     switch (arg?.type) {
       case 'array':
-        // TODO: Implement fixed hash types and AccountId32. (AccountId32, like H256, is also [u8,
-        // 32]. Read label to determine which form / forms to display.)
+        // TODO: for now, fall back to scale encoded hex input. 0x placeholder.
         result.array = {
           len: arg.array.len,
           form: this.getTypeInput(arg.array.type),
@@ -113,19 +112,40 @@ export class FormatInputFields {
 
   // Formats a composite form input.
   getCompositeInput(arg: AnyJson) {
+    const shortLabel = arg.label.short;
+
+    // NOTE: Custom inputs will ignore the composite type and stop the recursive input loop.
+    const customInput = this.getCustomInput(shortLabel);
+
     return {
       label: arg.label.short,
-      form: null,
-      forms: arg.composite.reduce(
-        (acc: AnyJson, { name, typeName, type }: AnyJson) => {
-          acc[name || typeName] = this.getTypeInput(type);
-          return acc;
-        },
-        {}
-      ),
+      form: customInput,
+      forms: customInput
+        ? null
+        : arg.composite.reduce(
+            (acc: AnyJson, { name, typeName, type }: AnyJson) => {
+              acc[name || typeName] = this.getTypeInput(type);
+              return acc;
+            },
+            {}
+          ),
     };
   }
 
+  // ------------------------------------------------------
+  // Custom input components
+  // ------------------------------------------------------
+
+  // Get a custom input component based on label. Currently only called with composite types.
+  getCustomInput = (label: string): string | null => {
+    // Custom input types should be added to this switch statement, and in the `useInput` hook.
+    switch (label) {
+      case 'AccountId32':
+        return 'AccountId32';
+    }
+
+    return null;
+  };
   // ------------------------------------------------------
   // Default input values.
   // ------------------------------------------------------

@@ -37,7 +37,7 @@ export const StorageItems = () => {
       };
     }
     // Get pallet list from scraper.
-    const scraper = new PalletScraper(Metadata);
+    const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
     const pallets = scraper.getList(['storage']);
 
     // If no pallet selected, get first one from scraper or fall back to null.
