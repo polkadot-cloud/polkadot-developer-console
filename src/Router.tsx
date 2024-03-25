@@ -26,7 +26,9 @@ export const Router = () => {
   // If the active tab is auto connect, & there is a `chain` property to connect to, also go to the
   // Chain tab. Also go to the Chain tab if the API is in a non error / disconnected state.
   const chainPageByDefault =
-    (activeTab?.autoConnect && activeTab?.chain) ||
+    (activeTab?.autoConnect &&
+      activeTab?.chain &&
+      !activeTab.forceDisconnect) ||
     ACTIVE_API_STATUSES.includes(apiStatus);
 
   return (

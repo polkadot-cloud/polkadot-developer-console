@@ -30,6 +30,8 @@ export const defaultTabsContext: TabsContextInterface = {
   instantiateApiFromTab: (tabId) => {},
   getStoredChain: (tabId) => undefined,
   forgetTabChain: (tabId) => {},
+  setTabAutoConnect: (id, autoConnect) => {},
+  setTabForceDisconnect: (id, forceDisconnect) => {},
   setTabConnectFrom: (tabId, connectFrom) => {},
 };
 
@@ -46,6 +48,7 @@ export const defaultTabs: Tabs = [
       endpoint: 'wss://rpc.ibp.network/polkadot',
     },
     name: 'Polkadot Relay Chain',
+    forceDisconnect: false,
     autoConnect: true,
   },
   {
@@ -56,6 +59,7 @@ export const defaultTabs: Tabs = [
       endpoint: 'wss://rpc.ibp.network/kusama',
     },
     name: 'Kusama Relay Chain',
+    forceDisconnect: false,
     autoConnect: true,
   },
   {
@@ -66,6 +70,7 @@ export const defaultTabs: Tabs = [
       endpoint: 'wss://rococo-rpc.polkadot.io',
     },
     name: 'Rococo Relay Chain',
+    forceDisconnect: false,
     autoConnect: true,
   },
   {
@@ -73,6 +78,7 @@ export const defaultTabs: Tabs = [
     connectFrom: 'directory',
     chain: undefined,
     name: 'Westend Relay Chain',
+    forceDisconnect: false,
     autoConnect: false,
   },
 ];
@@ -82,5 +88,6 @@ export const defaultEemptyTab: Tab = {
   connectFrom: 'directory',
   chain: undefined,
   name: '',
+  forceDisconnect: false,
   autoConnect: false,
 };

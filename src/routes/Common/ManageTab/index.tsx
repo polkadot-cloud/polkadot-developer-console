@@ -15,8 +15,8 @@ import { useApi } from 'contexts/Api';
 
 export const ManageTab = () => {
   const { getApiStatus } = useApi();
-  const { activeTabId } = useTabs();
   const { setActivePage } = useRoute();
+  const { activeTabId, setTabForceDisconnect } = useTabs();
 
   const apiStatus = getApiStatus(activeTabId);
   const showDisconnect = ['ready', 'connected', 'connecting'].includes(
@@ -52,6 +52,7 @@ export const ManageTab = () => {
                       'Are you sure you want to disconnect this tab?'
                     )
                   ) {
+                    setTabForceDisconnect(activeTabId, true);
                     ApiController.destroy(activeTabId);
                     setActivePage(0);
                   }

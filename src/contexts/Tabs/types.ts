@@ -16,6 +16,7 @@ export interface Tab {
       }
     | undefined;
   name: string;
+  forceDisconnect: boolean;
   autoConnect: boolean;
 }
 
@@ -49,5 +50,7 @@ export interface TabsContextInterface {
     tabId: number
   ) => { id: ChainId; chain: NetworkDirectoryItem } | undefined;
   forgetTabChain: (tabId: number) => void;
+  setTabAutoConnect: (id: number, autoConnect: boolean) => void;
+  setTabForceDisconnect: (id: number, forceDisconnect: boolean) => void;
   setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
 }

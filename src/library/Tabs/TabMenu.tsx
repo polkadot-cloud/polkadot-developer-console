@@ -22,7 +22,7 @@ export const TabContextMenu = ({
 }) => {
   const { closeMenu } = useMenu();
   const { getApiStatus } = useApi();
-  const { getTab, instantiateApiFromTab } = useTabs();
+  const { getTab, instantiateApiFromTab, setTabForceDisconnect } = useTabs();
 
   const tab = getTab(tabId);
   const apiStatus = getApiStatus(tabId);
@@ -65,6 +65,7 @@ export const TabContextMenu = ({
           <button
             onClick={() => {
               if (canDisconenct) {
+                setTabForceDisconnect(tabId, true);
                 ApiController.destroy(tabId);
                 closeMenu();
               } else if (canReconnect) {

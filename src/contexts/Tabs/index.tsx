@@ -122,6 +122,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         connectFrom: 'directory' as ConnectFrom,
         chain: undefined,
         name: 'New Tab',
+        forceDisconnect: false,
         autoConnect,
       },
     ];
@@ -158,6 +159,36 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const renameTab = (id: number, name: string) => {
     const newTabs = tabs.map((tab) => (tab.id === id ? { ...tab, name } : tab));
     setTabs(newTabs);
+  };
+
+  // Set a tab's autoConnect setting.
+  const setTabAutoConnect = (id: number, checked: boolean) => {
+    setTabs(
+      tabs.map((tab) => {
+        if (tab.id === id) {
+          return {
+            ...tab,
+            autoConnect: checked,
+          };
+        }
+        return tab;
+      })
+    );
+  };
+
+  // Set a tab's forceDisconnect setting.
+  const setTabForceDisconnect = (id: number, checked: boolean) => {
+    setTabs(
+      tabs.map((tab) => {
+        if (tab.id === id) {
+          return {
+            ...tab,
+            forceDisconnect: checked,
+          };
+        }
+        return tab;
+      })
+    );
   };
 
   // Forget a tab's chain.
@@ -206,6 +237,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
               autoTabNaming && isDirectoryId(chainId)
                 ? getAutoTabName(chainId)
                 : tab.name,
+            forceDisconnect: false,
             chain: { id: chainId, endpoint },
           }
         : tab
@@ -219,6 +251,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const tab = getTab(tabId);
     if (tab?.chain) {
       const { id, endpoint } = tab.chain;
+      setTabForceDisconnect(tabId, false);
       await ApiController.instantiate(tab.id, id, endpoint);
     }
   };
@@ -251,6 +284,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         getStoredChain,
         forgetTabChain,
         setTabConnectFrom,
+        setTabAutoConnect,
+        setTabForceDisconnect,
         instantiatedIds: instantiatedIds.current,
       }}
     >

@@ -6,7 +6,7 @@ import { useTabs } from 'contexts/Tabs';
 import { Wrapper } from './Wrapper';
 
 export const AutoConnect = () => {
-  const { getActiveTab, tabs, setTabs } = useTabs();
+  const { getActiveTab, activeTabId, setTabAutoConnect } = useTabs();
 
   let autoConnectEnabled = getActiveTab()?.autoConnect;
   if (autoConnectEnabled == undefined) {
@@ -15,17 +15,7 @@ export const AutoConnect = () => {
 
   // Handle auto connect toggle. Updates tab settings.
   const handleOnSwitch = (checked: boolean) => {
-    setTabs(
-      tabs.map((tab) => {
-        if (tab.id === getActiveTab()?.id) {
-          return {
-            ...tab,
-            autoConnect: checked,
-          };
-        }
-        return tab;
-      })
-    );
+    setTabAutoConnect(activeTabId, checked);
   };
 
   return (
