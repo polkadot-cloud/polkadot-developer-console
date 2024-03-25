@@ -236,13 +236,14 @@ export const InputFormWrapper = styled.div`
     &.footer {
       display: flex;
       flex-direction: row;
-      margin-top: 0.25rem;
+      margin-top: 0.5rem;
       justify-content: flex-end;
     }
 
     &.indent {
       padding-left: 1.25rem;
     }
+
     > .inner {
       display: flex;
       flex-flow: column wrap;
