@@ -133,7 +133,7 @@ export const useInput = () => {
     innerInput: ReactNode
   ) => (
     <Section indent={true}>
-      <h5 style={{ marginTop: '0.25rem' }}>{label}</h5>
+      <h4 className="marginTop">{label}</h4>
       {innerInput}
     </Section>
   );

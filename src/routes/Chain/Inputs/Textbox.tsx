@@ -20,7 +20,7 @@ export const Textbox = ({
 
   return (
     <>
-      <h5>{label}</h5>
+      <h4>{label}</h4>
       <TextInputWrapper className="input">
         <input
           type="text"

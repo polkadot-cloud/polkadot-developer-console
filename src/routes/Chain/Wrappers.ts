@@ -249,9 +249,13 @@ export const InputFormWrapper = styled.div`
       position: relative;
       width: 100%;
 
-      > h5 {
+      > h4 {
         margin: 0rem 0 0.3rem 0;
         padding: 0 0.25rem;
+
+        &.marginTop {
+          margin-top: 0.25rem;
+        }
       }
     }
   }
