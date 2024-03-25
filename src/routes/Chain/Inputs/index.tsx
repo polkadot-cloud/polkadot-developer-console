@@ -10,6 +10,7 @@ import { Select } from './Select';
 import { Section } from './Section';
 import type { InputArray } from './types';
 import { AccountId32 } from './AccountId32';
+import { Hash } from './Hash';
 
 export const useInput = () => {
   // Reads input and returns input components based on the input type. Called recursively for types
@@ -155,6 +156,10 @@ export const useInput = () => {
         // as the parent composite container is already wrapped.
         case 'AccountId32':
           return <AccountId32 defaultValue={''} />;
+
+        // A custom input for primitive hash types.
+        case 'Hash':
+          return <Hash defaultValue={FormatInputFields.defaultValue(form)} />;
 
         // A dropdown select input for multiple option enums.
         case 'select':

@@ -137,15 +137,24 @@ export class FormatInputFields {
   }
 
   // ------------------------------------------------------
-  // Custom input components
+  // Custom input components.
   // ------------------------------------------------------
 
   // Get a custom input component based on label. Currently only called with composite types.
+  //
+  // CONTRIBUTE: Input types should be added to this switch statement, and in the `useInput` hook.
   getCustomInput = (label: string): string | null => {
-    // Custom input types should be added to this switch statement, and in the `useInput` hook.
     switch (label) {
+      // Default Substrate AccountId type:
+      // `<https://crates.parity.io/sp_runtime/struct.AccountId32.html>`;
       case 'AccountId32':
         return 'AccountId32';
+
+      // Substrate Core rimitive hash types: `<https://docs.rs/sp-core/latest/sp_core/index.html>`.
+      case 'H160':
+      case 'H256':
+      case 'H512':
+        return 'Hash';
     }
 
     return null;
