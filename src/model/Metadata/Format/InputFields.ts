@@ -41,7 +41,7 @@ export class FormatInputFields {
 
     switch (arg?.type) {
       case 'array':
-        // TODO: for now, fall back to scale encoded hex input. 0x placeholder.
+        // TODO: Wrap inner type in a multi-input UI - enforcing length.
         result.array = {
           len: arg.array.len,
           form: this.getTypeInput(arg.array.type),
@@ -80,7 +80,7 @@ export class FormatInputFields {
         break;
 
       case 'sequence':
-        // TODO: implement sequence input UI. Test with dummy data.
+        // TODO: implement multi-input UI. Test with dummy data.
         result.sequence = {
           label: arg.label,
           form: null,
