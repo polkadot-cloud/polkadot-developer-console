@@ -164,7 +164,9 @@ export const useInput = () => {
             </Section>
           );
 
-        // Primitive number input textbox. Also acts as the default.
+        // Primitive textbox input. Also acts as the default input.
+        case 'text':
+        case 'checkbox': // TODO: implement custom component.
         case 'number':
         default:
           return (

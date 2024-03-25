@@ -70,8 +70,12 @@ export class FormatInputFields {
       case 'primitive':
         result.primitive = {
           label: arg.label,
-          // TODO: if char or str, set form to 'text'.
-          form: 'number',
+          // Separate inputs for text, numbers and booleans.
+          form: ['char', 'str'].includes(arg.label)
+            ? 'text'
+            : arg.label === 'bool'
+              ? 'checkbox'
+              : 'number',
         };
         break;
 
