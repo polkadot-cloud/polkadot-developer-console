@@ -6,11 +6,9 @@ import styled from 'styled-components';
 export const SelectFormWrapper = styled.div`
   --select-item-height: 2.8rem;
 
-  border-bottom: 1px solid var(--border-primary-color);
   flex: 1;
   display: flex;
   flex-flow: row wrap;
-  padding-bottom: 0.85rem;
   width: 100%;
   overflow: visible;
 
@@ -55,13 +53,6 @@ export const SelectFormWrapper = styled.div`
         width: 100%;
       }
     }
-
-    &.footer {
-      display: flex;
-      flex-direction: row;
-      margin-top: 0.75rem;
-      justify-content: flex-end;
-    }
   }
 `;
 
@@ -97,6 +88,16 @@ export const SelectItemWrapper = styled.button`
 
     &:hover {
       background-color: var(--button-primary-background);
+    }
+  }
+
+  &.input {
+    background-color: var(--background-default);
+    border: 1px solid var(--border-secondary-color);
+    border-radius: 0.25rem;
+
+    &:hover {
+      border-color: var(--accent-color-secondary);
     }
   }
 
@@ -150,6 +151,8 @@ export const SelectDropdownWrapper = styled.div`
   z-index: 10;
   border-top: none;
   display: none;
+  /* TODO: make theme variable + dark mode support */
+  box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.1);
 
   &.open {
     display: flex;
@@ -175,12 +178,22 @@ export const SelectTextWrapper = styled.h4`
 
 export const TextInputWrapper = styled.div`
   height: var(--select-item-height);
-
   border: 1px solid var(--border-primary-color);
   background-color: var(--background-primary);
   border-radius: 0.4rem;
   transition: border 0.15s;
   display: flex;
+  align-items: center;
+
+  &.input {
+    background-color: var(--background-default);
+    border: 1px solid var(--border-secondary-color);
+    border-radius: 0.25rem;
+
+    &:hover {
+      border-color: var(--accent-color-secondary);
+    }
+  }
 
   &:hover {
     border-color: var(--border-secondary-color);
@@ -189,10 +202,62 @@ export const TextInputWrapper = styled.div`
     }
   }
 
+  .polkicon {
+    position: relative;
+    left: 0.5rem;
+    padding-right: 0.15rem;
+  }
+
   > input {
     font-family: InterSemiBold, sans-serif;
     height: inherit;
     padding: 0 0.7rem;
     width: 100%;
+  }
+`;
+
+export const InputFormWrapper = styled.div`
+  --select-item-height: 2.65rem;
+
+  border-bottom: 1px solid var(--border-primary-color);
+  flex: 1;
+  display: flex;
+  flex-flow: column wrap;
+  margin-top: 0.5rem;
+  padding: 0 0.25rem 0.75rem 0.25rem;
+  overflow: visible;
+  width: 100%;
+
+  section {
+    flex: 1;
+    padding: 0.3rem 0 0 0;
+    width: 100%;
+
+    &.footer {
+      display: flex;
+      flex-direction: row;
+      margin-top: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    &.indent {
+      padding-left: 1.25rem;
+    }
+
+    > .inner {
+      display: flex;
+      flex-flow: column wrap;
+      position: relative;
+      width: 100%;
+
+      > h4 {
+        margin: 0rem 0 0.3rem 0;
+        padding: 0 0.25rem;
+
+        &.marginTop {
+          margin-top: 0.25rem;
+        }
+      }
+    }
   }
 `;

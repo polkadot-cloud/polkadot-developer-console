@@ -19,7 +19,7 @@ export class FormatCallSignature {
   // Call signature formatting.
   // ------------------------------------------------------
 
-  // Formats `rawConfig`` data into a string.
+  // Formats `rawConfig` data into a string.
   format = () => {
     const {
       modifier,
@@ -92,69 +92,84 @@ export class FormatCallSignature {
         str = this.getTypeString(section.sequence);
         break;
 
+      case 'composite':
+        str = this.getCompositeString(section);
+        break;
+
+      case 'primitive':
+      case 'bitSequence':
+        str = this.getShortLabel(section.label);
+        break;
+
       case 'sequence':
         str = `Vec<${this.getTypeString(section.sequence)}>`;
         break;
 
       case 'tuple':
-        str = `(${section.tuple.reduce(
-          (acc: string, subSection: AnyJson, index: number) => {
-            const sigType = this.getTypeString(subSection);
-            acc += sigType;
-            if (index !== section.tuple.length - 1) {
-              acc += ', ';
-            }
-            return acc;
-          },
-          ''
-        )})`;
+        str = this.getTupleString(section);
         break;
 
-      case 'bitSequence':
-      case 'primitive':
-        str = this.getShortLabel(section.label);
-        break;
-
-      case 'composite':
-        // Expand type if short label is not defined, or if they've been defined in ignore list.
-        if (['', ...this.#ignoreLabels].includes(section.label.short)) {
-          str += section.composite.reduce(
-            (acc: string, field: AnyJson, index: number) => {
-              acc = acc + this.getTypeString(field.type);
-              if (index < section.composite.length - 1) {
-                acc += ', ';
-              }
-              return acc;
-            },
-            ''
-          );
-        } else {
-          str = `${section.label.short}`;
-        }
-
-        break;
       case 'variant':
-        str = `${section.label.short}`;
-        // If variant is `Option`, expand signature with its `Some` type.
-        if (section.label.short === 'Option') {
-          // TODO: expand to check if this variant is actually an option of `Some` and `None`, where
-          // `None` has no fields.
-          str +=
-            section.variant[1].fields.reduce(
-              (acc: string, field: AnyJson, index: number) => {
-                acc = acc + this.getTypeString(field.type);
-                if (index < section.variant[1].fields.length - 1) {
-                  acc += ', ';
-                }
-                return acc;
-              },
-              `<`
-            ) + `>`;
-        }
+        str = this.getVariantType(section);
         break;
     }
     return str;
   };
+
+  // Formats a string from a composite type.
+  getCompositeString = ({ composite, label }: AnyJson) => {
+    let str = '';
+
+    // Expand type if short label is not defined, or if they've been defined in ignore list.
+    if (['', ...this.#ignoreLabels].includes(label.short)) {
+      str += composite.reduce((acc: string, field: AnyJson, index: number) => {
+        acc = acc + this.getTypeString(field.type);
+        if (index < composite.length - 1) {
+          acc += ', ';
+        }
+        return acc;
+      }, '');
+    } else {
+      str = `${label.short}`;
+    }
+
+    return str;
+  };
+
+  // Formats a string from a variant type.
+  getVariantType = ({ variant, label }: AnyJson) => {
+    let str = `${label.short}`;
+
+    // If variant is `Option`, expand signature with its `Some` type.
+    if (label.short === 'Option') {
+      // TODO: expand to check if this variant is actually an option of `Some` and `None`, where
+      // `None` has no fields.
+      str +=
+        variant[1].fields.reduce(
+          (acc: string, field: AnyJson, index: number) => {
+            acc = acc + this.getTypeString(field.type);
+            if (index < variant[1].fields.length - 1) {
+              acc += ', ';
+            }
+            return acc;
+          },
+          `<`
+        ) + `>`;
+    }
+
+    return str;
+  };
+
+  // Formats a string from a tuple type.
+  getTupleString = ({ tuple }: AnyJson) =>
+    tuple.reduce((acc: string, subSection: AnyJson, index: number) => {
+      const sigType = this.getTypeString(subSection);
+      acc += sigType;
+      if (index !== tuple.length - 1) {
+        acc += ', ';
+      }
+      return acc;
+    }, '');
 
   // ------------------------------------------------------
   // Class helpers

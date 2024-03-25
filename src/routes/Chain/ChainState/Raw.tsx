@@ -3,7 +3,11 @@
 
 import { useChainUi } from 'contexts/ChainUi';
 import { useTabs } from 'contexts/Tabs';
-import { SelectFormWrapper, TextInputWrapper } from '../Wrappers';
+import {
+  InputFormWrapper,
+  SelectFormWrapper,
+  TextInputWrapper,
+} from '../Wrappers';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
@@ -21,33 +25,36 @@ export const Raw = () => {
   };
 
   return (
-    <SelectFormWrapper className="withHeader">
-      <section className="singular">
-        <div className="inner">
-          <h5>Storage Key</h5>
-          <TextInputWrapper>
-            <input
-              type="text"
-              placeholder="0x..."
-              value={chainUi.selected}
-              onChange={(ev) => {
-                handleStorageKeyChange(ev.currentTarget.value);
-              }}
-            />
-          </TextInputWrapper>
-        </div>
-      </section>
-
-      <section className="singular footer">
-        <ButtonSubmit
-          onClick={() => {
-            /* Do nothing */
-          }}
-        >
-          Submit
-          <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
-        </ButtonSubmit>
-      </section>
-    </SelectFormWrapper>
+    <>
+      <SelectFormWrapper className="withHeader">
+        <section className="singular">
+          <div className="inner">
+            <h5>Storage Key</h5>
+            <TextInputWrapper>
+              <input
+                type="text"
+                placeholder="0x..."
+                value={chainUi.selected}
+                onChange={(ev) => {
+                  handleStorageKeyChange(ev.currentTarget.value);
+                }}
+              />
+            </TextInputWrapper>
+          </div>
+        </section>
+      </SelectFormWrapper>
+      <InputFormWrapper>
+        <section className="footer">
+          <ButtonSubmit
+            onClick={() => {
+              /* Do nothing */
+            }}
+          >
+            Submit
+            <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
+          </ButtonSubmit>
+        </section>
+      </InputFormWrapper>
+    </>
   );
 };

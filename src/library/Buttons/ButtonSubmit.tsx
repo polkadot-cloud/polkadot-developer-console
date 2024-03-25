@@ -11,7 +11,7 @@ export const ButtonSubmit = styled.button`
   font-size: 0.8rem;
 
   &:hover {
-    color: var(--accent-color-primary);
+    color: var(--accent-color-secondary);
   }
 
   > svg {

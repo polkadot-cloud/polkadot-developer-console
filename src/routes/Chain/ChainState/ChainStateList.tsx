@@ -25,10 +25,12 @@ import { camelize } from '@w3ux/utils';
 export const ChainStateList = ({
   items,
   chainUiSection,
+  activeItem,
   subject,
 }: {
   subject: string;
   items: PalletItemScraped[];
+  activeItem: string | null;
   chainUiSection: keyof ChainUiItem;
 }) => {
   const { activeTabId } = useTabs();
@@ -46,14 +48,10 @@ export const ChainStateList = ({
   // Inject call signature into items.
   const list: PalletItemScrapedWithSig[] = useMemo(
     () =>
-      items
-        .map((item) => ({
-          ...item,
-          callSig: new FormatCallSignature(item).format(),
-        }))
-        .sort(({ name: nameA }, { name: nameB }) =>
-          nameA < nameB ? -1 : nameA > nameB ? 1 : 0
-        ),
+      items.map((item) => ({
+        ...item,
+        callSig: new FormatCallSignature(item).format(),
+      })),
     [items]
   );
 
@@ -65,9 +63,13 @@ export const ChainStateList = ({
         )
       : list;
 
-  // Determine the currently selected item.
-  const selectedItem =
-    filteredList.find(({ name }) => name === chainUi.selected) ||
+  // Get the active item from the filtered list.
+  const activeListItem =
+    list.find(({ name }) => name === activeItem) || list[0];
+
+  // Determine the currently selected item from a filtered dropdown list.
+  const filteredSelectedItem =
+    filteredList.find(({ name }) => name === activeItem) ||
     filteredList[0] ||
     '';
 
@@ -103,16 +105,14 @@ export const ChainStateList = ({
         >
           <span>
             <SelectTextWrapper>
-              {chainUi.selected
-                ? camelize(chainUi.selected)
-                : selectedItem.name
-                  ? camelize(selectedItem.name)
-                  : `No ${subject}s`}
-              <span>{selectedItem?.callSig || ''}</span>
+              {activeListItem
+                ? camelize(activeListItem.name)
+                : `No ${subject}s`}
+              <span>{activeListItem?.callSig || ''}</span>
             </SelectTextWrapper>
           </span>
           <span>
-            <h5>{selectedItem?.docs?.[0] || ''}</h5>
+            <h5>{activeListItem?.docs?.[0] || ''}</h5>
             <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
           </span>
         </SelectItemWrapper>
@@ -148,7 +148,7 @@ export const ChainStateList = ({
           {filteredList.map(({ name, docs, callSig }) => (
             <SelectItemWrapper
               key={`${chainUiSection}_select_${name}`}
-              className={`option${chainUi.selected === name ? ` selected` : ``}`}
+              className={`option${filteredSelectedItem.name === name ? ` selected` : ``}`}
               onClick={() => {
                 setChainUiItem(activeTabId, chainUiSection, 'selected', name);
                 setDropdownOpen(false);

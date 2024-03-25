@@ -82,6 +82,13 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
           : key === 'selected'
             ? value
             : currentChainUiItem.selected,
+      // Reset search value if the pallet is being changed.
+      search:
+        key === 'pallet'
+          ? ''
+          : key === 'search'
+            ? value
+            : currentChainUiItem.search,
     };
 
     setChainUi({
