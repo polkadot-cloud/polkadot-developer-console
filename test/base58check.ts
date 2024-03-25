@@ -18,4 +18,5 @@ console.log('ss58 prefix: ', ss58);
 console.log('public key: ', publicKey);
 
 const encodedKey = base58Encode(decoded);
+
 console.log('encoding back: ', encodedKey);
