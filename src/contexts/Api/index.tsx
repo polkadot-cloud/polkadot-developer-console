@@ -106,8 +106,8 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     setTabForceDisconnect(tabId, true);
 
     NotificationsController.emit({
-      title: 'Error Initialising Chain',
-      subtitle: `Failed to initialise the chain.`,
+      title: 'Error Initializing Chain',
+      subtitle: `Failed to initialize the chain.`,
     });
   };
 
