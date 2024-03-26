@@ -30,7 +30,7 @@ export const checkLocalTabs = () => {
   const selectedTabId = localTabs.getSelectedTabId() || 0;
   const activeTabIndex = localTabs.getActiveTabIndex() || 0;
 
-  const { activeTabsValid, activeTabIdValid, activeTabIndexValid } =
+  const { selectedTabsValid, selectedTabIdValid, activeTabIndexValid } =
     performTabsCheck({
       activeTabs,
       selectedTabId,
@@ -38,12 +38,12 @@ export const checkLocalTabs = () => {
     });
 
   // Clear all tab data if active tabs are invalid.
-  if (!activeTabsValid) {
+  if (!selectedTabsValid) {
     removeLocalStorageState();
   }
 
-  // Clear activeTabId if it is not valid.
-  if (!activeTabIdValid) {
+  // Clear selectedTabId if it is not valid.
+  if (!selectedTabIdValid) {
     localStorage.removeItem('selectedTabId');
   }
 

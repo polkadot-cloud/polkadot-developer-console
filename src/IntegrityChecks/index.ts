@@ -22,7 +22,7 @@ export const performTabsCheck = ({
   activeTabIndex: number;
 }) => {
   // Check if each tab has its required properties.
-  let activeTabsValid: boolean;
+  let selectedTabsValid: boolean;
   try {
     activeTabs.forEach((tab) => {
       if (
@@ -37,16 +37,16 @@ export const performTabsCheck = ({
         throw new Error('Invalid tab');
       }
     });
-    activeTabsValid = true;
+    selectedTabsValid = true;
   } catch (e) {
-    activeTabsValid = false;
+    selectedTabsValid = false;
   }
 
-  // Check if `activeTabId` is among `activeTabs`.
-  const activeTabIdValid =
+  // Check if `selectedTabId` is among `activeTabs`.
+  const selectedTabIdValid =
     selectedTabId === 0
       ? true
-      : activeTabsValid &&
+      : selectedTabsValid &&
         selectedTabId &&
         activeTabs.find(({ id }) => id === selectedTabId) !== undefined;
 
@@ -54,13 +54,13 @@ export const performTabsCheck = ({
   const activeTabIndexValid =
     activeTabIndex === 0
       ? true
-      : activeTabsValid &&
+      : selectedTabsValid &&
         activeTabIndex &&
         activeTabs[activeTabIndex] !== undefined;
 
   return {
-    activeTabsValid,
-    activeTabIdValid,
+    selectedTabsValid,
+    selectedTabIdValid,
     activeTabIndexValid,
   };
 };
