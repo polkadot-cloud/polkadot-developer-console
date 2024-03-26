@@ -5,6 +5,7 @@ import { useRoute } from 'contexts/Route';
 import { PageContentWrapper } from './Wrappers';
 import type { PageProps } from 'routes/Common/PageWithMenu/types';
 import { ManageTab } from 'routes/Common/ManageTab';
+import { Directory } from 'routes/SearchChain/Connect/Directory';
 
 export const PageContent = ({ sections, pageWidth }: PageProps) => {
   const { activePage } = useRoute();
@@ -21,14 +22,15 @@ export const PageContent = ({ sections, pageWidth }: PageProps) => {
     width = sections?.[activePage]?.pageWidth || pageWidth;
   }
 
-  // TODO: add fallback component if Component and tab menu is not active.
   return (
     <PageContentWrapper className={width}>
       {Component !== undefined ? (
         <Component />
       ) : activePage === 9 ? (
         <ManageTab />
-      ) : null}
+      ) : (
+        <Directory />
+      )}
     </PageContentWrapper>
   );
 };
