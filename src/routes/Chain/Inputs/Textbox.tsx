@@ -7,14 +7,19 @@ import { TextInputWrapper } from '../Wrappers';
 export const Textbox = ({
   label,
   defaultValue,
+  numeric,
 }: {
   label: string | number;
   defaultValue: string | number;
+  numeric?: boolean;
 }) => {
   const [value, setValue] = useState<string | number>(defaultValue || '');
 
   // Handle textbox value change.
   const handleTextboxChange = (val: string) => {
+    if (numeric && isNaN(Number(val))) {
+      return;
+    }
     setValue(val);
   };
 

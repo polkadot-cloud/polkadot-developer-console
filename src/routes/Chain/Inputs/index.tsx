@@ -200,6 +200,7 @@ export const useInput = () => {
               <Textbox
                 label={label}
                 defaultValue={FormatInputFields.defaultValue(form)}
+                numeric={form === 'number'}
               />
             </Section>
           );

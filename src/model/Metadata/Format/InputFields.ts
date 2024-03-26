@@ -69,12 +69,16 @@ export class FormatInputFields {
       case 'primitive':
         result.primitive = {
           label: arg.label,
-          // Define separate inputs for text, numbers and booleans.
-          form: ['char', 'str'].includes(arg.label)
+          // Treat unsigned integers as text inputs. NOTE: Could improve by allowing minus and
+          // decimal in `number` input.
+          form: ['char', 'str', 'i8', 'i16', 'i32', 'i64', 'i128'].includes(
+            arg.label
+          )
             ? 'text'
             : arg.label === 'bool'
               ? 'checkbox'
-              : 'number',
+              : // Unsigned integers remain.
+                'number',
         };
         break;
 
