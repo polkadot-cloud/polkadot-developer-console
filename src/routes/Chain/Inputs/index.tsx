@@ -9,9 +9,10 @@ import { Fragment } from 'react';
 import { Select } from './Select';
 import { Section } from './Section';
 import type { InputArray } from './types';
-import { AccountId32 } from './AccountId32';
 import { Hash } from './Hash';
 import { Sequence } from './Sequence';
+import { Checkbox } from './Checkbox';
+import { AccountId32 } from './AccountId32';
 
 export const useInput = () => {
   // Reads input and returns input components based on the input type. Called recursively for types
@@ -190,9 +191,16 @@ export const useInput = () => {
             </Section>
           );
 
+        // A switch to toggle boolean inputs.
+        case 'checkbox':
+          return (
+            <Section indent={indent}>
+              <Checkbox label={label} defaultValue={false} />
+            </Section>
+          );
+
         // Primitive textbox input. Also acts as the default input.
         case 'text':
-        case 'checkbox': // TODO: implement custom component.
         case 'number':
         default:
           return (
