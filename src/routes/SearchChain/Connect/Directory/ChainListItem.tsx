@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConnectMenu } from './ConnectMenu';
 import { useTabs } from 'contexts/Tabs';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { useActiveTabId } from 'contexts/RenderedTab';
 
 export interface ChainListItemProps {
   chainId: DirectoryId;
@@ -22,10 +23,12 @@ export interface ChainListItemProps {
 }
 
 export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
+  const { connectTab } = useTabs();
+  const activeTabId = useActiveTabId();
   const { openMenu, closeMenu } = useMenu();
   const { tags, getTagsForChain, addChainToTag, removeChainFromTag } =
     useTags();
-  const { activeTabId, connectTab } = useTabs();
+
   const chainTags = getTagsForChain(chainId);
 
   // Lazily load the icon for the chain.

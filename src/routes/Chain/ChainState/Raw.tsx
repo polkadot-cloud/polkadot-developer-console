@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useChainUi } from 'contexts/ChainUi';
-import { useTabs } from 'contexts/Tabs';
 import {
   InputFormWrapper,
   SelectFormWrapper,
@@ -11,9 +10,10 @@ import {
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { useActiveTabId } from 'contexts/RenderedTab';
 
 export const Raw = () => {
-  const { activeTabId } = useTabs();
+  const activeTabId = useActiveTabId();
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'raw';

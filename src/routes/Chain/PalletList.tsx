@@ -14,9 +14,9 @@ import type { PalletListItem } from 'model/Metadata/Scraper/types';
 import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
-import { useTabs } from 'contexts/Tabs';
 import type { ChainUiItem } from 'contexts/ChainUi/types';
 import { camelize } from '@w3ux/utils';
+import { useActiveTabId } from 'contexts/RenderedTab';
 
 export const PalletList = ({
   pallets,
@@ -29,7 +29,7 @@ export const PalletList = ({
   chainUiSection: keyof ChainUiItem;
   onSelect: (value: string) => void;
 }) => {
-  const { activeTabId } = useTabs();
+  const activeTabId = useActiveTabId();
   const { getPalletVersions, getChainUi, setChainUiItem } = useChainUi();
   const palletVersions = getPalletVersions(activeTabId) || {};
   const chainUi = getChainUi(activeTabId, chainUiSection);

@@ -20,8 +20,8 @@ export const getTabs = (): Tabs | undefined => {
 };
 
 // Gets the active tab id from local storage, or returns undefined otherwise.
-export const getActiveTabId = (): number | undefined => {
-  const result = localStorageOrDefault('activeTabId', undefined, true) as
+export const getSelectedTabId = (): number | undefined => {
+  const result = localStorageOrDefault('selectedTabId', undefined, true) as
     | number
     | undefined;
 
@@ -52,7 +52,7 @@ export const setTabs = (tabs: Tabs) => {
 
 // Sets the active tab id to local storage.
 export const setActiveTabId = (id: number) => {
-  localStorage.setItem('activeTabId', id.toString());
+  localStorage.setItem('selectedTabId', id.toString());
 };
 
 // Sets the active tab index to local storage.

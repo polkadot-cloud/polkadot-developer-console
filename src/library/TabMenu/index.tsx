@@ -13,11 +13,13 @@ import { useRoute } from 'contexts/Route';
 import { ButtonWithTooltip } from '../ButtonWithTooltip';
 import { useRedirectOnInactive } from 'hooks/useRedirectOnInactive';
 import type { RouteSectionProvider } from 'routes/Common/types';
+import { useActiveTabId } from 'contexts/RenderedTab';
 
 export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
   const { pathname } = useLocation();
+  const activeTabId = useActiveTabId();
+  const { tabsHidden, setTabsHidden } = useTabs();
   const { activePage, setActivePage } = useRoute();
-  const { tabsHidden, setTabsHidden, activeTabId } = useTabs();
 
   // Redirect to section 0 if Api becomes inactive.
   useRedirectOnInactive(activeTabId);

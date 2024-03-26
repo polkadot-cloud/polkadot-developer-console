@@ -5,10 +5,13 @@ import { Header } from './Header';
 import { useTabs } from 'contexts/Tabs';
 import { CustomEndpointInput } from './CustomEndpoint';
 import { Directory } from './Directory';
+import { useActiveTabId } from 'contexts/RenderedTab';
 
 export const Connect = () => {
-  const { getActiveTab } = useTabs();
-  const tab = getActiveTab();
+  const { getTab } = useTabs();
+  const activeTabId = useActiveTabId();
+
+  const tab = getTab(activeTabId);
   const connectFrom = tab?.connectFrom;
 
   return (

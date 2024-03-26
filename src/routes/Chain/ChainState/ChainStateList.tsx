@@ -4,7 +4,6 @@
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
 import type { ChainUiItem } from 'contexts/ChainUi/types';
-import { useTabs } from 'contexts/Tabs';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { FormatCallSignature } from 'model/Metadata/Format/CallSignature';
 import type {
@@ -21,6 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 import { camelize } from '@w3ux/utils';
+import { useActiveTabId } from 'contexts/RenderedTab';
 
 export const ChainStateList = ({
   items,
@@ -33,7 +33,7 @@ export const ChainStateList = ({
   activeItem: string | null;
   chainUiSection: keyof ChainUiItem;
 }) => {
-  const { activeTabId } = useTabs();
+  const activeTabId = useActiveTabId();
   const { getChainUi, setChainUiItem } = useChainUi();
   const chainUi = getChainUi(activeTabId, chainUiSection);
 

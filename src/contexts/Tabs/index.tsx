@@ -27,8 +27,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const [tabs, setTabsState] = useState<Tabs>(local.getTabs() || defaultTabs);
 
   // Current active tab id.
-  const [activeTabId, setActiveTabIdState] = useState<number>(
-    local.getActiveTabId() || 1
+  const [selectedTabId, setSelectedTabIdState] = useState<number>(
+    local.getSelectedTabId() || 1
   );
 
   // Current active tab index.
@@ -69,10 +69,10 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabsState(newTabs);
   };
 
-  // Sets active tab id, and updates local storage.
-  const setActiveTabId = (id: number) => {
+  // Sets selected tab id, and updates local storage.
+  const setSelectedTabId = (id: number) => {
     local.setActiveTabId(id);
-    setActiveTabIdState(id);
+    setSelectedTabIdState(id);
   };
 
   // Sets active tab index, and updates local storage.
@@ -92,7 +92,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const getTab = (tabId: number) => tabs.find((tab) => tab.id === tabId);
 
   // Gets the active tab.
-  const getActiveTab = () => getTab(activeTabId);
+  const getActiveTab = () => getTab(selectedTabId);
 
   // Gets the previously connected to chain from network directory, if present.
   const getStoredChain = (tabId: number) => {
@@ -128,7 +128,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     ];
 
     setTabs(newTabs);
-    setActiveTabId(newTabId);
+    setSelectedTabId(newTabId);
     setActiveTabIndex(newTabs.length - 1);
   };
 
@@ -142,8 +142,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
 
     // If the active tab is being closed, fall back to its previous tab.
-    if (id === activeTabId) {
-      setActiveTabId(Object.values(newTabs)[Math.max(index - 1, 0)]?.id);
+    if (id === selectedTabId) {
+      setSelectedTabId(Object.values(newTabs)[Math.max(index - 1, 0)]?.id);
       setActiveTabIndex(Math.max(index - 1, 0));
     }
     // Re-sync the active tab index if the destroyed tab was in front of it.
@@ -256,17 +256,23 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Switch tab
+  const switchTab = (tabId: number, tabIndex: number) => {
+    setSelectedTabId(tabId);
+    setActiveTabIndex(tabIndex);
+  };
+
   return (
     <TabsContext.Provider
       value={{
         tabs,
         setTabs,
         createTab,
-        activeTabId,
+        selectedTabId,
         getTab,
         getActiveTab,
         destroyTab,
-        setActiveTabId,
+        setSelectedTabId,
         tabHoverIndex,
         setTabHoverIndex,
         activeTabIndex,
@@ -286,6 +292,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         setTabConnectFrom,
         setTabAutoConnect,
         setTabForceDisconnect,
+        switchTab,
         instantiatedIds: instantiatedIds.current,
       }}
     >

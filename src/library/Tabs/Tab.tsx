@@ -24,14 +24,14 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
     tabs,
     dragId,
+    switchTab,
     destroyTab,
-    activeTabId,
+    selectedTabId,
     tabHoverIndex,
     activeTabIndex,
-    setActiveTabId,
+    setSelectedTabId,
     instantiatedIds,
     setTabHoverIndex,
-    setActiveTabIndex,
     addInstantiatedId,
     incrementRedirectCounter,
   } = useTabs();
@@ -73,7 +73,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const dragging = dragIndex === index;
 
   // Is the tab active or being dragged.
-  const active = activeTabId === id || dragging;
+  const selected = selectedTabId === id || dragging;
 
   // Is this tab adjacent to the actve tab.
   const adjacentToActive = index === activeTabIndex - 1;
@@ -93,7 +93,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
         tabId={id}
         onSettings={() => {
           localSections.setPageRedirect('default', id, 9);
-          setActiveTabId(id);
+          setSelectedTabId(id);
           incrementRedirectCounter();
           closeMenu();
         }}
@@ -113,7 +113,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
         setNodeRef(el);
         tabRef.current = el;
       }}
-      className={`${active ? `active ` : ``}${adjacentToActive || adjacentToHover || adjacentToDragging ? `hide-border` : ``} ${dragging ? ` dragging` : ``}`}
+      className={`${selected ? `active ` : ``}${adjacentToActive || adjacentToHover || adjacentToDragging ? `hide-border` : ``} ${dragging ? ` dragging` : ``}`}
       onMouseOver={() => setTabHoverIndex(index)}
       onMouseLeave={() => setTabHoverIndex(0)}
       initial={!instantiated && !initial ? 'hidden' : 'show'}
@@ -142,8 +142,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
         onMouseDown={(ev) => {
           // Only handle left click.
           if (ev.button === 0) {
-            setActiveTabId(id);
-            setActiveTabIndex(index);
+            switchTab(id, index);
           }
         }}
         {...attributes}

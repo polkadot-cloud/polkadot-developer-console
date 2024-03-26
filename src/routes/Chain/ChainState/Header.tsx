@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useChainUi } from 'contexts/ChainUi';
-import { useTabs } from 'contexts/Tabs';
+import { useActiveTabId } from 'contexts/RenderedTab';
 import { HeaderToggleWrapper } from 'library/HeaderToggle/Wrapper';
 
 export const Header = () => {
-  const { activeTabId } = useTabs();
+  const activeTabId = useActiveTabId();
   const { getActiveChainStateSection, setActiveChainStateSection } =
     useChainUi();
   const activeToggle = getActiveChainStateSection(activeTabId);

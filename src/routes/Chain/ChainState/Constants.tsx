@@ -3,7 +3,6 @@
 
 import { InputFormWrapper, SelectFormWrapper } from '../Wrappers';
 import { useApi } from 'contexts/Api';
-import { useTabs } from 'contexts/Tabs';
 import { useMemo } from 'react';
 import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
@@ -12,10 +11,11 @@ import { ChainStateList } from './ChainStateList';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useActiveTabId } from 'contexts/RenderedTab';
 
 export const Constants = () => {
-  const { activeTabId } = useTabs();
   const { getChainSpec } = useApi();
+  const activeTabId = useActiveTabId();
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'constants';

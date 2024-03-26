@@ -14,11 +14,11 @@ import type { AppliedTags } from 'contexts/ChainFilter/types';
 // Perform integrity check on active tabs data.
 export const performTabsCheck = ({
   activeTabs,
-  activeTabId,
+  selectedTabId,
   activeTabIndex,
 }: {
   activeTabs: Tabs;
-  activeTabId: number;
+  selectedTabId: number;
   activeTabIndex: number;
 }) => {
   // Check if each tab has its required properties.
@@ -44,11 +44,11 @@ export const performTabsCheck = ({
 
   // Check if `activeTabId` is among `activeTabs`.
   const activeTabIdValid =
-    activeTabId === 0
+    selectedTabId === 0
       ? true
       : activeTabsValid &&
-        activeTabId &&
-        activeTabs.find(({ id }) => id === activeTabId) !== undefined;
+        selectedTabId &&
+        activeTabs.find(({ id }) => id === selectedTabId) !== undefined;
 
   // Check if `activeTabIndex` is a valid tab index.
   const activeTabIndexValid =

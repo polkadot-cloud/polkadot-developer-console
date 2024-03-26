@@ -1,15 +1,15 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useTabs } from 'contexts/Tabs';
 import { Constants } from './Constants';
 import { Header } from './Header';
 import { StorageItems } from './StorageItems';
 import { useChainUi } from 'contexts/ChainUi';
 import { Raw } from './Raw';
+import { useActiveTabId } from 'contexts/RenderedTab';
 
 export const ChainState = () => {
-  const { activeTabId } = useTabs();
+  const activeTabId = useActiveTabId();
   const { getActiveChainStateSection } = useChainUi();
   const activeChainStateSection = getActiveChainStateSection(activeTabId);
 

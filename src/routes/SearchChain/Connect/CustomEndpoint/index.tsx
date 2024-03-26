@@ -11,9 +11,11 @@ import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { ChainInputWrapper } from '../Wrappers';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { useActiveTabId } from 'contexts/RenderedTab';
 
 export const CustomEndpointInput = () => {
-  const { activeTabId, connectTab } = useTabs();
+  const { connectTab } = useTabs();
+  const activeTabId = useActiveTabId();
   const { getCustomEndpoint, setCustomEndpoint } = useChainFilter();
 
   // The editable value of the input.

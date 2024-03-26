@@ -10,6 +10,7 @@ import { accentColors } from 'styles/accents/developer-console';
 import { useApi } from 'contexts/Api';
 import { useSettings } from 'contexts/Settings';
 import { PageWrapper } from 'library/PageContent/Wrappers';
+import { useActiveTabId } from 'contexts/RenderedTab';
 
 // Renders a page and menu, with state controlling the active section of the page.
 export const PageWithMenu = ({
@@ -18,12 +19,13 @@ export const PageWithMenu = ({
   Menu,
   routeProvider,
 }: PageWithMenuProps) => {
+  const { getTab } = useTabs();
   const { getApiStatus } = useApi();
   const routeConfig = routeProvider();
+  const activeTabId = useActiveTabId();
   const { chainColorEnabled } = useSettings();
-  const { getActiveTab, activeTabId } = useTabs();
 
-  const tab = getActiveTab();
+  const tab = getTab(activeTabId);
   const apiStatus = getApiStatus(activeTabId);
 
   // Get colors from active chain id.
