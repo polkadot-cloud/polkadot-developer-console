@@ -12,7 +12,7 @@ export const useActiveTabId = () => useContext(ActiveTabContext);
 export const ActiveTabProvider = ({ children }: { children: ReactNode }) => {
   const { selectedTabId } = useTabs();
 
-  // Stores the currently rendered tab id.
+  // Stores the currently active tab id.
   const [activeTabId, setActiveTabId] = useState<number>(selectedTabId);
 
   useEffect(() => {
