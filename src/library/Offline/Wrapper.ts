@@ -6,10 +6,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   background: var(--accent-color-primary);
   border: 0.5px solid var(--border-primary-color);
-  /* TODO: make theme variable + dark mode support */
-  box-shadow:
-    0 2px 3px -1px rgba(0, 0, 0, 0.05),
-    0 1px 4px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-notification);
   position: fixed;
   bottom: 0.5rem;
   right: 0.5rem;

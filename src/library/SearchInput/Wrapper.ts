@@ -17,12 +17,11 @@ export const Wrapper = styled.div`
   > .inner {
     border: 1px solid var(--border-secondary-color);
     background-color: var(--background-primary);
+    box-shadow: var(--shadow-input);
     border-radius: 0.85rem;
     padding: 0rem 0.8rem;
     display: flex;
     align-items: center;
-    /* TODO: make theme variable + dark mode support */
-    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.03);
     display: flex;
     align-items: center;
     width: 100%;

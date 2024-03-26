@@ -62,10 +62,9 @@ export const CardsWrapper = styled.div`
     > .inner {
       border: 1px solid var(--border-primary-color);
       background-color: var(--background-default);
+      box-shadow: var(--shadow-dropdown);
       border-radius: 0.5rem;
       padding: 0.6rem 0.8rem;
-      /* TODO: make theme variable + dark mode support */
-      box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.1);
 
       > h4 {
         color: var(--text-color-secondary);

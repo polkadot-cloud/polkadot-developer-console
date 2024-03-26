@@ -8,7 +8,7 @@ export const Wrapper = styled(motion.div)`
   max-width: 150px;
 
   > .inner {
-    width: 100%;
+    box-shadow: var(--shadow-floating-menu);
     background: var(--background-invert);
     color: var(--text-color-invert);
     font-family: InterSemiBold, sans-serif;
@@ -17,10 +17,6 @@ export const Wrapper = styled(motion.div)`
     flex-flow: column wrap;
     padding: 0.32rem 0.6rem;
     font-size: 0.68rem;
-
-    /* TODO: make theme variable + dark mode support */
-    box-shadow:
-      0 4px 6px -1px rgba(0, 0, 0, 0.07),
-      0 2px 4px -2px rgba(0, 0, 0, 0.07);
+    width: 100%;
   }
 `;
