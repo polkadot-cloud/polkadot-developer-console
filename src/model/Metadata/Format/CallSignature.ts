@@ -141,9 +141,7 @@ export class FormatCallSignature {
     let str = `${label.short}`;
 
     // If variant is `Option`, expand signature with its `Some` type.
-    if (label.short === 'Option') {
-      // TODO: expand to check if this variant is actually an option of `Some` and `None`, where
-      // `None` has no fields.
+    if (this.verifyOption(label.short, variant)) {
       str +=
         variant[1].fields.reduce(
           (acc: string, field: AnyJson, index: number) => {
@@ -182,4 +180,10 @@ export class FormatCallSignature {
   // Gets a long label from a label input.
   getLongLabel = (input: string | { long: string; short: string }) =>
     typeof input === 'string' ? input : input.long;
+
+  // Verify if a variant is an Option.
+  verifyOption = (shortLabel: string, variant: { name?: string }[]) =>
+    shortLabel === 'Option' &&
+    variant?.[0]?.name === 'None' &&
+    variant?.[1]?.name === 'Some';
 }
