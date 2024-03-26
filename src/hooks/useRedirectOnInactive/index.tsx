@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useApi } from 'contexts/Api';
-import { useTabs } from 'contexts/Tabs';
 import { useRoute } from 'contexts/Route';
 import { useEffect } from 'react';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 // NOTE: This hook can only be used within <Page> components, depending on RouteProvider.
 export const useRedirectOnInactive = (tabId: number) => {
-  const { activeTabId } = useTabs();
   const { getApiStatus } = useApi();
+  const activeTabId = useActiveTabId();
   const { setActivePage } = useRoute();
 
   const apiStatus = getApiStatus(tabId);

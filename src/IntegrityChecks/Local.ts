@@ -27,24 +27,24 @@ import type { RemoveOrSetInput } from './types';
 export const checkLocalTabs = () => {
   // Use default tabs if activeTabs is empty.
   const activeTabs = localTabs.getTabs() || defaultTabs;
-  const activeTabId = localTabs.getActiveTabId() || 0;
+  const selectedTabId = localTabs.getSelectedTabId() || 0;
   const activeTabIndex = localTabs.getActiveTabIndex() || 0;
 
-  const { activeTabsValid, activeTabIdValid, activeTabIndexValid } =
+  const { selectedTabsValid, selectedTabIdValid, activeTabIndexValid } =
     performTabsCheck({
       activeTabs,
-      activeTabId,
+      selectedTabId,
       activeTabIndex,
     });
 
   // Clear all tab data if active tabs are invalid.
-  if (!activeTabsValid) {
+  if (!selectedTabsValid) {
     removeLocalStorageState();
   }
 
-  // Clear activeTabId if it is not valid.
-  if (!activeTabIdValid) {
-    localStorage.removeItem('activeTabId');
+  // Clear selectedTabId if it is not valid.
+  if (!selectedTabIdValid) {
+    localStorage.removeItem('selectedTabId');
   }
 
   // Clear `activeTabIndex` if not valid.
@@ -141,7 +141,7 @@ export const performLocalIntegrityChecks = () => {
 // `includeTags` is set to true.
 export const removeLocalStorageState = (includeTags = false) => {
   localStorage.removeItem('activeTabs');
-  localStorage.removeItem('activeTabId');
+  localStorage.removeItem('selectedTabId');
   localStorage.removeItem('activeTabIndex');
   localStorage.removeItem('searchTerms');
   localStorage.removeItem('customEndpoints');

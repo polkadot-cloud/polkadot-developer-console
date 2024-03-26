@@ -3,16 +3,16 @@
 
 import { SelectFormWrapper } from '../Wrappers';
 import { useApi } from 'contexts/Api';
-import { useTabs } from 'contexts/Tabs';
 import { PalletList } from '../PalletList';
 import { CallList } from '../CallList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { Header } from './Header';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
-  const { activeTabId } = useTabs();
+  const activeTabId = useActiveTabId();
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'calls';

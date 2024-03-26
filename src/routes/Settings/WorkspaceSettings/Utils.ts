@@ -14,7 +14,7 @@ import { defaultTags } from 'contexts/Tags/defaults';
 // The supported localStorage keys for import and export.
 const SUPPORTED_WORKSPACE_LOCAL_STORAGE_KEYS = [
   'activeTabs',
-  'activeTabId',
+  'selectedTabId',
   'activeTabIndex',
   'tags',
   'tagsConfig',
@@ -79,12 +79,12 @@ export const importWorkspace = (file: File) => {
 
         // Check if imported tabs data is valid.
         const activeTabs = json?.activeTabs;
-        const activeTabId = json?.activeTabId || 0;
+        const selectedTabId = json?.activeTabId || 0;
         const activeTabIndex = json?.activeTabIndex || 0;
 
         const tabsResult = performTabsCheck({
           activeTabs,
-          activeTabId,
+          selectedTabId,
           activeTabIndex,
         });
 

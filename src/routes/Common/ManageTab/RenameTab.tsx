@@ -6,12 +6,16 @@ import { useTabs } from 'contexts/Tabs';
 import { TextInput } from 'library/TextInput';
 import { useState } from 'react';
 import { RenameTabWrapper } from './Wrappers';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const RenameTab = () => {
-  const { activeTabId, getActiveTab, renameTab } = useTabs();
+  const activeTabId = useActiveTabId();
+  const { getTab, renameTab } = useTabs();
+
+  const activeTab = getTab(activeTabId);
 
   // The editable value of the input.
-  const initialValue = getActiveTab()?.name || '';
+  const initialValue = activeTab?.name || '';
   const [editableValue, setEditableValue] = useState<string>(initialValue);
 
   // Handle tab name form submission.

@@ -7,11 +7,12 @@ import { ChainListItem } from './ChainListItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import type { DirectoryId } from 'config/networks';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const RecentChain = () => {
-  const { activeTabId, getStoredChain, getActiveTab, forgetTabChain } =
-    useTabs();
-  const activeTab = getActiveTab();
+  const activeTabId = useActiveTabId();
+  const { getStoredChain, forgetTabChain, getTab } = useTabs();
+  const activeTab = getTab(activeTabId);
 
   const result = getStoredChain(activeTabId);
 

@@ -12,11 +12,13 @@ import { ApiController } from 'controllers/Api';
 import { useTabs } from 'contexts/Tabs';
 import { useRoute } from 'contexts/Route';
 import { useApi } from 'contexts/Api';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const ManageTab = () => {
   const { getApiStatus } = useApi();
   const { setActivePage } = useRoute();
-  const { activeTabId, setTabForceDisconnect } = useTabs();
+  const activeTabId = useActiveTabId();
+  const { setTabForceDisconnect } = useTabs();
 
   const apiStatus = getApiStatus(activeTabId);
   const showDisconnect = ['ready', 'connected', 'connecting'].includes(

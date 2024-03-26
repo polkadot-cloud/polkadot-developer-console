@@ -3,13 +3,13 @@
 
 import { SearchInput } from 'library/SearchInput';
 import { ChainInputWrapper } from '../Wrappers';
-import { useTabs } from 'contexts/Tabs';
 import { TagControls } from './TagControls';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const SearchChain = () => {
-  const { activeTabId } = useTabs();
+  const activeTabId = useActiveTabId();
   const { getSearchTerm, setSearchTerm } = useChainFilter();
 
   // The editable value of the input.

@@ -3,7 +3,6 @@
 
 import { InputFormWrapper, SelectFormWrapper } from '../Wrappers';
 import { useApi } from 'contexts/Api';
-import { useTabs } from 'contexts/Tabs';
 import { Fragment, useMemo } from 'react';
 import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
@@ -15,11 +14,12 @@ import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useInput } from '../Inputs';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const StorageItems = () => {
   const { readInput } = useInput();
-  const { activeTabId } = useTabs();
   const { getChainSpec } = useApi();
+  const activeTabId = useActiveTabId();
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'storage';

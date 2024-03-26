@@ -26,11 +26,11 @@ export interface TabsContextInterface {
   tabs: Tabs;
   setTabs: (tabs: Tabs) => void;
   createTab: () => void;
-  activeTabId: number;
+  selectedTabId: number;
   getTab: (id: number) => Tab | undefined;
   getActiveTab: () => Tab | undefined;
   destroyTab: (index: number, id: number) => void;
-  setActiveTabId: (index: number) => void;
+  setSelectedTabId: (index: number) => void;
   tabHoverIndex: number;
   setTabHoverIndex: Dispatch<SetStateAction<number>>;
   activeTabIndex: number;
@@ -53,4 +53,5 @@ export interface TabsContextInterface {
   setTabAutoConnect: (id: number, autoConnect: boolean) => void;
   setTabForceDisconnect: (id: number, forceDisconnect: boolean) => void;
   setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
+  switchTab: (tabId: number, tabIndex: number) => void;
 }

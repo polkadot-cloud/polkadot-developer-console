@@ -14,15 +14,15 @@ import type { AppliedTags } from 'contexts/ChainFilter/types';
 // Perform integrity check on active tabs data.
 export const performTabsCheck = ({
   activeTabs,
-  activeTabId,
+  selectedTabId,
   activeTabIndex,
 }: {
   activeTabs: Tabs;
-  activeTabId: number;
+  selectedTabId: number;
   activeTabIndex: number;
 }) => {
   // Check if each tab has its required properties.
-  let activeTabsValid: boolean;
+  let selectedTabsValid: boolean;
   try {
     activeTabs.forEach((tab) => {
       if (
@@ -37,30 +37,30 @@ export const performTabsCheck = ({
         throw new Error('Invalid tab');
       }
     });
-    activeTabsValid = true;
+    selectedTabsValid = true;
   } catch (e) {
-    activeTabsValid = false;
+    selectedTabsValid = false;
   }
 
-  // Check if `activeTabId` is among `activeTabs`.
-  const activeTabIdValid =
-    activeTabId === 0
+  // Check if `selectedTabId` is among `activeTabs`.
+  const selectedTabIdValid =
+    selectedTabId === 0
       ? true
-      : activeTabsValid &&
-        activeTabId &&
-        activeTabs.find(({ id }) => id === activeTabId) !== undefined;
+      : selectedTabsValid &&
+        selectedTabId &&
+        activeTabs.find(({ id }) => id === selectedTabId) !== undefined;
 
   // Check if `activeTabIndex` is a valid tab index.
   const activeTabIndexValid =
     activeTabIndex === 0
       ? true
-      : activeTabsValid &&
+      : selectedTabsValid &&
         activeTabIndex &&
         activeTabs[activeTabIndex] !== undefined;
 
   return {
-    activeTabsValid,
-    activeTabIdValid,
+    selectedTabsValid,
+    selectedTabIdValid,
     activeTabIndexValid,
   };
 };

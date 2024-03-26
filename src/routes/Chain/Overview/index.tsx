@@ -12,18 +12,21 @@ import BigNumber from 'bignumber.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHive } from '@fortawesome/free-brands-svg-icons';
 import { faList } from '@fortawesome/free-solid-svg-icons';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const Overview = () => {
+  const { getTab } = useTabs();
+  const activeTabId = useActiveTabId();
   const { getApiStatus, getChainSpec } = useApi();
-  const { getActiveTab, activeTabId } = useTabs();
 
+  const activeTab = getTab(activeTabId);
   const apiStatus = getApiStatus(activeTabId);
   const chainSpec = getChainSpec(activeTabId);
   const chainSpecReady = !!chainSpec;
 
   // NOTE: we know for certain there is an active tab and an associated API instance here, so we can
   // safely use the non-null assertion.
-  const chainId = getActiveTab()!.chain!.id;
+  const chainId = activeTab!.chain!.id;
   const isDirectory = isDirectoryId(chainId);
   const chainSpecChain = chainSpec?.chain || 'Unknown';
 

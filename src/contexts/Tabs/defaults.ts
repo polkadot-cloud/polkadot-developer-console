@@ -7,8 +7,8 @@ import type { Tab, Tabs, TabsContextInterface } from './types';
 export const defaultTabsContext: TabsContextInterface = {
   tabs: [],
   setTabs: (tabs) => {},
-  activeTabId: 0,
-  setActiveTabId: (id) => {},
+  selectedTabId: 0,
+  setSelectedTabId: (id) => {},
   createTab: () => {},
   destroyTab: (index, id) => {},
   getTab: (id) => undefined,
@@ -32,6 +32,7 @@ export const defaultTabsContext: TabsContextInterface = {
   forgetTabChain: (tabId) => {},
   setTabAutoConnect: (id, autoConnect) => {},
   setTabForceDisconnect: (id, forceDisconnect) => {},
+  switchTab: (tabId, tabIndex) => {},
   setTabConnectFrom: (tabId, connectFrom) => {},
 };
 

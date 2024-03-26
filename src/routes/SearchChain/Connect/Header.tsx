@@ -5,10 +5,12 @@ import { useTabs } from 'contexts/Tabs';
 import { AutoConnect } from '../../../library/AutoConnect';
 import { ConnectHeaderWrapper } from './Wrappers';
 import { HeaderToggleWrapper } from 'library/HeaderToggle/Wrapper';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const Header = () => {
-  const { activeTabId, setTabConnectFrom, getActiveTab } = useTabs();
-  const tab = getActiveTab();
+  const activeTabId = useActiveTabId();
+  const { setTabConnectFrom, getTab } = useTabs();
+  const tab = getTab(activeTabId);
 
   return (
     <ConnectHeaderWrapper>

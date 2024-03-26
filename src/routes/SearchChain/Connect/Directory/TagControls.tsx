@@ -5,14 +5,14 @@ import { faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { TagControlsWrapper } from '../Wrappers';
 import { TagControl } from 'library/TagControl';
 import { useChainFilter } from 'contexts/ChainFilter';
-import { useTabs } from 'contexts/Tabs';
 import { useMenu } from 'contexts/Menu';
 import { FilterTagMenu } from './TagsMenu/FilterTagMenu';
 import type { TagId } from 'contexts/Tags/types';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const TagControls = () => {
   const { openMenu } = useMenu();
-  const { activeTabId } = useTabs();
+  const activeTabId = useActiveTabId();
   const { getAppliedTags, applyTags, removeAppliedTag } = useChainFilter();
 
   const appliedTags = getAppliedTags(activeTabId);

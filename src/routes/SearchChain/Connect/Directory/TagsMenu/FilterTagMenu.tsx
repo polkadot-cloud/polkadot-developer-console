@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useTags } from 'contexts/Tags';
-import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
 import type { TagId } from 'contexts/Tags/types';
 import { useState } from 'react';
 import { TagsMenuInner } from './Inner';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const FilterTagMenu = ({
   onSelect,
@@ -14,7 +14,7 @@ export const FilterTagMenu = ({
   onSelect: (tagId: TagId, selected: boolean, current: string[]) => void;
 }) => {
   const { tags } = useTags();
-  const { activeTabId } = useTabs();
+  const activeTabId = useActiveTabId();
   const { getAppliedTags } = useChainFilter();
 
   const appliedTags = getAppliedTags(activeTabId);

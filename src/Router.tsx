@@ -3,22 +3,19 @@
 
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Settings } from 'routes/Settings';
-import { Header } from 'library/Header';
-import { ContextMenu } from 'library/ContextMenu';
-import { Tabs } from 'library/Tabs';
-import { Tooltip } from 'library/Tooltip';
-import { Notifications } from 'library/Notifications';
-import { Offline } from 'library/Offline';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
 import { Chain } from 'routes/Chain';
 import { Default } from 'routes/SearchChain';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const Router = () => {
+  const { getTab } = useTabs();
   const { getApiStatus } = useApi();
-  const { activeTabId, getActiveTab } = useTabs();
+  const activeTabId = useActiveTabId();
+
   const apiStatus = getApiStatus(activeTabId);
-  const activeTab = getActiveTab();
+  const activeTab = getTab(activeTabId);
 
   // Non disconnected API statuses.
   const ACTIVE_API_STATUSES = ['ready', 'connected', 'connecting'];
@@ -32,27 +29,15 @@ export const Router = () => {
     ACTIVE_API_STATUSES.includes(apiStatus);
 
   return (
-    <>
-      <ContextMenu />
-      <Notifications />
-      <Tooltip />
-      <Header />
-      <Tabs />
-      <Routes>
-        <Route
-          key={`route_default`}
-          path={'/'}
-          element={chainPageByDefault ? <Chain /> : <Default />}
-        />
-        <Route
-          key={`route_settings`}
-          path={'/settings'}
-          element={<Settings />}
-        />
-        {/* Fallback route to chain */}
-        <Route key="route_fallback" path="*" element={<Navigate to="/" />} />
-      </Routes>
-      <Offline />
-    </>
+    <Routes>
+      <Route
+        key={`route_default`}
+        path={'/'}
+        element={chainPageByDefault ? <Chain /> : <Default />}
+      />
+      <Route key={`route_settings`} path={'/settings'} element={<Settings />} />
+      {/* Fallback route to chain */}
+      <Route key="route_fallback" path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 };

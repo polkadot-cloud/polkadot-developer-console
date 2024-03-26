@@ -9,10 +9,12 @@ import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { useTags } from 'contexts/Tags';
 import type { TagItem } from 'contexts/Tags/types';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const ChainList = () => {
   const { getTagsForChain } = useTags();
-  const { activeTabId, getStoredChain } = useTabs();
+  const activeTabId = useActiveTabId();
+  const { getStoredChain } = useTabs();
   const { getAppliedTags, getSearchTerm } = useChainFilter();
   const tabStoredChain = getStoredChain(activeTabId);
 

@@ -4,11 +4,14 @@
 import { Switch } from 'library/Switch';
 import { useTabs } from 'contexts/Tabs';
 import { Wrapper } from './Wrapper';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const AutoConnect = () => {
-  const { getActiveTab, activeTabId, setTabAutoConnect } = useTabs();
+  const activeTabId = useActiveTabId();
+  const { getTab, setTabAutoConnect } = useTabs();
+  const activeTab = getTab(activeTabId);
 
-  let autoConnectEnabled = getActiveTab()?.autoConnect;
+  let autoConnectEnabled = activeTab?.autoConnect;
   if (autoConnectEnabled == undefined) {
     autoConnectEnabled = true;
   }

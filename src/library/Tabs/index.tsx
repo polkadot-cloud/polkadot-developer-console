@@ -34,7 +34,7 @@ export const Tabs = () => {
     setTabs,
     setDragId,
     tabsHidden,
-    activeTabId,
+    selectedTabId,
     setTabsHidden,
     setActiveTabIndex,
   } = useTabs();
@@ -68,7 +68,7 @@ export const Tabs = () => {
       const newTabs = arrayMove(tabs, oldIndex, newIndex);
 
       setTabs(newTabs);
-      setActiveTabIndex(newTabs.map((tab) => tab.id).indexOf(activeTabId));
+      setActiveTabIndex(newTabs.map((tab) => tab.id).indexOf(selectedTabId));
     }
     setDragId(null);
   };
