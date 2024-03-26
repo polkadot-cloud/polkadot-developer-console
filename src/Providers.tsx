@@ -16,7 +16,6 @@ import type { ReactNode } from 'react';
 
 export const Providers = () => {
   // !! Provider order matters.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const providers: Provider<{ children: ReactNode }>[] = [
     SettingsProvider,
     TabsProvider,
