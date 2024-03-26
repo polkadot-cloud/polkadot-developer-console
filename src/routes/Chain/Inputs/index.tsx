@@ -24,7 +24,11 @@ export const useInput = () => {
   ) => {
     switch (type) {
       case 'array':
-        return renderSequence(input, parentKey, input.len);
+        // If this array is a primitive, render a hash input. Otherwise (e.g. for variants) allow
+        // for a sequence input.
+        return input?.form?.primitive
+          ? renderInput({ ...input, form: 'Hash' }, indent)
+          : renderSequence(input, parentKey, input.len);
 
       case 'sequence':
         return renderSequence(input, parentKey);

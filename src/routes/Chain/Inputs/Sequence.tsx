@@ -47,6 +47,11 @@ export const Sequence = ({
         // Amend label of input to be it's index.
         arrayInput.label = 'Item ' + (index + 1);
 
+        // If maxLength is defined, append it to label.
+        if (maxLength) {
+          arrayInput.label += ` of ${maxLength}`;
+        }
+
         // Generate input for this index.
         const subInput = readInput(type, arrayInput, parentKey, true);
 
