@@ -90,8 +90,6 @@ SPDX-License-Identifier: GPL-3.0-only */
 
   --border-primary-color: rgb(58 52 58);
   --border-secondary-color: rgb(95 90 95);
-  /* TODO: Update for dark theme. */
-  --border-gradient: linear-gradient(45deg, #c3c3c3, #e6e6e6);
 
   --button-secondary-background: rgb(55 50 55);
   --button-tertiary-background: rgb(54 49 54);
@@ -118,6 +116,8 @@ SPDX-License-Identifier: GPL-3.0-only */
   );
 
   /* TODO: Update for dark theme start. */
+
+  --border-gradient: linear-gradient(45deg, #c3c3c3, #e6e6e6);
 
   --gradient-tab-fade: linear-gradient(
     90deg,
