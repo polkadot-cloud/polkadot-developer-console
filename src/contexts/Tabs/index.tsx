@@ -122,7 +122,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         connectFrom: 'directory' as ConnectFrom,
         chain: undefined,
         name: 'New Tab',
-        forceDisconnect: false,
+        forceDisconnect: !autoConnect,
         autoConnect,
       },
     ];
@@ -237,7 +237,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
               autoTabNaming && isDirectoryId(chainId)
                 ? getAutoTabName(chainId)
                 : tab.name,
-            forceDisconnect: false,
             chain: { id: chainId, endpoint },
           }
         : tab
@@ -251,7 +250,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const tab = getTab(tabId);
     if (tab?.chain) {
       const { id, endpoint } = tab.chain;
-      setTabForceDisconnect(tabId, false);
+      if (tab?.autoConnect) {
+        setTabForceDisconnect(tabId, false);
+      }
       await ApiController.instantiate(tab.id, id, endpoint);
     }
   };
