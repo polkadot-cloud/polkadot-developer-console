@@ -30,6 +30,7 @@ export const performTabsCheck = ({
           'id' in tab &&
           'connectFrom' in tab &&
           'name' in tab &&
+          'forceDisconnect' in tab &&
           'autoConnect' in tab
         )
       ) {
