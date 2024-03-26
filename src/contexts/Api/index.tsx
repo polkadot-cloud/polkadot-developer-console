@@ -11,6 +11,7 @@ import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import type { APIChainSpec, ApiStatus } from 'model/Api/types';
 import { useChainUi } from 'contexts/ChainUi';
+import { NotificationsController } from 'controllers/Notifications';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -18,7 +19,13 @@ export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const { fetchPalletVersions } = useChainUi();
-  const { getActiveTab, tabs, instantiateApiFromTab } = useTabs();
+  const {
+    tabs,
+    getActiveTab,
+    forgetTabChain,
+    instantiateApiFromTab,
+    setTabForceDisconnect,
+  } = useTabs();
 
   // Store API connection status of each tab. NOTE: requires ref as it is used in event listener.
   const [apiStatus, setApiStatusState] = useState<Record<number, ApiStatus>>(
@@ -95,6 +102,13 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const handleChainError = (tabId: number) => {
     removeApiStatus(tabId);
     removeChainSpec(tabId);
+    forgetTabChain(tabId);
+    setTabForceDisconnect(tabId, true);
+
+    NotificationsController.emit({
+      title: 'Error Initialising Chain',
+      subtitle: `Failed to initialise the chain.`,
+    });
   };
 
   // Handle incoming api status updates.
@@ -119,6 +133,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
           handleDisconnect(tabId);
           break;
         case 'error':
+          console.log('errored');
           handleChainError(tabId);
           break;
         case 'destroyed':

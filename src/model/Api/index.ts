@@ -114,7 +114,7 @@ export class Api {
       const metadataPJs = this.api.runtimeMetadata;
       const metadataJson = metadataPJs.toJSON();
 
-      // TODO: fallback if this fails.
+      // Set chainspec and metadata, or dispatch an error and disconnect otherwise.
       if (specVersion && metadataJson) {
         const metadataVersion = Object.keys(metadataJson?.metadata || {})[0];
         const magicNumber = Object.values(metadataJson?.metadata || {})[0]
@@ -130,6 +130,8 @@ export class Api {
             metadataPJs
           ),
         };
+      } else {
+        this.dispatchEvent(this.ensureEventStatus('error'));
       }
     }
   }
