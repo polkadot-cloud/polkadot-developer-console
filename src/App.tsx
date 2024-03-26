@@ -13,7 +13,7 @@ import { Tooltip } from 'library/Tooltip';
 import { Header } from 'library/Header';
 import { Tabs } from 'library/Tabs';
 import { Offline } from 'library/Offline';
-import { RenderedTabProvider } from 'contexts/RenderedTab';
+import { ActiveTabProvider } from 'contexts/ActiveTab';
 
 // The currently supported pages.
 export type Route = 'default' | 'settings';
@@ -34,11 +34,11 @@ export const App = () => (
         <Header />
         <Tabs />
         {/* Protect router from re-renders by rederring to `renderedTabId` in the
-         * RenderedTabProvider context. Prevents the router re-rendering on tab
+         * ActiveTabProvider context. Prevents the router re-rendering on tab
          * changes where the previously used tab id is still in use. */}
-        <RenderedTabProvider>
+        <ActiveTabProvider>
           <Router />
-        </RenderedTabProvider>
+        </ActiveTabProvider>
         <Offline />
       </ErrorBoundary>
     </HashRouter>

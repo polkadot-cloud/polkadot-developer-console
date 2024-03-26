@@ -16,7 +16,7 @@ import { formatInputString } from 'Utils';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { useChainUi } from 'contexts/ChainUi';
 import { camelize } from '@w3ux/utils';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const CallList = ({ calls }: { calls: AnyJson }) => {
   const activeTabId = useActiveTabId();

@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConnectMenu } from './ConnectMenu';
 import { useTabs } from 'contexts/Tabs';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export interface ChainListItemProps {
   chainId: DirectoryId;

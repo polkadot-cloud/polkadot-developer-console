@@ -6,7 +6,7 @@ import { useChainFilter } from 'contexts/ChainFilter';
 import type { TagId } from 'contexts/Tags/types';
 import { useState } from 'react';
 import { TagsMenuInner } from './Inner';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const FilterTagMenu = ({
   onSelect,

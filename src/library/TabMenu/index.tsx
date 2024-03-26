@@ -13,7 +13,7 @@ import { useRoute } from 'contexts/Route';
 import { ButtonWithTooltip } from '../ButtonWithTooltip';
 import { useRedirectOnInactive } from 'hooks/useRedirectOnInactive';
 import type { RouteSectionProvider } from 'routes/Common/types';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
   const { pathname } = useLocation();

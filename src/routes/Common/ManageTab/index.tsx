@@ -12,7 +12,7 @@ import { ApiController } from 'controllers/Api';
 import { useTabs } from 'contexts/Tabs';
 import { useRoute } from 'contexts/Route';
 import { useApi } from 'contexts/Api';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const ManageTab = () => {
   const { getApiStatus } = useApi();

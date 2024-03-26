@@ -7,7 +7,7 @@ import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
 import { Chain } from 'routes/Chain';
 import { Default } from 'routes/SearchChain';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const Router = () => {
   const { getTab } = useTabs();

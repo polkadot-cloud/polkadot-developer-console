@@ -6,7 +6,7 @@ import { ChainInputWrapper } from '../Wrappers';
 import { TagControls } from './TagControls';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const SearchChain = () => {
   const activeTabId = useActiveTabId();

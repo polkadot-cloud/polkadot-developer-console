@@ -5,7 +5,7 @@ import { Header } from './Header';
 import { useTabs } from 'contexts/Tabs';
 import { CustomEndpointInput } from './CustomEndpoint';
 import { Directory } from './Directory';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const Connect = () => {
   const { getTab } = useTabs();

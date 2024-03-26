@@ -4,7 +4,7 @@
 import { useApi } from 'contexts/Api';
 import { useRoute } from 'contexts/Route';
 import { useEffect } from 'react';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 // NOTE: This hook can only be used within <Page> components, depending on RouteProvider.
 export const useRedirectOnInactive = (tabId: number) => {

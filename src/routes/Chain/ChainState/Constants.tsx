@@ -11,7 +11,7 @@ import { ChainStateList } from './ChainStateList';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const Constants = () => {
   const { getChainSpec } = useApi();

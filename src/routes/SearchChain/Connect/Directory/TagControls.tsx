@@ -8,7 +8,7 @@ import { useChainFilter } from 'contexts/ChainFilter';
 import { useMenu } from 'contexts/Menu';
 import { FilterTagMenu } from './TagsMenu/FilterTagMenu';
 import type { TagId } from 'contexts/Tags/types';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const TagControls = () => {
   const { openMenu } = useMenu();

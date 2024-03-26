@@ -6,7 +6,7 @@ import { useTabs } from 'contexts/Tabs';
 import { TextInput } from 'library/TextInput';
 import { useState } from 'react';
 import { RenameTabWrapper } from './Wrappers';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const RenameTab = () => {
   const activeTabId = useActiveTabId();

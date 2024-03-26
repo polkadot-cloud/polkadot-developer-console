@@ -7,7 +7,7 @@ import type { RouteContextInterface, RouteContextProps } from './types';
 import * as local from './Local';
 import { useTabs } from 'contexts/Tabs';
 import { useApi } from 'contexts/Api';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const RouteContext =
   createContext<RouteContextInterface>(defaultRouteContext);

@@ -12,7 +12,7 @@ import BigNumber from 'bignumber.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHive } from '@fortawesome/free-brands-svg-icons';
 import { faList } from '@fortawesome/free-solid-svg-icons';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const Overview = () => {
   const { getTab } = useTabs();

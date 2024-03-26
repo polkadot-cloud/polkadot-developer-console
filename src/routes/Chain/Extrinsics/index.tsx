@@ -8,7 +8,7 @@ import { CallList } from '../CallList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { Header } from './Header';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();

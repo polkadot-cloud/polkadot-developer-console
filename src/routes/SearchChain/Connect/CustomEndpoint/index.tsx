@@ -11,7 +11,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { ChainInputWrapper } from '../Wrappers';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const CustomEndpointInput = () => {
   const { connectTab } = useTabs();

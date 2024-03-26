@@ -9,7 +9,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { useTags } from 'contexts/Tags';
 import type { TagItem } from 'contexts/Tags/types';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const ChainList = () => {
   const { getTagsForChain } = useTags();

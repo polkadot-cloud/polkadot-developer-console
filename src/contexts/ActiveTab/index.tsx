@@ -5,11 +5,11 @@ import { useTabs } from 'contexts/Tabs';
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-export const RenderedTabContext = createContext<number>(0);
+export const ActiveTabContext = createContext<number>(0);
 
-export const useActiveTabId = () => useContext(RenderedTabContext);
+export const useActiveTabId = () => useContext(ActiveTabContext);
 
-export const RenderedTabProvider = ({ children }: { children: ReactNode }) => {
+export const ActiveTabProvider = ({ children }: { children: ReactNode }) => {
   const { selectedTabId } = useTabs();
 
   // Stores the currently rendered tab id.
@@ -20,8 +20,8 @@ export const RenderedTabProvider = ({ children }: { children: ReactNode }) => {
   }, [selectedTabId]);
 
   return (
-    <RenderedTabContext.Provider value={activeTabId}>
+    <ActiveTabContext.Provider value={activeTabId}>
       {children}
-    </RenderedTabContext.Provider>
+    </ActiveTabContext.Provider>
   );
 };

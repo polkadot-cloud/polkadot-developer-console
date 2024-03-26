@@ -6,7 +6,7 @@ import { Header } from './Header';
 import { StorageItems } from './StorageItems';
 import { useChainUi } from 'contexts/ChainUi';
 import { Raw } from './Raw';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const ChainState = () => {
   const activeTabId = useActiveTabId();

@@ -4,7 +4,7 @@
 import { Switch } from 'library/Switch';
 import { useTabs } from 'contexts/Tabs';
 import { Wrapper } from './Wrapper';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const AutoConnect = () => {
   const activeTabId = useActiveTabId();

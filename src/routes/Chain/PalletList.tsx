@@ -16,7 +16,7 @@ import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
 import type { ChainUiItem } from 'contexts/ChainUi/types';
 import { camelize } from '@w3ux/utils';
-import { useActiveTabId } from 'contexts/RenderedTab';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const PalletList = ({
   pallets,
