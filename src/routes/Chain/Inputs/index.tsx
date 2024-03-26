@@ -11,6 +11,7 @@ import { Section } from './Section';
 import type { InputArray } from './types';
 import { AccountId32 } from './AccountId32';
 import { Hash } from './Hash';
+import { Sequence } from './Sequence';
 
 export const useInput = () => {
   // Reads input and returns input components based on the input type. Called recursively for types
@@ -23,7 +24,10 @@ export const useInput = () => {
   ) => {
     switch (type) {
       case 'array':
-        return renderArray(input, parentKey);
+        return renderSequence(input, parentKey, input.len);
+
+      case 'sequence':
+        return renderSequence(input, parentKey);
 
       case 'tuple':
         return renderTuple(input, parentKey);
@@ -40,15 +44,25 @@ export const useInput = () => {
     }
   };
 
-  // Renders an array input component.
-  const renderArray = (input: InputArray, parentKey: string): ReactNode => {
+  // Renders an multi-input component.
+  const renderSequence = (
+    input: InputArray,
+    parentKey: string,
+    maxLength?: number
+  ): ReactNode => {
     const [type, arrayInput]: [string, AnyJson] = Object.entries(input.form)[0];
 
     // Attach length to the array input.
     arrayInput.label = `[${arrayInput.label}, ${input.len}]`;
 
-    const subInput = readInput(type, arrayInput, parentKey, true);
-    return renderInnerInput(subInput);
+    return (
+      <Sequence
+        parentKey={parentKey}
+        type={type}
+        arrayInput={arrayInput}
+        maxLength={maxLength}
+      />
+    );
   };
 
   // Renders a tuple input component.
@@ -187,5 +201,6 @@ export const useInput = () => {
 
   return {
     readInput,
+    renderInnerInput,
   };
 };

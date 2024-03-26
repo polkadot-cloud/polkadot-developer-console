@@ -41,7 +41,7 @@ export class FormatInputFields {
 
     switch (arg?.type) {
       case 'array':
-        // TODO: Wrap inner type in a multi-input UI - enforcing length.
+        // TODO: Fall back to hex-encoded values for primitives. For non-primitive, display sequence input with a length warning.
         result.array = {
           len: arg.array.len,
           form: this.getTypeInput(arg.array.type),
@@ -80,10 +80,9 @@ export class FormatInputFields {
         break;
 
       case 'sequence':
-        // TODO: implement multi-input UI. Test with dummy data.
         result.sequence = {
           label: arg.label,
-          form: null,
+          form: this.getTypeInput(arg.array.type),
         };
         break;
 

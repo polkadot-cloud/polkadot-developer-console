@@ -261,3 +261,36 @@ export const InputFormWrapper = styled.div`
     }
   }
 `;
+
+export const SequenceItemWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+
+  > div {
+    display: flex;
+    flex-direction: row;
+
+    &:first-child {
+      flex-grow: 1;
+    }
+    &:last-child {
+      flex-shrink: 1;
+      padding-left: 0.65rem;
+      padding-bottom: 0.8rem;
+      > button {
+        color: var(--text-color-tertiary);
+      }
+    }
+  }
+`;
+
+export const AddInputWrapper = styled.div`
+  margin-top: 0.5rem;
+  padding-left: 1.25rem;
+  width: 100%;
+
+  > button {
+    color: var(--text-color-tertiary);
+  }
+`;
