@@ -138,6 +138,7 @@ export const SelectItemWrapper = styled.button`
 export const SelectDropdownWrapper = styled.div`
   background: var(--background-primary);
   border: 1px solid var(--border-primary-color);
+  box-shadow: var(--shadow-dropdown);
   border-bottom-left-radius: 0.4rem;
   border-bottom-right-radius: 0.4rem;
   position: absolute;
@@ -151,8 +152,6 @@ export const SelectDropdownWrapper = styled.div`
   z-index: 10;
   border-top: none;
   display: none;
-  /* TODO: make theme variable + dark mode support */
-  box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.1);
 
   &.open {
     display: flex;
