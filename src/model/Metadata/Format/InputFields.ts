@@ -41,7 +41,6 @@ export class FormatInputFields {
 
     switch (arg?.type) {
       case 'array':
-        // TODO: Fall back to hex-encoded values for primitives. For non-primitive, display sequence input with a length warning.
         result.array = {
           len: arg.array.len,
           form: this.getTypeInput(arg.array.type),
@@ -51,8 +50,8 @@ export class FormatInputFields {
       case 'bitSequence':
         result.bitSequence = {
           label: arg.label.short,
-          // TODO: fall back to scale encoded hex input. 0x placeholder.
-          form: null,
+          // NOTE: Currently falling back to encoded hash until a custom input is created.
+          form: 'Hash',
         };
         break;
 
@@ -70,7 +69,7 @@ export class FormatInputFields {
       case 'primitive':
         result.primitive = {
           label: arg.label,
-          // Separate inputs for text, numbers and booleans.
+          // Define separate inputs for text, numbers and booleans.
           form: ['char', 'str'].includes(arg.label)
             ? 'text'
             : arg.label === 'bool'

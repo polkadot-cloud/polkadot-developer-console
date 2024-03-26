@@ -30,6 +30,9 @@ export const useInput = () => {
           ? renderInput({ ...input, form: 'Hash' }, indent)
           : renderSequence(input, parentKey, input.len);
 
+      case 'bitSequence':
+        return renderInput(input, indent);
+
       case 'sequence':
         return renderSequence(input, parentKey);
 
