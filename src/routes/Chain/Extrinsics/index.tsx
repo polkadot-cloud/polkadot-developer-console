@@ -29,7 +29,7 @@ export const Extrinsics = () => {
       return {
         pallets: [],
         activePallet: null,
-        callItems: [],
+        items: [],
       };
     }
 
@@ -38,15 +38,15 @@ export const Extrinsics = () => {
 
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
 
-    let callItems = [];
+    let items = [];
     if (activePallet) {
-      callItems = scraper.getCalls(activePallet);
+      items = scraper.getCalls(activePallet);
     }
 
     const result = {
       pallets,
       activePallet,
-      callItems,
+      items,
     };
 
     // Update ref and return result.
@@ -54,13 +54,14 @@ export const Extrinsics = () => {
     return result;
   }, [chainUi.pallet, chainUi.selected, Metadata?.metadata]);
 
-  const { pallets, activePallet, callItems } = callData;
+  const { pallets, activePallet, items } = callData;
 
   return (
     <>
       <Header />
       <SelectFormWrapper className="withHeader">
         <PalletList
+          palletDataRef={callDataRef}
           activePallet={activePallet}
           pallets={pallets}
           chainUiSection={chainUiSection}
@@ -68,7 +69,7 @@ export const Extrinsics = () => {
             setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
           }}
         />
-        <CallList calls={callItems} />
+        <CallList calls={items} />
       </SelectFormWrapper>
     </>
   );

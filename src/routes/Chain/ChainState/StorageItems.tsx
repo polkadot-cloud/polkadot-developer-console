@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useInput } from '../Inputs';
 import { useActiveTabId } from 'contexts/ActiveTab';
+import type { PalletData } from './types';
 
 export const StorageItems = () => {
   const { readInput } = useInput();
@@ -26,17 +27,17 @@ export const StorageItems = () => {
   const chainUi = getChainUi(activeTabId, chainUiSection);
   const Metadata = getChainSpec(activeTabId)?.metadata;
 
-  // Store `constantsData` result as a ref for event listeners to access.
+  // Store `storageData` result as a ref for event listeners to access.
   const storageDataRef = useRef({});
 
   // Fetch storage data when metadata or the selected pallet changes.
-  const storageData = useMemo(() => {
+  const storageData = useMemo((): PalletData => {
     if (!Metadata) {
       return {
         pallets: [],
         activePallet: null,
-        storageItems: [],
-        activeStorageItem: null,
+        items: [],
+        activeItem: null,
       };
     }
     // Get pallet list from scraper.
@@ -47,21 +48,19 @@ export const StorageItems = () => {
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
 
     // Get storage items for the active pallet and sort by name.
-    const storageItems = (
-      activePallet ? scraper.getStorage(activePallet) : []
-    ).sort(({ name: nameA }, { name: nameB }) =>
-      nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+    const items = (activePallet ? scraper.getStorage(activePallet) : []).sort(
+      ({ name: nameA }, { name: nameB }) =>
+        nameA < nameB ? -1 : nameA > nameB ? 1 : 0
     );
 
     // If no storage item selected, select the first one from the list or fall back to null.
-    const activeStorageItem =
-      chainUi.selected || storageItems?.[0]?.name || null;
+    const activeItem = chainUi.selected || items?.[0]?.name || null;
 
     const result = {
       pallets,
       activePallet,
-      storageItems,
-      activeStorageItem,
+      items,
+      activeItem,
     };
 
     // Update ref and return result.
@@ -69,17 +68,14 @@ export const StorageItems = () => {
     return result;
   }, [chainUi.pallet, chainUi.selected, Metadata?.metadata]);
 
-  const { pallets, activePallet, storageItems, activeStorageItem } =
-    storageData;
+  const { pallets, activePallet, items, activeItem } = storageData;
 
   // Get the whole active storage item record for input formatting.
-  const activeListItem = storageItems.find(
-    (item) => item.name === activeStorageItem
-  );
+  const activeListItem = items.find((item) => item.name === activeItem);
 
   // Get input markup for the active storage item.
   const inputForm =
-    activePallet !== null && activeStorageItem !== null && !!activeListItem
+    activePallet !== null && activeItem !== null && !!activeListItem
       ? new FormatInputFields(activeListItem).format()
       : null;
 
@@ -87,6 +83,7 @@ export const StorageItems = () => {
     <>
       <SelectFormWrapper className="withHeader">
         <PalletList
+          palletDataRef={storageDataRef}
           pallets={pallets}
           activePallet={activePallet}
           chainUiSection={chainUiSection}
@@ -96,8 +93,8 @@ export const StorageItems = () => {
         />
         <ChainStateList
           subject="Storage Item"
-          items={storageItems}
-          activeItem={activeStorageItem}
+          items={items}
+          activeItem={activeItem}
           chainUiSection={chainUiSection}
         />
       </SelectFormWrapper>

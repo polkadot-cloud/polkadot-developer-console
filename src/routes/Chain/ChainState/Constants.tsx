@@ -12,6 +12,7 @@ import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useActiveTabId } from 'contexts/ActiveTab';
+import type { PalletData } from './types';
 
 export const Constants = () => {
   const { getChainSpec } = useApi();
@@ -26,13 +27,13 @@ export const Constants = () => {
   const constantsDataRef = useRef({});
 
   // Fetch storage data when metadata or the selected pallet changes.
-  const constantsData = useMemo(() => {
+  const constantsData = useMemo((): PalletData => {
     if (!Metadata) {
       return {
         pallets: [],
         activePallet: null,
-        constantItems: [],
-        activeConstantItem: null,
+        items: [],
+        activeItem: null,
       };
     }
     // Get pallet list from scraper.
@@ -42,19 +43,16 @@ export const Constants = () => {
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
 
-    const constantItems = activePallet
-      ? scraper.getConstants(activePallet)
-      : [];
+    const items = activePallet ? scraper.getConstants(activePallet) : [];
 
     // If no storage item selected, select the first one from the list or fall back to null.
-    const activeConstantItem =
-      chainUi.selected || constantItems?.[0]?.name || null;
+    const activeItem = chainUi.selected || items?.[0]?.name || null;
 
     const result = {
       pallets,
       activePallet,
-      constantItems,
-      activeConstantItem,
+      items,
+      activeItem,
     };
 
     // Update ref and return result.
@@ -62,13 +60,13 @@ export const Constants = () => {
     return result;
   }, [chainUi.pallet, chainUi.selected, Metadata?.metadata]);
 
-  const { pallets, activePallet, constantItems, activeConstantItem } =
-    constantsData;
+  const { pallets, activePallet, items, activeItem } = constantsData;
 
   return (
     <>
       <SelectFormWrapper className="withHeader">
         <PalletList
+          palletDataRef={constantsDataRef}
           pallets={pallets}
           activePallet={activePallet}
           chainUiSection={chainUiSection}
@@ -78,8 +76,8 @@ export const Constants = () => {
         />
         <ChainStateList
           subject="Runtime Constant"
-          items={constantItems}
-          activeItem={activeConstantItem}
+          items={items}
+          activeItem={activeItem}
           chainUiSection={chainUiSection}
         />
       </SelectFormWrapper>
