@@ -6,7 +6,6 @@ import type {
   PalletItemScraped,
   PalletListItem,
 } from 'model/Metadata/Scraper/types';
-import type { RefObject } from 'react';
 
 export interface PalletData {
   pallets: PalletListItem[];
@@ -20,7 +19,6 @@ export interface PalletListProps {
   activePallet: string | null;
   chainUiSection: keyof ChainUiItem;
   onSelect: (value: string) => void;
-  palletDataRef: RefObject<PalletData>;
 }
 
 export interface ChainStateListProps {

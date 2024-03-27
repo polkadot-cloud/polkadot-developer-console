@@ -9,7 +9,7 @@ import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { Header } from './Header';
 import { useActiveTabId } from 'contexts/ActiveTab';
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import type { PalletData } from '../ChainState/types';
 import { defaultPalletData } from '../ChainState/defaults';
 
@@ -21,9 +21,6 @@ export const Extrinsics = () => {
   const chainUiSection = 'calls';
   const chainUi = getChainUi(activeTabId, chainUiSection);
   const Metadata = getChainSpec(activeTabId)?.metadata;
-
-  // Store `callData` result as a ref for event listeners to access.
-  const callDataRef = useRef<PalletData>(defaultPalletData);
 
   // Fetch storage data when metadata or the selected pallet changes.
   const callData = useMemo((): PalletData => {
@@ -48,8 +45,6 @@ export const Extrinsics = () => {
       activeItem: null, // NOTE: not yet implemented.
     };
 
-    // Update ref and return result.
-    callDataRef.current = result;
     return result;
   }, [chainUi.pallet, chainUi.selected, Metadata?.metadata]);
 
@@ -60,7 +55,6 @@ export const Extrinsics = () => {
       <Header />
       <SelectFormWrapper className="withHeader">
         <PalletList
-          palletDataRef={callDataRef}
           activePallet={activePallet}
           pallets={pallets}
           chainUiSection={chainUiSection}

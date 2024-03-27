@@ -3,7 +3,7 @@
 
 import { InputFormWrapper, SelectFormWrapper } from '../Wrappers';
 import { useApi } from 'contexts/Api';
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
@@ -23,9 +23,6 @@ export const Constants = () => {
   const chainUiSection = 'constants';
   const chainUi = getChainUi(activeTabId, chainUiSection);
   const Metadata = getChainSpec(activeTabId)?.metadata;
-
-  // Store `constantsData` result as a ref for event listeners to access.
-  const constantsDataRef = useRef<PalletData>(defaultPalletData);
 
   // Fetch storage data when metadata or the selected pallet changes.
   const constantsData = useMemo((): PalletData => {
@@ -52,8 +49,6 @@ export const Constants = () => {
       activeItem,
     };
 
-    // Update ref and return result.
-    constantsDataRef.current = result;
     return result;
   }, [chainUi.pallet, chainUi.selected, Metadata?.metadata]);
 
@@ -63,7 +58,6 @@ export const Constants = () => {
     <>
       <SelectFormWrapper className="withHeader">
         <PalletList
-          palletDataRef={constantsDataRef}
           pallets={pallets}
           activePallet={activePallet}
           chainUiSection={chainUiSection}
