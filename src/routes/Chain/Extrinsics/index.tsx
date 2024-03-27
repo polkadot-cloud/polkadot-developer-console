@@ -9,6 +9,7 @@ import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { Header } from './Header';
 import { useActiveTabId } from 'contexts/ActiveTab';
+import { useMemo, useRef } from 'react';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
@@ -17,27 +18,48 @@ export const Extrinsics = () => {
 
   const chainUiSection = 'calls';
   const chainUi = getChainUi(activeTabId, chainUiSection);
-
   const Metadata = getChainSpec(activeTabId)?.metadata;
-  // TODO: handle UI where metadata has not yet been fetched.
-  if (!Metadata) {
-    return null;
-  }
 
-  const scraper = new PalletScraper(Metadata, { maxDepth: 2 });
-  const pallets = scraper.getList(['calls']);
+  // Store `callData` result as a ref for event listeners to access.
+  const callDataRef = useRef({});
 
-  const activePallet = chainUi.pallet || pallets?.[0].name || null;
-  let calls = [];
-  if (activePallet) {
-    calls = scraper.getCalls(activePallet);
-  }
+  // Fetch storage data when metadata or the selected pallet changes.
+  const callData = useMemo(() => {
+    if (!Metadata) {
+      return {
+        pallets: [],
+        activePallet: null,
+        callItems: [],
+      };
+    }
+
+    const scraper = new PalletScraper(Metadata, { maxDepth: 2 });
+    const pallets = scraper.getList(['calls']);
+
+    const activePallet = chainUi.pallet || pallets?.[0].name || null;
+
+    let callItems = [];
+    if (activePallet) {
+      callItems = scraper.getCalls(activePallet);
+    }
+
+    const result = {
+      pallets,
+      activePallet,
+      callItems,
+    };
+
+    // Update ref and return result.
+    callDataRef.current = result;
+    return result;
+  }, [chainUi.pallet, chainUi.selected, Metadata?.metadata]);
+
+  const { pallets, activePallet, callItems } = callData;
 
   return (
     <>
       <Header />
       <SelectFormWrapper className="withHeader">
-        {/* Pallet Selection */}
         <PalletList
           activePallet={activePallet}
           pallets={pallets}
@@ -46,9 +68,7 @@ export const Extrinsics = () => {
             setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
           }}
         />
-
-        {/* Call Selection */}
-        <CallList calls={calls} />
+        <CallList calls={callItems} />
       </SelectFormWrapper>
     </>
   );
