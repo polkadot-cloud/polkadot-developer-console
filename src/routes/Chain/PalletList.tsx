@@ -59,7 +59,7 @@ export const PalletList = ({
   // Pallet search input ref.
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Handle key down events
+  // Handle key down events.
   const handleKeyDown = (ev: KeyboardEvent) => {
     const { type, key } = ev;
     const palletIndex = filteredPallets.findIndex(
