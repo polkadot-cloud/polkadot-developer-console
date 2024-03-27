@@ -10,6 +10,8 @@ import { useChainUi } from 'contexts/ChainUi';
 import { Header } from './Header';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import { useMemo, useRef } from 'react';
+import type { PalletData } from '../ChainState/types';
+import { defaultPalletData } from '../ChainState/defaults';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
@@ -21,16 +23,12 @@ export const Extrinsics = () => {
   const Metadata = getChainSpec(activeTabId)?.metadata;
 
   // Store `callData` result as a ref for event listeners to access.
-  const callDataRef = useRef({});
+  const callDataRef = useRef<PalletData>(defaultPalletData);
 
   // Fetch storage data when metadata or the selected pallet changes.
-  const callData = useMemo(() => {
+  const callData = useMemo((): PalletData => {
     if (!Metadata) {
-      return {
-        pallets: [],
-        activePallet: null,
-        items: [],
-      };
+      return defaultPalletData;
     }
 
     const scraper = new PalletScraper(Metadata, { maxDepth: 2 });
@@ -43,10 +41,11 @@ export const Extrinsics = () => {
       items = scraper.getCalls(activePallet);
     }
 
-    const result = {
+    const result: PalletData = {
       pallets,
       activePallet,
       items,
+      activeItem: null, // NOTE: not yet implemented.
     };
 
     // Update ref and return result.

@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/utils/types';
 import type { ChainUiItem } from 'contexts/ChainUi/types';
 import type {
   PalletItemScraped,
@@ -21,7 +20,7 @@ export interface PalletListProps {
   activePallet: string | null;
   chainUiSection: keyof ChainUiItem;
   onSelect: (value: string) => void;
-  palletDataRef: RefObject<AnyJson>;
+  palletDataRef: RefObject<PalletData>;
 }
 
 export interface ChainStateListProps {

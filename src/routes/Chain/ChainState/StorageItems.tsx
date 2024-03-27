@@ -16,6 +16,7 @@ import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useInput } from '../Inputs';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import type { PalletData } from './types';
+import { defaultPalletData } from './defaults';
 
 export const StorageItems = () => {
   const { readInput } = useInput();
@@ -28,17 +29,12 @@ export const StorageItems = () => {
   const Metadata = getChainSpec(activeTabId)?.metadata;
 
   // Store `storageData` result as a ref for event listeners to access.
-  const storageDataRef = useRef({});
+  const storageDataRef = useRef<PalletData>(defaultPalletData);
 
   // Fetch storage data when metadata or the selected pallet changes.
   const storageData = useMemo((): PalletData => {
     if (!Metadata) {
-      return {
-        pallets: [],
-        activePallet: null,
-        items: [],
-        activeItem: null,
-      };
+      return defaultPalletData;
     }
     // Get pallet list from scraper.
     const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
@@ -56,7 +52,7 @@ export const StorageItems = () => {
     // If no storage item selected, select the first one from the list or fall back to null.
     const activeItem = chainUi.selected || items?.[0]?.name || null;
 
-    const result = {
+    const result: PalletData = {
       pallets,
       activePallet,
       items,
