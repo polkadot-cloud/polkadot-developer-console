@@ -3,13 +3,9 @@
 
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
-import type { ChainUiItem } from 'contexts/ChainUi/types';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { FormatCallSignature } from 'model/Metadata/Format/CallSignature';
-import type {
-  PalletItemScraped,
-  PalletItemScrapedWithSig,
-} from 'model/Metadata/Scraper/types';
+import type { PalletItemScrapedWithSig } from 'model/Metadata/Scraper/types';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   SelectDropdownWrapper,
@@ -21,18 +17,14 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 import { camelize } from '@w3ux/utils';
 import { useActiveTabId } from 'contexts/ActiveTab';
+import type { ChainStateListProps } from './types';
 
 export const ChainStateList = ({
   items,
   chainUiSection,
   activeItem,
   subject,
-}: {
-  subject: string;
-  items: PalletItemScraped[];
-  activeItem: string | null;
-  chainUiSection: keyof ChainUiItem;
-}) => {
+}: ChainStateListProps) => {
   const activeTabId = useActiveTabId();
   const { getChainUi, setChainUiItem } = useChainUi();
   const chainUi = getChainUi(activeTabId, chainUiSection);

@@ -10,25 +10,19 @@ import {
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
-import type { PalletListItem } from 'model/Metadata/Scraper/types';
 import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
-import type { ChainUiItem } from 'contexts/ChainUi/types';
 import { camelize } from '@w3ux/utils';
 import { useActiveTabId } from 'contexts/ActiveTab';
+import type { PalletListProps } from './ChainState/types';
 
 export const PalletList = ({
   pallets,
   activePallet,
   chainUiSection,
   onSelect,
-}: {
-  pallets: PalletListItem[];
-  activePallet: string | null;
-  chainUiSection: keyof ChainUiItem;
-  onSelect: (value: string) => void;
-}) => {
+}: PalletListProps) => {
   const activeTabId = useActiveTabId();
   const { getPalletVersions, getChainUi, setChainUiItem } = useChainUi();
   const palletVersions = getPalletVersions(activeTabId) || {};
