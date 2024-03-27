@@ -9,6 +9,7 @@ import type {
   APIStatusEventDetail,
   APIChainSpecVersion,
   EventStatus,
+  ErrDetail,
 } from './types';
 import { MetadataController } from 'controllers/Metadata';
 
@@ -90,7 +91,9 @@ export class Api {
 
       await this.#api.isReady;
     } catch (e) {
-      this.dispatchEvent(this.ensureEventStatus('error'));
+      this.dispatchEvent(this.ensureEventStatus('error'), {
+        err: 'InitializationError',
+      });
     }
   }
 
@@ -131,7 +134,9 @@ export class Api {
           ),
         };
       } else {
-        this.dispatchEvent(this.ensureEventStatus('error'));
+        this.dispatchEvent(this.ensureEventStatus('error'), {
+          err: 'ChainSpecError',
+        });
       }
     }
   }
@@ -169,7 +174,7 @@ export class Api {
       this.dispatchEvent(this.ensureEventStatus('disconnected'));
     });
 
-    this.#api.on('error', (err: string) => {
+    this.#api.on('error', (err: ErrDetail) => {
       this.dispatchEvent(this.ensureEventStatus('error'), { err });
     });
   }
@@ -178,7 +183,7 @@ export class Api {
   dispatchEvent(
     event: EventStatus,
     options?: {
-      err?: string;
+      err?: ErrDetail;
     }
   ) {
     const detail: APIStatusEventDetail = {

@@ -9,11 +9,13 @@ export type ApiStatus = 'connecting' | 'connected' | 'disconnected' | 'ready';
 
 export type EventStatus = ApiStatus | 'error' | 'destroyed' | 'fetchedSpec';
 
+export type ErrDetail = 'InitializationError' | 'ChainSpecError';
+
 export interface APIStatusEventDetail {
   event: EventStatus;
   tabId: number;
   chainId: ChainId;
-  err?: string;
+  err?: ErrDetail;
 }
 
 export interface APIChainSpecEventDetail {
