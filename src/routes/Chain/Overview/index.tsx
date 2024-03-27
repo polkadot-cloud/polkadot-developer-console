@@ -8,11 +8,15 @@ import { useTabs } from 'contexts/Tabs';
 import { CardsWrapper, Wrapper } from './Wrappers';
 import ConnectedSVG from 'svg/Connected.svg?react';
 import Odometer from '@w3ux/react-odometer';
-import BigNumber from 'bignumber.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHive } from '@fortawesome/free-brands-svg-icons';
 import { faList } from '@fortawesome/free-solid-svg-icons';
 import { useActiveTabId } from 'contexts/ActiveTab';
+import { isCustomEvent } from 'Utils';
+import { useRef, useState } from 'react';
+import { useEventListener } from 'usehooks-ts';
+import BigNumber from 'bignumber.js';
+import { ApiController } from 'controllers/Api';
 
 export const Overview = () => {
   const { getTab } = useTabs();
@@ -27,6 +31,8 @@ export const Overview = () => {
   // NOTE: we know for certain there is an active tab and an associated API instance here, so we can
   // safely use the non-null assertion.
   const chainId = activeTab!.chain!.id;
+  const tabId = activeTab!.id;
+
   const isDirectory = isDirectoryId(chainId);
   const chainSpecChain = chainSpec?.chain || 'Unknown';
 
@@ -44,9 +50,21 @@ export const Overview = () => {
   // Whether this component is still syncing.
   const syncing = !chainSpecReady;
 
-  // The current block number.
-  // TODO: Replace with actual block number.
-  const blockNumber = new BigNumber(syncing ? '0' : '1000000');
+  // The latest received block number.
+  const [blockNumber, setBlockNumber] = useState<string>(
+    ApiController.instances?.[tabId]?.blockNumber || '0'
+  );
+
+  // Handle new block number callback.
+  const newBlockCallback = (e: Event) => {
+    if (isCustomEvent(e)) {
+      setBlockNumber(e.detail.blockNumber);
+    }
+  };
+
+  const ref = useRef<Document>(document);
+
+  useEventListener('callback-block-number', newBlockCallback, ref);
 
   return (
     <Wrapper>
@@ -90,7 +108,7 @@ export const Overview = () => {
               Latest Block
             </h4>
             <h3 className={chainSpecReady ? undefined : 'shimmer syncing'}>
-              <Odometer value={blockNumber.toFormat()} />
+              <Odometer value={new BigNumber(blockNumber || 0).toFormat()} />
             </h3>
           </div>
         </section>

@@ -14,6 +14,7 @@ declare global {
     'api-status': CustomEvent<APIStatusEventDetail>;
     'new-chain-spec': CustomEvent<APIChainSpecEventDetail>;
     'online-status': CustomEvent<OnlineStatusEvent>;
+    'callback-block-number': CustomEvent<{ blockNumber: string }>;
     notification: CustomEvent<NotificationItem>;
   }
 }

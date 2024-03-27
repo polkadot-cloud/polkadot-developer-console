@@ -12,6 +12,7 @@ import type {
   ErrDetail,
 } from './types';
 import { MetadataController } from 'controllers/Metadata';
+import type { VoidFn } from '@polkadot/api/types';
 
 export class Api {
   // ------------------------------------------------------
@@ -35,6 +36,12 @@ export class Api {
 
   // The current chain spec.
   chainSpec: APIChainSpec | undefined;
+
+  // Unsubscribe objects.
+  #unsubs: Record<string, VoidFn> = {};
+
+  // The current block number.
+  blockNumber = '0';
 
   // ------------------------------------------------------
   // Getters.
@@ -90,6 +97,10 @@ export class Api {
       this.initApiEvents();
 
       await this.#api.isReady;
+
+      // Subscribe to block number. TODO: Move to a subscriptions class and call an initialization
+      // method instead..
+      this.subscribeBlockNumber();
     } catch (e) {
       this.dispatchEvent(this.ensureEventStatus('error'), {
         err: 'InitializationError',
@@ -198,6 +209,42 @@ export class Api {
   }
 
   // ------------------------------------------------------
+  // Subscriptions.
+  // ------------------------------------------------------
+  //
+  // TODO: Move to a subscriptions class instead. Verify if pallet and call exists before attempting
+  // subscriptions.
+
+  // Subscribe to block number.
+  subscribeBlockNumber = async (): Promise<void> => {
+    if (this.#unsubs['blockNumber'] === undefined) {
+      // Get block numbers.
+      const unsub = await this.api.query.system.number((num: number) => {
+        // Update class block number.
+        this.blockNumber = num.toString();
+
+        // Send block number to UI.
+        document.dispatchEvent(
+          new CustomEvent(`callback-block-number`, {
+            detail: { blockNumber: num.toString() },
+          })
+        );
+      });
+
+      // Block number subscription now initialised. Store unsub.
+      this.#unsubs['blockNumber'] = unsub as unknown as VoidFn;
+    }
+  };
+
+  // Unsubscribe from all active subscriptions.
+  unsubscribe = () => {
+    Object.values(this.#unsubs).forEach((unsub) => {
+      unsub();
+    });
+    this.#unsubs = {};
+  };
+
+  // ------------------------------------------------------
   // Class helpers.
   // ------------------------------------------------------
 
@@ -223,6 +270,9 @@ export class Api {
 
   // Disconnect gracefully from API and provider.
   async disconnect(destroy = false) {
+    // Unsubscribe from all active subscriptions.
+    this.unsubscribe();
+
     // Disconnect provider and api.
     this.provider?.disconnect();
     await this.api?.disconnect();
