@@ -226,7 +226,7 @@ export class Api {
         // Send block number to UI.
         document.dispatchEvent(
           new CustomEvent(`callback-block-number`, {
-            detail: { blockNumber: num.toString() },
+            detail: { tabId: this.#tabId, blockNumber: num.toString() },
           })
         );
       });

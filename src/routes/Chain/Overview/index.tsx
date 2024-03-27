@@ -13,7 +13,7 @@ import { faHive } from '@fortawesome/free-brands-svg-icons';
 import { faList } from '@fortawesome/free-solid-svg-icons';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import { isCustomEvent } from 'Utils';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import BigNumber from 'bignumber.js';
 import { ApiController } from 'controllers/Api';
@@ -58,13 +58,20 @@ export const Overview = () => {
   // Handle new block number callback.
   const newBlockCallback = (e: Event) => {
     if (isCustomEvent(e)) {
-      setBlockNumber(e.detail.blockNumber);
+      if (e.detail.tabId === tabId) {
+        setBlockNumber(e.detail.blockNumber);
+      }
     }
   };
 
+  // Listen for block number updates.
   const ref = useRef<Document>(document);
-
   useEventListener('callback-block-number', newBlockCallback, ref);
+
+  // Update block number on tab change.
+  useEffect(() => {
+    setBlockNumber(ApiController.instances?.[tabId]?.blockNumber || '0');
+  }, [tabId]);
 
   return (
     <Wrapper>
