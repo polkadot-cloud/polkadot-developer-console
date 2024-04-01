@@ -39,7 +39,7 @@
     "react-router-dom": "^6.22.2",
     "scale-ts": "^1.6.0",
     "styled-components": "^6.1.8",
-    "usehooks-ts": "^2.15.1"
+    "usehooks-ts": "^3.0.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.61",
