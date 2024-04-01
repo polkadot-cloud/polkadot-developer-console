@@ -1693,12 +1693,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.2.21":
-  version: 18.2.21
-  resolution: "@types/react-dom@npm:18.2.21"
+"@types/react-dom@npm:^18.2.23":
+  version: 18.2.23
+  resolution: "@types/react-dom@npm:18.2.23"
   dependencies:
     "@types/react": "npm:*"
-  checksum: 10c0/a887b4b647071df48173f054854713b68fdacfceeba7fa14f64ba26688d7d43574d7dc88a2a346e28f2e667eeab1b9bdbcad8a54353869835e52638607f61ff5
+  checksum: 10c0/9348e93558aa67b4b237bd0eab62e72e85f3e17a1c45fde04d874476269730f7c671b3d62390c4fca588da2a026e90cc74148abc349dbfd4ee5535a82ccdf38e
   languageName: node
   linkType: hard
 
@@ -2510,7 +2510,7 @@ __metadata:
     "@polkadot/util": "npm:^12.6.2"
     "@polkadot/util-crypto": "npm:^12.6.2"
     "@types/react": "npm:^18.2.61"
-    "@types/react-dom": "npm:^18.2.21"
+    "@types/react-dom": "npm:^18.2.23"
     "@types/styled-components": "npm:^5.1.34"
     "@typescript-eslint/eslint-plugin": "npm:^6.14.0"
     "@typescript-eslint/parser": "npm:^6.14.0"
