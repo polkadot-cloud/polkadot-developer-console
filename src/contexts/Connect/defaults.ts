@@ -19,7 +19,7 @@ export const defaultConnectContext: ConnectContextInterface = {
 export const TRANSITION_DURATION_MS = 180;
 
 // The default position of the connect overlay.
-export const defaultOverlayPosition = { top: 20, right: 20 };
+export const defaultOverlayPosition = { top: 12, right: 12 };
 
 // Padding from the window edge to the overlay.
 export const DocumentPadding = 10;
