@@ -6,16 +6,21 @@ import type { PageSections, RouteSectionProvider } from 'routes/Common/types';
 import { TabMenu } from 'library/TabMenu';
 import { Connect } from './Connect';
 import { PageContent } from 'library/PageContent';
+import { ParachainSetup } from './ParachainSetup';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
     0: {
-      label: 'Search Chain',
+      label: 'Connect Chain',
       Component: Connect,
+    },
+    1: {
+      label: 'New Parachain',
+      Component: ParachainSetup,
     },
   };
 
-  return { label: 'Connect', sections, pageWidth: 'thin' };
+  return { label: 'Home', sections, pageWidth: 'thin' };
 };
 
 export const Default = () => (
