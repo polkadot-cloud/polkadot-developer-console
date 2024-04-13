@@ -5,7 +5,7 @@ import { useRoute } from 'contexts/Route';
 import { PageContentWrapper } from './Wrappers';
 import type { PageProps } from 'routes/Common/PageWithMenu/types';
 import { ManageTab } from 'routes/Common/ManageTab';
-import { Directory } from 'routes/SearchChain/Connect/Directory';
+import { Directory } from 'routes/Home/Connect/Directory';
 
 export const PageContent = ({ sections, pageWidth }: PageProps) => {
   const { activePage } = useRoute();

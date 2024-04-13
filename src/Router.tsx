@@ -6,7 +6,7 @@ import { Settings } from 'routes/Settings';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
 import { Chain } from 'routes/Chain';
-import { Default } from 'routes/SearchChain';
+import { Default } from 'routes/Home';
 import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const Router = () => {

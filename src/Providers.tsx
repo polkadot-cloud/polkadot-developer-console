@@ -13,6 +13,7 @@ import { TooltipProvider } from 'contexts/Tooltip';
 import { ApiProvider } from 'contexts/Api';
 import { ChainUiProvider } from 'contexts/ChainUi';
 import type { ReactNode } from 'react';
+import { ParaSetupProvider } from 'contexts/ParaSetup';
 
 export const Providers = () => {
   // !! Provider order matters.
@@ -20,6 +21,7 @@ export const Providers = () => {
     SettingsProvider,
     TabsProvider,
     TagsProvider,
+    ParaSetupProvider,
     ChainFilterProvider,
     MenuProvider,
     TooltipProvider,

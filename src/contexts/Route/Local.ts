@@ -11,14 +11,15 @@ import type { Route } from 'App';
 // Gets saved active page from local storage, or returns undefined otherwise.
 export const getActivePage = (
   route: Route,
-  tabId: number
+  tabId: number,
+  connected: boolean
 ): number | undefined => {
   const result = localStorageOrDefault(`activePages`, undefined, true) as
     | Record<string, number>
     | undefined;
 
   if (result) {
-    const value = result[`${tabId}:${route}`];
+    const value = result[`${tabId}:${connected ? 1 : 0}:${route}`];
     if (value) {
       return value as number;
     }
@@ -58,7 +59,12 @@ export const getPageRedirect = (
 // ------------------------------------------------------
 
 // Sets page section to local storage.
-export const setActivePage = (route: Route, tabId: number, value: number) => {
+export const setActivePage = (
+  route: Route,
+  tabId: number,
+  connected: boolean,
+  value: number
+) => {
   const current =
     (localStorageOrDefault(`activePages`, undefined, true) as
       | Record<string, number>
@@ -66,7 +72,7 @@ export const setActivePage = (route: Route, tabId: number, value: number) => {
 
   const updated = {
     ...current,
-    [`${tabId}:${route}`]: value,
+    [`${tabId}:${connected ? 1 : 0}:${route}`]: value,
   };
   localStorage.setItem(`activePages`, JSON.stringify(updated));
 };
