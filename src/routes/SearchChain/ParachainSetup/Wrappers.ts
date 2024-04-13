@@ -58,6 +58,11 @@ export const ProgressWrapper = styled.div`
   }
 `;
 
+// Setup step form wrapper.
+export const FormWrapper = styled.div`
+  flex: 1;
+`;
+
 // Wrapper than contains the footer content for navigating setup steps.
 export const FooterWrapper = styled.div`
   flex: 1;
