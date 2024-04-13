@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { TAB_TRANSITION_DURATION_MS } from 'contexts/Tabs/defaults';
 import { useConnect } from 'contexts/Connect';
 import { DocumentPadding } from 'contexts/Connect/defaults';
+import { ConnectInner } from './Inner';
 
 export const ConnectOverlay = () => {
   const {
@@ -81,7 +82,7 @@ export const ConnectOverlay = () => {
           }}
           className="inner"
         >
-          <h3>Connect</h3>
+          <ConnectInner />
         </motion.div>
       </Wrapper>
     )
