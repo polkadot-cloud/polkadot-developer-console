@@ -1,12 +1,13 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { FormWrapper, ProgressWrapper, Wrapper } from './Wrappers';
+import { FormWrapper, Wrapper } from './Wrappers';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import type { SetupStep } from 'contexts/ParaSetup/types';
 import { setupSteps } from 'contexts/ParaSetup/defaults';
 import { Footer } from './Footer';
+import { Progress } from './Progress';
 
 export const ParachainSetup = () => {
   const activeTabId = useActiveTabId();
@@ -35,41 +36,35 @@ export const ParachainSetup = () => {
     <Wrapper>
       <h2>Set up a New Parachain</h2>
 
-      <ProgressWrapper>
-        <section
-          className={`${activeStep === 'reserve_para_id' ? `active` : ``}`}
-        >
-          <h4>Reserve Para ID</h4>
-        </section>
-        <section className="spacer">
-          <span className="connector"></span>
-        </section>
-        <section
-          className={`${activeStep === 'configure_node' ? `active` : ``}`}
-        >
-          <h4>Configure Node</h4>
-        </section>
-        <section className="spacer">
-          <span className="connector"></span>
-        </section>
-        <section
-          className={`${activeStep === 'register_parathread' ? `active` : ``}`}
-        >
-          <h4>Register Parathread</h4>
-        </section>
-        <section className="spacer">
-          <span className="connector"></span>
-        </section>
-        <section className={`${activeStep === 'get_coretime' ? `active` : ``}`}>
-          <h4>Get Coretime</h4>
-        </section>
-      </ProgressWrapper>
+      <Progress />
 
-      <FormWrapper>
-        <h3>
-          Reserve a Para ID on the Relay Chain you wish to secure blocks with.
-        </h3>
-      </FormWrapper>
+      {activeStep === 'reserve_para_id' && (
+        <FormWrapper>
+          <h3>
+            Reserve a Para ID on the Relay Chain you wish to secure blocks with.
+          </h3>
+        </FormWrapper>
+      )}
+
+      {activeStep === 'configure_node' && (
+        <FormWrapper>
+          <h3>Configure your Parachain Node to connect to the Relay Chain.</h3>
+        </FormWrapper>
+      )}
+
+      {activeStep === 'register_parathread' && (
+        <FormWrapper>
+          <h3>Register your Parathread on the Relay Chain.</h3>
+        </FormWrapper>
+      )}
+
+      {activeStep === 'get_coretime' && (
+        <FormWrapper>
+          <h3>
+            Get bulk or instantaneous Coretime and start processing blocks.
+          </h3>
+        </FormWrapper>
+      )}
 
       <Footer next={next} prev={prev} />
     </Wrapper>
