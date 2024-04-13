@@ -26,13 +26,13 @@ export const RouteProvider = ({ route, children }: RouteContextProps) => {
   const [activePage, setActivePageState] = useState<number>(
     !apiActive
       ? defaultActivePage
-      : local.getActivePage(route, activeTabId) || defaultActivePage
+      : local.getActivePage(route, activeTabId, apiActive) || defaultActivePage
   );
 
   // Sets active section, and updates local storage if persisted.
   const setActivePage = (section: number, persist = true) => {
     if (persist) {
-      local.setActivePage(route, activeTabId, section);
+      local.setActivePage(route, activeTabId, apiActive, section);
     }
     setActivePageState(section);
   };
@@ -41,15 +41,12 @@ export const RouteProvider = ({ route, children }: RouteContextProps) => {
   // is not active.
   useEffect(() => {
     const redirect = local.getPageRedirect(route, activeTabId);
-    const localActive = local.getActivePage(route, activeTabId);
+    const localActive = local.getActivePage(route, activeTabId, apiActive);
 
     if (redirect) {
       setActivePage(redirect || localActive || defaultActivePage, false);
     } else {
-      setActivePage(
-        !apiActive ? defaultActivePage : localActive || defaultActivePage,
-        false
-      );
+      setActivePage(localActive || defaultActivePage, false);
     }
   }, [route, activeTabId, redirectCounter, apiActive, apiStatus]);
 
