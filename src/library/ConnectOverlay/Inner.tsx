@@ -6,62 +6,133 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ItemWrapper } from './Wrappers';
 import PolkadotVaultSVG from '@w3ux/extension-assets/PolkadotVault.svg?react';
 import LedgerSquareSVG from '@w3ux/extension-assets/LedgerSquare.svg?react';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 
-export const ConnectInner = () => (
-  <>
-    <h3>
-      <FontAwesomeIcon icon={faPlug} transform="shrink-2" />
-      Connect Wallets
-    </h3>
+export const ConnectInner = () => {
+  // Store the active hardware wallet, if selected.
+  const [selectedHardwareWallet, setSelectedHardwareWallet] = useState<
+    string | undefined
+  >(undefined);
 
-    <h4>Hardware</h4>
-    <ItemWrapper>
-      <div>
-        <PolkadotVaultSVG className="icon" />
-      </div>
-      <div>
-        <div>
-          <h4>Polkadot Vault</h4>
-          <h5>
-            <a href="https://signer/parity.io" target="_blank" rel="noreferrer">
-              signer.parity.io
-              <FontAwesomeIcon icon={faExternalLinkAlt} transform="shrink-5" />
-            </a>
-          </h5>
-        </div>
-        <div>
-          <button>Manage</button>
-        </div>
-      </div>
-    </ItemWrapper>
-    <ItemWrapper>
-      <div>
-        <LedgerSquareSVG style={{ width: '1.4rem', height: '1.4rem' }} />
-      </div>
-      <div>
-        <div>
-          <h4>Ledger</h4>
-          <h5>
-            <a href="https://ledger.com" target="_blank" rel="noreferrer">
-              ledger.com
-              <FontAwesomeIcon icon={faExternalLinkAlt} transform="shrink-5" />
-            </a>
-          </h5>
-        </div>
-        <div>
-          <button>Manage</button>
-        </div>
-      </div>
-    </ItemWrapper>
+  const variants = {
+    hidden: {
+      height: 0,
+    },
+    show: {
+      height: 'auto',
+    },
+  };
 
-    <h4>Web Extensions</h4>
-    <ItemWrapper></ItemWrapper>
-    <ItemWrapper></ItemWrapper>
-    <ItemWrapper></ItemWrapper>
-    <ItemWrapper></ItemWrapper>
-    <ItemWrapper></ItemWrapper>
-    <ItemWrapper></ItemWrapper>
-    <ItemWrapper></ItemWrapper>
-    <ItemWrapper></ItemWrapper>
-  </>
-);
+  const getMotionProps = (item?: string) => {
+    const showHeading =
+      item === undefined && selectedHardwareWallet === undefined;
+
+    const showConnectItem =
+      item !== undefined &&
+      (item === selectedHardwareWallet || selectedHardwareWallet === undefined);
+
+    return {
+      initial: 'show',
+      variants,
+      transition: {
+        duration: 0.15,
+      },
+      animate: showHeading || showConnectItem ? 'show' : 'hidden',
+    };
+  };
+
+  return (
+    <>
+      <h3>
+        <FontAwesomeIcon icon={faPlug} transform="shrink-2" />
+        Connect Wallets
+      </h3>
+
+      <motion.h4 {...getMotionProps()}>Hardware</motion.h4>
+      <motion.span {...getMotionProps('polkadot_vault')}>
+        <ItemWrapper>
+          <div>
+            <PolkadotVaultSVG className="icon" />
+          </div>
+          <div>
+            <div>
+              <h4>Polkadot Vault</h4>
+              <h5>
+                <a
+                  href="https://signer/parity.io"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  signer.parity.io
+                  <FontAwesomeIcon
+                    icon={faExternalLinkAlt}
+                    transform="shrink-5"
+                  />
+                </a>
+              </h5>
+            </div>
+            <div>
+              <button
+                onClick={() =>
+                  setSelectedHardwareWallet(
+                    selectedHardwareWallet === 'polkadot_vault'
+                      ? undefined
+                      : 'polkadot_vault'
+                  )
+                }
+              >
+                {selectedHardwareWallet === 'polkadot_vault'
+                  ? 'Done'
+                  : 'Manage'}
+              </button>
+            </div>
+          </div>
+        </ItemWrapper>
+      </motion.span>
+
+      <motion.span {...getMotionProps('ledger')}>
+        <ItemWrapper>
+          <div>
+            <LedgerSquareSVG style={{ width: '1.4rem', height: '1.4rem' }} />
+          </div>
+          <div>
+            <div>
+              <h4>Ledger</h4>
+              <h5>
+                <a href="https://ledger.com" target="_blank" rel="noreferrer">
+                  ledger.com
+                  <FontAwesomeIcon
+                    icon={faExternalLinkAlt}
+                    transform="shrink-5"
+                  />
+                </a>
+              </h5>
+            </div>
+            <div>
+              <button
+                onClick={() =>
+                  setSelectedHardwareWallet(
+                    selectedHardwareWallet === 'ledger' ? undefined : 'ledger'
+                  )
+                }
+              >
+                {selectedHardwareWallet === 'ledger' ? 'Done' : 'Manage'}
+              </button>
+            </div>
+          </div>
+        </ItemWrapper>
+      </motion.span>
+
+      <motion.h4 {...getMotionProps()}>Web Extensions</motion.h4>
+      <ItemWrapper></ItemWrapper>
+      <ItemWrapper></ItemWrapper>
+      <ItemWrapper></ItemWrapper>
+      <ItemWrapper></ItemWrapper>
+      <ItemWrapper></ItemWrapper>
+      <ItemWrapper></ItemWrapper>
+      <ItemWrapper></ItemWrapper>
+      <ItemWrapper></ItemWrapper>
+    </>
+  );
+};

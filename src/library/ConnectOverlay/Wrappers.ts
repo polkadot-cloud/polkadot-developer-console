@@ -34,10 +34,11 @@ export const Wrapper = styled(motion.div)`
     > h4 {
       font-family: InterBold, sans-serif;
       margin: 0.5rem 0;
+      overflow: hidden;
     }
 
-    > div {
-      margin-bottom: 0.5rem;
+    > span {
+      overflow: hidden;
 
       &:last-child {
         margin-bottom: 0;
@@ -54,6 +55,9 @@ export const ItemWrapper = styled.div`
   padding: 0 0.6rem;
   display: flex;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
 
   > div {
     height: var(--connect-item-height);
@@ -66,8 +70,8 @@ export const ItemWrapper = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      min-width: 2.15rem;
-      max-width: 2.15rem;
+      min-width: 2.05rem;
+      max-width: 2.05rem;
       height: 100%;
 
       > .icon {
