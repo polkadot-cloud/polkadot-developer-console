@@ -17,6 +17,7 @@ export const useRouteSections = (): RouteSectionProvider => {
     1: {
       label: 'New Parachain',
       Component: ParachainSetup,
+      pageWidth: 'wide',
     },
   };
 
