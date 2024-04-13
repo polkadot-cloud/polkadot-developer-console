@@ -24,7 +24,7 @@ import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
 import { TabOverlay } from './TabOverlay';
 import { Tab } from './Tab';
 import { defaultEemptyTab } from 'contexts/Tabs/defaults';
-import { Controls } from './Controls';
+import { TabControls } from './TabControls';
 import { useLocation } from 'react-router-dom';
 
 export const Tabs = () => {
@@ -139,7 +139,7 @@ export const Tabs = () => {
           ) : null}
         </DragOverlay>
       </DndContext>
-      <Controls tabContainerRef={tabContainerRef} />
+      <TabControls tabContainerRef={tabContainerRef} />
     </TabsWrapper>
   );
 };

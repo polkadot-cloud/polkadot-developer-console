@@ -14,6 +14,7 @@ import { ApiProvider } from 'contexts/Api';
 import { ChainUiProvider } from 'contexts/ChainUi';
 import type { ReactNode } from 'react';
 import { ParaSetupProvider } from 'contexts/ParaSetup';
+import { ConnectProvider } from 'contexts/Connect';
 
 export const Providers = () => {
   // !! Provider order matters.
@@ -27,6 +28,7 @@ export const Providers = () => {
     TooltipProvider,
     ChainUiProvider,
     ApiProvider,
+    ConnectProvider,
   ];
 
   return withProviders(providers, App);
