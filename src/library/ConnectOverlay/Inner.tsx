@@ -11,6 +11,8 @@ import { useState } from 'react';
 import type { ConnectInnerProps } from './types';
 import { Extension } from './Extension';
 import { useConnect } from 'contexts/Connect';
+import { ManageVault } from './ManageVault';
+import { ManageLedger } from './ManageLedger';
 
 export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
   const { dismissOverlay } = useConnect();
@@ -23,12 +25,15 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
   const variants = {
     hidden: {
       height: 0,
+      opacity: 0,
     },
     show: {
       height: 'auto',
+      opacity: 1,
     },
   };
 
+  // Gets framer motion props for either a heading or a connect item.
   const getMotionProps = (item?: string) => {
     const showHeading = item === undefined && selectedConnectItem === undefined;
 
@@ -40,11 +45,22 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
       initial: 'show',
       variants,
       transition: {
-        duration: 0.2,
+        duration: 0.4,
+        ease: [0.25, 1, 0.25, 1],
       },
       animate: showHeading || showConnectItem ? 'show' : 'hidden',
     };
   };
+
+  // Gets framer motion props for a management ui item.
+  const getManageProps = (item: string) => ({
+    initial: 'hidden',
+    variants,
+    transition: {
+      duration: 0.2,
+    },
+    animate: selectedConnectItem === item ? 'show' : 'hidden',
+  });
 
   const extensionItems = installed.concat(other);
 
@@ -148,6 +164,14 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
           />
         </motion.span>
       ))}
+
+      <motion.span {...getManageProps('polkadot_vault')}>
+        <ManageVault />
+      </motion.span>
+
+      <motion.span {...getManageProps('ledger')}>
+        <ManageLedger />
+      </motion.span>
     </>
   );
 };

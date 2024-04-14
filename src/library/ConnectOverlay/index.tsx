@@ -108,7 +108,7 @@ export const ConnectOverlay = () => {
           variants={{
             hidden: {
               opacity: 0,
-              transform: 'scale(0.93)',
+              transform: 'scale(0.95)',
               filter: 'blur(4px)',
             },
             show: {

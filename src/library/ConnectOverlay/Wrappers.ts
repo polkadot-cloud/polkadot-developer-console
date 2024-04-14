@@ -54,7 +54,7 @@ export const Wrapper = styled(motion.div)`
       }
 
       > h4 {
-        font-family: InterBold, sans-serif;
+        font-family: InterSemiBold, sans-serif;
         margin: 0.75rem 0 0.4rem 0;
         overflow: hidden;
       }
