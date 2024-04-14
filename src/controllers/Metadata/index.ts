@@ -4,12 +4,12 @@
 import { MetadataV14 } from 'model/Metadata/MetadataV14';
 import type { MetadataVersion } from './types';
 import { UnknownMetadata } from 'model/Metadata/UnknownMetadata';
-import type { Metadata } from '@polkadot/types';
 import { MetadataV15 } from 'model/Metadata/MetadataV15';
+import type { AnyJson } from '@w3ux/utils/types';
 
 export class MetadataController {
   // Instantiate a metadata version.
-  static instantiate(version: string, metadata: Metadata): MetadataVersion {
+  static instantiate(version: string, metadata: AnyJson): MetadataVersion {
     switch (version) {
       case 'v15':
         return new MetadataV15(metadata);
