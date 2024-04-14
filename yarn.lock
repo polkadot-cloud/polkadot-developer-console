@@ -1182,7 +1182,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/rpc-provider@npm:10.12.1, @polkadot/rpc-provider@npm:^10.12.1":
+"@polkadot/rpc-provider@npm:10.12.1":
   version: 10.12.1
   resolution: "@polkadot/rpc-provider@npm:10.12.1"
   dependencies:
@@ -1206,7 +1206,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/rpc-provider@npm:10.12.6, @polkadot/rpc-provider@npm:^10.12.4":
+"@polkadot/rpc-provider@npm:10.12.6, @polkadot/rpc-provider@npm:^10.12.4, @polkadot/rpc-provider@npm:^10.12.6":
   version: 10.12.6
   resolution: "@polkadot/rpc-provider@npm:10.12.6"
   dependencies:
@@ -2871,7 +2871,7 @@ __metadata:
     "@fortawesome/free-solid-svg-icons": "npm:^6.5.1"
     "@fortawesome/react-fontawesome": "npm:^0.2.0"
     "@polkadot/api": "npm:^10.11.3"
-    "@polkadot/rpc-provider": "npm:^10.12.1"
+    "@polkadot/rpc-provider": "npm:^10.12.6"
     "@polkadot/util": "npm:^12.6.2"
     "@polkadot/util-crypto": "npm:^12.6.2"
     "@types/react": "npm:^18.2.61"
