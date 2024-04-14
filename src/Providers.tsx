@@ -37,10 +37,7 @@ export const Providers = () => {
       ExtensionsProvider,
       { options: { chainSafeSnapEnabled: true, polkagateSnapEnabled: true } },
     ],
-    [
-      ExtensionAccountsProvider,
-      { dappName: DappName, network: 'polkadot', ss58: 0 }, // TODO: Replace hard-coded values.
-    ],
+    [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
     ConnectProvider,
   ];
 
