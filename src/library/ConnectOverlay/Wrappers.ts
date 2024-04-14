@@ -7,9 +7,6 @@ import styled from 'styled-components';
 export const Wrapper = styled(motion.div)`
   --connect-item-height: 3.5rem;
 
-  width: 100%;
-  max-width: 500px;
-
   > .scroll {
     box-shadow: var(--shadow-floating-menu);
     border: 1px solid var(--border-secondary-color);

@@ -8,6 +8,7 @@ export interface ConnectContextInterface {
   show: boolean;
   hidden: boolean;
   position: [ConnectOverlayPosition, ConnectOverlayPosition];
+  syncPosition: () => void;
   dismissOverlay: () => void;
   openConnectOverlay: (ev: ConnectMouseEvent) => void;
   closeConnectOverlay: () => void;

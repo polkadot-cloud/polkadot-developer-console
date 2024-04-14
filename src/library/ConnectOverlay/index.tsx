@@ -7,7 +7,10 @@ import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { motion } from 'framer-motion';
 import { TAB_TRANSITION_DURATION_MS } from 'contexts/Tabs/defaults';
 import { useConnect } from 'contexts/Connect';
-import { DocumentPadding } from 'contexts/Connect/defaults';
+import {
+  CONNECT_OVERLAY_WIDTH,
+  DocumentPadding,
+} from 'contexts/Connect/defaults';
 import { ConnectInner } from './Inner';
 import { mobileCheck } from './Utils';
 import extensions from '@w3ux/extension-assets';
@@ -19,9 +22,9 @@ export const ConnectOverlay = () => {
     open,
     show,
     hidden,
+    syncPosition,
     dismissOverlay,
     position: [x, y],
-    closeConnectOverlay,
     checkOverlayPosition,
   } = useConnect();
   const { extensionsStatus } = useExtensions();
@@ -63,7 +66,7 @@ export const ConnectOverlay = () => {
 
   // Handler for closing the overlay on window resize.
   const resizeCallback = () => {
-    closeConnectOverlay();
+    syncPosition();
   };
 
   // Close the overlay if clicked outside of its container.
@@ -98,6 +101,8 @@ export const ConnectOverlay = () => {
           top: `${y}px`,
           opacity: show ? 1 : 0,
           zIndex: 99,
+          width: '100%',
+          maxWidth: `${CONNECT_OVERLAY_WIDTH}px`,
         }}
       >
         <motion.div

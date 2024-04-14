@@ -4,6 +4,7 @@
 import type { ReactNode, RefObject } from 'react';
 import { createContext, useContext, useState } from 'react';
 import {
+  CONNECT_OVERLAY_WIDTH,
   DocumentPadding,
   defaultConnectContext,
   defaultOverlayPosition,
@@ -34,19 +35,25 @@ export const ConnectProvider = ({ children }: { children: ReactNode }) => {
     [ConnectOverlayPosition, ConnectOverlayPosition]
   >([0, 0]);
 
+  // Re-syncs the connect overlay position to the default co-ordinates, ensuring it stays at the top
+  // right of the window. Can be used with window resizing or on open.
+  const syncPosition = () => {
+    const bodyRect = document.body.getBoundingClientRect();
+
+    // Position is currently hard-coded. Could change if a drag functionality is introduced.
+    const x =
+      bodyRect.width - defaultOverlayPosition.right - CONNECT_OVERLAY_WIDTH;
+    const y = defaultOverlayPosition.right;
+    setPosition([x, y]);
+  };
+
   // Sets the overlay position and opens it. Only succeeds if the overlay has been instantiated and
   // is not currently open.
   const openConnectOverlay = () => {
     if (open) {
       return;
     }
-    const bodyRect = document.body.getBoundingClientRect();
-
-    // Position is currently hard-coded. Could change if a drag functionality is introduced.
-    const x = bodyRect.width - defaultOverlayPosition.right;
-    const y = defaultOverlayPosition.right;
-
-    setPosition([x, y]);
+    syncPosition();
     setOpen(true);
   };
 
@@ -98,6 +105,7 @@ export const ConnectProvider = ({ children }: { children: ReactNode }) => {
         show,
         hidden,
         position,
+        syncPosition,
         dismissOverlay,
         closeConnectOverlay,
         openConnectOverlay,
