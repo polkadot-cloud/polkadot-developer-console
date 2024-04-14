@@ -12,11 +12,13 @@ import { ControlWithTooltip } from './ControlWithTooltip';
 import { useMenu } from 'contexts/Menu';
 import { InDevelopment } from 'library/HelpMenu/InDevelopment';
 import { useConnect } from 'contexts/Connect';
+import { useTooltip } from 'contexts/Tooltip';
 
 export const TabControls = ({ tabContainerRef }: ControlsProps) => {
   const navigate = useNavigate();
   const { openMenu } = useMenu();
   const { createTab } = useTabs();
+  const { closeTooltip } = useTooltip();
   const { openConnectOverlay } = useConnect();
 
   return (
@@ -51,12 +53,18 @@ export const TabControls = ({ tabContainerRef }: ControlsProps) => {
         <ControlWithTooltip
           icon={faPlug}
           tooltipText="Connect Wallets"
-          onClick={(ev) => openConnectOverlay(ev)}
+          onClick={(ev) => {
+            closeTooltip();
+            openConnectOverlay(ev);
+          }}
         />
         <ControlWithTooltip
           icon={faGear}
           tooltipText="Settings"
-          onClick={() => navigate('/settings')}
+          onClick={() => {
+            closeTooltip();
+            navigate('/settings');
+          }}
           last
         />
       </div>

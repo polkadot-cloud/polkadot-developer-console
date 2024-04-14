@@ -14,10 +14,12 @@ import { ButtonWithTooltip } from '../ButtonWithTooltip';
 import { useRedirectOnInactive } from 'hooks/useRedirectOnInactive';
 import type { RouteSectionProvider } from 'routes/Common/types';
 import { useActiveTabId } from 'contexts/ActiveTab';
+import { useTooltip } from 'contexts/Tooltip';
 
 export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
   const { pathname } = useLocation();
   const activeTabId = useActiveTabId();
+  const { closeTooltip } = useTooltip();
   const { tabsHidden, setTabsHidden } = useTabs();
   const { activePage, setActivePage } = useRoute();
 
@@ -45,7 +47,10 @@ export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
         <ButtonWithTooltip
           tooltipText="Manage Tab"
           active={activePage === 9}
-          onClick={() => setActivePage(9, false)}
+          onClick={() => {
+            closeTooltip();
+            setActivePage(9, false);
+          }}
           icon={faBarsProgress}
           disabled={false}
           iconTransform="shrink-1"
@@ -54,7 +59,10 @@ export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
         <ButtonWithTooltip
           tooltipText={tabsHidden ? 'Show Tabs' : 'Hide Tabs'}
           active={false}
-          onClick={() => setTabsHidden(!tabsHidden)}
+          onClick={() => {
+            closeTooltip();
+            setTabsHidden(!tabsHidden);
+          }}
           icon={tabsHidden ? faAngleDown : faAngleUp}
           disabled={pathname !== '/'}
           iconTransform="shrink-3"
