@@ -5,6 +5,7 @@ SPDX-License-Identifier: GPL-3.0-only */
   --background-default: #efeeee;
   --background-primary: #f3f2f2;
   --background-invert: #888;
+  --background-tooltip: #222;
 
   --border-primary-color: #e4e4e4;
   --border-secondary-color: #d3d1d1;
@@ -87,6 +88,8 @@ SPDX-License-Identifier: GPL-3.0-only */
   --background-default: rgb(36 32 36);
   --background-primary: rgb(41 37 41);
   --background-invert: #ddd;
+  --background-tooltip: #EEE;
+
 
   --border-primary-color: rgb(58 52 58);
   --border-secondary-color: rgb(95 90 95);

@@ -9,7 +9,7 @@ export const Wrapper = styled(motion.div)`
 
   > .inner {
     box-shadow: var(--shadow-floating-menu);
-    background: var(--background-invert);
+    background: var(--background-tooltip);
     color: var(--text-color-invert);
     font-family: InterSemiBold, sans-serif;
     border-radius: 0.35rem;
