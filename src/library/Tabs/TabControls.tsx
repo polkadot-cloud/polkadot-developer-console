@@ -11,11 +11,13 @@ import { useNavigate } from 'react-router-dom';
 import { ControlWithTooltip } from './ControlWithTooltip';
 import { useMenu } from 'contexts/Menu';
 import { InDevelopment } from 'library/HelpMenu/InDevelopment';
+import { useConnect } from 'contexts/Connect';
 
-export const Controls = ({ tabContainerRef }: ControlsProps) => {
+export const TabControls = ({ tabContainerRef }: ControlsProps) => {
   const navigate = useNavigate();
-  const { createTab } = useTabs();
   const { openMenu } = useMenu();
+  const { createTab } = useTabs();
+  const { openConnectOverlay } = useConnect();
 
   return (
     <ControlsWrapper>
@@ -49,10 +51,7 @@ export const Controls = ({ tabContainerRef }: ControlsProps) => {
         <ControlWithTooltip
           icon={faPlug}
           tooltipText="Connect Wallets"
-          onClick={(ev) => {
-            openMenu(ev, <InDevelopment />, { size: 'large' });
-          }}
-          inactive
+          onClick={(ev) => openConnectOverlay(ev)}
         />
         <ControlWithTooltip
           icon={faGear}

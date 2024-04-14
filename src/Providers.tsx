@@ -12,12 +12,18 @@ import { SettingsProvider } from 'contexts/Settings';
 import { TooltipProvider } from 'contexts/Tooltip';
 import { ApiProvider } from 'contexts/Api';
 import { ChainUiProvider } from 'contexts/ChainUi';
-import type { ReactNode } from 'react';
 import { ParaSetupProvider } from 'contexts/ParaSetup';
+import { ConnectProvider } from 'contexts/Connect';
+import {
+  ExtensionAccountsProvider,
+  ExtensionsProvider,
+} from '@w3ux/react-connect-kit';
+import type { AnyJson } from '@w3ux/utils/types';
+import { DappName } from 'consts';
 
 export const Providers = () => {
   // !! Provider order matters.
-  const providers: Provider<{ children: ReactNode }>[] = [
+  const providers: Provider<AnyJson>[] = [
     SettingsProvider,
     TabsProvider,
     TagsProvider,
@@ -27,6 +33,15 @@ export const Providers = () => {
     TooltipProvider,
     ChainUiProvider,
     ApiProvider,
+    [
+      ExtensionsProvider,
+      { options: { chainSafeSnapEnabled: true, polkagateSnapEnabled: true } },
+    ],
+    [
+      ExtensionAccountsProvider,
+      { dappName: DappName, network: 'polkadot', ss58: 0 }, // TODO: Replace hard-coded values.
+    ],
+    ConnectProvider,
   ];
 
   return withProviders(providers, App);

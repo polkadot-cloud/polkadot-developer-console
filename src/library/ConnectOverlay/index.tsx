@@ -1,0 +1,134 @@
+// Copyright 2024 @rossbulat/console authors & contributors
+// SPDX-License-Identifier: GPL-3.0-only
+
+import { useEffect } from 'react';
+import { Wrapper } from './Wrappers';
+import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
+import { motion } from 'framer-motion';
+import { TAB_TRANSITION_DURATION_MS } from 'contexts/Tabs/defaults';
+import { useConnect } from 'contexts/Connect';
+import {
+  CONNECT_OVERLAY_MAX_WIDTH,
+  DocumentPadding,
+} from 'contexts/Connect/defaults';
+import { ConnectInner } from './Inner';
+import { mobileCheck } from './Utils';
+import extensions from '@w3ux/extension-assets';
+import type { ExtensionArrayListItem } from '@w3ux/extension-assets/util';
+import { useExtensions } from '@w3ux/react-connect-kit';
+
+export const ConnectOverlay = () => {
+  const {
+    open,
+    show,
+    hidden,
+    overlayRef,
+    syncPosition,
+    dismissOverlay,
+    position: [x, y],
+    checkOverlayPosition,
+  } = useConnect();
+  const { extensionsStatus } = useExtensions();
+
+  // Whether the app is running on mobile.
+  const isMobile = mobileCheck();
+
+  // Whether the app is running in Nova Wallet.
+  const inNova = !!window?.walletExtension?.isNovaWallet || false;
+
+  // Whether the app is running in a SubWallet Mobile.
+  const inSubWallet = !!window.injectedWeb3?.['subwallet-js'] && isMobile;
+
+  // Get supported extensions.
+  const extensionsAsArray = Object.entries(extensions).map(([key, value]) => ({
+    id: key,
+    ...value,
+  })) as ExtensionArrayListItem[];
+
+  // Determine which web extensions to display. Only display Subwallet Mobile or Nova if in one of
+  // those environments. In Nova Wallet's case, fetch `nova-wallet` metadata and overwrite
+  // `polkadot-js` with it. Otherwise, keep all `web-extension` category items.
+  const web = inSubWallet
+    ? extensionsAsArray.filter((a) => a.id === 'subwallet-js')
+    : inNova
+      ? extensionsAsArray
+          .filter((a) => a.id === 'nova-wallet')
+          .map((a) => ({ ...a, id: 'polkadot-js' }))
+      : // Otherwise, keep all extensions except `polkadot-js`.
+        extensionsAsArray.filter((a) => a.category === 'web-extension');
+
+  const installed = web.filter((a) =>
+    Object.keys(extensionsStatus).find((key) => key === a.id)
+  );
+  const other = web.filter((a) => !installed.find((b) => b.id === a.id));
+
+  // Handler for closing the overlay on window resize.
+  const resizeCallback = () => {
+    syncPosition();
+  };
+
+  // Close the overlay if clicked outside of its container.
+  useOutsideAlerter(overlayRef, () => {
+    dismissOverlay();
+  });
+
+  // Check position and show the overlay if overlay has been opened.
+  useEffect(() => {
+    if (open) {
+      checkOverlayPosition();
+    }
+  }, [open]);
+
+  // Close the overlay on window resize.
+  useEffect(() => {
+    window.addEventListener('resize', resizeCallback);
+    return () => {
+      window.removeEventListener('resize', resizeCallback);
+    };
+  }, []);
+
+  return (
+    open && (
+      <Wrapper
+        ref={overlayRef}
+        onAnimationComplete={() => checkOverlayPosition()}
+        className="large"
+        style={{
+          position: 'absolute',
+          left: `${x}px`,
+          top: `${y}px`,
+          opacity: show ? 1 : 0,
+          zIndex: 99,
+          width: '100%',
+          maxWidth: `${CONNECT_OVERLAY_MAX_WIDTH}px`,
+        }}
+      >
+        <motion.div
+          animate={!hidden ? 'show' : 'hidden'}
+          variants={{
+            hidden: {
+              opacity: 0,
+              transform: 'scale(0.93)',
+              filter: 'blur(4px)',
+            },
+            show: {
+              opacity: 1,
+              transform: 'scale(1)',
+              filter: 'blur(0)',
+            },
+          }}
+          transition={{
+            duration: TAB_TRANSITION_DURATION_MS * 0.001,
+            ease: [0.1, 1, 0.1, 1],
+          }}
+          className="scroll"
+          style={{ maxHeight: window.innerHeight - DocumentPadding * 2 }}
+        >
+          <div className="inner">
+            <ConnectInner installed={installed} other={other} />
+          </div>
+        </motion.div>
+      </Wrapper>
+    )
+  );
+};

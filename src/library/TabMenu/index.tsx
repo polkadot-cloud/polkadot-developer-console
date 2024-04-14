@@ -21,7 +21,7 @@ export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
   const { tabsHidden, setTabsHidden } = useTabs();
   const { activePage, setActivePage } = useRoute();
 
-  // Redirect to section 0 if Api becomes inactive.
+  // Redirect to section `0` if Api becomes inactive.
   useRedirectOnInactive(activeTabId);
 
   return (
