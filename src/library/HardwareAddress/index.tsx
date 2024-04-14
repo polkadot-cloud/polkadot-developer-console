@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faCopy, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
@@ -111,7 +111,12 @@ export const HardwareAddress = ({
               )}
             </section>
             <h5 className="full">
-              <span>{ellipsisFn(address, 10)}</span>
+              <span>
+                {ellipsisFn(address, 10)}{' '}
+                <button onClick={() => navigator.clipboard.writeText(address)}>
+                  <FontAwesomeIcon icon={faCopy} transform="shrink-5" />
+                </button>
+              </span>
             </h5>
           </div>
         </div>

@@ -159,6 +159,11 @@ export const Wrapper = styled.div`
             width: 100%;
             max-width: 100%;
             font-size: 0.75rem;
+
+            > button {
+              color: var(--text-color-tertiary);
+              margin-left: 0.35rem;
+            }
           }
         }
       }

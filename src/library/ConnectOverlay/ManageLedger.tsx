@@ -16,20 +16,20 @@ export const ManageLedger = () => {
         initial={'Ross Bulat'}
         Identicon={<Polkicon address={address} size={remToUnit('2.1rem')} />}
         existsHandler={(addr) => {
-          console.log(addr);
+          console.debug(addr);
           /* Do nothing */
           return false;
         }}
         renameHandler={(addr, newName) => {
-          console.log(addr, newName);
+          console.debug(addr, newName);
           /* Do nothing */
         }}
         openRemoveHandler={(addr) => {
-          console.log(addr);
+          console.debug(addr);
           /* Do nothing */
         }}
         openConfirmHandler={(addr, index) => {
-          console.log(addr, index);
+          console.debug(addr, index);
           /* Do nothing */
         }}
       />
@@ -39,20 +39,20 @@ export const ManageLedger = () => {
         initial={'Ross Bulat'}
         Identicon={<Polkicon address={address} size={remToUnit('2.1rem')} />}
         existsHandler={(addr) => {
-          console.log(addr);
+          console.debug(addr);
           /* Do nothing */
           return false;
         }}
         renameHandler={(addr, newName) => {
-          console.log(addr, newName);
+          console.debug(addr, newName);
           /* Do nothing */
         }}
         openRemoveHandler={(addr) => {
-          console.log(addr);
+          console.debug(addr);
           /* Do nothing */
         }}
         openConfirmHandler={(addr, index) => {
-          console.log(addr, index);
+          console.debug(addr, index);
           /* Do nothing */
         }}
       />
