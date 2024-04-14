@@ -54,7 +54,9 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
 
       <motion.h4 {...getMotionProps()}>Hardware</motion.h4>
       <motion.span {...getMotionProps('polkadot_vault')}>
-        <ItemWrapper>
+        <ItemWrapper
+          className={`${selectedConnectItem === 'polkadot_vault' ? ` last` : ``}`}
+        >
           <div>
             <PolkadotVaultSVG className="icon" />
           </div>
@@ -93,7 +95,9 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
       </motion.span>
 
       <motion.span {...getMotionProps('ledger')}>
-        <ItemWrapper>
+        <ItemWrapper
+          className={`${selectedConnectItem === 'ledger' ? ` last` : ``}`}
+        >
           <div>
             <LedgerSquareSVG style={{ width: '1.4rem', height: '1.4rem' }} />
           </div>
