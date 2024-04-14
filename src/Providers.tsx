@@ -14,8 +14,12 @@ import { ApiProvider } from 'contexts/Api';
 import { ChainUiProvider } from 'contexts/ChainUi';
 import { ParaSetupProvider } from 'contexts/ParaSetup';
 import { ConnectProvider } from 'contexts/Connect';
-import { ExtensionsProvider } from '@w3ux/react-connect-kit';
+import {
+  ExtensionAccountsProvider,
+  ExtensionsProvider,
+} from '@w3ux/react-connect-kit';
 import type { AnyJson } from '@w3ux/utils/types';
+import { DappName } from 'consts';
 
 export const Providers = () => {
   // !! Provider order matters.
@@ -32,6 +36,10 @@ export const Providers = () => {
     [
       ExtensionsProvider,
       { options: { chainSafeSnapEnabled: true, polkagateSnapEnabled: true } },
+    ],
+    [
+      ExtensionAccountsProvider,
+      { dappName: DappName, network: 'polkadot', ss58: 0 }, // TODO: Replace hard-coded values.
     ],
     ConnectProvider,
   ];
