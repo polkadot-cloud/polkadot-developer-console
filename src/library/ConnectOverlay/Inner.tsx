@@ -12,6 +12,7 @@ import type { ConnectInnerProps } from './types';
 import { Extension } from './Extension';
 import { useConnect } from 'contexts/Connect';
 import { ManageVault } from './ManageVault';
+import { ManageLedger } from './ManageLedger';
 
 export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
   const { dismissOverlay } = useConnect();
@@ -166,6 +167,10 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
 
       <motion.span {...getManageProps('polkadot_vault')}>
         <ManageVault />
+      </motion.span>
+
+      <motion.span {...getManageProps('ledger')}>
+        <ManageLedger />
       </motion.span>
     </>
   );
