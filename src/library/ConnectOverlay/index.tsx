@@ -9,6 +9,10 @@ import { TAB_TRANSITION_DURATION_MS } from 'contexts/Tabs/defaults';
 import { useConnect } from 'contexts/Connect';
 import { DocumentPadding } from 'contexts/Connect/defaults';
 import { ConnectInner } from './Inner';
+import { mobileCheck } from './Utils';
+import extensions from '@w3ux/extension-assets';
+import type { ExtensionArrayListItem } from '@w3ux/extension-assets/util';
+import { useExtensions } from '@w3ux/react-connect-kit';
 
 export const ConnectOverlay = () => {
   const {
@@ -20,9 +24,42 @@ export const ConnectOverlay = () => {
     closeConnectOverlay,
     checkOverlayPosition,
   } = useConnect();
+  const { extensionsStatus } = useExtensions();
 
   // Menu ref for position access.
   const overlayRef = useRef(null);
+
+  // Whether the app is running on mobile.
+  const isMobile = mobileCheck();
+
+  // Whether the app is running in Nova Wallet.
+  const inNova = !!window?.walletExtension?.isNovaWallet || false;
+
+  // Whether the app is running in a SubWallet Mobile.
+  const inSubWallet = !!window.injectedWeb3?.['subwallet-js'] && isMobile;
+
+  // Get supported extensions.
+  const extensionsAsArray = Object.entries(extensions).map(([key, value]) => ({
+    id: key,
+    ...value,
+  })) as ExtensionArrayListItem[];
+
+  // Determine which web extensions to display. Only display Subwallet Mobile or Nova if in one of
+  // those environments. In Nova Wallet's case, fetch `nova-wallet` metadata and overwrite
+  // `polkadot-js` with it. Otherwise, keep all `web-extension` category items.
+  const web = inSubWallet
+    ? extensionsAsArray.filter((a) => a.id === 'subwallet-js')
+    : inNova
+      ? extensionsAsArray
+          .filter((a) => a.id === 'nova-wallet')
+          .map((a) => ({ ...a, id: 'polkadot-js' }))
+      : // Otherwise, keep all extensions except `polkadot-js`.
+        extensionsAsArray.filter((a) => a.category === 'web-extension');
+
+  const installed = web.filter((a) =>
+    Object.keys(extensionsStatus).find((key) => key === a.id)
+  );
+  const other = web.filter((a) => !installed.find((b) => b.id === a.id));
 
   // Handler for closing the overlay on window resize.
   const resizeCallback = () => {
@@ -82,7 +119,7 @@ export const ConnectOverlay = () => {
           }}
           className="inner"
         >
-          <ConnectInner />
+          <ConnectInner installed={installed} other={other} />
         </motion.div>
       </Wrapper>
     )

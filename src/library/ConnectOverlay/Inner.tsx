@@ -8,10 +8,12 @@ import PolkadotVaultSVG from '@w3ux/extension-assets/PolkadotVault.svg?react';
 import LedgerSquareSVG from '@w3ux/extension-assets/LedgerSquare.svg?react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import type { ConnectInnerProps } from './types';
+import { Extension } from './Extension';
 
-export const ConnectInner = () => {
+export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
   // Store the active hardware wallet, if selected.
-  const [selectedHardwareWallet, setSelectedHardwareWallet] = useState<
+  const [selectedConnectItem, setSelectedConnectItem] = useState<
     string | undefined
   >(undefined);
 
@@ -25,12 +27,11 @@ export const ConnectInner = () => {
   };
 
   const getMotionProps = (item?: string) => {
-    const showHeading =
-      item === undefined && selectedHardwareWallet === undefined;
+    const showHeading = item === undefined && selectedConnectItem === undefined;
 
     const showConnectItem =
       item !== undefined &&
-      (item === selectedHardwareWallet || selectedHardwareWallet === undefined);
+      (item === selectedConnectItem || selectedConnectItem === undefined);
 
     return {
       initial: 'show',
@@ -41,6 +42,8 @@ export const ConnectInner = () => {
       animate: showHeading || showConnectItem ? 'show' : 'hidden',
     };
   };
+
+  const extensionItems = installed.concat(other);
 
   return (
     <>
@@ -75,16 +78,14 @@ export const ConnectInner = () => {
             <div>
               <button
                 onClick={() =>
-                  setSelectedHardwareWallet(
-                    selectedHardwareWallet === 'polkadot_vault'
+                  setSelectedConnectItem(
+                    selectedConnectItem === 'polkadot_vault'
                       ? undefined
                       : 'polkadot_vault'
                   )
                 }
               >
-                {selectedHardwareWallet === 'polkadot_vault'
-                  ? 'Done'
-                  : 'Manage'}
+                {selectedConnectItem === 'polkadot_vault' ? 'Done' : 'Manage'}
               </button>
             </div>
           </div>
@@ -112,12 +113,12 @@ export const ConnectInner = () => {
             <div>
               <button
                 onClick={() =>
-                  setSelectedHardwareWallet(
-                    selectedHardwareWallet === 'ledger' ? undefined : 'ledger'
+                  setSelectedConnectItem(
+                    selectedConnectItem === 'ledger' ? undefined : 'ledger'
                   )
                 }
               >
-                {selectedHardwareWallet === 'ledger' ? 'Done' : 'Manage'}
+                {selectedConnectItem === 'ledger' ? 'Done' : 'Manage'}
               </button>
             </div>
           </div>
@@ -125,14 +126,18 @@ export const ConnectInner = () => {
       </motion.span>
 
       <motion.h4 {...getMotionProps()}>Web Extensions</motion.h4>
-      <ItemWrapper></ItemWrapper>
-      <ItemWrapper></ItemWrapper>
-      <ItemWrapper></ItemWrapper>
-      <ItemWrapper></ItemWrapper>
-      <ItemWrapper></ItemWrapper>
-      <ItemWrapper></ItemWrapper>
-      <ItemWrapper></ItemWrapper>
-      <ItemWrapper></ItemWrapper>
+
+      {extensionItems.map((extension, i) => (
+        <motion.span
+          {...getMotionProps()}
+          key={`extension_item_${extension.id}`}
+        >
+          <Extension
+            extension={extension}
+            last={i === extensionItems.length - 1}
+          />
+        </motion.span>
+      ))}
     </>
   );
 };

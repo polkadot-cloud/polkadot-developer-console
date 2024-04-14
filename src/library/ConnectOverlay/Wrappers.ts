@@ -17,7 +17,7 @@ export const Wrapper = styled(motion.div)`
     border-radius: 0.4rem;
     display: flex;
     flex-flow: column wrap;
-    padding: 0.75rem;
+    padding: 0.7rem;
     overflow-y: scroll;
     overflow-x: hidden;
     width: 100%;
@@ -52,12 +52,16 @@ export const ItemWrapper = styled.div`
   border: 1px solid var(--border-secondary-color);
   border-radius: 0.5rem;
   flex: 1;
-  padding: 0 0.6rem;
+  padding: 0 0.5rem;
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
   margin-bottom: 0.5rem;
+
+  &.last {
+    margin-bottom: 0;
+  }
 
   > div {
     height: var(--connect-item-height);
@@ -73,6 +77,11 @@ export const ItemWrapper = styled.div`
       min-width: 2.05rem;
       max-width: 2.05rem;
       height: 100%;
+
+      .icon-web {
+        width: 1.6rem;
+        height: 1.6rem;
+      }
 
       > .icon {
         width: 1.75rem;
@@ -124,6 +133,15 @@ export const ItemWrapper = styled.div`
             color: var(--accent-color-secondary);
             font-family: InterSemiBold, sans-serif;
             font-size: 0.75rem;
+
+            svg {
+              margin-right: 0.15rem;
+            }
+
+            &:disabled {
+              color: var(--text-color-tertiary);
+              cursor: default;
+            }
           }
         }
       }
