@@ -28,6 +28,7 @@ export const Wrapper = styled(motion.div)`
       > h3 {
         color: var(--text-color-tertiary);
         margin-bottom: 0.35rem;
+        font-size: 0.75rem;
 
         > svg {
           margin-right: 0.4rem;
@@ -36,7 +37,7 @@ export const Wrapper = styled(motion.div)`
 
       > h4 {
         font-family: InterBold, sans-serif;
-        margin: 0.5rem 0;
+        margin: 0.75rem 0 0.4rem 0;
         overflow: hidden;
       }
 
@@ -54,14 +55,14 @@ export const Wrapper = styled(motion.div)`
 export const ItemWrapper = styled.div`
   background-color: var(--background-default);
   border: 1px solid var(--border-secondary-color);
-  border-radius: 0.5rem;
+  border-radius: 0.4rem;
   flex: 1;
-  padding: 0 0.5rem;
+  padding: 0 0.6rem;
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.55rem;
 
   &.last {
     margin-bottom: 0;
