@@ -1,14 +1,14 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { Wrapper } from './Wrappers';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { motion } from 'framer-motion';
 import { TAB_TRANSITION_DURATION_MS } from 'contexts/Tabs/defaults';
 import { useConnect } from 'contexts/Connect';
 import {
-  CONNECT_OVERLAY_WIDTH,
+  CONNECT_OVERLAY_MAX_WIDTH,
   DocumentPadding,
 } from 'contexts/Connect/defaults';
 import { ConnectInner } from './Inner';
@@ -22,15 +22,13 @@ export const ConnectOverlay = () => {
     open,
     show,
     hidden,
+    overlayRef,
     syncPosition,
     dismissOverlay,
     position: [x, y],
     checkOverlayPosition,
   } = useConnect();
   const { extensionsStatus } = useExtensions();
-
-  // Menu ref for position access.
-  const overlayRef = useRef(null);
 
   // Whether the app is running on mobile.
   const isMobile = mobileCheck();
@@ -77,7 +75,7 @@ export const ConnectOverlay = () => {
   // Check position and show the overlay if overlay has been opened.
   useEffect(() => {
     if (open) {
-      checkOverlayPosition(overlayRef);
+      checkOverlayPosition();
     }
   }, [open]);
 
@@ -93,7 +91,7 @@ export const ConnectOverlay = () => {
     open && (
       <Wrapper
         ref={overlayRef}
-        onAnimationComplete={() => checkOverlayPosition(overlayRef)}
+        onAnimationComplete={() => checkOverlayPosition()}
         className="large"
         style={{
           position: 'absolute',
@@ -102,7 +100,7 @@ export const ConnectOverlay = () => {
           opacity: show ? 1 : 0,
           zIndex: 99,
           width: '100%',
-          maxWidth: `${CONNECT_OVERLAY_WIDTH}px`,
+          maxWidth: `${CONNECT_OVERLAY_MAX_WIDTH}px`,
         }}
       >
         <motion.div
@@ -111,10 +109,12 @@ export const ConnectOverlay = () => {
             hidden: {
               opacity: 0,
               transform: 'scale(0.93)',
+              filter: 'blur(4px)',
             },
             show: {
               opacity: 1,
               transform: 'scale(1)',
+              filter: 'blur(0)',
             },
           }}
           transition={{

@@ -1,14 +1,9 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ReactNode, RefObject } from 'react';
-import { createContext, useContext, useState } from 'react';
-import {
-  CONNECT_OVERLAY_WIDTH,
-  DocumentPadding,
-  defaultConnectContext,
-  defaultOverlayPosition,
-} from './defaults';
+import type { ReactNode } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
+import { defaultConnectContext, defaultOverlayPosition } from './defaults';
 import type { ConnectContextInterface, ConnectOverlayPosition } from './types';
 import { TAB_TRANSITION_DURATION_MS } from 'contexts/Tabs/defaults';
 
@@ -35,14 +30,20 @@ export const ConnectProvider = ({ children }: { children: ReactNode }) => {
     [ConnectOverlayPosition, ConnectOverlayPosition]
   >([0, 0]);
 
+  // Overlay ref for position access.
+  const overlayRef = useRef<HTMLDivElement>(null);
+
   // Re-syncs the connect overlay position to the default co-ordinates, ensuring it stays at the top
   // right of the window. Can be used with window resizing or on open.
   const syncPosition = () => {
     const bodyRect = document.body.getBoundingClientRect();
 
-    // Position is currently hard-coded. Could change if a drag functionality is introduced.
+    // NOTE: Position is currently hard-coded. Could change if a drag functionality is introduced.
     const x =
-      bodyRect.width - defaultOverlayPosition.right - CONNECT_OVERLAY_WIDTH;
+      bodyRect.width -
+      defaultOverlayPosition.right -
+      (overlayRef.current?.clientWidth || 0);
+
     const y = defaultOverlayPosition.right;
     setPosition([x, y]);
   };
@@ -74,25 +75,20 @@ export const ConnectProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Adjusts overlay position and shows the menu.
-  const checkOverlayPosition = (ref: RefObject<HTMLDivElement>) => {
-    if (!ref?.current) {
+  const checkOverlayPosition = () => {
+    if (!overlayRef?.current) {
       return;
     }
 
     // Adjust overlay position if it is leaking out of the window, otherwise keep it at the current
     // position.
     const bodyRect = document.body.getBoundingClientRect();
-    const menuRect = ref.current.getBoundingClientRect();
-    const hiddenRight = menuRect.right > bodyRect.right - DocumentPadding;
-    const hiddenBottom = menuRect.bottom > bodyRect.bottom - DocumentPadding;
+    const menuRect = overlayRef.current.getBoundingClientRect();
+    const hiddenRight = menuRect.right > bodyRect.right;
+    const hiddenBottom = menuRect.bottom > bodyRect.bottom;
 
-    const x = hiddenRight
-      ? window.innerWidth - menuRect.width - DocumentPadding
-      : position[0];
-
-    const y = hiddenBottom
-      ? window.innerHeight - menuRect.height - DocumentPadding
-      : position[1];
+    const x = hiddenRight ? window.innerWidth - menuRect.width : position[0];
+    const y = hiddenBottom ? window.innerHeight - menuRect.height : position[1];
 
     setPosition([x, y]);
     setShow(true);
@@ -105,6 +101,7 @@ export const ConnectProvider = ({ children }: { children: ReactNode }) => {
         show,
         hidden,
         position,
+        overlayRef,
         syncPosition,
         dismissOverlay,
         closeConnectOverlay,

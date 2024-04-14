@@ -9,18 +9,19 @@ export const defaultConnectContext: ConnectContextInterface = {
   show: false,
   hidden: false,
   position: [0, 0],
+  overlayRef: { current: null },
   syncPosition: () => {},
   dismissOverlay: () => {},
   openConnectOverlay: (ev) => {},
   closeConnectOverlay: () => {},
-  checkOverlayPosition: (menuRef) => {},
+  checkOverlayPosition: () => {},
 };
 
 // The default position of the connect overlay.
-export const defaultOverlayPosition = { top: 14, right: 14 };
+export const defaultOverlayPosition = { top: 0, right: 0 };
 
 // Width of overlay in pixels.
-export const CONNECT_OVERLAY_WIDTH = 500;
+export const CONNECT_OVERLAY_MAX_WIDTH = 500;
 
 // Duration of entrance and exit transitions.
 export const TRANSITION_DURATION_MS = 180;

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled(motion.div)`
   --connect-item-height: 3.5rem;
+  padding: 0.75rem;
 
   > .scroll {
     box-shadow: var(--shadow-floating-menu);

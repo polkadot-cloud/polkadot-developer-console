@@ -7,12 +7,13 @@ export interface ConnectContextInterface {
   open: boolean;
   show: boolean;
   hidden: boolean;
+  overlayRef: RefObject<HTMLDivElement>;
   position: [ConnectOverlayPosition, ConnectOverlayPosition];
   syncPosition: () => void;
   dismissOverlay: () => void;
   openConnectOverlay: (ev: ConnectMouseEvent) => void;
   closeConnectOverlay: () => void;
-  checkOverlayPosition: (ref: RefObject<HTMLDivElement>) => void;
+  checkOverlayPosition: () => void;
 }
 
 export type ConnectMouseEvent =
