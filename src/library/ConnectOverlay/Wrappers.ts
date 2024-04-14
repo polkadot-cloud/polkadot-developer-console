@@ -10,38 +10,42 @@ export const Wrapper = styled(motion.div)`
   width: 100%;
   max-width: 500px;
 
-  > .inner {
+  > .scroll {
     box-shadow: var(--shadow-floating-menu);
     border: 1px solid var(--border-secondary-color);
     background: var(--background-default);
     border-radius: 0.4rem;
-    display: flex;
-    flex-flow: column wrap;
-    padding: 0.7rem;
     overflow-y: scroll;
     overflow-x: hidden;
-    width: 100%;
+    position: relative;
 
-    > h3 {
-      color: var(--text-color-tertiary);
-      margin-bottom: 0.35rem;
+    > .inner {
+      display: flex;
+      flex-flow: column wrap;
+      padding: 0.7rem;
+      width: 100%;
 
-      > svg {
-        margin-right: 0.4rem;
+      > h3 {
+        color: var(--text-color-tertiary);
+        margin-bottom: 0.35rem;
+
+        > svg {
+          margin-right: 0.4rem;
+        }
       }
-    }
 
-    > h4 {
-      font-family: InterBold, sans-serif;
-      margin: 0.5rem 0;
-      overflow: hidden;
-    }
+      > h4 {
+        font-family: InterBold, sans-serif;
+        margin: 0.5rem 0;
+        overflow: hidden;
+      }
 
-    > span {
-      overflow: hidden;
+      > span {
+        overflow: hidden;
 
-      &:last-child {
-        margin-bottom: 0;
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
     }
   }
@@ -74,8 +78,8 @@ export const ItemWrapper = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      min-width: 2.05rem;
-      max-width: 2.05rem;
+      min-width: 2rem;
+      max-width: 2rem;
       height: 100%;
 
       .icon-web {

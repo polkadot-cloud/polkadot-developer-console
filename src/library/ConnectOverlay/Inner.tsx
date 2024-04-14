@@ -37,7 +37,7 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
       initial: 'show',
       variants,
       transition: {
-        duration: 0.15,
+        duration: 0.2,
       },
       animate: showHeading || showConnectItem ? 'show' : 'hidden',
     };

@@ -98,7 +98,6 @@ export const ConnectOverlay = () => {
           top: `${y}px`,
           opacity: show ? 1 : 0,
           zIndex: 99,
-          maxHeight: window.innerHeight - DocumentPadding * 2,
         }}
       >
         <motion.div
@@ -117,9 +116,12 @@ export const ConnectOverlay = () => {
             duration: TAB_TRANSITION_DURATION_MS * 0.001,
             ease: [0.1, 1, 0.1, 1],
           }}
-          className="inner"
+          className="scroll"
+          style={{ maxHeight: window.innerHeight - DocumentPadding * 2 }}
         >
-          <ConnectInner installed={installed} other={other} />
+          <div className="inner">
+            <ConnectInner installed={installed} other={other} />
+          </div>
         </motion.div>
       </Wrapper>
     )
