@@ -108,7 +108,7 @@ export const ItemWrapper = styled.div`
           }
 
           > h4 {
-            font-family: InterSemiBold, sans-serif;
+            font-family: InterBold, sans-serif;
             line-height: 0.85rem;
             margin-bottom: 0.25rem;
 
@@ -117,7 +117,7 @@ export const ItemWrapper = styled.div`
             }
 
             > .badge {
-              color: var(--accent-color-secondary);
+              color: var(--text-color-secondary);
               border-radius: 0.25rem;
               font-size: 0.7rem;
               margin-left: 0.35rem;
