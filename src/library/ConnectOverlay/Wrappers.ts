@@ -23,13 +23,33 @@ export const Wrapper = styled(motion.div)`
       padding: 0.7rem;
       width: 100%;
 
-      > h3 {
-        color: var(--text-color-tertiary);
-        margin-bottom: 0.35rem;
-        font-size: 0.75rem;
+      .title {
+        flex: 1;
+        display: flex;
 
-        > svg {
-          margin-right: 0.4rem;
+        > h3 {
+          color: var(--text-color-tertiary);
+          margin-bottom: 0.35rem;
+          font-size: 0.75rem;
+
+          > svg {
+            margin-right: 0.4rem;
+          }
+        }
+        > button {
+          border: 1px solid var(--border-secondary-color);
+          background-color: var(--background-default);
+          color: var(--text-color-tertiary);
+          font-family: InterSemiBold, sans-serif;
+          font-size: 0.75rem;
+          margin-left: auto;
+          padding: 0.25rem 0.5rem;
+          border-radius: 0.4rem;
+          cursor: pointer;
+
+          &:hover {
+            background-color: var(--background-hover);
+          }
         }
       }
 

@@ -10,8 +10,11 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import type { ConnectInnerProps } from './types';
 import { Extension } from './Extension';
+import { useConnect } from 'contexts/Connect';
 
 export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
+  const { dismissOverlay } = useConnect();
+
   // Store the active hardware wallet, if selected.
   const [selectedConnectItem, setSelectedConnectItem] = useState<
     string | undefined
@@ -47,10 +50,13 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
 
   return (
     <>
-      <h3>
-        <FontAwesomeIcon icon={faPlug} transform="shrink-2" />
-        Connect Wallets
-      </h3>
+      <div className="title">
+        <h3>
+          <FontAwesomeIcon icon={faPlug} transform="shrink-2" />
+          Connect Wallets
+        </h3>
+        <button onClick={() => dismissOverlay()}>Close</button>
+      </div>
 
       <motion.h4 {...getMotionProps()}>Hardware</motion.h4>
       <motion.span {...getMotionProps('polkadot_vault')}>
