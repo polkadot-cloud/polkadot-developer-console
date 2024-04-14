@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 export const Wrapper = styled(motion.div)`
-  --connect-item-height: 3.4rem;
+  --connect-item-height: 3.5rem;
 
   width: 100%;
   max-width: 500px;
@@ -113,6 +113,17 @@ export const ItemWrapper = styled.div`
             font-family: InterSemiBold, sans-serif;
             line-height: 0.85rem;
             margin-bottom: 0.25rem;
+
+            &.connected {
+              color: var(--text-color-primary);
+            }
+
+            > .badge {
+              color: var(--accent-color-secondary);
+              border-radius: 0.25rem;
+              font-size: 0.7rem;
+              margin-left: 0.35rem;
+            }
           }
 
           > h5 {
@@ -140,7 +151,7 @@ export const ItemWrapper = styled.div`
             font-size: 0.75rem;
 
             svg {
-              margin-right: 0.15rem;
+              margin-right: 0.2rem;
             }
 
             &:disabled {
