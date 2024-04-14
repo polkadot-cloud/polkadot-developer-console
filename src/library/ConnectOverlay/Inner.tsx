@@ -87,7 +87,7 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
               <h4>Polkadot Vault</h4>
               <h5>
                 <a
-                  href="https://signer/parity.io"
+                  href="https://signer.parity.io"
                   target="_blank"
                   rel="noreferrer"
                 >
