@@ -87,7 +87,13 @@ export const ManageVault = ({
       </motion.div>
 
       <motion.div {...getMotionProps('import_container', importActive)}>
-        <QrReader importActive={importActive} activeChain={activeChain} />
+        <QrReader
+          importActive={importActive}
+          activeChain={activeChain}
+          onSuccess={() => {
+            setImportActive(false);
+          }}
+        />
       </motion.div>
 
       <motion.div {...getMotionProps('address', showAddresses)}>

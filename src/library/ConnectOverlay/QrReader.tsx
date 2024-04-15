@@ -10,7 +10,11 @@ import { isValidAddress } from '@w3ux/utils';
 import { formatAccountSs58 } from './Utils';
 import { useVaultAccounts } from '@w3ux/react-connect-kit';
 
-export const QrReader = ({ importActive, activeChain }: QrReaderProps) => {
+export const QrReader = ({
+  importActive,
+  activeChain,
+  onSuccess,
+}: QrReaderProps) => {
   const { addVaultAccount, vaultAccountExists, vaultAccounts } =
     useVaultAccounts();
 
@@ -34,8 +38,7 @@ export const QrReader = ({ importActive, activeChain }: QrReaderProps) => {
     if (valid) {
       const account = addVaultAccount(qrData, vaultAccounts.length);
       if (account) {
-        // TODO: add OtherAccounts context.
-        // addOtherAccounts([account]);
+        onSuccess();
       }
     }
   });
