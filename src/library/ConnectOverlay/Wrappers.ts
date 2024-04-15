@@ -83,7 +83,7 @@ export const ItemWrapper = styled.div`
   border: 1px solid var(--border-secondary-color);
   border-radius: 0.4rem;
   flex: 1;
-  padding: 0 0.6rem;
+  padding: 0 0.5rem;
   display: flex;
   align-items: center;
   position: relative;
@@ -246,7 +246,8 @@ export const ImportButtonWrapper = styled.div`
     color: var(--accent-color-secondary);
     font-family: InterSemiBold, sans-serif;
     font-size: 0.75rem;
-    padding: 0 0.5rem;
+    padding: 0 0.6rem;
+
     > svg {
       margin-right: 0.2rem;
     }
