@@ -237,7 +237,7 @@ export const ChainSearchInputWrapper = styled.div`
   }
 `;
 export const SubHeadingWrapper = styled.h5`
-  margin: 0.65rem 0 0.15rem 0;
+  margin: 0.8rem 0 0.15rem 0;
   padding-left: 0.25rem;
 `;
 

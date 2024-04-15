@@ -23,4 +23,6 @@ export type HardwareAddressProps = ComponentBase & {
   openRemoveHandler: (address: string) => void;
   // handle confirm import UI.
   openConfirmHandler: (address: string, index: number) => void;
+  // Whether this is the last address.
+  last?: boolean;
 };

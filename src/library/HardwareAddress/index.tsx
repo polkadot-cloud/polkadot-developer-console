@@ -19,6 +19,7 @@ export const HardwareAddress = ({
   renameHandler,
   openConfirmHandler,
   openRemoveHandler,
+  last,
 }: HardwareAddressProps) => {
   // Store whether this address is being edited.
   const [editing, setEditing] = useState<boolean>(false);
@@ -60,8 +61,8 @@ export const HardwareAddress = ({
   const isImported = existsHandler(address);
 
   return (
-    <Wrapper>
-      <div className="border"></div>
+    <Wrapper className={last === true ? ` last` : undefined}>
+      <div className={`border ${last === true ? ` last` : ``}`}></div>
       <div className="content">
         <div className="inner">
           <div className="identicon">

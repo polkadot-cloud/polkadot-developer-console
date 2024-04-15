@@ -89,6 +89,7 @@ export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
             console.log(addr, index);
             /* Do nothing */
           }}
+          last
         />
       </motion.div>
     </>
