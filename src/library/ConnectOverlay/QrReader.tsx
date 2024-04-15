@@ -37,7 +37,6 @@ export const QrReader = ({ importActive, activeChain }: QrReaderProps) => {
         // TODO: add OtherAccounts context.
         // addOtherAccounts([account]);
       }
-      // TODO: close import.
     }
   });
 
