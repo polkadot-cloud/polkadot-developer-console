@@ -57,10 +57,19 @@ export const Wrapper = styled(motion.div)`
         font-family: InterSemiBold, sans-serif;
         margin: 0.75rem 0 0.4rem 0;
         overflow: hidden;
+
+        &.hidden {
+          margin: 0.75rem 0 0 0;
+        }
       }
 
-      > span {
+      > .motion {
         overflow: hidden;
+
+        > .motion {
+          border: 1px solid green;
+          overflow: hidden;
+        }
 
         &:last-child {
           margin-bottom: 0;
@@ -80,7 +89,6 @@ export const ItemWrapper = styled.div`
   align-items: center;
   position: relative;
   overflow: hidden;
-  margin-bottom: 0.55rem;
 
   &.last {
     margin-bottom: 0;
@@ -180,5 +188,31 @@ export const ItemWrapper = styled.div`
         }
       }
     }
+  }
+`;
+
+export const ChainSearchInputWrapper = styled.div`
+  border: 1px solid var(--border-primary-color);
+  background-color: var(--background-primary);
+  color: var(--text-color-tertiary);
+  border-radius: 0.4rem;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  margin-bottom: 0.5rem;
+
+  > input {
+    color: var(--text-color-secondary);
+    border: none;
+    border-radius: 0.4rem;
+    font-family: Inter, sans-serif;
+    font-size: 0.75rem;
+    padding: 0.5rem 0 0.5rem 0.3rem;
+    flex: 1;
+  }
+
+  button {
+    color: var(--text-color-tertiary);
   }
 `;

@@ -6,19 +6,19 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 0.5rem 0.5rem 0.5rem 0.55rem;
+  padding: 0.5rem 0.5rem 1.5rem 0.55rem;
   position: relative;
-  margin-bottom: 1rem;
 
   > .border {
     position: absolute;
     right: 0.5rem;
-    bottom: 0;
+    bottom: 1rem;
     width: calc(100% - 4rem);
     border-bottom: 1px solid var(--border-secondary-color);
 
     &.last {
       border-bottom: none;
+      padding-bottom: 0.5rem;
     }
   }
 
