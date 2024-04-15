@@ -8,15 +8,12 @@ import { ChainSearchInput } from './ChainSearchInput';
 import { useState } from 'react';
 import type { ManageHardwareProps } from './types';
 import { motion } from 'framer-motion';
-import type { DirectoryId } from 'config/networks';
-import {
-  ImportButtonWrapper,
-  ImportQRWrapper,
-  SubHeadingWrapper,
-} from './Wrappers';
+import { NetworkDirectory, type DirectoryId } from 'config/networks';
+import { ImportButtonWrapper, SubHeadingWrapper } from './Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
+import { QrReader } from './QrReader';
 
 export const ManageVault = ({
   getMotionProps,
@@ -33,6 +30,9 @@ export const ManageVault = ({
 
   // Whether the import account button is active.
   const [importActive, setImportActive] = useState<boolean>(false);
+
+  // Get the currently actve chain name.
+  const activeChain = NetworkDirectory[directoryId as DirectoryId];
 
   // Search input focus handler.
   const onSearchFocused = () => {
@@ -64,6 +64,7 @@ export const ManageVault = ({
           onSearchBlurred={onSearchBlurred}
           directoryId={directoryId}
           setDirectoryId={setDirectoryId}
+          activeChain={activeChain}
         />
       </motion.div>
 
@@ -86,9 +87,7 @@ export const ManageVault = ({
       </motion.div>
 
       <motion.div {...getMotionProps('import_container', importActive)}>
-        <ImportQRWrapper>
-          <h4>Import QR Code box</h4>
-        </ImportQRWrapper>
+        <QrReader importActive={importActive} activeChain={activeChain} />
       </motion.div>
 
       <motion.div {...getMotionProps('address', showAddresses)}>

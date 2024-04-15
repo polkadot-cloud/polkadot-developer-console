@@ -11,6 +11,7 @@ export type ChainId = DirectoryId | 'custom';
 export interface NetworkDirectoryItem {
   system: {
     chain: string;
+    ss58: number;
   };
   name: string;
   unit: string;
@@ -25,6 +26,7 @@ export const NetworkDirectory: NetworkDirectory = {
   polkadot: {
     system: {
       chain: 'Polkadot',
+      ss58: 0,
     },
     name: 'Polkadot Relay Chain',
     unit: 'DOT',
@@ -43,6 +45,7 @@ export const NetworkDirectory: NetworkDirectory = {
   kusama: {
     system: {
       chain: 'Kusama',
+      ss58: 2,
     },
     name: 'Kusama Relay Chain',
     unit: 'KSM',
@@ -61,6 +64,7 @@ export const NetworkDirectory: NetworkDirectory = {
   rococo: {
     system: {
       chain: 'Rococo',
+      ss58: 0,
     },
     name: 'Rococo Relay Chain',
     unit: 'ROC',
@@ -72,6 +76,7 @@ export const NetworkDirectory: NetworkDirectory = {
   westend: {
     system: {
       chain: 'Westend',
+      ss58: 42,
     },
     name: 'Westend Relay Chain',
     unit: 'WND',

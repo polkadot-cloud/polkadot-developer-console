@@ -3,7 +3,7 @@
 
 import type { ExtensionArrayListItem } from '@w3ux/extension-assets/util';
 import type { AnyJson } from '@w3ux/utils/types';
-import type { DirectoryId } from 'config/networks';
+import type { DirectoryId, NetworkDirectoryItem } from 'config/networks';
 import type { Dispatch, SetStateAction } from 'react';
 
 export interface ConnectInnerProps {
@@ -21,9 +21,15 @@ export interface ChainSearchInputProps {
   onSearchBlurred: () => void;
   directoryId: DirectoryId;
   setDirectoryId: Dispatch<SetStateAction<DirectoryId>>;
+  activeChain: NetworkDirectoryItem | undefined;
 }
 
 export interface ManageHardwareProps {
   getMotionProps: (item: string, active?: boolean) => AnyJson;
   selectedConnectItem: string | undefined;
+}
+
+export interface QrReaderProps {
+  importActive: boolean;
+  activeChain: NetworkDirectoryItem | undefined;
 }

@@ -301,9 +301,26 @@ export const ChainResultWrapper = styled.button`
 `;
 
 export const ImportQRWrapper = styled.div`
+  border: 1px solid var(--border-primary-color);
+  border-radius: 0.4rem;
   flex: 1;
-  min-height: 200px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 0.25rem;
+
+  > .qrRegion {
+    border: 1px solid var(--border-secondary-color);
+    background-color: var(--background-invert);
+    border-radius: 0.35rem;
+    overflow: hidden;
+    width: 250px;
+    height: 188px;
+    margin: 0.6rem 0 0.4rem 0;
+  }
+
+  > h4 {
+    margin-bottom: 0.3rem;
+  }
 `;

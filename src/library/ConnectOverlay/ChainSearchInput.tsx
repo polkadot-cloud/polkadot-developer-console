@@ -19,6 +19,7 @@ export const ChainSearchInput = ({
   onSearchBlurred,
   directoryId,
   setDirectoryId,
+  activeChain,
 }: ChainSearchInputProps) => {
   // Whether the input is in focused state.
   const [focused, setFocused] = useState<boolean>(false);
@@ -27,7 +28,7 @@ export const ChainSearchInput = ({
   const [searchValue, setSearchValue] = useState<string>('');
 
   // Get the currently actve chain name.
-  const activeChain = NetworkDirectory[directoryId as DirectoryId]?.name;
+  const chainName = activeChain?.name;
 
   // Lazily load the icon for the chain.
   const Icon = useMemo(() => {
@@ -93,7 +94,7 @@ export const ChainSearchInput = ({
           placeholder="Search Chain"
           onChange={(ev) => onChange(ev.target.value)}
           onFocus={() => onFocus()}
-          value={focused ? searchValue : activeChain}
+          value={focused ? searchValue : chainName}
           onKeyDown={(ev) => {
             // Exit on enter key.
             if (ev.key === 'Enter') {
