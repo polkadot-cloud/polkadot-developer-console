@@ -11,6 +11,7 @@ import { formatAccountSs58 } from './Utils';
 import { useVaultAccounts } from '@w3ux/react-connect-kit';
 
 export const QrReader = ({
+  directoryId,
   importActive,
   activeChain,
   onSuccess,
@@ -30,20 +31,24 @@ export const QrReader = ({
 
   const valid =
     isValidAddress(qrData) &&
-    !vaultAccountExists(qrData) &&
+    !vaultAccountExists(directoryId, qrData) &&
     !formatAccountSs58(qrData, ss58);
 
   useEffect(() => {
     // Add account and close overlay if valid.
     if (valid) {
-      const account = addVaultAccount(qrData, vaultAccounts.length);
+      const account = addVaultAccount(
+        directoryId,
+        qrData,
+        vaultAccounts.length
+      );
       if (account) {
         onSuccess();
       }
     }
   });
 
-  const exists = vaultAccountExists(qrData);
+  const exists = vaultAccountExists(directoryId, qrData);
 
   // Display feedback.
   const feedback =

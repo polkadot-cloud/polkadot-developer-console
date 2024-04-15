@@ -30,6 +30,7 @@ export interface ManageHardwareProps {
 }
 
 export interface QrReaderProps {
+  directoryId: DirectoryId;
   importActive: boolean;
   activeChain: NetworkDirectoryItem | undefined;
   onSuccess: () => void;
