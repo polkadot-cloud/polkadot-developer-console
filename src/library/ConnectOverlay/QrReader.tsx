@@ -8,10 +8,11 @@ import { useEffect, useState } from 'react';
 import type { AnyJson } from '@w3ux/utils/types';
 import { isValidAddress } from '@w3ux/utils';
 import { formatAccountSs58 } from './Utils';
+import { useVaultAccounts } from '@w3ux/react-connect-kit';
 
 export const QrReader = ({ importActive, activeChain }: QrReaderProps) => {
-  // const { addVaultAccount, vaultAccountExists, vaultAccounts } =
-  //   useVaultAccounts();
+  const { addVaultAccount, vaultAccountExists, vaultAccounts } =
+    useVaultAccounts();
 
   // Store data from QR Code scanner.
   const [qrData, setQrData] = useState<AnyJson>(undefined);
@@ -22,24 +23,25 @@ export const QrReader = ({ importActive, activeChain }: QrReaderProps) => {
   const handleQrData = (signature: string) => {
     setQrData(signature.split(':')?.[1] || '');
   };
-  // const valid =
-  //   isValidAddress(qrData) &&
-  //   !vaultAccountExists(qrData) &&
-  //   !formatAccountSs58(qrData, ss58);
+
+  const valid =
+    isValidAddress(qrData) &&
+    !vaultAccountExists(qrData) &&
+    !formatAccountSs58(qrData, ss58);
 
   useEffect(() => {
     // Add account and close overlay if valid.
-    // if (valid) {
-    //   const account = addVaultAccount(qrData, vaultAccounts.length);
-    //   if (account) {
-    //     addOtherAccounts([account]);
-    //   }
-    //   // TODO: close import.
-    // }
+    if (valid) {
+      const account = addVaultAccount(qrData, vaultAccounts.length);
+      if (account) {
+        // TODO: add OtherAccounts context.
+        // addOtherAccounts([account]);
+      }
+      // TODO: close import.
+    }
   });
 
-  // const vaultAccountExists = vaultAccountExists(qrData);
-  const vaultAccountExists = false;
+  const exists = vaultAccountExists(qrData);
 
   // Display feedback.
   const feedback =
@@ -48,7 +50,7 @@ export const QrReader = ({ importActive, activeChain }: QrReaderProps) => {
       : isValidAddress(qrData)
         ? formatAccountSs58(qrData, ss58)
           ? 'Different Network Address'
-          : vaultAccountExists
+          : exists
             ? 'Account Already Imported'
             : 'Address Received'
         : 'Invalid Address';
