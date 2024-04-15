@@ -10,11 +10,11 @@ export const Wrapper = styled.div`
   position: relative;
 
   > .border {
+    border-bottom: 1px solid var(--border-secondary-color);
     position: absolute;
     right: 0.5rem;
     bottom: 1rem;
     width: calc(100% - 4rem);
-    border-bottom: 1px solid var(--border-secondary-color);
 
     &.last {
       border-bottom: none;
@@ -81,7 +81,7 @@ export const Wrapper = styled.div`
 
         button {
           color: var(--accent-color-primary);
-          margin-left: 0.25rem;
+          margin-left: 0.2rem;
         }
 
         section {
@@ -111,11 +111,12 @@ export const Wrapper = styled.div`
         }
 
         input {
-          border: 1px solid var(--border-secondary-color);
+          background: var(--background-primary);
+          border: 1px solid var(--border-primary-color);
           color: var(--text-color-primary);
           font-family: InterSemiBold, sans-serif;
           border-radius: 0.5rem;
-          padding: 0.55rem 0.7rem;
+          padding: 0.5rem 0.7rem;
           letter-spacing: 0.02rem;
           font-size: 0.8rem;
           text-overflow: ellipsis;
@@ -139,7 +140,7 @@ export const Wrapper = styled.div`
         }
 
         .full {
-          margin-top: 0.5rem;
+          margin-top: 0.35rem;
           margin-bottom: 1.1rem;
           opacity: 0.8;
           position: relative;
