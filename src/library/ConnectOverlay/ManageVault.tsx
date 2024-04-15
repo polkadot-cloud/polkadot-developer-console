@@ -9,7 +9,9 @@ import { useState } from 'react';
 import type { ManageHardwareProps } from './types';
 import { motion } from 'framer-motion';
 import type { DirectoryId } from 'config/networks';
-import { SubHeadingWrapper } from './Wrappers';
+import { ImportButtonWrapper, SubHeadingWrapper } from './Wrappers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQrcode } from '@fortawesome/free-solid-svg-icons';
 
 export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
   const address = '1hYiMW8KSfUYChzCQSPGXvMSyKVqmyvMXqohjKr3oU5PCXF';
@@ -39,8 +41,21 @@ export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
         directoryId={directoryId}
         setDirectoryId={setDirectoryId}
       />
-      <SubHeadingWrapper>2 Accounts Imported</SubHeadingWrapper>
+
       <motion.div {...getMotionProps('address', !searchActive)}>
+        <SubHeadingWrapper>
+          <h5>2 Accounts Imported</h5>
+          <ImportButtonWrapper>
+            <button
+              onClick={() => {
+                /* Do nothing */
+              }}
+            >
+              <FontAwesomeIcon icon={faQrcode} transform="shrink-2" /> Import
+              Account
+            </button>
+          </ImportButtonWrapper>
+        </SubHeadingWrapper>
         <HardwareAddress
           address={address}
           index={0}

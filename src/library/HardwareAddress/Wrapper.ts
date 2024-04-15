@@ -104,8 +104,6 @@ export const Wrapper = styled.div`
 
         h5,
         button {
-          font-size: 0.9rem;
-
           &.label {
             display: flex;
             align-items: flex-end;
@@ -122,7 +120,7 @@ export const Wrapper = styled.div`
           border-radius: 0.5rem;
           padding: 0.5rem 0.6rem;
           letter-spacing: 0.02rem;
-          font-size: 0.8rem;
+          font-size: 0.75rem;
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
@@ -163,7 +161,7 @@ export const Wrapper = styled.div`
             padding-right: 0;
             width: 100%;
             max-width: 100%;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
 
             > button {
               color: var(--text-color-tertiary);

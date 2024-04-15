@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 export const Wrapper = styled(motion.div)`
-  --connect-item-height: 3.5rem;
+  --connect-item-height: 3.25rem;
   padding: 0.75rem;
 
   > .scroll {
@@ -236,9 +236,36 @@ export const ChainSearchInputWrapper = styled.div`
     color: var(--text-color-tertiary);
   }
 `;
-export const SubHeadingWrapper = styled.h5`
-  margin: 0.8rem 0 0.15rem 0;
-  padding-left: 0.25rem;
+
+export const ImportButtonWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+
+  > button {
+    color: var(--accent-color-secondary);
+    font-family: InterSemiBold, sans-serif;
+    font-size: 0.75rem;
+    padding: 0 0.5rem;
+    > svg {
+      margin-right: 0.2rem;
+    }
+  }
+`;
+
+export const SubHeadingWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--border-primary-color);
+  padding-bottom: 0.6rem;
+  margin: 0.8rem 0 0.3rem 0;
+
+  > h5 {
+    font-size: 0.75rem;
+    line-height: 0.75rem;
+    padding-left: 0.25rem;
+  }
 `;
 
 export const ChainResultsWrapper = styled.div`
@@ -260,7 +287,7 @@ export const ChainResultWrapper = styled.button`
   border-top: 1px solid var(--border-primary-color);
   color: var(--text-color-secondary);
   font-family: InterSemiBold, sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   width: 100%;
   display: flex;
   padding: 0.6rem 0.5rem;

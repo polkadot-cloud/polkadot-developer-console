@@ -116,7 +116,9 @@ export const ChainSearchInput = ({
       {focused && (
         <ChainResultsWrapper>
           <SubHeadingWrapper>
-            {totalResults} {totalResults === 1 ? 'Chain' : 'Chains'} Found
+            <h5>
+              {totalResults} {totalResults === 1 ? 'Chain' : 'Chains'} Found
+            </h5>
           </SubHeadingWrapper>
           <div className="results">
             {Object.entries(filtered).map(([key, { name }]) => (
