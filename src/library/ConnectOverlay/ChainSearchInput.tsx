@@ -8,7 +8,7 @@ import {
   ChainSearchInputWrapper,
 } from './Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { Suspense, lazy, useMemo, useState } from 'react';
 import type { ChainSearchInputProps } from './types';
 import type { DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
@@ -27,6 +27,17 @@ export const ChainSearchInput = ({
 
   // Get the currently actve chain name.
   const activeChain = NetworkDirectory[directoryId as DirectoryId]?.name;
+
+  // Lazily load the icon for the chain.
+  const Icon = useMemo(() => {
+    try {
+      return lazy(
+        () => import(`../../config/networks/icons/${directoryId}/Inline.tsx`)
+      );
+    } catch (e) {
+      return undefined;
+    }
+  }, [directoryId]);
 
   // On focus handler.
   const onFocus = () => {
@@ -66,12 +77,16 @@ export const ChainSearchInput = ({
   return (
     <>
       <ChainSearchInputWrapper>
-        {focused && (
+        {focused ? (
           <FontAwesomeIcon
             icon={faSearch}
             transform="shrink-3"
             className="icon"
           />
+        ) : (
+          <Suspense fallback={undefined}>
+            <span className="chainIcon">{Icon && <Icon />}</span>
+          </Suspense>
         )}
         <input
           placeholder="Search Chain"

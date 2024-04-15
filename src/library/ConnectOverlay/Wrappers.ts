@@ -202,8 +202,24 @@ export const ChainSearchInputWrapper = styled.div`
   padding: 0 0.5rem;
   margin-bottom: 0.5rem;
 
-  &.icon {
+  > .icon {
     margin-right: 0.3rem;
+  }
+
+  > .chainIcon {
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-right: 0.2rem;
+    position: relative;
+
+    > svg {
+      fill: var(--text-color-secondary);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
   }
 
   > input {
