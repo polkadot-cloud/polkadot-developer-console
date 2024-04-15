@@ -236,14 +236,13 @@ export const ChainSearchInputWrapper = styled.div`
     color: var(--text-color-tertiary);
   }
 `;
+export const SubHeadingWrapper = styled.h5`
+  margin: 0.65rem 0 0.15rem 0;
+  padding-left: 0.25rem;
+`;
 
 export const ChainResultsWrapper = styled.div`
   flex: 1;
-
-  > h5 {
-    margin: 0.8rem 0 0.25rem 0;
-    padding-left: 0.25rem;
-  }
 
   > .results {
     > button {

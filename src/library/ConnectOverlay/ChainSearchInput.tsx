@@ -6,6 +6,7 @@ import {
   ChainResultWrapper,
   ChainResultsWrapper,
   ChainSearchInputWrapper,
+  SubHeadingWrapper,
 } from './Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Suspense, lazy, useMemo, useState } from 'react';
@@ -114,9 +115,9 @@ export const ChainSearchInput = ({
       </ChainSearchInputWrapper>
       {focused && (
         <ChainResultsWrapper>
-          <h5>
+          <SubHeadingWrapper>
             {totalResults} {totalResults === 1 ? 'Chain' : 'Chains'} Found
-          </h5>
+          </SubHeadingWrapper>
           <div className="results">
             {Object.entries(filtered).map(([key, { name }]) => (
               <ChainResultWrapper

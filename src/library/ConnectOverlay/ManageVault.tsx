@@ -9,6 +9,7 @@ import { useState } from 'react';
 import type { ManageHardwareProps } from './types';
 import { motion } from 'framer-motion';
 import type { DirectoryId } from 'config/networks';
+import { SubHeadingWrapper } from './Wrappers';
 
 export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
   const address = '1hYiMW8KSfUYChzCQSPGXvMSyKVqmyvMXqohjKr3oU5PCXF';
@@ -38,7 +39,7 @@ export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
         directoryId={directoryId}
         setDirectoryId={setDirectoryId}
       />
-
+      <SubHeadingWrapper>2 Accounts Imported</SubHeadingWrapper>
       <motion.div {...getMotionProps('address', !searchActive)}>
         <HardwareAddress
           address={address}

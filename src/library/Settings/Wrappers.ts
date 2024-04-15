@@ -20,7 +20,7 @@ export const SettingsHeaderWrapper = styled.div`
   }
 `;
 
-export const SettingsSubheadingWrapper = styled.h4`
+export const SettingsSubHeadingWrapper = styled.h4`
   border-bottom: 1px solid var(--border-primary-color);
   margin: 1.2rem 0 0.6rem 0;
   padding-bottom: 0.5rem;
