@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   position: relative;
 
   > .border {
-    border-bottom: 1px solid var(--border-secondary-color);
+    border-bottom: 1px solid var(--border-primary-color);
     position: absolute;
     right: 0.5rem;
     bottom: 1rem;
