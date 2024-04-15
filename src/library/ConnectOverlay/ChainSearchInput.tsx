@@ -32,13 +32,21 @@ export const ChainSearchInput = ({
     setFocused(false);
   };
 
+  // On change handler.
+  const onChange = (value: string) => {
+    // If trimmed value and the current value is empty, don't update.
+    if (!(!value.trim().length && searchValue === '')) {
+      setSearchValue(value);
+    }
+  };
+
   return (
     <>
       <ChainSearchInputWrapper>
         {focused && <FontAwesomeIcon icon={faSearch} transform="shrink-3" />}
         <input
           placeholder="Search Chain"
-          onChange={(ev) => setSearchValue(ev.target.value)}
+          onChange={(ev) => onChange(ev.target.value)}
           onFocus={() => onFocus()}
           value={focused ? searchValue : chain}
           onKeyDown={(ev) => {
