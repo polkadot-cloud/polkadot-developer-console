@@ -9,19 +9,30 @@ import { useState } from 'react';
 import type { ManageHardwareProps } from './types';
 import { motion } from 'framer-motion';
 import type { DirectoryId } from 'config/networks';
-import { ImportButtonWrapper, SubHeadingWrapper } from './Wrappers';
+import {
+  ImportButtonWrapper,
+  ImportQRWrapper,
+  SubHeadingWrapper,
+} from './Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQrcode } from '@fortawesome/free-solid-svg-icons';
+import { useEffectIgnoreInitial } from '@w3ux/hooks';
 
-export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
+export const ManageVault = ({
+  getMotionProps,
+  selectedConnectItem,
+}: ManageHardwareProps) => {
   const address = '1hYiMW8KSfUYChzCQSPGXvMSyKVqmyvMXqohjKr3oU5PCXF';
+
+  // The directory id of the address list.
+  const [directoryId, setDirectoryId] = useState<DirectoryId>('polkadot');
 
   // Whether the search input is active. When active, addresses are hidden and search results are
   // shown instead.
   const [searchActive, setSearchActive] = useState<boolean>(false);
 
-  // The directory id of the address list.
-  const [directoryId, setDirectoryId] = useState<DirectoryId>('polkadot');
+  // Whether the import account button is active.
+  const [importActive, setImportActive] = useState<boolean>(false);
 
   // Search input focus handler.
   const onSearchFocused = () => {
@@ -33,29 +44,54 @@ export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
     setSearchActive(false);
   };
 
+  // Whether to show address entries. Requires both searching and importing to be inactive.
+  const showAddresses = !searchActive && !importActive;
+
+  // Resets UI when the selected connect item changes from `polakdot_vault`, Cancelling import and
+  // search if active.
+  useEffectIgnoreInitial(() => {
+    if (selectedConnectItem !== 'polkadot_vault') {
+      setSearchActive(false);
+      setImportActive(false);
+    }
+  }, [selectedConnectItem]);
+
   return (
     <>
-      <ChainSearchInput
-        onSearchFocused={onSearchFocused}
-        onSearchBlurred={onSearchBlurred}
-        directoryId={directoryId}
-        setDirectoryId={setDirectoryId}
-      />
+      <motion.div {...getMotionProps('address_config', !importActive)}>
+        <ChainSearchInput
+          onSearchFocused={onSearchFocused}
+          onSearchBlurred={onSearchBlurred}
+          directoryId={directoryId}
+          setDirectoryId={setDirectoryId}
+        />
+      </motion.div>
 
-      <motion.div {...getMotionProps('address', !searchActive)}>
+      <motion.div {...getMotionProps('address_config', !searchActive)}>
         <SubHeadingWrapper>
-          <h5>2 Accounts</h5>
+          <h5>{!importActive ? '2 Accounts' : 'New Account'}</h5>
           <ImportButtonWrapper>
             <button
               onClick={() => {
-                /* Do nothing */
+                setImportActive(!importActive);
               }}
             >
-              <FontAwesomeIcon icon={faQrcode} transform="shrink-2" /> Import
-              Account
+              {!importActive && (
+                <FontAwesomeIcon icon={faQrcode} transform="shrink-2" />
+              )}
+              {importActive ? 'Cancel Import' : 'Import Account'}
             </button>
           </ImportButtonWrapper>
         </SubHeadingWrapper>
+      </motion.div>
+
+      <motion.div {...getMotionProps('import_container', importActive)}>
+        <ImportQRWrapper>
+          <h4>Import QR Code box</h4>
+        </ImportQRWrapper>
+      </motion.div>
+
+      <motion.div {...getMotionProps('address', showAddresses)}>
         <HardwareAddress
           address={address}
           index={0}
@@ -81,7 +117,7 @@ export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
         />
       </motion.div>
 
-      <motion.div {...getMotionProps('address', !searchActive)}>
+      <motion.div {...getMotionProps('address', showAddresses)}>
         <HardwareAddress
           address={address}
           index={1}

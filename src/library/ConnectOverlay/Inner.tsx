@@ -46,7 +46,18 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
     // Whether to show this element if it is an imported address.
     const showImportedAddress = item === 'address' && active;
 
-    const show = showHeading || showConnectItem || showImportedAddress;
+    // Whether to show this element if it is an  address label.
+    const showAddressLabel = item === 'address_config' && active;
+
+    // Whether to show this element if it is an import container.
+    const showImportContainer = item === 'import_container' && active;
+
+    const show =
+      showHeading ||
+      showConnectItem ||
+      showImportedAddress ||
+      showAddressLabel ||
+      showImportContainer;
 
     return {
       initial: 'show',
@@ -175,7 +186,10 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
       ))}
 
       <motion.span {...getManageProps('polkadot_vault')}>
-        <ManageVault getMotionProps={getMotionProps} />
+        <ManageVault
+          getMotionProps={getMotionProps}
+          selectedConnectItem={selectedConnectItem}
+        />
       </motion.span>
 
       <motion.span {...getManageProps('ledger')}>

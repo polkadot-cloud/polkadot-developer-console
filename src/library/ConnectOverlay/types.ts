@@ -25,4 +25,5 @@ export interface ChainSearchInputProps {
 
 export interface ManageHardwareProps {
   getMotionProps: (item: string, active?: boolean) => AnyJson;
+  selectedConnectItem: string | undefined;
 }

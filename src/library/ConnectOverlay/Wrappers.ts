@@ -299,3 +299,11 @@ export const ChainResultWrapper = styled.button`
     border-color: transparent;
   }
 `;
+
+export const ImportQRWrapper = styled.div`
+  flex: 1;
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
