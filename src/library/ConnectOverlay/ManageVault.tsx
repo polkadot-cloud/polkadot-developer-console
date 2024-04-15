@@ -44,7 +44,7 @@ export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
 
       <motion.div {...getMotionProps('address', !searchActive)}>
         <SubHeadingWrapper>
-          <h5>2 Accounts Imported</h5>
+          <h5>2 Accounts</h5>
           <ImportButtonWrapper>
             <button
               onClick={() => {
