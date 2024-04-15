@@ -68,6 +68,7 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
       duration: 0.2,
     },
     animate: selectedConnectItem === item ? 'show' : 'hidden',
+    className: 'motion',
   });
 
   const extensionItems = installed.concat(other);

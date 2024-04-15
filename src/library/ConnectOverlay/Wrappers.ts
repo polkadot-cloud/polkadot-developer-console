@@ -67,7 +67,6 @@ export const Wrapper = styled(motion.div)`
         overflow: hidden;
 
         > .motion {
-          border: 1px solid green;
           overflow: hidden;
         }
 
@@ -89,6 +88,7 @@ export const ItemWrapper = styled.div`
   align-items: center;
   position: relative;
   overflow: hidden;
+  margin-bottom: 0.5rem;
 
   &.last {
     margin-bottom: 0;
@@ -202,17 +202,57 @@ export const ChainSearchInputWrapper = styled.div`
   padding: 0 0.5rem;
   margin-bottom: 0.5rem;
 
+  &.icon {
+    margin-right: 0.3rem;
+  }
+
   > input {
     color: var(--text-color-secondary);
     border: none;
     border-radius: 0.4rem;
-    font-family: Inter, sans-serif;
+    font-family: InterSemiBold, sans-serif;
     font-size: 0.75rem;
-    padding: 0.5rem 0 0.5rem 0.3rem;
+    padding: 0.5rem 0 0.5rem 0.2rem;
     flex: 1;
   }
 
   button {
     color: var(--text-color-tertiary);
+  }
+`;
+
+export const ChainResultsWrapper = styled.div`
+  flex: 1;
+
+  > h5 {
+    margin: 0.8rem 0 0.25rem 0;
+    padding-left: 0.25rem;
+  }
+
+  > .results {
+    > button {
+      &:first-child {
+        border-color: transparent;
+      }
+      &:last-child {
+        border-bottom: 1px solid var(--border-primary-color);
+      }
+    }
+  }
+`;
+
+export const ChainResultWrapper = styled.button`
+  border-top: 1px solid var(--border-primary-color);
+  color: var(--text-color-secondary);
+  font-family: InterSemiBold, sans-serif;
+  font-size: 0.75rem;
+  width: 100%;
+  display: flex;
+  padding: 0.6rem 0.5rem;
+
+  &:hover {
+    background: var(--button-hover-background);
+    border-radius: 0.4rem;
+    border-color: transparent;
   }
 `;

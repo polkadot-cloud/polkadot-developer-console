@@ -31,6 +31,7 @@ export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
       <ChainSearchInput
         onSearchFocused={onSearchFocused}
         onSearchBlurred={onSearchBlurred}
+        defaultDirectoryId={'polkadot'}
       />
 
       <motion.div {...getMotionProps('address', !searchActive)}>

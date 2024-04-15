@@ -2,14 +2,21 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { ChainSearchInputWrapper } from './Wrappers';
+import {
+  ChainResultWrapper,
+  ChainResultsWrapper,
+  ChainSearchInputWrapper,
+} from './Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import type { ChainSearchInputProps } from './types';
+import type { DirectoryId } from 'config/networks';
+import { NetworkDirectory } from 'config/networks';
 
 export const ChainSearchInput = ({
   onSearchFocused,
   onSearchBlurred,
+  defaultDirectoryId,
 }: ChainSearchInputProps) => {
   // Whether the input is in focused state.
   const [focused, setFocused] = useState<boolean>(false);
@@ -17,8 +24,12 @@ export const ChainSearchInput = ({
   // The current search value of the input.
   const [searchValue, setSearchValue] = useState<string>('');
 
-  // The currently active chain of the input.
-  const [chain] = useState<string>('');
+  // The currently active chain (by directory id) of the input.
+  const [directoryId, setDirectoryId] =
+    useState<DirectoryId>(defaultDirectoryId);
+
+  // Get the currently actve chain name.
+  const activeChain = NetworkDirectory[directoryId as DirectoryId]?.name;
 
   // On focus handler.
   const onFocus = () => {
@@ -40,15 +51,36 @@ export const ChainSearchInput = ({
     }
   };
 
+  // Determine search results from network directory.
+  const results = NetworkDirectory;
+  const filtered = !focused
+    ? {}
+    : searchValue === ''
+      ? results
+      : Object.fromEntries(
+          Object.entries(results).filter(([, { name }]) =>
+            name.toLowerCase().includes(searchValue.toLowerCase())
+          )
+        );
+
+  // Total chain results.
+  const totalResults = Object.keys(filtered).length;
+
   return (
     <>
       <ChainSearchInputWrapper>
-        {focused && <FontAwesomeIcon icon={faSearch} transform="shrink-3" />}
+        {focused && (
+          <FontAwesomeIcon
+            icon={faSearch}
+            transform="shrink-3"
+            className="icon"
+          />
+        )}
         <input
           placeholder="Search Chain"
           onChange={(ev) => onChange(ev.target.value)}
           onFocus={() => onFocus()}
-          value={focused ? searchValue : chain}
+          value={focused ? searchValue : activeChain}
           onKeyDown={(ev) => {
             // Exit on enter key.
             if (ev.key === 'Enter') {
@@ -68,7 +100,27 @@ export const ChainSearchInput = ({
           </button>
         )}
       </ChainSearchInputWrapper>
-      {focused && <h5>Chain Search...</h5>}
+      {focused && (
+        <ChainResultsWrapper>
+          <h5>
+            {totalResults} {totalResults === 1 ? 'Chain' : 'Chains'} Found
+          </h5>
+          <div className="results">
+            {Object.entries(filtered).map(([key, { name }]) => (
+              <ChainResultWrapper
+                key={`connect_wallet_${key}`}
+                onClick={() => {
+                  setDirectoryId(key as DirectoryId);
+                  setSearchValue(name);
+                  onBlur();
+                }}
+              >
+                {name}
+              </ChainResultWrapper>
+            ))}
+          </div>
+        </ChainResultsWrapper>
+      )}
     </>
   );
 };

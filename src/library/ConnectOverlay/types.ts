@@ -3,6 +3,7 @@
 
 import type { ExtensionArrayListItem } from '@w3ux/extension-assets/util';
 import type { AnyJson } from '@w3ux/utils/types';
+import type { DirectoryId } from 'config/networks';
 
 export interface ConnectInnerProps {
   installed: ExtensionArrayListItem[];
@@ -17,6 +18,7 @@ export interface ExtensionProps {
 export interface ChainSearchInputProps {
   onSearchFocused: () => void;
   onSearchBlurred: () => void;
+  defaultDirectoryId: DirectoryId;
 }
 
 export interface ManageHardwareProps {

@@ -116,7 +116,7 @@ export const Wrapper = styled.div`
           color: var(--text-color-primary);
           font-family: InterSemiBold, sans-serif;
           border-radius: 0.5rem;
-          padding: 0.5rem 0.7rem;
+          padding: 0.5rem 0.6rem;
           letter-spacing: 0.02rem;
           font-size: 0.8rem;
           text-overflow: ellipsis;
