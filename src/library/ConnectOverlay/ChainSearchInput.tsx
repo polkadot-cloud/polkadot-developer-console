@@ -16,17 +16,14 @@ import { NetworkDirectory } from 'config/networks';
 export const ChainSearchInput = ({
   onSearchFocused,
   onSearchBlurred,
-  defaultDirectoryId,
+  directoryId,
+  setDirectoryId,
 }: ChainSearchInputProps) => {
   // Whether the input is in focused state.
   const [focused, setFocused] = useState<boolean>(false);
 
   // The current search value of the input.
   const [searchValue, setSearchValue] = useState<string>('');
-
-  // The currently active chain (by directory id) of the input.
-  const [directoryId, setDirectoryId] =
-    useState<DirectoryId>(defaultDirectoryId);
 
   // Get the currently actve chain name.
   const activeChain = NetworkDirectory[directoryId as DirectoryId]?.name;

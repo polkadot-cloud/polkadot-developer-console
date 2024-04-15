@@ -8,6 +8,7 @@ import { ChainSearchInput } from './ChainSearchInput';
 import { useState } from 'react';
 import type { ManageHardwareProps } from './types';
 import { motion } from 'framer-motion';
+import type { DirectoryId } from 'config/networks';
 
 export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
   const address = '1hYiMW8KSfUYChzCQSPGXvMSyKVqmyvMXqohjKr3oU5PCXF';
@@ -15,6 +16,9 @@ export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
   // Whether the search input is active. When active, addresses are hidden and search results are
   // shown instead.
   const [searchActive, setSearchActive] = useState<boolean>(false);
+
+  // The directory id of the address list.
+  const [directoryId, setDirectoryId] = useState<DirectoryId>('polkadot');
 
   // Search input focus handler.
   const onSearchFocused = () => {
@@ -31,7 +35,8 @@ export const ManageVault = ({ getMotionProps }: ManageHardwareProps) => {
       <ChainSearchInput
         onSearchFocused={onSearchFocused}
         onSearchBlurred={onSearchBlurred}
-        defaultDirectoryId={'polkadot'}
+        directoryId={directoryId}
+        setDirectoryId={setDirectoryId}
       />
 
       <motion.div {...getMotionProps('address', !searchActive)}>
