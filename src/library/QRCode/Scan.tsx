@@ -70,7 +70,7 @@ export const Html5QrCodePlugin = ({
 
       if (devices && devices.length) {
         const cameraId = devices[0].id;
-        await html5QrCode.start(
+        await html5QrCode?.start(
           cameraId,
           {
             fps,
@@ -100,7 +100,11 @@ export const Html5QrCodePlugin = ({
 
       // Stop HTML5 Qr Code on unmount.
       return () => {
-        newHtml5QrCode?.stop();
+        try {
+          newHtml5QrCode?.stop();
+        } catch (e) {
+          /* Silent error */
+        }
       };
     }
   }, []);
