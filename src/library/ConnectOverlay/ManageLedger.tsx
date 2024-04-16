@@ -11,6 +11,7 @@ export const ManageLedger = () => {
   return (
     <>
       <HardwareAddress
+        network="polkadot"
         address={address}
         index={0}
         initial={'Ross Bulat'}
@@ -34,6 +35,7 @@ export const ManageLedger = () => {
         }}
       />
       <HardwareAddress
+        network="polkadot"
         address={address}
         index={1}
         initial={'Ross Bulat'}
