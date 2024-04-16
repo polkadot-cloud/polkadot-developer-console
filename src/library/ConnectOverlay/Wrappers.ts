@@ -36,6 +36,7 @@ export const Wrapper = styled(motion.div)`
             margin-right: 0.4rem;
           }
         }
+
         > button {
           border: 1px solid var(--border-secondary-color);
           background-color: var(--background-default);
@@ -203,7 +204,7 @@ export const ChainSearchInputWrapper = styled.div`
   margin-bottom: 0.5rem;
 
   > .icon {
-    margin-right: 0.3rem;
+    margin-right: 0.15rem;
   }
 
   > .chainIcon {

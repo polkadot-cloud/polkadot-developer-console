@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Polkicon } from '@w3ux/react-polkicon';
-import { remToUnit } from '@w3ux/utils';
 import { HardwareAddress } from 'library/HardwareAddress';
 import { ChainSearchInput } from './ChainSearchInput';
 import { useState } from 'react';
@@ -14,12 +13,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { QrReader } from './QrReader';
+import { useVaultAccounts } from '@w3ux/react-connect-kit';
+import type { VaultAccount } from '@w3ux/react-connect-kit/types';
+import { remToUnit } from '@w3ux/utils';
 
 export const ManageVault = ({
   getMotionProps,
   selectedConnectItem,
 }: ManageHardwareProps) => {
-  const address = '1hYiMW8KSfUYChzCQSPGXvMSyKVqmyvMXqohjKr3oU5PCXF';
+  const {
+    getVaultAccounts,
+    vaultAccountExists,
+    renameVaultAccount,
+    removeVaultAccount,
+  } = useVaultAccounts();
 
   // The directory id of the address list.
   const [directoryId, setDirectoryId] = useState<DirectoryId>('polkadot');
@@ -33,6 +40,8 @@ export const ManageVault = ({
 
   // Get the currently actve chain name.
   const activeChain = NetworkDirectory[directoryId as DirectoryId];
+
+  const vaultAccounts = getVaultAccounts(directoryId);
 
   // Search input focus handler.
   const onSearchFocused = () => {
@@ -56,6 +65,18 @@ export const ManageVault = ({
     }
   }, [selectedConnectItem]);
 
+  // Handle renaming a vault address.
+  const handleRename = (address: string, newName: string) => {
+    renameVaultAccount(directoryId, address, newName);
+  };
+
+  // Handle removing a vault address.
+  const handleRemove = (address: string) => {
+    if (confirm('Are you sure you want to remove this account?')) {
+      removeVaultAccount(directoryId, address);
+    }
+  };
+
   return (
     <>
       <motion.div {...getMotionProps('address_config', !importActive)}>
@@ -70,7 +91,13 @@ export const ManageVault = ({
 
       <motion.div {...getMotionProps('address_config', !searchActive)}>
         <SubHeadingWrapper>
-          <h5>{!importActive ? '2 Accounts' : 'New Account'}</h5>
+          <h5>
+            {!importActive
+              ? `${
+                  vaultAccounts.length || 'No'
+                } ${vaultAccounts.length === 1 ? 'Account' : 'Accounts'}`
+              : 'New Account'}
+          </h5>
           <ImportButtonWrapper>
             <button
               onClick={() => {
@@ -98,56 +125,24 @@ export const ManageVault = ({
       </motion.div>
 
       <motion.div {...getMotionProps('address', showAddresses)}>
-        <HardwareAddress
-          address={address}
-          index={0}
-          initial={'Ross Bulat'}
-          Identicon={<Polkicon address={address} size={remToUnit('2.1rem')} />}
-          existsHandler={(addr) => {
-            console.log(addr);
-            /* Do nothing */
-            return false;
-          }}
-          renameHandler={(addr, newName) => {
-            console.log(addr, newName);
-            /* Do nothing */
-          }}
-          openRemoveHandler={(addr) => {
-            console.log(addr);
-            /* Do nothing */
-          }}
-          openConfirmHandler={(addr, index) => {
-            console.log(addr, index);
-            /* Do nothing */
-          }}
-        />
-      </motion.div>
-
-      <motion.div {...getMotionProps('address', showAddresses)}>
-        <HardwareAddress
-          address={address}
-          index={1}
-          initial={'Ross Bulat'}
-          Identicon={<Polkicon address={address} size={remToUnit('2.1rem')} />}
-          existsHandler={(addr) => {
-            console.log(addr);
-            /* Do nothing */
-            return false;
-          }}
-          renameHandler={(addr, newName) => {
-            console.log(addr, newName);
-            /* Do nothing */
-          }}
-          openRemoveHandler={(addr) => {
-            console.log(addr);
-            /* Do nothing */
-          }}
-          openConfirmHandler={(addr, index) => {
-            console.log(addr, index);
-            /* Do nothing */
-          }}
-          last
-        />
+        {vaultAccounts.map(({ address, name }: VaultAccount, i) => (
+          <HardwareAddress
+            key={`vault_imported_${i}`}
+            network={directoryId}
+            address={address}
+            index={i}
+            initial={name}
+            Identicon={
+              <Polkicon address={address} size={remToUnit('2.1rem')} />
+            }
+            existsHandler={vaultAccountExists}
+            renameHandler={handleRename}
+            onRemove={handleRemove}
+            onConfirm={() => {
+              /* Do nothing. Not shown in UI. */
+            }}
+          />
+        ))}
       </motion.div>
     </>
   );
