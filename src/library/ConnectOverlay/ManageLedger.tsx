@@ -11,6 +11,7 @@ export const ManageLedger = () => {
   return (
     <>
       <HardwareAddress
+        network="polkadot"
         address={address}
         index={0}
         initial={'Ross Bulat'}
@@ -24,16 +25,17 @@ export const ManageLedger = () => {
           console.debug(addr, newName);
           /* Do nothing */
         }}
-        openRemoveHandler={(addr) => {
+        onRemove={(addr) => {
           console.debug(addr);
           /* Do nothing */
         }}
-        openConfirmHandler={(addr, index) => {
+        onConfirm={(addr, index) => {
           console.debug(addr, index);
           /* Do nothing */
         }}
       />
       <HardwareAddress
+        network="polkadot"
         address={address}
         index={1}
         initial={'Ross Bulat'}
@@ -47,11 +49,11 @@ export const ManageLedger = () => {
           console.debug(addr, newName);
           /* Do nothing */
         }}
-        openRemoveHandler={(addr) => {
+        onRemove={(addr) => {
           console.debug(addr);
           /* Do nothing */
         }}
-        openConfirmHandler={(addr, index) => {
+        onConfirm={(addr, index) => {
           console.debug(addr, index);
           /* Do nothing */
         }}

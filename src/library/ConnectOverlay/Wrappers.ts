@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 export const Wrapper = styled(motion.div)`
-  --connect-item-height: 3.5rem;
+  --connect-item-height: 3.25rem;
   padding: 0.75rem;
 
   > .scroll {
@@ -36,6 +36,7 @@ export const Wrapper = styled(motion.div)`
             margin-right: 0.4rem;
           }
         }
+
         > button {
           border: 1px solid var(--border-secondary-color);
           background-color: var(--background-default);
@@ -57,10 +58,18 @@ export const Wrapper = styled(motion.div)`
         font-family: InterSemiBold, sans-serif;
         margin: 0.75rem 0 0.4rem 0;
         overflow: hidden;
+
+        &.hidden {
+          margin: 0.75rem 0 0 0;
+        }
       }
 
-      > span {
+      > .motion {
         overflow: hidden;
+
+        > .motion {
+          overflow: hidden;
+        }
 
         &:last-child {
           margin-bottom: 0;
@@ -75,12 +84,12 @@ export const ItemWrapper = styled.div`
   border: 1px solid var(--border-secondary-color);
   border-radius: 0.4rem;
   flex: 1;
-  padding: 0 0.6rem;
+  padding: 0 0.5rem;
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.5rem;
 
   &.last {
     margin-bottom: 0;
@@ -180,5 +189,139 @@ export const ItemWrapper = styled.div`
         }
       }
     }
+  }
+`;
+
+export const ChainSearchInputWrapper = styled.div`
+  border: 1px solid var(--border-primary-color);
+  background-color: var(--background-primary);
+  color: var(--text-color-tertiary);
+  border-radius: 0.4rem;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  margin-bottom: 0.5rem;
+
+  > .icon {
+    margin-right: 0.15rem;
+  }
+
+  > .chainIcon {
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-right: 0.2rem;
+    position: relative;
+
+    > svg {
+      fill: var(--text-color-secondary);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  > input {
+    color: var(--text-color-secondary);
+    border: none;
+    border-radius: 0.4rem;
+    font-family: InterSemiBold, sans-serif;
+    font-size: 0.75rem;
+    padding: 0.5rem 0 0.5rem 0.2rem;
+    flex: 1;
+  }
+
+  button {
+    color: var(--text-color-tertiary);
+  }
+`;
+
+export const ImportButtonWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+
+  > button {
+    color: var(--accent-color-secondary);
+    font-family: InterSemiBold, sans-serif;
+    font-size: 0.75rem;
+    padding: 0 0.6rem;
+
+    > svg {
+      margin-right: 0.2rem;
+    }
+  }
+`;
+
+export const SubHeadingWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--border-primary-color);
+  padding-bottom: 0.6rem;
+  margin: 0.8rem 0 0.3rem 0;
+
+  > h5 {
+    font-size: 0.75rem;
+    line-height: 0.75rem;
+    padding-left: 0.25rem;
+  }
+`;
+
+export const ChainResultsWrapper = styled.div`
+  flex: 1;
+
+  > .results {
+    > button {
+      &:first-child {
+        border-color: transparent;
+      }
+      &:last-child {
+        border-bottom: 1px solid var(--border-primary-color);
+      }
+    }
+  }
+`;
+
+export const ChainResultWrapper = styled.button`
+  border-top: 1px solid var(--border-primary-color);
+  color: var(--text-color-secondary);
+  font-family: InterSemiBold, sans-serif;
+  font-size: 0.7rem;
+  width: 100%;
+  display: flex;
+  padding: 0.6rem 0.5rem;
+
+  &:hover {
+    background: var(--button-hover-background);
+    border-radius: 0.4rem;
+    border-color: transparent;
+  }
+`;
+
+export const ImportQRWrapper = styled.div`
+  border: 1px solid var(--border-primary-color);
+  border-radius: 0.4rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.25rem;
+
+  > .qrRegion {
+    border: 1px solid var(--border-secondary-color);
+    background-color: var(--background-invert);
+    border-radius: 0.35rem;
+    overflow: hidden;
+    width: 250px;
+    height: 188px;
+    margin: 0.6rem 0 0.4rem 0;
+  }
+
+  > h4 {
+    margin-bottom: 0.3rem;
   }
 `;

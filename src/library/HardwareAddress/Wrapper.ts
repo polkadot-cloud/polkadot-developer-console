@@ -6,19 +6,23 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 0.5rem 0.5rem 0.5rem 0.55rem;
+  padding: 0.5rem 0.5rem 1.5rem 0.55rem;
   position: relative;
-  margin-bottom: 1rem;
+
+  &.last {
+    padding-bottom: 0.5rem;
+  }
 
   > .border {
+    border-bottom: 1px solid var(--border-primary-color);
     position: absolute;
     right: 0.5rem;
-    bottom: 0;
+    bottom: 1rem;
     width: calc(100% - 4rem);
-    border-bottom: 1px solid var(--border-secondary-color);
 
     &.last {
       border-bottom: none;
+      padding-bottom: 0;
     }
   }
 
@@ -81,7 +85,7 @@ export const Wrapper = styled.div`
 
         button {
           color: var(--accent-color-primary);
-          margin-left: 0.25rem;
+          margin-left: 0.2rem;
         }
 
         section {
@@ -100,8 +104,6 @@ export const Wrapper = styled.div`
 
         h5,
         button {
-          font-size: 0.9rem;
-
           &.label {
             display: flex;
             align-items: flex-end;
@@ -111,13 +113,14 @@ export const Wrapper = styled.div`
         }
 
         input {
-          border: 1px solid var(--border-secondary-color);
+          background: var(--background-primary);
+          border: 1px solid var(--border-primary-color);
           color: var(--text-color-primary);
           font-family: InterSemiBold, sans-serif;
           border-radius: 0.5rem;
-          padding: 0.55rem 0.7rem;
+          padding: 0.5rem 0.6rem;
           letter-spacing: 0.02rem;
-          font-size: 0.8rem;
+          font-size: 0.75rem;
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
@@ -139,7 +142,7 @@ export const Wrapper = styled.div`
         }
 
         .full {
-          margin-top: 0.5rem;
+          margin-top: 0.35rem;
           margin-bottom: 1.1rem;
           opacity: 0.8;
           position: relative;
@@ -158,7 +161,7 @@ export const Wrapper = styled.div`
             padding-right: 0;
             width: 100%;
             max-width: 100%;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
 
             > button {
               color: var(--text-color-tertiary);

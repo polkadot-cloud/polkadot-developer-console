@@ -2250,9 +2250,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@w3ux/react-connect-kit@npm:0.1.11":
-  version: 0.1.11
-  resolution: "@w3ux/react-connect-kit@npm:0.1.11"
+"@w3ux/react-connect-kit@npm:^0.1.15":
+  version: 0.1.15
+  resolution: "@w3ux/react-connect-kit@npm:0.1.15"
   dependencies:
     "@chainsafe/metamask-polkadot-adapter": "npm:^0.6.0"
     "@polkadot/util": "npm:^12.6.2"
@@ -2260,7 +2260,7 @@ __metadata:
     "@w3ux/extension-assets": "npm:^0.2.3"
     "@w3ux/hooks": "npm:^0.0.3"
     "@w3ux/utils": "npm:^0.0.2"
-  checksum: 10c0/c387365ef36fa76ec1c571be2d14bb0d58841bf9a821e6a41d84577b9a7b846934c61adeabdb2796936fa5a758bbcfe086a909e71cae8b6ec600f983cc1f5123
+  checksum: 10c0/4aa288c5dc608394b18d8ac5405ed7bd584719c42661483c8d859d01d174a1bb1bb7acc3abd96bc92aa21e175a294d37e75a6db7176949ef157addc8a70106d0
   languageName: node
   linkType: hard
 
@@ -2297,6 +2297,17 @@ __metadata:
     "@polkadot/util": "npm:^12.6.2"
     bignumber.js: "npm:^9.1.1"
   checksum: 10c0/33ce48775fd806313363d029c11c34dbe269d2f93aa64e2bc0229ce26383277d6bc0d8e2452b4df2e31d87a41020289a8cf4bd6f3efc4b089387247455b3426d
+  languageName: node
+  linkType: hard
+
+"@w3ux/utils@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@w3ux/utils@npm:0.1.0"
+  dependencies:
+    "@polkadot/keyring": "npm:^12.6.2"
+    "@polkadot/util": "npm:^12.6.2"
+    bignumber.js: "npm:^9.1.1"
+  checksum: 10c0/b69f108d506102c5e27fe224b5c1a32ab4e0c27c7d007f7647eee17760a56c539ee3a246cdf8e5d1a8613d35b077c28349e60b247676b5be886f418a62bddff7
   languageName: node
   linkType: hard
 
@@ -2882,10 +2893,10 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.2.1"
     "@w3ux/extension-assets": "npm:^0.2.6"
     "@w3ux/hooks": "npm:^0.0.3"
-    "@w3ux/react-connect-kit": "npm:0.1.11"
+    "@w3ux/react-connect-kit": "npm:^0.1.15"
     "@w3ux/react-odometer": "npm:^0.0.3"
     "@w3ux/react-polkicon": "npm:^0.0.2"
-    "@w3ux/utils": "npm:^0.0.2"
+    "@w3ux/utils": "npm:^0.1.0"
     bignumber.js: "npm:^9.1.2"
     buffer: "npm:^6.0.3"
     date-fns: "npm:^3.3.1"
@@ -2902,8 +2913,10 @@ __metadata:
     eslint-plugin-unused-imports: "npm:^3.1.0"
     framer-motion: "npm:^11.0.8"
     gh-pages: "npm:^6.1.1"
+    html5-qrcode: "npm:^2.3.8"
     prettier: "npm:^3.2.5"
     prettier-plugin-organize-imports: "npm:^3.2.4"
+    qrcode-generator: "npm:^1.4.4"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-error-boundary: "npm:^4.0.13"
@@ -4304,6 +4317,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"html5-qrcode@npm:^2.3.8":
+  version: 2.3.8
+  resolution: "html5-qrcode@npm:2.3.8"
+  checksum: 10c0/3d7d0b3687e41a6fc0a06345f67e89ad3c7c00a3d0d8846d6fd31985e1ed2ac1c310e625f0b650dbc689f6b83469e3378417e7431ae5a9194178f1172bf6a93a
+  languageName: node
+  linkType: hard
+
 "http-cache-semantics@npm:^4.1.1":
   version: 4.1.1
   resolution: "http-cache-semantics@npm:4.1.1"
@@ -5632,6 +5652,13 @@ __metadata:
   version: 2.3.1
   resolution: "punycode@npm:2.3.1"
   checksum: 10c0/14f76a8206bc3464f794fb2e3d3cc665ae416c01893ad7a02b23766eb07159144ee612ad67af5e84fa4479ccfe67678c4feb126b0485651b302babf66f04f9e9
+  languageName: node
+  linkType: hard
+
+"qrcode-generator@npm:^1.4.4":
+  version: 1.4.4
+  resolution: "qrcode-generator@npm:1.4.4"
+  checksum: 10c0/3249fcff98cb9fa17c21329d3dfd895e294a2d6ea48161f7b377010779d41f0cd88668b7fb3478a659725061bb0a770b40a227c2f4853e8c4a6b947a9e8bf17a
   languageName: node
   linkType: hard
 

@@ -5,7 +5,7 @@ import { useTags } from 'contexts/Tags';
 import {
   SettingsHeaderButton,
   SettingsHeaderWrapper,
-  SettingsSubheadingWrapper,
+  SettingsSubHeadingWrapper,
 } from 'library/Settings/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -46,9 +46,9 @@ export const TagSettings = () => {
         />
       )}
 
-      <SettingsSubheadingWrapper>
+      <SettingsSubHeadingWrapper>
         {totalTags} {totalTags === 1 ? 'tag' : 'tags'}
-      </SettingsSubheadingWrapper>
+      </SettingsSubHeadingWrapper>
 
       {Object.entries(tags).map(([id, tag]) => (
         <MangeTagItem key={`tag_${id}`} id={id} tag={tag} />

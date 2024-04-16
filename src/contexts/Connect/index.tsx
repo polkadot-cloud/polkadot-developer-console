@@ -25,7 +25,6 @@ export const ConnectProvider = ({ children }: { children: ReactNode }) => {
   const [hidden, setHidden] = useState<boolean>(false);
 
   // The overlay position coordinates.
-  // TODO: These should probably be hard-coded to the top right of the screen.
   const [position, setPosition] = useState<
     [ConnectOverlayPosition, ConnectOverlayPosition]
   >([0, 0]);

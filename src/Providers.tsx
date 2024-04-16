@@ -17,6 +17,7 @@ import { ConnectProvider } from 'contexts/Connect';
 import {
   ExtensionAccountsProvider,
   ExtensionsProvider,
+  VaultAccountsProvider,
 } from '@w3ux/react-connect-kit';
 import type { AnyJson } from '@w3ux/utils/types';
 import { DappName } from 'consts';
@@ -35,6 +36,7 @@ export const Providers = () => {
     ApiProvider,
     ExtensionsProvider,
     [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
+    VaultAccountsProvider,
     ConnectProvider,
   ];
 

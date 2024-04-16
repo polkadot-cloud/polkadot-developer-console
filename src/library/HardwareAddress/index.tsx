@@ -10,6 +10,7 @@ import { Wrapper } from './Wrapper';
 import type { HardwareAddressProps } from './types';
 
 export const HardwareAddress = ({
+  network,
   address,
   index,
   initial,
@@ -17,8 +18,9 @@ export const HardwareAddress = ({
   Identicon,
   existsHandler,
   renameHandler,
-  openConfirmHandler,
-  openRemoveHandler,
+  onConfirm,
+  onRemove,
+  last,
 }: HardwareAddressProps) => {
   // Store whether this address is being edited.
   const [editing, setEditing] = useState<boolean>(false);
@@ -57,11 +59,11 @@ export const HardwareAddress = ({
   };
 
   // Check whether this address is imported.
-  const isImported = existsHandler(address);
+  const isImported = existsHandler(network, address);
 
   return (
-    <Wrapper>
-      <div className="border"></div>
+    <Wrapper className={last === true ? ` last` : undefined}>
+      <div className={`border ${last === true ? ` last` : ``}`}></div>
       <div className="content">
         <div className="inner">
           <div className="identicon">
@@ -123,11 +125,9 @@ export const HardwareAddress = ({
       </div>
       <div className="action">
         {isImported ? (
-          <button onClick={() => openRemoveHandler(address)}>Remove</button>
+          <button onClick={() => onRemove(address)}>Remove</button>
         ) : (
-          <button onClick={() => openConfirmHandler(address, index)}>
-            Import
-          </button>
+          <button onClick={() => onConfirm(address, index)}>Import</button>
         )}
       </div>
     </Wrapper>

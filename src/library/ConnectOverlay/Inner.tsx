@@ -33,13 +33,31 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
     },
   };
 
-  // Gets framer motion props for either a heading or a connect item.
-  const getMotionProps = (item?: string) => {
-    const showHeading = item === undefined && selectedConnectItem === undefined;
+  // Gets framer motion props for either a element that needs to be hidden and shown.
+  const getMotionProps = (item: string, active = true) => {
+    // Whether to show this element if it is a heading.
+    const showHeading = item === 'heading' && selectedConnectItem === undefined;
 
+    // Whether to show this element if it is a connect item.
     const showConnectItem =
       item !== undefined &&
       (item === selectedConnectItem || selectedConnectItem === undefined);
+
+    // Whether to show this element if it is an imported address.
+    const showImportedAddress = item === 'address' && active;
+
+    // Whether to show this element if it is an  address label.
+    const showAddressLabel = item === 'address_config' && active;
+
+    // Whether to show this element if it is an import container.
+    const showImportContainer = item === 'import_container' && active;
+
+    const show =
+      showHeading ||
+      showConnectItem ||
+      showImportedAddress ||
+      showAddressLabel ||
+      showImportContainer;
 
     return {
       initial: 'show',
@@ -48,7 +66,8 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
         duration: 0.4,
         ease: [0.25, 1, 0.25, 1],
       },
-      animate: showHeading || showConnectItem ? 'show' : 'hidden',
+      animate: show ? 'show' : 'hidden',
+      className: `motion${show ? `` : ` hidden`}`,
     };
   };
 
@@ -60,6 +79,7 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
       duration: 0.2,
     },
     animate: selectedConnectItem === item ? 'show' : 'hidden',
+    className: 'motion',
   });
 
   const extensionItems = installed.concat(other);
@@ -74,7 +94,7 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
         <button onClick={() => dismissOverlay()}>Close</button>
       </div>
 
-      <motion.h4 {...getMotionProps()}>Hardware</motion.h4>
+      <motion.h4 {...getMotionProps('heading')}>Hardware</motion.h4>
       <motion.span {...getMotionProps('polkadot_vault')}>
         <ItemWrapper
           className={`${selectedConnectItem === 'polkadot_vault' ? ` last` : ``}`}
@@ -151,11 +171,11 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
         </ItemWrapper>
       </motion.span>
 
-      <motion.h4 {...getMotionProps()}>Web Extensions</motion.h4>
+      <motion.h4 {...getMotionProps('heading')}>Web Extensions</motion.h4>
 
       {extensionItems.map((extension, i) => (
         <motion.span
-          {...getMotionProps()}
+          {...getMotionProps('heading')}
           key={`extension_item_${extension.id}`}
         >
           <Extension
@@ -166,7 +186,10 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
       ))}
 
       <motion.span {...getManageProps('polkadot_vault')}>
-        <ManageVault />
+        <ManageVault
+          getMotionProps={getMotionProps}
+          selectedConnectItem={selectedConnectItem}
+        />
       </motion.span>
 
       <motion.span {...getManageProps('ledger')}>
