@@ -48,7 +48,7 @@ export const AccountsWrapper = styled.div`
       border: 1px solid var(--border-primary-color);
       box-shadow: var(--shadow-dropdown);
       border-radius: 0.5rem;
-      padding: 0.75rem 0.75rem;
+      padding: 0.9rem 0.85rem;
       display: flex;
       align-items: center;
       flex: 1;
@@ -69,8 +69,7 @@ export const AccountsWrapper = styled.div`
 
           > .address {
             position: relative;
-            height: 1.1rem;
-            margin-top: 0.25rem;
+            height: 0.9rem;
           }
 
           > .name > h3,
@@ -87,6 +86,8 @@ export const AccountsWrapper = styled.div`
 
           > .name > h3 {
             color: var(--text-color-primary);
+            font-size: 0.8rem;
+            line-height: 0.8rem;
           }
 
           > .address > h5 {
