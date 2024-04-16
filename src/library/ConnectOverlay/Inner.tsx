@@ -20,7 +20,7 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
   // Store the active hardware wallet, if selected.
   const [selectedConnectItem, setSelectedConnectItem] = useState<
     string | undefined
-  >('polkadot_vault'); // TODO: Replace with undefined after testing.
+  >(undefined);
 
   const variants = {
     hidden: {
