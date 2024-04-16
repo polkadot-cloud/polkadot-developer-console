@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable no-useless-escape */
 
-import { Keyring } from '@polkadot/api';
-
 // Checks if in mobile browser.
 //
 // NOTE: taken from `http://detectmobilebrowsers.com/`.
@@ -24,21 +22,4 @@ export const mobileCheck = () => {
     navigator.userAgent || navigator.vendor || (window.opera && 'opera m') || ''
   );
   return check;
-};
-
-// Formats an address with the supplied ss58 prefix.
-// TODO: Move to `@w3ux/utils`.
-export const formatAccountSs58 = (address: string, ss58: number) => {
-  try {
-    const keyring = new Keyring();
-    keyring.setSS58Format(ss58);
-    const formatted = keyring.addFromAddress(address).address;
-    if (formatted !== address) {
-      return formatted;
-    }
-
-    return null;
-  } catch (e) {
-    return null;
-  }
 };

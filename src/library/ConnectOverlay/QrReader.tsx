@@ -6,8 +6,7 @@ import { ImportQRWrapper } from './Wrappers';
 import type { QrReaderProps } from './types';
 import { useEffect, useState } from 'react';
 import type { AnyJson } from '@w3ux/utils/types';
-import { isValidAddress } from '@w3ux/utils';
-import { formatAccountSs58 } from './Utils';
+import { isValidAddress, formatAccountSs58 } from '@w3ux/utils';
 import { useVaultAccounts } from '@w3ux/react-connect-kit';
 
 export const QrReader = ({
