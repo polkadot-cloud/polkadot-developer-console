@@ -6,14 +6,14 @@ import { useRoute } from 'contexts/Route';
 import { useEffect } from 'react';
 import { useActiveTabId } from 'contexts/ActiveTab';
 
-// NOTE: This hook can only be used within <Page> components, depending on RouteProvider.
+// NOTE: This hook can only be used within <Page> components; it is dependent on RouteProvider.
 export const useRedirectOnInactive = (tabId: number) => {
   const { getApiStatus } = useApi();
   const activeTabId = useActiveTabId();
   const { setActivePage } = useRoute();
 
   const apiStatus = getApiStatus(tabId);
-  const INACTIVE_API_STATUSES = ['connected', 'disconnected', 'error'];
+  const INACTIVE_API_STATUSES = ['disconnected', 'error'];
   const apiInactive = INACTIVE_API_STATUSES.includes(apiStatus);
 
   //  Redirect to section 0 if api is no longer connected. Do not persist - user might want to land
