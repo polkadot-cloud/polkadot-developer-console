@@ -5,7 +5,7 @@ import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
-import { CardsWrapper, Wrapper } from './Wrappers';
+import { CardsWrapper } from './Wrappers';
 import ConnectedSVG from 'svg/Connected.svg?react';
 import Odometer from '@w3ux/react-odometer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import BigNumber from 'bignumber.js';
 import { ApiController } from 'controllers/Api';
+import { FlexWrapper, StatsWrapper } from '../Wrappers';
 
 export const Overview = () => {
   const { getTab } = useTabs();
@@ -74,7 +75,7 @@ export const Overview = () => {
   }, [tabId]);
 
   return (
-    <Wrapper>
+    <FlexWrapper>
       <h2>
         {!chainSpecReady && apiStatus === 'connecting'
           ? 'Connecting...'
@@ -83,7 +84,7 @@ export const Overview = () => {
             : 'Fetching Chain Spec...'}
       </h2>
 
-      <div className="stats">
+      <StatsWrapper className="vSpace">
         <div className={`active${syncing ? ` shimmer` : ``}`}>
           <ConnectedSVG className="icon" />{' '}
           {apiStatus === 'connecting'
@@ -106,7 +107,7 @@ export const Overview = () => {
         ) : (
           ''
         )}
-      </div>
+      </StatsWrapper>
       <CardsWrapper>
         <section>
           <div className="inner">
@@ -129,6 +130,6 @@ export const Overview = () => {
           </div>
         </section>
       </CardsWrapper>
-    </Wrapper>
+    </FlexWrapper>
   );
 };

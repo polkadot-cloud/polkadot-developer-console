@@ -8,6 +8,7 @@ import { Extrinsics } from './Extrinsics';
 import { ChainState } from './ChainState';
 import { TabMenu } from '../../library/TabMenu';
 import { PageContent } from 'library/PageContent';
+import { Accounts } from './Accounts';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
@@ -22,6 +23,10 @@ export const useRouteSections = (): RouteSectionProvider => {
     2: {
       label: 'Extrinsics',
       Component: Extrinsics,
+    },
+    3: {
+      label: 'Accounts',
+      Component: Accounts,
     },
   };
 
