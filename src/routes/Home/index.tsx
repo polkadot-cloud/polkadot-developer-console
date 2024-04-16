@@ -11,7 +11,7 @@ import { ParachainSetup } from './ParachainSetup';
 export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
     0: {
-      label: 'Connect Chain',
+      label: 'Connect',
       Component: Connect,
     },
     1: {

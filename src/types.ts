@@ -9,6 +9,7 @@ import type {
   APIChainSpecEventDetail,
   APIStatusEventDetail,
 } from 'model/Api/types';
+import type { BlockNumberEventDetail } from 'model/BlockNumber/types';
 import type { CSSProperties, ReactNode } from 'react';
 
 declare global {
@@ -22,7 +23,7 @@ declare global {
     'api-status': CustomEvent<APIStatusEventDetail>;
     'new-chain-spec': CustomEvent<APIChainSpecEventDetail>;
     'online-status': CustomEvent<OnlineStatusEvent>;
-    'callback-block-number': CustomEvent<{ blockNumber: string }>;
+    'callback-block-number': CustomEvent<BlockNumberEventDetail>;
     notification: CustomEvent<NotificationItem>;
   }
 }

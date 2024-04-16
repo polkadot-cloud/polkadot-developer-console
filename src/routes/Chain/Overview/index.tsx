@@ -5,7 +5,7 @@ import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
 import { useApi } from 'contexts/Api';
 import { useTabs } from 'contexts/Tabs';
-import { CardsWrapper, Wrapper } from './Wrappers';
+import { CardsWrapper } from './Wrappers';
 import ConnectedSVG from 'svg/Connected.svg?react';
 import Odometer from '@w3ux/react-odometer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,7 +16,8 @@ import { isCustomEvent } from 'Utils';
 import { useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import BigNumber from 'bignumber.js';
-import { ApiController } from 'controllers/Api';
+import { FlexWrapper, StatsWrapper } from '../Wrappers';
+import { SubscriptionsController } from 'controllers/Subscriptions';
 
 export const Overview = () => {
   const { getTab } = useTabs();
@@ -52,7 +53,7 @@ export const Overview = () => {
 
   // The latest received block number.
   const [blockNumber, setBlockNumber] = useState<string>(
-    ApiController.instances?.[tabId]?.blockNumber || '0'
+    SubscriptionsController.get(tabId, 'blockNumber')?.blockNumber || '0'
   );
 
   // Handle new block number callback.
@@ -70,11 +71,13 @@ export const Overview = () => {
 
   // Update block number on tab change.
   useEffect(() => {
-    setBlockNumber(ApiController.instances?.[tabId]?.blockNumber || '0');
+    setBlockNumber(
+      SubscriptionsController.get(tabId, 'blockNumber')?.blockNumber || '0'
+    );
   }, [tabId]);
 
   return (
-    <Wrapper>
+    <FlexWrapper>
       <h2>
         {!chainSpecReady && apiStatus === 'connecting'
           ? 'Connecting...'
@@ -83,7 +86,7 @@ export const Overview = () => {
             : 'Fetching Chain Spec...'}
       </h2>
 
-      <div className="stats">
+      <StatsWrapper className="vSpace">
         <div className={`active${syncing ? ` shimmer` : ``}`}>
           <ConnectedSVG className="icon" />{' '}
           {apiStatus === 'connecting'
@@ -106,7 +109,7 @@ export const Overview = () => {
         ) : (
           ''
         )}
-      </div>
+      </StatsWrapper>
       <CardsWrapper>
         <section>
           <div className="inner">
@@ -129,6 +132,6 @@ export const Overview = () => {
           </div>
         </section>
       </CardsWrapper>
-    </Wrapper>
+    </FlexWrapper>
   );
 };
