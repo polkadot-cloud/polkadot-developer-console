@@ -36,7 +36,7 @@ export const Providers = () => {
     ApiProvider,
     ExtensionsProvider,
     [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
-    [VaultAccountsProvider, { network: 'polkadot' }], // TODO: Replace hard-coded `network`.
+    VaultAccountsProvider,
     ConnectProvider,
   ];
 
