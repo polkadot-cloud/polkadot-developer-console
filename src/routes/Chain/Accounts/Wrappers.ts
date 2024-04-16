@@ -95,8 +95,7 @@ export const AccountsWrapper = styled.div`
             padding-right: 1.5rem;
 
             > .copy {
-              margin-left: 0.35rem;
-              border: 1px solid var(--border-secondary-color);
+              margin-left: 0.2rem;
               border-radius: 1rem;
               width: 1.2rem;
               height: 1.2rem;
