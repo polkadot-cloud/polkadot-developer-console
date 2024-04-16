@@ -69,7 +69,7 @@ export const AccountsWrapper = styled.div`
           > .address {
             position: relative;
             height: 1.1rem;
-            margin-top: 0.3rem;
+            margin-top: 0.25rem;
           }
 
           > .name > h3,
@@ -84,9 +84,13 @@ export const AccountsWrapper = styled.div`
             overflow: hidden;
           }
 
+          > .name > h3 {
+            color: var(--text-color-primary);
+          }
+
           > .address > h5 {
-            font-size: 0.72rem;
             font-family: InterSemiBold, sans-serif;
+            font-size: 0.72rem;
           }
         }
       }

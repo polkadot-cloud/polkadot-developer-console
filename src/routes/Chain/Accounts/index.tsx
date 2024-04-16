@@ -11,12 +11,23 @@ import {
 } from '@w3ux/react-connect-kit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
+import { useApi } from 'contexts/Api';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const Accounts = () => {
+  const { getChainSpec } = useApi();
+  const activeTabId = useActiveTabId();
   const { getVaultAccounts } = useVaultAccounts();
   const { getExtensionAccounts } = useExtensionAccounts();
 
-  const accounts = getExtensionAccounts(0).concat(getVaultAccounts('polkadot'));
+  const chainSpec = getChainSpec(activeTabId);
+
+  const accounts =
+    chainSpec && chainSpec.chain
+      ? getExtensionAccounts(chainSpec.ss58Prefix).concat(
+          getVaultAccounts(chainSpec.chain)
+        )
+      : [];
 
   return (
     <FlexWrapper>
