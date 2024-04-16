@@ -17,6 +17,8 @@ import type {
 } from 'model/Api/types';
 import { useChainUi } from 'contexts/ChainUi';
 import { NotificationsController } from 'controllers/Notifications';
+import { SubscriptionsController } from 'controllers/Subscriptions';
+import { BlockNumber } from 'model/BlockNumber';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -125,7 +127,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {
     if (isCustomEvent(e)) {
-      const { tabId, event, err } = e.detail as APIStatusEventDetail;
+      const { tabId, chainId, event, err } = e.detail as APIStatusEventDetail;
 
       switch (event) {
         case 'ready':
@@ -133,6 +135,18 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
             ...apiStatusRef.current,
             [tabId]: 'ready',
           });
+
+          // Initialise subscriptions for Overview here. We are currently only subscribing to the
+          // block number. NOTE: SubscriptionsController is currently only assuming one `chainId`
+          // per tab. This needs to change for parachain setup. TODO: SubscriptionsController to
+          // handle multiple chainIds per tab.
+          SubscriptionsController.set(
+            tabId,
+            'blockNumber',
+            new BlockNumber(tabId, chainId)
+          );
+          // TODO: Set up account balance subscriptions.
+
           break;
         case 'connecting':
           setApiStatus({ ...apiStatusRef.current, [tabId]: 'connecting' });

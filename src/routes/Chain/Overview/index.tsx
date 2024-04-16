@@ -16,8 +16,8 @@ import { isCustomEvent } from 'Utils';
 import { useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import BigNumber from 'bignumber.js';
-import { ApiController } from 'controllers/Api';
 import { FlexWrapper, StatsWrapper } from '../Wrappers';
+import { SubscriptionsController } from 'controllers/Subscriptions';
 
 export const Overview = () => {
   const { getTab } = useTabs();
@@ -53,7 +53,7 @@ export const Overview = () => {
 
   // The latest received block number.
   const [blockNumber, setBlockNumber] = useState<string>(
-    ApiController.instances?.[tabId]?.blockNumber || '0'
+    SubscriptionsController.get(tabId, 'blockNumber')?.blockNumber || '0'
   );
 
   // Handle new block number callback.
@@ -71,7 +71,9 @@ export const Overview = () => {
 
   // Update block number on tab change.
   useEffect(() => {
-    setBlockNumber(ApiController.instances?.[tabId]?.blockNumber || '0');
+    setBlockNumber(
+      SubscriptionsController.get(tabId, 'blockNumber')?.blockNumber || '0'
+    );
   }, [tabId]);
 
   return (

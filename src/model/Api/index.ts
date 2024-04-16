@@ -12,7 +12,7 @@ import type {
   ErrDetail,
 } from './types';
 import { MetadataController } from 'controllers/Metadata';
-import type { VoidFn } from '@polkadot/api/types';
+import { SubscriptionsController } from 'controllers/Subscriptions';
 
 export class Api {
   // ------------------------------------------------------
@@ -36,12 +36,6 @@ export class Api {
 
   // The current chain spec.
   chainSpec: APIChainSpec | undefined;
-
-  // Unsubscribe objects.
-  #unsubs: Record<string, VoidFn> = {};
-
-  // The current block number.
-  blockNumber = '0';
 
   // ------------------------------------------------------
   // Getters.
@@ -97,10 +91,6 @@ export class Api {
       this.initApiEvents();
 
       await this.#api.isReady;
-
-      // Subscribe to block number. TODO: Move to a subscriptions class and call an initialization
-      // method instead..
-      this.subscribeBlockNumber();
     } catch (e) {
       this.dispatchEvent(this.ensureEventStatus('error'), {
         err: 'InitializationError',
@@ -212,36 +202,18 @@ export class Api {
   // Subscriptions.
   // ------------------------------------------------------
   //
-  // TODO: Move to a subscriptions class instead. Verify if pallet and call exists before attempting
-  // subscriptions.
 
-  // Subscribe to block number.
-  subscribeBlockNumber = async (): Promise<void> => {
-    if (this.#unsubs['blockNumber'] === undefined) {
-      // Get block numbers.
-      const unsub = await this.api.query.system.number((num: number) => {
-        // Update class block number.
-        this.blockNumber = num.toString();
-
-        // Send block number to UI.
-        document.dispatchEvent(
-          new CustomEvent(`callback-block-number`, {
-            detail: { tabId: this.#tabId, blockNumber: num.toString() },
-          })
-        );
-      });
-
-      // Block number subscription now initialised. Store unsub.
-      this.#unsubs['blockNumber'] = unsub as unknown as VoidFn;
-    }
-  };
-
-  // Unsubscribe from all active subscriptions.
+  // Unsubscribe from all active subscriptions associated with this API instance.
   unsubscribe = () => {
-    Object.values(this.#unsubs).forEach((unsub) => {
-      unsub();
-    });
-    this.#unsubs = {};
+    const subs = SubscriptionsController.getAll(this.tabId);
+
+    if (subs) {
+      Object.entries(subs).forEach(([subscriptionId, subscription]) => {
+        subscription.unsub();
+        // Remove subscription from controller.
+        SubscriptionsController.removeSub(this.tabId, subscriptionId);
+      });
+    }
   };
 
   // ------------------------------------------------------
