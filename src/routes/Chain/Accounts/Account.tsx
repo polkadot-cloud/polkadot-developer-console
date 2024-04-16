@@ -4,6 +4,8 @@
 import { ellipsisFn, remToUnit } from '@w3ux/utils';
 import type { AccountProps } from './types';
 import { Polkicon } from '@w3ux/react-polkicon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 export const Account = ({ account }: AccountProps) => {
   const { name, address } = account;
@@ -19,7 +21,15 @@ export const Account = ({ account }: AccountProps) => {
             <h3>{name}</h3>
           </div>
           <div className="address">
-            <h5>{ellipsisFn(address, 7)}</h5>
+            <h5>
+              {ellipsisFn(address, 7)}
+              <button
+                className="copy"
+                onClick={() => navigator.clipboard.writeText(address)}
+              >
+                <FontAwesomeIcon icon={faCopy} transform="shrink-4" />
+              </button>
+            </h5>
           </div>
         </div>
       </div>

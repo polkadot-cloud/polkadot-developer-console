@@ -92,6 +92,24 @@ export const AccountsWrapper = styled.div`
           > .address > h5 {
             font-family: InterSemiBold, sans-serif;
             font-size: 0.72rem;
+            padding-right: 1.5rem;
+
+            > .copy {
+              margin-left: 0.35rem;
+              border: 1px solid var(--border-secondary-color);
+              border-radius: 1rem;
+              width: 1.2rem;
+              height: 1.2rem;
+              opacity: 0.6;
+
+              &:hover {
+                opacity: 1;
+              }
+
+              > svg {
+                color: var(--text-color-tertiary);
+              }
+            }
           }
         }
       }
