@@ -11,11 +11,19 @@ import type {
 //
 // Designed to emit notifications to subscribers to the `notification` event.
 export class NotificationsController {
+  // ------------------------------------------------------
+  // Class members.
+  // ------------------------------------------------------
+
   // Store how long a notification should remain displayed for.
   private static displayDuration = 3000;
 
   // Store the notification indexes.
   private static indexes: number[] = [];
+
+  // ------------------------------------------------------
+  // Event handling.
+  // ------------------------------------------------------
 
   // Emit a new notification to all subscribed elements.
   static emit({ title, subtitle }: NotificationText) {
