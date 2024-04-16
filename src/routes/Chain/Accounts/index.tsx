@@ -3,8 +3,6 @@
 
 import { FlexWrapper, StatsWrapper } from '../Wrappers';
 import { AccountsWrapper } from './Wrappers';
-import { Polkicon } from '@w3ux/react-polkicon';
-import { ellipsisFn, remToUnit } from '@w3ux/utils';
 import {
   useExtensionAccounts,
   useVaultAccounts,
@@ -13,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
 import { useApi } from 'contexts/Api';
 import { useActiveTabId } from 'contexts/ActiveTab';
+import { Account } from './Account';
 
 export const Accounts = () => {
   const { getChainSpec } = useApi();
@@ -43,22 +42,8 @@ export const Accounts = () => {
         </div>
       </StatsWrapper>
       <AccountsWrapper>
-        {accounts.map(({ name, address }, i) => (
-          <section key={`imported_account_${i}`}>
-            <div className="inner">
-              <div className="icon">
-                <Polkicon address={address} size={remToUnit('1.7rem')} />
-              </div>
-              <div className="content">
-                <div className="name">
-                  <h3>{name}</h3>
-                </div>
-                <div className="address">
-                  <h5>{ellipsisFn(address, 7)}</h5>
-                </div>
-              </div>
-            </div>
-          </section>
+        {accounts.map((account, i) => (
+          <Account account={account} key={`imported_account_${i}`} />
         ))}
       </AccountsWrapper>
     </FlexWrapper>
