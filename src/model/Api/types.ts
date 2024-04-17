@@ -19,8 +19,9 @@ export interface APIStatusEventDetail {
 }
 
 export interface APIChainSpecEventDetail {
-  spec: APIChainSpec;
   tabId: number;
+  spec: APIChainSpec;
+  consts: Record<string, AnyJson>;
 }
 
 export interface APIChainSpec {
@@ -29,6 +30,7 @@ export interface APIChainSpec {
   ss58Prefix: number;
   magicNumber: number;
   metadata: MetadataVersion;
+  consts: AnyJson;
 }
 
 export interface APIChainSpecVersion {

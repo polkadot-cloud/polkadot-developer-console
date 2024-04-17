@@ -177,11 +177,11 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   // Handle incoming chain spec updates.
   const handleNewChainSpec = (e: Event): void => {
     if (isCustomEvent(e)) {
-      const { tabId, spec } = e.detail;
+      const { tabId, spec, consts } = e.detail;
 
       setChainSpec({
         ...chainSpecRef.current,
-        [tabId]: spec,
+        [tabId]: { ...spec, consts },
       });
 
       // Fetch pallet versions for ChainUi state.

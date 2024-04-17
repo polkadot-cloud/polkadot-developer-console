@@ -13,6 +13,7 @@ import { useApi } from 'contexts/Api';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import { Account } from './Account';
 import { useTabs } from 'contexts/Tabs';
+import BigNumber from 'bignumber.js';
 
 export const Accounts = () => {
   const { getTab } = useTabs();
@@ -22,6 +23,9 @@ export const Accounts = () => {
   const { getExtensionAccounts } = useExtensionAccounts();
   const tab = getTab(activeTabId);
   const chainSpec = getChainSpec(activeTabId);
+
+  const existentialDeposit =
+    chainSpec?.consts?.existentialDeposit || new BigNumber(0);
 
   const accounts =
     chainSpec && chainSpec.chain
@@ -46,6 +50,7 @@ export const Accounts = () => {
       <AccountsWrapper>
         {accounts.map((account, i) => (
           <Account
+            existentialDeposit={existentialDeposit}
             account={account}
             chainId={tab?.chain?.id}
             key={`imported_account_${i}`}

@@ -15,18 +15,33 @@ import BigNumber from 'bignumber.js';
 import type { DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 
-export const Account = ({ account, chainId }: AccountProps) => {
+export const Account = ({
+  account,
+  chainId,
+  existentialDeposit,
+}: AccountProps) => {
   const { getTab } = useTabs();
   const { openMenu } = useMenu();
   const activeTabId = useActiveTabId();
-  const { getAccountBalance } = useAccounts();
+  const { getAccountBalance, getBalanceLocks } = useAccounts();
 
-  const { name, address } = account;
   const tab = getTab(activeTabId);
+  const { name, address } = account;
   const balances = getAccountBalance(address);
+  const { maxLock } = getBalanceLocks(address);
 
-  // TODO: Deduct account locks.
-  const freePlanck = balances?.balance?.free || new BigNumber(0);
+  // Calculate a forced amount of free balance that needs to be reserved to keep the account alive.
+  // Deducts `locks` from free balance reserve needed.
+  const edReserved = BigNumber.max(existentialDeposit.minus(maxLock), 0);
+
+  // Free balance with locks and reserves not deducted.
+  const balanceFree = balances?.balance?.free || new BigNumber(0);
+
+  // Free balance with locks and reserves deducted.
+  const freePlanck = BigNumber.max(
+    0,
+    balanceFree.minus(edReserved).minus(maxLock)
+  );
 
   // NOTE: assuming chain definitely exists here.
   // TODO: Move chain unit and ss58 prefix to tab settings and assign for customEndpoint also.

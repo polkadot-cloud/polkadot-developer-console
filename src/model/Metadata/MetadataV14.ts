@@ -19,7 +19,6 @@ export class MetadataV14 implements MetadataVersion {
 
   palletExists(palletName: string) {
     const json: AnyJson = this.getMetadataJson();
-    console.log(json?.pallets);
     return (
       json?.pallets?.find(
         ({ name }: { name: string }) => name === palletName
