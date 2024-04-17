@@ -12,9 +12,10 @@ export interface NetworkDirectoryItem {
   system: {
     chain: string;
     ss58: number;
+    units: number;
+    unit: string;
   };
   name: string;
-  unit: string;
   color: string;
   providers: Record<string, string>;
 }
@@ -27,9 +28,10 @@ export const NetworkDirectory: NetworkDirectory = {
     system: {
       chain: 'Polkadot',
       ss58: 0,
+      units: 10,
+      unit: 'DOT',
     },
     name: 'Polkadot Relay Chain',
-    unit: 'DOT',
     color: '#c10e7d',
     providers: {
       'Automata 1RPC': 'wss://1rpc.io/dot',
@@ -46,9 +48,10 @@ export const NetworkDirectory: NetworkDirectory = {
     system: {
       chain: 'Kusama',
       ss58: 2,
+      units: 10,
+      unit: 'KSM',
     },
     name: 'Kusama Relay Chain',
-    unit: 'KSM',
     color: '#000',
     providers: {
       'Automata 1RPC': 'wss://1rpc.io/ksm',
@@ -65,9 +68,10 @@ export const NetworkDirectory: NetworkDirectory = {
     system: {
       chain: 'Rococo',
       ss58: 0,
+      units: 10,
+      unit: 'ROC',
     },
     name: 'Rococo Relay Chain',
-    unit: 'ROC',
     color: '#552bbf',
     providers: {
       Parity: 'wss://rococo-rpc.polkadot.io',
@@ -77,9 +81,10 @@ export const NetworkDirectory: NetworkDirectory = {
     system: {
       chain: 'Westend',
       ss58: 42,
+      units: 10,
+      unit: 'WND',
     },
     name: 'Westend Relay Chain',
-    unit: 'WND',
     color: '#c63860',
     providers: {
       Dwellir: 'wss://westend-rpc.dwellir.com',

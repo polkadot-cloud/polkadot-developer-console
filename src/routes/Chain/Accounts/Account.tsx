@@ -12,8 +12,6 @@ import { useTabs } from 'contexts/Tabs';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import BigNumber from 'bignumber.js';
-import type { DirectoryId } from 'config/networks';
-import { NetworkDirectory } from 'config/networks';
 
 export const Account = ({
   account,
@@ -43,9 +41,9 @@ export const Account = ({
     balanceFree.minus(edReserved).minus(maxLock)
   );
 
-  // NOTE: assuming chain definitely exists here.
-  // TODO: Move chain unit and ss58 prefix to tab settings and assign for customEndpoint also.
-  const unit = chainId ? NetworkDirectory[chainId as DirectoryId].unit : 'UNIT';
+  // NOTE: assuming tab and chain definitely exist here.
+  const unit = tab!.chain!.unit;
+  const units = tab!.chain!.units;
 
   return (
     <section>
@@ -86,7 +84,8 @@ export const Account = ({
           <div className="free">
             <h5>
               <span>Free:</span>{' '}
-              {planckToUnit(freePlanck, 10).decimalPlaces(3).toFormat()} {unit}
+              {planckToUnit(freePlanck, units).decimalPlaces(3).toFormat()}{' '}
+              {unit}
             </h5>
           </div>
         </div>

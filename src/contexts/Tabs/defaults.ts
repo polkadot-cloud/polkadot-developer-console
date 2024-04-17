@@ -47,6 +47,9 @@ export const defaultTabs: Tabs = [
     chain: {
       id: 'polkadot',
       endpoint: 'wss://rpc.ibp.network/polkadot',
+      ss58: 0,
+      units: 10,
+      unit: 'DOT',
     },
     name: 'Polkadot Relay Chain',
     forceDisconnect: false,
@@ -58,6 +61,9 @@ export const defaultTabs: Tabs = [
     chain: {
       id: 'kusama',
       endpoint: 'wss://rpc.ibp.network/kusama',
+      ss58: 2,
+      units: 10,
+      unit: 'KSM',
     },
     name: 'Kusama Relay Chain',
     forceDisconnect: false,
@@ -69,6 +75,9 @@ export const defaultTabs: Tabs = [
     chain: {
       id: 'rococo',
       endpoint: 'wss://rococo-rpc.polkadot.io',
+      ss58: 0,
+      units: 10,
+      unit: 'ROC',
     },
     name: 'Rococo Relay Chain',
     forceDisconnect: false,
@@ -91,4 +100,9 @@ export const defaultEemptyTab: Tab = {
   name: '',
   forceDisconnect: false,
   autoConnect: false,
+};
+export const defaultCustomEndpointChainMeta = {
+  ss58: 0,
+  units: 10,
+  unit: 'UNIT',
 };

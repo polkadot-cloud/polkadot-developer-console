@@ -13,11 +13,20 @@ export interface Tab {
     | {
         id: ChainId;
         endpoint: string;
+        ss58: number;
+        units: number;
+        unit: string;
       }
     | undefined;
   name: string;
   forceDisconnect: boolean;
   autoConnect: boolean;
+}
+
+export interface ChainMeta {
+  ss58: number;
+  units: number;
+  unit: string;
 }
 
 export type ConnectFrom = 'directory' | 'customEndpoint';
