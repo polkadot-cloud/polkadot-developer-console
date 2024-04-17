@@ -36,6 +36,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
 
   const apiStatus = getApiStatus(selectedTabId);
   const chainSpec = getChainSpec(selectedTabId);
+
   const accounts =
     chainSpec && chainSpec.chain
       ? getExtensionAccounts(chainSpec.ss58Prefix).concat(
@@ -150,7 +151,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <Accounts.Provider
-      value={{ getAccountBalance, getBalanceLocks, getEdReserved }}
+      value={{ getAccountBalance, getBalanceLocks, getEdReserved, accounts }}
     >
       {children}
     </Accounts.Provider>

@@ -24,6 +24,9 @@ export const defaultTabsContext: TabsContextInterface = {
   setTabsHidden: (hidden) => {},
   instantiatedIds: [],
   renameTab: (id, name) => {},
+  updateSs58: (id, ss58) => {},
+  updateUnits: (id, units) => {},
+  updateUnit: (id, unit) => {},
   redirectCounter: 0,
   incrementRedirectCounter: () => {},
   connectTab: (tabId, chainId, endpoint) => {},
@@ -47,6 +50,9 @@ export const defaultTabs: Tabs = [
     chain: {
       id: 'polkadot',
       endpoint: 'wss://rpc.ibp.network/polkadot',
+      ss58: 0,
+      units: 10,
+      unit: 'DOT',
     },
     name: 'Polkadot Relay Chain',
     forceDisconnect: false,
@@ -58,6 +64,9 @@ export const defaultTabs: Tabs = [
     chain: {
       id: 'kusama',
       endpoint: 'wss://rpc.ibp.network/kusama',
+      ss58: 2,
+      units: 10,
+      unit: 'KSM',
     },
     name: 'Kusama Relay Chain',
     forceDisconnect: false,
@@ -69,6 +78,9 @@ export const defaultTabs: Tabs = [
     chain: {
       id: 'rococo',
       endpoint: 'wss://rococo-rpc.polkadot.io',
+      ss58: 0,
+      units: 10,
+      unit: 'ROC',
     },
     name: 'Rococo Relay Chain',
     forceDisconnect: false,
@@ -78,7 +90,7 @@ export const defaultTabs: Tabs = [
     id: 4,
     connectFrom: 'directory',
     chain: undefined,
-    name: 'Westend Relay Chain',
+    name: 'New Tab',
     forceDisconnect: false,
     autoConnect: false,
   },
@@ -91,4 +103,9 @@ export const defaultEemptyTab: Tab = {
   name: '',
   forceDisconnect: false,
   autoConnect: false,
+};
+export const defaultCustomEndpointChainMeta = {
+  ss58: 0,
+  units: 10,
+  unit: 'UNIT',
 };

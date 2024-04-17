@@ -2,27 +2,25 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
-import { useTabs } from 'contexts/Tabs';
 import { TextInput } from 'library/TextInput';
 import { useState } from 'react';
-import { RenameTabWrapper } from './Wrappers';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { InputWrapper } from './Wrappers';
+import type { InputProps } from './types';
 
-export const RenameTab = () => {
-  const activeTabId = useActiveTabId();
-  const { getTab, renameTab } = useTabs();
-
-  const activeTab = getTab(activeTabId);
-
+export const Input = ({
+  label,
+  placeholder,
+  initialValue,
+  onSubmit,
+}: InputProps) => {
   // The editable value of the input.
-  const initialValue = activeTab?.name || '';
   const [editableValue, setEditableValue] = useState<string>(initialValue);
 
   // Handle tab name form submission.
-  const onSubmit = (value: string) => {
+  const handleSubmit = (value: string) => {
     if (value) {
       setEditableValue(value);
-      renameTab(activeTabId, value);
+      onSubmit(value);
     }
   };
 
@@ -37,18 +35,18 @@ export const RenameTab = () => {
   // Update tab value when active tab changes.
   useEffectIgnoreInitial(() => {
     setEditableValue(initialValue);
-  }, [activeTabId, initialValue]);
+  }, [initialValue]);
 
   return (
-    <RenameTabWrapper>
-      <h4>Rename Tab</h4>
+    <InputWrapper>
+      <h4>{label}</h4>
       <TextInput
-        name="tab_name"
+        name={label}
         value={editableValue}
-        placeholder="Tab Name"
+        placeholder={placeholder}
         onChange={onChange}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
       />
-    </RenameTabWrapper>
+    </InputWrapper>
   );
 };

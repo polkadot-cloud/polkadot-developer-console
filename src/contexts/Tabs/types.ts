@@ -13,11 +13,20 @@ export interface Tab {
     | {
         id: ChainId;
         endpoint: string;
+        ss58: number;
+        units: number;
+        unit: string;
       }
     | undefined;
   name: string;
   forceDisconnect: boolean;
   autoConnect: boolean;
+}
+
+export interface ChainMeta {
+  ss58: number;
+  units: number;
+  unit: string;
 }
 
 export type ConnectFrom = 'directory' | 'customEndpoint';
@@ -42,6 +51,9 @@ export interface TabsContextInterface {
   setTabsHidden: (hidden: boolean) => void;
   instantiatedIds: number[];
   renameTab: (id: number, name: string) => void;
+  updateSs58: (id: number, ss58: number) => void;
+  updateUnits: (id: number, units: number) => void;
+  updateUnit: (id: number, unit: string) => void;
   redirectCounter: number;
   incrementRedirectCounter: () => void;
   connectTab: (tabId: number, chainId: ChainId, endpoint: string) => void;

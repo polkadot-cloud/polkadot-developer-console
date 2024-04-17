@@ -3,8 +3,17 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
-import type { ConnectFrom, Tabs, TabsContextInterface } from './types';
-import { defaultTabs, defaultTabsContext } from './defaults';
+import type {
+  ChainMeta,
+  ConnectFrom,
+  Tabs,
+  TabsContextInterface,
+} from './types';
+import {
+  defaultCustomEndpointChainMeta,
+  defaultTabs,
+  defaultTabsContext,
+} from './defaults';
 import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
 import { NetworkDirectory } from 'config/networks';
@@ -161,6 +170,36 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
+  // Update a tab's ss58 prefix.
+  const updateSs58 = (id: number, ss58: number) => {
+    const newTabs = tabs.map((tab) =>
+      tab.id === id
+        ? { ...tab, chain: tab?.chain ? { ...tab.chain, ss58 } : undefined }
+        : tab
+    );
+    setTabs(newTabs);
+  };
+
+  // Update a tab's units.
+  const updateUnits = (id: number, units: number) => {
+    const newTabs = tabs.map((tab) =>
+      tab.id === id
+        ? { ...tab, chain: tab?.chain ? { ...tab.chain, units } : undefined }
+        : tab
+    );
+    setTabs(newTabs);
+  };
+
+  // Update a tab's unit.
+  const updateUnit = (id: number, unit: string) => {
+    const newTabs = tabs.map((tab) =>
+      tab.id === id
+        ? { ...tab, chain: tab?.chain ? { ...tab.chain, unit } : undefined }
+        : tab
+    );
+    setTabs(newTabs);
+  };
+
   // Set a tab's autoConnect setting.
   const setTabAutoConnect = (id: number, checked: boolean) => {
     setTabs(
@@ -228,16 +267,30 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Connect tab to an Api instance and update its chain data.
   const connectTab = (tabId: number, chainId: ChainId, endpoint: string) => {
+    const isDirectory = isDirectoryId(chainId);
+
+    // Inject chain metadata from network directory or custom endpoint.
+    let chainMeta: ChainMeta;
+    if (isDirectory) {
+      const system = NetworkDirectory[chainId].system;
+      chainMeta = {
+        ss58: system.ss58,
+        units: system.units,
+        unit: system.unit,
+      };
+    } else {
+      const localChain = local.getTabs()?.find(({ id }) => id === tabId)?.chain;
+      chainMeta = localChain || defaultCustomEndpointChainMeta;
+    }
+
     const newTabs = [...tabs].map((tab) =>
       tab.id === tabId
         ? {
             ...tab,
             // Auto rename the tab here if the setting is turned on.
             name:
-              autoTabNaming && isDirectoryId(chainId)
-                ? getAutoTabName(chainId)
-                : tab.name,
-            chain: { id: chainId, endpoint },
+              autoTabNaming && isDirectory ? getAutoTabName(chainId) : tab.name,
+            chain: { id: chainId, endpoint, ...chainMeta },
           }
         : tab
     );
@@ -284,6 +337,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         tabsHidden,
         setTabsHidden,
         renameTab,
+        updateSs58,
+        updateUnits,
+        updateUnit,
         connectTab,
         instantiateApiFromTab,
         redirectCounter,
