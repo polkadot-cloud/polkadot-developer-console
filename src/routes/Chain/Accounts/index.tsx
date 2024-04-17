@@ -12,15 +12,18 @@ import { faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
 import { useApi } from 'contexts/Api';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import { Account } from './Account';
+import { useTabs } from 'contexts/Tabs';
 
 export const Accounts = () => {
+  const { getTab } = useTabs();
   const { getChainSpec } = useApi();
   const activeTabId = useActiveTabId();
   const { getVaultAccounts } = useVaultAccounts();
   const { getExtensionAccounts } = useExtensionAccounts();
-
+  const tab = getTab(activeTabId);
   const chainSpec = getChainSpec(activeTabId);
 
+  console.log(tab?.chain?.id);
   const accounts =
     chainSpec && chainSpec.chain
       ? getExtensionAccounts(chainSpec.ss58Prefix).concat(
@@ -43,7 +46,11 @@ export const Accounts = () => {
       </StatsWrapper>
       <AccountsWrapper>
         {accounts.map((account, i) => (
-          <Account account={account} key={`imported_account_${i}`} />
+          <Account
+            account={account}
+            chainId={tab?.chain?.id}
+            key={`imported_account_${i}`}
+          />
         ))}
       </AccountsWrapper>
     </FlexWrapper>

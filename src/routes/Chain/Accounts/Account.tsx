@@ -11,7 +11,7 @@ import { AccountContextMenu } from './AccountMenu';
 import { useTabs } from 'contexts/Tabs';
 import { useActiveTabId } from 'contexts/ActiveTab';
 
-export const Account = ({ account }: AccountProps) => {
+export const Account = ({ account, chainId }: AccountProps) => {
   const { getTab } = useTabs();
   const { openMenu } = useMenu();
   const activeTabId = useActiveTabId();
@@ -28,16 +28,13 @@ export const Account = ({ account }: AccountProps) => {
         </div>
         <div className="content">
           {/* NOTE: Currently hiding menu on custom endpoint connections as there is no guarantee Subscan will have the connected chain supported. Once menu contains more links, this check can happen inside the menu. */}
-          {tab?.connectFrom !== 'customEndpoint' && (
+          {chainId && tab?.connectFrom !== 'customEndpoint' && (
             <div className="menu">
               <button
                 onClick={(ev) => {
                   openMenu(
                     ev,
-                    <AccountContextMenu
-                      account={account}
-                      directoryId={'polkadot'}
-                    />
+                    <AccountContextMenu account={account} chainId={chainId} />
                   );
                 }}
               >

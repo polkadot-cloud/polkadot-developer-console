@@ -4,14 +4,14 @@
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { ImportedAccount } from '@w3ux/react-connect-kit/types';
-import type { DirectoryId } from 'config/networks';
+import type { ChainId } from 'config/networks';
 import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
 
 export const AccountContextMenu = ({
-  directoryId,
+  chainId,
   account,
 }: {
-  directoryId: DirectoryId;
+  chainId: ChainId;
   account: ImportedAccount;
 }) => {
   const { address } = account;
@@ -23,8 +23,8 @@ export const AccountContextMenu = ({
           <button
             onClick={() => {
               // NOTE: Attempts to go to Subscan with the currently connected chain and address.
-              // Assumes that `directoryId` matches the chain name on Subscan.
-              open(`https://${directoryId}.subscan.io/account/${address}`);
+              // Assumes that `chainId` matches the chain name on Subscan.
+              open(`https://${chainId}.subscan.io/account/${address}`);
             }}
           ></button>
           <div className="inner">
