@@ -45,7 +45,7 @@ export const AccountsWrapper = styled.div`
 
     > .inner {
       background-color: var(--background-default);
-      border: 1px solid var(--border-primary-color);
+      border: 1px solid var(--border-secondary-color);
       box-shadow: var(--shadow-dropdown);
       border-radius: 0.5rem;
       display: flex;
