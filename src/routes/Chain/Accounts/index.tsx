@@ -3,10 +3,7 @@
 
 import { FlexWrapper, StatsWrapper } from '../Wrappers';
 import { AccountsWrapper } from './Wrappers';
-import {
-  useExtensionAccounts,
-  useVaultAccounts,
-} from '@w3ux/react-connect-kit';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
 import { useApi } from 'contexts/Api';
@@ -14,25 +11,19 @@ import { useActiveTabId } from 'contexts/ActiveTab';
 import { Account } from './Account';
 import { useTabs } from 'contexts/Tabs';
 import BigNumber from 'bignumber.js';
+import { useAccounts } from 'contexts/Accounts';
 
 export const Accounts = () => {
   const { getTab } = useTabs();
+  const { accounts } = useAccounts();
   const { getChainSpec } = useApi();
   const activeTabId = useActiveTabId();
-  const { getVaultAccounts } = useVaultAccounts();
-  const { getExtensionAccounts } = useExtensionAccounts();
+
   const tab = getTab(activeTabId);
   const chainSpec = getChainSpec(activeTabId);
 
   const existentialDeposit =
     chainSpec?.consts?.existentialDeposit || new BigNumber(0);
-
-  const accounts =
-    chainSpec && chainSpec.chain
-      ? getExtensionAccounts(chainSpec.ss58Prefix).concat(
-          getVaultAccounts(chainSpec.chain)
-        )
-      : [];
 
   return (
     <FlexWrapper>

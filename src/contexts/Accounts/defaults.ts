@@ -9,4 +9,5 @@ export const defaultAccountsContext: AccountsContextInterface = {
   getAccountBalance: (address) => undefined,
   getBalanceLocks: (address) => ({ locks: [], maxLock: new BigNumber(0) }),
   getEdReserved: (address, existentialDeposit) => new BigNumber(0),
+  accounts: [],
 };
