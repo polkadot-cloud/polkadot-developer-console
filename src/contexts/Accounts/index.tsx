@@ -3,7 +3,11 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import type { AccountBalancesState, AccountsContextInterface } from './types';
+import type {
+  AccountBalancesState,
+  AccountsContextInterface,
+  BalanceLocks,
+} from './types';
 import { defaultAccountsContext } from './defaults';
 import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
@@ -15,6 +19,8 @@ import {
 } from '@w3ux/react-connect-kit';
 import { useApi } from 'contexts/Api';
 import type { AccountBalances } from 'model/AccountBalances';
+import type { BalanceLock } from 'model/AccountBalances/types';
+import BigNumber from 'bignumber.js';
 
 export const Accounts = createContext<AccountsContextInterface>(
   defaultAccountsContext
@@ -78,6 +84,41 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Gets the largest lock balance, dictating the total amount of unavailable funds from locks.
+  const getMaxLock = (locks: BalanceLock[]): BigNumber =>
+    locks.reduce(
+      (prev, current) =>
+        prev.amount.isGreaterThan(current.amount) ? prev : current,
+      { amount: new BigNumber(0) }
+    )?.amount || new BigNumber(0);
+
+  // Gets an account's balance's locks.
+  const getBalanceLocks = (address: string | undefined): BalanceLocks => {
+    if (address) {
+      const maybeLocks = accountBalances[address]?.locks;
+      if (maybeLocks) {
+        return { locks: maybeLocks, maxLock: getMaxLock(maybeLocks) };
+      }
+    }
+
+    return {
+      locks: [],
+      maxLock: new BigNumber(0),
+    };
+  };
+
+  // Gets the amount of balance reserved for existential deposit.
+  const getEdReserved = (
+    address: string | undefined,
+    existentialDeposit: BigNumber
+  ): BigNumber => {
+    const { locks, maxLock } = getBalanceLocks(address);
+    if (address && locks) {
+      return BigNumber.max(existentialDeposit.minus(maxLock), 0);
+    }
+    return new BigNumber(0);
+  };
+
   // Sync account balances on imported accounts update or tab change. `api` instance is required in
   // subscription classes so api must be `ready` before syncing.
   useEffect(() => {
@@ -108,7 +149,9 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
   );
 
   return (
-    <Accounts.Provider value={{ getAccountBalance }}>
+    <Accounts.Provider
+      value={{ getAccountBalance, getBalanceLocks, getEdReserved }}
+    >
       {children}
     </Accounts.Provider>
   );
