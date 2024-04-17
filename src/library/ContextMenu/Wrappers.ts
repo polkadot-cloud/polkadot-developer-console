@@ -94,11 +94,11 @@ export const ListWrapper = styled.ul`
         }
 
         &:nth-child(3) {
+          color: var(--text-color-tertiary);
           justify-content: flex-end;
           padding-left: 0.5rem;
 
           &.inactive {
-            color: var(--text-color-tertiary);
             opacity: 0.6;
           }
 

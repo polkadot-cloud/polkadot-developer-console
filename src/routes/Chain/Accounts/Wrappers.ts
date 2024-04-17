@@ -65,8 +65,8 @@ export const AccountsWrapper = styled.div`
 
           > .menu {
             position: absolute;
-            top: -0.4rem;
-            right: -0.4rem;
+            top: -0.5rem;
+            right: -0.5rem;
             z-index: 2;
 
             > button {
