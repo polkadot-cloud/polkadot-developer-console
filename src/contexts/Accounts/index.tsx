@@ -2,13 +2,12 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import type { AccountBalancesState, AccountsContextInterface } from './types';
 import { defaultAccountsContext } from './defaults';
 import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
-import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import {
   useExtensionAccounts,
@@ -52,12 +51,15 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
   // Check all accounts have been synced. App-wide syncing state for all accounts.
   const newAccountBalanceCallback = (e: Event) => {
     if (isCustomEvent(e)) {
-      const { address, ...newBalances } = e.detail;
+      const { address, balance, tabId } = e.detail;
+      if (tabId !== selectedTabId) {
+        return;
+      }
 
       // Update state of active accounts.
       setActiveBalances({
         ...accountBalancesRef.current,
-        [address]: newBalances,
+        [address]: balance,
       });
     }
   };
@@ -78,7 +80,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
 
   // Sync account balances on imported accounts update or tab change. `api` instance is required in
   // subscription classes so api must be `ready` before syncing.
-  useEffectIgnoreInitial(() => {
+  useEffect(() => {
     setActiveBalances(
       (
         SubscriptionsController?.get(
@@ -87,12 +89,13 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
         ) as AccountBalances
       )?.balances || {}
     );
+
     if (apiStatus === 'ready') {
       handleSyncAccounts();
     }
   }, [
     selectedTabId,
-    apiStatus,
+    apiStatus === 'ready',
     JSON.stringify(accounts.map(({ address }) => address)),
   ]);
 
