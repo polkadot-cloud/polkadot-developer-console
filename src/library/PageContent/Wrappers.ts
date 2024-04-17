@@ -20,7 +20,7 @@ export const PageContentWrapper = styled.div`
     max-width: 750px;
   }
   &.wide {
-    max-width: 1200px;
+    max-width: 1300px;
   }
 
   > h2 {
