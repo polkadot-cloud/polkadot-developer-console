@@ -38,7 +38,7 @@ export const Accounts = () => {
             icon={faArrowDownLong}
             transform={'shrink-2'}
             className="icon"
-          />{' '}
+          />
           {accounts.length || 'No'}{' '}
           {accounts.length === 1 ? 'Account' : 'Accounts'} Imported
         </div>

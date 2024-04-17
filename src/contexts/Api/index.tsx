@@ -19,6 +19,7 @@ import { useChainUi } from 'contexts/ChainUi';
 import { NotificationsController } from 'controllers/Notifications';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { BlockNumber } from 'model/BlockNumber';
+import { AccountBalances } from 'model/AccountBalances';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -145,7 +146,13 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
             'blockNumber',
             new BlockNumber(tabId, chainId)
           );
-          // TODO: Set up account balance subscriptions.
+
+          // Initialise account balance subscriptions.
+          SubscriptionsController.set(
+            tabId,
+            'accountBalances',
+            new AccountBalances(tabId, chainId)
+          );
 
           break;
         case 'connecting':

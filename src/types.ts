@@ -5,7 +5,7 @@ import type { ExtensionInjected } from '@w3ux/react-connect-kit/types';
 import type { AnyJson } from '@w3ux/utils/types';
 import type { NotificationItem } from 'controllers/Notifications/types';
 import type { OnlineStatusEvent } from 'controllers/OnlineStatus/types';
-import type { AccountBalanceEventDetail } from 'model/AccountBalance/types';
+import type { AccountBalanceEventDetail } from 'model/AccountBalances/types';
 import type {
   APIChainSpecEventDetail,
   APIStatusEventDetail,

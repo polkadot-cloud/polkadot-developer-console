@@ -1,11 +1,11 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AccountBalance } from 'model/AccountBalance';
+import type { AccountBalances } from 'model/AccountBalances';
 import type { BlockNumber } from 'model/BlockNumber';
 
 // Define all possible subscription classes.
-export type Subscription = AccountBalance | BlockNumber;
+export type Subscription = AccountBalances | BlockNumber;
 
 // the record of subscriptions, keyed by tabId.
 export type ChainSubscriptions = Record<string, Subscription>;
