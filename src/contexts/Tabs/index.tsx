@@ -180,6 +180,26 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
+  // Update a tab's units.
+  const updateUnits = (id: number, units: number) => {
+    const newTabs = tabs.map((tab) =>
+      tab.id === id
+        ? { ...tab, chain: tab?.chain ? { ...tab.chain, units } : undefined }
+        : tab
+    );
+    setTabs(newTabs);
+  };
+
+  // Update a tab's unit.
+  const updateUnit = (id: number, unit: string) => {
+    const newTabs = tabs.map((tab) =>
+      tab.id === id
+        ? { ...tab, chain: tab?.chain ? { ...tab.chain, unit } : undefined }
+        : tab
+    );
+    setTabs(newTabs);
+  };
+
   // Set a tab's autoConnect setting.
   const setTabAutoConnect = (id: number, checked: boolean) => {
     setTabs(
@@ -318,6 +338,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         setTabsHidden,
         renameTab,
         updateSs58,
+        updateUnits,
+        updateUnit,
         connectTab,
         instantiateApiFromTab,
         redirectCounter,
