@@ -4,8 +4,9 @@
 import type { VoidFn } from '@polkadot/api/types';
 import type { ChainId } from 'config/networks';
 import { ApiController } from 'controllers/Api';
+import type { Unsubscribable } from 'controllers/Subscriptions/types';
 
-export class BlockNumber {
+export class BlockNumber implements Unsubscribable {
   // ------------------------------------------------------
   // Class members.
   // ------------------------------------------------------
@@ -20,7 +21,7 @@ export class BlockNumber {
   blockNumber = '0';
 
   // Unsubscribe object.
-  unsub: VoidFn;
+  #unsub: VoidFn;
 
   // ------------------------------------------------------
   // Constructor.
@@ -42,7 +43,7 @@ export class BlockNumber {
   subscribe = async (): Promise<void> => {
     const api = ApiController.instances[this.#tabId].api;
 
-    if (api && this.unsub === undefined) {
+    if (api && this.#unsub === undefined) {
       // Get block numbers.
       const unsub = await api.query.system.number((num: number) => {
         // Update class block number.
@@ -61,7 +62,18 @@ export class BlockNumber {
       });
 
       // Subscription now initialised. Store unsub.
-      this.unsub = unsub as unknown as VoidFn;
+      this.#unsub = unsub as unknown as VoidFn;
+    }
+  };
+
+  // ------------------------------------------------------
+  // Unsubscribe handler.
+  // ------------------------------------------------------
+
+  // Unsubscribe from class subscription.
+  unsubscribe = (): void => {
+    if (typeof this.#unsub === 'function') {
+      this.#unsub();
     }
   };
 }

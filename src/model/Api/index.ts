@@ -209,7 +209,7 @@ export class Api {
 
     if (subs) {
       Object.entries(subs).forEach(([subscriptionId, subscription]) => {
-        subscription.unsub();
+        subscription.unsubscribe();
         // Remove subscription from controller.
         SubscriptionsController.removeSub(this.tabId, subscriptionId);
       });
