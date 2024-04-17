@@ -85,7 +85,7 @@ export const Html5QrCodePlugin = ({
           }
         );
       } else {
-        // TODO: display error if no camera devices are available.
+        // Silently fail if no cameras available.
       }
     } catch (err) {
       console.error(err);

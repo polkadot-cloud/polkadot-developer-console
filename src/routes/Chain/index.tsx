@@ -9,28 +9,43 @@ import { ChainState } from './ChainState';
 import { TabMenu } from '../../library/TabMenu';
 import { PageContent } from 'library/PageContent';
 import { Accounts } from './Accounts';
+import { useActiveTabId } from 'contexts/ActiveTab';
+import { useApi } from 'contexts/Api';
 
 export const useRouteSections = (): RouteSectionProvider => {
+  const { getChainSpec } = useApi();
+  const activeTabId = useActiveTabId();
+  const chainSpec = getChainSpec(activeTabId);
+
+  const balancesPaleltExists = chainSpec?.metadata?.palletExists('Balances');
+
   const sections: PageSections = {
     0: {
       label: 'Overview',
       Component: Overview,
+      pageWidth: 'wide',
     },
     1: {
       label: 'Chain State',
       Component: ChainState,
+      pageWidth: 'wide',
     },
     2: {
       label: 'Extrinsics',
       Component: Extrinsics,
-    },
-    3: {
-      label: 'Accounts',
-      Component: Accounts,
+      pageWidth: 'wide',
     },
   };
 
-  return { label: 'Chain', sections, pageWidth: 'wide' };
+  if (balancesPaleltExists) {
+    sections[3] = {
+      label: 'Accounts',
+      Component: Accounts,
+      pageWidth: 'wide',
+    };
+  }
+
+  return { label: 'Chain', sections, pageWidth: 'thin' };
 };
 
 export const Chain = () => (

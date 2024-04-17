@@ -18,8 +18,15 @@ export const PageContent = ({ sections, pageWidth }: PageProps) => {
     Component = ManageTab;
     width = 'thin';
   } else {
+    // Attempt to get the component and width from the sections object.
     Component = sections?.[activePage]?.Component;
     width = sections?.[activePage]?.pageWidth || pageWidth;
+
+    // If no component was found, attempt to get the first section of the active page.
+    if (!Component) {
+      Component = sections?.[0]?.Component;
+      width = sections?.[0]?.pageWidth || pageWidth;
+    }
   }
 
   return (
@@ -29,7 +36,10 @@ export const PageContent = ({ sections, pageWidth }: PageProps) => {
       ) : activePage === 9 ? (
         <ManageTab />
       ) : (
-        <Directory />
+        <>
+          {/* In worse case scenario where no component was found, fall back to directory. */}
+          <Directory />
+        </>
       )}
     </PageContentWrapper>
   );

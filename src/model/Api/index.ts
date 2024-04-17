@@ -13,6 +13,8 @@ import type {
 } from './types';
 import { MetadataController } from 'controllers/Metadata';
 import { SubscriptionsController } from 'controllers/Subscriptions';
+import type { AnyJson } from '@w3ux/utils/types';
+import BigNumber from 'bignumber.js';
 
 export class Api {
   // ------------------------------------------------------
@@ -36,6 +38,9 @@ export class Api {
 
   // The current chain spec.
   chainSpec: APIChainSpec | undefined;
+
+  // Chain constants.
+  consts: Record<string, AnyJson> = {};
 
   // ------------------------------------------------------
   // Getters.
@@ -133,6 +138,7 @@ export class Api {
             metadataVersion,
             metadataPJs
           ),
+          consts: {},
         };
       } else {
         this.dispatchEvent(this.ensureEventStatus('error'), {
@@ -141,6 +147,28 @@ export class Api {
       }
     }
   }
+
+  // Fetch chain consts. Must be called after chain spec is fetched.
+  fetchConsts = () => {
+    const metadata = this.chainSpec?.metadata;
+
+    try {
+      if (metadata) {
+        const hasBalancesPallet = metadata.palletExists('Balances');
+        const existentialDeposit = hasBalancesPallet
+          ? new BigNumber(
+              this.api.consts.balances.existentialDeposit.toString()
+            )
+          : null;
+
+        this.consts = {
+          existentialDeposit,
+        };
+      }
+    } catch (e) {
+      this.consts = {};
+    }
+  };
 
   // ------------------------------------------------------
   // Event handling.
@@ -156,11 +184,15 @@ export class Api {
       if (!this.chainSpec) {
         await this.fetchChainSpec();
 
+        // Fetch chain constants.
+        this.fetchConsts();
+
         document.dispatchEvent(
           new CustomEvent('new-chain-spec', {
             detail: {
-              spec: this.chainSpec,
               tabId: this.tabId,
+              spec: this.chainSpec,
+              consts: this.consts,
             },
           })
         );
@@ -209,7 +241,7 @@ export class Api {
 
     if (subs) {
       Object.entries(subs).forEach(([subscriptionId, subscription]) => {
-        subscription.unsub();
+        subscription.unsubscribe();
         // Remove subscription from controller.
         SubscriptionsController.removeSub(this.tabId, subscriptionId);
       });

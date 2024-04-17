@@ -23,7 +23,7 @@ export const AccountsWrapper = styled.div`
       padding-right: var(--account-item-spacing);
     }
 
-    @media (max-width: 1000px) {
+    @media (max-width: 1100px) {
       flex-basis: 50%;
 
       &:nth-child(3n - 2),
@@ -45,22 +45,44 @@ export const AccountsWrapper = styled.div`
 
     > .inner {
       background-color: var(--background-default);
-      border: 1px solid var(--border-primary-color);
+      border: 1px solid var(--border-secondary-color);
       box-shadow: var(--shadow-dropdown);
       border-radius: 0.5rem;
-      padding: 0.9rem 0.85rem;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
+      padding: 0.85rem 0 0.5rem 0;
       flex: 1;
 
       > div {
         &.icon {
+          padding-top: 0.15rem;
+          padding-left: 0.75rem;
           flex: 0;
         }
 
         &.content {
-          padding-left: 0.65rem;
+          padding-left: 0.6rem;
           flex-grow: 1;
+          position: relative;
+
+          > .menu {
+            position: absolute;
+            top: -0.3rem;
+            right: 0.6rem;
+            z-index: 2;
+
+            > button {
+              color: var(--text-color-tertiary);
+              background: var(--button-secondary-background);
+              width: 1.2rem;
+              height: 1.2rem;
+              border-radius: 2rem;
+
+              &:hover {
+                color: var(--text-color-primary);
+              }
+            }
+          }
 
           > .name {
             position: relative;
@@ -82,6 +104,7 @@ export const AccountsWrapper = styled.div`
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
+            padding-right: 2.25rem;
           }
 
           > .name > h3 {
@@ -108,6 +131,24 @@ export const AccountsWrapper = styled.div`
 
               > svg {
                 color: var(--text-color-tertiary);
+              }
+            }
+          }
+
+          > .free {
+            border-top: 1px solid var(--border-primary-color);
+            margin-top: 0.95rem;
+            padding-top: 0.45rem;
+            padding-right: 0.65rem;
+            display: flex;
+            justify-content: flex-end;
+
+            > h5 {
+              color: var(--text-color-secondary);
+              font-family: InterSemiBold, sans-serif;
+              font-size: 0.68rem;
+              > span {
+                opacity: 0.8;
               }
             }
           }

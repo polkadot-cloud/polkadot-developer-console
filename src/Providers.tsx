@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { App } from 'App';
+import { DappName } from 'consts';
+import type { AnyJson } from '@w3ux/utils/types';
 import { TabsProvider } from 'contexts/Tabs';
 import type { Provider } from 'hooks/withProviders';
 import { withProviders } from 'hooks/withProviders';
@@ -14,13 +16,12 @@ import { ApiProvider } from 'contexts/Api';
 import { ChainUiProvider } from 'contexts/ChainUi';
 import { ParaSetupProvider } from 'contexts/ParaSetup';
 import { ConnectProvider } from 'contexts/Connect';
+import { AccountsProvider } from 'contexts/Accounts';
 import {
   ExtensionAccountsProvider,
   ExtensionsProvider,
   VaultAccountsProvider,
 } from '@w3ux/react-connect-kit';
-import type { AnyJson } from '@w3ux/utils/types';
-import { DappName } from 'consts';
 
 export const Providers = () => {
   // !! Provider order matters.
@@ -37,6 +38,7 @@ export const Providers = () => {
     ExtensionsProvider,
     [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
     VaultAccountsProvider,
+    AccountsProvider,
     ConnectProvider,
   ];
 

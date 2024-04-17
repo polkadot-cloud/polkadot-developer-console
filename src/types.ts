@@ -5,6 +5,7 @@ import type { ExtensionInjected } from '@w3ux/react-connect-kit/types';
 import type { AnyJson } from '@w3ux/utils/types';
 import type { NotificationItem } from 'controllers/Notifications/types';
 import type { OnlineStatusEvent } from 'controllers/OnlineStatus/types';
+import type { AccountBalanceEventDetail } from 'model/AccountBalances/types';
 import type {
   APIChainSpecEventDetail,
   APIStatusEventDetail,
@@ -24,6 +25,7 @@ declare global {
     'new-chain-spec': CustomEvent<APIChainSpecEventDetail>;
     'online-status': CustomEvent<OnlineStatusEvent>;
     'callback-block-number': CustomEvent<BlockNumberEventDetail>;
+    'callback-account-balance': CustomEvent<AccountBalanceEventDetail>;
     notification: CustomEvent<NotificationItem>;
   }
 }

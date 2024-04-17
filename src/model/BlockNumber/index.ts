@@ -4,8 +4,9 @@
 import type { VoidFn } from '@polkadot/api/types';
 import type { ChainId } from 'config/networks';
 import { ApiController } from 'controllers/Api';
+import type { Unsubscribable } from 'controllers/Subscriptions/types';
 
-export class BlockNumber {
+export class BlockNumber implements Unsubscribable {
   // ------------------------------------------------------
   // Class members.
   // ------------------------------------------------------
@@ -20,7 +21,7 @@ export class BlockNumber {
   blockNumber = '0';
 
   // Unsubscribe object.
-  unsub: VoidFn;
+  #unsub: VoidFn;
 
   // ------------------------------------------------------
   // Constructor.
@@ -40,28 +41,43 @@ export class BlockNumber {
 
   // Subscribe to block number.
   subscribe = async (): Promise<void> => {
-    const api = ApiController.instances[this.#tabId].api;
+    try {
+      const api = ApiController.instances[this.#tabId].api;
 
-    if (api && this.unsub === undefined) {
-      // Get block numbers.
-      const unsub = await api.query.system.number((num: number) => {
-        // Update class block number.
-        this.blockNumber = num.toString();
+      if (api && this.#unsub === undefined) {
+        // Get block numbers.
+        const unsub = await api.query.system.number((num: number) => {
+          // Update class block number.
+          this.blockNumber = num.toString();
 
-        // Send block number to UI.
-        document.dispatchEvent(
-          new CustomEvent(`callback-block-number`, {
-            detail: {
-              tabId: this.#tabId,
-              chainId: this.#chainId,
-              blockNumber: num.toString(),
-            },
-          })
-        );
-      });
+          // Send block number to UI.
+          document.dispatchEvent(
+            new CustomEvent(`callback-block-number`, {
+              detail: {
+                tabId: this.#tabId,
+                chainId: this.#chainId,
+                blockNumber: num.toString(),
+              },
+            })
+          );
+        });
 
-      // Block number subscription now initialised. Store unsub.
-      this.unsub = unsub as unknown as VoidFn;
+        // Subscription now initialised. Store unsub.
+        this.#unsub = unsub as unknown as VoidFn;
+      }
+    } catch (e) {
+      // Block number subscription failed.
+    }
+  };
+
+  // ------------------------------------------------------
+  // Unsubscribe handler.
+  // ------------------------------------------------------
+
+  // Unsubscribe from class subscription.
+  unsubscribe = (): void => {
+    if (typeof this.#unsub === 'function') {
+      this.#unsub();
     }
   };
 }

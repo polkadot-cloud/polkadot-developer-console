@@ -18,6 +18,7 @@ import { useEventListener } from 'usehooks-ts';
 import BigNumber from 'bignumber.js';
 import { FlexWrapper, StatsWrapper } from '../Wrappers';
 import { SubscriptionsController } from 'controllers/Subscriptions';
+import type { BlockNumber } from 'model/BlockNumber';
 
 export const Overview = () => {
   const { getTab } = useTabs();
@@ -53,7 +54,8 @@ export const Overview = () => {
 
   // The latest received block number.
   const [blockNumber, setBlockNumber] = useState<string>(
-    SubscriptionsController.get(tabId, 'blockNumber')?.blockNumber || '0'
+    (SubscriptionsController.get(tabId, 'blockNumber') as BlockNumber)
+      ?.blockNumber || '0'
   );
 
   // Handle new block number callback.
@@ -72,7 +74,8 @@ export const Overview = () => {
   // Update block number on tab change.
   useEffect(() => {
     setBlockNumber(
-      SubscriptionsController.get(tabId, 'blockNumber')?.blockNumber || '0'
+      (SubscriptionsController.get(tabId, 'blockNumber') as BlockNumber)
+        ?.blockNumber || '0'
     );
   }, [tabId]);
 
