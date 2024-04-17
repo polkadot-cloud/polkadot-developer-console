@@ -23,7 +23,6 @@ export const Accounts = () => {
   const tab = getTab(activeTabId);
   const chainSpec = getChainSpec(activeTabId);
 
-  console.log(tab?.chain?.id);
   const accounts =
     chainSpec && chainSpec.chain
       ? getExtensionAccounts(chainSpec.ss58Prefix).concat(
