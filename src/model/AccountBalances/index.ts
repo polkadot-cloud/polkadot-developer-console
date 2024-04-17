@@ -44,67 +44,71 @@ export class AccountBalances implements Unsubscribable {
 
   // Sync account balance.
   syncAccounts = async (newAccounts: string[]): Promise<void> => {
-    // Handle accounts that have been removed.
-    this.handleRemovedAccounts(newAccounts);
+    try {
+      // Handle accounts that have been removed.
+      this.handleRemovedAccounts(newAccounts);
 
-    // Determine new accounts that need to be subscribed to.
-    const accountsAdded = newAccounts.filter(
-      (account) => !this.#accounts.includes(account)
-    );
+      // Determine new accounts that need to be subscribed to.
+      const accountsAdded = newAccounts.filter(
+        (account) => !this.#accounts.includes(account)
+      );
 
-    // Exit early if there are no new accounts to subscribe to.
-    if (!accountsAdded.length) {
-      return;
-    }
+      // Exit early if there are no new accounts to subscribe to.
+      if (!accountsAdded.length) {
+        return;
+      }
 
-    // Get api instance and subscribe to new accounts.
-    const api = ApiController.instances[this.#tabId].api;
-    if (api) {
-      accountsAdded.forEach(async (address) => {
-        this.#accounts.push(address);
+      // Get api instance and subscribe to new accounts.
+      const api = ApiController.instances[this.#tabId].api;
+      if (api) {
+        accountsAdded.forEach(async (address) => {
+          this.#accounts.push(address);
 
-        const unsub = await api.queryMulti<AnyJson>(
-          [
-            [api.query.system.account, address],
-            [api.query.balances.locks, address],
-          ],
-          async ([
-            { data: accountData, nonce },
-            locksResult,
-          ]): Promise<void> => {
-            // Update balance data for this address.
-            this.balances[address] = {
-              nonce: nonce.toNumber(),
-              balance: {
-                free: stringToBigNumber(accountData.free.toString()),
-                reserved: stringToBigNumber(accountData.reserved.toString()),
-                frozen: stringToBigNumber(accountData.frozen.toString()),
-              },
-              locks: locksResult
-                .toHuman()
-                .map((lock: { id: string; amount: string }) => ({
-                  ...lock,
-                  id: lock.id.trim(),
-                  amount: stringToBigNumber(lock.amount),
-                })),
-            };
-
-            // Send balance data to UI.
-            document.dispatchEvent(
-              new CustomEvent('callback-account-balance', {
-                detail: {
-                  tabId: this.#tabId,
-                  chainId: this.#chainId,
-                  address,
-                  balance: this.balances[address],
+          const unsub = await api.queryMulti<AnyJson>(
+            [
+              [api.query.system.account, address],
+              [api.query.balances.locks, address],
+            ],
+            async ([
+              { data: accountData, nonce },
+              locksResult,
+            ]): Promise<void> => {
+              // Update balance data for this address.
+              this.balances[address] = {
+                nonce: nonce.toNumber(),
+                balance: {
+                  free: stringToBigNumber(accountData.free.toString()),
+                  reserved: stringToBigNumber(accountData.reserved.toString()),
+                  frozen: stringToBigNumber(accountData.frozen.toString()),
                 },
-              })
-            );
-          }
-        );
+                locks: locksResult
+                  .toHuman()
+                  .map((lock: { id: string; amount: string }) => ({
+                    ...lock,
+                    id: lock.id.trim(),
+                    amount: stringToBigNumber(lock.amount),
+                  })),
+              };
 
-        this.#unsubs[address] = unsub;
-      });
+              // Send balance data to UI.
+              document.dispatchEvent(
+                new CustomEvent('callback-account-balance', {
+                  detail: {
+                    tabId: this.#tabId,
+                    chainId: this.#chainId,
+                    address,
+                    balance: this.balances[address],
+                  },
+                })
+              );
+            }
+          );
+
+          this.#unsubs[address] = unsub;
+        });
+      }
+    } catch (e) {
+      // Account balance subscription failed.
     }
   };
 

@@ -41,28 +41,32 @@ export class BlockNumber implements Unsubscribable {
 
   // Subscribe to block number.
   subscribe = async (): Promise<void> => {
-    const api = ApiController.instances[this.#tabId].api;
+    try {
+      const api = ApiController.instances[this.#tabId].api;
 
-    if (api && this.#unsub === undefined) {
-      // Get block numbers.
-      const unsub = await api.query.system.number((num: number) => {
-        // Update class block number.
-        this.blockNumber = num.toString();
+      if (api && this.#unsub === undefined) {
+        // Get block numbers.
+        const unsub = await api.query.system.number((num: number) => {
+          // Update class block number.
+          this.blockNumber = num.toString();
 
-        // Send block number to UI.
-        document.dispatchEvent(
-          new CustomEvent(`callback-block-number`, {
-            detail: {
-              tabId: this.#tabId,
-              chainId: this.#chainId,
-              blockNumber: num.toString(),
-            },
-          })
-        );
-      });
+          // Send block number to UI.
+          document.dispatchEvent(
+            new CustomEvent(`callback-block-number`, {
+              detail: {
+                tabId: this.#tabId,
+                chainId: this.#chainId,
+                blockNumber: num.toString(),
+              },
+            })
+          );
+        });
 
-      // Subscription now initialised. Store unsub.
-      this.#unsub = unsub as unknown as VoidFn;
+        // Subscription now initialised. Store unsub.
+        this.#unsub = unsub as unknown as VoidFn;
+      }
+    } catch (e) {
+      // Block number subscription failed.
     }
   };
 
