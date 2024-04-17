@@ -60,7 +60,7 @@ export class BlockNumber {
         );
       });
 
-      // Block number subscription now initialised. Store unsub.
+      // Subscription now initialised. Store unsub.
       this.unsub = unsub as unknown as VoidFn;
     }
   };

@@ -2250,17 +2250,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@w3ux/react-connect-kit@npm:^0.1.15":
-  version: 0.1.15
-  resolution: "@w3ux/react-connect-kit@npm:0.1.15"
+"@w3ux/react-connect-kit@npm:^0.1.16":
+  version: 0.1.16
+  resolution: "@w3ux/react-connect-kit@npm:0.1.16"
   dependencies:
     "@chainsafe/metamask-polkadot-adapter": "npm:^0.6.0"
     "@polkadot/util": "npm:^12.6.2"
     "@polkagate/extension-dapp": "npm:^0.46.12"
     "@w3ux/extension-assets": "npm:^0.2.3"
     "@w3ux/hooks": "npm:^0.0.3"
-    "@w3ux/utils": "npm:^0.0.2"
-  checksum: 10c0/4aa288c5dc608394b18d8ac5405ed7bd584719c42661483c8d859d01d174a1bb1bb7acc3abd96bc92aa21e175a294d37e75a6db7176949ef157addc8a70106d0
+    "@w3ux/utils": "npm:^0.1.1"
+  checksum: 10c0/30ff5d63cd81757b48b65b8e689b1d05dbdd94e57adcf1eb4872eb6d5a5e8cdfe29e0f6a76752438e6dec0f75094822a21cc4ed0d2dc00894c73718a41111a05
   languageName: node
   linkType: hard
 
@@ -2271,43 +2271,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@w3ux/react-polkicon@npm:^0.0.2":
-  version: 0.0.2
-  resolution: "@w3ux/react-polkicon@npm:0.0.2"
+"@w3ux/react-polkicon@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "@w3ux/react-polkicon@npm:0.0.3"
   dependencies:
     "@polkadot/util": "npm:^12.6.2"
-    "@w3ux/utils": "npm:0.0.1"
-    framer-motion: "npm:^11.0.6"
-  checksum: 10c0/f1566d84f9991a64bd97aabec1475a876c86017070590bf111779c6f2baa1194818d6162416758368a8902cbeb4c8da7ca8998a0a8251d161a79f75a77b952cc
+    "@w3ux/utils": "npm:^0.1.1"
+    framer-motion: "npm:^11.0.24"
+  checksum: 10c0/d2c9b103cde8ac6b0c22d4994a94741cbc5828b8f19913f4d10e0c3b05af9c69cfee538e10d8dba6e2f05445ae610e98564f6cd5f407b526b0672e0ddfd28de2
   languageName: node
   linkType: hard
 
-"@w3ux/utils@npm:0.0.1":
-  version: 0.0.1
-  resolution: "@w3ux/utils@npm:0.0.1"
-  checksum: 10c0/a14823f3f0e3776a472ccaf6838745af077191fe3a004ceea3936c4d5767189de96eba9752b9cf8eb56a1aa24e38c6a05f673748a955671be761cb713108b8c4
-  languageName: node
-  linkType: hard
-
-"@w3ux/utils@npm:^0.0.2":
-  version: 0.0.2
-  resolution: "@w3ux/utils@npm:0.0.2"
+"@w3ux/utils@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@w3ux/utils@npm:0.1.1"
   dependencies:
     "@polkadot/keyring": "npm:^12.6.2"
     "@polkadot/util": "npm:^12.6.2"
     bignumber.js: "npm:^9.1.1"
-  checksum: 10c0/33ce48775fd806313363d029c11c34dbe269d2f93aa64e2bc0229ce26383277d6bc0d8e2452b4df2e31d87a41020289a8cf4bd6f3efc4b089387247455b3426d
-  languageName: node
-  linkType: hard
-
-"@w3ux/utils@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@w3ux/utils@npm:0.1.0"
-  dependencies:
-    "@polkadot/keyring": "npm:^12.6.2"
-    "@polkadot/util": "npm:^12.6.2"
-    bignumber.js: "npm:^9.1.1"
-  checksum: 10c0/b69f108d506102c5e27fe224b5c1a32ab4e0c27c7d007f7647eee17760a56c539ee3a246cdf8e5d1a8613d35b077c28349e60b247676b5be886f418a62bddff7
+  checksum: 10c0/403d4fac9a5daac3e76fa199f0505c7a8e557c51bfdb77055ca22682644117bfa7710b91b07d5c3079a09dc46441d53c04849a1cce1f8a6dca13db16cbf86fe5
   languageName: node
   linkType: hard
 
@@ -2893,10 +2875,10 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.2.1"
     "@w3ux/extension-assets": "npm:^0.2.6"
     "@w3ux/hooks": "npm:^0.0.3"
-    "@w3ux/react-connect-kit": "npm:^0.1.15"
+    "@w3ux/react-connect-kit": "npm:^0.1.16"
     "@w3ux/react-odometer": "npm:^0.0.3"
-    "@w3ux/react-polkicon": "npm:^0.0.2"
-    "@w3ux/utils": "npm:^0.1.0"
+    "@w3ux/react-polkicon": "npm:^0.0.3"
+    "@w3ux/utils": "npm:^0.1.1"
     bignumber.js: "npm:^9.1.2"
     buffer: "npm:^6.0.3"
     date-fns: "npm:^3.3.1"
@@ -3937,9 +3919,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^11.0.6":
-  version: 11.0.20
-  resolution: "framer-motion@npm:11.0.20"
+"framer-motion@npm:^11.0.24":
+  version: 11.1.1
+  resolution: "framer-motion@npm:11.1.1"
   dependencies:
     tslib: "npm:^2.4.0"
   peerDependencies:
@@ -3953,7 +3935,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/863c209b6ae9a9e2dc852d004de2e2596171dbbf34684b665618f87087081fd2d9f73c9c0decea4f59daec18734776be75442c2e5c3885a204b338ce3899a4f6
+  checksum: 10c0/0f80828f27ab18937a0dee55efacbd124f248f8eb869e581aeabbbbd755eb2cd42f70f5490edf1280abdef3d08c4c0d3f404db8fe6d32583d3842cb575f09cdb
   languageName: node
   linkType: hard
 
