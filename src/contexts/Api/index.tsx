@@ -207,7 +207,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   return (
     <Api.Provider
       value={{
-        isReady: false,
         getApiStatus,
         getApiActive,
         getTabApi,
