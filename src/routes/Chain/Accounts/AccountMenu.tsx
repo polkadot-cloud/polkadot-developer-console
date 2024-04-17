@@ -29,7 +29,7 @@ export const AccountContextMenu = ({
           ></button>
           <div className="inner">
             <div className="none">
-              {/* TODO: When Subscan SVG becomes available, add here */}
+              {/* NOTE: Subscan SVG can be placed here when available. */}
               {/* <FontAwesomeIcon icon={faBarsProgress} transform="shrink-2" /> */}
             </div>
             <div>
