@@ -61,6 +61,26 @@ export const AccountsWrapper = styled.div`
         &.content {
           padding-left: 0.65rem;
           flex-grow: 1;
+          position: relative;
+
+          > .menu {
+            position: absolute;
+            top: -0.4rem;
+            right: -0.4rem;
+            z-index: 2;
+
+            > button {
+              color: var(--text-color-tertiary);
+              background: var(--button-secondary-background);
+              width: 1.2rem;
+              height: 1.2rem;
+              border-radius: 2rem;
+
+              &:hover {
+                color: var(--text-color-primary);
+              }
+            }
+          }
 
           > .name {
             position: relative;
@@ -88,6 +108,7 @@ export const AccountsWrapper = styled.div`
             color: var(--text-color-primary);
             font-size: 0.8rem;
             line-height: 0.8rem;
+            padding-right: 1.25rem;
           }
 
           > .address > h5 {

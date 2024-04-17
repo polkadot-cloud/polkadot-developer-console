@@ -5,7 +5,7 @@ import { ellipsisFn, remToUnit } from '@w3ux/utils';
 import type { AccountProps } from './types';
 import { Polkicon } from '@w3ux/react-polkicon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faCopy } from '@fortawesome/free-solid-svg-icons';
 
 export const Account = ({ account }: AccountProps) => {
   const { name, address } = account;
@@ -17,6 +17,15 @@ export const Account = ({ account }: AccountProps) => {
           <Polkicon address={address} size={remToUnit('1.7rem')} />
         </div>
         <div className="content">
+          <div className="menu">
+            <button
+              onClick={() => {
+                /* Do nothing. */
+              }}
+            >
+              <FontAwesomeIcon icon={faBars} transform="shrink-6" />
+            </button>
+          </div>
           <div className="name">
             <h3>{name}</h3>
           </div>
