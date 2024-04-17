@@ -137,7 +137,7 @@ export const AccountsWrapper = styled.div`
 
           > .free {
             border-top: 1px solid var(--border-primary-color);
-            margin-top: 0.75rem;
+            margin-top: 0.95rem;
             padding-top: 0.45rem;
             padding-right: 0.65rem;
             display: flex;
