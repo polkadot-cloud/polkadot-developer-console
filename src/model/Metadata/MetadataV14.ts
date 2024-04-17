@@ -19,6 +19,11 @@ export class MetadataV14 implements MetadataVersion {
 
   palletExists(palletName: string) {
     const json: AnyJson = this.getMetadataJson();
-    return json?.pallets?.[palletName] !== undefined;
+    console.log(json?.pallets);
+    return (
+      json?.pallets?.find(
+        ({ name }: { name: string }) => name === palletName
+      ) !== undefined
+    );
   }
 }

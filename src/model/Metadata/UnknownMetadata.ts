@@ -18,6 +18,10 @@ export class UnknownMetadata implements MetadataVersion {
 
   palletExists(palletName: string) {
     const json: AnyJson = this.getMetadataJson();
-    return json?.pallets?.[palletName] !== undefined;
+    return (
+      json?.pallets?.find(
+        ({ name }: { name: string }) => name === palletName
+      ) !== undefined
+    );
   }
 }
