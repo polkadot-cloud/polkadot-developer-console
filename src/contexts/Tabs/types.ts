@@ -51,6 +51,7 @@ export interface TabsContextInterface {
   setTabsHidden: (hidden: boolean) => void;
   instantiatedIds: number[];
   renameTab: (id: number, name: string) => void;
+  updateSs58: (id: number, ss58: number) => void;
   redirectCounter: number;
   incrementRedirectCounter: () => void;
   connectTab: (tabId: number, chainId: ChainId, endpoint: string) => void;

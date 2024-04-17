@@ -170,6 +170,16 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
+  // Update a tab's ss58 prefix.
+  const updateSs58 = (id: number, ss58: number) => {
+    const newTabs = tabs.map((tab) =>
+      tab.id === id
+        ? { ...tab, chain: tab?.chain ? { ...tab.chain, ss58 } : undefined }
+        : tab
+    );
+    setTabs(newTabs);
+  };
+
   // Set a tab's autoConnect setting.
   const setTabAutoConnect = (id: number, checked: boolean) => {
     setTabs(
@@ -249,7 +259,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         unit: system.unit,
       };
     } else {
-      chainMeta = defaultCustomEndpointChainMeta;
+      const localChain = local.getTabs()?.find(({ id }) => id === tabId)?.chain;
+      chainMeta = localChain || defaultCustomEndpointChainMeta;
     }
 
     const newTabs = [...tabs].map((tab) =>
@@ -306,6 +317,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         tabsHidden,
         setTabsHidden,
         renameTab,
+        updateSs58,
         connectTab,
         instantiateApiFromTab,
         redirectCounter,

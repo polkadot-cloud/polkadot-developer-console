@@ -19,7 +19,7 @@ export const ManageTab = () => {
   const { getApiStatus } = useApi();
   const { setActivePage } = useRoute();
   const activeTabId = useActiveTabId();
-  const { setTabForceDisconnect, renameTab, getTab } = useTabs();
+  const { setTabForceDisconnect, renameTab, getTab, updateSs58 } = useTabs();
 
   const activeTab = getTab(activeTabId);
   const apiStatus = getApiStatus(activeTabId);
@@ -52,8 +52,7 @@ export const ManageTab = () => {
           if (!isNaN(Number(value)) && Number.isInteger(Number(value))) {
             // Ensure whole number with no decimals.
             const valueInt = Math.ceil(Number(value));
-            /* TODO: Implement update */
-            console.log(valueInt);
+            updateSs58(activeTabId, valueInt);
           }
         }}
         initialValue={String(activeTab?.chain?.ss58 || '0')}
