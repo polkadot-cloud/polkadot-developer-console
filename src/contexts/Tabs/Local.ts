@@ -25,7 +25,7 @@ export const getSelectedTabId = (): number | undefined => {
     | number
     | undefined;
 
-  if (result) {
+  if (result !== undefined) {
     return result as number;
   }
 };
@@ -36,7 +36,7 @@ export const getActiveTabIndex = (): number | undefined => {
     | number
     | undefined;
 
-  if (result) {
+  if (result !== undefined) {
     return result as number;
   }
 };

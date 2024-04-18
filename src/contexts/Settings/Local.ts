@@ -8,19 +8,23 @@ import type { LocalSettings, SettingsKey } from './types';
 // Getters.
 // ------------------------------------------------------
 
-// Gets saved auto connect setting from local storage, or return undefined otherwise.
-export const getSetting = (key: SettingsKey): boolean => {
+// Gets saved setting from local storage, or return undefined otherwise.
+export const getSetting = (
+  key: SettingsKey,
+  defaultValue?: boolean
+): boolean => {
   const result = localStorageOrDefault(`settings`, undefined, true) as
     | LocalSettings
     | undefined;
 
   if (result) {
     const maybeValue = result[key];
-    if (maybeValue) {
+    if (maybeValue !== undefined) {
       return maybeValue as boolean;
     }
   }
-  return false;
+
+  return defaultValue !== undefined ? defaultValue : false;
 };
 
 // ------------------------------------------------------

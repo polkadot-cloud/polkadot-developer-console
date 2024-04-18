@@ -21,7 +21,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
 
   // Whether to automatically rename tabs based on chain being connected to.
   const [autoTabNaming, setAutoTabNamingState] = useState<boolean>(
-    local.getSetting('autoTabNaming')
+    local.getSetting('autoTabNaming', true)
   );
 
   // Whether to use chain colors.
