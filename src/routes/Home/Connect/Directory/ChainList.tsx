@@ -48,7 +48,7 @@ export const ChainList = () => {
   if (searchTerm !== '') {
     filtered = Object.fromEntries(
       Object.entries(filtered).filter(([, { name }]) =>
-        name.includes(searchTerm)
+        name.toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
   }
