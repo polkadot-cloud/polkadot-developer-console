@@ -68,6 +68,11 @@ export const ListWrapper = styled.ul`
           &.none {
             width: 0;
           }
+
+          > .svg {
+            width: 0.9rem;
+            height: 0.9rem;
+          }
         }
         &:nth-child(2) {
           flex-grow: 1;

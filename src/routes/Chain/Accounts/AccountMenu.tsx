@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { ImportedAccount } from '@w3ux/react-connect-kit/types';
 import type { ChainId } from 'config/networks';
 import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
+import SubscanIconGrayscaleSVG from 'svg/SubscanIconGrayscale.svg?react';
 
 export const AccountContextMenu = ({
   chainId,
@@ -28,9 +29,8 @@ export const AccountContextMenu = ({
             }}
           ></button>
           <div className="inner">
-            <div className="none">
-              {/* NOTE: Subscan SVG can be placed here when available. */}
-              {/* <FontAwesomeIcon icon={faBarsProgress} transform="shrink-2" /> */}
+            <div>
+              <SubscanIconGrayscaleSVG className="svg" />
             </div>
             <div>
               <h3>View on Subscan</h3>
