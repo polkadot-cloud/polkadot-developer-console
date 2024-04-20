@@ -46,4 +46,4 @@ export type PalletVersions = Record<string, Record<string, string>>;
 
 export type ChainStateSections = Record<number, ChainStateSection>;
 
-export type ChainStateSection = 'storage' | 'constants' | 'raw';
+export type ChainStateSection = 'storage' | 'constants' | 'calls' | 'raw';

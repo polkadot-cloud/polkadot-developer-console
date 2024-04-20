@@ -10,13 +10,13 @@ import {
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
-import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
 import { camelize, setStateWithRef } from '@w3ux/utils';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import type { PalletListProps } from './ChainState/types';
 import { useEventListener } from 'usehooks-ts';
+import { SearchInput } from 'library/ContextMenu/SearchInput';
 
 export const PalletList = ({
   pallets,
@@ -134,36 +134,16 @@ export const PalletList = ({
           ref={palletSelectRef}
           className={`${palletsOpen ? ` open` : ``}`}
         >
-          <SearchWrapper>
-            <input
-              ref={searchInputRef}
-              placeholder="Search"
-              value={palletSearch}
-              onChange={(ev) =>
-                handlePalletSearchChange(ev.currentTarget.value)
-              }
-              onKeyDown={(ev) => {
-                // Close and retain search value on enter key.
-                if (ev.key === 'Enter') {
-                  setPalletsOpen(false);
-                }
-                if (ev.key === 'Escape') {
-                  // If search value exists, first clear it.
-                  if (chainUi.palletSearch.length > 0) {
-                    setChainUiItem(
-                      activeTabId,
-                      chainUiSection,
-                      'palletSearch',
-                      ''
-                    );
-                  } else {
-                    // No search, go ahead and close dropdown.
-                    setPalletsOpen(false);
-                  }
-                }
-              }}
-            />
-          </SearchWrapper>
+          <SearchInput
+            inputRef={searchInputRef}
+            value={palletSearch}
+            chainUiKey="palletSearch"
+            chainUiSection={chainUiSection}
+            onChange={(ev) => handlePalletSearchChange(ev.currentTarget.value)}
+            onEnter={() => setPalletsOpen(false)}
+            onEscape={() => setPalletsOpen(false)}
+          />
+
           {filteredPallets.map(({ index, name }) => (
             <SelectItemWrapper
               key={`pallet_${index}_${name}`}

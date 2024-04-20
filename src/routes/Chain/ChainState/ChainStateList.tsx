@@ -14,11 +14,11 @@ import {
 } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 import { camelize, setStateWithRef } from '@w3ux/utils';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import type { ChainStateListProps } from './types';
 import { useEventListener } from 'usehooks-ts';
+import { SearchInput } from 'library/ContextMenu/SearchInput';
 
 export const ChainStateList = ({
   items,
@@ -147,29 +147,15 @@ export const ChainStateList = ({
           ref={dropdownRef}
           className={`${dropdownOpen ? ` open` : ``}`}
         >
-          <SearchWrapper>
-            <input
-              ref={searchInputRef}
-              placeholder="Search"
-              value={chainUi.search}
-              onChange={(ev) => handleSearchChange(ev.currentTarget.value)}
-              onKeyDown={(ev) => {
-                // Close and retain search value on enter key.
-                if (ev.key === 'Enter') {
-                  setDropdownOpen(false);
-                }
-                if (ev.key === 'Escape') {
-                  // If search value exists, first clear it.
-                  if (chainUi.search.length > 0) {
-                    setChainUiItem(activeTabId, chainUiSection, 'search', '');
-                  } else {
-                    // No search, go ahead and close dropdown.
-                    setDropdownOpen(false);
-                  }
-                }
-              }}
-            />
-          </SearchWrapper>
+          <SearchInput
+            inputRef={searchInputRef}
+            value={chainUi.search}
+            chainUiKey="search"
+            chainUiSection={chainUiSection}
+            onChange={(ev) => handleSearchChange(ev.currentTarget.value)}
+            onEnter={() => setDropdownOpen(false)}
+            onEscape={() => setDropdownOpen(false)}
+          />
 
           {filteredList.map(({ name, docs, callSig }) => (
             <SelectItemWrapper

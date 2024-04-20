@@ -11,12 +11,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import type { AnyJson } from '@w3ux/utils/types';
 import { Format } from 'model/Metadata/Scraper/Format';
-import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 import { formatInputString } from 'Utils';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { useChainUi } from 'contexts/ChainUi';
 import { camelize } from '@w3ux/utils';
 import { useActiveTabId } from 'contexts/ActiveTab';
+import { SearchInput } from 'library/ContextMenu/SearchInput';
 
 export const CallList = ({ calls }: { calls: AnyJson }) => {
   const activeTabId = useActiveTabId();
@@ -138,29 +138,15 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
           ref={callsSelectRef}
           className={`${callsOpen ? ` open` : ``}`}
         >
-          <SearchWrapper>
-            <input
-              ref={searchInputRef}
-              placeholder="Search"
-              value={chainUi.search}
-              onChange={(ev) => handleCallSearchChange(ev.currentTarget.value)}
-              onKeyDown={(ev) => {
-                // Close and retain search value on enter key.
-                if (ev.key === 'Enter') {
-                  setCallsOpen(false);
-                }
-                if (ev.key === 'Escape') {
-                  // If search value exists, first clear it.
-                  if (chainUi.search.length > 0) {
-                    setChainUiItem(activeTabId, chainUiSection, 'search', '');
-                  } else {
-                    // No search, go ahead and close dropdown.
-                    setCallsOpen(false);
-                  }
-                }
-              }}
-            />
-          </SearchWrapper>
+          <SearchInput
+            inputRef={searchInputRef}
+            value={chainUi.search}
+            chainUiKey="search"
+            chainUiSection={chainUiSection}
+            onChange={(ev) => handleCallSearchChange(ev.currentTarget.value)}
+            onEnter={() => setCallsOpen(false)}
+            onEscape={() => setCallsOpen(false)}
+          />
 
           {filteredCalls.map(({ name, docs, fieldNames }) => (
             <SelectItemWrapper
