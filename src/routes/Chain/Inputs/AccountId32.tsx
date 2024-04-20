@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   SelectDropdownWrapper,
   SelectItemWrapper,
@@ -9,7 +9,7 @@ import {
   TextInputWrapper,
 } from '../Wrappers';
 import { Polkicon } from '@w3ux/react-polkicon';
-import { remToUnit, setStateWithRef } from '@w3ux/utils';
+import { ellipsisFn, remToUnit, setStateWithRef } from '@w3ux/utils';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { useAccounts } from 'contexts/Accounts';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
@@ -48,11 +48,6 @@ export const AccountId32 = () => {
   // Pallet search input ref.
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Handle input value change.
-  const handleInputChange = (val: string) => {
-    setValue(val);
-  };
-
   // Filter accounts based on search term, if present.
   // TODO: Remove read only accounts once supported.
   const filteredAccounts =
@@ -64,13 +59,20 @@ export const AccountId32 = () => {
         )
       : accounts;
 
+  // Focus the pallet search input when the menu is opened.
+  useEffect(() => {
+    if (dropdownOpen) {
+      searchInputRef.current?.focus();
+    }
+  }, [dropdownOpen]);
+
   // Close pallet selection if clicked outside of its container.
   useOutsideAlerter(
     accountDropdownRef,
     () => {
       setDropdownOpen(false);
     },
-    ['ignore-outside-alerter-pallets']
+    ['ignore-outside-alerter-search-input']
   );
 
   return (
@@ -78,18 +80,22 @@ export const AccountId32 = () => {
       <TextInputWrapper className="input">
         <span className="polkicon">
           <Polkicon
-            address={value}
+            address={selectedAddress}
             size={remToUnit('1.5rem')}
             outerColor="var(--background-primary)"
           />
         </span>
 
-        <input
-          type="text"
-          value={value || ''}
-          onChange={(ev) => handleInputChange(ev.currentTarget.value)}
-          onFocus={() => setDropdownOpen(true)}
-        />
+        <button
+          className="deadInput ignore-outside-alerter-search-input"
+          onClick={() => {
+            if (!dropdownOpen) {
+              setDropdownOpen(true);
+            }
+          }}
+        >
+          {value}
+        </button>
       </TextInputWrapper>
       <SelectDropdownWrapper
         ref={accountDropdownRef}
@@ -98,7 +104,9 @@ export const AccountId32 = () => {
         <SearchInput
           inputRef={searchInputRef}
           value={searchValue}
-          onChange={(ev) => setSearchValue(ev.currentTarget.value)}
+          onChange={(ev) => {
+            setSearchValue(ev.currentTarget.value);
+          }}
           onEnter={() => setDropdownOpen(false)}
           onEscape={() => setDropdownOpen(false)}
         />
@@ -113,9 +121,13 @@ export const AccountId32 = () => {
             }}
           >
             <span>
-              <SelectTextWrapper>{name}</SelectTextWrapper>
+              <SelectTextWrapper className="secondary">
+                {name}
+              </SelectTextWrapper>
             </span>
-            <span></span>
+            <span>
+              <h5>{ellipsisFn(address, 14)}</h5>
+            </span>
           </SelectItemWrapper>
         ))}
       </SelectDropdownWrapper>

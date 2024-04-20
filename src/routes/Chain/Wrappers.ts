@@ -158,13 +158,17 @@ export const SelectItemWrapper = styled.button`
     }
     &:last-child {
       color: var(--text-color-primary);
-      justify-content: flex-end;
       overflow: hidden;
+      flex-basis: 20%;
+      flex-grow: 1;
+      display: flex;
+      justify-content: flex-end;
 
       > h5 {
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        text-align: right;
         width: 100%;
       }
 
@@ -213,6 +217,15 @@ export const SelectTextWrapper = styled.h4`
     font-family: Inter, sans-serif;
     margin-left: 0.1rem;
   }
+
+  &.secondary {
+    color: var(--text-color-secondary);
+    font-size: 0.8rem;
+
+    > span {
+      color: var(--text-color-tertiary);
+    }
+  }
 `;
 
 export const TextInputWrapper = styled.div`
@@ -223,16 +236,6 @@ export const TextInputWrapper = styled.div`
   transition: border 0.15s;
   display: flex;
   align-items: center;
-
-  &.input {
-    background-color: var(--background-default);
-    border: 1px solid var(--border-secondary-color);
-    border-radius: 0.25rem;
-
-    &:hover {
-      border-color: var(--accent-color-secondary);
-    }
-  }
 
   &:hover {
     border-color: var(--border-secondary-color);
@@ -247,11 +250,29 @@ export const TextInputWrapper = styled.div`
     padding-right: 0.15rem;
   }
 
-  > input {
+  > input,
+  > .deadInput {
     font-family: InterSemiBold, sans-serif;
     height: inherit;
     padding: 0 0.7rem;
     width: 100%;
+    text-align: left;
+  }
+
+  &.input {
+    background-color: var(--background-default);
+    border: 1px solid var(--border-secondary-color);
+    border-radius: 0.25rem;
+
+    &:hover {
+      border-color: var(--accent-color-secondary);
+    }
+
+    > input,
+    > .deadInput {
+      color: var(--text-color-secondary);
+      font-size: 0.8rem;
+    }
   }
 `;
 
