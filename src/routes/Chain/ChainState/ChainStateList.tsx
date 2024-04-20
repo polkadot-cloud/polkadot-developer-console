@@ -17,8 +17,8 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { camelize, setStateWithRef } from '@w3ux/utils';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import type { ChainStateListProps } from './types';
-import { useEventListener } from 'usehooks-ts';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
+import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
 
 export const ChainStateList = ({
   items,
@@ -72,28 +72,15 @@ export const ChainStateList = ({
     filteredList[0] ||
     '';
 
-  // Handle key down events.
-  const handleKeyDown = (ev: KeyboardEvent) => {
-    const { type, key } = ev;
-    const itemIndex = filteredList.findIndex(({ name }) => name === activeItem);
-
-    // Determine the new pallet index, defaulting to the active item if present in the filtered
-    // list, otherwise 0
-    let newIndex = itemIndex > filteredList.length - 1 ? 0 : itemIndex;
-    if (dropdownOpenRef.current && type === 'keydown') {
-      if (key === 'ArrowDown') {
-        newIndex = Math.min(newIndex + 1, filteredList.length - 1);
-      } else if (key === 'ArrowUp') {
-        newIndex = Math.max(newIndex - 1, 0);
-      }
-
-      // Update the active item if the index points to a valid filtered item.
-      const newActiveItem = filteredList[newIndex]?.name;
-      if (newActiveItem) {
-        setChainUiItem(activeTabId, chainUiSection, 'selected', newActiveItem);
-      }
-    }
-  };
+  // Enable keyboard navigation for pallet selection.
+  useBrowseListWithKeys({
+    listItems: filteredList.map(({ name }) => name),
+    listOpenRef: dropdownOpenRef,
+    activeValue: activeItem,
+    onUpdate: (newItem: string) => {
+      setChainUiItem(activeTabId, chainUiSection, 'selected', newItem);
+    },
+  });
 
   // Refs for the selection menus.
   const dropdownRef = useRef(null);
@@ -116,10 +103,6 @@ export const ChainStateList = ({
       searchInputRef.current?.focus();
     }
   }, [dropdownOpen]);
-
-  // Listen for key down events for form control.
-  const documentRef = useRef(document);
-  useEventListener('keydown', handleKeyDown, documentRef);
 
   return (
     <section>
