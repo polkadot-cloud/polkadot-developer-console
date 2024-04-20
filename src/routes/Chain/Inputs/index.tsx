@@ -177,7 +177,7 @@ export const useInput = () => {
         // Input tailored for account addresses. Polkicon included. NOTE: `<Section>` is not needed
         // as the parent composite container is already wrapped.
         case 'AccountId32':
-          return <AccountId32 defaultValue={''} />;
+          return <AccountId32 />;
 
         // A custom input for primitive hash types.
         case 'Hash':
