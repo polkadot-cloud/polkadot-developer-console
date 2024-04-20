@@ -14,6 +14,8 @@ export const SearchInput = ({
   onChange,
   onEnter,
   onEscape,
+  setSearchValue,
+  searchValue,
 }: SearchInputProps) => {
   const activeTabId = useActiveTabId();
   const { getChainUi, setChainUiItem } = useChainUi();
@@ -21,6 +23,9 @@ export const SearchInput = ({
   const chainUi = chainUiSection
     ? getChainUi(activeTabId, chainUiSection)
     : undefined;
+
+  // Check if chainUi is being used.
+  const isChainUi = chainUi && chainUiSection && chainUiKey;
 
   return (
     <SearchWrapper>
@@ -37,12 +42,19 @@ export const SearchInput = ({
           if (ev.key === 'Escape') {
             // Escape action on non-empty search value.
             if (
-              chainUi &&
-              chainUiSection &&
-              chainUiKey &&
-              chainUi[chainUiKey].length > 0
+              // If chainUi is being used, check if the currently selected item's search value is
+              // not empty.
+              (isChainUi && chainUi[chainUiKey].length > 0) ||
+              // If a direct search value is being used, check if it is not empty.
+              (searchValue && searchValue.length > 0)
             ) {
-              setChainUiItem(activeTabId, chainUiSection, chainUiKey, '');
+              if (isChainUi) {
+                setChainUiItem(activeTabId, chainUiSection, chainUiKey, '');
+              } else {
+                if (typeof setSearchValue === 'function') {
+                  setSearchValue('');
+                }
+              }
             } else {
               // Escape action on empty search value.
               onEscape();

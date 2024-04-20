@@ -109,6 +109,8 @@ export const AccountId32 = () => {
           }}
           onEnter={() => setDropdownOpen(false)}
           onEscape={() => setDropdownOpen(false)}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
         />
         {filteredAccounts.map(({ name, address }, i) => (
           <SelectItemWrapper
