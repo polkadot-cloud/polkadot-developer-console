@@ -29,10 +29,6 @@ export const SearchInput = ({
   // Check if chainUi is being used.
   const isChainUi = chainUi && chainUiSection && chainUiKeys;
 
-  if (isChainUi) {
-    console.log(chainUi[chainUiKeys.selectOnSearchKey]);
-  }
-
   return (
     <SearchWrapper>
       <input
