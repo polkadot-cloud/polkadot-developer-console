@@ -25,10 +25,10 @@ export const useInput = () => {
   ) => {
     switch (type) {
       case 'array':
-        // If this array is a primitive, render a hash input. Otherwise (e.g. for variants) allow
+        // If this array is a primitive, render a textbox input. Otherwise (e.g. for variants) allow
         // for a sequence input.
         return input?.form?.primitive
-          ? renderInput({ ...input, form: 'Hash' }, indent)
+          ? renderInput({ ...input.form.primitive, form: 'text' }, indent)
           : renderSequence(input, parentKey, input.len);
 
       case 'bitSequence':
@@ -58,12 +58,14 @@ export const useInput = () => {
     parentKey: string,
     maxLength?: number
   ): ReactNode => {
-    const [type, arrayInput]: [string, AnyJson] = Object.entries(input.form)[0];
+    const [type, arrayInput]: [string, AnyJson] = Object.entries(
+      input.form
+    )?.[0] || ['unknown', {}];
 
     // Attach length to the array input.
     arrayInput.label = `[${arrayInput.label}, ${input.len}]`;
-
-    return (
+    return renderLabelWithInner(
+      `${input.label}[]`,
       <Sequence
         parentKey={parentKey}
         type={type}
@@ -177,7 +179,7 @@ export const useInput = () => {
         // Input tailored for account addresses. Polkicon included. NOTE: `<Section>` is not needed
         // as the parent composite container is already wrapped.
         case 'AccountId32':
-          return <AccountId32 defaultValue={''} />;
+          return <AccountId32 />;
 
         // A custom input for primitive hash types.
         case 'Hash':

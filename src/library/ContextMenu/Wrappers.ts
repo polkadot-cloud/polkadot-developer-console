@@ -189,6 +189,8 @@ export const SearchWrapper = styled.div`
   top: 0;
   width: 100%;
   z-index: 5;
+  display: flex;
+  align-items: center;
 
   > input {
     border: 1px solid var(--border-primary-color);
@@ -196,7 +198,16 @@ export const SearchWrapper = styled.div`
     border-radius: 0.25rem;
     margin: 0.3rem 0;
     font-size: 0.7rem;
-    width: 100%;
+    flex-grow: 1;
+  }
+
+  > .icon {
+    color: var(--text-color-tertiary);
+    margin-left: 0.5rem;
+
+    &.active {
+      color: var(--accent-color-primary);
+    }
   }
 
   &.bg {

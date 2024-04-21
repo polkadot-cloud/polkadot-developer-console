@@ -14,11 +14,12 @@ import {
 } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { SearchWrapper } from 'library/ContextMenu/Wrappers';
 import { camelize, setStateWithRef } from '@w3ux/utils';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import type { ChainStateListProps } from './types';
-import { useEventListener } from 'usehooks-ts';
+import { SearchInput } from 'library/ContextMenu/SearchInput';
+import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
+import { useSelectFirst } from 'hooks/useSelectFirst';
 
 export const ChainStateList = ({
   items,
@@ -44,6 +45,14 @@ export const ChainStateList = ({
     setChainUiItem(activeTabId, chainUiSection, 'search', value);
   };
 
+  // Gets a filtered list by applying a search term on list items, if not empty.
+  const getFilteredItems = (search: string) =>
+    search !== ''
+      ? list.filter(({ name }) =>
+          name.toLowerCase().includes(formatInputString(search, true))
+        )
+      : list;
+
   // Inject call signature into items.
   const list: PalletItemScrapedWithSig[] = useMemo(
     () =>
@@ -55,12 +64,7 @@ export const ChainStateList = ({
   );
 
   // Filter items based on search term, if selection is present.
-  const filteredList =
-    list.length > 0
-      ? list.filter(({ name }) =>
-          name.toLowerCase().includes(formatInputString(chainUi.search, true))
-        )
-      : list;
+  const filteredList = getFilteredItems(chainUi.search);
 
   // Get the active item from the filtered list.
   const activeListItem =
@@ -72,34 +76,33 @@ export const ChainStateList = ({
     filteredList[0] ||
     '';
 
-  // Handle key down events.
-  const handleKeyDown = (ev: KeyboardEvent) => {
-    const { type, key } = ev;
-    const itemIndex = filteredList.findIndex(({ name }) => name === activeItem);
-
-    // Determine the new pallet index, defaulting to the active item if present in the filtered
-    // list, otherwise 0
-    let newIndex = itemIndex > filteredList.length - 1 ? 0 : itemIndex;
-    if (dropdownOpenRef.current && type === 'keydown') {
-      if (key === 'ArrowDown') {
-        newIndex = Math.min(newIndex + 1, filteredList.length - 1);
-      } else if (key === 'ArrowUp') {
-        newIndex = Math.max(newIndex - 1, 0);
-      }
-
-      // Update the active item if the index points to a valid filtered item.
-      const newActiveItem = filteredList[newIndex]?.name;
-      if (newActiveItem) {
-        setChainUiItem(activeTabId, chainUiSection, 'selected', newActiveItem);
-      }
-    }
-  };
+  // Enable keyboard navigation for pallet selection.
+  useBrowseListWithKeys({
+    listItems: filteredList.map(({ name }) => name),
+    listOpenRef: dropdownOpenRef,
+    activeValue: activeItem,
+    onUpdate: (newItem: string) => {
+      setChainUiItem(activeTabId, chainUiSection, 'selected', newItem);
+    },
+  });
 
   // Refs for the selection menus.
   const dropdownRef = useRef(null);
 
   // Dropdown search input ref.
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // If the currently selected pallet is not in the filtered list, select the first item.
+  useSelectFirst({
+    isActive: chainUi['selectOnSearch'] === true,
+    onSelect: (value) => {
+      setChainUiItem(activeTabId, chainUiSection, 'selected', value);
+    },
+    activeItem,
+    searchTerm: chainUi.search,
+    getFiltered: (searchTerm: string) =>
+      getFilteredItems(searchTerm).map(({ name }) => name),
+  });
 
   // Close dropdown if clicked outside of its container.
   useOutsideAlerter(
@@ -116,10 +119,6 @@ export const ChainStateList = ({
       searchInputRef.current?.focus();
     }
   }, [dropdownOpen]);
-
-  // Listen for key down events for form control.
-  const documentRef = useRef(document);
-  useEventListener('keydown', handleKeyDown, documentRef);
 
   return (
     <section>
@@ -147,29 +146,18 @@ export const ChainStateList = ({
           ref={dropdownRef}
           className={`${dropdownOpen ? ` open` : ``}`}
         >
-          <SearchWrapper>
-            <input
-              ref={searchInputRef}
-              placeholder="Search"
-              value={chainUi.search}
-              onChange={(ev) => handleSearchChange(ev.currentTarget.value)}
-              onKeyDown={(ev) => {
-                // Close and retain search value on enter key.
-                if (ev.key === 'Enter') {
-                  setDropdownOpen(false);
-                }
-                if (ev.key === 'Escape') {
-                  // If search value exists, first clear it.
-                  if (chainUi.search.length > 0) {
-                    setChainUiItem(activeTabId, chainUiSection, 'search', '');
-                  } else {
-                    // No search, go ahead and close dropdown.
-                    setDropdownOpen(false);
-                  }
-                }
-              }}
-            />
-          </SearchWrapper>
+          <SearchInput
+            inputRef={searchInputRef}
+            value={chainUi.search}
+            chainUiKeys={{
+              searchKey: 'search',
+              selectOnSearchKey: 'selectOnSearch',
+            }}
+            chainUiSection={chainUiSection}
+            onChange={(ev) => handleSearchChange(ev.currentTarget.value)}
+            onEnter={() => setDropdownOpen(false)}
+            onEscape={() => setDropdownOpen(false)}
+          />
 
           {filteredList.map(({ name, docs, callSig }) => (
             <SelectItemWrapper

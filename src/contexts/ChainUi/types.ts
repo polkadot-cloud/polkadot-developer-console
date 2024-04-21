@@ -11,7 +11,7 @@ export interface ChainUiContextInterface {
     tabId: number,
     section: keyof ChainUiItem,
     key: string,
-    value: string
+    value: string | boolean
   ) => void;
   getPalletVersions: (tabId: number) => Record<string, string> | undefined;
   fetchPalletVersions: (
@@ -24,10 +24,16 @@ export interface ChainUiContextInterface {
     tabId: number,
     section: ChainStateSection
   ) => void;
+  isChainUiValueEmpty: (
+    tabId: number,
+    section: keyof ChainUiItem,
+    key: keyof ChainUiItemInner
+  ) => boolean;
 }
 
 export type ChainUiState = Record<number, ChainUiItem>;
 
+// Chain UI configs for each of the interfaces (storage, constants, calls, raw).
 export interface ChainUiItem {
   storage: ChainUiItemInner;
   constants: ChainUiItemInner;
@@ -35,15 +41,27 @@ export interface ChainUiItem {
   raw: ChainUiItemInner;
 }
 
+// A single chain UI config.
 export interface ChainUiItemInner {
+  // The selected item.
   selected: string;
+  // The search term.
   search: string;
+  // Whether automatic selection on search is enabled.
+  selectOnSearch: boolean;
+  // The selected pallet (not used for `raw` config).
   pallet: string;
+  // The pallet search term (not used for `raw` config).
   palletSearch: string;
+  // Whether automatic selection on search is enabled for pallet.
+  palletSelectOnSearch: boolean;
 }
 
+// Store versions of pallets. {tabid: { palletName: version }}.
 export type PalletVersions = Record<string, Record<string, string>>;
 
+// The active chain sections, keyed by tab.
 export type ChainStateSections = Record<number, ChainStateSection>;
 
-export type ChainStateSection = 'storage' | 'constants' | 'raw';
+// The possible chain sections to be active.
+export type ChainStateSection = 'storage' | 'constants' | 'calls' | 'raw';
