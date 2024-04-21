@@ -274,6 +274,12 @@ export const TextInputWrapper = styled.div`
       font-size: 0.8rem;
     }
   }
+
+  > span {
+    &:last-child {
+      padding: 0 0.5rem;
+    }
+  }
 `;
 
 export const InputFormWrapper = styled.div`

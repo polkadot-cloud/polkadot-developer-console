@@ -9,7 +9,12 @@ import {
   TextInputWrapper,
 } from '../Wrappers';
 import { Polkicon } from '@w3ux/react-polkicon';
-import { ellipsisFn, remToUnit, setStateWithRef } from '@w3ux/utils';
+import {
+  ellipsisFn,
+  isValidAddress,
+  remToUnit,
+  setStateWithRef,
+} from '@w3ux/utils';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { useAccounts } from 'contexts/Accounts';
 import { formatInputString } from 'Utils';
@@ -110,6 +115,13 @@ export const AccountId32 = () => {
             }
           }}
         />
+        <span>
+          <h5>
+            {isValidAddress(selectedAddress)
+              ? ellipsisFn(selectedAddress, 14)
+              : ''}
+          </h5>
+        </span>
       </TextInputWrapper>
       <SelectDropdownWrapper
         ref={accountDropdownRef}
