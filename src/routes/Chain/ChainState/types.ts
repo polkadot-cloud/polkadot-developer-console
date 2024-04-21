@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainUiItem } from 'contexts/ChainUi/types';
+import type { ChainStateSection, ChainUiItem } from 'contexts/ChainUi/types';
 import type {
   PalletItemScraped,
   PalletListItem,
@@ -25,5 +25,5 @@ export interface ChainStateListProps {
   subject: string;
   items: PalletItemScraped[];
   activeItem: string | null;
-  chainUiSection: keyof ChainUiItem;
+  chainUiSection: ChainStateSection;
 }

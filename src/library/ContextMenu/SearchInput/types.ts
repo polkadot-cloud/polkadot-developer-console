@@ -14,7 +14,10 @@ export interface SearchInputProps {
   onEnter: () => void;
   onEscape: () => void;
   chainUiSection?: ChainStateSection;
-  chainUiKey?: keyof ChainUiItemInner;
+  chainUiKeys?: {
+    searchKey: keyof ChainUiItemInner;
+    selectOnSearchKey: keyof ChainUiItemInner;
+  };
   searchValue?: string;
   setSearchValue?: (value: string) => void;
 }

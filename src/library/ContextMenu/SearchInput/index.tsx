@@ -5,11 +5,13 @@ import { useActiveTabId } from 'contexts/ActiveTab';
 import { SearchWrapper } from '../Wrappers';
 import type { SearchInputProps } from './types';
 import { useChainUi } from 'contexts/ChainUi';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWandSparkles } from '@fortawesome/free-solid-svg-icons';
 
 export const SearchInput = ({
   inputRef,
   value,
-  chainUiKey,
+  chainUiKeys,
   chainUiSection,
   onChange,
   onEnter,
@@ -18,14 +20,18 @@ export const SearchInput = ({
   searchValue,
 }: SearchInputProps) => {
   const activeTabId = useActiveTabId();
-  const { getChainUi, setChainUiItem } = useChainUi();
+  const { getChainUi, setChainUiItem, isChainUiValueEmpty } = useChainUi();
 
   const chainUi = chainUiSection
     ? getChainUi(activeTabId, chainUiSection)
     : undefined;
 
   // Check if chainUi is being used.
-  const isChainUi = chainUi && chainUiSection && chainUiKey;
+  const isChainUi = chainUi && chainUiSection && chainUiKeys;
+
+  if (isChainUi) {
+    console.log(chainUi[chainUiKeys.selectOnSearchKey]);
+  }
 
   return (
     <SearchWrapper>
@@ -44,12 +50,22 @@ export const SearchInput = ({
             if (
               // If chainUi is being used, check if the currently selected item's search value is
               // not empty.
-              (isChainUi && chainUi[chainUiKey].length > 0) ||
+              (isChainUi &&
+                !isChainUiValueEmpty(
+                  activeTabId,
+                  chainUiSection,
+                  chainUiKeys.searchKey
+                )) ||
               // If a direct search value is being used, check if it is not empty.
               (searchValue && searchValue.length > 0)
             ) {
               if (isChainUi) {
-                setChainUiItem(activeTabId, chainUiSection, chainUiKey, '');
+                setChainUiItem(
+                  activeTabId,
+                  chainUiSection,
+                  chainUiKeys.searchKey,
+                  ''
+                );
               } else {
                 if (typeof setSearchValue === 'function') {
                   setSearchValue('');
@@ -62,6 +78,21 @@ export const SearchInput = ({
           }
         }}
       />
+      {isChainUi && (
+        <button
+          className={`icon ${chainUi[chainUiKeys.selectOnSearchKey] === true ? 'active' : ''}`}
+          onClick={() => {
+            setChainUiItem(
+              activeTabId,
+              chainUiSection,
+              chainUiKeys.selectOnSearchKey,
+              !chainUi[chainUiKeys.selectOnSearchKey]
+            );
+          }}
+        >
+          <FontAwesomeIcon icon={faWandSparkles} transform="shrink-3" />
+        </button>
+      )}
     </SearchWrapper>
   );
 };

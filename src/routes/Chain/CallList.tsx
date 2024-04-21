@@ -141,7 +141,10 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
           <SearchInput
             inputRef={searchInputRef}
             value={chainUi.search}
-            chainUiKey="search"
+            chainUiKeys={{
+              searchKey: 'search',
+              selectOnSearchKey: 'selectOnSearch',
+            }}
             chainUiSection={chainUiSection}
             onChange={(ev) => handleCallSearchChange(ev.currentTarget.value)}
             onEnter={() => setCallsOpen(false)}

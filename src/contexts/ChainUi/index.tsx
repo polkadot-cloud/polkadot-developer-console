@@ -67,7 +67,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     tabId: number,
     section: keyof ChainUiItem,
     key: string,
-    value: string
+    value: string | boolean
   ) => {
     const currentChainUi = chainUi[tabId] || defaultChainUiItem;
     const currentChainUiItem = currentChainUi[section] || defaultChainUiInner;
@@ -143,6 +143,21 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     tabId: number
   ): Record<string, string> | undefined => palletVersions[tabId];
 
+  // Check if a chainUI value is empty. For boolean types, return empty if false. This function should be used on strings, but for type safety booleans are also supported.
+  const isChainUiValueEmpty = (
+    tabId: number,
+    section: keyof ChainUiItem,
+    key: keyof ChainUiItemInner
+  ): boolean => {
+    const chainUiItem = getChainUi(tabId, section);
+    const val = chainUiItem[key];
+
+    if (typeof val === 'string') {
+      return val.length === 0;
+    }
+    return !!val;
+  };
+
   return (
     <ChainUi.Provider
       value={{
@@ -151,6 +166,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
         setChainUiItem,
         getPalletVersions,
         fetchPalletVersions,
+        isChainUiValueEmpty,
         getActiveChainStateSection,
         setActiveChainStateSection,
       }}

@@ -9,8 +9,10 @@ export const defaultChainUiState = {};
 export const defaultChainUiInner = {
   selected: '',
   search: '',
+  selectOnSearch: true,
   pallet: '',
   palletSearch: '',
+  palletSelectOnSearch: true,
 };
 
 export const defaultChainUiItem: ChainUiItem = {
@@ -28,4 +30,5 @@ export const defaultChainContext: ChainUiContextInterface = {
   fetchPalletVersions: async (tabId, metadata, apiInstance) => {},
   getActiveChainStateSection: (tabId) => 'storage',
   setActiveChainStateSection: (tabId, section) => {},
+  isChainUiValueEmpty: (tabId, section, key) => true,
 };

@@ -19,6 +19,7 @@ import { useActiveTabId } from 'contexts/ActiveTab';
 import type { ChainStateListProps } from './types';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
+import { useSelectFirst } from 'hooks/useSelectFirst';
 
 export const ChainStateList = ({
   items,
@@ -44,6 +45,14 @@ export const ChainStateList = ({
     setChainUiItem(activeTabId, chainUiSection, 'search', value);
   };
 
+  // Gets a filtered list by applying a search term on list items, if not empty.
+  const getFilteredItems = (search: string) =>
+    search !== ''
+      ? list.filter(({ name }) =>
+          name.toLowerCase().includes(formatInputString(search, true))
+        )
+      : list;
+
   // Inject call signature into items.
   const list: PalletItemScrapedWithSig[] = useMemo(
     () =>
@@ -55,12 +64,7 @@ export const ChainStateList = ({
   );
 
   // Filter items based on search term, if selection is present.
-  const filteredList =
-    list.length > 0
-      ? list.filter(({ name }) =>
-          name.toLowerCase().includes(formatInputString(chainUi.search, true))
-        )
-      : list;
+  const filteredList = getFilteredItems(chainUi.search);
 
   // Get the active item from the filtered list.
   const activeListItem =
@@ -87,6 +91,18 @@ export const ChainStateList = ({
 
   // Dropdown search input ref.
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // If the currently selected pallet is not in the filtered list, select the first item.
+  useSelectFirst({
+    isActive: chainUi['selectOnSearch'] === true,
+    onSelect: (value) => {
+      setChainUiItem(activeTabId, chainUiSection, 'selected', value);
+    },
+    activeItem,
+    searchTerm: chainUi.search,
+    getFiltered: (searchTerm: string) =>
+      getFilteredItems(searchTerm).map(({ name }) => name),
+  });
 
   // Close dropdown if clicked outside of its container.
   useOutsideAlerter(
@@ -133,7 +149,10 @@ export const ChainStateList = ({
           <SearchInput
             inputRef={searchInputRef}
             value={chainUi.search}
-            chainUiKey="search"
+            chainUiKeys={{
+              searchKey: 'search',
+              selectOnSearchKey: 'selectOnSearch',
+            }}
             chainUiSection={chainUiSection}
             onChange={(ev) => handleSearchChange(ev.currentTarget.value)}
             onEnter={() => setDropdownOpen(false)}

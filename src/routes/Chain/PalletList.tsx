@@ -17,6 +17,7 @@ import { useActiveTabId } from 'contexts/ActiveTab';
 import type { PalletListProps } from './ChainState/types';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
+import { useSelectFirst } from 'hooks/useSelectFirst';
 
 export const PalletList = ({
   pallets,
@@ -40,24 +41,27 @@ export const PalletList = ({
     setStateWithRef(value, setPalletsOpenState, palletsOpenRef);
   };
 
-  // Handle pallet search change.
-  const handlePalletSearchChange = (value: string) => {
-    setChainUiItem(activeTabId, chainUiSection, 'palletSearch', value);
-  };
-
-  // Filter providers based on search term, if present.
-  const filteredPallets =
-    palletSearch !== ''
-      ? pallets.filter(({ name }) =>
-          name.toLowerCase().includes(formatInputString(palletSearch, true))
-        )
-      : pallets;
-
   // Selection menu ref.
   const palletSelectRef = useRef<HTMLDivElement>(null);
 
   // Pallet search input ref.
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Handle pallet search change.
+  const handlePalletSearchChange = (value: string) => {
+    setChainUiItem(activeTabId, chainUiSection, 'palletSearch', value);
+  };
+
+  // Gets a filtered list by applying a search term on pallet names, if not empty.
+  const getFilteredPallets = (search: string) =>
+    search !== ''
+      ? pallets.filter(({ name }) =>
+          name.toLowerCase().includes(formatInputString(search, true))
+        )
+      : pallets;
+
+  // Filter providers based on search term, if present.
+  const filteredPallets = getFilteredPallets(palletSearch);
 
   // Enable keyboard navigation for pallet selection.
   useBrowseListWithKeys({
@@ -67,6 +71,16 @@ export const PalletList = ({
     onUpdate: (newItem: string) => {
       setChainUiItem(activeTabId, chainUiSection, 'pallet', newItem);
     },
+  });
+
+  // If the currently selected pallet is not in the filtered list, select the first item.
+  useSelectFirst({
+    isActive: chainUi['palletSelectOnSearch'] === true,
+    onSelect,
+    activeItem: activePallet,
+    searchTerm: palletSearch,
+    getFiltered: (searchTerm: string) =>
+      getFilteredPallets(searchTerm).map(({ name }) => name),
   });
 
   // Close pallet selection if clicked outside of its container.
@@ -118,7 +132,10 @@ export const PalletList = ({
           <SearchInput
             inputRef={searchInputRef}
             value={palletSearch}
-            chainUiKey="palletSearch"
+            chainUiKeys={{
+              searchKey: 'palletSearch',
+              selectOnSearchKey: 'palletSelectOnSearch',
+            }}
             chainUiSection={chainUiSection}
             onChange={(ev) => handlePalletSearchChange(ev.currentTarget.value)}
             onEnter={() => setPalletsOpen(false)}

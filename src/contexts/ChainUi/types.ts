@@ -11,7 +11,7 @@ export interface ChainUiContextInterface {
     tabId: number,
     section: keyof ChainUiItem,
     key: string,
-    value: string
+    value: string | boolean
   ) => void;
   getPalletVersions: (tabId: number) => Record<string, string> | undefined;
   fetchPalletVersions: (
@@ -24,6 +24,11 @@ export interface ChainUiContextInterface {
     tabId: number,
     section: ChainStateSection
   ) => void;
+  isChainUiValueEmpty: (
+    tabId: number,
+    section: keyof ChainUiItem,
+    key: keyof ChainUiItemInner
+  ) => boolean;
 }
 
 export type ChainUiState = Record<number, ChainUiItem>;
@@ -42,10 +47,14 @@ export interface ChainUiItemInner {
   selected: string;
   // The search term.
   search: string;
+  // Whether automatic selection on search is enabled.
+  selectOnSearch: boolean;
   // The selected pallet (not used for `raw` config).
   pallet: string;
   // The pallet search term (not used for `raw` config).
   palletSearch: string;
+  // Whether automatic selection on search is enabled for pallet.
+  palletSelectOnSearch: boolean;
 }
 
 // Store versions of pallets. {tabid: { palletName: version }}.
