@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   SelectDropdownWrapper,
   SelectItemWrapper,
@@ -12,7 +12,6 @@ import { Polkicon } from '@w3ux/react-polkicon';
 import { ellipsisFn, remToUnit, setStateWithRef } from '@w3ux/utils';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { useAccounts } from 'contexts/Accounts';
-import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { formatInputString } from 'Utils';
 
 export const AccountId32 = () => {
@@ -30,6 +29,22 @@ export const AccountId32 = () => {
       selectedAddress
   );
 
+  // Handle input value change.
+  const handleInputChange = (val: string) => {
+    setValue(val);
+    setSelectedAddress(val);
+    setSearchValue(val);
+  };
+
+  // Handle input blur. If the input value is an imported address, set the input value to be the
+  // name of the imported account.
+  const handleInputBlur = () => {
+    const isImportedAddress = accounts.find(({ address }) => address === value);
+    if (isImportedAddress) {
+      setValue(isImportedAddress.name);
+    }
+  };
+
   // The current search  value of the input.
   const [searchValue, setSearchValue] = useState<string>('');
 
@@ -45,9 +60,6 @@ export const AccountId32 = () => {
   // Ref for account dropdown list.
   const accountDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Pallet search input ref.
-  const searchInputRef = useRef<HTMLInputElement>(null);
-
   // Filter accounts based on search term, if present.
   // TODO: Remove read only accounts once supported.
   const filteredAccounts =
@@ -58,13 +70,6 @@ export const AccountId32 = () => {
             address.toLowerCase().includes(searchValue.toLowerCase())
         )
       : accounts;
-
-  // Focus the pallet search input when the menu is opened.
-  useEffect(() => {
-    if (dropdownOpen) {
-      searchInputRef.current?.focus();
-    }
-  }, [dropdownOpen]);
 
   // Close pallet selection if clicked outside of its container.
   useOutsideAlerter(
@@ -86,32 +91,30 @@ export const AccountId32 = () => {
           />
         </span>
 
-        <button
-          className="deadInput ignore-outside-alerter-search-input"
-          onClick={() => {
+        <input
+          type="text"
+          className="ignore-outside-alerter-search-input"
+          value={value || ''}
+          onChange={(ev) => handleInputChange(ev.currentTarget.value)}
+          onFocus={() => {
             if (!dropdownOpen) {
               setDropdownOpen(true);
             }
           }}
-        >
-          {value}
-        </button>
+          onBlur={() => handleInputBlur()}
+          onKeyDown={(ev) => {
+            // Enter key action.
+            if (ev.key === 'Enter') {
+              setDropdownOpen(false);
+              ev.currentTarget.blur();
+            }
+          }}
+        />
       </TextInputWrapper>
       <SelectDropdownWrapper
         ref={accountDropdownRef}
         className={`${dropdownOpen ? ` open` : ``}`}
       >
-        <SearchInput
-          inputRef={searchInputRef}
-          value={searchValue}
-          onChange={(ev) => {
-            setSearchValue(ev.currentTarget.value);
-          }}
-          onEnter={() => setDropdownOpen(false)}
-          onEscape={() => setDropdownOpen(false)}
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-        />
         {filteredAccounts.map(({ name, address }, i) => (
           <SelectItemWrapper
             key={`pallet_${i}_${name}`}
