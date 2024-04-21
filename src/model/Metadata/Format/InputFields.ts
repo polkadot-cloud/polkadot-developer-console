@@ -85,7 +85,7 @@ export class FormatInputFields {
       case 'sequence':
         result.sequence = {
           label: arg.label,
-          form: this.getTypeInput(arg.array.type),
+          form: this.getTypeInput(arg.sequence.type),
         };
         break;
 
