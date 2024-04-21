@@ -28,6 +28,7 @@ export interface ChainUiContextInterface {
 
 export type ChainUiState = Record<number, ChainUiItem>;
 
+// Chain UI configs for each of the interfaces (storage, constants, calls, raw).
 export interface ChainUiItem {
   storage: ChainUiItemInner;
   constants: ChainUiItemInner;
@@ -35,15 +36,23 @@ export interface ChainUiItem {
   raw: ChainUiItemInner;
 }
 
+// A single chain UI config.
 export interface ChainUiItemInner {
+  // The selected item.
   selected: string;
+  // The search term.
   search: string;
+  // The selected pallet (not used for `raw` config).
   pallet: string;
+  // The pallet search term (not used for `raw` config).
   palletSearch: string;
 }
 
+// Store versions of pallets. {tabid: { palletName: version }}.
 export type PalletVersions = Record<string, Record<string, string>>;
 
+// The active chain sections, keyed by tab.
 export type ChainStateSections = Record<number, ChainStateSection>;
 
+// The possible chain sections to be active.
 export type ChainStateSection = 'storage' | 'constants' | 'calls' | 'raw';
