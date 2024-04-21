@@ -277,7 +277,7 @@ export const TextInputWrapper = styled.div`
 
   > span {
     &:last-child {
-      padding: 0 0.5rem;
+      padding: 0 0.75rem;
     }
   }
 `;
