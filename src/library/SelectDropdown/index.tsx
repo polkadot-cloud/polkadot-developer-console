@@ -58,7 +58,9 @@ export const SelectDropdown = ({
   // Sync dropdown height on initial render and on open state.
   useEffect(() => {
     // Ensure dropdown fits in window display.
-    syncWindowHeight();
+    if (open) {
+      syncWindowHeight();
+    }
   }, [open]);
 
   // Close the overlay on window resize.
