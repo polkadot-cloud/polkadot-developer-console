@@ -46,13 +46,12 @@ jobs:
       matrix:
         node-version: [18.x, 20.x]
     steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-      - name: Use Node.js ${{ matrix.node-version }}
-        with:
-          node-version: ${{ matrix.node-version }}
       - run: yarn install
       - run: yarn build
       - run: yarn lint
