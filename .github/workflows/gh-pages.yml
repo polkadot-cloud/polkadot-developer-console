@@ -24,4 +24,4 @@ jobs:
         with:
           folder: build
         env:
-          FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
+          FONTAWESOME_PACKAGE_TOKEN: ${{ env.FONTAWESOME_PACKAGE_TOKEN }}
