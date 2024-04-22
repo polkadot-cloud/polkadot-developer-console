@@ -12,7 +12,6 @@ env:
 jobs:
   check-license:
     runs-on: ubuntu-latest
-    environment: github-pages
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v4
@@ -25,7 +24,6 @@ jobs:
   # Github Action is available.
   markdown-link-check:
     runs-on: ubuntu-latest
-    environment: github-pages
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v4
@@ -41,7 +39,6 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    environment: github-pages
     strategy:
       matrix:
         node-version: [18.x, 20.x]
