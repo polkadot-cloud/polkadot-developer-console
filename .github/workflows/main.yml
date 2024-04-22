@@ -43,7 +43,7 @@ jobs:
       - run: yarn build
       - run: yarn lint
         env:
-          FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PRO_TOKEN }}
+          FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
 
   all:
     needs: [check-license, markdown-link-check, build]
