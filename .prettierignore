@@ -11,3 +11,4 @@ public/lottie/player.js
 CHANGELOG.md
 .yarn
 .licenserc.json
+.env.yarn
