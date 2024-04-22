@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
 
+env:
+  FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
+
 jobs:
   gh-deploy:
     runs-on: ubuntu-latest
@@ -15,23 +18,15 @@ jobs:
           node-version: 18
           registry-url: https://registry.npmjs.org
           cache: 'yarn'
-        env:
-          FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
   
       - name: Install
         run: yarn install
-        env:
-          FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
-      
+
       - name: Build
         working-directory: '.'
         run: yarn build:pages
-        env:
-          FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: build
-        env:
-          FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
