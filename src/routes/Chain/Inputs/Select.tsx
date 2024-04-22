@@ -1,16 +1,12 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useRef, useState } from 'react';
-import {
-  SelectDropdownWrapper,
-  SelectItemWrapper,
-  SelectTextWrapper,
-} from '../Wrappers';
+import { useState } from 'react';
+import { SelectItemWrapper, SelectTextWrapper } from '../Wrappers';
 import { camelize } from '@w3ux/utils';
-import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { SelectDropdown } from 'library/SelectDropdown';
 
 export const Select = ({
   values,
@@ -22,20 +18,8 @@ export const Select = ({
   // Whether select options are open.
   const [open, setOpen] = useState<boolean>(false);
 
-  // Refs for the selection menu.
-  const selectRef = useRef(null);
-
   // Outside alerter ignore class.
   const ignoreClass = `ignore-outside-alerter-select_${camelize(String(label))}`;
-
-  // Close selection menu if clicked outside of its container.
-  useOutsideAlerter(
-    selectRef,
-    () => {
-      setOpen(false);
-    },
-    [ignoreClass]
-  );
 
   return (
     <>
@@ -53,9 +37,10 @@ export const Select = ({
       </SelectItemWrapper>
 
       {open && (
-        <SelectDropdownWrapper
-          ref={selectRef}
-          className={`${open ? `open` : ``}`}
+        <SelectDropdown
+          open={open}
+          onOutsideClick={() => setOpen(false)}
+          outsideAlerterIgnore={[ignoreClass]}
         >
           {values.map((val) => (
             <SelectItemWrapper
@@ -71,7 +56,7 @@ export const Select = ({
               <span />
             </SelectItemWrapper>
           ))}
-        </SelectDropdownWrapper>
+        </SelectDropdown>
       )}
     </>
   );

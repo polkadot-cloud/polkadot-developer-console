@@ -2,21 +2,17 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useEffect, useRef, useState } from 'react';
-import {
-  SelectItemWrapper,
-  SelectTextWrapper,
-  SelectDropdownWrapper,
-} from './Wrappers';
+import { SelectItemWrapper, SelectTextWrapper } from './Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import type { AnyJson } from '@w3ux/utils/types';
 import { Format } from 'model/Metadata/Scraper/Format';
 import { formatInputString } from 'Utils';
-import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { useChainUi } from 'contexts/ChainUi';
 import { camelize } from '@w3ux/utils';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
+import { SelectDropdown } from 'library/SelectDropdown';
 
 export const CallList = ({ calls }: { calls: AnyJson }) => {
   const activeTabId = useActiveTabId();
@@ -88,20 +84,8 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
     filteredCalls[0] ||
     '';
 
-  // Refs for the selection menus.
-  const callsSelectRef = useRef(null);
-
   // Call search input ref.
   const searchInputRef = useRef<HTMLInputElement>(null);
-
-  // Close call selection if clicked outside of its container.
-  useOutsideAlerter(
-    callsSelectRef,
-    () => {
-      setCallsOpen(false);
-    },
-    ['ignore-outside-alerter-calls']
-  );
 
   // Focus the call search input when the menu is opened.
   useEffect(() => {
@@ -134,9 +118,10 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
           </span>
         </SelectItemWrapper>
 
-        <SelectDropdownWrapper
-          ref={callsSelectRef}
-          className={`${callsOpen ? ` open` : ``}`}
+        <SelectDropdown
+          open={callsOpen}
+          onOutsideClick={() => setCallsOpen(false)}
+          outsideAlerterIgnore={['ignore-outside-alerter-calls']}
         >
           <SearchInput
             inputRef={searchInputRef}
@@ -171,7 +156,7 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
               </span>
             </SelectItemWrapper>
           ))}
-        </SelectDropdownWrapper>
+        </SelectDropdown>
       </div>
     </section>
   );
