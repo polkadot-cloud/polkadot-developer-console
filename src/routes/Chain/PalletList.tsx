@@ -2,14 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  SelectItemWrapper,
-  SelectTextWrapper,
-  SelectDropdownWrapper,
-} from './Wrappers';
+import { SelectItemWrapper, SelectTextWrapper } from './Wrappers';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
-import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
 import { camelize, setStateWithRef } from '@w3ux/utils';
@@ -18,6 +13,7 @@ import type { PalletListProps } from './ChainState/types';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
 import { useSelectFirst } from 'hooks/useSelectFirst';
+import { SelectDropdown } from 'library/SelectDropdown';
 
 export const PalletList = ({
   pallets,
@@ -40,9 +36,6 @@ export const PalletList = ({
   const setPalletsOpen = (value: boolean) => {
     setStateWithRef(value, setPalletsOpenState, palletsOpenRef);
   };
-
-  // Selection menu ref.
-  const palletSelectRef = useRef<HTMLDivElement>(null);
 
   // Pallet search input ref.
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -83,15 +76,6 @@ export const PalletList = ({
       getFilteredPallets(searchTerm).map(({ name }) => name),
   });
 
-  // Close pallet selection if clicked outside of its container.
-  useOutsideAlerter(
-    palletSelectRef,
-    () => {
-      setPalletsOpen(false);
-    },
-    ['ignore-outside-alerter-pallets']
-  );
-
   // Focus the pallet search input when the menu is opened.
   useEffect(() => {
     if (palletsOpen) {
@@ -125,9 +109,10 @@ export const PalletList = ({
           </span>
         </SelectItemWrapper>
 
-        <SelectDropdownWrapper
-          ref={palletSelectRef}
-          className={`${palletsOpen ? ` open` : ``}`}
+        <SelectDropdown
+          open={palletsOpen}
+          onOutsideClick={() => setPalletsOpen(false)}
+          outsideAlerterIgnore={['ignore-outside-alerter-pallets']}
         >
           <SearchInput
             inputRef={searchInputRef}
@@ -159,7 +144,7 @@ export const PalletList = ({
               </span>
             </SelectItemWrapper>
           ))}
-        </SelectDropdownWrapper>
+        </SelectDropdown>
       </div>
     </section>
   );

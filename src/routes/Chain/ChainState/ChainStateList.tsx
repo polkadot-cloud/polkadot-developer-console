@@ -3,15 +3,10 @@
 
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
-import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { FormatCallSignature } from 'model/Metadata/Format/CallSignature';
 import type { PalletItemScrapedWithSig } from 'model/Metadata/Scraper/types';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  SelectDropdownWrapper,
-  SelectItemWrapper,
-  SelectTextWrapper,
-} from '../Wrappers';
+import { SelectItemWrapper, SelectTextWrapper } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { camelize, setStateWithRef } from '@w3ux/utils';
@@ -20,6 +15,7 @@ import type { ChainStateListProps } from './types';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
 import { useSelectFirst } from 'hooks/useSelectFirst';
+import { SelectDropdown } from 'library/SelectDropdown';
 
 export const ChainStateList = ({
   items,
@@ -86,9 +82,6 @@ export const ChainStateList = ({
     },
   });
 
-  // Refs for the selection menus.
-  const dropdownRef = useRef(null);
-
   // Dropdown search input ref.
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -103,15 +96,6 @@ export const ChainStateList = ({
     getFiltered: (searchTerm: string) =>
       getFilteredItems(searchTerm).map(({ name }) => name),
   });
-
-  // Close dropdown if clicked outside of its container.
-  useOutsideAlerter(
-    dropdownRef,
-    () => {
-      setDropdownOpen(false);
-    },
-    ['ignore-outside-alerter-chain-state']
-  );
 
   // Focus the call search input when the menu is opened.
   useEffect(() => {
@@ -142,9 +126,10 @@ export const ChainStateList = ({
           </span>
         </SelectItemWrapper>
 
-        <SelectDropdownWrapper
-          ref={dropdownRef}
-          className={`${dropdownOpen ? ` open` : ``}`}
+        <SelectDropdown
+          open={dropdownOpen}
+          onOutsideClick={() => setDropdownOpen(false)}
+          outsideAlerterIgnore={['ignore-outside-alerter-chain-state']}
         >
           <SearchInput
             inputRef={searchInputRef}
@@ -179,7 +164,7 @@ export const ChainStateList = ({
               </span>
             </SelectItemWrapper>
           ))}
-        </SelectDropdownWrapper>
+        </SelectDropdown>
       </div>
     </section>
   );

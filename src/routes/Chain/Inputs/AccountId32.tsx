@@ -3,7 +3,6 @@
 
 import { useRef, useState } from 'react';
 import {
-  SelectDropdownWrapper,
   SelectItemWrapper,
   SelectTextWrapper,
   TextInputWrapper,
@@ -15,9 +14,9 @@ import {
   remToUnit,
   setStateWithRef,
 } from '@w3ux/utils';
-import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { useAccounts } from 'contexts/Accounts';
 import { formatInputString } from 'Utils';
+import { SelectDropdown } from 'library/SelectDropdown';
 
 export const AccountId32 = () => {
   const { accounts } = useAccounts();
@@ -62,9 +61,6 @@ export const AccountId32 = () => {
     setStateWithRef(val, setDropdownOpenState, dropdownOpenRef);
   };
 
-  // Ref for account dropdown list.
-  const accountDropdownRef = useRef<HTMLDivElement>(null);
-
   // Filter accounts based on search term, if present.
   // TODO: Remove read only accounts once supported.
   const filteredAccounts =
@@ -75,15 +71,6 @@ export const AccountId32 = () => {
             address.toLowerCase().includes(searchValue.toLowerCase())
         )
       : accounts;
-
-  // Close pallet selection if clicked outside of its container.
-  useOutsideAlerter(
-    accountDropdownRef,
-    () => {
-      setDropdownOpen(false);
-    },
-    ['ignore-outside-alerter-search-input']
-  );
 
   return (
     <>
@@ -123,9 +110,10 @@ export const AccountId32 = () => {
           </h5>
         </span>
       </TextInputWrapper>
-      <SelectDropdownWrapper
-        ref={accountDropdownRef}
-        className={`${dropdownOpen ? ` open` : ``}`}
+      <SelectDropdown
+        open={dropdownOpen}
+        onOutsideClick={() => setDropdownOpen(false)}
+        outsideAlerterIgnore={['ignore-outside-alerter-search-input']}
       >
         {filteredAccounts.map(({ name, address }, i) => (
           <SelectItemWrapper
@@ -147,7 +135,7 @@ export const AccountId32 = () => {
             </span>
           </SelectItemWrapper>
         ))}
-      </SelectDropdownWrapper>
+      </SelectDropdown>
     </>
   );
 };
