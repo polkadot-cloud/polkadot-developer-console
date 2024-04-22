@@ -18,10 +18,17 @@ jobs:
         env:
           FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
   
-      - run: yarn install
+      - name: Install
+        run: yarn install
+        env:
+          FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
+      
       - name: Build
         working-directory: '.'
         run: yarn build:pages
+        env:
+          FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
+
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
