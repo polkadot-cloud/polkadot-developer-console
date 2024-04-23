@@ -8,6 +8,8 @@ import type {
   PalletItemScraped,
   PalletStoragePlain,
   ScraperConfig,
+  MetadataPalletStorageItem,
+  ScraperOptions,
 } from './types';
 import { MetadataScraper } from './Base';
 import type { MetadataVersion } from 'model/Metadata/types';
@@ -61,46 +63,81 @@ export class PalletScraper extends MetadataScraper {
   }
 
   // Get a pallet's storage items from metadata.
-  getStorage(palletName: string) {
+  getStorage(
+    palletName: string,
+    options?: ScraperOptions
+  ): PalletItemScraped[] {
     const pallet = this.getPallet(palletName);
     if (!pallet) {
       return [];
     }
 
-    let result: PalletItemScraped[] = [];
-    // Defensive: Check if storage items are defined for this pallet.
+    // NOTE: Check if storage items are defined for this pallet as there may be none defined.
     const items = pallet.storage?.items;
+    return items
+      ? items.map((item) => this.startStorageScrape(item, options))
+      : [];
+  }
 
-    if (items) {
-      result = items.map((item) => {
-        const { name, docs, type, modifier, fallback } = item;
-        const typeKey = Object.keys(type)[0];
-
-        let scrapedType;
-        if (typeKey === 'plain') {
-          scrapedType = {
-            argTypes: undefined,
-            returnType: this.start((type as PalletStoragePlain).plain),
-          };
-        } else {
-          const { key, value } = (type as PalleStorageMap).map;
-          scrapedType = {
-            argTypes: this.start(key),
-            returnType: this.start(value),
-          };
-        }
-
-        return {
-          name,
-          docs,
-          modifier,
-          fallback,
-          type: scrapedType,
-        };
-      });
+  // Get a pallet storage item from metadata.
+  getStorageItem(
+    palletName: string,
+    itemKey: string,
+    options?: ScraperOptions
+  ) {
+    const pallet = this.getPallet(palletName);
+    if (!pallet) {
+      return null;
     }
 
-    return result;
+    // Defensive: Check if storage items are defined for this pallet.
+    const items = pallet.storage?.items;
+    if (!items) {
+      return null;
+    }
+
+    const item = items.find(({ name }) => name === itemKey);
+    if (!item) {
+      return null;
+    }
+
+    return this.startStorageScrape(item, options);
+  }
+
+  // Starts scraping a storage item.
+  startStorageScrape(
+    item: MetadataPalletStorageItem,
+    options?: ScraperOptions
+  ) {
+    const { name, docs, type, modifier, fallback } = item;
+    const typeKey = Object.keys(type)[0];
+
+    let scrapedType;
+    if (typeKey === 'plain') {
+      scrapedType = {
+        argTypes: undefined,
+        returnType: this.start(
+          (type as PalletStoragePlain).plain,
+          null,
+          options
+        ),
+      };
+    } else {
+      const { key, value } = (type as PalleStorageMap).map;
+
+      scrapedType = {
+        argTypes: this.start(key, null, options),
+        returnType: this.start(value, null, options),
+      };
+    }
+
+    return {
+      name,
+      docs,
+      modifier,
+      fallback,
+      type: scrapedType,
+    };
   }
 
   // Get a pallet's constants from metadata.
@@ -120,7 +157,7 @@ export class PalletScraper extends MetadataScraper {
 
         const scrapedType = {
           argTypes: undefined,
-          returnType: this.start(type),
+          returnType: this.start(type, null),
         };
 
         return {
@@ -146,7 +183,7 @@ export class PalletScraper extends MetadataScraper {
     // Defensive: Check if calls are defined for this pallet.
     const callType = pallet.calls?.type;
     if (callType) {
-      const result = this.start(pallet.calls.type);
+      const result = this.start(pallet.calls.type, null);
       return result;
     } else {
       return null;

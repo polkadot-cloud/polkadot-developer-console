@@ -6,6 +6,7 @@ import type { MetadataVersion } from 'model/Metadata/types';
 import { Format } from './Format';
 import type {
   ScraperConfig,
+  ScraperOptions,
   TrailId,
   TrailParam,
   TrailParentId,
@@ -18,12 +19,13 @@ export class MetadataScraper {
   metadata: MetadataVersion;
 
   // The metadata lookup.
-  lookup: AnyJson = {};
+  #lookup: AnyJson = {};
 
   // Maximum recursion depth for scraping types.
   #maxDepth: number;
 
-  // Keep track of trails that have happened for a given scrape
+  // Keep track of type trails that have happened for a given scrape. Allows for checking cyclic
+  // types.
   #trails: Record<string, { parent: TrailParentId; trail: TrailId[] }> = {};
 
   get trails() {
@@ -34,27 +36,33 @@ export class MetadataScraper {
   constructor(metadata: MetadataVersion, config: ScraperConfig) {
     this.metadata = metadata;
     this.#maxDepth = config.maxDepth;
-    this.lookup = this.metadata.getMetadataJson().lookup;
+    this.#lookup = this.metadata.getMetadataJson().lookup;
   }
 
   // ------------------------------------------------------
-  // Scrape types.
+  // Scrape.
   // ------------------------------------------------------
 
   // Start scraping a type from metadata. Entry should be made from here for any new trail.
-  start(typeId: number, parent?: number) {
-    const params = {
+  start(typeId: number, parent: TrailParentId, options?: ScraperOptions) {
+    // Defining a new tail.
+    const trail = {
       trailId: this.newTrailId(parent),
-      parent: parent === undefined ? null : parent,
+      parent,
+    };
+
+    const params = {
+      ...trail,
+      labelsOnly: !!options?.labelsOnly,
     };
     return this.getType(typeId, params);
   }
 
   // Get a lookup type from metadata. Possible recursion when scraping type ids.
   getType(typeId: number, trailParam: TrailParam) {
-    const { trailId } = trailParam;
+    const { trailId, labelsOnly } = trailParam;
 
-    const lookup = this.lookup.types.find(
+    const lookup = this.#lookup.types.find(
       ({ id }: { id: number }) => id === typeId
     );
 
@@ -69,14 +77,15 @@ export class MetadataScraper {
     // Add current type id to trails record.
     this.appendTrail(trailId, typeId);
 
-    const depth = this.trailDepth(trailId);
-
+    // Exit if lookup not found.
     if (!lookup) {
       return {
         unknown: true,
       };
     }
 
+    // Exit if the depth of the trail surpasses the maximum depth.
+    const depth = this.trailDepth(trailId);
     if (depth >= this.#maxDepth) {
       return {
         unknown: true,
@@ -105,10 +114,14 @@ export class MetadataScraper {
           long: Format.typeToString(path, params),
           short: path[path.length - 1],
         };
-        result.bitsequence = {
-          bitOrderType: this.start((value as AnyJson).bitOrderType, trailId),
-          bitStoreType: this.start((value as AnyJson).bitStoreType, trailId),
-        };
+
+        // Stop scraping at this point if only interested in labels.
+        if (!labelsOnly) {
+          result.bitsequence = {
+            bitOrderType: this.start((value as AnyJson).bitOrderType, trailId),
+            bitStoreType: this.start((value as AnyJson).bitStoreType, trailId),
+          };
+        }
         break;
 
       case 'compact':
@@ -143,7 +156,11 @@ export class MetadataScraper {
           long: Format.typeToString(path, params),
           short: path[path.length - 1],
         };
-        result.variant = this.scrapeVariant(value, trailParam) || 'U128';
+
+        // Stop scraping at this point if only interested in labels.
+        if (!labelsOnly) {
+          result.variant = this.scrapeVariant(value, trailParam) || 'U128';
+        }
         break;
 
       default:
@@ -185,11 +202,11 @@ export class MetadataScraper {
   }
 
   // ------------------------------------------------------
-  // Class helpers
+  // Class helpers.
   // ------------------------------------------------------
 
   // Generates a new trail Id for a new scrape.
-  newTrailId(parent?: number): number {
+  newTrailId(parent: TrailParentId): number {
     // Get the largest trail record key, and increment it by one.
     const trailKeys = Object.keys(this.#trails);
     const trailKeysOrDefault = Object.keys(this.#trails).length
@@ -199,7 +216,7 @@ export class MetadataScraper {
 
     // Add new trail id to trails record.
     this.#trails[trailId] = {
-      parent: parent === undefined ? null : parent,
+      parent,
       trail: [],
     };
     return trailId;

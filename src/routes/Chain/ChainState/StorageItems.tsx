@@ -41,28 +41,38 @@ export const StorageItems = () => {
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
 
     // Get storage items for the active pallet and sort by name.
-    const items = (activePallet ? scraper.getStorage(activePallet) : []).sort(
-      ({ name: nameA }, { name: nameB }) =>
-        nameA < nameB ? -1 : nameA > nameB ? 1 : 0
-    );
+    const palletStorage = activePallet
+      ? scraper.getStorage(activePallet, { labelsOnly: true })
+      : [];
 
-    // If no storage item selected, select the first one from the list or fall back to null.
-    const activeItem = chainUi.selected || items?.[0]?.name || null;
+    // Sort the storage items by name.
+    const items = palletStorage.sort(({ name: nameA }, { name: nameB }) =>
+      nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+    );
 
     const result: PalletData = {
       pallets,
       activePallet,
       items,
-      activeItem,
     };
 
     return result;
-  }, [chainUi.pallet, chainUi.selected, Metadata?.metadata]);
+  }, [chainUi.pallet, Metadata?.metadata]);
 
-  const { pallets, activePallet, items, activeItem } = storageData;
+  const { pallets, activePallet, items } = storageData;
 
-  // Get the whole active storage item record for input formatting.
-  const activeListItem = items.find((item) => item.name === activeItem);
+  // If no storage item selected, select the first one from the list or fall back to null.
+  const activeItem = chainUi.selected || items?.[0]?.name || null;
+
+  // Get the whole active storage item record  from metadata for input formatting.
+  const activeListItem = useMemo(() => {
+    if (!Metadata || !activePallet || !activeItem) {
+      return null;
+    }
+
+    const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
+    return scraper.getStorageItem(activePallet, activeItem);
+  }, [items, activeItem, activePallet]);
 
   // Get input markup for the active storage item.
   const inputForm =
