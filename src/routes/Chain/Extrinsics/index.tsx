@@ -42,13 +42,15 @@ export const Extrinsics = () => {
       pallets,
       activePallet,
       items,
-      activeItem: null, // NOTE: not yet implemented.
     };
 
     return result;
   }, [chainUi.pallet, chainUi.selected, Metadata?.metadata]);
 
   const { pallets, activePallet, items } = callData;
+
+  // NOTE: not yet implemented.
+  // const activeItem = null;
 
   return (
     <>

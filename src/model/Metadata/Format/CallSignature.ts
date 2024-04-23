@@ -123,6 +123,10 @@ export class FormatCallSignature {
     // Expand type if short label is not defined, or if they've been defined in ignore list.
     if (['', ...this.#ignoreLabels].includes(label.short)) {
       str += composite.reduce((acc: string, field: AnyJson, index: number) => {
+        // Defensive: return if field type is missing.
+        if (!field?.type) {
+          return '';
+        }
         acc = acc + this.getTypeString(field.type);
         if (index < composite.length - 1) {
           acc += ', ';

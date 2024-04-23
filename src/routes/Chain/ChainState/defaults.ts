@@ -7,5 +7,4 @@ export const defaultPalletData: PalletData = {
   pallets: [],
   activePallet: null,
   items: [],
-  activeItem: null,
 };

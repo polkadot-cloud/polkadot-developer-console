@@ -11,7 +11,6 @@ export interface PalletData {
   pallets: PalletListItem[];
   activePallet: string | null;
   items: PalletItemScraped[];
-  activeItem: string | null;
 }
 
 export interface PalletListProps {

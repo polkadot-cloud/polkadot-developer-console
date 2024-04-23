@@ -39,20 +39,19 @@ export const Constants = () => {
 
     const items = activePallet ? scraper.getConstants(activePallet) : [];
 
-    // If no storage item selected, select the first one from the list or fall back to null.
-    const activeItem = chainUi.selected || items?.[0]?.name || null;
-
     const result: PalletData = {
       pallets,
       activePallet,
       items,
-      activeItem,
     };
 
     return result;
   }, [chainUi.pallet, chainUi.selected, Metadata?.metadata]);
 
-  const { pallets, activePallet, items, activeItem } = constantsData;
+  const { pallets, activePallet, items } = constantsData;
+
+  // If no storage item selected, select the first one from the list or fall back to null.
+  const activeItem = chainUi.selected || items?.[0]?.name || null;
 
   return (
     <>

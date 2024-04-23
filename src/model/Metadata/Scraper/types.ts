@@ -10,27 +10,31 @@ export interface Pallet {
     type: number;
   };
   storage: {
-    items: {
-      docs: string[];
-      modifier: string;
-      name: string;
-      fallback: string;
-      type: PalletStoragePlain | PalleStorageMap;
-    }[];
+    items: MetadataPalletStorageItem[];
     prefix: string;
   };
-  constants: {
-    docs: string[];
-    name: string;
-    type: number;
-    value: string;
-  }[];
+  constants: MetadataPalletConstantItem[];
   events: {
     type: number;
   };
   errors: {
     type: number;
   };
+}
+
+export interface MetadataPalletStorageItem {
+  docs: string[];
+  modifier: string;
+  name: string;
+  fallback: string;
+  type: PalletStoragePlain | PalleStorageMap;
+}
+
+export interface MetadataPalletConstantItem {
+  docs: string[];
+  name: string;
+  type: number;
+  value: string;
 }
 
 export interface PalletItemScraped {
@@ -74,4 +78,9 @@ export type TrailParentId = number | null;
 export interface TrailParam {
   trailId: TrailId;
   parent: TrailParentId;
+  labelsOnly: boolean;
+}
+
+export interface ScraperOptions {
+  labelsOnly?: boolean;
 }
