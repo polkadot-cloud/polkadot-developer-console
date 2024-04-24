@@ -26,3 +26,8 @@ export interface ChainStateListProps {
   activeItem: string | null;
   chainUiSection: ChainStateSection;
 }
+
+export interface EncodedDetailsProps {
+  activePallet: string;
+  activeItem: string;
+}

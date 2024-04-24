@@ -360,3 +360,70 @@ export const AddInputWrapper = styled.div`
     color: var(--text-color-tertiary);
   }
 `;
+
+export const EncodedWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+
+  > .module {
+    flex-basis: 100%;
+    display: flex;
+    flex-direction: column;
+    max-width: 450px;
+
+    @media (max-width: 750px) {
+      max-width: none;
+    }
+
+    > section {
+      display: flex;
+      align-items: center;
+      padding: 0.3rem 0.4rem;
+
+      > div {
+        display: flex;
+        padding-bottom: 0.3rem;
+
+        &:first-child {
+          padding-right: 0.75rem;
+          min-width: 4rem;
+          justify-content: flex-end;
+
+          > h5 {
+            font-family: InterSemiBold, sans-serif;
+            color: var(--text-color-secondary);
+          }
+        }
+        &:last-child {
+          border-bottom: 1px solid var(--border-secondary-color);
+          flex-grow: 1;
+
+          > h4 {
+            font-family: InterSemiBold, sans-serif;
+            color: var(--text-color-tertiary);
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+
+            > button {
+              color: var(--text-color-secondary);
+              display: flex;
+              justify-content: flex-end;
+              flex-grow: 1;
+              margin-left: 0.65rem;
+              transition: opacity 0.15s;
+              opacity: 0.6;
+
+              &:hover {
+                color: var(--text-color-primary);
+                opacity: 1;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
