@@ -43,7 +43,7 @@ export const EncodedDetails = ({
         </section>
         <section>
           <div>
-            <h5>Method</h5>
+            <h5>Call</h5>
           </div>
 
           <div>
