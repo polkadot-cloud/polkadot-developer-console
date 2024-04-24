@@ -1,6 +1,7 @@
 import type { VoidFn } from '@polkadot/api/types';
 import { ApiController } from 'controllers/Api';
 import type { SubscriptionConfig } from './types';
+import type { AnyJson } from '@w3ux/utils/types';
 
 export class ChainState {
   // ------------------------------------------------------
@@ -9,6 +10,9 @@ export class ChainState {
 
   // The associated tab id for this chain state instance.
   #tabId: number;
+
+  // Chain state results, keyed by subscription key.
+  results: Record<string, AnyJson>;
 
   // Unsubscribe objects, keyed by subscription key.
   #unsubs: Record<string, VoidFn>;
@@ -53,10 +57,13 @@ export class ChainState {
   // Unsubscribe from one class subscription.
   unsubscribeOne = (key: string): void => {
     const unsub = this.#unsubs[key];
-    if (typeof unsub === 'function') {
-      unsub();
+
+    if (unsub !== undefined) {
+      if (typeof unsub === 'function') {
+        unsub();
+      }
+      delete this.#unsubs[key];
     }
-    delete this.#unsubs[key];
   };
 
   // Unsubscribe from all class subscriptions.
