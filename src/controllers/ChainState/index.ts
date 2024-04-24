@@ -18,14 +18,14 @@ export class ChainStateController {
   // Instantiate a new `ChainState` instance with the supplied tabId.
   static async instantiate(tabId: number) {
     if (this.instances[tabId]) {
-      await this.destroy(tabId);
+      this.destroy(tabId);
     }
 
     this.instances[tabId] = new ChainState(tabId);
   }
 
   // Gracefully disconnect and then destroy an api instance.
-  static async destroy(tabId: number) {
+  static destroy(tabId: number) {
     const instance = this.instances[tabId];
     if (instance) {
       instance.unsubscribeAll();

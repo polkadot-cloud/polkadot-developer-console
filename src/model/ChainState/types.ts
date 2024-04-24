@@ -9,7 +9,8 @@ export type SubscriptionConfig =
 
 export interface RawStorageSubscriptionConfig {
   namespace: string;
-  key: string;
+  method: string;
+  args: AnyJson[];
 }
 
 export interface StorageSubscriptionInterface {
