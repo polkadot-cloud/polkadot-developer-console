@@ -33,7 +33,7 @@
     "@w3ux/react-connect-kit": "^0.1.16",
     "@w3ux/react-odometer": "^0.0.3",
     "@w3ux/react-polkicon": "^0.0.3",
-    "@w3ux/utils": "^0.1.1",
+    "@w3ux/utils": "^0.1.2",
     "bignumber.js": "^9.1.2",
     "buffer": "^6.0.3",
     "date-fns": "^3.3.1",

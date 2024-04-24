@@ -17,6 +17,7 @@ import { useInput } from '../Inputs';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import type { PalletData } from './types';
 import { defaultPalletData } from './defaults';
+import { EncodedDetails } from './EncodedDetails';
 
 export const StorageItems = () => {
   const { readInput } = useInput();
@@ -115,6 +116,9 @@ export const StorageItems = () => {
           </ButtonSubmit>
         </section>
       </InputFormWrapper>
+      {activePallet && activeItem && (
+        <EncodedDetails activePallet={activePallet} activeItem={activeItem} />
+      )}
     </>
   );
 };
