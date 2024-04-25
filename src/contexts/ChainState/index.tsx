@@ -62,7 +62,6 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   const handleNewChainState = (e: Event) => {
     if (isCustomEvent(e)) {
       const { tabId, type, subscriptionKey, result } = e.detail;
-      console.log(e.detail);
 
       if (tabId === selectedTabId) {
         setChainStateItem(type, subscriptionKey, result);
@@ -79,6 +78,24 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
         subscription.type === type && subscription.result !== undefined
     );
     return Object.fromEntries(filteredEntries);
+  };
+
+  // Remove a subscription from chain state.
+  const removeChainStateItem = (subscriptionKey: string) => {
+    // Remove key and unsubscribe from controller.
+    ChainStateController.instances?.[selectedTabId].unsubscribeOne(
+      subscriptionKey
+    );
+
+    // Remove key from context chain state.
+    const updatedChainState = { ...chainStateSubscriptions };
+    delete updatedChainState[subscriptionKey];
+
+    setStateWithRef(
+      updatedChainState,
+      setChainStateSubscriptions,
+      chainStateSubscriptionsRef
+    );
   };
 
   const documentRef = useRef(document);
@@ -105,6 +122,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
       value={{
         getChainStateByType,
         getChainStateItem,
+        removeChainStateItem,
       }}
     >
       {children}

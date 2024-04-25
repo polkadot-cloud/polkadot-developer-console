@@ -9,6 +9,7 @@ export interface ChainStateContextInterface {
     type: StorageSubscriptionType
   ) => ChainStateSubscriptions;
   getChainStateItem: (subscriptionKey: string) => AnyJson | null;
+  removeChainStateItem: (subscriptionKey: string) => void;
 }
 
 export type ChainStateSubscriptions = Record<string, ChainStateSubscription>;

@@ -10,12 +10,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { capitalizeFirstLetter } from '@w3ux/utils';
 import type { SubscriptionResultProps } from '../types';
 import { splitSubscriptionKey } from 'model/ChainState/util';
+import { useChainState } from 'contexts/ChainState';
 
 export const SubscriptionResult = ({
   subscriptionKey,
   type,
   result,
 }: SubscriptionResultProps) => {
+  const { removeChainStateItem } = useChainState();
   const [, rawKey] = splitSubscriptionKey(subscriptionKey);
 
   // Readable display of the result.
@@ -49,9 +51,7 @@ export const SubscriptionResult = ({
       <div className="dismiss">
         <button
           className="close"
-          onClick={() => {
-            /* TODO: implement */
-          }}
+          onClick={() => removeChainStateItem(subscriptionKey)}
         >
           <FontAwesomeIcon icon={faXmark} />
         </button>

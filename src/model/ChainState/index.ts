@@ -56,7 +56,7 @@ export class ChainState {
           // this is acceptable for now.
           //
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const unsub = (api as any).rpc[namespace][method](
+          const unsub = await (api as any).rpc[namespace][method](
             ...args,
             ([data]: AnyJson) => {
               const result = data.unwrapOr(undefined);
@@ -115,6 +115,7 @@ export class ChainState {
 
   // Unsubscribe from one class subscription.
   unsubscribeOne = (subscriptionKey: string): void => {
+    console.log(this.#unsubs[subscriptionKey]);
     const unsub = this.#unsubs[subscriptionKey];
 
     if (unsub !== undefined) {
