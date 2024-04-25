@@ -1,24 +1,24 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { SubscriptionResultsWrapper } from '../../Wrappers';
+import { ChainStateResultWrapper } from '../../Wrappers';
 import { useChainState } from 'contexts/ChainState';
-import { SubscriptionResult } from './Result';
+import { ChainStateResult } from './Result';
 import { splitSubscriptionKey } from 'model/ChainState/util';
 
-export const SubscriptionResults = () => {
+export const Results = () => {
   const { getChainStateByType } = useChainState();
 
   const chainStateItems = getChainStateByType('raw');
 
   return (
-    <SubscriptionResultsWrapper>
+    <ChainStateResultWrapper>
       {Object.entries(chainStateItems || {}).map(([subscriptionKey, value]) => {
         const { type, result } = value;
         const [index, rawKey] = splitSubscriptionKey(subscriptionKey);
 
         return (
-          <SubscriptionResult
+          <ChainStateResult
             key={`${index}-${rawKey}`}
             subscriptionKey={subscriptionKey}
             type={type}
@@ -26,6 +26,6 @@ export const SubscriptionResults = () => {
           />
         );
       })}
-    </SubscriptionResultsWrapper>
+    </ChainStateResultWrapper>
   );
 };

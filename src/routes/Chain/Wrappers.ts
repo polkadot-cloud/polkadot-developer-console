@@ -434,7 +434,7 @@ export const EncodedWrapper = styled.div`
   }
 `;
 
-export const SubscriptionResultsWrapper = styled.div`
+export const ChainStateResultWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;

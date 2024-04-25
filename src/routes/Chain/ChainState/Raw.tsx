@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import { ChainStateController } from 'controllers/ChainState';
-import { SubscriptionResults } from './SubscriptionResults';
+import { Results } from './Results';
 
 export const Raw = () => {
   const activeTabId = useActiveTabId();
@@ -77,7 +77,7 @@ export const Raw = () => {
           </ButtonSubmit>
         </section>
       </InputFormWrapper>
-      <SubscriptionResults />
+      <Results />
     </>
   );
 };
