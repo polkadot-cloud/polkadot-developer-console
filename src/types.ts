@@ -11,6 +11,7 @@ import type {
   APIStatusEventDetail,
 } from 'model/Api/types';
 import type { BlockNumberEventDetail } from 'model/BlockNumber/types';
+import type { ChainStateEventDetail } from 'model/ChainState/types';
 import type { CSSProperties, ReactNode } from 'react';
 
 declare global {
@@ -26,6 +27,7 @@ declare global {
     'online-status': CustomEvent<OnlineStatusEvent>;
     'callback-block-number': CustomEvent<BlockNumberEventDetail>;
     'callback-account-balance': CustomEvent<AccountBalanceEventDetail>;
+    'callback-new-chain-state': CustomEvent<ChainStateEventDetail>;
     notification: CustomEvent<NotificationItem>;
   }
 }

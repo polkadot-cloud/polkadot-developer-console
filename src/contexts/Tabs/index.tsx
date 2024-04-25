@@ -6,6 +6,7 @@ import { createContext, useContext, useRef, useState } from 'react';
 import type {
   ChainMeta,
   ConnectFrom,
+  TabChainData,
   Tabs,
   TabsContextInterface,
 } from './types';
@@ -21,6 +22,7 @@ import type { ChainId, DirectoryId } from 'config/networks';
 import { checkLocalTabs } from 'IntegrityChecks/Local';
 import { ApiController } from 'controllers/Api';
 import { isDirectoryId } from 'config/networks/Utils';
+import { ChainStateController } from 'controllers/ChainState';
 
 checkLocalTabs();
 
@@ -160,8 +162,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       setActiveTabIndex(activeTabIndex - 1);
     }
 
-    // Destroy any Api instance associated with tab.
-    ApiController.destroy(id);
+    // Destroy any controller instances associated with tab.
+    destroyControllers(id);
   };
 
   // Rename a tab.
@@ -234,7 +236,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const forgetTabChain = (id: number) => {
     // Disconnect from Api instance if present.
     if (getTab(id)?.chain) {
-      ApiController.destroy(id);
+      destroyControllers(id);
     }
     // Update tab state.
     const newTabs = tabs.map((tab) =>
@@ -283,6 +285,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       chainMeta = localChain || defaultCustomEndpointChainMeta;
     }
 
+    const chainData = { id: chainId, endpoint, ...chainMeta };
+
     const newTabs = [...tabs].map((tab) =>
       tab.id === tabId
         ? {
@@ -290,11 +294,12 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
             // Auto rename the tab here if the setting is turned on.
             name:
               autoTabNaming && isDirectory ? getAutoTabName(chainId) : tab.name,
-            chain: { id: chainId, endpoint, ...chainMeta },
+            chain: chainData,
           }
         : tab
     );
     setTabs(newTabs);
+    instantiateControllers(tabId, chainData);
     ApiController.instantiate(tabId, chainId, endpoint);
   };
 
@@ -302,15 +307,31 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const instantiateApiFromTab = async (tabId: number) => {
     const tab = getTab(tabId);
     if (tab?.chain) {
-      const { id, endpoint } = tab.chain;
       if (tab?.autoConnect) {
         setTabForceDisconnect(tabId, false);
       }
-      await ApiController.instantiate(tab.id, id, endpoint);
+      await instantiateControllers(tab.id, tab?.chain);
     }
   };
 
-  // Switch tab
+  // Instantiate controllers for a new tab.
+  const instantiateControllers = async (tabId: number, chain: TabChainData) => {
+    if (!chain) {
+      return;
+    }
+    const { id, endpoint } = chain;
+
+    await ApiController.instantiate(tabId, id, endpoint);
+    ChainStateController.instantiate(tabId);
+  };
+
+  // Destroy controller instances for a tab.
+  const destroyControllers = (tabId: number) => {
+    ApiController.destroy(tabId);
+    ChainStateController.destroy(tabId);
+  };
+
+  // Switch tab.
   const switchTab = (tabId: number, tabIndex: number) => {
     setSelectedTabId(tabId);
     setActiveTabIndex(tabIndex);

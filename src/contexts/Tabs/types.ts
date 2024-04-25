@@ -9,18 +9,18 @@ export type Tabs = Tab[];
 export interface Tab {
   id: number;
   connectFrom: ConnectFrom;
-  chain:
-    | {
-        id: ChainId;
-        endpoint: string;
-        ss58: number;
-        units: number;
-        unit: string;
-      }
-    | undefined;
+  chain: TabChainData | undefined;
   name: string;
   forceDisconnect: boolean;
   autoConnect: boolean;
+}
+
+export interface TabChainData {
+  id: ChainId;
+  endpoint: string;
+  ss58: number;
+  units: number;
+  unit: string;
 }
 
 export interface ChainMeta {
