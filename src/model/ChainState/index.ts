@@ -115,7 +115,6 @@ export class ChainState {
 
   // Unsubscribe from one class subscription.
   unsubscribeOne = (subscriptionKey: string): void => {
-    console.log(this.#unsubs[subscriptionKey]);
     const unsub = this.#unsubs[subscriptionKey];
 
     if (unsub !== undefined) {
