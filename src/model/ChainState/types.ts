@@ -7,13 +7,17 @@ export type SubscriptionConfig =
   | RawStorageSubscriptionConfig
   | StorageSubscriptionInterface;
 
+export type StorageSubscriptionType = 'raw' | 'storage';
+
 export interface RawStorageSubscriptionConfig {
+  type: StorageSubscriptionType;
   namespace: string;
   method: string;
   args: AnyJson[];
 }
 
 export interface StorageSubscriptionInterface {
+  type: StorageSubscriptionType;
   pallet: string;
   call: string;
   args: AnyJson[];

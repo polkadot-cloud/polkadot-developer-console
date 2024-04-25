@@ -1,6 +1,9 @@
+// Copyright 2024 @rossbulat/console authors & contributors
+// SPDX-License-Identifier: GPL-3.0-only
+
 import type { VoidFn } from '@polkadot/api/types';
 import { ApiController } from 'controllers/Api';
-import type { SubscriptionConfig } from './types';
+import type { RawStorageSubscriptionConfig, SubscriptionConfig } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
 
 export class ChainState {
@@ -15,7 +18,7 @@ export class ChainState {
   results: Record<string, AnyJson>;
 
   // Unsubscribe objects, keyed by subscription key.
-  #unsubs: Record<string, VoidFn>;
+  #unsubs: Record<string, VoidFn> = {};
 
   // ------------------------------------------------------
   // Constructor.
@@ -31,26 +34,40 @@ export class ChainState {
 
   // Subscribe to chain state query.
   subscribe = async (
-    type: 'strorage' | 'raw',
+    subscriptionKey: string,
     config: SubscriptionConfig
   ): Promise<void> => {
     const api = ApiController.instances[this.#tabId].api;
 
     if (api) {
-      console.log(api, type, config);
+      try {
+        // Get the type of subscription. `raw` (storage keys) or `storage` (items).
+        const { type } = config;
 
-      // TODO: Implement.
-      // await api.rpc.state.subscribeStorage(
-      //   ['0xf0c365c3cf59d671eb72da0e7a4113c49f1f0515f462cdcf84e0f1d6045dfcbb'],
-      //   ([result]: AnyJson) => {
-      //     const unwrapped = result.unwrapOr(null);
-      //     if (unwrapped) {
-      //       console.log('Storage key test result:', unwrapped.toHex());
-      //
-      //       // Send result to UI in `new-chain-state-result` event.
-      //     }
-      //   }
-      // );
+        // Subscribe to raw storage keys.
+        if (type === 'raw') {
+          const { namespace, method, args } =
+            config as RawStorageSubscriptionConfig;
+
+          // This call is optimistically attempting to subscribe to whatever config is being passed
+          // into this method. A try catch covers the scenario where invalid config is passed, so
+          // this is acceptable for now.
+          //
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const unsub = (api as any).rpc[namespace][method](
+            ...args,
+            ([result]: AnyJson) => {
+              const unwrapped = result.unwrapOr(null);
+              console.log('Raw storage key test result:', unwrapped.toHex());
+              // TODO: Send result to UI in `new-chain-state-result` event.
+            }
+          );
+          this.#unsubs[subscriptionKey] = unsub;
+        }
+      } catch (e) {
+        console.log('subscription error', e);
+        // TODO: Send error to UI.
+      }
     }
   };
 
