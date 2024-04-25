@@ -22,6 +22,7 @@ import {
   ExtensionsProvider,
   VaultAccountsProvider,
 } from '@w3ux/react-connect-kit';
+import { ChainStateProvider } from 'contexts/ChainState';
 
 export const Providers = () => {
   // !! Provider order matters.
@@ -40,6 +41,7 @@ export const Providers = () => {
     VaultAccountsProvider,
     AccountsProvider,
     ConnectProvider,
+    ChainStateProvider,
   ];
 
   return withProviders(providers, App);
