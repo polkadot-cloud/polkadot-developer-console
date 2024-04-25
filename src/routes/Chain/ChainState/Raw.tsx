@@ -34,16 +34,18 @@ export const Raw = () => {
     }
 
     const chainState = ChainStateController.instances[activeTabId];
-    chainState.subscribe(
-      'someKey', // TODO: Implement real key.
-      {
-        type: 'raw',
-        namespace: 'state',
-        method: 'subscribeStorage',
-        args: [[value]], // NOTE: One argument - array of raw storage keys.
-      }
-    );
+    chainState.subscribe(`${value}`, {
+      type: 'raw',
+      namespace: 'state',
+      method: 'subscribeStorage',
+      args: [[value]],
+    });
+
+    setChainUiItem(activeTabId, chainUiSection, 'selected', '');
   };
+
+  // Test raw storage key for timestamp.now():
+  // 0xf0c365c3cf59d671eb72da0e7a4113c49f1f0515f462cdcf84e0f1d6045dfcbb
 
   return (
     <>

@@ -9,9 +9,6 @@ export const SubscriptionResults = () => {
   const { getChainStateByType } = useChainState();
   const chainStateItems = getChainStateByType('raw');
 
-  // Test raw storage key for timestamp.now():
-  // 0xf0c365c3cf59d671eb72da0e7a4113c49f1f0515f462cdcf84e0f1d6045dfcbb
-
   return (
     <SubscriptionResultsWrapper>
       {Object.entries(chainStateItems || {}).map(

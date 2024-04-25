@@ -15,7 +15,13 @@ export const SubscriptionResult = ({
   type,
   result,
 }: SubscriptionResultProps) => {
-  const display = result.toHuman();
+  const display = result?.toHuman();
+
+  // Should not happen, but just in case result is undefined or `toHuman()` fails on a result, don't
+  // display it.
+  if (display === undefined) {
+    return null;
+  }
 
   return (
     <section>

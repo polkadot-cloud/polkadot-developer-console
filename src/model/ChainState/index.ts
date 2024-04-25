@@ -57,22 +57,28 @@ export class ChainState {
           const unsub = (api as any).rpc[namespace][method](
             ...args,
             ([data]: AnyJson) => {
-              const result = data.unwrapOr(null);
+              const result = data.unwrapOr(undefined);
 
-              // Persist result to class chain state.
-              this.results[subscriptionKey] = { type, result };
+              if (result !== undefined) {
+                // Persist result to class chain state.
+                this.results[subscriptionKey] = { type, result };
 
-              // Send result to UI.
-              document.dispatchEvent(
-                new CustomEvent(`callback-new-chain-state`, {
-                  detail: {
-                    tabId: this.#tabId,
-                    type,
-                    subscriptionKey,
-                    result,
-                  },
-                })
-              );
+                // Send result to UI.
+                document.dispatchEvent(
+                  new CustomEvent(`callback-new-chain-state`, {
+                    detail: {
+                      tabId: this.#tabId,
+                      type,
+                      subscriptionKey,
+                      result,
+                    },
+                  })
+                );
+              } else {
+                // If the result is undefined, flagging an invalid subscription, unsubscribe and
+                // delete from class.
+                this.unsubscribeOne(subscriptionKey);
+              }
             }
           );
           this.#unsubs[subscriptionKey] = unsub;

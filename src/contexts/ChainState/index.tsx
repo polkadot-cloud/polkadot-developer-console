@@ -67,8 +67,11 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   // Get chain state by type.
   const getChainStateByType = (type: StorageSubscriptionType) => {
+    // Note that undefined results are also being removed, which could be present as a result of a
+    // temporary invalid subscription.
     const filteredEntries = Object.entries(chainStateSubscriptions).filter(
-      ([, subscription]) => subscription.type === type
+      ([, subscription]) =>
+        subscription.type === type && subscription.result !== undefined
     );
     return Object.fromEntries(filteredEntries);
   };
