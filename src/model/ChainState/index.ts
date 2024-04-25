@@ -3,9 +3,13 @@
 
 import type { VoidFn } from '@polkadot/api/types';
 import { ApiController } from 'controllers/Api';
-import type { RawStorageSubscriptionConfig, SubscriptionConfig } from './types';
+import type {
+  ConstantResult,
+  RawStorageSubscriptionConfig,
+  SubscriptionConfig,
+} from './types';
 import type { AnyJson } from '@w3ux/utils/types';
-import { splitSubscriptionKey } from './util';
+import { splitChainStateKey } from './util';
 
 export class ChainState {
   // ------------------------------------------------------
@@ -15,8 +19,11 @@ export class ChainState {
   // The associated tab id for this chain state instance.
   #tabId: number;
 
-  // Chain state results, keyed by subscription key.
-  results: Record<string, AnyJson> = {};
+  // Chain state subscription results, keyed by subscription key.
+  subscriptions: Record<string, AnyJson> = {};
+
+  // Chain state constant results, keyed by constant key.
+  constants: Record<string, AnyJson> = {};
 
   // Unsubscribe objects, keyed by subscription key.
   #unsubs: Record<string, VoidFn> = {};
@@ -39,7 +46,7 @@ export class ChainState {
     config: SubscriptionConfig
   ): Promise<void> => {
     const api = ApiController.instances[this.#tabId].api;
-    const subscriptionKey = this.prependIndexToKey(rawKey);
+    const subscriptionKey = this.prependIndexToKey('subscription', rawKey);
 
     if (api) {
       try {
@@ -63,7 +70,7 @@ export class ChainState {
 
               if (result !== undefined) {
                 // Persist result to class chain state.
-                this.results[subscriptionKey] = { type, result };
+                this.subscriptions[subscriptionKey] = { type, result };
 
                 // Send result to UI.
                 document.dispatchEvent(
@@ -92,25 +99,50 @@ export class ChainState {
   };
 
   // ------------------------------------------------------
+  // Constants.
+  // ------------------------------------------------------
+
+  fetchConstant = (pallet: string, constant: string): ConstantResult | null => {
+    const api = ApiController.instances[this.#tabId].api;
+    const result = api?.consts?.[pallet]?.[constant];
+
+    if (result) {
+      const rawKey = `${pallet}_${constant}`;
+      const key = this.prependIndexToKey('constant', rawKey);
+      const value = {
+        type: 'constant',
+        result,
+      };
+
+      this.constants[key] = value;
+      return { key, value };
+    }
+    return null;
+  };
+
+  // ------------------------------------------------------
   // Utilities.
   // ------------------------------------------------------
 
   // Prepend an index and underscore to the start of a subscription key.
-  prependIndexToKey = (subscriptionKey: string): string => {
-    // Iterate this.results, use `splitSubscriptionKey` to find the highest index, and increment by
-    // 1.
-    const greatestIndex = Object.keys(this.results).reduce(
-      (acc: number, key) => {
-        const [index] = splitSubscriptionKey(key);
-        return Number(index) > acc ? Number(index) : acc;
-      },
-      0
-    );
+  prependIndexToKey = (
+    type: 'constant' | 'subscription',
+    subscriptionKey: string
+  ): string => {
+    const entries =
+      type === 'subscription' ? this.subscriptions : this.constants;
+
+    // Iterate `this.subscriptions`, use `splitChainStateKey` to find the highest index, and
+    // increment by 1.
+    const greatestIndex = Object.keys(entries).reduce((acc: number, key) => {
+      const [index] = splitChainStateKey(key);
+      return Number(index) > acc ? Number(index) : acc;
+    }, 0);
     return `${greatestIndex + 1}_${subscriptionKey}`;
   };
 
   // ------------------------------------------------------
-  // Unsubscribe.
+  // Unsubscribe & removal.
   // ------------------------------------------------------
 
   // Unsubscribe from one class subscription.
@@ -122,15 +154,20 @@ export class ChainState {
         unsub();
       }
 
-      delete this.results[subscriptionKey];
+      delete this.subscriptions[subscriptionKey];
       delete this.#unsubs[subscriptionKey];
     }
   };
 
-  // Unsubscribe from all class subscriptions.
+  // Unsubscribe from all class #subscriptions.
   unsubscribeAll = (): void => {
     for (const key in Object.keys(this.#unsubs)) {
       this.unsubscribeOne(key);
     }
+  };
+
+  // Remove a constant from class state.
+  removeConstant = (key: string): void => {
+    delete this.constants[key];
   };
 }

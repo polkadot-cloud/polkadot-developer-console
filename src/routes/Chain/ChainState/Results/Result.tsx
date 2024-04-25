@@ -9,16 +9,16 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { capitalizeFirstLetter } from '@w3ux/utils';
 import type { ChainStateResultProps } from '../types';
-import { splitSubscriptionKey } from 'model/ChainState/util';
+import { splitChainStateKey } from 'model/ChainState/util';
 import { useChainState } from 'contexts/ChainState';
 
 export const ChainStateResult = ({
-  subscriptionKey,
+  chainStateKey,
   type,
   result,
 }: ChainStateResultProps) => {
   const { removeChainStateItem } = useChainState();
-  const [, rawKey] = splitSubscriptionKey(subscriptionKey);
+  const [, rawKey] = splitChainStateKey(chainStateKey);
 
   // Readable display of the result.
   const display = result?.toHuman();
@@ -51,7 +51,7 @@ export const ChainStateResult = ({
       <div className="dismiss">
         <button
           className="close"
-          onClick={() => removeChainStateItem(subscriptionKey)}
+          onClick={() => removeChainStateItem(type, chainStateKey)}
         >
           <FontAwesomeIcon icon={faXmark} />
         </button>

@@ -77,7 +77,7 @@ export const Raw = () => {
           </ButtonSubmit>
         </section>
       </InputFormWrapper>
-      <Results />
+      <Results display="raw" />
     </>
   );
 };

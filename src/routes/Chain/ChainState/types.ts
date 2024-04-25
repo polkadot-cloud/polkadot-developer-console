@@ -35,7 +35,7 @@ export interface EncodedDetailsProps {
 }
 
 export interface ChainStateResultProps {
-  subscriptionKey: string;
+  chainStateKey: string;
   type: StorageSubscriptionType;
   result: AnyJson;
 }

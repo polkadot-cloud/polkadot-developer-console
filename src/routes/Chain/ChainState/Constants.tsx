@@ -14,10 +14,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import type { PalletData } from './types';
 import { defaultPalletData } from './defaults';
+import { camelize } from '@w3ux/utils';
+import { ChainStateController } from 'controllers/ChainState';
+import { useChainState } from 'contexts/ChainState';
+import { Results } from './Results';
 
 export const Constants = () => {
   const { getChainSpec } = useApi();
   const activeTabId = useActiveTabId();
+  const { setConstant } = useChainState();
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'constants';
@@ -53,6 +58,21 @@ export const Constants = () => {
   // If no storage item selected, select the first one from the list or fall back to null.
   const activeItem = chainUi.selected || items?.[0]?.name || null;
 
+  // Handle retrieval of constant from scraped items.
+  const handleSubmit = () => {
+    const chainState = ChainStateController.instances[activeTabId];
+
+    if (activePallet && activeItem) {
+      const pallet = camelize(activePallet);
+      const key = camelize(activeItem);
+
+      const result = chainState.fetchConstant(pallet, key);
+      if (result !== null) {
+        setConstant(result.key, result.value);
+      }
+    }
+  };
+
   return (
     <>
       <SelectFormWrapper className="withHeader">
@@ -73,16 +93,13 @@ export const Constants = () => {
       </SelectFormWrapper>
       <InputFormWrapper>
         <section className="footer">
-          <ButtonSubmit
-            onClick={() => {
-              /* Do nothing */
-            }}
-          >
+          <ButtonSubmit onClick={() => handleSubmit()}>
             Submit
             <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
           </ButtonSubmit>
         </section>
       </InputFormWrapper>
+      <Results display="constant" />
     </>
   );
 };

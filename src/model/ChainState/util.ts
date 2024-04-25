@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 // Destructure subscription key into index key.
-export const splitSubscriptionKey = (
+export const splitChainStateKey = (
   subscriptionKey: string
 ): [string, string] => {
   const result = subscriptionKey.split(/_(.*)/s);
