@@ -304,6 +304,12 @@ export const InputFormWrapper = styled.div`
       flex-direction: row;
       margin-top: 0.5rem;
       justify-content: flex-end;
+
+      > button:disabled {
+        color: var(--text-color-tertiary);
+        cursor: default;
+        opacity: 0.5;
+      }
     }
 
     &.indent {

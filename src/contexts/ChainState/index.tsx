@@ -48,16 +48,21 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     subscriptionKey: string,
     result: AnyJson
   ) => {
-    setChainStateSubscriptions({
-      ...chainStateSubscriptionsRef.current,
-      [subscriptionKey]: { type, result },
-    });
+    setStateWithRef(
+      {
+        ...chainStateSubscriptionsRef.current,
+        [subscriptionKey]: { type, result },
+      },
+      setChainStateSubscriptions,
+      chainStateSubscriptionsRef
+    );
   };
 
   // Store chain state subscription results as they are received.
   const handleNewChainState = (e: Event) => {
     if (isCustomEvent(e)) {
       const { tabId, type, subscriptionKey, result } = e.detail;
+      console.log(e.detail);
 
       if (tabId === selectedTabId) {
         setChainStateItem(type, subscriptionKey, result);

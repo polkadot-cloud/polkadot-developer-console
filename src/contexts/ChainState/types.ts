@@ -8,7 +8,7 @@ export interface ChainStateContextInterface {
   getChainStateByType: (
     type: StorageSubscriptionType
   ) => ChainStateSubscriptions;
-  getChainStateItem: (key: string) => AnyJson | null;
+  getChainStateItem: (subscriptionKey: string) => AnyJson | null;
 }
 
 export type ChainStateSubscriptions = Record<string, ChainStateSubscription>;

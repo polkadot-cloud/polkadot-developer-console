@@ -9,12 +9,16 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { capitalizeFirstLetter } from '@w3ux/utils';
 import type { SubscriptionResultProps } from '../types';
+import { splitSubscriptionKey } from 'model/ChainState/util';
 
 export const SubscriptionResult = ({
   subscriptionKey,
   type,
   result,
 }: SubscriptionResultProps) => {
+  const [, rawKey] = splitSubscriptionKey(subscriptionKey);
+
+  // Readable display of the result.
   const display = result?.toHuman();
 
   // Should not happen, but just in case result is undefined or `toHuman()` fails on a result, don't
@@ -28,7 +32,7 @@ export const SubscriptionResult = ({
       <div className="inner">
         <div className="header">
           <h5>
-            {capitalizeFirstLetter(type)}: {subscriptionKey}
+            {capitalizeFirstLetter(type)}: {rawKey}
           </h5>
         </div>
         <div className="value">

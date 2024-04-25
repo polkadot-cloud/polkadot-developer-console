@@ -68,7 +68,10 @@ export const Raw = () => {
       </SelectFormWrapper>
       <InputFormWrapper>
         <section className="footer">
-          <ButtonSubmit onClick={() => handleSubmit()}>
+          <ButtonSubmit
+            onClick={() => handleSubmit()}
+            disabled={!chainUi.selected}
+          >
             Submit
             <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
           </ButtonSubmit>

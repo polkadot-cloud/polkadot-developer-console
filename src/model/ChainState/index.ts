@@ -5,6 +5,7 @@ import type { VoidFn } from '@polkadot/api/types';
 import { ApiController } from 'controllers/Api';
 import type { RawStorageSubscriptionConfig, SubscriptionConfig } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
+import { splitSubscriptionKey } from './util';
 
 export class ChainState {
   // ------------------------------------------------------
@@ -34,10 +35,11 @@ export class ChainState {
 
   // Subscribe to chain state query.
   subscribe = async (
-    subscriptionKey: string,
+    rawKey: string,
     config: SubscriptionConfig
   ): Promise<void> => {
     const api = ApiController.instances[this.#tabId].api;
+    const subscriptionKey = this.prependIndexToKey(rawKey);
 
     if (api) {
       try {
@@ -88,6 +90,28 @@ export class ChainState {
       }
     }
   };
+
+  // ------------------------------------------------------
+  // Utilities.
+  // ------------------------------------------------------
+
+  // Prepend an index and underscore to the start of a subscription key.
+  prependIndexToKey = (subscriptionKey: string): string => {
+    // Iterate this.results, use `splitSubscriptionKey` to find the highest index, and increment by
+    // 1.
+    const greatestIndex = Object.keys(this.results).reduce(
+      (acc: number, key) => {
+        const [index] = splitSubscriptionKey(key);
+        return Number(index) > acc ? Number(index) : acc;
+      },
+      0
+    );
+    return `${greatestIndex + 1}_${subscriptionKey}`;
+  };
+
+  // ------------------------------------------------------
+  // Unsubscribe.
+  // ------------------------------------------------------
 
   // Unsubscribe from one class subscription.
   unsubscribeOne = (subscriptionKey: string): void => {
