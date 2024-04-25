@@ -8,7 +8,7 @@ import {
 } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { capitalizeFirstLetter } from '@w3ux/utils';
-import type { SubscriptionResultProps } from './types';
+import type { SubscriptionResultProps } from '../types';
 
 export const SubscriptionResult = ({
   subscriptionKey,

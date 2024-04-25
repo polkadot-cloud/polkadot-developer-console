@@ -5,7 +5,6 @@ import { useChainUi } from 'contexts/ChainUi';
 import {
   InputFormWrapper,
   SelectFormWrapper,
-  SubscriptionResultsWrapper,
   TextInputWrapper,
 } from '../Wrappers';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
@@ -13,15 +12,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import { ChainStateController } from 'controllers/ChainState';
-import { SubscriptionResult } from './SubscriptionResult';
-import { useChainState } from 'contexts/ChainState';
+import { SubscriptionResults } from './SubscriptionResults';
 
 export const Raw = () => {
   const activeTabId = useActiveTabId();
-  const { getChainStateByType } = useChainState();
   const { getChainUi, setChainUiItem } = useChainUi();
-
-  const chainStateItems = getChainStateByType('raw');
 
   const chainUiSection = 'raw';
   const chainUi = getChainUi(activeTabId, chainUiSection);
@@ -50,9 +45,6 @@ export const Raw = () => {
     );
   };
 
-  // Test raw storage key for timestamp.now():
-  // 0xf0c365c3cf59d671eb72da0e7a4113c49f1f0515f462cdcf84e0f1d6045dfcbb
-
   return (
     <>
       <SelectFormWrapper className="withHeader">
@@ -80,21 +72,7 @@ export const Raw = () => {
           </ButtonSubmit>
         </section>
       </InputFormWrapper>
-      <SubscriptionResultsWrapper>
-        {Object.entries(chainStateItems || {}).map(
-          ([subscriptionKey, value], i) => {
-            const { type, result } = value;
-            return (
-              <SubscriptionResult
-                key={`${subscriptionKey}-${i}`}
-                subscriptionKey={subscriptionKey}
-                type={type}
-                result={result}
-              />
-            );
-          }
-        )}
-      </SubscriptionResultsWrapper>
+      <SubscriptionResults />
     </>
   );
 };
