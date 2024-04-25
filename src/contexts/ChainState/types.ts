@@ -2,10 +2,18 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
+import type { StorageSubscriptionType } from 'model/ChainState/types';
 
 export interface ChainStateContextInterface {
-  getChainStateItem: (key: string) => AnyJson;
-  setChainStateItem: (key: string, value: AnyJson) => void;
+  getChainStateByType: (
+    type: StorageSubscriptionType
+  ) => ChainStateSubscriptions;
+  getChainStateItem: (key: string) => AnyJson | null;
 }
 
-export type ChainStateSubscriptions = Record<string, AnyJson>;
+export type ChainStateSubscriptions = Record<string, ChainStateSubscription>;
+
+export interface ChainStateSubscription {
+  type: StorageSubscriptionType;
+  result: AnyJson;
+}

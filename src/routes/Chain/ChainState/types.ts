@@ -1,7 +1,9 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
+import type { AnyJson } from '@w3ux/utils/types';
 import type { ChainStateSection, ChainUiItem } from 'contexts/ChainUi/types';
+import type { StorageSubscriptionType } from 'model/ChainState/types';
 import type {
   PalletItemScraped,
   PalletListItem,
@@ -30,4 +32,10 @@ export interface ChainStateListProps {
 export interface EncodedDetailsProps {
   activePallet: string;
   activeItem: string;
+}
+
+export interface SubscriptionResultProps {
+  subscriptionKey: string;
+  type: StorageSubscriptionType;
+  result: AnyJson;
 }

@@ -5,6 +5,6 @@
 import type { ChainStateContextInterface } from './types';
 
 export const defaultChainStateContext: ChainStateContextInterface = {
-  getChainStateItem: (key) => {},
-  setChainStateItem: (key, value) => {},
+  getChainStateByType: (type) => ({}),
+  getChainStateItem: (key) => null,
 };

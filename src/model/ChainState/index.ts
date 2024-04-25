@@ -15,7 +15,7 @@ export class ChainState {
   #tabId: number;
 
   // Chain state results, keyed by subscription key.
-  results: Record<string, AnyJson>;
+  results: Record<string, AnyJson> = {};
 
   // Unsubscribe objects, keyed by subscription key.
   #unsubs: Record<string, VoidFn> = {};
@@ -56,30 +56,44 @@ export class ChainState {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const unsub = (api as any).rpc[namespace][method](
             ...args,
-            ([result]: AnyJson) => {
-              const unwrapped = result.unwrapOr(null);
-              console.log('Raw storage key test result:', unwrapped.toHex());
-              // TODO: Send result to UI in `new-chain-state-result` event.
+            ([data]: AnyJson) => {
+              const result = data.unwrapOr(null);
+
+              // Persist result to class chain state.
+              this.results[subscriptionKey] = { type, result };
+
+              // Send result to UI.
+              document.dispatchEvent(
+                new CustomEvent(`callback-new-chain-state`, {
+                  detail: {
+                    tabId: this.#tabId,
+                    type,
+                    subscriptionKey,
+                    result,
+                  },
+                })
+              );
             }
           );
           this.#unsubs[subscriptionKey] = unsub;
         }
       } catch (e) {
-        console.log('subscription error', e);
-        // TODO: Send error to UI.
+        // TODO: Send error to UI and handle as notification.
       }
     }
   };
 
   // Unsubscribe from one class subscription.
-  unsubscribeOne = (key: string): void => {
-    const unsub = this.#unsubs[key];
+  unsubscribeOne = (subscriptionKey: string): void => {
+    const unsub = this.#unsubs[subscriptionKey];
 
     if (unsub !== undefined) {
       if (typeof unsub === 'function') {
         unsub();
       }
-      delete this.#unsubs[key];
+
+      delete this.results[subscriptionKey];
+      delete this.#unsubs[subscriptionKey];
     }
   };
 

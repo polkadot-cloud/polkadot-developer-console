@@ -8,31 +8,29 @@ import {
 } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { capitalizeFirstLetter } from '@w3ux/utils';
+import type { SubscriptionResultProps } from './types';
 
-export const SubscriptionResult = () => {
-  const type = 'raw';
-  const key =
-    '0xf0c365c3cf59d671eb72da0e7a4113c49f1f0515f462cdcf84e0f1d6045dfcbb';
-  const result = '0x6141ca128f010000';
+export const SubscriptionResult = ({
+  subscriptionKey,
+  type,
+  result,
+}: SubscriptionResultProps) => {
+  const display = result.toHuman();
 
   return (
     <section>
       <div className="inner">
         <div className="header">
           <h5>
-            {capitalizeFirstLetter(type)}: {key}
+            {capitalizeFirstLetter(type)}: {subscriptionKey}
           </h5>
         </div>
         <div className="value">
           <div>
-            <h4>{result}</h4>
+            <h4>{display}</h4>
           </div>
           <div>
-            <button
-              onClick={() =>
-                navigator.clipboard.writeText('0x6141ca128f010000')
-              }
-            >
+            <button onClick={() => navigator.clipboard.writeText(display)}>
               <FontAwesomeIcon icon={faClone} transform="shrink-2" />
             </button>
           </div>

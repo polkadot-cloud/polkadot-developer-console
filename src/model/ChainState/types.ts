@@ -22,3 +22,10 @@ export interface StorageSubscriptionInterface {
   call: string;
   args: AnyJson[];
 }
+
+export interface ChainStateEventDetail {
+  tabId: number;
+  type: StorageSubscriptionType;
+  key: string;
+  value: AnyJson;
+}
