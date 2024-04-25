@@ -34,8 +34,8 @@ export interface EncodedDetailsProps {
   activeItem: string;
 }
 
-export interface SubscriptionResultProps {
-  subscriptionKey: string;
+export interface ChainStateResultProps {
+  chainStateKey: string;
   type: StorageSubscriptionType;
   result: AnyJson;
 }

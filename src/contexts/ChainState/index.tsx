@@ -11,6 +11,7 @@ import {
 } from 'react';
 import { defaultChainStateContext } from './defaults';
 import type {
+  ChainStateConstants,
   ChainStateContextInterface,
   ChainStateSubscriptions,
 } from './types';
@@ -20,7 +21,10 @@ import { isCustomEvent } from 'Utils';
 import { useTabs } from 'contexts/Tabs';
 import { ChainStateController } from 'controllers/ChainState';
 import { setStateWithRef } from '@w3ux/utils';
-import type { StorageSubscriptionType } from 'model/ChainState/types';
+import type {
+  StorageSubscriptionType,
+  StorageType,
+} from 'model/ChainState/types';
 
 export const ChainState = createContext<ChainStateContextInterface>(
   defaultChainStateContext
@@ -34,9 +38,15 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   // The results of current chain state subscriptions.
   const [chainStateSubscriptions, setChainStateSubscriptions] =
     useState<ChainStateSubscriptions>(
-      ChainStateController.instances?.[selectedTabId]?.results || {}
+      ChainStateController.instances?.[selectedTabId]?.subscriptions || {}
     );
   const chainStateSubscriptionsRef = useRef(chainStateSubscriptions);
+
+  // The results of current chain state constants.
+  const [chainStateConstants, setChainStateConstants] =
+    useState<ChainStateConstants>(
+      ChainStateController.instances?.[selectedTabId]?.constants || {}
+    );
 
   // Get a chain state subscription by key.
   const getChainStateItem = (key: string) =>
@@ -81,21 +91,36 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Remove a subscription from chain state.
-  const removeChainStateItem = (subscriptionKey: string) => {
-    // Remove key and unsubscribe from controller.
-    ChainStateController.instances?.[selectedTabId].unsubscribeOne(
-      subscriptionKey
-    );
+  const removeChainStateItem = (type: StorageType, key: string) => {
+    // Handle removal of chain state subscription.
+    if (['storage', 'raw'].includes(type)) {
+      // Remove key and unsubscribe from controller.
+      ChainStateController.instances?.[selectedTabId].unsubscribeOne(key);
+      // Remove key from context chain state.
+      const updatedChainState = { ...chainStateSubscriptions };
+      delete updatedChainState[key];
 
-    // Remove key from context chain state.
-    const updatedChainState = { ...chainStateSubscriptions };
-    delete updatedChainState[subscriptionKey];
+      setStateWithRef(
+        updatedChainState,
+        setChainStateSubscriptions,
+        chainStateSubscriptionsRef
+      );
+    }
 
-    setStateWithRef(
-      updatedChainState,
-      setChainStateSubscriptions,
-      chainStateSubscriptionsRef
-    );
+    // Handle removal of chain state constant.
+    if (type === 'constant') {
+      const updated = { ...chainStateConstants };
+      delete updated[key];
+      setChainStateConstants(updated);
+      ChainStateController.instances?.[selectedTabId].removeConstant(key);
+    }
+  };
+
+  // Set a new constant for a tab and key.
+  const setConstant = (key: string, value: AnyJson) => {
+    const updated = { ...chainStateConstants };
+    updated[key] = value;
+    setChainStateConstants(updated);
   };
 
   const documentRef = useRef(document);
@@ -107,13 +132,13 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   // Get chain state on mount and selected tab change.
   useEffect(() => {
-    const tabChainState =
-      ChainStateController.instances?.[selectedTabId]?.results || {};
-
     setStateWithRef(
-      tabChainState,
+      ChainStateController.instances?.[selectedTabId]?.subscriptions || {},
       setChainStateSubscriptions,
       chainStateSubscriptionsRef
+    );
+    setChainStateConstants(
+      ChainStateController.instances?.[selectedTabId]?.constants || {}
     );
   }, [selectedTabId]);
 
@@ -123,6 +148,8 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
         getChainStateByType,
         getChainStateItem,
         removeChainStateItem,
+        chainStateConstants,
+        setConstant,
       }}
     >
       {children}

@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/utils/types';
 import { ChainState } from 'model/ChainState';
 
 export class ChainStateController {
@@ -9,7 +8,7 @@ export class ChainStateController {
   // Class members.
   // ------------------------------------------------------
   // The currently instantiated chain state instances, keyed by tab id.
-  static instances: Record<string, AnyJson> = {};
+  static instances: Record<string, ChainState> = {};
 
   // ------------------------------------------------------
   // Chain state instance methods.

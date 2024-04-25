@@ -8,17 +8,17 @@ import {
 } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { capitalizeFirstLetter } from '@w3ux/utils';
-import type { SubscriptionResultProps } from '../types';
-import { splitSubscriptionKey } from 'model/ChainState/util';
+import type { ChainStateResultProps } from '../types';
+import { splitChainStateKey } from 'model/ChainState/util';
 import { useChainState } from 'contexts/ChainState';
 
-export const SubscriptionResult = ({
-  subscriptionKey,
+export const ChainStateResult = ({
+  chainStateKey,
   type,
   result,
-}: SubscriptionResultProps) => {
+}: ChainStateResultProps) => {
   const { removeChainStateItem } = useChainState();
-  const [, rawKey] = splitSubscriptionKey(subscriptionKey);
+  const [, rawKey] = splitChainStateKey(chainStateKey);
 
   // Readable display of the result.
   const display = result?.toHuman();
@@ -51,7 +51,7 @@ export const SubscriptionResult = ({
       <div className="dismiss">
         <button
           className="close"
-          onClick={() => removeChainStateItem(subscriptionKey)}
+          onClick={() => removeChainStateItem(type, chainStateKey)}
         >
           <FontAwesomeIcon icon={faXmark} />
         </button>

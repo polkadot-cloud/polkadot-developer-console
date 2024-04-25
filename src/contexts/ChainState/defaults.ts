@@ -7,5 +7,7 @@ import type { ChainStateContextInterface } from './types';
 export const defaultChainStateContext: ChainStateContextInterface = {
   getChainStateByType: (type) => ({}),
   getChainStateItem: (key) => null,
-  removeChainStateItem: (key) => {},
+  removeChainStateItem: (type, key) => {},
+  setConstant: (key, value) => ({}),
+  chainStateConstants: {},
 };

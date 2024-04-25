@@ -7,8 +7,11 @@ export type SubscriptionConfig =
   | RawStorageSubscriptionConfig
   | StorageSubscriptionInterface;
 
+export type StorageType = StorageSubscriptionType | 'constant';
+
 export type StorageSubscriptionType = 'raw' | 'storage';
 
+// Configuration for raw subscriptions.
 export interface RawStorageSubscriptionConfig {
   type: StorageSubscriptionType;
   namespace: string;
@@ -16,11 +19,17 @@ export interface RawStorageSubscriptionConfig {
   args: AnyJson[];
 }
 
+// Configuration for storage item subscriptions.
 export interface StorageSubscriptionInterface {
   type: StorageSubscriptionType;
   pallet: string;
   call: string;
   args: AnyJson[];
+}
+
+export interface ConstantResult {
+  key: string;
+  value: AnyJson;
 }
 
 export interface ChainStateEventDetail {
