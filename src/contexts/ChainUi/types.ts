@@ -35,14 +35,14 @@ export interface ChainUiContextInterface {
     tabId: number,
     section: InputArgsFor,
     key: string
-  ) => InputArgs | null;
+  ) => InputArg | null;
   setInputArgAtKey: (
     tabId: number,
     section: InputArgsFor,
     key: string,
-    value: string
+    arg: InputArg
   ) => void;
-  resetInputArgAtKey: (tabId: number, section: InputArgsFor) => void;
+  resetInputArgSection: (tabId: number, section: InputArgsFor) => void;
 }
 
 // Types associated with chain ui.

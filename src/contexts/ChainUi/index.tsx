@@ -18,6 +18,8 @@ import type {
   ChainStateSections,
   ChainStateSection,
   InputArgsFor,
+  InputArgsState,
+  InputArg,
 } from './types';
 import type { ApiPromise } from '@polkadot/api';
 import { xxhashAsHex } from '@polkadot/util-crypto';
@@ -41,6 +43,9 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
 
   // Stores pallet versions of a chain, keyed by tab.
   const [palletVersions, setPalletVersions] = useState<PalletVersions>({});
+
+  // Stores the input arguments for either a storage item or call, keyed by tab.
+  const [inputArgs, setInputArgs] = useState<InputArgsState>({});
 
   // Gets an active chain state section by tabId. Falls back to 'storage'.
   const getActiveChainStateSection = (tabId: number): string =>
@@ -161,9 +166,10 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
 
   // Get input args for either a storage item or call.
   const getInputArgs = (tabId: number, section: InputArgsFor) => {
-    console.log(tabId, section);
-    // TODO: implement
-    return {};
+    if (!inputArgs[tabId]) {
+      return null;
+    }
+    return inputArgs[tabId][section];
   };
 
   // Get input args at a key for either a storage item or call.
@@ -172,9 +178,11 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     section: InputArgsFor,
     key: string
   ) => {
-    console.log(tabId, section, key);
-    // TODO: implement
-    return {};
+    if (!inputArgs[tabId]) {
+      return null;
+    }
+    const args = inputArgs[tabId][section];
+    return args?.[key] || null;
   };
 
   // Set input args at a given key for either a storage item or call.
@@ -182,17 +190,32 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     tabId: number,
     section: InputArgsFor,
     key: string,
-    value: string
+    arg: InputArg
   ) => {
-    // TODO: If an `InputArgs` record does not exist for the tab yet, add it now.
-    console.log(tabId, section, key, value);
-    // TODO: implement.
+    const updatedInputArgs = { ...inputArgs };
+
+    // If an `InputArgs` record does not exist for the tab yet, add it now.
+    if (!inputArgs[tabId]) {
+      updatedInputArgs[tabId] = {
+        storage: {},
+        call: {},
+      };
+    }
+    // Apply the new input arg and update state.
+    updatedInputArgs[tabId][section][key] = arg;
+    setInputArgs(updatedInputArgs);
   };
 
   // Reset input args at a given key for either a storage item or call.
-  const resetInputArgAtKey = (tabId: number, section: InputArgsFor) => {
-    console.log(tabId, section);
-    // TODO: implement.
+  const resetInputArgSection = (tabId: number, section: InputArgsFor) => {
+    if (!inputArgs[tabId]) {
+      return;
+    }
+    const updatedInputArgs = { ...inputArgs };
+
+    // Reset the input args for the given section and update state.
+    updatedInputArgs[tabId][section] = {};
+    setInputArgs(updatedInputArgs);
   };
 
   return (
@@ -209,7 +232,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
         getInputArgs,
         getInputArgsAtKey,
         setInputArgAtKey,
-        resetInputArgAtKey,
+        resetInputArgSection,
       }}
     >
       {children}
