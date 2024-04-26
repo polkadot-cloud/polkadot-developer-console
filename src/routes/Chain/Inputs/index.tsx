@@ -79,7 +79,7 @@ export const useInput = () => {
   const renderTuple = (input: AnyJson, parentKey: string) =>
     input.map((item: AnyJson, index: number) => {
       const [tupleType, tupleInput] = Object.entries(item)[0];
-      const key = `${parentKey}_${tupleType}_${index}`;
+      const key = `${parentKey}_${index}`;
 
       return (
         <Fragment key={key}>
@@ -97,7 +97,7 @@ export const useInput = () => {
         : Object.entries(input.forms).map(
             ([label, subInput]: AnyJson, index: number) => {
               const subType = Object.keys(subInput)[0];
-              const key = `${parentKey}_${label}_${index}`;
+              const key = `${parentKey}_${index}`;
 
               const subInputLabel = subInput[subType].label;
 
@@ -133,7 +133,7 @@ export const useInput = () => {
         {input.forms[selectedVariant].map(
           (subInput: AnyJson, index: number) => {
             const subType = Object.keys(subInput)[0];
-            const key = `${parentKey}_${selectedVariant}_${subType}_${index}`;
+            const key = `${parentKey}_${index}`;
 
             return (
               <Fragment key={key}>
