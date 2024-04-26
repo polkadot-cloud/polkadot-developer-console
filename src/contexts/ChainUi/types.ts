@@ -30,12 +30,12 @@ export interface ChainUiContextInterface {
     section: keyof ChainUiItem,
     key: keyof ChainUiItemInner
   ) => boolean;
-  getInputArgs: (tabId: number, section: InputArgsFor) => InputArgs;
+  getInputArgs: (tabId: number, section: InputArgsFor) => InputArgs | null;
   getInputArgsAtKey: (
     tabId: number,
     section: InputArgsFor,
     key: string
-  ) => InputArgs;
+  ) => InputArgs | null;
   setInputArgAtKey: (
     tabId: number,
     section: InputArgsFor,
@@ -87,9 +87,6 @@ export type ChainStateSection = 'storage' | 'constants' | 'calls' | 'raw';
 // Types associated with input arguments.
 // --------------------------------------
 
-// The section input args are being applied to.
-export type InputArgsFor = 'storage' | 'call';
-
 // Input args object used for React state. Keyed by tab id.
 export type InputArgsState = Record<
   number,
@@ -111,3 +108,6 @@ export interface InputArg {
   // The input data.
   value: AnyJson;
 }
+
+// The section input args are being applied to.
+export type InputArgsFor = 'storage' | 'call';
