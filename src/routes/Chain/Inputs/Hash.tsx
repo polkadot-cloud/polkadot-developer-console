@@ -3,9 +3,11 @@
 
 import { useState } from 'react';
 import { TextInputWrapper } from '../Wrappers';
+import type { HashProps } from './types';
 
-export const Hash = ({ defaultValue }: { defaultValue: string | number }) => {
+export const Hash = ({ inputKey, defaultValue }: HashProps) => {
   const [value, setValue] = useState<string | number>(defaultValue || '');
+  console.log(inputKey, '(hash)');
 
   // Handle textbox value change.
   const handleTextboxChange = (val: string) => {

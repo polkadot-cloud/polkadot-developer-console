@@ -3,16 +3,15 @@
 
 import { useState } from 'react';
 import { TextInputWrapper } from '../Wrappers';
+import type { TextboxProps } from './types';
 
 export const Textbox = ({
+  inputKey,
   label,
   defaultValue,
   numeric,
-}: {
-  label: string | number;
-  defaultValue: string | number;
-  numeric?: boolean;
-}) => {
+}: TextboxProps) => {
+  console.log(inputKey, '(textbox)');
   const [value, setValue] = useState<string | number>(defaultValue || '');
 
   // Handle textbox value change.

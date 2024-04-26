@@ -106,7 +106,7 @@ export interface InputArg {
   // The type of input, e.g. variant, composite, etc.
   input: string;
   // The input data.
-  value: AnyJson;
+  value?: AnyJson;
 }
 
 // The section input args are being applied to.

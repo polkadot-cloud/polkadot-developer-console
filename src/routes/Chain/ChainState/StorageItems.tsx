@@ -101,14 +101,18 @@ export const StorageItems = () => {
       </SelectFormWrapper>
       <InputFormWrapper>
         {!!inputForm &&
-          Object.entries(inputForm).map(([type, input]: AnyJson, index) => {
-            const key = `${index}`;
-            return (
-              <Fragment key={`input_arg_${key}`}>
-                {readInput(type, input, key)}
-              </Fragment>
-            );
-          })}
+          Object.entries(inputForm).map(([type, input]: AnyJson, index) => (
+            <Fragment key={`input_arg_${index}`}>
+              {readInput(
+                type,
+                {
+                  inputKey: `${index}`,
+                  inputArgsFor: 'storage',
+                },
+                input
+              )}
+            </Fragment>
+          ))}
         <section className="footer">
           <ButtonSubmit
             onClick={() => {

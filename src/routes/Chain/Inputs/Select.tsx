@@ -7,16 +7,12 @@ import { camelize } from '@w3ux/utils';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SelectDropdown } from 'library/SelectDropdown';
+import type { SelectProps } from './types';
 
-export const Select = ({
-  values,
-  label,
-}: {
-  values: string[];
-  label: string | number;
-}) => {
+export const Select = ({ inputKey, values, label }: SelectProps) => {
   // Whether select options are open.
   const [open, setOpen] = useState<boolean>(false);
+  console.log(inputKey, '(select)');
 
   // Outside alerter ignore class.
   const ignoreClass = `ignore-outside-alerter-select_${camelize(String(label))}`;

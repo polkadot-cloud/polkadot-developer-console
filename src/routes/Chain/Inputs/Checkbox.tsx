@@ -3,15 +3,11 @@
 
 import { Switch } from 'library/Switch';
 import { useState } from 'react';
+import type { CheckboxProps } from './types';
 
-export const Checkbox = ({
-  label,
-  defaultValue,
-}: {
-  label: string | number;
-  defaultValue: boolean;
-}) => {
+export const Checkbox = ({ inputKey, label, defaultValue }: CheckboxProps) => {
   const [checked, setChecked] = useState<boolean>(defaultValue);
+  console.log(inputKey, '(checkbox)');
 
   return (
     <>

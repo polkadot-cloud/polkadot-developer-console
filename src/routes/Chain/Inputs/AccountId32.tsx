@@ -17,9 +17,15 @@ import {
 import { useAccounts } from 'contexts/Accounts';
 import { formatInputString } from 'Utils';
 import { SelectDropdown } from 'library/SelectDropdown';
+import type { InputArgConfig } from './types';
+import { useChainUi } from 'contexts/ChainUi';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
-export const AccountId32 = () => {
+export const AccountId32 = ({ inputKey, inputArgsFor }: InputArgConfig) => {
   const { accounts } = useAccounts();
+  const activeTabId = useActiveTabId();
+  const { setInputArgAtKey } = useChainUi();
+  console.log(inputKey, 'AccountId32', inputArgsFor);
 
   // The current selected address.
   const [selectedAddress, setSelectedAddress] = useState<string>(
@@ -33,11 +39,20 @@ export const AccountId32 = () => {
       selectedAddress
   );
 
+  // Handle setting input arg.
+  const handleSetInputArg = (val: string) => {
+    setInputArgAtKey(activeTabId, inputArgsFor, inputKey, {
+      input: 'AccountId32',
+      value: val,
+    });
+  };
+
   // Handle input value change.
   const handleInputChange = (val: string) => {
     setValue(val);
     setSelectedAddress(val);
     setSearchValue(val);
+    handleSetInputArg(val);
   };
 
   // Handle input blur. If the input value is an imported address, set the input value to be the
@@ -123,6 +138,7 @@ export const AccountId32 = () => {
               setDropdownOpen(false);
               setValue(name);
               setSelectedAddress(address);
+              handleSetInputArg(address);
             }}
           >
             <span>

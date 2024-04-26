@@ -218,6 +218,8 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     setInputArgs(updatedInputArgs);
   };
 
+  console.log(inputArgs);
+
   return (
     <ChainUi.Provider
       value={{

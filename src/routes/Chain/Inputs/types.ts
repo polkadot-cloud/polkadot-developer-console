@@ -2,12 +2,49 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
+import type { InputArgsFor } from 'contexts/ChainUi/types';
 
 export interface InputItem {
   form: AnyJson;
-  label: string;
+  label: string | number;
 }
 
 export interface InputArray extends InputItem {
   len: number;
 }
+
+export interface RenderInputArgs {
+  inputItem: InputItem;
+  key: string;
+}
+
+export interface InputArgConfig {
+  inputKey: string;
+  inputArgsFor: InputArgsFor;
+}
+
+export type HashProps = InputArgConfig & {
+  defaultValue: string | number;
+};
+
+export type SelectProps = InputArgConfig & {
+  values: string[];
+  label: string | number;
+};
+
+export type CheckboxProps = InputArgConfig & {
+  label: string | number;
+  defaultValue: boolean;
+};
+
+export type TextboxProps = InputArgConfig & {
+  label: string | number;
+  defaultValue: string | number;
+  numeric?: boolean;
+};
+
+export type SequenceProps = InputArgConfig & {
+  type: string;
+  arrayInput: AnyJson;
+  maxLength?: number;
+};
