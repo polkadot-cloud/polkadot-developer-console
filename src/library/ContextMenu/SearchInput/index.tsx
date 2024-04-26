@@ -6,7 +6,10 @@ import { SearchWrapper } from '../Wrappers';
 import type { SearchInputProps } from './types';
 import { useChainUi } from 'contexts/ChainUi';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWandSparkles } from '@fortawesome/free-solid-svg-icons';
+import {
+  faWandSparkles,
+  faDeleteLeft,
+} from '@fortawesome/pro-duotone-svg-icons';
 
 export const SearchInput = ({
   inputRef,
@@ -31,49 +34,70 @@ export const SearchInput = ({
 
   return (
     <SearchWrapper>
-      <input
-        ref={inputRef}
-        placeholder="Search"
-        value={value}
-        onChange={(ev) => onChange(ev)}
-        onKeyDown={(ev) => {
-          // Enter key action.
-          if (ev.key === 'Enter') {
-            onEnter();
-          }
-          if (ev.key === 'Escape') {
-            // Escape action on non-empty search value.
-            if (
-              // If chainUi is being used, check if the currently selected item's search value is
-              // not empty.
-              (isChainUi &&
-                !isChainUiValueEmpty(
-                  activeTabId,
-                  chainUiSection,
-                  chainUiKeys.searchKey
-                )) ||
-              // If a direct search value is being used, check if it is not empty.
-              (searchValue && searchValue.length > 0)
-            ) {
-              if (isChainUi) {
-                setChainUiItem(
-                  activeTabId,
-                  chainUiSection,
-                  chainUiKeys.searchKey,
-                  ''
-                );
-              } else {
-                if (typeof setSearchValue === 'function') {
-                  setSearchValue('');
-                }
-              }
-            } else {
-              // Escape action on empty search value.
-              onEscape();
+      <div className="input">
+        <input
+          ref={inputRef}
+          placeholder="Search"
+          value={value}
+          onChange={(ev) => onChange(ev)}
+          onKeyDown={(ev) => {
+            // Enter key action.
+            if (ev.key === 'Enter') {
+              onEnter();
             }
-          }
-        }}
-      />
+            if (ev.key === 'Escape') {
+              // Escape action on non-empty search value.
+              if (
+                // If chainUi is being used, check if the currently selected item's search value is
+                // not empty.
+                (isChainUi &&
+                  !isChainUiValueEmpty(
+                    activeTabId,
+                    chainUiSection,
+                    chainUiKeys.searchKey
+                  )) ||
+                // If a direct search value is being used, check if it is not empty.
+                (searchValue && searchValue.length > 0)
+              ) {
+                if (isChainUi) {
+                  setChainUiItem(
+                    activeTabId,
+                    chainUiSection,
+                    chainUiKeys.searchKey,
+                    ''
+                  );
+                } else {
+                  if (typeof setSearchValue === 'function') {
+                    setSearchValue('');
+                  }
+                }
+              } else {
+                // Escape action on empty search value.
+                onEscape();
+              }
+            }
+          }}
+        />
+        <button
+          className="delete"
+          onClick={() => {
+            if (typeof setSearchValue === 'function') {
+              setSearchValue('');
+            }
+
+            if (isChainUi) {
+              setChainUiItem(
+                activeTabId,
+                chainUiSection,
+                chainUiKeys.searchKey,
+                ''
+              );
+            }
+          }}
+        >
+          <FontAwesomeIcon icon={faDeleteLeft} transform="grow-1" />
+        </button>
+      </div>
       {isChainUi && (
         <button
           className={`icon ${chainUi[chainUiKeys.selectOnSearchKey] === true ? 'active' : ''}`}

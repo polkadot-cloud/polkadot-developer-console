@@ -192,18 +192,42 @@ export const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
 
-  > input {
+  > .input {
     border: 1px solid var(--border-primary-color);
     padding: 0.3rem 0.4rem;
     border-radius: 0.25rem;
     margin: 0.3rem 0;
-    font-size: 0.7rem;
     flex-grow: 1;
+    display: flex;
+    position: relative;
+
+    > input {
+      margin: 0;
+      padding: 0;
+      flex-grow: 1;
+      font-size: 0.7rem;
+      padding-right: 1.35rem;
+    }
+
+    > .delete {
+      color: var(--text-color-tertiary);
+      position: absolute;
+      top: 0.25rem;
+      right: 0.35rem;
+
+      &:hover {
+        color: var(--accent-color-primary);
+      }
+
+      .fa-secondary {
+        opacity: 0.25;
+      }
+    }
   }
 
   > .icon {
     color: var(--text-color-tertiary);
-    margin-left: 0.5rem;
+    margin-left: 0.6rem;
 
     &.active {
       color: var(--accent-color-primary);
