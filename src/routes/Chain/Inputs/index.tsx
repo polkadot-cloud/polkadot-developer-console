@@ -82,7 +82,7 @@ export const useInput = () => {
       const key = `${parentKey}_${index}`;
 
       return (
-        <Fragment key={key}>
+        <Fragment key={`input_arg_${key}`}>
           {readInput(tupleType, tupleInput, key, true)}
         </Fragment>
       );
@@ -111,7 +111,7 @@ export const useInput = () => {
               };
 
               return (
-                <Fragment key={key}>
+                <Fragment key={`input_arg_${key}`}>
                   {readInput(subType, subInputWithLabel, key, true)}
                 </Fragment>
               );
@@ -136,7 +136,7 @@ export const useInput = () => {
             const key = `${parentKey}_${index}`;
 
             return (
-              <Fragment key={key}>
+              <Fragment key={`input_arg_${key}`}>
                 {readInput(subType, subInput[subType], key, true)}
               </Fragment>
             );
