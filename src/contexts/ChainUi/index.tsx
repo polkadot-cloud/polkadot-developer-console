@@ -17,6 +17,7 @@ import type {
   ChainUiItemInner,
   ChainStateSections,
   ChainStateSection,
+  InputArgsFor,
 } from './types';
 import type { ApiPromise } from '@polkadot/api';
 import { xxhashAsHex } from '@polkadot/util-crypto';
@@ -158,6 +159,42 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     return !!val;
   };
 
+  // Get input args for either a storage item or call.
+  const getInputArgs = (tabId: number, section: InputArgsFor) => {
+    console.log(tabId, section);
+    // TODO: implement
+    return {};
+  };
+
+  // Get input args at a key for either a storage item or call.
+  const getInputArgsAtKey = (
+    tabId: number,
+    section: InputArgsFor,
+    key: string
+  ) => {
+    console.log(tabId, section, key);
+    // TODO: implement
+    return {};
+  };
+
+  // Set input args at a given key for either a storage item or call.
+  const setInputArgAtKey = (
+    tabId: number,
+    section: InputArgsFor,
+    key: string,
+    value: string
+  ) => {
+    // TODO: If an `InputArgs` record does not exist for the tab yet, add it now.
+    console.log(tabId, section, key, value);
+    // TODO: implement.
+  };
+
+  // Reset input args at a given key for either a storage item or call.
+  const resetInputArgAtKey = (tabId: number, section: InputArgsFor) => {
+    console.log(tabId, section);
+    // TODO: implement.
+  };
+
   return (
     <ChainUi.Provider
       value={{
@@ -169,6 +206,10 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
         isChainUiValueEmpty,
         getActiveChainStateSection,
         setActiveChainStateSection,
+        getInputArgs,
+        getInputArgsAtKey,
+        setInputArgAtKey,
+        resetInputArgAtKey,
       }}
     >
       {children}
