@@ -271,7 +271,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const connectTab = (tabId: number, chainId: ChainId, endpoint: string) => {
     const isDirectory = isDirectoryId(chainId);
 
-    // Inject chain metadata from network directory or custom endpoint.
+    // Inject chain meta from network directory or custom endpoint.
     let chainMeta: ChainMeta;
     if (isDirectory) {
       const system = NetworkDirectory[chainId].system;

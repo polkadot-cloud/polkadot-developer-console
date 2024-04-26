@@ -42,6 +42,9 @@ export class Api {
   // Chain constants.
   consts: Record<string, AnyJson> = {};
 
+  // Whether the api has been initialised.
+  #initialized = false;
+
   // ------------------------------------------------------
   // Getters.
   // ------------------------------------------------------
@@ -96,6 +99,9 @@ export class Api {
       this.initApiEvents();
 
       await this.#api.isReady;
+
+      // Set initialized flag.
+      this.#initialized = true;
     } catch (e) {
       this.dispatchEvent(this.ensureEventStatus('error'), {
         err: 'InitializationError',
@@ -104,6 +110,8 @@ export class Api {
   }
 
   async fetchChainSpec() {
+    console.log('fetching chain spec');
+
     // Fetch chain specs.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newChainSpec = await Promise.all<any>([
@@ -113,7 +121,8 @@ export class Api {
     ]);
 
     // Check that chain values have been fetched before committing to state.
-    if (newChainSpec.every((c) => !!c?.toHuman())) {
+    if (newChainSpec.every((c) => c?.toHuman() !== undefined)) {
+      console.log('all values exist');
       const chain = newChainSpec[0].toString();
       const specVersion =
         newChainSpec[1].toJSON() as unknown as APIChainSpecVersion;
@@ -125,9 +134,9 @@ export class Api {
 
       // Set chainspec and metadata, or dispatch an error and disconnect otherwise.
       if (specVersion && metadataJson) {
+        console.log('metadata and spec version exist');
         const metadataVersion = Object.keys(metadataJson?.metadata || {})[0];
-        const magicNumber = Object.values(metadataJson?.metadata || {})[0]
-          .magicNumber;
+        const magicNumber = metadataJson.magicNumber;
 
         this.chainSpec = {
           chain,
@@ -141,11 +150,35 @@ export class Api {
           consts: {},
         };
       } else {
+        console.log('metadata or spec version does not exist');
         this.dispatchEvent(this.ensureEventStatus('error'), {
           err: 'ChainSpecError',
         });
       }
+    } else {
+      console.log('fetched values do not exist');
     }
+  }
+
+  async handleFetchChainData() {
+    // Fetch chain spec. NOTE: This is a one-time fetch. It's currently not possible to update the
+    // chain spec without a refresh.
+    if (!this.chainSpec) {
+      // Fetch chain spec.
+      await this.fetchChainSpec();
+      // Fetch chain constants.
+      this.fetchConsts();
+    }
+
+    document.dispatchEvent(
+      new CustomEvent('new-chain-spec', {
+        detail: {
+          tabId: this.tabId,
+          spec: this.chainSpec,
+          consts: this.consts,
+        },
+      })
+    );
   }
 
   // Fetch chain consts. Must be called after chain spec is fetched.
@@ -178,29 +211,19 @@ export class Api {
   async initApiEvents() {
     this.#api.on('ready', async () => {
       this.dispatchEvent(this.ensureEventStatus('ready'));
-
-      // Fetch chain spec. NOTE: This is a one-time fetch. It's currently not possible to update the
-      // chain spec without a refresh.
-      if (!this.chainSpec) {
-        await this.fetchChainSpec();
-
-        // Fetch chain constants.
-        this.fetchConsts();
-
-        document.dispatchEvent(
-          new CustomEvent('new-chain-spec', {
-            detail: {
-              tabId: this.tabId,
-              spec: this.chainSpec,
-              consts: this.consts,
-            },
-          })
-        );
-      }
+      this.handleFetchChainData();
     });
 
     this.#api.on('connected', () => {
       this.dispatchEvent(this.ensureEventStatus('connected'));
+
+      // If this chain has already been initialized, sync chain data. May have been lost due to a
+      // disconnect and automatic reconnect.
+      console.log('connected, initialised: ', this.#initialized);
+      if (this.#initialized) {
+        console.log('initialised');
+        this.handleFetchChainData();
+      }
     });
 
     this.#api.on('disconnected', () => {
@@ -227,6 +250,7 @@ export class Api {
     if (options?.err) {
       detail['err'] = options.err;
     }
+    console.log(detail);
     document.dispatchEvent(new CustomEvent('api-status', { detail }));
   }
 

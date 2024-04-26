@@ -193,6 +193,8 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  console.log(chainSpec);
+
   const documentRef = useRef<Document>(document);
 
   // Listen for api status updates.
