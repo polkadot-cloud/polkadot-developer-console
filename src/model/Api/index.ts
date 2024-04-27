@@ -110,8 +110,6 @@ export class Api {
   }
 
   async fetchChainSpec() {
-    console.log('fetching chain spec');
-
     // Fetch chain specs.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newChainSpec = await Promise.all<any>([
@@ -122,7 +120,6 @@ export class Api {
 
     // Check that chain values have been fetched before committing to state.
     if (newChainSpec.every((c) => c?.toHuman() !== undefined)) {
-      console.log('all values exist');
       const chain = newChainSpec[0].toString();
       const specVersion =
         newChainSpec[1].toJSON() as unknown as APIChainSpecVersion;
@@ -134,7 +131,6 @@ export class Api {
 
       // Set chainspec and metadata, or dispatch an error and disconnect otherwise.
       if (specVersion && metadataJson) {
-        console.log('metadata and spec version exist');
         const metadataVersion = Object.keys(metadataJson?.metadata || {})[0];
         const magicNumber = metadataJson.magicNumber;
 
@@ -150,13 +146,10 @@ export class Api {
           consts: {},
         };
       } else {
-        console.log('metadata or spec version does not exist');
         this.dispatchEvent(this.ensureEventStatus('error'), {
           err: 'ChainSpecError',
         });
       }
-    } else {
-      console.log('fetched values do not exist');
     }
   }
 
@@ -219,9 +212,7 @@ export class Api {
 
       // If this chain has already been initialized, sync chain data. May have been lost due to a
       // disconnect and automatic reconnect.
-      console.log('connected, initialised: ', this.#initialized);
       if (this.#initialized) {
-        console.log('initialised');
         this.handleFetchChainData();
       }
     });
@@ -250,7 +241,6 @@ export class Api {
     if (options?.err) {
       detail['err'] = options.err;
     }
-    console.log(detail);
     document.dispatchEvent(new CustomEvent('api-status', { detail }));
   }
 
