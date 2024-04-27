@@ -30,19 +30,19 @@ export interface ChainUiContextInterface {
     section: keyof ChainUiItem,
     key: keyof ChainUiItemInner
   ) => boolean;
-  getInputArgs: (tabId: number, section: InputArgsFor) => InputArgs | null;
+  getInputArgs: (tabId: number, section: InputNamespace) => InputArgs | null;
   getInputArgsAtKey: (
     tabId: number,
-    section: InputArgsFor,
+    section: InputNamespace,
     key: string
   ) => InputArg | null;
   setInputArgAtKey: (
     tabId: number,
-    section: InputArgsFor,
+    section: InputNamespace,
     key: string,
     arg: InputArg
   ) => void;
-  resetInputArgSection: (tabId: number, section: InputArgsFor) => void;
+  resetInputArgSection: (tabId: number, section: InputNamespace) => void;
 }
 
 // Types associated with chain ui.
@@ -110,4 +110,4 @@ export interface InputArg {
 }
 
 // The section input args are being applied to.
-export type InputArgsFor = 'storage' | 'call';
+export type InputNamespace = 'storage' | 'call';

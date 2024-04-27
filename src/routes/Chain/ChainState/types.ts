@@ -5,7 +5,7 @@ import type { AnyJson } from '@w3ux/utils/types';
 import type {
   ChainStateSection,
   ChainUiItem,
-  InputArgsFor,
+  InputNamespace,
 } from 'contexts/ChainUi/types';
 import type { StorageSubscriptionType } from 'model/ChainState/types';
 import type {
@@ -45,6 +45,6 @@ export interface ChainStateResultProps {
 }
 
 export interface InputFormProps {
-  namespace: InputArgsFor;
+  namespace: InputNamespace;
   inputForm: AnyJson;
 }

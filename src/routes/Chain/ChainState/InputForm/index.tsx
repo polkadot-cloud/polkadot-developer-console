@@ -9,10 +9,13 @@ import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { faCircleRight } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useInput } from '../../Inputs';
-import { InputFormProvider } from './provider';
+import { InputFormProvider, useInputForm } from './provider';
 
-export const InputFormInner = ({ inputForm, namespace }: InputFormProps) => {
+export const InputFormInner = ({ inputForm }: { inputForm: AnyJson }) => {
   const { readInput } = useInput();
+  const { namespace, inputKeysRef } = useInputForm();
+
+  console.log(inputKeysRef);
 
   return (
     <InputFormWrapper>
@@ -43,8 +46,8 @@ export const InputFormInner = ({ inputForm, namespace }: InputFormProps) => {
   );
 };
 
-export const InputForm = (props: InputFormProps) => (
-  <InputFormProvider namespace={props.namespace}>
-    <InputFormInner {...props} />
+export const InputForm = ({ namespace, inputForm }: InputFormProps) => (
+  <InputFormProvider namespace={namespace}>
+    <InputFormInner inputForm={inputForm} />
   </InputFormProvider>
 );

@@ -17,7 +17,7 @@ import type {
   ChainUiItemInner,
   ChainStateSections,
   ChainStateSection,
-  InputArgsFor,
+  InputNamespace,
   InputArgsState,
   InputArg,
 } from './types';
@@ -169,7 +169,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Get input args for either a storage item or call.
-  const getInputArgs = (tabId: number, section: InputArgsFor) => {
+  const getInputArgs = (tabId: number, section: InputNamespace) => {
     if (!inputArgs[tabId]) {
       return null;
     }
@@ -179,7 +179,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   // Get input args at a key for either a storage item or call.
   const getInputArgsAtKey = (
     tabId: number,
-    section: InputArgsFor,
+    section: InputNamespace,
     key: string
   ) => {
     if (!inputArgs[tabId]) {
@@ -192,7 +192,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   // Set input args at a given key for either a storage item or call.
   const setInputArgAtKey = (
     tabId: number,
-    section: InputArgsFor,
+    section: InputNamespace,
     key: string,
     arg: InputArg
   ) => {
@@ -211,7 +211,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Reset input args at a given key for either a storage item or call.
-  const resetInputArgSection = (tabId: number, section: InputArgsFor) => {
+  const resetInputArgSection = (tabId: number, section: InputNamespace) => {
     if (!inputArgs[tabId]) {
       return;
     }

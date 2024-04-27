@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
-import type { InputArgsFor } from 'contexts/ChainUi/types';
+import type { InputNamespace } from 'contexts/ChainUi/types';
 
 export interface InputItem {
   form: AnyJson;
@@ -20,7 +20,7 @@ export interface RenderInputArgs {
 
 export interface InputArgConfig {
   inputKey: string;
-  namespace: InputArgsFor;
+  namespace: InputNamespace;
 }
 
 export type HashProps = InputArgConfig & {
