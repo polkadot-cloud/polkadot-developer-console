@@ -21,11 +21,11 @@ import type { InputArgConfig } from './types';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTabId } from 'contexts/ActiveTab';
 
-export const AccountId32 = ({ inputKey, inputArgsFor }: InputArgConfig) => {
+export const AccountId32 = ({ inputKey, namespace }: InputArgConfig) => {
   const { accounts } = useAccounts();
   const activeTabId = useActiveTabId();
   const { setInputArgAtKey } = useChainUi();
-  console.log(inputKey, 'AccountId32', inputArgsFor);
+  console.log(inputKey, 'AccountId32', namespace);
 
   // The current selected address.
   const [selectedAddress, setSelectedAddress] = useState<string>(
@@ -41,7 +41,7 @@ export const AccountId32 = ({ inputKey, inputArgsFor }: InputArgConfig) => {
 
   // Handle setting input arg.
   const handleSetInputArg = (val: string) => {
-    setInputArgAtKey(activeTabId, inputArgsFor, inputKey, {
+    setInputArgAtKey(activeTabId, namespace, inputKey, {
       input: 'AccountId32',
       value: val,
     });

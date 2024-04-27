@@ -82,7 +82,7 @@ export const useInput = () => {
   // Renders a tuple input component.
   const renderTuple = (
     input: AnyJson,
-    { inputArgsFor, inputKey }: InputArgConfig
+    { namespace, inputKey }: InputArgConfig
   ) => {
     console.log(inputKey, '(tuple)');
 
@@ -94,7 +94,7 @@ export const useInput = () => {
         <Fragment key={`input_arg_${childInputKey}`}>
           {readInput(
             tupleType,
-            { inputArgsFor, inputKey: childInputKey },
+            { namespace, inputKey: childInputKey },
             tupleInput,
             true
           )}
@@ -106,7 +106,7 @@ export const useInput = () => {
   // Renders a composite input component.
   const renderComposite = (input: AnyJson, inputArgConfig: InputArgConfig) => {
     let inner: ReactNode = null;
-    const { inputArgsFor, inputKey } = inputArgConfig;
+    const { namespace, inputKey } = inputArgConfig;
 
     if (input.form !== null) {
       inner = renderInput(input, inputArgConfig, false);
@@ -132,7 +132,7 @@ export const useInput = () => {
             <Fragment key={`input_arg_${childInputKey}`}>
               {readInput(
                 subType,
-                { inputArgsFor, inputKey: childInputKey },
+                { namespace, inputKey: childInputKey },
                 subInputWithLabel,
                 true
               )}
@@ -151,7 +151,7 @@ export const useInput = () => {
     indent: boolean
   ) => {
     const selectedVariant = Object.keys(input.forms)[0];
-    const { inputArgsFor, inputKey } = inputArgConfig;
+    const { namespace, inputKey } = inputArgConfig;
     return (
       <>
         {renderInput(input, inputArgConfig, indent, Object.keys(input.forms))}
@@ -164,7 +164,7 @@ export const useInput = () => {
               <Fragment key={`input_arg_${childInputKey}`}>
                 {readInput(
                   subType,
-                  { inputArgsFor, inputKey: childInputKey },
+                  { namespace, inputKey: childInputKey },
                   subInput[subType],
                   true
                 )}

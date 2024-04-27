@@ -15,7 +15,7 @@ export const InputForm = createContext<InputFormContextInterface>(
 export const useInputForm = () => useContext(InputForm);
 
 export const InputFormProvider = ({
-  inputArgsFor,
+  namespace,
   children,
 }: InputFormProviderProps) => {
   // A reference to accumulate input keys for an input form.
@@ -24,7 +24,7 @@ export const InputFormProvider = ({
   return (
     <InputForm.Provider
       value={{
-        inputArgsFor,
+        namespace,
         inputKeysRef,
       }}
     >

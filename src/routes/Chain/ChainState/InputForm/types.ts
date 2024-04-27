@@ -5,11 +5,11 @@ import type { InputArgsFor } from 'contexts/ChainUi/types';
 import type { ReactNode, RefObject } from 'react';
 
 export interface InputFormContextInterface {
-  inputArgsFor: InputArgsFor;
+  namespace: InputArgsFor;
   inputKeysRef: RefObject<Record<string, string>>;
 }
 
 export interface InputFormProviderProps {
-  inputArgsFor: InputArgsFor;
+  namespace: InputArgsFor;
   children: ReactNode;
 }

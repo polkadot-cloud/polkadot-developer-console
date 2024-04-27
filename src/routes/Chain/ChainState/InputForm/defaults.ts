@@ -4,6 +4,6 @@
 import type { InputFormContextInterface } from './types';
 
 export const defaultInputFormContext: InputFormContextInterface = {
-  inputArgsFor: 'storage',
+  namespace: 'storage',
   inputKeysRef: { current: {} },
 };

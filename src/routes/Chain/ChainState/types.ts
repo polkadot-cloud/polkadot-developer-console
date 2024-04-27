@@ -45,6 +45,6 @@ export interface ChainStateResultProps {
 }
 
 export interface InputFormProps {
-  inputArgsFor: InputArgsFor;
+  namespace: InputArgsFor;
   inputForm: AnyJson;
 }

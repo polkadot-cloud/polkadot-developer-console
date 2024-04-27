@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useInput } from '../../Inputs';
 import { InputFormProvider } from './provider';
 
-export const InputFormInner = ({ inputForm, inputArgsFor }: InputFormProps) => {
+export const InputFormInner = ({ inputForm, namespace }: InputFormProps) => {
   const { readInput } = useInput();
 
   return (
@@ -23,7 +23,7 @@ export const InputFormInner = ({ inputForm, inputArgsFor }: InputFormProps) => {
               type,
               {
                 inputKey: `${index}`,
-                inputArgsFor,
+                namespace,
               },
               input
             )}
@@ -44,7 +44,7 @@ export const InputFormInner = ({ inputForm, inputArgsFor }: InputFormProps) => {
 };
 
 export const InputForm = (props: InputFormProps) => (
-  <InputFormProvider inputArgsFor={props.inputArgsFor}>
+  <InputFormProvider namespace={props.namespace}>
     <InputFormInner {...props} />
   </InputFormProvider>
 );

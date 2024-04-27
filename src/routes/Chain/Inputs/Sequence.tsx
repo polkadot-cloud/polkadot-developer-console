@@ -10,7 +10,7 @@ import type { SequenceProps } from './types';
 
 export const Sequence = ({
   inputKey,
-  inputArgsFor,
+  namespace,
   type,
   arrayInput,
   maxLength,
@@ -51,7 +51,7 @@ export const Sequence = ({
         // Generate input for this index.
         const subInput = readInput(
           type,
-          { inputArgsFor, inputKey },
+          { namespace, inputKey },
           arrayInput,
           true
         );

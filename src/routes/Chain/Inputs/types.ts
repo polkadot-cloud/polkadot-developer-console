@@ -20,7 +20,7 @@ export interface RenderInputArgs {
 
 export interface InputArgConfig {
   inputKey: string;
-  inputArgsFor: InputArgsFor;
+  namespace: InputArgsFor;
 }
 
 export type HashProps = InputArgConfig & {
