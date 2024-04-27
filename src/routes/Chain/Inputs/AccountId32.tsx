@@ -29,7 +29,11 @@ export const AccountId32 = ({
   const { accounts } = useAccounts();
   const activeTabId = useActiveTabId();
   const { setInputArgAtKey } = useChainUi();
-  console.log(inputKey, 'AccountId32', namespace, inputKeysRef);
+  console.log(inputKey, 'AccountId32', namespace, inputKeysRef.current);
+
+  if (inputKeysRef.current) {
+    inputKeysRef.current[inputKey] = 'AccountId32';
+  }
 
   // The current selected address.
   const [selectedAddress, setSelectedAddress] = useState<string>(

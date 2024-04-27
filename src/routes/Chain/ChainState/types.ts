@@ -47,4 +47,5 @@ export interface ChainStateResultProps {
 export interface InputFormProps {
   namespace: InputNamespace;
   inputForm: AnyJson;
+  activeItem: string | null;
 }

@@ -7,7 +7,7 @@ import type { HashProps } from './types';
 
 export const Hash = ({ inputKey, inputKeysRef, defaultValue }: HashProps) => {
   const [value, setValue] = useState<string | number>(defaultValue || '');
-  console.log(inputKey, '(hash)', inputKeysRef);
+  console.log(inputKey, '(hash)', inputKeysRef.current);
 
   // Handle textbox value change.
   const handleTextboxChange = (val: string) => {

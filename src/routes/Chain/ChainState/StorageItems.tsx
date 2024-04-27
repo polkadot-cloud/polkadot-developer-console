@@ -14,6 +14,7 @@ import type { PalletData } from './types';
 import { defaultPalletData } from './defaults';
 import { EncodedDetails } from './EncodedDetails';
 import { InputForm } from './InputForm';
+import type { InputNamespace } from 'contexts/ChainUi/types';
 
 export const StorageItems = () => {
   const { getChainSpec } = useApi();
@@ -21,6 +22,8 @@ export const StorageItems = () => {
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'storage';
+  const inputNamespace: InputNamespace = 'storage';
+
   const chainUi = getChainUi(activeTabId, chainUiSection);
   const Metadata = getChainSpec(activeTabId)?.metadata;
 
@@ -94,7 +97,11 @@ export const StorageItems = () => {
           chainUiSection={chainUiSection}
         />
       </SelectFormWrapper>
-      <InputForm inputForm={inputForm} namespace="storage" />
+      <InputForm
+        inputForm={inputForm}
+        namespace={inputNamespace}
+        activeItem={activeItem}
+      />
       {activePallet && activeItem && (
         <EncodedDetails activePallet={activePallet} activeItem={activeItem} />
       )}

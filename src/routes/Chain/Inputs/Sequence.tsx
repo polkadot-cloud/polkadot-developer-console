@@ -17,7 +17,7 @@ export const Sequence = ({
   maxLength,
 }: SequenceProps) => {
   const { readInput, renderInnerInput } = useInput();
-  console.log(inputKey, 'Sequence', namespace, inputKeysRef);
+  console.log(inputKey, 'Sequence', namespace, inputKeysRef.current);
 
   // The number of inputs being rendererd.
   const [inputs, setInputs] = useState<number[]>([0]);

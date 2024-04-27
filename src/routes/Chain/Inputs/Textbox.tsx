@@ -12,7 +12,7 @@ export const Textbox = ({
   defaultValue,
   numeric,
 }: TextboxProps) => {
-  console.log(inputKey, '(textbox)', inputKeysRef);
+  console.log(inputKey, '(textbox)', inputKeysRef.current);
   const [value, setValue] = useState<string | number>(defaultValue || '');
 
   // Handle textbox value change.

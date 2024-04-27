@@ -12,7 +12,7 @@ export const Checkbox = ({
   defaultValue,
 }: CheckboxProps) => {
   const [checked, setChecked] = useState<boolean>(defaultValue);
-  console.log(inputKey, '(checkbox)', inputKeysRef);
+  console.log(inputKey, '(checkbox)', inputKeysRef.current);
 
   return (
     <>

@@ -17,7 +17,7 @@ export const Select = ({
 }: SelectProps) => {
   // Whether select options are open.
   const [open, setOpen] = useState<boolean>(false);
-  console.log(inputKey, '(select)', inputKeysRef);
+  console.log(inputKey, '(select)', inputKeysRef.current);
 
   // Outside alerter ignore class.
   const ignoreClass = `ignore-outside-alerter-select_${camelize(String(label))}`;

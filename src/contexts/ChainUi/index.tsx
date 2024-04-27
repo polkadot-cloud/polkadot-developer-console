@@ -169,30 +169,30 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Get input args for either a storage item or call.
-  const getInputArgs = (tabId: number, section: InputNamespace) => {
+  const getInputArgs = (tabId: number, namespace: InputNamespace) => {
     if (!inputArgs[tabId]) {
       return null;
     }
-    return inputArgs[tabId][section];
+    return inputArgs[tabId][namespace];
   };
 
   // Get input args at a key for either a storage item or call.
   const getInputArgsAtKey = (
     tabId: number,
-    section: InputNamespace,
+    namespace: InputNamespace,
     key: string
   ) => {
     if (!inputArgs[tabId]) {
       return null;
     }
-    const args = inputArgs[tabId][section];
+    const args = inputArgs[tabId][namespace];
     return args?.[key] || null;
   };
 
   // Set input args at a given key for either a storage item or call.
   const setInputArgAtKey = (
     tabId: number,
-    section: InputNamespace,
+    namespace: InputNamespace,
     key: string,
     arg: InputArg
   ) => {
@@ -206,23 +206,21 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
       };
     }
     // Apply the new input arg and update state.
-    updatedInputArgs[tabId][section][key] = arg;
+    updatedInputArgs[tabId][namespace][key] = arg;
     setInputArgs(updatedInputArgs);
   };
 
   // Reset input args at a given key for either a storage item or call.
-  const resetInputArgSection = (tabId: number, section: InputNamespace) => {
+  const resetInputArgSection = (tabId: number, namespace: InputNamespace) => {
     if (!inputArgs[tabId]) {
       return;
     }
     const updatedInputArgs = { ...inputArgs };
 
     // Reset the input args for the given section and update state.
-    updatedInputArgs[tabId][section] = {};
+    updatedInputArgs[tabId][namespace] = {};
     setInputArgs(updatedInputArgs);
   };
-
-  console.log(inputArgs);
 
   return (
     <ChainUi.Provider
