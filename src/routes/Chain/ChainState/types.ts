@@ -2,7 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
-import type { ChainStateSection, ChainUiItem } from 'contexts/ChainUi/types';
+import type {
+  ChainStateSection,
+  ChainUiItem,
+  InputArgsFor,
+} from 'contexts/ChainUi/types';
 import type { StorageSubscriptionType } from 'model/ChainState/types';
 import type {
   PalletItemScraped,
@@ -41,5 +45,6 @@ export interface ChainStateResultProps {
 }
 
 export interface InputFormProps {
+  inputArgsFor: InputArgsFor;
   inputForm: AnyJson;
 }

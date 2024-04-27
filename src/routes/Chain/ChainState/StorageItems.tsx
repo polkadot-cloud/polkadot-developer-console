@@ -94,7 +94,7 @@ export const StorageItems = () => {
           chainUiSection={chainUiSection}
         />
       </SelectFormWrapper>
-      <InputForm inputForm={inputForm} />
+      <InputForm inputForm={inputForm} inputArgsFor="storage" />
       {activePallet && activeItem && (
         <EncodedDetails activePallet={activePallet} activeItem={activeItem} />
       )}
