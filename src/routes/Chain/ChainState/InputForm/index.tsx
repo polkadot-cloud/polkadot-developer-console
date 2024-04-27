@@ -27,10 +27,12 @@ export const InputFormInner = ({
   // Reset input keys and chain ui on activeItem change.
   useEffectIgnoreInitial(() => {
     resetInputArgSection(activeTabId, namespace);
-    if (inputKeysRef.current) {
-      inputKeysRef.current = {};
-    }
   }, [activeItem]);
+
+  // Reset input keys accumulator on every render.
+  if (inputKeysRef.current) {
+    inputKeysRef.current = {};
+  }
 
   return (
     <InputFormWrapper>
