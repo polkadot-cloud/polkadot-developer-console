@@ -39,3 +39,7 @@ export interface ChainStateResultProps {
   type: StorageSubscriptionType;
   result: AnyJson;
 }
+
+export interface InputFormProps {
+  inputForm: AnyJson;
+}
