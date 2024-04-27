@@ -15,8 +15,6 @@ export const InputFormInner = ({ inputForm }: { inputForm: AnyJson }) => {
   const { readInput } = useInput();
   const { namespace, inputKeysRef } = useInputForm();
 
-  console.log(inputKeysRef);
-
   return (
     <InputFormWrapper>
       {!!inputForm &&
@@ -27,6 +25,7 @@ export const InputFormInner = ({ inputForm }: { inputForm: AnyJson }) => {
               {
                 inputKey: `${index}`,
                 namespace,
+                inputKeysRef,
               },
               input
             )}

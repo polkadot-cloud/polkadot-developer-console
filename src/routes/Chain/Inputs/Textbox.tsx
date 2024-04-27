@@ -7,11 +7,12 @@ import type { TextboxProps } from './types';
 
 export const Textbox = ({
   inputKey,
+  inputKeysRef,
   label,
   defaultValue,
   numeric,
 }: TextboxProps) => {
-  console.log(inputKey, '(textbox)');
+  console.log(inputKey, '(textbox)', inputKeysRef);
   const [value, setValue] = useState<string | number>(defaultValue || '');
 
   // Handle textbox value change.

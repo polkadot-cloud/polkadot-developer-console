@@ -3,6 +3,7 @@
 
 import type { AnyJson } from '@w3ux/utils/types';
 import type { InputNamespace } from 'contexts/ChainUi/types';
+import type { RefObject } from 'react';
 
 export interface InputItem {
   form: AnyJson;
@@ -21,6 +22,7 @@ export interface RenderInputArgs {
 export interface InputArgConfig {
   inputKey: string;
   namespace: InputNamespace;
+  inputKeysRef: RefObject<Record<string, string>>;
 }
 
 export type HashProps = InputArgConfig & {

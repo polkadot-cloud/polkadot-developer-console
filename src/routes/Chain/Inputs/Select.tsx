@@ -9,10 +9,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { SelectProps } from './types';
 
-export const Select = ({ inputKey, values, label }: SelectProps) => {
+export const Select = ({
+  inputKey,
+  inputKeysRef,
+  values,
+  label,
+}: SelectProps) => {
   // Whether select options are open.
   const [open, setOpen] = useState<boolean>(false);
-  console.log(inputKey, '(select)');
+  console.log(inputKey, '(select)', inputKeysRef);
 
   // Outside alerter ignore class.
   const ignoreClass = `ignore-outside-alerter-select_${camelize(String(label))}`;

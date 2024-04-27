@@ -9,13 +9,15 @@ import { useState } from 'react';
 import type { SequenceProps } from './types';
 
 export const Sequence = ({
-  inputKey,
   namespace,
+  inputKey,
+  inputKeysRef,
   type,
   arrayInput,
   maxLength,
 }: SequenceProps) => {
   const { readInput, renderInnerInput } = useInput();
+  console.log(inputKey, 'Sequence', namespace, inputKeysRef);
 
   // The number of inputs being rendererd.
   const [inputs, setInputs] = useState<number[]>([0]);
@@ -51,7 +53,7 @@ export const Sequence = ({
         // Generate input for this index.
         const subInput = readInput(
           type,
-          { namespace, inputKey },
+          { namespace, inputKey, inputKeysRef },
           arrayInput,
           true
         );
