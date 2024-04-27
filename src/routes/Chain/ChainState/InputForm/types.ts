@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { InputArgsFor } from 'contexts/ChainUi/types';
-import type { ReactNode } from 'react';
+import type { ReactNode, RefObject } from 'react';
 
 export interface InputFormContextInterface {
   inputArgsFor: InputArgsFor;
+  inputKeysRef: RefObject<Record<string, string>>;
 }
 
 export interface InputFormProviderProps {

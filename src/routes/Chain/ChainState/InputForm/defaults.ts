@@ -5,4 +5,5 @@ import type { InputFormContextInterface } from './types';
 
 export const defaultInputFormContext: InputFormContextInterface = {
   inputArgsFor: 'storage',
+  inputKeysRef: { current: {} },
 };
