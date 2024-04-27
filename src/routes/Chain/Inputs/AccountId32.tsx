@@ -29,7 +29,7 @@ export const AccountId32 = ({ inputKey, inputArgsFor }: InputArgConfig) => {
 
   // The current selected address.
   const [selectedAddress, setSelectedAddress] = useState<string>(
-    String(accounts?.[0]?.address) || ''
+    String(accounts?.[0]?.address || '')
   );
 
   // The current value of the input. Attempts to find an account name, or uses the selected address,

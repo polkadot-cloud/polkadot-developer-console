@@ -112,6 +112,10 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     metadata: MetadataVersion,
     apiInstance: ApiPromise
   ) => {
+    // Exit if pallet versions have already been fetched.
+    if (palletVersions[tabId] !== undefined) {
+      return;
+    }
     // Get pallet list from scraper.
     const scraper = new PalletScraper(metadata);
     const pallets = scraper.getList();
