@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Fragment } from 'react/jsx-runtime';
-import { InputFormWrapper } from '../Wrappers';
-import type { InputFormProps } from './types';
+import { InputFormWrapper } from '../../Wrappers';
+import type { InputFormProps } from '../types';
 import type { AnyJson } from '@w3ux/utils/types';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { faCircleRight } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useInput } from '../Inputs';
+import { useInput } from '../../Inputs';
+import { InputFormProvider } from './provider';
 
-export const InputForm = ({ inputForm }: InputFormProps) => {
+export const InputFormInner = ({ inputForm }: InputFormProps) => {
   const { readInput } = useInput();
 
   return (
@@ -41,3 +42,9 @@ export const InputForm = ({ inputForm }: InputFormProps) => {
     </InputFormWrapper>
   );
 };
+
+export const InputForm = (props: InputFormProps) => (
+  <InputFormProvider inputArgsFor="storage">
+    <InputFormInner {...props} />
+  </InputFormProvider>
+);
