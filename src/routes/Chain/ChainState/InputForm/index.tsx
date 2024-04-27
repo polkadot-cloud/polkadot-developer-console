@@ -21,8 +21,8 @@ export const InputFormInner = ({
 }: InputFormInnerProps) => {
   const { readInput } = useInput();
   const activeTabId = useActiveTabId();
-  const { resetInputArgSection } = useChainUi();
   const { namespace, inputKeysRef } = useInputForm();
+  const { resetInputArgSection, getInputArgs } = useChainUi();
 
   // Reset input keys and chain ui on activeItem change.
   useEffectIgnoreInitial(() => {
@@ -55,6 +55,7 @@ export const InputFormInner = ({
           onClick={() => {
             /* TODO: submit storage query */
             console.log(inputKeysRef.current);
+            console.log(getInputArgs(activeTabId, namespace));
           }}
         >
           Submit
