@@ -157,6 +157,7 @@ export const useInput = () => {
     inputArgConfig: InputArgConfig,
     indent: boolean
   ) => {
+    // TODO: Replace with actual selected variant.
     const selectedVariant = Object.keys(input.forms)[0];
     const { namespace, inputKey, inputKeysRef } = inputArgConfig;
     return (

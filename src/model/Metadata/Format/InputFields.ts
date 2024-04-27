@@ -99,6 +99,7 @@ export class FormatInputFields {
         result.variant = this.getVariantInput(arg);
         break;
     }
+
     return result;
   };
 
@@ -146,13 +147,15 @@ export class FormatInputFields {
   //
   // CONTRIBUTE: Input types should be added to this switch statement, and in the `useInput` hook.
   getCustomInput = (label: string): string | null => {
+    // TODO: Add `Vec` and `BoundedVec` cases. In both cases the parameter types need to be known.
+    // If Vec parameter is u8, or BoundedVec parameter 2 is u8, then we are dealing with bytes.
     switch (label) {
       // Default Substrate AccountId type:
       // `<https://crates.parity.io/sp_runtime/struct.AccountId32.html>`;
       case 'AccountId32':
         return 'AccountId32';
 
-      // Substrate Core rimitive hash types: `<https://docs.rs/sp-core/latest/sp_core/index.html>`.
+      // Substrate Core primitive hash types: `<https://docs.rs/sp-core/latest/sp_core/index.html>`.
       case 'H160':
       case 'H256':
       case 'H512':
