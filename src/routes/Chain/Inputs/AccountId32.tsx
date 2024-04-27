@@ -29,8 +29,8 @@ export const AccountId32 = ({
   const { accounts } = useAccounts();
   const activeTabId = useActiveTabId();
   const { setInputArgAtKey } = useChainUi();
-  console.log(inputKey, 'AccountId32', namespace, inputKeysRef.current);
 
+  // Accumulate input key.
   if (inputKeysRef.current) {
     inputKeysRef.current[inputKey] = 'AccountId32';
   }

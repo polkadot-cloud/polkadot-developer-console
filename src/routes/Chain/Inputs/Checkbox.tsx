@@ -12,7 +12,11 @@ export const Checkbox = ({
   defaultValue,
 }: CheckboxProps) => {
   const [checked, setChecked] = useState<boolean>(defaultValue);
-  console.log(inputKey, '(checkbox)', inputKeysRef.current);
+
+  // Accumulate input key.
+  if (inputKeysRef.current) {
+    inputKeysRef.current[inputKey] = 'Checkbox';
+  }
 
   return (
     <>

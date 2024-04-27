@@ -84,7 +84,10 @@ export const useInput = () => {
     input: AnyJson,
     { namespace, inputKey, inputKeysRef }: InputArgConfig
   ) => {
-    console.log(inputKey, '(tuple)');
+    // Accumulate input key.
+    if (inputKeysRef.current) {
+      inputKeysRef.current[inputKey] = 'Tuple';
+    }
 
     return input.map((item: AnyJson, index: number) => {
       const [tupleType, tupleInput] = Object.entries(item)[0];
@@ -111,7 +114,11 @@ export const useInput = () => {
     if (input.form !== null) {
       inner = renderInput(input, inputArgConfig, false);
     } else {
-      console.log(inputKey, '(composite)');
+      // Accumulate input key.
+      if (inputKeysRef.current) {
+        inputKeysRef.current[inputKey] = 'Composite';
+      }
+
       inner = Object.entries(input.forms).map(
         ([label, subInput]: AnyJson, index: number) => {
           const subType = Object.keys(subInput)[0];

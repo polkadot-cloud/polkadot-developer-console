@@ -12,8 +12,12 @@ export const Textbox = ({
   defaultValue,
   numeric,
 }: TextboxProps) => {
-  console.log(inputKey, '(textbox)', inputKeysRef.current);
   const [value, setValue] = useState<string | number>(defaultValue || '');
+
+  // Accumulate input key.
+  if (inputKeysRef.current) {
+    inputKeysRef.current[inputKey] = 'Textbox';
+  }
 
   // Handle textbox value change.
   const handleTextboxChange = (val: string) => {

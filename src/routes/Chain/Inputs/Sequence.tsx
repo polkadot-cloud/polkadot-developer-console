@@ -17,7 +17,11 @@ export const Sequence = ({
   maxLength,
 }: SequenceProps) => {
   const { readInput, renderInnerInput } = useInput();
-  console.log(inputKey, 'Sequence', namespace, inputKeysRef.current);
+
+  // Accumulate input key.
+  if (inputKeysRef.current) {
+    inputKeysRef.current[inputKey] = 'Sequence';
+  }
 
   // The number of inputs being rendererd.
   const [inputs, setInputs] = useState<number[]>([0]);
