@@ -17,6 +17,7 @@ import { AccountId32 } from './AccountId32';
 export const useInput = () => {
   // Reads input and returns input components based on the input type. Called recursively for types
   // that host other types.
+
   const readInput = (
     type: string,
     inputArgConfig: InputArgConfig,
@@ -39,7 +40,13 @@ export const useInput = () => {
         return renderInput(input, inputArgConfig, indent);
 
       case 'sequence':
-        return renderSequence(input, inputArgConfig);
+        // Render a hash input for a vec of bytes, otherwise render a sequence input.
+        return sequenceIsBytes(input.label)
+          ? renderLabelWithInner(
+              'Bytes',
+              renderInput({ ...input, form: 'Bytes' }, inputArgConfig, indent)
+            )
+          : renderSequence(input, inputArgConfig);
 
       case 'tuple':
         return renderTuple(input, inputArgConfig);
@@ -214,8 +221,9 @@ export const useInput = () => {
         case 'AccountId32':
           return <AccountId32 {...inputArgConfig} />;
 
-        // A custom input for primitive hash types.
+        // A custom input for primitive hash and bytes types.
         case 'Hash':
+        case 'Bytes':
           return (
             <Hash
               {...inputArgConfig}
@@ -259,6 +267,13 @@ export const useInput = () => {
           );
       }
     })();
+
+  // Check if a sequence is a vector of bytes
+  const sequenceIsBytes = (label: string) =>
+    // NOTE: BoundedVec and WeakBoundedVec are untested.
+    /Vec<.+>: u8/.test(label) ||
+    /BoundedVec<.+>: u8/.test(label) ||
+    /WeakBoundedVec<.+>: u8/.test(label);
 
   return {
     readInput,
