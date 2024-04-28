@@ -285,6 +285,7 @@ export const useInput = () => {
   // Check if a sequence is a vector of bytes.
   const sequenceIsBytes = (label: string) =>
     // NOTE: BoundedVec and WeakBoundedVec are untested.
+    label === 'u8' ||
     /Vec<.+>: u8/.test(label) ||
     /BoundedVec<.+>: u8/.test(label) ||
     /WeakBoundedVec<.+>: u8/.test(label);
