@@ -26,15 +26,25 @@ export const useInput = () => {
   ) => {
     switch (type) {
       case 'array':
-        // If this array is a primitive, render a textbox input. Otherwise (e.g. for variants) allow
-        // for a sequence input.
-        return input?.form?.primitive
-          ? renderInput(
-              { ...input.form.primitive, form: 'text' },
-              inputArgConfig,
-              indent
+        // If array is a vector of bytes, render a hash input.
+        return arrayIsBytes(input)
+          ? renderLabelWithInner(
+              formatArrayLabel(input),
+              renderInput({ ...input, form: 'Bytes' }, inputArgConfig, indent)
             )
-          : renderSequence(input, inputArgConfig, input.len);
+          : // If array is  of a primitive type, render a textbox input.
+            input?.form?.primitive
+            ? // Otherwise (e.g. for variants) allow for a sequence input.
+              renderInput(
+                {
+                  ...input.form.primitive,
+                  label: formatArrayLabel(input),
+                  form: 'text',
+                },
+                inputArgConfig,
+                indent
+              )
+            : renderSequence(input, inputArgConfig, input.len);
 
       case 'bitSequence':
         return renderInput(input, inputArgConfig, indent);
@@ -268,12 +278,24 @@ export const useInput = () => {
       }
     })();
 
-  // Check if a sequence is a vector of bytes
+  // Check if an array is a vector of bytes.
+  const arrayIsBytes = (input: AnyJson) =>
+    input?.form?.primitive?.label === 'u8';
+
+  // Check if a sequence is a vector of bytes.
   const sequenceIsBytes = (label: string) =>
     // NOTE: BoundedVec and WeakBoundedVec are untested.
     /Vec<.+>: u8/.test(label) ||
     /BoundedVec<.+>: u8/.test(label) ||
     /WeakBoundedVec<.+>: u8/.test(label);
+
+  // Formats an array label with its length.
+  const formatArrayLabel = (input: AnyJson) => {
+    if (input?.form?.primitive) {
+      return `[${input.form.primitive.label};${input.len}]`;
+    }
+    return input?.label || '';
+  };
 
   return {
     readInput,
