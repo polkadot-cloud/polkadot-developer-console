@@ -32,6 +32,7 @@ export const Textbox = ({
       <h4>{label}</h4>
       <TextInputWrapper className="input">
         <input
+          placeholder="..."
           type="text"
           value={value || ''}
           onChange={(ev) => handleTextboxChange(ev.currentTarget.value)}
