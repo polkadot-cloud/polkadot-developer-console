@@ -35,7 +35,7 @@ export const Textbox = ({
     }
     setInputArgAtKey(activeTabId, namespace, inputKey, {
       input: INPUT_TYPE,
-      value,
+      value: val,
     });
 
     setValue(val);
