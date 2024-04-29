@@ -93,6 +93,7 @@ export const StorageItems = () => {
         <ChainStateList
           subject="Storage Item"
           items={items}
+          inputNamespace={inputNamespace}
           activeItem={activeItem}
           chainUiSection={chainUiSection}
         />

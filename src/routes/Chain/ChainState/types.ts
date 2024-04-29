@@ -29,6 +29,7 @@ export interface PalletListProps {
 export interface ChainStateListProps {
   subject: string;
   items: PalletItemScraped[];
+  inputNamespace?: InputNamespace;
   activeItem: string | null;
   chainUiSection: ChainStateSection;
 }

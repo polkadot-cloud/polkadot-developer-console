@@ -1,11 +1,21 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextInputWrapper } from '../Wrappers';
 import type { HashProps } from './types';
+import { useActiveTabId } from 'contexts/ActiveTab';
+import { useChainUi } from 'contexts/ChainUi';
 
-export const Hash = ({ inputKey, inputKeysRef, defaultValue }: HashProps) => {
+export const Hash = ({
+  inputKey,
+  namespace,
+  inputKeysRef,
+  defaultValue,
+}: HashProps) => {
+  const activeTabId = useActiveTabId();
+  const { setInputArgAtKey } = useChainUi();
+
   const [value, setValue] = useState<string | number>(defaultValue || '');
 
   // Accumulate input key.
@@ -17,6 +27,14 @@ export const Hash = ({ inputKey, inputKeysRef, defaultValue }: HashProps) => {
   const handleTextboxChange = (val: string) => {
     setValue(val);
   };
+
+  // Update input arg value to the default value on initial render.
+  useEffect(() => {
+    setInputArgAtKey(activeTabId, namespace, inputKey, {
+      input: 'Hash',
+      value,
+    });
+  }, []);
 
   return (
     <TextInputWrapper className="input">

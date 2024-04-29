@@ -1,17 +1,23 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextInputWrapper } from '../Wrappers';
 import type { TextboxProps } from './types';
+import { useActiveTabId } from 'contexts/ActiveTab';
+import { useChainUi } from 'contexts/ChainUi';
 
 export const Textbox = ({
   inputKey,
+  namespace,
   inputKeysRef,
   label,
   defaultValue,
   numeric,
 }: TextboxProps) => {
+  const activeTabId = useActiveTabId();
+  const { setInputArgAtKey } = useChainUi();
+
   const [value, setValue] = useState<string | number>(defaultValue || '');
 
   // Accumulate input key.
@@ -26,6 +32,14 @@ export const Textbox = ({
     }
     setValue(val);
   };
+
+  // Update input arg value to the default value on initial render.
+  useEffect(() => {
+    setInputArgAtKey(activeTabId, namespace, inputKey, {
+      input: 'Textbox',
+      value,
+    });
+  }, []);
 
   return (
     <>

@@ -2,21 +2,35 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Switch } from 'library/Switch';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { CheckboxProps } from './types';
+import { useActiveTabId } from 'contexts/ActiveTab';
+import { useChainUi } from 'contexts/ChainUi';
 
 export const Checkbox = ({
   inputKey,
+  namespace,
   inputKeysRef,
   label,
   defaultValue,
 }: CheckboxProps) => {
+  const activeTabId = useActiveTabId();
+  const { setInputArgAtKey } = useChainUi();
+
   const [checked, setChecked] = useState<boolean>(defaultValue);
 
   // Accumulate input key.
   if (inputKeysRef.current) {
     inputKeysRef.current[inputKey] = 'Checkbox';
   }
+
+  // Update input arg value to the default value on initial render.
+  useEffect(() => {
+    setInputArgAtKey(activeTabId, namespace, inputKey, {
+      input: 'Checkbox',
+      value: checked,
+    });
+  }, []);
 
   return (
     <>

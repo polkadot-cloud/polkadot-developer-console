@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SelectItemWrapper, SelectTextWrapper } from '../Wrappers';
 import { camelize } from '@w3ux/utils';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -35,6 +35,14 @@ export const Select = ({
 
   // Get the currently selected value, or fall back to the first value.
   const currentValue = value !== undefined ? value : values[0];
+
+  // Update input arg value to the default value on initial render.
+  useEffect(() => {
+    setInputArgAtKey(activeTabId, namespace, inputKey, {
+      input: 'Select',
+      value: currentValue,
+    });
+  }, []);
 
   return (
     <>

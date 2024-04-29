@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import {
   defaultChainContext,
   defaultChainUiInner,
@@ -27,6 +27,7 @@ import { u16 } from 'scale-ts';
 import type { AnyJson } from '@w3ux/utils/types';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import type { MetadataVersion } from 'model/Metadata/types';
+import { setStateWithRef } from '@w3ux/utils';
 
 export const ChainUi =
   createContext<ChainUiContextInterface>(defaultChainContext);
@@ -44,8 +45,10 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   // Stores pallet versions of a chain, keyed by tab.
   const [palletVersions, setPalletVersions] = useState<PalletVersions>({});
 
-  // Stores the input arguments for either a storage item or call, keyed by tab.
+  // Stores the input arguments for either a storage item or call, keyed by tab. NOTE: Needs a ref
+  // as multiple updates happen within the same render.
   const [inputArgs, setInputArgs] = useState<InputArgsState>({});
+  const inputArgsRef = useRef(inputArgs);
 
   // Gets an active chain state section by tabId. Falls back to 'storage'.
   const getActiveChainStateSection = (tabId: number): string =>
@@ -170,10 +173,10 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
 
   // Get input args for either a storage item or call.
   const getInputArgs = (tabId: number, namespace: InputNamespace) => {
-    if (!inputArgs[tabId]) {
+    if (!inputArgsRef.current[tabId]) {
       return null;
     }
-    return inputArgs[tabId][namespace];
+    return inputArgsRef.current[tabId][namespace];
   };
 
   // Get input args at a key for either a storage item or call.
@@ -182,24 +185,24 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     namespace: InputNamespace,
     key: string
   ) => {
-    if (!inputArgs[tabId]) {
+    if (!inputArgsRef.current[tabId]) {
       return null;
     }
-    const args = inputArgs[tabId][namespace];
+    const args = inputArgsRef.current[tabId][namespace];
     return args?.[key] || null;
   };
 
-  // Set input args at a given key for either a storage item or call.
+  // Set input args at a given input key for either a storage item or call.
   const setInputArgAtKey = (
     tabId: number,
     namespace: InputNamespace,
     key: string,
     arg: InputArg
   ) => {
-    const updatedInputArgs = { ...inputArgs };
+    const updatedInputArgs = { ...inputArgsRef.current };
 
     // If an `InputArgs` record does not exist for the tab yet, add it now.
-    if (!inputArgs[tabId]) {
+    if (!inputArgsRef.current[tabId]) {
       updatedInputArgs[tabId] = {
         storage: {},
         call: {},
@@ -207,19 +210,20 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     }
     // Apply the new input arg and update state.
     updatedInputArgs[tabId][namespace][key] = arg;
-    setInputArgs(updatedInputArgs);
+    setStateWithRef(updatedInputArgs, setInputArgs, inputArgsRef);
   };
 
   // Reset input args at a given key for either a storage item or call.
   const resetInputArgSection = (tabId: number, namespace: InputNamespace) => {
-    if (!inputArgs[tabId]) {
+    if (!inputArgsRef.current[tabId]) {
       return;
     }
-    const updatedInputArgs = { ...inputArgs };
+
+    const updatedInputArgs = { ...inputArgsRef.current };
 
     // Reset the input args for the given section and update state.
     updatedInputArgs[tabId][namespace] = {};
-    setInputArgs(updatedInputArgs);
+    setStateWithRef(updatedInputArgs, setInputArgs, inputArgsRef);
   };
 
   return (

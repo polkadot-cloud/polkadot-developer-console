@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   SelectItemWrapper,
   SelectTextWrapper,
@@ -94,6 +94,14 @@ export const AccountId32 = ({
             address.toLowerCase().includes(searchValue.toLowerCase())
         )
       : accounts;
+
+  // Update input arg value to the default value on initial render.
+  useEffect(() => {
+    setInputArgAtKey(activeTabId, namespace, inputKey, {
+      input: 'AccountId32',
+      value: selectedAddress,
+    });
+  }, []);
 
   return (
     <>
