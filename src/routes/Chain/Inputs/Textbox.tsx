@@ -18,11 +18,14 @@ export const Textbox = ({
   const activeTabId = useActiveTabId();
   const { setInputArgAtKey } = useChainUi();
 
+  // The input arg type of this component.
+  const INPUT_TYPE = 'Textbox';
+
   const [value, setValue] = useState<string | number>(defaultValue || '');
 
   // Accumulate input key.
   if (inputKeysRef.current) {
-    inputKeysRef.current[inputKey] = 'Textbox';
+    inputKeysRef.current[inputKey] = INPUT_TYPE;
   }
 
   // Handle textbox value change.
@@ -30,13 +33,18 @@ export const Textbox = ({
     if (numeric && isNaN(Number(val))) {
       return;
     }
+    setInputArgAtKey(activeTabId, namespace, inputKey, {
+      input: INPUT_TYPE,
+      value,
+    });
+
     setValue(val);
   };
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
     setInputArgAtKey(activeTabId, namespace, inputKey, {
-      input: 'Textbox',
+      input: INPUT_TYPE,
       value,
     });
   }, []);

@@ -30,9 +30,12 @@ export const AccountId32 = ({
   const activeTabId = useActiveTabId();
   const { setInputArgAtKey } = useChainUi();
 
+  // The input arg type of this component.
+  const INPUT_TYPE = 'AccountId32';
+
   // Accumulate input key.
   if (inputKeysRef.current) {
-    inputKeysRef.current[inputKey] = 'AccountId32';
+    inputKeysRef.current[inputKey] = INPUT_TYPE;
   }
 
   // The current selected address.
@@ -50,7 +53,7 @@ export const AccountId32 = ({
   // Handle setting input arg.
   const handleSetInputArg = (val: string) => {
     setInputArgAtKey(activeTabId, namespace, inputKey, {
-      input: 'AccountId32',
+      input: INPUT_TYPE,
       value: val,
     });
   };
@@ -98,7 +101,7 @@ export const AccountId32 = ({
   // Update input arg value to the default value on initial render.
   useEffect(() => {
     setInputArgAtKey(activeTabId, namespace, inputKey, {
-      input: 'AccountId32',
+      input: INPUT_TYPE,
       value: selectedAddress,
     });
   }, []);

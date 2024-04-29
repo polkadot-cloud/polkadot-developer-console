@@ -22,12 +22,15 @@ export const Select = ({
   const activeTabId = useActiveTabId();
   const { setInputArgAtKey } = useChainUi();
 
+  // The input arg type of this component.
+  const INPUT_TYPE = 'Select';
+
   // Whether select options are open.
   const [open, setOpen] = useState<boolean>(false);
 
   // Accumulate input key.
   if (inputKeysRef.current) {
-    inputKeysRef.current[inputKey] = 'Select';
+    inputKeysRef.current[inputKey] = INPUT_TYPE;
   }
 
   // Outside alerter ignore class.
@@ -39,7 +42,7 @@ export const Select = ({
   // Update input arg value to the default value on initial render.
   useEffect(() => {
     setInputArgAtKey(activeTabId, namespace, inputKey, {
-      input: 'Select',
+      input: INPUT_TYPE,
       value: currentValue,
     });
   }, []);
@@ -71,7 +74,7 @@ export const Select = ({
               className={`option`}
               onClick={() => {
                 setInputArgAtKey(activeTabId, namespace, inputKey, {
-                  input: 'Select',
+                  input: INPUT_TYPE,
                   value: val,
                 });
                 setOpen(false);

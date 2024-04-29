@@ -23,6 +23,8 @@ export const Sequence = ({
     inputKeysRef.current[inputKey] = 'Sequence';
   }
 
+  // TODO: Link with input args state.
+
   // The number of inputs being rendererd.
   const [inputs, setInputs] = useState<number[]>([0]);
 

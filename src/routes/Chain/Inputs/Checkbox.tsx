@@ -17,17 +17,20 @@ export const Checkbox = ({
   const activeTabId = useActiveTabId();
   const { setInputArgAtKey } = useChainUi();
 
+  // The input arg type of this component.
+  const INPUT_TYPE = 'Checkbox';
+
   const [checked, setChecked] = useState<boolean>(defaultValue);
 
   // Accumulate input key.
   if (inputKeysRef.current) {
-    inputKeysRef.current[inputKey] = 'Checkbox';
+    inputKeysRef.current[inputKey] = INPUT_TYPE;
   }
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
     setInputArgAtKey(activeTabId, namespace, inputKey, {
-      input: 'Checkbox',
+      input: INPUT_TYPE,
       value: checked,
     });
   }, []);
@@ -39,7 +42,13 @@ export const Checkbox = ({
         scale={0.85}
         active={checked}
         disabled={false}
-        onSwitch={() => setChecked(!checked)}
+        onSwitch={() => {
+          setInputArgAtKey(activeTabId, namespace, inputKey, {
+            input: INPUT_TYPE,
+            value: !checked,
+          });
+          setChecked(!checked);
+        }}
       />
     </>
   );
