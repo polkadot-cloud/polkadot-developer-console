@@ -152,13 +152,16 @@ export const useInput = () => {
 
           const subInputLabel = subInput[subType].label;
 
+          // If label contains and long and short variant, use the short variant.
+          const shortLabel =
+            typeof subInputLabel === 'object'
+              ? subInputLabel.short
+              : subInputLabel;
+
           // Prepend this type's label into child input label if they are different.
           const subInputWithLabel = {
             ...subInput[subType],
-            label:
-              label !== subInputLabel
-                ? `${label}: ${subInput[subType].label}`
-                : label,
+            label: label !== shortLabel ? `${label}: ${shortLabel}` : label,
           };
 
           return (
