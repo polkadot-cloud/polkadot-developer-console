@@ -18,9 +18,11 @@ export const Sequence = ({
 }: SequenceProps) => {
   const { readInput, renderInnerInput } = useInput();
 
+  const INPUT_TYPE = 'Sequence';
+
   // Accumulate input key.
   if (inputKeysRef.current) {
-    inputKeysRef.current[inputKey] = 'Sequence';
+    inputKeysRef.current[inputKey] = INPUT_TYPE;
   }
 
   // The number of inputs being rendererd.
@@ -48,7 +50,7 @@ export const Sequence = ({
 
         // Accumulate input key.
         if (inputKeysRef.current) {
-          inputKeysRef.current[subInputKey] = 'SequenceItem';
+          inputKeysRef.current[subInputKey] = `${INPUT_TYPE}Item`;
         }
 
         // Amend label of input to be it's index.
