@@ -19,6 +19,7 @@ import {
 import { useApi } from 'contexts/Api';
 import { ConnectionIcon } from './ConectionIcon';
 import * as localSections from 'contexts/Route/Local';
+import { useChainUi } from 'contexts/ChainUi';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -38,6 +39,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
 
   const { getApiStatus } = useApi();
   const { openMenu, closeMenu } = useMenu();
+  const { destroyTabChainUi } = useChainUi();
 
   const {
     listeners,
@@ -159,6 +161,10 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
             setDestroying(true);
             setTabHoverIndex(0);
             setTimeout(() => {
+              // Destroy chainUi state associated with this tab.
+              destroyTabChainUi(id);
+
+              // Destroy tab instance.
               destroyTab(index, id);
             }, 125);
           }}

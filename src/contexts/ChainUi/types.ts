@@ -43,6 +43,7 @@ export interface ChainUiContextInterface {
     arg: InputArg
   ) => void;
   resetInputArgSection: (tabId: number, section: InputNamespace) => void;
+  destroyTabChainUi: (tabId: number) => void;
 }
 
 // Types associated with chain ui.

@@ -218,12 +218,23 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     if (!inputArgsRef.current[tabId]) {
       return;
     }
-
     const updatedInputArgs = { ...inputArgsRef.current };
 
     // Reset the input args for the given section and update state.
     updatedInputArgs[tabId][namespace] = {};
     setStateWithRef(updatedInputArgs, setInputArgs, inputArgsRef);
+  };
+
+  // Reset input args for a tab.
+  const destroyTabChainUi = (tabId: number) => {
+    console.log('destroy statse for ', tabId);
+
+    /* TODO: Implement.
+    setChainUi
+    setActiveChainStateSections
+    setPalletVersions
+    setInputArgs
+    */
   };
 
   return (
@@ -241,6 +252,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
         getInputArgsAtKey,
         setInputArgAtKey,
         resetInputArgSection,
+        destroyTabChainUi,
       }}
     >
       {children}
