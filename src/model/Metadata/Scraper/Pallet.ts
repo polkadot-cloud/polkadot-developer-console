@@ -104,35 +104,6 @@ export class PalletScraper extends MetadataScraper {
     return this.startStorageScrape(item, options);
   }
 
-  // Get a pallet call item from metadata.
-  getCallItem(palletName: string, itemKey: string) {
-    console.debug('getCallItem', palletName, itemKey);
-
-    const pallet = this.getPallet(palletName);
-    if (!pallet) {
-      return null;
-    }
-
-    // Defensive: Check if storage items are defined for this pallet.
-    const items = pallet.calls;
-    if (!items) {
-      return null;
-    }
-
-    // TODO: This can be improved by only scraping the call name of interest.
-    const result = this.start(pallet.calls.type, null);
-
-    const item = result.variant.find(
-      ({ name }: { name: string }) => name === itemKey
-    );
-    if (!item) {
-      return null;
-    }
-
-    // TODO: Scrape `item.fields` for argTypes, `returnType` is undefined.
-    return null;
-  }
-
   // Starts scraping a storage item.
   startStorageScrape(
     item: MetadataPalletStorageItem,
@@ -167,6 +138,38 @@ export class PalletScraper extends MetadataScraper {
       fallback,
       type: scrapedType,
     };
+  }
+
+  // Get a pallet call item from metadata.
+  getCallItem(palletName: string, itemKey: string) {
+    const pallet = this.getPallet(palletName);
+    if (!pallet) {
+      return null;
+    }
+
+    // Defensive: Check if storage items are defined for this pallet.
+    const items = pallet.calls;
+    if (!items) {
+      return null;
+    }
+    console.log(itemKey);
+
+    // TODO: Get variant type without scraping, as the call type will come from the inner variant.
+    // const result = this.start(pallet.calls.type, null, { maxDepth: 2 });
+
+    // const item = result?.variant?.find(
+    //   ({ name }: { name: string }) => name === itemKey
+    // );
+
+    // if (!item) {
+    //   return null;
+    // }
+    return this.startCallScrape();
+  }
+
+  // Starts scraping a call.
+  startCallScrape() {
+    return null;
   }
 
   // Get a pallet's constants from metadata.
@@ -215,8 +218,9 @@ export class PalletScraper extends MetadataScraper {
       return [];
     }
 
+    // TODO: Get variant type without scraping, as the calls will come from the inner variant.
     const result = this.start(pallet.calls.type, null, options);
-    return result.variant;
+    return result?.variant || [];
   }
 
   // ------------------------------------------------------

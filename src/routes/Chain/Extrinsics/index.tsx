@@ -33,17 +33,21 @@ export const Extrinsics = () => {
       return defaultPalletData;
     }
 
-    const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
+    const scraper = new PalletScraper(Metadata, {
+      maxDepth: 7,
+    });
     const pallets = scraper.getList(['calls']);
 
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
 
     // Get calls for the active pallet.
-    const palletCalls = activePallet ? scraper.getCalls(activePallet) : [];
+    const calls = activePallet
+      ? scraper.getCalls(activePallet, { labelsOnly: true })
+      : [];
 
     // Sort the storage items by name.
-    const items = palletCalls.sort(({ name: nameA }, { name: nameB }) =>
+    const items = calls.sort(({ name: nameA }, { name: nameB }) =>
       nameA < nameB ? -1 : nameA > nameB ? 1 : 0
     );
 
