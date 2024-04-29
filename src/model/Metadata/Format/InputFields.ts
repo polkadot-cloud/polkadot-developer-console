@@ -57,7 +57,7 @@ export class FormatInputFields {
 
       case 'compact':
         result.compact = {
-          label: arg.label,
+          label: arg.compact.label,
           form: this.getTypeInput(arg.compact.type),
         };
         break;
