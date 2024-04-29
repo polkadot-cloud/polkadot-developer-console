@@ -24,7 +24,7 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
   if (inputKeysRef.current) {
     inputKeysRef.current = {};
   }
-
+  // TODO: Support array of inputs.
   return (
     <InputFormWrapper>
       {!!inputForm &&
@@ -44,7 +44,7 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
       <section className="footer">
         <ButtonSubmit
           onClick={() => {
-            /* TODO: submit storage query */
+            /* TODO: submit storage query or extrinsic. */
             console.log(inputKeysRef.current);
             console.log(getInputArgs(activeTabId, namespace));
           }}

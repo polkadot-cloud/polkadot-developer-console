@@ -27,8 +27,10 @@ export class FormatInputFields {
       return {};
     }
 
-    // TODO: if arg types is an array, accumulate results.
-    const result = this.getTypeInput(argTypes);
+    const result = Array.isArray(argTypes)
+      ? argTypes.map((argType) => this.getTypeInput(argType))
+      : this.getTypeInput(argTypes);
+
     return result;
   };
 
