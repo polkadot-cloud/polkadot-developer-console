@@ -23,8 +23,6 @@ export const Sequence = ({
     inputKeysRef.current[inputKey] = 'Sequence';
   }
 
-  // TODO: Link with input args state.
-
   // The number of inputs being rendererd.
   const [inputs, setInputs] = useState<number[]>([0]);
 
@@ -46,7 +44,12 @@ export const Sequence = ({
   return (
     <>
       {indices.map((index) => {
-        const key = `${inputKey}_squence_${index}`;
+        const subInputKey = `${inputKey}_${index}`;
+
+        // Accumulate input key.
+        if (inputKeysRef.current) {
+          inputKeysRef.current[subInputKey] = 'SequenceItem';
+        }
 
         // Amend label of input to be it's index.
         arrayInput.label = 'Item ' + (index + 1);
@@ -65,20 +68,17 @@ export const Sequence = ({
         );
 
         return (
-          <SequenceItemWrapper key={key}>
+          <SequenceItemWrapper key={`input_arg_${subInputKey}`}>
             <div>{renderInnerInput(subInput)}</div>
             <div>
-              <button
-                onClick={() => {
-                  removeInput(index);
-                }}
-              >
+              <button onClick={() => removeInput(index)}>
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
           </SequenceItemWrapper>
         );
       })}
+
       {!(maxLength && inputs.length >= maxLength) && (
         <AddInputWrapper>
           <button
