@@ -197,11 +197,14 @@ export const useInput = () => {
       ? currentInputArg
       : Object.keys(input.forms)[0];
 
+    // Ensure forms exist before rendering.
+    const selectedForm = input.forms?.[selectedVariant as string];
+
     return (
       <>
         {renderInput(input, inputArgConfig, indent, Object.keys(input.forms))}
-        {input.forms[selectedVariant as string].map(
-          (subInput: AnyJson, index: number) => {
+        {selectedForm &&
+          selectedForm.map((subInput: AnyJson, index: number) => {
             // Exit early if subInput does not exist or if this is a simple variant.
             if (subInput === undefined || subInput.length === 0) {
               return null;
@@ -219,8 +222,7 @@ export const useInput = () => {
                 )}
               </Fragment>
             );
-          }
-        )}
+          })}
       </>
     );
   };

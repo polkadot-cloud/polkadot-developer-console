@@ -5,18 +5,21 @@ import { useEffect, useRef, useState } from 'react';
 import { SelectItemWrapper, SelectTextWrapper } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import type { AnyJson } from '@w3ux/utils/types';
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
 import { camelize } from '@w3ux/utils';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { SelectDropdown } from 'library/SelectDropdown';
-import type { CallListItem } from './types';
+import type { CallListItem, CallListProps } from './types';
 
-export const CallList = ({ items }: { items: AnyJson }) => {
+export const CallList = ({
+  items,
+  activeItem,
+  inputNamespace,
+}: CallListProps) => {
   const activeTabId = useActiveTabId();
-  const { getChainUi, setChainUiItem } = useChainUi();
+  const { getChainUi, setChainUiItem, resetInputArgSection } = useChainUi();
 
   const chainUiSection = 'calls';
   const chainUi = getChainUi(activeTabId, chainUiSection);
@@ -57,6 +60,13 @@ export const CallList = ({ items }: { items: AnyJson }) => {
       searchInputRef.current?.focus();
     }
   }, [callsOpen]);
+
+  // Reset input args when active item changes.
+  useEffect(() => {
+    if (inputNamespace) {
+      resetInputArgSection(activeTabId, inputNamespace);
+    }
+  }, [activeItem]);
 
   return (
     <section>

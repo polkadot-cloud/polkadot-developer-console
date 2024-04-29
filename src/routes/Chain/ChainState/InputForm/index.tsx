@@ -24,23 +24,36 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
   if (inputKeysRef.current) {
     inputKeysRef.current = {};
   }
-  // TODO: Support array of inputs.
+
+  // Increment input arg indexes.
+  let inputArgIndex = 0;
+
+  // if inputForm exists and is not an array, convert it into one.
+  if (!Array.isArray(inputForm) && !!inputForm) {
+    inputForm = [inputForm];
+  }
+
   return (
     <InputFormWrapper>
       {!!inputForm &&
-        Object.entries(inputForm).map(([type, input]: AnyJson, index) => (
-          <Fragment key={`input_arg_${index}`}>
-            {readInput(
-              type,
-              {
-                inputKey: `${index}`,
-                namespace,
-                inputKeysRef,
-              },
-              input
-            )}
-          </Fragment>
-        ))}
+        inputForm.map((inputItem: AnyJson) =>
+          Object.entries(inputItem).map(([type, input]) => {
+            inputArgIndex++;
+            return (
+              <Fragment key={`input_arg_${inputArgIndex}`}>
+                {readInput(
+                  type,
+                  {
+                    inputKey: `${inputArgIndex}`,
+                    namespace,
+                    inputKeysRef,
+                  },
+                  input
+                )}
+              </Fragment>
+            );
+          })
+        )}
       <section className="footer">
         <ButtonSubmit
           onClick={() => {

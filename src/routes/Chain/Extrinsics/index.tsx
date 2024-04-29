@@ -90,7 +90,11 @@ export const Extrinsics = () => {
             setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
           }}
         />
-        <CallList items={items} />
+        <CallList
+          items={items}
+          inputNamespace={inputNamespace}
+          activeItem={activeItem}
+        />
       </SelectFormWrapper>
       <InputForm
         inputForm={inputForm}
