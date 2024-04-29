@@ -105,8 +105,8 @@ export class PalletScraper extends MetadataScraper {
   }
 
   // Get a pallet call item from metadata.
-  getCallItem(palletName: string, itemKey: string, options?: ScraperOptions) {
-    console.debug('getCallItem', palletName, itemKey, options);
+  getCallItem(palletName: string, itemKey: string) {
+    console.debug('getCallItem', palletName, itemKey);
 
     const pallet = this.getPallet(palletName);
     if (!pallet) {

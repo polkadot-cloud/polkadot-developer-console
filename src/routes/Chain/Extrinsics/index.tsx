@@ -68,7 +68,7 @@ export const Extrinsics = () => {
     }
 
     const scraper = new PalletScraper(Metadata, { maxDepth: '*' });
-    return scraper.getCallItem(activePallet, activeItem, { labelsOnly: true });
+    return scraper.getCallItem(activePallet, activeItem);
   }, [items, activeItem, activePallet]);
 
   // Get input markup for the active call item.
