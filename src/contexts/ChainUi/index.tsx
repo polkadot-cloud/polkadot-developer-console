@@ -47,8 +47,13 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
 
   // Stores the input arguments for either a storage item or call, keyed by tab. NOTE: Needs a ref
   // as multiple updates happen within the same render.
-  const [inputArgs, setInputArgs] = useState<InputArgsState>({});
+  const [inputArgs, setInputArgsState] = useState<InputArgsState>({});
   const inputArgsRef = useRef(inputArgs);
+
+  // Setter for inputArgs. Updates state and ref.
+  const setInputArgs = (value: InputArgsState) => {
+    setStateWithRef(value, setInputArgsState, inputArgsRef);
+  };
 
   // Gets an active chain state section by tabId. Falls back to 'storage'.
   const getActiveChainStateSection = (tabId: number): string =>
@@ -210,7 +215,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     }
     // Apply the new input arg and update state.
     updatedInputArgs[tabId][namespace][key] = arg;
-    setStateWithRef(updatedInputArgs, setInputArgs, inputArgsRef);
+    setInputArgs(updatedInputArgs);
   };
 
   // Reset input args at a given key for either a storage item or call.
@@ -222,19 +227,27 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
 
     // Reset the input args for the given section and update state.
     updatedInputArgs[tabId][namespace] = {};
-    setStateWithRef(updatedInputArgs, setInputArgs, inputArgsRef);
+    setInputArgs(updatedInputArgs);
   };
 
   // Reset input args for a tab.
   const destroyTabChainUi = (tabId: number) => {
-    console.log('destroy statse for ', tabId);
+    const updatedChainUi = { ...chainUi };
+    delete updatedChainUi[tabId];
 
-    /* TODO: Implement.
-    setChainUi
-    setActiveChainStateSections
-    setPalletVersions
-    setInputArgs
-    */
+    const updatedChainStateSections = { ...activeChainStateSections };
+    delete updatedChainStateSections[tabId];
+
+    const updatedPalletVersions = { ...palletVersions };
+    delete updatedPalletVersions[tabId];
+
+    const updatedInputArgs = { ...inputArgsRef.current };
+    delete updatedInputArgs[tabId];
+
+    setChainUi(updatedChainUi);
+    setActiveChainStateSections(updatedChainStateSections);
+    setPalletVersions(updatedPalletVersions);
+    setInputArgs(updatedInputArgs);
   };
 
   return (
