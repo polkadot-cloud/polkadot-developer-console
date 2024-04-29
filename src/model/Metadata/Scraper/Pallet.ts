@@ -107,7 +107,29 @@ export class PalletScraper extends MetadataScraper {
   // Get a pallet call item from metadata.
   getCallItem(palletName: string, itemKey: string, options?: ScraperOptions) {
     console.debug('getCallItem', palletName, itemKey, options);
-    // TODO: Implement.
+
+    const pallet = this.getPallet(palletName);
+    if (!pallet) {
+      return null;
+    }
+
+    // Defensive: Check if storage items are defined for this pallet.
+    const items = pallet.calls;
+    if (!items) {
+      return null;
+    }
+
+    // TODO: This can be improved by only scraping the call name of interest.
+    const result = this.start(pallet.calls.type, null);
+
+    const item = result.variant.find(
+      ({ name }: { name: string }) => name === itemKey
+    );
+    if (!item) {
+      return null;
+    }
+
+    // TODO: Scrape `item.fields` for argTypes, `returnType` is undefined.
     return null;
   }
 
