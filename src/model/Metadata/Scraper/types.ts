@@ -68,7 +68,7 @@ export interface PalletListItem {
 }
 
 export interface ScraperConfig {
-  maxDepth: number;
+  maxDepth: number | '*';
 }
 
 export type TrailId = number;

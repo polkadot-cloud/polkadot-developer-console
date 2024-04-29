@@ -69,7 +69,7 @@ export const StorageItems = () => {
       return null;
     }
 
-    const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
+    const scraper = new PalletScraper(Metadata, { maxDepth: '*' });
     return scraper.getStorageItem(activePallet, activeItem);
   }, [items, activeItem, activePallet]);
 
