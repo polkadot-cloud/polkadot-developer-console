@@ -1,25 +1,27 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/utils/types';
 import { useInput } from '.';
 import { AddInputWrapper, SequenceItemWrapper } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import type { SequenceProps } from './types';
 
 export const Sequence = ({
-  parentKey,
+  namespace,
+  inputKey,
+  inputKeysRef,
   type,
   arrayInput,
   maxLength,
-}: {
-  parentKey: string;
-  type: string;
-  arrayInput: AnyJson;
-  maxLength?: number;
-}) => {
+}: SequenceProps) => {
   const { readInput, renderInnerInput } = useInput();
+
+  // Accumulate input key.
+  if (inputKeysRef.current) {
+    inputKeysRef.current[inputKey] = 'Sequence';
+  }
 
   // The number of inputs being rendererd.
   const [inputs, setInputs] = useState<number[]>([0]);
@@ -42,7 +44,12 @@ export const Sequence = ({
   return (
     <>
       {indices.map((index) => {
-        const key = `${parentKey}_squence_${index}`;
+        const subInputKey = `${inputKey}_${index}`;
+
+        // Accumulate input key.
+        if (inputKeysRef.current) {
+          inputKeysRef.current[subInputKey] = 'SequenceItem';
+        }
 
         // Amend label of input to be it's index.
         arrayInput.label = 'Item ' + (index + 1);
@@ -53,23 +60,25 @@ export const Sequence = ({
         }
 
         // Generate input for this index.
-        const subInput = readInput(type, arrayInput, parentKey, true);
+        const subInput = readInput(
+          type,
+          { namespace, inputKey, inputKeysRef },
+          arrayInput,
+          true
+        );
 
         return (
-          <SequenceItemWrapper key={key}>
+          <SequenceItemWrapper key={`input_arg_${subInputKey}`}>
             <div>{renderInnerInput(subInput)}</div>
             <div>
-              <button
-                onClick={() => {
-                  removeInput(index);
-                }}
-              >
+              <button onClick={() => removeInput(index)}>
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
           </SequenceItemWrapper>
         );
       })}
+
       {!(maxLength && inputs.length >= maxLength) && (
         <AddInputWrapper>
           <button

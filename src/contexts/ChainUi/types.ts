@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ApiPromise } from '@polkadot/api';
+import type { AnyJson } from '@w3ux/utils/types';
 import type { MetadataVersion } from 'model/Metadata/types';
 
 export interface ChainUiContextInterface {
@@ -29,8 +30,26 @@ export interface ChainUiContextInterface {
     section: keyof ChainUiItem,
     key: keyof ChainUiItemInner
   ) => boolean;
+  getInputArgs: (tabId: number, section: InputNamespace) => InputArgs | null;
+  getInputArgsAtKey: (
+    tabId: number,
+    section: InputNamespace,
+    key: string
+  ) => InputArg | null;
+  setInputArgAtKey: (
+    tabId: number,
+    section: InputNamespace,
+    key: string,
+    arg: InputArg
+  ) => void;
+  resetInputArgSection: (tabId: number, section: InputNamespace) => void;
+  destroyTabChainUi: (tabId: number) => void;
 }
 
+// Types associated with chain ui.
+// -------------------------------
+
+// Chain state object used for React state.
 export type ChainUiState = Record<number, ChainUiItem>;
 
 // Chain UI configs for each of the interfaces (storage, constants, calls, raw).
@@ -65,3 +84,31 @@ export type ChainStateSections = Record<number, ChainStateSection>;
 
 // The possible chain sections to be active.
 export type ChainStateSection = 'storage' | 'constants' | 'calls' | 'raw';
+
+// Types associated with input arguments.
+// --------------------------------------
+
+// Input args object used for React state. Keyed by tab id.
+export type InputArgsState = Record<
+  number,
+  {
+    // There can be one persisted storage input for each tab.
+    storage: InputArgs;
+    // There can be one persisted call input for each tab.
+    call: InputArgs;
+  }
+>;
+
+// Input arguments for storage and call data.
+export type InputArgs = Record<string, InputArg>;
+
+// One input arg.
+export interface InputArg {
+  // The type of input, e.g. Variant, Composite, etc.
+  input: string;
+  // The input data.
+  value?: AnyJson;
+}
+
+// The section input args are being applied to.
+export type InputNamespace = 'storage' | 'call';

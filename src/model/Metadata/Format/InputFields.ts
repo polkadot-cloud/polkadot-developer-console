@@ -57,7 +57,7 @@ export class FormatInputFields {
 
       case 'compact':
         result.compact = {
-          label: arg.label,
+          label: arg.compact.label,
           form: this.getTypeInput(arg.compact.type),
         };
         break;
@@ -99,6 +99,7 @@ export class FormatInputFields {
         result.variant = this.getVariantInput(arg);
         break;
     }
+
     return result;
   };
 
@@ -118,23 +119,31 @@ export class FormatInputFields {
 
   // Formats a composite form input.
   getCompositeInput(arg: AnyJson) {
-    const shortLabel = arg.label.short;
+    let shortLabel = arg.label.short;
 
-    // NOTE: Custom inputs will ignore the composite type and stop the recursive input loop.
+    // If this composite is a sequence of u8s, then change the label to `Bytes`.
+    if (this.checkCompositeIsBytes(shortLabel, arg)) {
+      shortLabel = 'Bytes';
+    }
+
+    // Use a pre-defined custom input if the label matches. NOTE: Custom inputs will ignore the
+    // composite type and stop the recursive input loop.
     const customInput = this.getCustomInput(shortLabel);
 
+    const forms = customInput
+      ? null
+      : arg.composite.reduce(
+          (acc: AnyJson, { name, typeName, type }: AnyJson) => {
+            acc[name || typeName] = this.getTypeInput(type);
+            return acc;
+          },
+          {}
+        );
+
     return {
-      label: arg.label.short,
+      label: shortLabel,
       form: customInput,
-      forms: customInput
-        ? null
-        : arg.composite.reduce(
-            (acc: AnyJson, { name, typeName, type }: AnyJson) => {
-              acc[name || typeName] = this.getTypeInput(type);
-              return acc;
-            },
-            {}
-          ),
+      forms,
     };
   }
 
@@ -146,21 +155,40 @@ export class FormatInputFields {
   //
   // CONTRIBUTE: Input types should be added to this switch statement, and in the `useInput` hook.
   getCustomInput = (label: string): string | null => {
+    // If Vec parameter is u8, or BoundedVec parameter 2 is u8, then we are dealing with bytes.
     switch (label) {
       // Default Substrate AccountId type:
       // `<https://crates.parity.io/sp_runtime/struct.AccountId32.html>`;
       case 'AccountId32':
         return 'AccountId32';
 
-      // Substrate Core rimitive hash types: `<https://docs.rs/sp-core/latest/sp_core/index.html>`.
+      // Substrate Core primitive hash types: `<https://docs.rs/sp-core/latest/sp_core/index.html>`.
       case 'H160':
       case 'H256':
       case 'H512':
+      case 'EthereumAddress': // Ethereum address hash.
         return 'Hash';
+
+      // Types that result in a u8 array.
+      case 'Bytes':
+        return 'Bytes';
     }
 
     return null;
   };
+
+  // ------------------------------------------------------
+  // Helpers.
+  // ------------------------------------------------------
+
+  checkCompositeIsBytes(shortLabel: string, arg: AnyJson) {
+    return (
+      ['Vec', 'BoundedVec', 'WeakBoundedVec'].includes(shortLabel) &&
+      arg.composite?.[0]?.type?.sequence?.label === 'u8' &&
+      arg.composite?.length === 1
+    );
+  }
+
   // ------------------------------------------------------
   // Default input values.
   // ------------------------------------------------------

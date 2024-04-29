@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import {
   defaultChainContext,
   defaultChainUiInner,
@@ -17,6 +17,9 @@ import type {
   ChainUiItemInner,
   ChainStateSections,
   ChainStateSection,
+  InputNamespace,
+  InputArgsState,
+  InputArg,
 } from './types';
 import type { ApiPromise } from '@polkadot/api';
 import { xxhashAsHex } from '@polkadot/util-crypto';
@@ -24,6 +27,7 @@ import { u16 } from 'scale-ts';
 import type { AnyJson } from '@w3ux/utils/types';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import type { MetadataVersion } from 'model/Metadata/types';
+import { setStateWithRef } from '@w3ux/utils';
 
 export const ChainUi =
   createContext<ChainUiContextInterface>(defaultChainContext);
@@ -40,6 +44,16 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
 
   // Stores pallet versions of a chain, keyed by tab.
   const [palletVersions, setPalletVersions] = useState<PalletVersions>({});
+
+  // Stores the input arguments for either a storage item or call, keyed by tab. NOTE: Needs a ref
+  // as multiple updates happen within the same render.
+  const [inputArgs, setInputArgsState] = useState<InputArgsState>({});
+  const inputArgsRef = useRef(inputArgs);
+
+  // Setter for inputArgs. Updates state and ref.
+  const setInputArgs = (value: InputArgsState) => {
+    setStateWithRef(value, setInputArgsState, inputArgsRef);
+  };
 
   // Gets an active chain state section by tabId. Falls back to 'storage'.
   const getActiveChainStateSection = (tabId: number): string =>
@@ -162,6 +176,80 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     return !!val;
   };
 
+  // Get input args for either a storage item or call.
+  const getInputArgs = (tabId: number, namespace: InputNamespace) => {
+    if (!inputArgsRef.current[tabId]) {
+      return null;
+    }
+    return inputArgsRef.current[tabId][namespace];
+  };
+
+  // Get input args at a key for either a storage item or call.
+  const getInputArgsAtKey = (
+    tabId: number,
+    namespace: InputNamespace,
+    key: string
+  ) => {
+    if (!inputArgsRef.current[tabId]) {
+      return null;
+    }
+    const args = inputArgsRef.current[tabId][namespace];
+    return args?.[key] || null;
+  };
+
+  // Set input args at a given input key for either a storage item or call.
+  const setInputArgAtKey = (
+    tabId: number,
+    namespace: InputNamespace,
+    key: string,
+    arg: InputArg
+  ) => {
+    const updatedInputArgs = { ...inputArgsRef.current };
+
+    // If an `InputArgs` record does not exist for the tab yet, add it now.
+    if (!inputArgsRef.current[tabId]) {
+      updatedInputArgs[tabId] = {
+        storage: {},
+        call: {},
+      };
+    }
+    // Apply the new input arg and update state.
+    updatedInputArgs[tabId][namespace][key] = arg;
+    setInputArgs(updatedInputArgs);
+  };
+
+  // Reset input args at a given key for either a storage item or call.
+  const resetInputArgSection = (tabId: number, namespace: InputNamespace) => {
+    if (!inputArgsRef.current[tabId]) {
+      return;
+    }
+    const updatedInputArgs = { ...inputArgsRef.current };
+
+    // Reset the input args for the given section and update state.
+    updatedInputArgs[tabId][namespace] = {};
+    setInputArgs(updatedInputArgs);
+  };
+
+  // Reset input args for a tab.
+  const destroyTabChainUi = (tabId: number) => {
+    const updatedChainUi = { ...chainUi };
+    delete updatedChainUi[tabId];
+
+    const updatedChainStateSections = { ...activeChainStateSections };
+    delete updatedChainStateSections[tabId];
+
+    const updatedPalletVersions = { ...palletVersions };
+    delete updatedPalletVersions[tabId];
+
+    const updatedInputArgs = { ...inputArgsRef.current };
+    delete updatedInputArgs[tabId];
+
+    setChainUi(updatedChainUi);
+    setActiveChainStateSections(updatedChainStateSections);
+    setPalletVersions(updatedPalletVersions);
+    setInputArgs(updatedInputArgs);
+  };
+
   return (
     <ChainUi.Provider
       value={{
@@ -173,6 +261,11 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
         isChainUiValueEmpty,
         getActiveChainStateSection,
         setActiveChainStateSection,
+        getInputArgs,
+        getInputArgsAtKey,
+        setInputArgAtKey,
+        resetInputArgSection,
+        destroyTabChainUi,
       }}
     >
       {children}

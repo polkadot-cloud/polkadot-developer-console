@@ -55,13 +55,11 @@ SPDX-License-Identifier: GPL-3.0-only */
 
   --shadow-dropdown: 0 1px 4px -2px rgba(0, 0, 0, 0.1);
 
-  --shadow-floating-menu:
-  0 4px 6px -1px rgba(0, 0, 0, 0.07),
-  0 2px 4px -2px rgba(0, 0, 0, 0.07);
+  --shadow-floating-menu: 0 4px 6px -1px rgba(0, 0, 0, 0.07),
+    0 2px 4px -2px rgba(0, 0, 0, 0.07);
 
-  --shadow-notification:
-  0 2px 3px -1px rgba(0, 0, 0, 0.05),
-  0 1px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-notification: 0 2px 3px -1px rgba(0, 0, 0, 0.05),
+    0 1px 4px -2px rgba(0, 0, 0, 0.05);
 
   --card-shadow-color: rgb(158 158 158 / 20%);
   --card-deep-shadow-color: rgb(158 158 158 / 50%);
@@ -90,8 +88,7 @@ SPDX-License-Identifier: GPL-3.0-only */
   --background-default: rgb(36 32 36);
   --background-primary: rgb(41 37 41);
   --background-invert: #ddd;
-  --background-tooltip: #EEE;
-
+  --background-tooltip: #eee;
 
   --border-primary-color: rgb(58 52 58);
   --border-secondary-color: rgb(95 90 95);
@@ -145,13 +142,11 @@ SPDX-License-Identifier: GPL-3.0-only */
 
   --shadow-dropdown: 0 1px 4px -2px rgba(0, 0, 0, 0.1);
 
-  --shadow-floating-menu:
-  0 4px 6px -1px rgba(0, 0, 0, 0.07),
-  0 2px 4px -2px rgba(0, 0, 0, 0.07);
+  --shadow-floating-menu: 0 4px 6px -1px rgba(0, 0, 0, 0.07),
+    0 2px 4px -2px rgba(0, 0, 0, 0.07);
 
-  --shadow-notification:
-  0 2px 3px -1px rgba(0, 0, 0, 0.05),
-  0 1px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-notification: 0 2px 3px -1px rgba(0, 0, 0, 0.05),
+    0 1px 4px -2px rgba(0, 0, 0, 0.05);
 
   /* --- Update for dark theme end. */
 

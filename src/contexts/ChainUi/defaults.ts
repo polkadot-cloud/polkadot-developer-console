@@ -31,4 +31,9 @@ export const defaultChainContext: ChainUiContextInterface = {
   getActiveChainStateSection: (tabId) => 'storage',
   setActiveChainStateSection: (tabId, section) => {},
   isChainUiValueEmpty: (tabId, section, key) => true,
+  getInputArgs: (tabId, section) => null,
+  getInputArgsAtKey: (tabId, section, key) => null,
+  setInputArgAtKey: (tabId, section, key, value) => {},
+  resetInputArgSection: (tabId, section) => {},
+  destroyTabChainUi: (tabId) => {},
 };

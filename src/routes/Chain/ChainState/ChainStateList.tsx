@@ -19,12 +19,13 @@ import { SelectDropdown } from 'library/SelectDropdown';
 
 export const ChainStateList = ({
   items,
+  inputNamespace,
   chainUiSection,
   activeItem,
   subject,
 }: ChainStateListProps) => {
   const activeTabId = useActiveTabId();
-  const { getChainUi, setChainUiItem } = useChainUi();
+  const { getChainUi, setChainUiItem, resetInputArgSection } = useChainUi();
   const chainUi = getChainUi(activeTabId, chainUiSection);
 
   // Whether dropdown is open.
@@ -103,6 +104,13 @@ export const ChainStateList = ({
       searchInputRef.current?.focus();
     }
   }, [dropdownOpen]);
+
+  // Reset input args when active item changes.
+  useEffect(() => {
+    if (inputNamespace) {
+      resetInputArgSection(activeTabId, inputNamespace);
+    }
+  }, [activeItem]);
 
   return (
     <section>

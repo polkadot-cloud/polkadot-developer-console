@@ -10,6 +10,7 @@
     "deploy:pages": "yarn build:pages && gh-pages -d build",
     "clear": "rm -rf node_modules build tsconfig.tsbuildinfo yarn.lock",
     "lint": "eslint . --fix && npx prettier --write .",
+    "test:storage": "tsup src/test/storageQueries.ts && node dist/storageQueries.cjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -70,6 +71,7 @@
     "gh-pages": "^6.1.1",
     "prettier": "^3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4",
+    "tsup": "^8.0.2",
     "typescript": "^5.2.2",
     "vite": "^5.2.10",
     "vite-plugin-checker": "^0.6.4",
