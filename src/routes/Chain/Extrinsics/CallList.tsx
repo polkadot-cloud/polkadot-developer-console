@@ -100,29 +100,26 @@ export const CallList = ({ items }: { items: AnyJson }) => {
             onEscape={() => setCallsOpen(false)}
           />
 
-          {filteredCalls.map(({ name, docs, fieldNames }: CallListItem) => {
-            console.log(fieldNames);
-            return (
-              <SelectItemWrapper
-                key={`call_select_${name}`}
-                className="option"
-                onClick={() => {
-                  setChainUiItem(activeTabId, chainUiSection, 'selected', name);
-                  setCallsOpen(false);
-                }}
-              >
-                <span>
-                  <SelectTextWrapper>
-                    {camelize(name)}
-                    {fieldNames && <span>({fieldNames})</span>}
-                  </SelectTextWrapper>
-                </span>
-                <span>
-                  <h5>{docs[0]}</h5>
-                </span>
-              </SelectItemWrapper>
-            );
-          })}
+          {filteredCalls.map(({ name, docs, fieldNames }: CallListItem) => (
+            <SelectItemWrapper
+              key={`call_select_${name}`}
+              className="option"
+              onClick={() => {
+                setChainUiItem(activeTabId, chainUiSection, 'selected', name);
+                setCallsOpen(false);
+              }}
+            >
+              <span>
+                <SelectTextWrapper>
+                  {camelize(name)}
+                  {fieldNames && <span>({fieldNames})</span>}
+                </SelectTextWrapper>
+              </span>
+              <span>
+                <h5>{docs[0]}</h5>
+              </span>
+            </SelectItemWrapper>
+          ))}
         </SelectDropdown>
       </div>
     </section>
