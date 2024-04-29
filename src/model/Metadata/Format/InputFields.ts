@@ -155,7 +155,6 @@ export class FormatInputFields {
   //
   // CONTRIBUTE: Input types should be added to this switch statement, and in the `useInput` hook.
   getCustomInput = (label: string): string | null => {
-    // TODO: Add `Vec` and `BoundedVec` cases. In both cases the parameter types need to be known.
     // If Vec parameter is u8, or BoundedVec parameter 2 is u8, then we are dealing with bytes.
     switch (label) {
       // Default Substrate AccountId type:
