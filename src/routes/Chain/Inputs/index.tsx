@@ -85,7 +85,12 @@ export const useInput = () => {
   ): ReactNode => {
     const [type, arrayInput]: [string, AnyJson] = Object.entries(
       input.form
-    )?.[0] || ['unknown', {}];
+    )?.[0] || [undefined, {}];
+
+    // If this type does not exist, return early.
+    if (type === undefined) {
+      return null;
+    }
 
     // Attach length to the array input.
     arrayInput.label = `[${arrayInput.label}, ${input.len}]`;
@@ -198,6 +203,10 @@ export const useInput = () => {
         {renderInput(input, inputArgConfig, indent, Object.keys(input.forms))}
         {input.forms[selectedVariant as string].map(
           (subInput: AnyJson, index: number) => {
+            // Exit early if subInput does not exist.
+            if (subInput === undefined) {
+              return null;
+            }
             const subType = Object.keys(subInput)[0];
             const childInputKey = `${inputKey}_${index}`;
 
@@ -235,12 +244,15 @@ export const useInput = () => {
 
   // Renders an input component wrapped in an input section.
   const renderInput = (
-    { form, label }: InputItem,
+    inputItem: InputItem,
     inputArgConfig: InputArgConfig,
     indent: boolean,
     values?: string[]
-  ) =>
-    (() => {
+  ) => {
+    const label = inputItem?.label || '';
+    const form = inputItem?.form || null;
+
+    return (() => {
       switch (form) {
         // Input tailored for account addresses. Polkicon included. NOTE: `<Section>` is not needed
         // as the parent composite container is already wrapped.
@@ -288,7 +300,7 @@ export const useInput = () => {
             </Section>
           );
 
-        // Primitive textbox input. Also acts as the default input.
+        // Primitive textbox input.
         case 'text':
         case 'number':
         default:
@@ -296,7 +308,7 @@ export const useInput = () => {
             <Section indent={indent}>
               <Textbox
                 {...inputArgConfig}
-                label={label}
+                label={label || 'Value'}
                 defaultValue={FormatInputFields.defaultValue(form)}
                 numeric={form === 'number'}
               />
@@ -304,6 +316,7 @@ export const useInput = () => {
           );
       }
     })();
+  };
 
   // Check if an array is a vector of bytes.
   const arrayIsBytes = (input: AnyJson) =>
