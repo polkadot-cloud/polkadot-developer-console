@@ -183,8 +183,21 @@ export class PalletScraper extends MetadataScraper {
 
   // Starts scraping a call.
   startCallScrape(item: AnyJson) {
-    console.log('start scraping: ', item);
-    return null;
+    const scrapedType = {
+      argTypes: item.fields.map(({ type }: { type: number; docs: string[] }) =>
+        this.start(type, null)
+      ),
+      returnType: '',
+    };
+
+    const result = {
+      name: item.name,
+      docs: item.docs,
+      modifier: '',
+      type: scrapedType,
+    };
+
+    return result;
   }
 
   // Get a pallet's constants from metadata.
