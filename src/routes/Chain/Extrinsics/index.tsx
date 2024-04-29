@@ -4,7 +4,7 @@
 import { SelectFormWrapper } from '../Wrappers';
 import { useApi } from 'contexts/Api';
 import { PalletList } from '../PalletList';
-import { CallList } from '../CallList';
+import { CallList } from './CallList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { Header } from './Header';
@@ -41,13 +41,11 @@ export const Extrinsics = () => {
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
 
-    // Get calls for the active pallet.
-    const calls = activePallet
-      ? scraper.getCalls(activePallet, { labelsOnly: true })
-      : [];
+    // Get call items for the active pallet.
+    let items = activePallet ? scraper.getCalls(activePallet) : [];
 
-    // Sort the storage items by name.
-    const items = calls.sort(({ name: nameA }, { name: nameB }) =>
+    // Sort the call items by name.
+    items = items.sort(({ name: nameA }, { name: nameB }) =>
       nameA < nameB ? -1 : nameA > nameB ? 1 : 0
     );
 
@@ -70,7 +68,6 @@ export const Extrinsics = () => {
     if (!Metadata || !activePallet || !activeItem) {
       return null;
     }
-
     const scraper = new PalletScraper(Metadata, { maxDepth: '*' });
     return scraper.getCallItem(activePallet, activeItem);
   }, [items, activeItem, activePallet]);
@@ -93,7 +90,7 @@ export const Extrinsics = () => {
             setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
           }}
         />
-        <CallList calls={items} />
+        <CallList items={items} />
       </SelectFormWrapper>
       <InputForm
         inputForm={inputForm}

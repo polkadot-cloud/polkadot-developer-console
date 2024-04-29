@@ -19,7 +19,7 @@ export class MetadataScraper {
   metadata: MetadataVersion;
 
   // The metadata lookup.
-  #lookup: AnyJson = {};
+  lookup: AnyJson = {};
 
   // Maximum recursion depth for scraping types.
   #maxDepth: number | '*';
@@ -36,7 +36,7 @@ export class MetadataScraper {
   constructor(metadata: MetadataVersion, config: ScraperConfig) {
     this.metadata = metadata;
     this.#maxDepth = config.maxDepth;
-    this.#lookup = this.metadata.getMetadataJson().lookup;
+    this.lookup = this.metadata.getMetadataJson().lookup;
   }
 
   // ------------------------------------------------------
@@ -63,7 +63,7 @@ export class MetadataScraper {
   getType(typeId: number, trailParam: TrailParam) {
     const { trailId, labelsOnly, maxDepth } = trailParam;
 
-    const lookup = this.#lookup.types.find(
+    const lookup = this.lookup.types.find(
       ({ id }: { id: number }) => id === typeId
     );
 

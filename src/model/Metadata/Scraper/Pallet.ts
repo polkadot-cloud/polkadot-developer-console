@@ -13,6 +13,7 @@ import type {
 } from './types';
 import { MetadataScraper } from './Base';
 import type { MetadataVersion } from 'model/Metadata/types';
+import type { AnyJson } from '@w3ux/utils/types';
 
 export class PalletScraper extends MetadataScraper {
   // The pallet metadata in JSON format.
@@ -140,6 +141,21 @@ export class PalletScraper extends MetadataScraper {
     };
   }
 
+  getPalletCalls(palletName: string) {
+    const pallet = this.pallets?.find(
+      ({ name }: { name: string }) => name === palletName
+    );
+    const callType = pallet?.calls?.type;
+    if (!callType) {
+      return [];
+    }
+    const lookup = this.lookup.types.find(
+      ({ id }: { id: number }) => id === callType
+    );
+
+    return lookup?.type?.def?.variant?.variants || [];
+  }
+
   // Get a pallet call item from metadata.
   getCallItem(palletName: string, itemKey: string) {
     const pallet = this.getPallet(palletName);
@@ -152,23 +168,22 @@ export class PalletScraper extends MetadataScraper {
     if (!items) {
       return null;
     }
-    console.log(itemKey);
 
-    // TODO: Get variant type without scraping, as the call type will come from the inner variant.
-    // const result = this.start(pallet.calls.type, null, { maxDepth: 2 });
+    // Get call variant type without scraping, as inner variant type id is needed to start
+    // scraping.
+    const result = this.getPalletCalls(palletName);
+    const item = result.find(({ name }: { name: string }) => name === itemKey);
 
-    // const item = result?.variant?.find(
-    //   ({ name }: { name: string }) => name === itemKey
-    // );
+    if (!item) {
+      return null;
+    }
 
-    // if (!item) {
-    //   return null;
-    // }
-    return this.startCallScrape();
+    return this.startCallScrape(item);
   }
 
   // Starts scraping a call.
-  startCallScrape() {
+  startCallScrape(item: AnyJson) {
+    console.log('start scraping: ', item);
     return null;
   }
 
@@ -206,7 +221,7 @@ export class PalletScraper extends MetadataScraper {
   }
 
   // Get a pallet's calls list from metadata.
-  getCalls(palletName: string, options?: ScraperOptions): PalletItemScraped[] {
+  getCalls(palletName: string): PalletItemScraped[] {
     const pallet = this.getPallet(palletName);
     if (!pallet) {
       return [];
@@ -218,9 +233,23 @@ export class PalletScraper extends MetadataScraper {
       return [];
     }
 
-    // TODO: Get variant type without scraping, as the calls will come from the inner variant.
-    const result = this.start(pallet.calls.type, null, options);
-    return result?.variant || [];
+    // Get call variant type without scraping, All call signatures need is to read the `fields`
+    // property.
+    const callList = this.getPalletCalls(palletName);
+
+    // Format the call list for rendering as select dropdown.
+    const formattedCallList = callList.map((item: AnyJson) => {
+      const { name, docs, fields } = item;
+      return {
+        name,
+        docs,
+        fieldNames: fields
+          .map((field: { name: string }) => field.name)
+          .join(', '),
+      };
+    });
+
+    return formattedCallList;
   }
 
   // ------------------------------------------------------
