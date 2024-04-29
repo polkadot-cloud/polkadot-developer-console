@@ -197,10 +197,6 @@ export const useInput = () => {
       ? currentInputArg
       : Object.keys(input.forms)[0];
 
-    if (input.label === 'Option') {
-      console.log(input.forms[selectedVariant as string]);
-    }
-
     return (
       <>
         {renderInput(input, inputArgConfig, indent, Object.keys(input.forms))}
@@ -274,7 +270,6 @@ export const useInput = () => {
 
         // A dropdown select input for multiple option enums.
         case 'select':
-          console.log('redner select', inputItem);
           return (
             <Section indent={indent}>
               <Select
