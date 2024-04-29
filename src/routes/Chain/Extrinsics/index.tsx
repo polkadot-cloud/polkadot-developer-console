@@ -12,6 +12,9 @@ import { useActiveTabId } from 'contexts/ActiveTab';
 import { useMemo } from 'react';
 import type { PalletData } from '../ChainState/types';
 import { defaultPalletData } from '../ChainState/defaults';
+import { FormatInputFields } from 'model/Metadata/Format/InputFields';
+import { InputForm } from '../ChainState/InputForm';
+import type { InputNamespace } from 'contexts/ChainUi/types';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
@@ -19,6 +22,8 @@ export const Extrinsics = () => {
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'calls';
+  const inputNamespace: InputNamespace = 'call';
+
   const chainUi = getChainUi(activeTabId, chainUiSection);
   const Metadata = getChainSpec(activeTabId)?.metadata;
 
@@ -28,15 +33,19 @@ export const Extrinsics = () => {
       return defaultPalletData;
     }
 
-    const scraper = new PalletScraper(Metadata, { maxDepth: 2 });
+    const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
     const pallets = scraper.getList(['calls']);
 
+    // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
 
-    let items = [];
-    if (activePallet) {
-      items = scraper.getCalls(activePallet);
-    }
+    // Get calls for the active pallet.
+    const palletCalls = activePallet ? scraper.getCalls(activePallet) : [];
+
+    // Sort the storage items by name.
+    const items = palletCalls.sort(({ name: nameA }, { name: nameB }) =>
+      nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+    );
 
     const result: PalletData = {
       pallets,
@@ -49,8 +58,24 @@ export const Extrinsics = () => {
 
   const { pallets, activePallet, items } = callData;
 
-  // NOTE: not yet implemented.
-  // const activeItem = null;
+  // If no call is selected, select the first one from the list or fall back to null.
+  const activeItem = chainUi.selected || items?.[0]?.name || null;
+
+  // Get the whole call item record from metadata for input formatting.
+  const activeListItem = useMemo(() => {
+    if (!Metadata || !activePallet || !activeItem) {
+      return null;
+    }
+
+    const scraper = new PalletScraper(Metadata, { maxDepth: '*' });
+    return scraper.getCallItem(activePallet, activeItem, { labelsOnly: true });
+  }, [items, activeItem, activePallet]);
+
+  // Get input markup for the active call item.
+  const inputForm =
+    activePallet !== null && activeItem !== null && !!activeListItem
+      ? new FormatInputFields(activeListItem).format()
+      : null;
 
   return (
     <>
@@ -66,6 +91,11 @@ export const Extrinsics = () => {
         />
         <CallList calls={items} />
       </SelectFormWrapper>
+      <InputForm
+        inputForm={inputForm}
+        namespace={inputNamespace}
+        activeItem={activeItem}
+      />
     </>
   );
 };

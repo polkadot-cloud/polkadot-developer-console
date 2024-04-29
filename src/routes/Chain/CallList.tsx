@@ -41,9 +41,8 @@ export const CallList = ({ calls }: { calls: AnyJson }) => {
     fieldNames: string | undefined;
     fieldTypes: string | undefined;
   }[] = [];
-  // Calls type should aways be a variant, but checking to prevent errors.
-  if (calls && calls.type === 'variant') {
-    calls.variant.forEach(
+  if (calls) {
+    calls.forEach(
       ({
         name,
         docs,

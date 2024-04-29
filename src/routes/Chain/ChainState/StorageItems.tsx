@@ -39,7 +39,7 @@ export const StorageItems = () => {
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
 
-    // Get storage items for the active pallet and sort by name.
+    // Get storage items for the active pallet.
     const palletStorage = activePallet
       ? scraper.getStorage(activePallet, { labelsOnly: true })
       : [];
@@ -63,7 +63,7 @@ export const StorageItems = () => {
   // If no storage item selected, select the first one from the list or fall back to null.
   const activeItem = chainUi.selected || items?.[0]?.name || null;
 
-  // Get the whole active storage item record  from metadata for input formatting.
+  // Get the whole active storage item record from metadata for input formatting.
   const activeListItem = useMemo(() => {
     if (!Metadata || !activePallet || !activeItem) {
       return null;

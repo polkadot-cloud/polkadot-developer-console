@@ -104,6 +104,13 @@ export class PalletScraper extends MetadataScraper {
     return this.startStorageScrape(item, options);
   }
 
+  // Get a pallet call item from metadata.
+  getCallItem(palletName: string, itemKey: string, options?: ScraperOptions) {
+    console.debug('getCallItem', palletName, itemKey, options);
+    // TODO: Implement.
+    return null;
+  }
+
   // Starts scraping a storage item.
   startStorageScrape(
     item: MetadataPalletStorageItem,
@@ -174,20 +181,20 @@ export class PalletScraper extends MetadataScraper {
   }
 
   // Get a pallet's calls list from metadata.
-  getCalls(palletName: string) {
+  getCalls(palletName: string, options?: ScraperOptions): PalletItemScraped[] {
     const pallet = this.getPallet(palletName);
     if (!pallet) {
-      return;
+      return [];
     }
 
-    // Defensive: Check if calls are defined for this pallet.
+    // NOTE: Checking if calls are defined for this pallet as there may be none defined.
     const callType = pallet.calls?.type;
-    if (callType) {
-      const result = this.start(pallet.calls.type, null);
-      return result;
-    } else {
-      return null;
+    if (!callType) {
+      return [];
     }
+
+    const result = this.start(pallet.calls.type, null, options);
+    return result.variant;
   }
 
   // ------------------------------------------------------
