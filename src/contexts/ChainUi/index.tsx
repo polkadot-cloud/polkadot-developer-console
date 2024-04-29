@@ -191,10 +191,10 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     key: string
   ) => {
     if (!inputArgsRef.current[tabId]) {
-      return null;
+      return undefined;
     }
     const args = inputArgsRef.current[tabId][namespace];
-    return args?.[key] || null;
+    return args?.[key] || undefined;
   };
 
   // Set input args at a given input key for either a storage item or call.

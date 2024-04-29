@@ -193,18 +193,21 @@ export const useInput = () => {
     )?.value;
 
     // Fall back to the first variant if no value is set.
-    const selectedVariant =
-      currentInputArg !== undefined
-        ? currentInputArg
-        : Object.keys(input.forms)[0];
+    const selectedVariant = ![undefined, ''].includes(currentInputArg)
+      ? currentInputArg
+      : Object.keys(input.forms)[0];
+
+    if (input.label === 'Option') {
+      console.log(input.forms[selectedVariant as string]);
+    }
 
     return (
       <>
         {renderInput(input, inputArgConfig, indent, Object.keys(input.forms))}
         {input.forms[selectedVariant as string].map(
           (subInput: AnyJson, index: number) => {
-            // Exit early if subInput does not exist.
-            if (subInput === undefined) {
+            // Exit early if subInput does not exist or if this is a simple variant.
+            if (subInput === undefined || subInput.length === 0) {
               return null;
             }
             const subType = Object.keys(subInput)[0];
@@ -271,6 +274,7 @@ export const useInput = () => {
 
         // A dropdown select input for multiple option enums.
         case 'select':
+          console.log('redner select', inputItem);
           return (
             <Section indent={indent}>
               <Select

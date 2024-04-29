@@ -37,7 +37,7 @@ export const Select = ({
   const ignoreClass = `ignore-outside-alerter-select_${camelize(String(label))}`;
 
   // Get the currently selected value, or fall back to the first value.
-  const currentValue = value !== undefined ? value : values[0];
+  const currentValue = ![undefined, ''].includes(value) ? value : values[0];
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
