@@ -8,13 +8,20 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { SelectProps } from './types';
+import { useActiveTabId } from 'contexts/ActiveTab';
+import { useChainUi } from 'contexts/ChainUi';
 
 export const Select = ({
   inputKey,
+  namespace,
   inputKeysRef,
   values,
+  value,
   label,
 }: SelectProps) => {
+  const activeTabId = useActiveTabId();
+  const { setInputArgAtKey } = useChainUi();
+
   // Whether select options are open.
   const [open, setOpen] = useState<boolean>(false);
 
@@ -26,6 +33,9 @@ export const Select = ({
   // Outside alerter ignore class.
   const ignoreClass = `ignore-outside-alerter-select_${camelize(String(label))}`;
 
+  // Get the currently selected value, or fall back to the first value.
+  const currentValue = value !== undefined ? value : values[0];
+
   return (
     <>
       <h4>{label}</h4>
@@ -34,7 +44,7 @@ export const Select = ({
         onClick={() => setOpen(!open)}
       >
         <span>
-          <SelectTextWrapper>{values[0] || `No Values`}</SelectTextWrapper>
+          <SelectTextWrapper>{currentValue || `No Values`}</SelectTextWrapper>
         </span>
         <span>
           <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
@@ -52,7 +62,11 @@ export const Select = ({
               key={`select_${label}_${camelize(val)}`}
               className={`option`}
               onClick={() => {
-                /* Do nothing. */
+                setInputArgAtKey(activeTabId, namespace, inputKey, {
+                  input: 'Select',
+                  value: val,
+                });
+                setOpen(false);
               }}
             >
               <span>

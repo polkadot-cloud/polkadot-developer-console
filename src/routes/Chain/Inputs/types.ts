@@ -32,6 +32,7 @@ export type HashProps = InputArgConfig & {
 export type SelectProps = InputArgConfig & {
   values: string[];
   label: string | number;
+  value: string;
 };
 
 export type CheckboxProps = InputArgConfig & {

@@ -103,7 +103,7 @@ export type InputArgs = Record<string, InputArg>;
 
 // One input arg.
 export interface InputArg {
-  // The type of input, e.g. variant, composite, etc.
+  // The type of input, e.g. Variant, Composite, etc.
   input: string;
   // The input data.
   value?: AnyJson;

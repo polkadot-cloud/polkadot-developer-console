@@ -13,11 +13,15 @@ import { Hash } from './Hash';
 import { Sequence } from './Sequence';
 import { Checkbox } from './Checkbox';
 import { AccountId32 } from './AccountId32';
+import { useChainUi } from 'contexts/ChainUi';
+import { useActiveTabId } from 'contexts/ActiveTab';
 
 export const useInput = () => {
+  const activeTabId = useActiveTabId();
+  const { getInputArgsAtKey } = useChainUi();
+
   // Reads input and returns input components based on the input type. Called recursively for types
   // that host other types.
-
   const readInput = (
     type: string,
     inputArgConfig: InputArgConfig,
@@ -174,13 +178,25 @@ export const useInput = () => {
     inputArgConfig: InputArgConfig,
     indent: boolean
   ) => {
-    // TODO: Replace with actual selected variant.
-    const selectedVariant = Object.keys(input.forms)[0];
     const { namespace, inputKey, inputKeysRef } = inputArgConfig;
+
+    // Get the current variant value, if any.
+    const currentInputArg = getInputArgsAtKey(
+      activeTabId,
+      namespace,
+      inputKey
+    )?.value;
+
+    // Fall back to the first variant if no value is set.
+    const selectedVariant =
+      currentInputArg !== undefined
+        ? currentInputArg
+        : Object.keys(input.forms)[0];
+
     return (
       <>
         {renderInput(input, inputArgConfig, indent, Object.keys(input.forms))}
-        {input.forms[selectedVariant].map(
+        {input.forms[selectedVariant as string].map(
           (subInput: AnyJson, index: number) => {
             const subType = Object.keys(subInput)[0];
             const childInputKey = `${inputKey}_${index}`;
@@ -245,7 +261,18 @@ export const useInput = () => {
         case 'select':
           return (
             <Section indent={indent}>
-              <Select {...inputArgConfig} label={label} values={values || []} />
+              <Select
+                {...inputArgConfig}
+                label={label}
+                values={values || []}
+                value={
+                  getInputArgsAtKey(
+                    activeTabId,
+                    inputArgConfig.namespace,
+                    inputArgConfig.inputKey
+                  )?.value
+                }
+              />
             </Section>
           );
 
