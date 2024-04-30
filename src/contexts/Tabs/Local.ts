@@ -16,8 +16,18 @@ export const getTabs = (): Tabs | undefined => {
     | undefined;
 
   if (result) {
-    return result as Tabs;
+    try {
+      const formatted = result.map((tab) => ({
+        ...tab,
+        activePage: getActivePage('default', tab.id, false),
+      }));
+
+      return formatted as Tabs;
+    } catch (e) {
+      // Silently fail.
+    }
   }
+  return undefined;
 };
 
 // Gets the active tab id from local storage, or returns undefined otherwise.
