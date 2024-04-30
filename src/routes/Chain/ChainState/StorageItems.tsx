@@ -15,18 +15,17 @@ import { defaultPalletData } from './defaults';
 import { EncodedDetails } from './EncodedDetails';
 import { InputForm } from './InputForm';
 import type { InputNamespace } from 'contexts/ChainUi/types';
-import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const StorageItems = () => {
-  const { tabId } = useActiveTab();
   const { getChainSpec } = useApi();
+  const { tabId, ownerId } = useActiveTab();
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'storage';
   const inputNamespace: InputNamespace = 'storage';
 
   const chainUi = getChainUi(tabId, chainUiSection);
-  const Metadata = getChainSpec(tabIdToOwnerId(tabId))?.metadata;
+  const Metadata = getChainSpec(ownerId)?.metadata;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const storageData = useMemo((): PalletData => {

@@ -268,6 +268,12 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     return tabName;
   };
 
+  // Switch tab.
+  const switchTab = (tabId: number, tabIndex: number) => {
+    setSelectedTabId(tabId);
+    setActiveTabIndex(tabIndex);
+  };
+
   // Connect tab to an Api instance and update its chain data.
   const connectTab = (tabId: number, chainId: ChainId, endpoint: string) => {
     const isDirectory = isDirectoryId(chainId);
@@ -301,7 +307,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     );
     setTabs(newTabs);
     instantiateControllers(tabId, chainData);
-    ApiController.instantiate(tabIdToOwnerId(tabId), chainId, endpoint);
   };
 
   // Instantiate an Api instance from tab chain data.
@@ -311,7 +316,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       if (tab?.autoConnect) {
         setTabForceDisconnect(tabId, false);
       }
-      await instantiateControllers(tab.id, tab?.chain);
+      instantiateControllers(tab.id, tab?.chain);
     }
   };
 
@@ -332,12 +337,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const ownerId = tabIdToOwnerId(tabId);
     ApiController.destroy(ownerId);
     ChainStateController.destroy(ownerId);
-  };
-
-  // Switch tab.
-  const switchTab = (tabId: number, tabIndex: number) => {
-    setSelectedTabId(tabId);
-    setActiveTabIndex(tabIndex);
   };
 
   return (

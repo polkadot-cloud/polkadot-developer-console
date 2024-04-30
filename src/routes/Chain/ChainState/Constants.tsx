@@ -18,17 +18,16 @@ import { camelize } from '@w3ux/utils';
 import { ChainStateController } from 'controllers/ChainState';
 import { useChainState } from 'contexts/ChainState';
 import { Results } from './Results';
-import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const Constants = () => {
   const { getChainSpec } = useApi();
-  const { tabId } = useActiveTab();
+  const { tabId, ownerId } = useActiveTab();
   const { setConstant } = useChainState();
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'constants';
   const chainUi = getChainUi(tabId, chainUiSection);
-  const Metadata = getChainSpec(tabIdToOwnerId(tabId))?.metadata;
+  const Metadata = getChainSpec(ownerId)?.metadata;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const constantsData = useMemo((): PalletData => {

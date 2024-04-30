@@ -15,18 +15,17 @@ import { defaultPalletData } from '../ChainState/defaults';
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 import { InputForm } from '../ChainState/InputForm';
 import type { InputNamespace } from 'contexts/ChainUi/types';
-import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
-  const { tabId } = useActiveTab();
+  const { tabId, ownerId } = useActiveTab();
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'calls';
   const inputNamespace: InputNamespace = 'call';
 
   const chainUi = getChainUi(tabId, chainUiSection);
-  const Metadata = getChainSpec(tabIdToOwnerId(tabId))?.metadata;
+  const Metadata = getChainSpec(ownerId)?.metadata;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const callData = useMemo((): PalletData => {

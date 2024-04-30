@@ -11,14 +11,13 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { Account } from './Account';
 import BigNumber from 'bignumber.js';
 import { useAccounts } from 'contexts/Accounts';
-import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const Accounts = () => {
-  const { accounts } = useAccounts();
   const { getChainSpec } = useApi();
-  const { tab, tabId } = useActiveTab();
+  const { accounts } = useAccounts();
+  const { tab, ownerId } = useActiveTab();
 
-  const chainSpec = getChainSpec(tabIdToOwnerId(tabId));
+  const chainSpec = getChainSpec(ownerId);
 
   const existentialDeposit =
     chainSpec?.consts?.existentialDeposit || new BigNumber(0);

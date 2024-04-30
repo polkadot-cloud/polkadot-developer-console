@@ -8,7 +8,6 @@ import * as local from './Local';
 import { useTabs } from 'contexts/Tabs';
 import { useApi } from 'contexts/Api';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const RouteContext =
   createContext<RouteContextInterface>(defaultRouteContext);
@@ -16,12 +15,12 @@ export const RouteContext =
 export const useRoute = () => useContext(RouteContext);
 
 export const RouteProvider = ({ route, children }: RouteContextProps) => {
-  const { tabId } = useActiveTab();
+  const { tabId, ownerId } = useActiveTab();
   const { redirectCounter } = useTabs();
   const { getApiActive, getApiStatus } = useApi();
 
-  const apiStatus = getApiStatus(tabIdToOwnerId(tabId));
-  const apiActive = getApiActive(tabIdToOwnerId(tabId));
+  const apiStatus = getApiStatus(ownerId);
+  const apiActive = getApiActive(ownerId);
 
   // The active section of the page. Falls back to default section if not connected.
   const [activePage, setActivePageState] = useState<number>(

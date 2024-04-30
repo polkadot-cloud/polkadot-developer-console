@@ -10,7 +10,6 @@ import { useApi } from 'contexts/Api';
 import { useSettings } from 'contexts/Settings';
 import { PageWrapper } from 'library/PageContent/Wrappers';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 // Renders a page and menu, with state controlling the active section of the page.
 export const PageWithMenu = ({
@@ -21,10 +20,10 @@ export const PageWithMenu = ({
 }: PageWithMenuProps) => {
   const { getApiStatus } = useApi();
   const routeConfig = routeProvider();
-  const { tab, tabId } = useActiveTab();
+  const { tab, ownerId } = useActiveTab();
   const { chainColorEnabled } = useSettings();
 
-  const apiStatus = getApiStatus(tabIdToOwnerId(tabId));
+  const apiStatus = getApiStatus(ownerId);
 
   // Get colors from active chain id.
   const chainId: DirectoryId | undefined =
