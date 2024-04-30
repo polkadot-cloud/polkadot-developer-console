@@ -10,7 +10,6 @@ import {
 } from 'routes/Settings/TabSettings/Wrappers';
 import { ApiController } from 'controllers/Api';
 import { useTabs } from 'contexts/Tabs';
-import { useRoute } from 'contexts/Route';
 import { useApi } from 'contexts/Api';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { SubHeadingWrapper } from './Wrappers';
@@ -23,9 +22,9 @@ export const ManageTab = () => {
     updateSs58,
     updateUnits,
     updateUnit,
+    setTabActivePage,
   } = useTabs();
   const { getApiStatus } = useApi();
-  const { setActivePage } = useRoute();
   const { tab, tabId, ownerId } = useActiveTab();
 
   const apiStatus = getApiStatus(ownerId);
@@ -112,7 +111,7 @@ export const ManageTab = () => {
                   ) {
                     setTabForceDisconnect(tabId, true);
                     ApiController.destroy(ownerId);
-                    setActivePage(0);
+                    setTabActivePage(tabId, 'default', 0, false);
                   }
                 }}
               >

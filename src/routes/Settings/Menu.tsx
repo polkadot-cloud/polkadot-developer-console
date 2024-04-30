@@ -2,16 +2,23 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { ButtonWrapper, HeaderMenuWrapper } from 'library/HeaderMenu/Wrappers';
-import { useRoute } from '../../contexts/Route';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { accentColors } from 'styles/accents/developer-console';
 import type { RouteSectionProvider } from 'routes/Common/types';
+import { useActiveTab } from 'contexts/ActiveTab';
+import { useTabs } from 'contexts/Tabs';
+import { useApi } from 'contexts/Api';
 
 export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
   const navigate = useNavigate();
-  const { activePage, setActivePage } = useRoute();
+  const { getApiActive } = useApi();
+  const { setTabActivePage } = useTabs();
+  const { tab, tabId, ownerId } = useActiveTab();
+
+  const apiActive = getApiActive(ownerId);
+  const activePage = tab?.activePage || 0;
 
   return (
     <HeaderMenuWrapper
@@ -27,7 +34,9 @@ export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
             <button
               key={`menu-section-${key}-${index}`}
               className={activePage === Number(key) ? 'active' : undefined}
-              onClick={() => setActivePage(Number(key))}
+              onClick={() => {
+                setTabActivePage(tabId, 'settings', Number(key), apiActive);
+              }}
             >
               {section.label}
             </button>

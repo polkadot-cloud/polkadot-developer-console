@@ -1,6 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
+import type { Route } from 'App';
 import type { ChainId, NetworkDirectoryItem } from 'config/networks';
 import type { Dispatch, SetStateAction } from 'react';
 
@@ -13,6 +14,7 @@ export interface Tab {
   name: string;
   forceDisconnect: boolean;
   autoConnect: boolean;
+  activePage: number;
 }
 
 export interface TabChainData {
@@ -64,6 +66,13 @@ export interface TabsContextInterface {
   forgetTabChain: (tabId: number) => void;
   setTabAutoConnect: (id: number, autoConnect: boolean) => void;
   setTabForceDisconnect: (id: number, forceDisconnect: boolean) => void;
+  setTabActivePage: (
+    id: number,
+    route: Route,
+    page: number,
+    apiActive: boolean,
+    persist?: boolean
+  ) => void;
   setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
   switchTab: (tabId: number, tabIndex: number) => void;
 }

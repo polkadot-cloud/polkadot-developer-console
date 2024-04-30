@@ -7,10 +7,14 @@ import { useApi } from 'contexts/Api';
 import { Chain } from 'routes/Chain';
 import { Default } from 'routes/Home';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { useEffect } from 'react';
+import { useTabs } from 'contexts/Tabs';
+import * as local from 'contexts/Tabs/Local';
 
 export const Router = () => {
   const { getApiStatus } = useApi();
-  const { ownerId, tab } = useActiveTab();
+  const { setTabActivePage } = useTabs();
+  const { ownerId, tab, tabId } = useActiveTab();
 
   const apiStatus = getApiStatus(ownerId);
 
@@ -22,6 +26,25 @@ export const Router = () => {
   const chainPageByDefault =
     (tab?.autoConnect && tab?.chain && !tab.forceDisconnect) ||
     ACTIVE_API_STATUSES.includes(apiStatus);
+
+  // Upon a chain connection, move to a locally persisted activePage if it is different from the tab's current activePage.
+  const setActivePageOnConnect = () => {
+    const activePage = local.getActivePage('default', tabId, true);
+    if (tab && activePage !== undefined && activePage !== tab.activePage) {
+      setTabActivePage(tabId, 'default', activePage, true, false);
+    }
+  };
+
+  //  Redirect to section 0 if api is no longer connected. Do not persist - user might want to land
+  //  on this section again on subsequent visits. Forces redirect on tab change if that tab was on a
+  //  different section.
+  useEffect(() => {
+    if (!ACTIVE_API_STATUSES.includes(apiStatus)) {
+      setTabActivePage(tabId, 'default', 0, false);
+    } else {
+      setActivePageOnConnect();
+    }
+  }, [apiStatus, tabId]);
 
   return (
     <Routes>

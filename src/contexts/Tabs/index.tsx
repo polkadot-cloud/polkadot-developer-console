@@ -24,6 +24,7 @@ import { ApiController } from 'controllers/Api';
 import { isDirectoryId } from 'config/networks/Utils';
 import { ChainStateController } from 'controllers/ChainState';
 import { tabIdToOwnerId } from './Utils';
+import type { Route } from 'App';
 
 checkLocalTabs();
 
@@ -136,6 +137,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         name: 'New Tab',
         forceDisconnect: !autoConnect,
         autoConnect,
+        activePage: 0,
       },
     ];
 
@@ -226,6 +228,31 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
           return {
             ...tab,
             forceDisconnect: checked,
+          };
+        }
+        return tab;
+      })
+    );
+  };
+
+  // Set a tab's active page.
+  const setTabActivePage = (
+    id: number,
+    route: Route,
+    page: number,
+    apiActive: boolean,
+    persist = true
+  ) => {
+    if (persist) {
+      local.setActivePage(route, id, apiActive, page);
+    }
+
+    setTabs(
+      tabs.map((tab) => {
+        if (tab.id === id) {
+          return {
+            ...tab,
+            activePage: page,
           };
         }
         return tab;
@@ -372,6 +399,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         setTabConnectFrom,
         setTabAutoConnect,
         setTabForceDisconnect,
+        setTabActivePage,
         switchTab,
         instantiatedIds: instantiatedIds.current,
       }}

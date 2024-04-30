@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Body } from 'library/Body';
-import { RouteProvider } from 'contexts/Route';
+import { useRedirect } from 'hooks/useRedirect';
 import type { PageWithMenuProps } from './types';
 import { NetworkDirectory, type DirectoryId } from 'config/networks';
 import { accentColors } from 'styles/accents/developer-console';
@@ -22,6 +22,9 @@ export const PageWithMenu = ({
   const routeConfig = routeProvider();
   const { tab, ownerId } = useActiveTab();
   const { chainColorEnabled } = useSettings();
+
+  // Redirect when redirects are present in local storage.
+  useRedirect({ route });
 
   const apiStatus = getApiStatus(ownerId);
 
@@ -51,14 +54,12 @@ export const PageWithMenu = ({
           : undefined
       }
     >
-      <RouteProvider route={route}>
-        <Menu {...routeConfig} />
-        <Body>
-          <PageWrapper>
-            <Page {...routeConfig} />
-          </PageWrapper>
-        </Body>
-      </RouteProvider>
+      <Menu {...routeConfig} />
+      <Body>
+        <PageWrapper>
+          <Page {...routeConfig} />
+        </PageWrapper>
+      </Body>
     </div>
   );
 };
