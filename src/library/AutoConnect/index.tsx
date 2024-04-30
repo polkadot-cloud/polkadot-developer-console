@@ -4,21 +4,20 @@
 import { Switch } from 'library/Switch';
 import { useTabs } from 'contexts/Tabs';
 import { Wrapper } from './Wrapper';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const AutoConnect = () => {
-  const activeTabId = useActiveTabId();
-  const { getTab, setTabAutoConnect } = useTabs();
-  const activeTab = getTab(activeTabId);
+  const { tab, tabId } = useActiveTab();
+  const { setTabAutoConnect } = useTabs();
 
-  let autoConnectEnabled = activeTab?.autoConnect;
+  let autoConnectEnabled = tab?.autoConnect;
   if (autoConnectEnabled == undefined) {
     autoConnectEnabled = true;
   }
 
   // Handle auto connect toggle. Updates tab settings.
   const handleOnSwitch = (checked: boolean) => {
-    setTabAutoConnect(activeTabId, checked);
+    setTabAutoConnect(tabId, checked);
   };
 
   return (

@@ -11,7 +11,7 @@ import { ChainStateList } from './ChainStateList';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import type { PalletData } from './types';
 import { defaultPalletData } from './defaults';
 import { camelize } from '@w3ux/utils';
@@ -22,13 +22,13 @@ import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const Constants = () => {
   const { getChainSpec } = useApi();
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { setConstant } = useChainState();
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'constants';
-  const chainUi = getChainUi(activeTabId, chainUiSection);
-  const Metadata = getChainSpec(tabIdToOwnerId(activeTabId))?.metadata;
+  const chainUi = getChainUi(tabId, chainUiSection);
+  const Metadata = getChainSpec(tabIdToOwnerId(tabId))?.metadata;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const constantsData = useMemo((): PalletData => {
@@ -61,7 +61,7 @@ export const Constants = () => {
 
   // Handle retrieval of constant from scraped items.
   const handleSubmit = () => {
-    const chainState = ChainStateController.instances[activeTabId];
+    const chainState = ChainStateController.instances[tabId];
 
     if (activePallet && activeItem) {
       const pallet = camelize(activePallet);
@@ -82,7 +82,7 @@ export const Constants = () => {
           activePallet={activePallet}
           chainUiSection={chainUiSection}
           onSelect={(value) => {
-            setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
+            setChainUiItem(tabId, chainUiSection, 'pallet', value);
           }}
         />
         <ChainStateList

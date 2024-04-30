@@ -10,7 +10,7 @@ import { SelectItemWrapper, SelectTextWrapper } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { camelize, setStateWithRef } from '@w3ux/utils';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import type { ChainStateListProps } from './types';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
@@ -24,9 +24,9 @@ export const ChainStateList = ({
   activeItem,
   subject,
 }: ChainStateListProps) => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { getChainUi, setChainUiItem, resetInputArgSection } = useChainUi();
-  const chainUi = getChainUi(activeTabId, chainUiSection);
+  const chainUi = getChainUi(tabId, chainUiSection);
 
   // Whether dropdown is open.
   const [dropdownOpen, setDropdownOpenState] = useState<boolean>(false);
@@ -39,7 +39,7 @@ export const ChainStateList = ({
 
   // Handle search change.
   const handleSearchChange = (value: string) => {
-    setChainUiItem(activeTabId, chainUiSection, 'search', value);
+    setChainUiItem(tabId, chainUiSection, 'search', value);
   };
 
   // Gets a filtered list by applying a search term on list items, if not empty.
@@ -79,7 +79,7 @@ export const ChainStateList = ({
     listOpenRef: dropdownOpenRef,
     activeValue: activeItem,
     onUpdate: (newItem: string) => {
-      setChainUiItem(activeTabId, chainUiSection, 'selected', newItem);
+      setChainUiItem(tabId, chainUiSection, 'selected', newItem);
     },
   });
 
@@ -90,7 +90,7 @@ export const ChainStateList = ({
   useSelectFirst({
     isActive: chainUi['selectOnSearch'] === true,
     onSelect: (value) => {
-      setChainUiItem(activeTabId, chainUiSection, 'selected', value);
+      setChainUiItem(tabId, chainUiSection, 'selected', value);
     },
     activeItem,
     searchTerm: chainUi.search,
@@ -108,7 +108,7 @@ export const ChainStateList = ({
   // Reset input args when active item changes.
   useEffect(() => {
     if (inputNamespace) {
-      resetInputArgSection(activeTabId, inputNamespace);
+      resetInputArgSection(tabId, inputNamespace);
     }
   }, [activeItem]);
 
@@ -157,7 +157,7 @@ export const ChainStateList = ({
               key={`${chainUiSection}_select_${name}`}
               className={`option${filteredSelectedItem.name === name ? ` selected` : ``}`}
               onClick={() => {
-                setChainUiItem(activeTabId, chainUiSection, 'selected', name);
+                setChainUiItem(tabId, chainUiSection, 'selected', name);
                 setDropdownOpen(false);
               }}
             >

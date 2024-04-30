@@ -11,21 +11,21 @@ import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { ChainInputWrapper } from '../Wrappers';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const CustomEndpointInput = () => {
   const { connectTab } = useTabs();
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { getCustomEndpoint, setCustomEndpoint } = useChainFilter();
 
   // The editable value of the input.
-  const customEndpoint = getCustomEndpoint(activeTabId);
+  const customEndpoint = getCustomEndpoint(tabId);
 
   // Handle input change.
   const onChange = (value: string) => {
     //  If trimmed value and the current value is empty, don't update.
     if (!(!value.trim().length && customEndpoint === '')) {
-      setCustomEndpoint(activeTabId, value);
+      setCustomEndpoint(tabId, value);
     }
   };
 
@@ -42,7 +42,7 @@ export const CustomEndpointInput = () => {
       <div className="footer">
         <ButtonSubmit
           onClick={() => {
-            connectTab(activeTabId, 'custom', customEndpoint);
+            connectTab(tabId, 'custom', customEndpoint);
           }}
         >
           Connect

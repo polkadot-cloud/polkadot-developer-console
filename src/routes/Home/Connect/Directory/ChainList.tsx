@@ -9,21 +9,21 @@ import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { useTags } from 'contexts/Tags';
 import type { TagItem } from 'contexts/Tags/types';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const ChainList = () => {
+  const { tabId } = useActiveTab();
   const { getTagsForChain } = useTags();
-  const activeTabId = useActiveTabId();
   const { getStoredChain } = useTabs();
   const { getAppliedTags, getSearchTerm } = useChainFilter();
-  const tabStoredChain = getStoredChain(activeTabId);
+  const tabStoredChain = getStoredChain(tabId);
 
   // NOTE: Currently naively filtering simple chain list.
 
   const results = NetworkDirectory;
 
   // Filter chains based on applied tags.
-  const appliedTags: [DirectoryId, TagItem][] = getAppliedTags(activeTabId);
+  const appliedTags: [DirectoryId, TagItem][] = getAppliedTags(tabId);
 
   let filtered = appliedTags.length
     ? Object.fromEntries(
@@ -36,7 +36,7 @@ export const ChainList = () => {
     : results;
 
   // Filter chains based on search term.
-  const searchTerm = getSearchTerm(activeTabId);
+  const searchTerm = getSearchTerm(tabId);
 
   // Remove the currently stored chain from results if it exists.
   if (tabStoredChain) {

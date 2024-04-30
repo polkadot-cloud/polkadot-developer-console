@@ -6,7 +6,7 @@ import { useChainFilter } from 'contexts/ChainFilter';
 import type { TagId } from 'contexts/Tags/types';
 import { useState } from 'react';
 import { TagsMenuInner } from './Inner';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const FilterTagMenu = ({
   onSelect,
@@ -14,10 +14,10 @@ export const FilterTagMenu = ({
   onSelect: (tagId: TagId, selected: boolean, current: string[]) => void;
 }) => {
   const { tags } = useTags();
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { getAppliedTags } = useChainFilter();
 
-  const appliedTags = getAppliedTags(activeTabId);
+  const appliedTags = getAppliedTags(tabId);
   const appliedTagIds = appliedTags.map(([id]) => id);
 
   // The tag search term.

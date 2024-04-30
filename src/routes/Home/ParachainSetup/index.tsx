@@ -3,17 +3,17 @@
 
 import { FormWrapper, Wrapper } from './Wrappers';
 import { useParaSetup } from 'contexts/ParaSetup';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import type { SetupStep } from 'contexts/ParaSetup/types';
 import { setupSteps } from 'contexts/ParaSetup/defaults';
 import { Footer } from './Footer';
 import { Progress } from './Progress';
 
 export const ParachainSetup = () => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { getActiveStep } = useParaSetup();
 
-  const activeStep = getActiveStep(activeTabId);
+  const activeStep = getActiveStep(tabId);
 
   // Get the next step in the setup process.
   const getNextStep = (): SetupStep | null => {

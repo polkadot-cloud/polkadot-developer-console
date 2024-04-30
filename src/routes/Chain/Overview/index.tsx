@@ -4,14 +4,13 @@
 import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
 import { useApi } from 'contexts/Api';
-import { useTabs } from 'contexts/Tabs';
 import { CardsWrapper } from './Wrappers';
 import ConnectedSVG from 'svg/Connected.svg?react';
 import Odometer from '@w3ux/react-odometer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHive } from '@fortawesome/free-brands-svg-icons';
 import { faList } from '@fortawesome/free-solid-svg-icons';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { isCustomEvent } from 'Utils';
 import { useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
@@ -22,19 +21,16 @@ import type { BlockNumber } from 'model/BlockNumber';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const Overview = () => {
-  const { getTab } = useTabs();
-  const activeTabId = useActiveTabId();
+  const { tab, tabId } = useActiveTab();
   const { getApiStatus, getChainSpec } = useApi();
 
-  const activeTab = getTab(activeTabId);
-  const apiStatus = getApiStatus(tabIdToOwnerId(activeTabId));
-  const chainSpec = getChainSpec(tabIdToOwnerId(activeTabId));
+  const apiStatus = getApiStatus(tabIdToOwnerId(tabId));
+  const chainSpec = getChainSpec(tabIdToOwnerId(tabId));
   const chainSpecReady = !!chainSpec;
 
   // NOTE: we know for certain there is an active tab and an associated API instance here, so we can
   // safely use the non-null assertion.
-  const chainId = activeTab!.chain!.id;
-  const tabId = activeTab!.id;
+  const chainId = tab!.chain!.id;
 
   const isDirectory = isDirectoryId(chainId);
   const chainSpecChain = chainSpec?.chain || 'Unknown';

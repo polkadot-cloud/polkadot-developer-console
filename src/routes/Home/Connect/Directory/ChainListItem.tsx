@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConnectMenu } from './ConnectMenu';
 import { useTabs } from 'contexts/Tabs';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export interface ChainListItemProps {
   chainId: DirectoryId;
@@ -24,7 +24,7 @@ export interface ChainListItemProps {
 
 export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   const { connectTab } = useTabs();
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { openMenu, closeMenu } = useMenu();
   const { tags, getTagsForChain, addChainToTag, removeChainFromTag } =
     useTags();
@@ -43,7 +43,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   // Handle tag provider select. Connect to chain on successful selection.
   const handleOnProviderSelect = (endpoint: string) => {
     // Update tab data and connect to Api instance.
-    connectTab(activeTabId, chainId, endpoint);
+    connectTab(tabId, chainId, endpoint);
     // Close menu.
     closeMenu();
   };

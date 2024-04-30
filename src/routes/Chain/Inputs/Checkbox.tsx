@@ -4,7 +4,7 @@
 import { Switch } from 'library/Switch';
 import { useEffect, useState } from 'react';
 import type { CheckboxProps } from './types';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
 
 export const Checkbox = ({
@@ -14,7 +14,7 @@ export const Checkbox = ({
   label,
   defaultValue,
 }: CheckboxProps) => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { setInputArgAtKey } = useChainUi();
 
   // The input arg type of this component.
@@ -29,7 +29,7 @@ export const Checkbox = ({
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
-    setInputArgAtKey(activeTabId, namespace, inputKey, {
+    setInputArgAtKey(tabId, namespace, inputKey, {
       input: INPUT_TYPE,
       value: checked,
     });
@@ -43,7 +43,7 @@ export const Checkbox = ({
         active={checked}
         disabled={false}
         onSwitch={() => {
-          setInputArgAtKey(activeTabId, namespace, inputKey, {
+          setInputArgAtKey(tabId, namespace, inputKey, {
             input: INPUT_TYPE,
             value: !checked,
           });

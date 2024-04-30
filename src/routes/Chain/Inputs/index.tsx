@@ -14,10 +14,10 @@ import { Sequence } from './Sequence';
 import { Checkbox } from './Checkbox';
 import { AccountId32 } from './AccountId32';
 import { useChainUi } from 'contexts/ChainUi';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const useInput = () => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { getInputArgsAtKey } = useChainUi();
 
   // Reads input and returns input components based on the input type. Called recursively for types
@@ -200,7 +200,7 @@ export const useInput = () => {
 
     // Get the current variant value, if any.
     const currentInputArg = getInputArgsAtKey(
-      activeTabId,
+      tabId,
       namespace,
       inputKey
     )?.value;
@@ -293,7 +293,7 @@ export const useInput = () => {
                 values={values || []}
                 value={
                   getInputArgsAtKey(
-                    activeTabId,
+                    tabId,
                     inputArgConfig.namespace,
                     inputArgConfig.inputKey
                   )?.value

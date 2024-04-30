@@ -9,14 +9,14 @@ import { ChainState } from './ChainState';
 import { TabMenu } from '../../library/TabMenu';
 import { PageContent } from 'library/PageContent';
 import { Accounts } from './Accounts';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { useApi } from 'contexts/Api';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const useRouteSections = (): RouteSectionProvider => {
+  const { tabId } = useActiveTab();
   const { getChainSpec } = useApi();
-  const activeTabId = useActiveTabId();
-  const chainSpec = getChainSpec(tabIdToOwnerId(activeTabId));
+  const chainSpec = getChainSpec(tabIdToOwnerId(tabId));
 
   const balancesPaleltExists = chainSpec?.metadata?.palletExists('Balances');
 

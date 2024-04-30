@@ -8,7 +8,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
 import { camelize } from '@w3ux/utils';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { CallListItem, CallListProps } from './types';
@@ -18,11 +18,11 @@ export const CallList = ({
   activeItem,
   inputNamespace,
 }: CallListProps) => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { getChainUi, setChainUiItem, resetInputArgSection } = useChainUi();
 
   const chainUiSection = 'calls';
-  const chainUi = getChainUi(activeTabId, chainUiSection);
+  const chainUi = getChainUi(tabId, chainUiSection);
 
   // Call selection open.
   const [callsOpen, setCallsOpenState] = useState<boolean>(false);
@@ -34,7 +34,7 @@ export const CallList = ({
 
   // Handle pallet search change.
   const handleCallSearchChange = (value: string) => {
-    setChainUiItem(activeTabId, chainUiSection, 'search', value);
+    setChainUiItem(tabId, chainUiSection, 'search', value);
   };
 
   // Filter calls based on search term, if selection is present.
@@ -64,7 +64,7 @@ export const CallList = ({
   // Reset input args when active item changes.
   useEffect(() => {
     if (inputNamespace) {
-      resetInputArgSection(activeTabId, inputNamespace);
+      resetInputArgSection(tabId, inputNamespace);
     }
   }, [activeItem]);
 
@@ -115,7 +115,7 @@ export const CallList = ({
               key={`call_select_${name}`}
               className="option"
               onClick={() => {
-                setChainUiItem(activeTabId, chainUiSection, 'selected', name);
+                setChainUiItem(tabId, chainUiSection, 'selected', name);
                 setCallsOpen(false);
               }}
             >

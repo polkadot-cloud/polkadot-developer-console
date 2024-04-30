@@ -1,14 +1,14 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { ProgressWrapper } from './Wrappers';
 
 export const Progress = () => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { getActiveStep } = useParaSetup();
-  const activeStep = getActiveStep(activeTabId);
+  const activeStep = getActiveStep(tabId);
 
   return (
     <ProgressWrapper>

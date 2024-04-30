@@ -2,32 +2,32 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useChainUi } from 'contexts/ChainUi';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { HeaderToggleWrapper } from 'library/HeaderToggle/Wrapper';
 
 export const Header = () => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { getActiveChainStateSection, setActiveChainStateSection } =
     useChainUi();
-  const activeToggle = getActiveChainStateSection(activeTabId);
+  const activeToggle = getActiveChainStateSection(tabId);
 
   return (
     <HeaderToggleWrapper>
       <button
         className={activeToggle === 'storage' ? 'active' : undefined}
-        onClick={() => setActiveChainStateSection(activeTabId, 'storage')}
+        onClick={() => setActiveChainStateSection(tabId, 'storage')}
       >
         Storage Items
       </button>
       <button
         className={activeToggle === 'constants' ? 'active' : undefined}
-        onClick={() => setActiveChainStateSection(activeTabId, 'constants')}
+        onClick={() => setActiveChainStateSection(tabId, 'constants')}
       >
         Runtime Constants
       </button>
       <button
         className={activeToggle === 'raw' ? 'active' : undefined}
-        onClick={() => setActiveChainStateSection(activeTabId, 'raw')}
+        onClick={() => setActiveChainStateSection(tabId, 'raw')}
       >
         Raw Storage
       </button>
