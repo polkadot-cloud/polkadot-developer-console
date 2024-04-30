@@ -336,10 +336,6 @@ export const useInput = () => {
   const arrayIsBytes = (input: AnyJson) =>
     input?.form?.primitive?.label === 'u8';
 
-  // Check if a sequence is a vector of AccountId32.
-  // const sequenceIsAccountId32 = (shortLabel: string) =>
-  //   shortLabel === 'AccountId32' || /Vec<.+>: AccountId32/.test(shortLabel);
-
   // Check if a sequence is a vector of bytes.
   const sequenceIsBytes = (label: string) =>
     // Assuming this is called within a sequence `type`, a standalone u8 label is a vector of bytes.
