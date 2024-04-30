@@ -86,7 +86,6 @@ export const useInput = () => {
     const [type, arrayInput]: [string, AnyJson] = Object.entries(
       input.form
     )?.[0] || [undefined, {}];
-
     // If this type does not exist, return early.
     if (type === undefined) {
       return null;
@@ -152,14 +151,28 @@ export const useInput = () => {
 
           const subInputLabel = subInput[subType].label;
 
+          // If label contains and long and short variant, use the short variant.
+          const shortLabel =
+            typeof subInputLabel === 'object'
+              ? subInputLabel.short
+              : subInputLabel;
+
           // Prepend this type's label into child input label if they are different.
           const subInputWithLabel = {
             ...subInput[subType],
-            label:
-              label !== subInputLabel
-                ? `${label}: ${subInput[subType].label}`
-                : label,
+            label: label !== shortLabel ? `${label}: ${shortLabel}` : label,
           };
+
+          // Checking if this sub type is a customInput. NOTE: Only AccountId32 supported for now.
+          //
+          // TODO: This should be expanded to all custom input types in the future.
+          if (shortLabel === 'AccountId32') {
+            subInputWithLabel.form.composite = {
+              label: 'AccountId32',
+              form: 'AccountId32',
+              forms: null,
+            };
+          }
 
           return (
             <Fragment key={`input_arg_${childInputKey}`}>
@@ -197,11 +210,14 @@ export const useInput = () => {
       ? currentInputArg
       : Object.keys(input.forms)[0];
 
+    // Ensure forms exist before rendering.
+    const selectedForm = input.forms?.[selectedVariant as string];
+
     return (
       <>
         {renderInput(input, inputArgConfig, indent, Object.keys(input.forms))}
-        {input.forms[selectedVariant as string].map(
-          (subInput: AnyJson, index: number) => {
+        {selectedForm &&
+          selectedForm.map((subInput: AnyJson, index: number) => {
             // Exit early if subInput does not exist or if this is a simple variant.
             if (subInput === undefined || subInput.length === 0) {
               return null;
@@ -219,8 +235,7 @@ export const useInput = () => {
                 )}
               </Fragment>
             );
-          }
-        )}
+          })}
       </>
     );
   };

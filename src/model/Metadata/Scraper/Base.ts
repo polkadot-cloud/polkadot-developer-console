@@ -19,7 +19,7 @@ export class MetadataScraper {
   metadata: MetadataVersion;
 
   // The metadata lookup.
-  #lookup: AnyJson = {};
+  lookup: AnyJson = {};
 
   // Maximum recursion depth for scraping types.
   #maxDepth: number | '*';
@@ -36,7 +36,7 @@ export class MetadataScraper {
   constructor(metadata: MetadataVersion, config: ScraperConfig) {
     this.metadata = metadata;
     this.#maxDepth = config.maxDepth;
-    this.#lookup = this.metadata.getMetadataJson().lookup;
+    this.lookup = this.metadata.getMetadataJson().lookup;
   }
 
   // ------------------------------------------------------
@@ -54,15 +54,16 @@ export class MetadataScraper {
     const params = {
       ...trail,
       labelsOnly: !!options?.labelsOnly,
+      maxDepth: options?.maxDepth || this.#maxDepth,
     };
     return this.getType(typeId, params);
   }
 
   // Get a lookup type from metadata. Possible recursion when scraping type ids.
   getType(typeId: number, trailParam: TrailParam) {
-    const { trailId, labelsOnly } = trailParam;
+    const { trailId, labelsOnly, maxDepth } = trailParam;
 
-    const lookup = this.#lookup.types.find(
+    const lookup = this.lookup.types.find(
       ({ id }: { id: number }) => id === typeId
     );
 
@@ -87,7 +88,7 @@ export class MetadataScraper {
 
     // Exit if the depth of the trail surpasses the maximum depth.
     const depth = this.trailDepth(trailId);
-    if (this.#maxDepth !== '*' && depth >= this.#maxDepth) {
+    if (maxDepth !== '*' && depth >= maxDepth) {
       console.debug(
         'Metadata Scraper: Maximum depth reached at type id: ',
         typeId

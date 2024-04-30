@@ -13,10 +13,10 @@ const decodedHex = u8aToHex(decoded);
 const ss58 = u8aToNumber(decoded.subarray(0, 1));
 const publicKey = u8aToHex(decoded.subarray(2));
 
-console.log('full hex: ', decodedHex);
-console.log('ss58 prefix: ', ss58);
-console.log('public key: ', publicKey);
+console.debug('full hex: ', decodedHex);
+console.debug('ss58 prefix: ', ss58);
+console.debug('public key: ', publicKey);
 
 const encodedKey = base58Encode(decoded);
 
-console.log('encoding back: ', encodedKey);
+console.debug('encoding back: ', encodedKey);

@@ -17,7 +17,7 @@ const runTests = async () => {
   // other formatting.
   let result = await api.query.system.blockHash(20523285);
   const result2 = await api.query.system.blockHash('20523285');
-  console.log(result.toHuman(), '\n', result2.toHuman());
+  console.debug(result.toHuman(), '\n', result2.toHuman());
 
   // `AccountId32`
   //
@@ -25,7 +25,7 @@ const runTests = async () => {
   result = await api.query.system.account(
     '1554u1a67ApEt5xmjbZwjgDNaVckbzB6cjRHWAQ1SpNkNxTd'
   );
-  console.log(result.toHuman());
+  console.debug(result.toHuman());
 
   // EthereumAddress
   //
@@ -33,7 +33,7 @@ const runTests = async () => {
   result = await api.query.claims.claims(
     '0x00002F21194993a750972574e2d82CE8C95078a6'
   );
-  console.log(result.toHuman());
+  console.debug(result.toHuman());
 
   // Hash (H256, H160, H512)
   //
@@ -41,7 +41,7 @@ const runTests = async () => {
   result = await api.query.offences.reports(
     '0xe8474499e90396b81636faa7353ffcaf4ea1edcd8f97ae72ef7d9b5ca9c98c04'
   );
-  console.log(result.toHuman());
+  console.debug(result.toHuman());
 
   // Composite / Tuples / not-byte Arrays / non-byte sequences.
   //
@@ -52,7 +52,7 @@ const runTests = async () => {
     '0xd8677a828653d895cb5770cc1e96a829710db4e6683971f17194e0388cf8c611',
   ]);
 
-  console.log(result.toHuman());
+  console.debug(result.toHuman());
 
   // Complex Objects
   //
@@ -81,7 +81,7 @@ const runTests = async () => {
       },
     },
   });
-  console.log(result.toHuman());
+  console.debug(result.toHuman());
 
   // TODO: Bitsequence
 

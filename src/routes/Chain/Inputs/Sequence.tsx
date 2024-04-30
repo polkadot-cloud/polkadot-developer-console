@@ -64,7 +64,7 @@ export const Sequence = ({
         // Generate input for this index.
         const subInput = readInput(
           type,
-          { namespace, inputKey, inputKeysRef },
+          { namespace, inputKey: subInputKey, inputKeysRef },
           arrayInput,
           true
         );

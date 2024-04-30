@@ -41,7 +41,7 @@ export type CheckboxProps = InputArgConfig & {
 };
 
 export type TextboxProps = InputArgConfig & {
-  label: string | number;
+  label: { short?: string; long?: string } | string | number;
   defaultValue: string | number;
   numeric?: boolean;
 };
