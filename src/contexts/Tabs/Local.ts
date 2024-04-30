@@ -48,7 +48,7 @@ export const getActivePage = (
   tabId: number,
   connected: boolean
 ): number | undefined => {
-  const result = localStorageOrDefault(`activePages`, undefined, true) as
+  const result = localStorageOrDefault('activePages', undefined, true) as
     | Record<string, number>
     | undefined;
 
@@ -66,7 +66,7 @@ export const getPageRedirect = (
   route: Route,
   tabId: number
 ): number | undefined => {
-  const result = localStorageOrDefault(`pageRedirects`, undefined, true) as
+  const result = localStorageOrDefault('pageRedirects', undefined, true) as
     | Record<string, number>
     | undefined;
 
@@ -78,9 +78,9 @@ export const getPageRedirect = (
       delete updated[`${tabId}:${route}`];
 
       if (Object.keys(updated).length === 0) {
-        localStorage.removeItem(`pageRedirects`);
+        localStorage.removeItem('pageRedirects');
       } else {
-        localStorage.setItem(`pageRedirects`, JSON.stringify(updated));
+        localStorage.setItem('pageRedirects', JSON.stringify(updated));
       }
 
       return value as number;
@@ -114,7 +114,7 @@ export const setActivePage = (
   value: number
 ) => {
   const current =
-    (localStorageOrDefault(`activePages`, undefined, true) as
+    (localStorageOrDefault('activePages', undefined, true) as
       | Record<string, number>
       | undefined) || {};
 
@@ -122,13 +122,13 @@ export const setActivePage = (
     ...current,
     [`${tabId}:${connected ? 1 : 0}:${route}`]: value,
   };
-  localStorage.setItem(`activePages`, JSON.stringify(updated));
+  localStorage.setItem('activePages', JSON.stringify(updated));
 };
 
 // Sets a temporary redirect to local storage.
 export const setPageRedirect = (route: Route, tabId: number, value: number) => {
   const current =
-    (localStorageOrDefault(`pageRedirects`, undefined, true) as
+    (localStorageOrDefault('pageRedirects', undefined, true) as
       | Record<string, number>
       | undefined) || {};
 
@@ -136,5 +136,5 @@ export const setPageRedirect = (route: Route, tabId: number, value: number) => {
     ...current,
     [`${tabId}:${route}`]: value,
   };
-  localStorage.setItem(`pageRedirects`, JSON.stringify(updated));
+  localStorage.setItem('pageRedirects', JSON.stringify(updated));
 };
