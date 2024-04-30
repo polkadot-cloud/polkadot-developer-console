@@ -74,5 +74,5 @@ export interface TabsContextInterface {
     persist?: boolean
   ) => void;
   setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
-  switchTab: (tabId: number, tabIndex: number) => void;
+  switchTab: (tabId: number, tabIndex: number, connected: boolean) => void;
 }

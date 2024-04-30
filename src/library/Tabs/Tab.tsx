@@ -22,6 +22,7 @@ import * as localTabs from 'contexts/Tabs/Local';
 import { useChainUi } from 'contexts/ChainUi';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -146,7 +147,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
         onMouseDown={(ev) => {
           // Only handle left click.
           if (ev.button === 0) {
-            switchTab(id, index);
+            switchTab(id, index, ACTIVE_API_STATUSES.includes(apiStatus));
           }
         }}
         {...attributes}

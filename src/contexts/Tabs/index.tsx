@@ -296,7 +296,13 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Switch tab.
-  const switchTab = (tabId: number, tabIndex: number) => {
+  const switchTab = (tabId: number, tabIndex: number, connected: boolean) => {
+    const localActivePage = local.getActivePage('default', tabId, connected);
+
+    if (localActivePage !== undefined) {
+      setTabActivePage(tabId, 'default', localActivePage, connected, false);
+    }
+
     setSelectedTabId(tabId);
     setSelectedTabIndex(tabIndex);
   };

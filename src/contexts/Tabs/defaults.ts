@@ -36,7 +36,7 @@ export const defaultTabsContext: TabsContextInterface = {
   setTabAutoConnect: (id, autoConnect) => {},
   setTabForceDisconnect: (id, forceDisconnect) => {},
   setTabActivePage: (id, route, page, apiActive, persist) => {},
-  switchTab: (tabId, tabIndex) => {},
+  switchTab: (tabId, tabIndex, connected) => {},
   setTabConnectFrom: (tabId, connectFrom) => {},
 };
 

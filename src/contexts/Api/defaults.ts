@@ -10,3 +10,6 @@ export const defaultApiContext: ApiContextInterface = {
   getApiActive: (ownerId) => false,
   getChainSpec: (ownerId) => null,
 };
+
+// Non disconnected API statuses.
+export const ACTIVE_API_STATUSES = ['ready', 'connected', 'connecting'];

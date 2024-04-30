@@ -10,16 +10,13 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useEffect } from 'react';
 import { useTabs } from 'contexts/Tabs';
 import * as local from 'contexts/Tabs/Local';
+import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 
 export const Router = () => {
   const { getApiStatus } = useApi();
   const { setTabActivePage } = useTabs();
   const { ownerId, tab, tabId } = useActiveTab();
-
   const apiStatus = getApiStatus(ownerId);
-
-  // Non disconnected API statuses.
-  const ACTIVE_API_STATUSES = ['ready', 'connected', 'connecting'];
 
   // If the active tab is auto connect, & there is a `chain` property to connect to, also go to the
   // Chain tab. Also go to the Chain tab if the API is in a non error / disconnected state.
@@ -31,16 +28,20 @@ export const Router = () => {
   const setActivePageOnConnect = () => {
     const activePage = local.getActivePage('default', tabId, true);
     if (tab && activePage !== undefined && activePage !== tab.activePage) {
-      setTabActivePage(tabId, 'default', activePage, true, false);
+      setTabActivePage(tabId, 'default', activePage, true, true);
     }
   };
 
-  //  Redirect to section 0 if api is no longer connected. Do not persist - user might want to land
-  //  on this section again on subsequent visits. Forces redirect on tab change if that tab was on a
-  //  different section.
+  // Redirect to local active page on disconnect if api is no longer connected.
+  const setActivePageOnDisconnect = () => {
+    const localActivePage = local.getActivePage('default', tabId, false);
+    setTabActivePage(tabId, 'default', localActivePage || 0, false);
+  };
+
+  // Handle active page changes on tab and api status changes.
   useEffect(() => {
-    if (!ACTIVE_API_STATUSES.includes(apiStatus)) {
-      setTabActivePage(tabId, 'default', 0, false);
+    if (!apiStatus || !ACTIVE_API_STATUSES.includes(apiStatus)) {
+      setActivePageOnDisconnect();
     } else {
       setActivePageOnConnect();
     }
