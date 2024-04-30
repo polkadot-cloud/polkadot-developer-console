@@ -35,6 +35,7 @@ export const defaultTabsContext: TabsContextInterface = {
   forgetTabChain: (tabId) => {},
   setTabAutoConnect: (id, autoConnect) => {},
   setTabForceDisconnect: (id, forceDisconnect) => {},
+  setTabActivePage: (id, route, page, apiActive, persist) => {},
   switchTab: (tabId, tabIndex) => {},
   setTabConnectFrom: (tabId, connectFrom) => {},
 };
@@ -57,6 +58,7 @@ export const defaultTabs: Tabs = [
     name: 'Polkadot Relay Chain',
     forceDisconnect: false,
     autoConnect: true,
+    activePage: 0,
   },
   {
     id: 2,
@@ -71,6 +73,7 @@ export const defaultTabs: Tabs = [
     name: 'Kusama Relay Chain',
     forceDisconnect: false,
     autoConnect: true,
+    activePage: 0,
   },
   {
     id: 3,
@@ -85,6 +88,7 @@ export const defaultTabs: Tabs = [
     name: 'Rococo Relay Chain',
     forceDisconnect: false,
     autoConnect: true,
+    activePage: 0,
   },
   {
     id: 4,
@@ -93,6 +97,7 @@ export const defaultTabs: Tabs = [
     name: 'New Tab',
     forceDisconnect: false,
     autoConnect: false,
+    activePage: 0,
   },
 ];
 
@@ -103,6 +108,7 @@ export const defaultEemptyTab: Tab = {
   name: '',
   forceDisconnect: false,
   autoConnect: false,
+  activePage: 0,
 };
 export const defaultCustomEndpointChainMeta = {
   ss58: 0,

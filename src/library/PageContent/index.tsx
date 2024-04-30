@@ -1,14 +1,16 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useRoute } from 'contexts/Route';
 import { PageContentWrapper } from './Wrappers';
 import type { PageProps } from 'routes/Common/PageWithMenu/types';
 import { ManageTab } from 'routes/Common/ManageTab';
 import { Directory } from 'routes/Home/Connect/Directory';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const PageContent = ({ sections, pageWidth }: PageProps) => {
-  const { activePage } = useRoute();
+  const { tab } = useActiveTab();
+
+  const activePage = tab?.activePage || 0;
 
   // NOTE: page section 9 is a reserved id for `ManageTab`.
   let Component;

@@ -18,7 +18,7 @@ import {
 } from 'contexts/Tabs/defaults';
 import { useApi } from 'contexts/Api';
 import { ConnectionIcon } from './ConectionIcon';
-import * as localSections from 'contexts/Route/Local';
+import * as localTabs from 'contexts/Tabs/Local';
 import { useChainUi } from 'contexts/ChainUi';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useActiveTab } from 'contexts/ActiveTab';
@@ -96,7 +96,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
       <TabContextMenu
         tabId={id}
         onSettings={() => {
-          localSections.setPageRedirect('default', id, 9);
+          localTabs.setPageRedirect('default', id, 9);
           setSelectedTabId(id);
           incrementRedirectCounter();
           closeMenu();

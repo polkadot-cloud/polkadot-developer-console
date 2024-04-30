@@ -9,20 +9,24 @@ import {
 import { useTabs } from 'contexts/Tabs';
 import { useLocation } from 'react-router-dom';
 import { HeaderMenuWrapper } from 'library/HeaderMenu/Wrappers';
-import { useRoute } from 'contexts/Route';
 import { ButtonWithTooltip } from '../ButtonWithTooltip';
-import { useRedirectOnInactive } from 'hooks/useRedirectOnInactive';
 import type { RouteSectionProvider } from 'routes/Common/types';
 import { useTooltip } from 'contexts/Tooltip';
+import { useActiveTab } from 'contexts/ActiveTab';
+import { useApi } from 'contexts/Api';
 
 export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
+  const { getApiActive } = useApi();
   const { pathname } = useLocation();
   const { closeTooltip } = useTooltip();
-  const { tabsHidden, setTabsHidden } = useTabs();
-  const { activePage, setActivePage } = useRoute();
+  const { tab, tabId, ownerId } = useActiveTab();
+  const { tabsHidden, setTabsHidden, setTabActivePage } = useTabs();
 
-  // Redirect to section `0` if Api becomes inactive.
-  useRedirectOnInactive();
+  // Get whether the api instance associated with this tab is active.
+  const apiActive = getApiActive(ownerId);
+
+  // Get the active page from tab.
+  const activePage = tab?.activePage || 0;
 
   return (
     <HeaderMenuWrapper>
@@ -32,7 +36,9 @@ export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
           {Object.entries(sections).map(([key, section], index) => (
             <button
               key={`menu-section-${key}-${index}`}
-              onClick={() => setActivePage(Number(key))}
+              onClick={() => {
+                setTabActivePage(tabId, 'default', Number(key), apiActive);
+              }}
               className={activePage === Number(key) ? 'active' : undefined}
             >
               {section.label}
@@ -47,7 +53,7 @@ export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
           active={activePage === 9}
           onClick={() => {
             closeTooltip();
-            setActivePage(9, false);
+            setTabActivePage(tabId, 'default', Number(9), apiActive, false);
           }}
           icon={faBarsProgress}
           disabled={false}
