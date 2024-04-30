@@ -35,7 +35,7 @@ export const App = () => (
         <Tooltip />
         <Header />
         <Tabs />
-        {/* Protect router from re-renders by rendering to `activeTabId` in the
+        {/* Protect router from re-renders by rendering to `activeTab` in the
          * ActiveTabProvider context. Prevents the router re-rendering on tab
          * changes where the previously used tab id is still in use. */}
         <ActiveTabProvider>

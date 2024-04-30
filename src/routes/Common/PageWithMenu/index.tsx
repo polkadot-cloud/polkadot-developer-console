@@ -10,6 +10,7 @@ import { useApi } from 'contexts/Api';
 import { useSettings } from 'contexts/Settings';
 import { PageWrapper } from 'library/PageContent/Wrappers';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { useEffect, useState } from 'react';
 
 // Renders a page and menu, with state controlling the active section of the page.
 export const PageWithMenu = ({
@@ -20,8 +21,8 @@ export const PageWithMenu = ({
 }: PageWithMenuProps) => {
   const { getApiStatus } = useApi();
   const routeConfig = routeProvider();
-  const { tab, ownerId } = useActiveTab();
   const { chainColorEnabled } = useSettings();
+  const { tab, tabId, ownerId } = useActiveTab();
 
   const apiStatus = getApiStatus(ownerId);
 
@@ -33,18 +34,28 @@ export const PageWithMenu = ({
   const networkColor = NetworkDirectory[chainId]?.color;
 
   // Get chain color, if present.
-  const color =
+  const getChainColor = () =>
     !apiConnected || !chainColorEnabled
       ? accentColors.primary.light
       : networkColor
         ? networkColor
         : accentColors.secondary.light;
 
+  // Store active chain color.
+  const [chainColor, setChainColor] = useState<string | undefined>(
+    getChainColor()
+  );
+
+  // Update chain color on tab change.
+  useEffect(() => {
+    setChainColor(getChainColor());
+  }, [tabId]);
+
   return (
     <div
       style={
-        color
-          ? Object.fromEntries([['--accent-color-secondary', color]])
+        chainColor
+          ? Object.fromEntries([['--accent-color-secondary', chainColor]])
           : undefined
       }
     >
