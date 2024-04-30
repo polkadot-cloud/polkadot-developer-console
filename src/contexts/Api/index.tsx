@@ -24,7 +24,7 @@ import { SubscriptionsController } from 'controllers/Subscriptions';
 import { BlockNumber } from 'model/BlockNumber';
 import { AccountBalances } from 'model/AccountBalances';
 import { setStateWithRef } from '@w3ux/utils';
-import { ownerIdToTabId } from 'contexts/Tabs/Utils';
+import { ownerIdToTabId, tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -91,7 +91,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const getTabApi = () => {
     const activeTab = getActiveTab();
     if (activeTab?.chain) {
-      return ApiController.instances[String(activeTab.id)];
+      return ApiController.instances[tabIdToOwnerId(activeTab.id)];
     }
   };
 

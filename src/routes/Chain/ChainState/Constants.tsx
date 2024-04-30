@@ -60,7 +60,7 @@ export const Constants = () => {
 
   // Handle retrieval of constant from scraped items.
   const handleSubmit = () => {
-    const chainState = ChainStateController.instances[tabId];
+    const chainState = ChainStateController.instances[ownerId];
 
     if (activePallet && activeItem) {
       const pallet = camelize(activePallet);
