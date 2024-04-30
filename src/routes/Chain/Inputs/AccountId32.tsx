@@ -52,10 +52,7 @@ export const AccountId32 = ({
 
   // Handle setting input arg.
   const handleSetInputArg = (val: string) => {
-    setInputArgAtKey(tabId, namespace, inputKey, {
-      input: INPUT_TYPE,
-      value: val,
-    });
+    setInputArgAtKey(tabId, namespace, inputKey, val);
   };
 
   // Handle input value change.
@@ -100,10 +97,7 @@ export const AccountId32 = ({
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
-    setInputArgAtKey(tabId, namespace, inputKey, {
-      input: INPUT_TYPE,
-      value: selectedAddress,
-    });
+    setInputArgAtKey(tabId, namespace, inputKey, selectedAddress);
   }, []);
 
   return (

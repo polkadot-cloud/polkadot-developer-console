@@ -102,13 +102,8 @@ export type InputArgsState = Record<
 // Input arguments for storage and call data.
 export type InputArgs = Record<string, InputArg>;
 
-// One input arg.
-export interface InputArg {
-  // The type of input, e.g. Variant, Composite, etc.
-  input: string;
-  // The input data.
-  value?: AnyJson;
-}
+// One input arg value.
+export type InputArg = AnyJson | undefined;
 
 // The section input args are being applied to.
 export type InputNamespace = 'storage' | 'call';

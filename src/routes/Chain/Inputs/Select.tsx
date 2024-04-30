@@ -41,10 +41,7 @@ export const Select = ({
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
-    setInputArgAtKey(tabId, namespace, inputKey, {
-      input: INPUT_TYPE,
-      value: currentValue,
-    });
+    setInputArgAtKey(tabId, namespace, inputKey, currentValue);
   }, []);
 
   return (
@@ -73,10 +70,7 @@ export const Select = ({
               key={`select_${label}_${camelize(val)}`}
               className={`option`}
               onClick={() => {
-                setInputArgAtKey(tabId, namespace, inputKey, {
-                  input: INPUT_TYPE,
-                  value: val,
-                });
+                setInputArgAtKey(tabId, namespace, inputKey, val);
                 setOpen(false);
               }}
             >

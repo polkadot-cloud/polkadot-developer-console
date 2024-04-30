@@ -33,20 +33,13 @@ export const Textbox = ({
     if (numeric && isNaN(Number(val))) {
       return;
     }
-    setInputArgAtKey(tabId, namespace, inputKey, {
-      input: INPUT_TYPE,
-      value: val,
-    });
-
+    setInputArgAtKey(tabId, namespace, inputKey, val);
     setValue(val);
   };
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
-    setInputArgAtKey(tabId, namespace, inputKey, {
-      input: INPUT_TYPE,
-      value,
-    });
+    setInputArgAtKey(tabId, namespace, inputKey, value);
   }, []);
 
   const displayLabel = typeof label === 'object' ? label.short : label;

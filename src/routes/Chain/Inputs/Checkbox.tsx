@@ -29,10 +29,7 @@ export const Checkbox = ({
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
-    setInputArgAtKey(tabId, namespace, inputKey, {
-      input: INPUT_TYPE,
-      value: checked,
-    });
+    setInputArgAtKey(tabId, namespace, inputKey, checked);
   }, []);
 
   return (
@@ -43,10 +40,7 @@ export const Checkbox = ({
         active={checked}
         disabled={false}
         onSwitch={() => {
-          setInputArgAtKey(tabId, namespace, inputKey, {
-            input: INPUT_TYPE,
-            value: !checked,
-          });
+          setInputArgAtKey(tabId, namespace, inputKey, !checked);
           setChecked(!checked);
         }}
       />
