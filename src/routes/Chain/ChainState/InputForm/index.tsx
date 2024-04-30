@@ -57,7 +57,7 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
       <section className="footer">
         <ButtonSubmit
           onClick={() => {
-            /* TODO: submit storage query or extrinsic. */
+            /* TODO: Submit storage query or extrinsic. */
             console.log(inputKeysRef.current);
             console.log(getInputArgs(activeTabId, namespace));
           }}

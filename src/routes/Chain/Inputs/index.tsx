@@ -86,7 +86,6 @@ export const useInput = () => {
     const [type, arrayInput]: [string, AnyJson] = Object.entries(
       input.form
     )?.[0] || [undefined, {}];
-
     // If this type does not exist, return early.
     if (type === undefined) {
       return null;
@@ -163,6 +162,17 @@ export const useInput = () => {
             ...subInput[subType],
             label: label !== shortLabel ? `${label}: ${shortLabel}` : label,
           };
+
+          // Checking if this sub type is a customInput. NOTE: Only AccountId32 supported for now.
+          //
+          // TODO: This should be expanded to all custom input types in the future.
+          if (shortLabel === 'AccountId32') {
+            subInputWithLabel.form.composite = {
+              label: 'AccountId32',
+              form: 'AccountId32',
+              forms: null,
+            };
+          }
 
           return (
             <Fragment key={`input_arg_${childInputKey}`}>
@@ -325,6 +335,10 @@ export const useInput = () => {
   // Check if an array is a vector of bytes.
   const arrayIsBytes = (input: AnyJson) =>
     input?.form?.primitive?.label === 'u8';
+
+  // Check if a sequence is a vector of AccountId32.
+  // const sequenceIsAccountId32 = (shortLabel: string) =>
+  //   shortLabel === 'AccountId32' || /Vec<.+>: AccountId32/.test(shortLabel);
 
   // Check if a sequence is a vector of bytes.
   const sequenceIsBytes = (label: string) =>
