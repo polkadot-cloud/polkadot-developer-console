@@ -26,6 +26,7 @@ import { Tab } from './Tab';
 import { defaultEemptyTab } from 'contexts/Tabs/defaults';
 import { TabControls } from './TabControls';
 import { useLocation } from 'react-router-dom';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const Tabs = () => {
   const {
@@ -34,10 +35,10 @@ export const Tabs = () => {
     setTabs,
     setDragId,
     tabsHidden,
-    selectedTabId,
     setTabsHidden,
-    setActiveTabIndex,
+    setSelectedTabIndex,
   } = useTabs();
+  const { tabId } = useActiveTab();
   const { pathname } = useLocation();
 
   const sensors = useSensors(
@@ -68,7 +69,7 @@ export const Tabs = () => {
       const newTabs = arrayMove(tabs, oldIndex, newIndex);
 
       setTabs(newTabs);
-      setActiveTabIndex(newTabs.map((tab) => tab.id).indexOf(selectedTabId));
+      setSelectedTabIndex(newTabs.map((tab) => tab.id).indexOf(tabId));
     }
     setDragId(null);
   };

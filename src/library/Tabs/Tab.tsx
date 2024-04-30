@@ -21,6 +21,7 @@ import { ConnectionIcon } from './ConectionIcon';
 import * as localSections from 'contexts/Route/Local';
 import { useChainUi } from 'contexts/ChainUi';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -28,7 +29,6 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     dragId,
     switchTab,
     destroyTab,
-    selectedTabId,
     tabHoverIndex,
     activeTabIndex,
     setSelectedTabId,
@@ -37,6 +37,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     addInstantiatedId,
     incrementRedirectCounter,
   } = useTabs();
+  const { tabId } = useActiveTab();
 
   const { getApiStatus } = useApi();
   const { openMenu, closeMenu } = useMenu();
@@ -76,7 +77,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const dragging = dragIndex === index;
 
   // Is the tab active or being dragged.
-  const selected = selectedTabId === id || dragging;
+  const selected = tabId === id || dragging;
 
   // Is this tab adjacent to the actve tab.
   const adjacentToActive = index === activeTabIndex - 1;

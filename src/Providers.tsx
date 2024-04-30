@@ -23,12 +23,14 @@ import {
   VaultAccountsProvider,
 } from '@w3ux/react-connect-kit';
 import { ChainStateProvider } from 'contexts/ChainState';
+import { ActiveTabProvider } from 'contexts/ActiveTab';
 
 export const Providers = () => {
   // !! Provider order matters.
   const providers: Provider<AnyJson>[] = [
     SettingsProvider,
     TabsProvider,
+    ActiveTabProvider,
     TagsProvider,
     ParaSetupProvider,
     ChainFilterProvider,

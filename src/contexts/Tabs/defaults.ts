@@ -16,7 +16,7 @@ export const defaultTabsContext: TabsContextInterface = {
   tabHoverIndex: 0,
   setTabHoverIndex: (id) => {},
   activeTabIndex: 0,
-  setActiveTabIndex: (index) => {},
+  setSelectedTabIndex: (index) => {},
   addInstantiatedId: (id) => {},
   dragId: null,
   setDragId: (index) => {},

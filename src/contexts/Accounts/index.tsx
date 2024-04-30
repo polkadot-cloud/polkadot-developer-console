@@ -9,7 +9,6 @@ import type {
   BalanceLocks,
 } from './types';
 import { defaultAccountsContext } from './defaults';
-import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import { SubscriptionsController } from 'controllers/Subscriptions';
@@ -22,6 +21,7 @@ import type { AccountBalances } from 'model/AccountBalances';
 import type { BalanceLock } from 'model/AccountBalances/types';
 import BigNumber from 'bignumber.js';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const Accounts = createContext<AccountsContextInterface>(
   defaultAccountsContext
@@ -30,12 +30,12 @@ export const Accounts = createContext<AccountsContextInterface>(
 export const useAccounts = () => useContext(Accounts);
 
 export const AccountsProvider = ({ children }: { children: ReactNode }) => {
-  const { selectedTabId } = useTabs();
+  const { tabId } = useActiveTab();
   const { getVaultAccounts } = useVaultAccounts();
   const { getChainSpec, getApiStatus } = useApi();
   const { getExtensionAccounts } = useExtensionAccounts();
 
-  const ownerId = tabIdToOwnerId(selectedTabId);
+  const ownerId = tabIdToOwnerId(tabId);
 
   const apiStatus = getApiStatus(ownerId);
   const chainSpec = getChainSpec(ownerId);
@@ -139,7 +139,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
       handleSyncAccounts();
     }
   }, [
-    selectedTabId,
+    tabId,
     apiStatus === 'ready',
     JSON.stringify(accounts.map(({ address }) => address)),
   ]);

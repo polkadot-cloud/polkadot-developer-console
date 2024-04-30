@@ -44,7 +44,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   );
 
   // Current active tab index.
-  const [activeTabIndex, setActiveTabIndexState] = useState<number>(
+  const [activeTabIndex, setSelectedTabIndexState] = useState<number>(
     local.getActiveTabIndex() || 1
   );
 
@@ -88,9 +88,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Sets active tab index, and updates local storage.
-  const setActiveTabIndex = (index: number) => {
-    local.setActiveTabIndex(index);
-    setActiveTabIndexState(index);
+  const setSelectedTabIndex = (index: number) => {
+    local.setSelectedTabIndex(index);
+    setSelectedTabIndexState(index);
   };
 
   // Remove an id from destroying tabs.
@@ -141,7 +141,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
     setTabs(newTabs);
     setSelectedTabId(newTabId);
-    setActiveTabIndex(newTabs.length - 1);
+    setSelectedTabIndex(newTabs.length - 1);
   };
 
   // Removes a tab from state.
@@ -156,11 +156,11 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     // If the active tab is being closed, fall back to its previous tab.
     if (id === selectedTabId) {
       setSelectedTabId(Object.values(newTabs)[Math.max(index - 1, 0)]?.id);
-      setActiveTabIndex(Math.max(index - 1, 0));
+      setSelectedTabIndex(Math.max(index - 1, 0));
     }
     // Re-sync the active tab index if the destroyed tab was in front of it.
     if (activeTabIndex > index) {
-      setActiveTabIndex(activeTabIndex - 1);
+      setSelectedTabIndex(activeTabIndex - 1);
     }
 
     // Destroy any controller instances associated with tab.
@@ -271,7 +271,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Switch tab.
   const switchTab = (tabId: number, tabIndex: number) => {
     setSelectedTabId(tabId);
-    setActiveTabIndex(tabIndex);
+    setSelectedTabIndex(tabIndex);
   };
 
   // Connect tab to an Api instance and update its chain data.
@@ -353,7 +353,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         tabHoverIndex,
         setTabHoverIndex,
         activeTabIndex,
-        setActiveTabIndex,
+        setSelectedTabIndex,
         addInstantiatedId,
         setDragId,
         dragId,

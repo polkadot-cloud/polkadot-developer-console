@@ -43,7 +43,7 @@ export interface TabsContextInterface {
   tabHoverIndex: number;
   setTabHoverIndex: Dispatch<SetStateAction<number>>;
   activeTabIndex: number;
-  setActiveTabIndex: (index: number) => void;
+  setSelectedTabIndex: (index: number) => void;
   addInstantiatedId: (id: number) => void;
   setDragId: Dispatch<SetStateAction<number | null>>;
   dragId: number | null;

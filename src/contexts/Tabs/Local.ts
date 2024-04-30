@@ -56,6 +56,6 @@ export const setActiveTabId = (id: number) => {
 };
 
 // Sets the active tab index to local storage.
-export const setActiveTabIndex = (index: number) => {
+export const setSelectedTabIndex = (index: number) => {
   localStorage.setItem('activeTabIndex', index.toString());
 };
