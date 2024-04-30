@@ -22,7 +22,6 @@ export const ManageTab = () => {
     updateSs58,
     updateUnits,
     updateUnit,
-    setTabActivePage,
   } = useTabs();
   const { getApiStatus } = useApi();
   const { tab, tabId, ownerId } = useActiveTab();
@@ -111,7 +110,6 @@ export const ManageTab = () => {
                   ) {
                     setTabForceDisconnect(tabId, true);
                     ApiController.destroy(ownerId);
-                    setTabActivePage(tabId, 'default', 0, false);
                   }
                 }}
               >
