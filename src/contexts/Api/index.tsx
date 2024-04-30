@@ -66,7 +66,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     setApiStatus(updated);
   };
 
-  // Remove tab chain spec.
+  // Remove chain spec for an owner.
   const removeChainSpec = (ownerId: OwnerId) => {
     const updated = { ...chainSpecRef.current };
     delete updated[ownerId];
@@ -115,10 +115,11 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     // connection is an invalid chain and forget it. This prevents auto connect on subsequent
     // visits.
     if (err && ['InitializationError', 'ChainSpecError'].includes(err)) {
-      // TODO: Test if owner is a tab first. Requires refactoring of `tabIdToOwnerId`.
-      forgetTabChain(ownerIdToTabId(ownerId));
-      setTabForceDisconnect(ownerIdToTabId(ownerId), true);
-
+      // If this owner is a tab, disconnect and forget the chain.
+      if (ownerId.startsWith('tab_')) {
+        forgetTabChain(ownerIdToTabId(ownerId));
+        setTabForceDisconnect(ownerIdToTabId(ownerId), true);
+      }
       NotificationsController.emit({
         title: 'Error Initializing Chain',
         subtitle: `Failed to initialize the chain.`,
@@ -140,8 +141,8 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
           // Initialise subscriptions for Overview here. We are currently only subscribing to the
           // block number. NOTE: SubscriptionsController is currently only assuming one `chainId`
-          // per tab. This needs to change for parachain setup. TODO: SubscriptionsController to
-          // handle multiple chainIds per tab.
+          // per owner. This needs to change for parachain setup. TODO: SubscriptionsController to
+          // handle multiple chainIds for owners.
           SubscriptionsController.set(
             ownerId,
             'blockNumber',
