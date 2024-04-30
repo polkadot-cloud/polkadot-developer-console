@@ -11,6 +11,10 @@ export type EventStatus = ApiStatus | 'error' | 'destroyed' | 'fetchedSpec';
 
 export type ErrDetail = 'InitializationError' | 'ChainSpecError';
 
+export type ApiStatusState = Record<string, ApiStatus>;
+
+export type ChainSpecState = Record<number, APIChainSpec>;
+
 export interface APIStatusEventDetail {
   event: EventStatus;
   tabId: number;
@@ -19,7 +23,7 @@ export interface APIStatusEventDetail {
 }
 
 export interface APIChainSpecEventDetail {
-  tabId: number;
+  ownerId: number;
   spec: APIChainSpec;
   consts: Record<string, AnyJson>;
 }

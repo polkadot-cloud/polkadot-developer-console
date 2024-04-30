@@ -21,8 +21,8 @@ export class Api {
   // Class members.
   // ------------------------------------------------------
 
-  // The associated tab id for this api instance.
-  #tabId: number;
+  // The associated owner for this api instance.
+  #ownerId: number;
 
   // The supplied chain id.
   #chainId: ChainId;
@@ -49,8 +49,8 @@ export class Api {
   // Getters.
   // ------------------------------------------------------
 
-  get tabId() {
-    return this.#tabId;
+  get ownerId() {
+    return this.#ownerId;
   }
 
   get chainId() {
@@ -73,8 +73,8 @@ export class Api {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(tabId: number, chainId: ChainId, endpoint: string) {
-    this.#tabId = tabId;
+  constructor(ownerId: number, chainId: ChainId, endpoint: string) {
+    this.#ownerId = ownerId;
     this.#chainId = chainId;
     this.#rpcEndpoint = endpoint;
   }
@@ -166,7 +166,7 @@ export class Api {
     document.dispatchEvent(
       new CustomEvent('new-chain-spec', {
         detail: {
-          tabId: this.tabId,
+          ownerId: this.ownerId,
           spec: this.chainSpec,
           consts: this.consts,
         },
@@ -235,7 +235,7 @@ export class Api {
   ) {
     const detail: APIStatusEventDetail = {
       event,
-      tabId: this.tabId,
+      tabId: this.ownerId,
       chainId: this.chainId,
     };
     if (options?.err) {
@@ -251,13 +251,13 @@ export class Api {
 
   // Unsubscribe from all active subscriptions associated with this API instance.
   unsubscribe = () => {
-    const subs = SubscriptionsController.getAll(this.tabId);
+    const subs = SubscriptionsController.getAll(this.ownerId);
 
     if (subs) {
       Object.entries(subs).forEach(([subscriptionId, subscription]) => {
         subscription.unsubscribe();
         // Remove subscription from controller.
-        SubscriptionsController.removeSub(this.tabId, subscriptionId);
+        SubscriptionsController.remove(this.ownerId, subscriptionId);
       });
     }
   };

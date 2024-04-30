@@ -33,7 +33,7 @@ export interface ConstantResult {
 }
 
 export interface ChainStateEventDetail {
-  tabId: number;
+  ownerId: number;
   type: StorageSubscriptionType;
   key: string;
   value: AnyJson;

@@ -13,6 +13,8 @@ import type {
   APIChainSpec,
   APIStatusEventDetail,
   ApiStatus,
+  ApiStatusState,
+  ChainSpecState,
   ErrDetail,
 } from 'model/Api/types';
 import { useChainUi } from 'contexts/ChainUi';
@@ -20,6 +22,7 @@ import { NotificationsController } from 'controllers/Notifications';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { BlockNumber } from 'model/BlockNumber';
 import { AccountBalances } from 'model/AccountBalances';
+import { setStateWithRef } from '@w3ux/utils';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -35,31 +38,32 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     setTabForceDisconnect,
   } = useTabs();
 
-  // Store API connection status of each tab. NOTE: requires ref as it is used in event listener.
-  const [apiStatus, setApiStatusState] = useState<Record<number, ApiStatus>>(
-    {}
-  );
+  // Store API connection status of each api instance. NOTE: requires ref as it is used in event
+  // listener.
+  const [apiStatus, setApiStatusState] = useState<ApiStatusState>({});
   const apiStatusRef = useRef(apiStatus);
 
-  // Store chain spec of each tab. NOTE: requires ref as it is used in event listener.
-  const [chainSpec, setChainSpecState] = useState<Record<number, APIChainSpec>>(
-    {}
-  );
+  /*
+    tab_1: 'connecting',
+    coretime_1: 'connected',
+    coretime_2: 'ready',
+  */
+
+  // Setter for api status. Updates state and ref.
+  const setApiStatus = (status: Record<number, ApiStatus>) => {
+    setStateWithRef(status, setApiStatusState, apiStatusRef);
+  };
+
+  // Store chain spec of each api instance. NOTE: requires ref as it is used in event listener.
+  const [chainSpec, setChainSpecState] = useState<ChainSpecState>({});
   const chainSpecRef = useRef(chainSpec);
 
-  // Setter for api status.
-  const setApiStatus = (status: Record<number, ApiStatus>) => {
-    apiStatusRef.current = status;
-    setApiStatusState(status);
-  };
-
-  // Setter for chain spec.
+  // Setter for chain spec. Updates state and ref.
   const setChainSpec = (status: Record<number, APIChainSpec>) => {
-    chainSpecRef.current = status;
-    setChainSpecState(status);
+    setStateWithRef(status, setChainSpecState, chainSpecRef);
   };
 
-  // Remove tab api status.
+  // Remove api status for an owner.
   const removeApiStatus = (tabId: number) => {
     const updated = { ...apiStatusRef.current };
     delete updated[tabId];
@@ -177,18 +181,18 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   // Handle incoming chain spec updates.
   const handleNewChainSpec = (e: Event): void => {
     if (isCustomEvent(e)) {
-      const { tabId, spec, consts } = e.detail;
+      const { ownerId, spec, consts } = e.detail;
 
       setChainSpec({
         ...chainSpecRef.current,
-        [tabId]: { ...spec, consts },
+        [ownerId]: { ...spec, consts },
       });
 
       // Fetch pallet versions for ChainUi state.
       fetchPalletVersions(
-        tabId,
+        ownerId,
         spec.metadata,
-        ApiController.instances[tabId].api
+        ApiController.instances[ownerId].api
       );
     }
   };

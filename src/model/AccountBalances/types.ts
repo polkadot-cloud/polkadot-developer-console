@@ -23,7 +23,7 @@ export interface BalanceLock {
 }
 
 export interface AccountBalanceEventDetail {
-  tabId: number;
+  ownerId: number;
   chainId: ChainId;
   address: string;
   balance: Balances;

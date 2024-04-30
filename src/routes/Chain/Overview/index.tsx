@@ -61,7 +61,7 @@ export const Overview = () => {
   // Handle new block number callback.
   const newBlockCallback = (e: Event) => {
     if (isCustomEvent(e)) {
-      if (e.detail.tabId === tabId) {
+      if (e.detail.ownerId === tabId) {
         setBlockNumber(e.detail.blockNumber);
       }
     }

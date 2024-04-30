@@ -11,8 +11,8 @@ export class BlockNumber implements Unsubscribable {
   // Class members.
   // ------------------------------------------------------
 
-  // The associated tab id for this block number instance.
-  #tabId: number;
+  // The associated owner for this block number instance.
+  #ownerId: number;
 
   // The supplied chain id.
   #chainId: ChainId;
@@ -27,8 +27,8 @@ export class BlockNumber implements Unsubscribable {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(tabId: number, chainId: ChainId) {
-    this.#tabId = tabId;
+  constructor(ownerId: number, chainId: ChainId) {
+    this.#ownerId = ownerId;
     this.#chainId = chainId;
 
     // Subscribe immediately.
@@ -42,7 +42,7 @@ export class BlockNumber implements Unsubscribable {
   // Subscribe to block number.
   subscribe = async (): Promise<void> => {
     try {
-      const api = ApiController.instances[this.#tabId].api;
+      const api = ApiController.instances[this.#ownerId].api;
 
       if (api && this.#unsub === undefined) {
         // Get block numbers.
@@ -52,9 +52,9 @@ export class BlockNumber implements Unsubscribable {
 
           // Send block number to UI.
           document.dispatchEvent(
-            new CustomEvent(`callback-block-number`, {
+            new CustomEvent('callback-block-number', {
               detail: {
-                tabId: this.#tabId,
+                ownerId: this.#ownerId,
                 chainId: this.#chainId,
                 blockNumber: num.toString(),
               },

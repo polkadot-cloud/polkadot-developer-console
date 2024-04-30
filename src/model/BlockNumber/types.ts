@@ -6,5 +6,5 @@ import type { ChainId } from 'config/networks';
 export interface BlockNumberEventDetail {
   blockNumber: number;
   chainId: ChainId;
-  tabId: number;
+  ownerId: number;
 }
