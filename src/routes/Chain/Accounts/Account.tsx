@@ -8,8 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { AccountContextMenu } from './AccountMenu';
-import { useTabs } from 'contexts/Tabs';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import BigNumber from 'bignumber.js';
 
@@ -18,12 +17,10 @@ export const Account = ({
   chainId,
   existentialDeposit,
 }: AccountProps) => {
-  const { getTab } = useTabs();
   const { openMenu } = useMenu();
-  const activeTabId = useActiveTabId();
+  const { tab } = useActiveTab();
   const { getAccountBalance, getBalanceLocks } = useAccounts();
 
-  const tab = getTab(activeTabId);
   const { name, address } = account;
   const balances = getAccountBalance(address);
   const { maxLock } = getBalanceLocks(address);

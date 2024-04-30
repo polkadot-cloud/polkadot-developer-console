@@ -25,6 +25,7 @@ import type {
   StorageSubscriptionType,
   StorageType,
 } from 'model/ChainState/types';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const ChainState = createContext<ChainStateContextInterface>(
   defaultChainStateContext
@@ -38,14 +39,16 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   // The results of current chain state subscriptions.
   const [chainStateSubscriptions, setChainStateSubscriptions] =
     useState<ChainStateSubscriptions>(
-      ChainStateController.instances?.[selectedTabId]?.subscriptions || {}
+      ChainStateController.instances?.[tabIdToOwnerId(selectedTabId)]
+        ?.subscriptions || {}
     );
   const chainStateSubscriptionsRef = useRef(chainStateSubscriptions);
 
   // The results of current chain state constants.
   const [chainStateConstants, setChainStateConstants] =
     useState<ChainStateConstants>(
-      ChainStateController.instances?.[selectedTabId]?.constants || {}
+      ChainStateController.instances?.[tabIdToOwnerId(selectedTabId)]
+        ?.constants || {}
     );
 
   // Get a chain state subscription by key.
@@ -71,9 +74,9 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   // Store chain state subscription results as they are received.
   const handleNewChainState = (e: Event) => {
     if (isCustomEvent(e)) {
-      const { tabId, type, subscriptionKey, result } = e.detail;
+      const { ownerId, type, subscriptionKey, result } = e.detail;
 
-      if (tabId === selectedTabId) {
+      if (ownerId === tabIdToOwnerId(selectedTabId)) {
         setChainStateItem(type, subscriptionKey, result);
       }
     }
@@ -95,7 +98,9 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     // Handle removal of chain state subscription.
     if (['storage', 'raw'].includes(type)) {
       // Remove key and unsubscribe from controller.
-      ChainStateController.instances?.[selectedTabId].unsubscribeOne(key);
+      ChainStateController.instances?.[
+        tabIdToOwnerId(selectedTabId)
+      ].unsubscribeOne(key);
       // Remove key from context chain state.
       const updatedChainState = { ...chainStateSubscriptions };
       delete updatedChainState[key];
@@ -112,7 +117,9 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
       const updated = { ...chainStateConstants };
       delete updated[key];
       setChainStateConstants(updated);
-      ChainStateController.instances?.[selectedTabId].removeConstant(key);
+      ChainStateController.instances?.[
+        tabIdToOwnerId(selectedTabId)
+      ].removeConstant(key);
     }
   };
 
@@ -133,12 +140,14 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   // Get chain state on mount and selected tab change.
   useEffect(() => {
     setStateWithRef(
-      ChainStateController.instances?.[selectedTabId]?.subscriptions || {},
+      ChainStateController.instances?.[tabIdToOwnerId(selectedTabId)]
+        ?.subscriptions || {},
       setChainStateSubscriptions,
       chainStateSubscriptionsRef
     );
     setChainStateConstants(
-      ChainStateController.instances?.[selectedTabId]?.constants || {}
+      ChainStateController.instances?.[tabIdToOwnerId(selectedTabId)]
+        ?.constants || {}
     );
   }, [selectedTabId]);
 

@@ -8,7 +8,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { SelectProps } from './types';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
 
 export const Select = ({
@@ -19,7 +19,7 @@ export const Select = ({
   value,
   label,
 }: SelectProps) => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { setInputArgAtKey } = useChainUi();
 
   // The input arg type of this component.
@@ -41,7 +41,7 @@ export const Select = ({
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
-    setInputArgAtKey(activeTabId, namespace, inputKey, {
+    setInputArgAtKey(tabId, namespace, inputKey, {
       input: INPUT_TYPE,
       value: currentValue,
     });
@@ -73,7 +73,7 @@ export const Select = ({
               key={`select_${label}_${camelize(val)}`}
               className={`option`}
               onClick={() => {
-                setInputArgAtKey(activeTabId, namespace, inputKey, {
+                setInputArgAtKey(tabId, namespace, inputKey, {
                   input: INPUT_TYPE,
                   value: val,
                 });

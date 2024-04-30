@@ -9,10 +9,11 @@ import type { TabProps } from './types';
 import { DEFAULT_TAB_WIDTH_PX } from 'contexts/Tabs/defaults';
 import { useApi } from 'contexts/Api';
 import { ConnectionIcon } from './ConectionIcon';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const TabOverlay = ({ id, name }: TabProps) => {
   const { getApiStatus } = useApi();
-  const apiStatus = getApiStatus(id);
+  const apiStatus = getApiStatus(tabIdToOwnerId(id));
 
   return (
     <TabWrapper

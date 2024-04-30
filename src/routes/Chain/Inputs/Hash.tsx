@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { TextInputWrapper } from '../Wrappers';
 import type { HashProps } from './types';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
 
 export const Hash = ({
@@ -13,7 +13,7 @@ export const Hash = ({
   inputKeysRef,
   defaultValue,
 }: HashProps) => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { setInputArgAtKey } = useChainUi();
 
   // The input arg type of this component.
@@ -29,7 +29,7 @@ export const Hash = ({
   // Handle textbox value change.
   const handleTextboxChange = (val: string) => {
     setValue(val);
-    setInputArgAtKey(activeTabId, namespace, inputKey, {
+    setInputArgAtKey(tabId, namespace, inputKey, {
       input: INPUT_TYPE,
       value: val,
     });
@@ -37,7 +37,7 @@ export const Hash = ({
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
-    setInputArgAtKey(activeTabId, namespace, inputKey, {
+    setInputArgAtKey(tabId, namespace, inputKey, {
       input: INPUT_TYPE,
       value,
     });

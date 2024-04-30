@@ -5,11 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FooterButtonWrapper, FooterWrapper } from './Wrappers';
 import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { useParaSetup } from 'contexts/ParaSetup';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import type { FooterProps } from './types';
 
 export const Footer = ({ next, prev }: FooterProps) => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { setActiveStep } = useParaSetup();
 
   return (
@@ -21,7 +21,7 @@ export const Footer = ({ next, prev }: FooterProps) => {
             <button
               onClick={() => {
                 if (prev) {
-                  setActiveStep(activeTabId, prev);
+                  setActiveStep(tabId, prev);
                 }
               }}
               disabled={prev === null}
@@ -40,7 +40,7 @@ export const Footer = ({ next, prev }: FooterProps) => {
             <button
               onClick={() => {
                 if (next) {
-                  setActiveStep(activeTabId, next);
+                  setActiveStep(tabId, next);
                 }
               }}
               disabled={next === null}

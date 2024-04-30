@@ -4,18 +4,15 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Settings } from 'routes/Settings';
 import { useApi } from 'contexts/Api';
-import { useTabs } from 'contexts/Tabs';
 import { Chain } from 'routes/Chain';
 import { Default } from 'routes/Home';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const Router = () => {
-  const { getTab } = useTabs();
   const { getApiStatus } = useApi();
-  const activeTabId = useActiveTabId();
+  const { ownerId, tab } = useActiveTab();
 
-  const apiStatus = getApiStatus(activeTabId);
-  const activeTab = getTab(activeTabId);
+  const apiStatus = getApiStatus(ownerId);
 
   // Non disconnected API statuses.
   const ACTIVE_API_STATUSES = ['ready', 'connected', 'connecting'];
@@ -23,9 +20,7 @@ export const Router = () => {
   // If the active tab is auto connect, & there is a `chain` property to connect to, also go to the
   // Chain tab. Also go to the Chain tab if the API is in a non error / disconnected state.
   const chainPageByDefault =
-    (activeTab?.autoConnect &&
-      activeTab?.chain &&
-      !activeTab.forceDisconnect) ||
+    (tab?.autoConnect && tab?.chain && !tab.forceDisconnect) ||
     ACTIVE_API_STATUSES.includes(apiStatus);
 
   return (

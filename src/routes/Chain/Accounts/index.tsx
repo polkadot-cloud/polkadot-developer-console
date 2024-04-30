@@ -7,20 +7,17 @@ import { AccountsWrapper } from './Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
 import { useApi } from 'contexts/Api';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { Account } from './Account';
-import { useTabs } from 'contexts/Tabs';
 import BigNumber from 'bignumber.js';
 import { useAccounts } from 'contexts/Accounts';
 
 export const Accounts = () => {
-  const { getTab } = useTabs();
-  const { accounts } = useAccounts();
   const { getChainSpec } = useApi();
-  const activeTabId = useActiveTabId();
+  const { accounts } = useAccounts();
+  const { tab, ownerId } = useActiveTab();
 
-  const tab = getTab(activeTabId);
-  const chainSpec = getChainSpec(activeTabId);
+  const chainSpec = getChainSpec(ownerId);
 
   const existentialDeposit =
     chainSpec?.consts?.existentialDeposit || new BigNumber(0);

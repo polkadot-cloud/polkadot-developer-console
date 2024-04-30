@@ -1,11 +1,11 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainId } from 'config/networks';
+import type { Tab } from 'contexts/Tabs/types';
 import type { OwnerId } from 'model/Api/types';
 
-export interface BlockNumberEventDetail {
-  blockNumber: number;
-  chainId: ChainId;
+export interface ActiveTabContextInterface {
+  tabId: number;
   ownerId: OwnerId;
+  tab: Tab | undefined;
 }

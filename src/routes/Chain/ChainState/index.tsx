@@ -6,12 +6,12 @@ import { Header } from './Header';
 import { StorageItems } from './StorageItems';
 import { useChainUi } from 'contexts/ChainUi';
 import { Raw } from './Raw';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const ChainState = () => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { getActiveChainStateSection } = useChainUi();
-  const activeChainStateSection = getActiveChainStateSection(activeTabId);
+  const activeChainStateSection = getActiveChainStateSection(tabId);
 
   let content: JSX.Element;
   switch (activeChainStateSection) {

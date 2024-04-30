@@ -11,14 +11,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useInput } from '../../Inputs';
 import { InputFormProvider, useInputForm } from './provider';
 import { useChainUi } from 'contexts/ChainUi';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import type { InputFormInnerProps } from './types';
 
 export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
   const { readInput } = useInput();
-  const activeTabId = useActiveTabId();
-  const { namespace, inputKeysRef } = useInputForm();
+  const { tabId } = useActiveTab();
   const { getInputArgs } = useChainUi();
+  const { namespace, inputKeysRef } = useInputForm();
 
   // Reset input keys accumulator on every render.
   if (inputKeysRef.current) {
@@ -59,7 +59,7 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
           onClick={() => {
             /* TODO: Submit storage query or extrinsic. */
             console.log(inputKeysRef.current);
-            console.log(getInputArgs(activeTabId, namespace));
+            console.log(getInputArgs(tabId, namespace));
           }}
         >
           Submit

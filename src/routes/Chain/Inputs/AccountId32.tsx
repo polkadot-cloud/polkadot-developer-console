@@ -19,15 +19,15 @@ import { formatInputString } from 'Utils';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { InputArgConfig } from './types';
 import { useChainUi } from 'contexts/ChainUi';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const AccountId32 = ({
   inputKey,
   namespace,
   inputKeysRef,
 }: InputArgConfig) => {
+  const { tabId } = useActiveTab();
   const { accounts } = useAccounts();
-  const activeTabId = useActiveTabId();
   const { setInputArgAtKey } = useChainUi();
 
   // The input arg type of this component.
@@ -52,7 +52,7 @@ export const AccountId32 = ({
 
   // Handle setting input arg.
   const handleSetInputArg = (val: string) => {
-    setInputArgAtKey(activeTabId, namespace, inputKey, {
+    setInputArgAtKey(tabId, namespace, inputKey, {
       input: INPUT_TYPE,
       value: val,
     });
@@ -100,7 +100,7 @@ export const AccountId32 = ({
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
-    setInputArgAtKey(activeTabId, namespace, inputKey, {
+    setInputArgAtKey(tabId, namespace, inputKey, {
       input: INPUT_TYPE,
       value: selectedAddress,
     });

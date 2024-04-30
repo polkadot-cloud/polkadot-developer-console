@@ -10,14 +10,15 @@ import type {
 } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
 import { splitChainStateKey } from './util';
+import type { OwnerId } from 'model/Api/types';
 
 export class ChainState {
   // ------------------------------------------------------
   // Class members.
   // ------------------------------------------------------
 
-  // The associated tab id for this chain state instance.
-  #tabId: number;
+  // The associated owner for this chain state instance.
+  #ownerId: OwnerId;
 
   // Chain state subscription results, keyed by subscription key.
   subscriptions: Record<string, AnyJson> = {};
@@ -32,8 +33,8 @@ export class ChainState {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(tabId: number) {
-    this.#tabId = tabId;
+  constructor(ownerId: OwnerId) {
+    this.#ownerId = ownerId;
   }
 
   // ------------------------------------------------------
@@ -45,7 +46,7 @@ export class ChainState {
     rawKey: string,
     config: SubscriptionConfig
   ): Promise<void> => {
-    const api = ApiController.instances[this.#tabId].api;
+    const api = ApiController.instances[this.#ownerId].api;
     const subscriptionKey = this.prependIndexToKey('subscription', rawKey);
 
     if (api) {
@@ -74,9 +75,9 @@ export class ChainState {
 
                 // Send result to UI.
                 document.dispatchEvent(
-                  new CustomEvent(`callback-new-chain-state`, {
+                  new CustomEvent('callback-new-chain-state', {
                     detail: {
-                      tabId: this.#tabId,
+                      ownerId: this.#ownerId,
                       type,
                       subscriptionKey,
                       result,
@@ -103,7 +104,7 @@ export class ChainState {
   // ------------------------------------------------------
 
   fetchConstant = (pallet: string, constant: string): ConstantResult | null => {
-    const api = ApiController.instances[this.#tabId].api;
+    const api = ApiController.instances[this.#ownerId].api;
     const result = api?.consts?.[pallet]?.[constant];
 
     if (result) {

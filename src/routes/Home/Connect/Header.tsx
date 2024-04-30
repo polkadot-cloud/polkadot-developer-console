@@ -5,19 +5,18 @@ import { useTabs } from 'contexts/Tabs';
 import { AutoConnect } from '../../../library/AutoConnect';
 import { ConnectHeaderWrapper } from './Wrappers';
 import { HeaderToggleWrapper } from 'library/HeaderToggle/Wrapper';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const Header = () => {
-  const activeTabId = useActiveTabId();
-  const { setTabConnectFrom, getTab } = useTabs();
-  const tab = getTab(activeTabId);
+  const { tabId, tab } = useActiveTab();
+  const { setTabConnectFrom } = useTabs();
 
   return (
     <ConnectHeaderWrapper>
       <HeaderToggleWrapper>
         <button
           className={tab?.connectFrom === 'directory' ? 'active' : undefined}
-          onClick={() => setTabConnectFrom(activeTabId, 'directory')}
+          onClick={() => setTabConnectFrom(tabId, 'directory')}
         >
           Directory
         </button>
@@ -25,7 +24,7 @@ export const Header = () => {
           className={
             tab?.connectFrom === 'customEndpoint' ? 'active' : undefined
           }
-          onClick={() => setTabConnectFrom(activeTabId, 'customEndpoint')}
+          onClick={() => setTabConnectFrom(tabId, 'customEndpoint')}
         >
           Custom Endpoint
         </button>

@@ -12,32 +12,30 @@ import { ApiController } from 'controllers/Api';
 import { useTabs } from 'contexts/Tabs';
 import { useRoute } from 'contexts/Route';
 import { useApi } from 'contexts/Api';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { SubHeadingWrapper } from './Wrappers';
 import { isDirectoryId } from 'config/networks/Utils';
 
 export const ManageTab = () => {
-  const { getApiStatus } = useApi();
-  const { setActivePage } = useRoute();
-  const activeTabId = useActiveTabId();
   const {
     setTabForceDisconnect,
     renameTab,
-    getTab,
     updateSs58,
     updateUnits,
     updateUnit,
   } = useTabs();
+  const { getApiStatus } = useApi();
+  const { setActivePage } = useRoute();
+  const { tab, tabId, ownerId } = useActiveTab();
 
-  const activeTab = getTab(activeTabId);
-  const apiStatus = getApiStatus(activeTabId);
+  const apiStatus = getApiStatus(ownerId);
   const showDisconnect = ['ready', 'connected', 'connecting'].includes(
     apiStatus
   );
 
   // Determine whether this is a custom endpoint. If it is, we want to allow the chain metadata to
   // be updated.
-  const isDirectory = isDirectoryId(activeTab?.chain?.id || '');
+  const isDirectory = isDirectoryId(tab?.chain?.id || '');
 
   return (
     <>
@@ -51,9 +49,9 @@ export const ManageTab = () => {
         label="Rename Tab"
         placeholder="Tab Name"
         onSubmit={(value: string) => {
-          renameTab(activeTabId, value);
+          renameTab(tabId, value);
         }}
-        initialValue={activeTab?.name || ''}
+        initialValue={tab?.name || ''}
       />
       {!isDirectory && (
         <>
@@ -66,10 +64,10 @@ export const ManageTab = () => {
               if (!isNaN(Number(value)) && Number.isInteger(Number(value))) {
                 // Ensure whole number with no decimals.
                 const valueInt = Math.ceil(Number(value));
-                updateSs58(activeTabId, valueInt);
+                updateSs58(tabId, valueInt);
               }
             }}
-            initialValue={String(activeTab?.chain?.ss58 || '0')}
+            initialValue={String(tab?.chain?.ss58 || '0')}
           />
           <Input
             label="Chain Units"
@@ -78,18 +76,18 @@ export const ManageTab = () => {
               if (!isNaN(Number(value)) && Number.isInteger(Number(value))) {
                 // Ensure whole number with no decimals.
                 const valueInt = Math.ceil(Number(value));
-                updateUnits(activeTabId, valueInt);
+                updateUnits(tabId, valueInt);
               }
             }}
-            initialValue={String(activeTab?.chain?.units || '')}
+            initialValue={String(tab?.chain?.units || '')}
           />
           <Input
             label="Chain Unit"
             placeholder="UNIT"
             onSubmit={(value: string) => {
-              updateUnit(activeTabId, value);
+              updateUnit(tabId, value);
             }}
-            initialValue={String(activeTab?.chain?.unit || '')}
+            initialValue={String(tab?.chain?.unit || '')}
           />
         </>
       )}
@@ -112,8 +110,8 @@ export const ManageTab = () => {
                       'Are you sure you want to disconnect this tab?'
                     )
                   ) {
-                    setTabForceDisconnect(activeTabId, true);
-                    ApiController.destroy(activeTabId);
+                    setTabForceDisconnect(tabId, true);
+                    ApiController.destroy(ownerId);
                     setActivePage(0);
                   }
                 }}

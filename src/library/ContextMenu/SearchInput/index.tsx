@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { SearchWrapper } from '../Wrappers';
 import type { SearchInputProps } from './types';
 import { useChainUi } from 'contexts/ChainUi';
@@ -22,11 +22,11 @@ export const SearchInput = ({
   setSearchValue,
   searchValue,
 }: SearchInputProps) => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { getChainUi, setChainUiItem, isChainUiValueEmpty } = useChainUi();
 
   const chainUi = chainUiSection
-    ? getChainUi(activeTabId, chainUiSection)
+    ? getChainUi(tabId, chainUiSection)
     : undefined;
 
   // Check if chainUi is being used.
@@ -52,7 +52,7 @@ export const SearchInput = ({
                 // not empty.
                 (isChainUi &&
                   !isChainUiValueEmpty(
-                    activeTabId,
+                    tabId,
                     chainUiSection,
                     chainUiKeys.searchKey
                   )) ||
@@ -61,7 +61,7 @@ export const SearchInput = ({
               ) {
                 if (isChainUi) {
                   setChainUiItem(
-                    activeTabId,
+                    tabId,
                     chainUiSection,
                     chainUiKeys.searchKey,
                     ''
@@ -86,12 +86,7 @@ export const SearchInput = ({
             }
 
             if (isChainUi) {
-              setChainUiItem(
-                activeTabId,
-                chainUiSection,
-                chainUiKeys.searchKey,
-                ''
-              );
+              setChainUiItem(tabId, chainUiSection, chainUiKeys.searchKey, '');
             }
           }}
         >
@@ -103,7 +98,7 @@ export const SearchInput = ({
           className={`icon ${chainUi[chainUiKeys.selectOnSearchKey] === true ? 'active' : ''}`}
           onClick={() => {
             setChainUiItem(
-              activeTabId,
+              tabId,
               chainUiSection,
               chainUiKeys.selectOnSearchKey,
               !chainUi[chainUiKeys.selectOnSearchKey]

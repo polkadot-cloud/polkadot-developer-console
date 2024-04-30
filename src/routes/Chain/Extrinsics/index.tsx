@@ -8,7 +8,7 @@ import { CallList } from './CallList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { Header } from './Header';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { useMemo } from 'react';
 import type { PalletData } from '../ChainState/types';
 import { defaultPalletData } from '../ChainState/defaults';
@@ -18,14 +18,14 @@ import type { InputNamespace } from 'contexts/ChainUi/types';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
-  const activeTabId = useActiveTabId();
+  const { tabId, ownerId } = useActiveTab();
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'calls';
   const inputNamespace: InputNamespace = 'call';
 
-  const chainUi = getChainUi(activeTabId, chainUiSection);
-  const Metadata = getChainSpec(activeTabId)?.metadata;
+  const chainUi = getChainUi(tabId, chainUiSection);
+  const Metadata = getChainSpec(ownerId)?.metadata;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const callData = useMemo((): PalletData => {
@@ -88,7 +88,7 @@ export const Extrinsics = () => {
           pallets={pallets}
           chainUiSection={chainUiSection}
           onSelect={(value) => {
-            setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
+            setChainUiItem(tabId, chainUiSection, 'pallet', value);
           }}
         />
         <CallList

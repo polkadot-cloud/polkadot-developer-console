@@ -10,20 +10,20 @@ import {
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { ChainStateController } from 'controllers/ChainState';
 import { Results } from './Results';
 
 export const Raw = () => {
-  const activeTabId = useActiveTabId();
+  const { tabId, ownerId } = useActiveTab();
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'raw';
-  const chainUi = getChainUi(activeTabId, chainUiSection);
+  const chainUi = getChainUi(tabId, chainUiSection);
 
   // Handle storage key change.
   const handleStorageKeyChange = (value: string) => {
-    setChainUiItem(activeTabId, chainUiSection, 'selected', value);
+    setChainUiItem(tabId, chainUiSection, 'selected', value);
   };
 
   // Handle storage key submission.
@@ -33,7 +33,7 @@ export const Raw = () => {
       return;
     }
 
-    const chainState = ChainStateController.instances[activeTabId];
+    const chainState = ChainStateController.instances[ownerId];
     chainState.subscribe(`${value}`, {
       type: 'raw',
       namespace: 'state',
@@ -41,7 +41,7 @@ export const Raw = () => {
       args: [[value]],
     });
 
-    setChainUiItem(activeTabId, chainUiSection, 'selected', '');
+    setChainUiItem(tabId, chainUiSection, 'selected', '');
   };
 
   // Test raw storage key for timestamp.now():

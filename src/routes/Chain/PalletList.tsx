@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
 import { camelize, setStateWithRef } from '@w3ux/utils';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import type { PalletListProps } from './ChainState/types';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
@@ -21,11 +21,11 @@ export const PalletList = ({
   chainUiSection,
   onSelect,
 }: PalletListProps) => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { getPalletVersions, getChainUi, setChainUiItem } = useChainUi();
 
-  const palletVersions = getPalletVersions(activeTabId) || {};
-  const chainUi = getChainUi(activeTabId, chainUiSection);
+  const palletVersions = getPalletVersions(tabId) || {};
+  const chainUi = getChainUi(tabId, chainUiSection);
   const { palletSearch } = chainUi;
 
   // Pallet selection open.
@@ -42,7 +42,7 @@ export const PalletList = ({
 
   // Handle pallet search change.
   const handlePalletSearchChange = (value: string) => {
-    setChainUiItem(activeTabId, chainUiSection, 'palletSearch', value);
+    setChainUiItem(tabId, chainUiSection, 'palletSearch', value);
   };
 
   // Gets a filtered list by applying a search term on pallet names, if not empty.
@@ -62,7 +62,7 @@ export const PalletList = ({
     listOpenRef: palletsOpenRef,
     activeValue: activePallet,
     onUpdate: (newItem: string) => {
-      setChainUiItem(activeTabId, chainUiSection, 'pallet', newItem);
+      setChainUiItem(tabId, chainUiSection, 'pallet', newItem);
     },
   });
 

@@ -9,7 +9,7 @@ import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { ChainStateList } from './ChainStateList';
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import type { PalletData } from './types';
 import { defaultPalletData } from './defaults';
 import { EncodedDetails } from './EncodedDetails';
@@ -18,14 +18,14 @@ import type { InputNamespace } from 'contexts/ChainUi/types';
 
 export const StorageItems = () => {
   const { getChainSpec } = useApi();
-  const activeTabId = useActiveTabId();
+  const { tabId, ownerId } = useActiveTab();
   const { getChainUi, setChainUiItem } = useChainUi();
 
   const chainUiSection = 'storage';
   const inputNamespace: InputNamespace = 'storage';
 
-  const chainUi = getChainUi(activeTabId, chainUiSection);
-  const Metadata = getChainSpec(activeTabId)?.metadata;
+  const chainUi = getChainUi(tabId, chainUiSection);
+  const Metadata = getChainSpec(ownerId)?.metadata;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const storageData = useMemo((): PalletData => {
@@ -87,7 +87,7 @@ export const StorageItems = () => {
           activePallet={activePallet}
           chainUiSection={chainUiSection}
           onSelect={(value) => {
-            setChainUiItem(activeTabId, chainUiSection, 'pallet', value);
+            setChainUiItem(tabId, chainUiSection, 'pallet', value);
           }}
         />
         <ChainStateList

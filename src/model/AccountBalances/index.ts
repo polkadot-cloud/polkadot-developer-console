@@ -8,6 +8,7 @@ import type { ChainId } from 'config/networks';
 import { ApiController } from 'controllers/Api';
 import type { Balances } from './types';
 import type { Unsubscribable } from 'controllers/Subscriptions/types';
+import type { OwnerId } from 'model/Api/types';
 
 export class AccountBalances implements Unsubscribable {
   // ------------------------------------------------------
@@ -17,8 +18,8 @@ export class AccountBalances implements Unsubscribable {
   // Accounts that are being subscribed to.
   #accounts: string[] = [];
 
-  // The associated tab id for this block number instance.
-  #tabId: number;
+  // The associated owner for this block number instance.
+  #ownerId: OwnerId;
 
   // The supplied chain id.
   #chainId: ChainId;
@@ -33,8 +34,8 @@ export class AccountBalances implements Unsubscribable {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(tabId: number, chainId: ChainId) {
-    this.#tabId = tabId;
+  constructor(ownerId: OwnerId, chainId: ChainId) {
+    this.#ownerId = ownerId;
     this.#chainId = chainId;
   }
 
@@ -59,7 +60,7 @@ export class AccountBalances implements Unsubscribable {
       }
 
       // Get api instance and subscribe to new accounts.
-      const api = ApiController.instances[this.#tabId].api;
+      const api = ApiController.instances[this.#ownerId].api;
       if (api) {
         accountsAdded.forEach(async (address) => {
           this.#accounts.push(address);
@@ -94,7 +95,7 @@ export class AccountBalances implements Unsubscribable {
               document.dispatchEvent(
                 new CustomEvent('callback-account-balance', {
                   detail: {
-                    tabId: this.#tabId,
+                    ownerId: this.#ownerId,
                     chainId: this.#chainId,
                     address,
                     balance: this.balances[address],

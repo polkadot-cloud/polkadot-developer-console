@@ -5,21 +5,29 @@ import type { AnyJson } from '@w3ux/utils/types';
 import type { ChainId } from 'config/networks';
 import type { MetadataVersion } from 'controllers/Metadata/types';
 
+// Over-arching type for the owner id. Used by API instances and classes associated with the api,
+// e.g. ChainState, ChainSpec, subscriptions, etc.
+export type OwnerId = string;
+
 export type ApiStatus = 'connecting' | 'connected' | 'disconnected' | 'ready';
 
 export type EventStatus = ApiStatus | 'error' | 'destroyed' | 'fetchedSpec';
 
 export type ErrDetail = 'InitializationError' | 'ChainSpecError';
 
+export type ApiStatusState = Record<OwnerId, ApiStatus>;
+
+export type ChainSpecState = Record<OwnerId, APIChainSpec>;
+
 export interface APIStatusEventDetail {
   event: EventStatus;
-  tabId: number;
+  ownerId: OwnerId;
   chainId: ChainId;
   err?: ErrDetail;
 }
 
 export interface APIChainSpecEventDetail {
-  tabId: number;
+  ownerId: OwnerId;
   spec: APIChainSpec;
   consts: Record<string, AnyJson>;
 }

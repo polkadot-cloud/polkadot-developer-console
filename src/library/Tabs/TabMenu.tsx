@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useApi } from 'contexts/Api';
 import { useMenu } from 'contexts/Menu';
 import { useTabs } from 'contexts/Tabs';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { ApiController } from 'controllers/Api';
 import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
 
@@ -25,7 +26,8 @@ export const TabContextMenu = ({
   const { getTab, instantiateApiFromTab, setTabForceDisconnect } = useTabs();
 
   const tab = getTab(tabId);
-  const apiStatus = getApiStatus(tabId);
+  const ownerId = tabIdToOwnerId(tabId);
+  const apiStatus = getApiStatus(ownerId);
 
   const apiStatusActive = ['ready', 'connected', 'connecting'].includes(
     apiStatus
@@ -66,7 +68,7 @@ export const TabContextMenu = ({
             onClick={() => {
               if (canDisconenct) {
                 setTabForceDisconnect(tabId, true);
-                ApiController.destroy(tabId);
+                ApiController.destroy(ownerId);
                 closeMenu();
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);

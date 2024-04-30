@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { TextInputWrapper } from '../Wrappers';
 import type { TextboxProps } from './types';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
 
 export const Textbox = ({
@@ -15,7 +15,7 @@ export const Textbox = ({
   defaultValue,
   numeric,
 }: TextboxProps) => {
-  const activeTabId = useActiveTabId();
+  const { tabId } = useActiveTab();
   const { setInputArgAtKey } = useChainUi();
 
   // The input arg type of this component.
@@ -33,7 +33,7 @@ export const Textbox = ({
     if (numeric && isNaN(Number(val))) {
       return;
     }
-    setInputArgAtKey(activeTabId, namespace, inputKey, {
+    setInputArgAtKey(tabId, namespace, inputKey, {
       input: INPUT_TYPE,
       value: val,
     });
@@ -43,7 +43,7 @@ export const Textbox = ({
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
-    setInputArgAtKey(activeTabId, namespace, inputKey, {
+    setInputArgAtKey(tabId, namespace, inputKey, {
       input: INPUT_TYPE,
       value,
     });

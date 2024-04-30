@@ -7,16 +7,15 @@ import { ChainListItem } from './ChainListItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import type { DirectoryId } from 'config/networks';
-import { useActiveTabId } from 'contexts/ActiveTab';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const RecentChain = () => {
-  const activeTabId = useActiveTabId();
-  const { getStoredChain, forgetTabChain, getTab } = useTabs();
-  const activeTab = getTab(activeTabId);
+  const { tab, tabId } = useActiveTab();
+  const { getStoredChain, forgetTabChain } = useTabs();
 
-  const result = getStoredChain(activeTabId);
+  const result = getStoredChain(tabId);
 
-  if (!result || !activeTab?.chain?.id) {
+  if (!result || !tab?.chain?.id) {
     return null;
   }
 
@@ -31,7 +30,7 @@ export const RecentChain = () => {
               if (
                 window.confirm('Are you sure you want to forget this chain?')
               ) {
-                forgetTabChain(activeTabId);
+                forgetTabChain(tabId);
               }
             }}
           >
