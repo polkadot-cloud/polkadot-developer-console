@@ -16,6 +16,7 @@ import type {
   ApiStatusState,
   ChainSpecState,
   ErrDetail,
+  OwnerId,
 } from 'model/Api/types';
 import { useChainUi } from 'contexts/ChainUi';
 import { NotificationsController } from 'controllers/Notifications';
@@ -23,6 +24,7 @@ import { SubscriptionsController } from 'controllers/Subscriptions';
 import { BlockNumber } from 'model/BlockNumber';
 import { AccountBalances } from 'model/AccountBalances';
 import { setStateWithRef } from '@w3ux/utils';
+import { ownerIdToTabId } from 'contexts/Tabs/Utils';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -43,15 +45,9 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const [apiStatus, setApiStatusState] = useState<ApiStatusState>({});
   const apiStatusRef = useRef(apiStatus);
 
-  /*
-    tab_1: 'connecting',
-    coretime_1: 'connected',
-    coretime_2: 'ready',
-  */
-
   // Setter for api status. Updates state and ref.
-  const setApiStatus = (status: Record<number, ApiStatus>) => {
-    setStateWithRef(status, setApiStatusState, apiStatusRef);
+  const setApiStatus = (newApiStatus: Record<OwnerId, ApiStatus>) => {
+    setStateWithRef(newApiStatus, setApiStatusState, apiStatusRef);
   };
 
   // Store chain spec of each api instance. NOTE: requires ref as it is used in event listener.
@@ -64,63 +60,64 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Remove api status for an owner.
-  const removeApiStatus = (tabId: number) => {
+  const removeApiStatus = (ownerId: OwnerId) => {
     const updated = { ...apiStatusRef.current };
-    delete updated[tabId];
+    delete updated[ownerId];
     setApiStatus(updated);
   };
 
   // Remove tab chain spec.
-  const removeChainSpec = (tabId: number) => {
+  const removeChainSpec = (ownerId: OwnerId) => {
     const updated = { ...chainSpecRef.current };
-    delete updated[tabId];
+    delete updated[ownerId];
     setChainSpec(updated);
   };
 
-  // Gets an api status based on a tab id.
-  const getApiStatus = (tabId: number): ApiStatus => apiStatus[tabId];
+  // Gets an api status, keyed by owner.
+  const getApiStatus = (ownerId: OwnerId): ApiStatus => apiStatus[ownerId];
 
   // Gets whether an api is active (not disconnected or undefined).
-  const getApiActive = (tabId: number): boolean => {
-    const status = getApiStatus(tabId);
+  const getApiActive = (ownerId: OwnerId): boolean => {
+    const status = getApiStatus(ownerId);
     return (
       status === 'ready' || status === 'connected' || status === 'connecting'
     );
   };
 
-  // Gets a chain spec based on a tab id.
-  const getChainSpec = (tabId: number): APIChainSpec => chainSpec[tabId];
+  // Gets a chain spec, keyed by owner.
+  const getChainSpec = (ownerId: OwnerId): APIChainSpec => chainSpec[ownerId];
 
   // Gets the `Api` instance of the active tab, if present.
   const getTabApi = () => {
     const activeTab = getActiveTab();
     if (activeTab?.chain) {
-      return ApiController.instances[activeTab.id];
+      return ApiController.instances[String(activeTab.id)];
     }
   };
 
   // Handle a chain disconnect.
-  const handleDisconnect = (tabId: number, destroy = false) => {
+  const handleDisconnect = (ownerId: OwnerId, destroy = false) => {
     if (destroy) {
-      removeApiStatus(tabId);
-      removeChainSpec(tabId);
+      removeApiStatus(ownerId);
+      removeChainSpec(ownerId);
     } else {
       // Update API status to `disconnected`.
-      setApiStatus({ ...apiStatusRef.current, [tabId]: 'disconnected' });
+      setApiStatus({ ...apiStatusRef.current, [ownerId]: 'disconnected' });
     }
   };
 
   // Handle a chain error.
-  const handleChainError = (tabId: number, err?: ErrDetail) => {
-    removeApiStatus(tabId);
-    removeChainSpec(tabId);
+  const handleChainError = (ownerId: OwnerId, err?: ErrDetail) => {
+    removeApiStatus(ownerId);
+    removeChainSpec(ownerId);
 
     // If the error originated from initialization or bootstrapping of metadata, assume the
     // connection is an invalid chain and forget it. This prevents auto connect on subsequent
     // visits.
     if (err && ['InitializationError', 'ChainSpecError'].includes(err)) {
-      forgetTabChain(tabId);
-      setTabForceDisconnect(tabId, true);
+      // TODO: Test if owner is a tab first. Requires refactoring of `tabIdToOwnerId`.
+      forgetTabChain(ownerIdToTabId(ownerId));
+      setTabForceDisconnect(ownerIdToTabId(ownerId), true);
 
       NotificationsController.emit({
         title: 'Error Initializing Chain',
@@ -132,13 +129,13 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {
     if (isCustomEvent(e)) {
-      const { tabId, chainId, event, err } = e.detail as APIStatusEventDetail;
+      const { ownerId, chainId, event, err } = e.detail as APIStatusEventDetail;
 
       switch (event) {
         case 'ready':
           setApiStatus({
             ...apiStatusRef.current,
-            [tabId]: 'ready',
+            [ownerId]: 'ready',
           });
 
           // Initialise subscriptions for Overview here. We are currently only subscribing to the
@@ -146,33 +143,33 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
           // per tab. This needs to change for parachain setup. TODO: SubscriptionsController to
           // handle multiple chainIds per tab.
           SubscriptionsController.set(
-            tabId,
+            ownerId,
             'blockNumber',
-            new BlockNumber(tabId, chainId)
+            new BlockNumber(ownerId, chainId)
           );
 
           // Initialise account balance subscriptions.
           SubscriptionsController.set(
-            tabId,
+            ownerId,
             'accountBalances',
-            new AccountBalances(tabId, chainId)
+            new AccountBalances(ownerId, chainId)
           );
 
           break;
         case 'connecting':
-          setApiStatus({ ...apiStatusRef.current, [tabId]: 'connecting' });
+          setApiStatus({ ...apiStatusRef.current, [ownerId]: 'connecting' });
           break;
         case 'connected':
-          setApiStatus({ ...apiStatusRef.current, [tabId]: 'connected' });
+          setApiStatus({ ...apiStatusRef.current, [ownerId]: 'connected' });
           break;
         case 'disconnected':
-          handleDisconnect(tabId);
+          handleDisconnect(ownerId);
           break;
         case 'error':
-          handleChainError(tabId, err);
+          handleChainError(ownerId, err);
           break;
         case 'destroyed':
-          handleDisconnect(tabId, true);
+          handleDisconnect(ownerId, true);
           break;
       }
     }

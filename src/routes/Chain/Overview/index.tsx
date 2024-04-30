@@ -19,6 +19,7 @@ import BigNumber from 'bignumber.js';
 import { FlexWrapper, StatsWrapper } from '../Wrappers';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { BlockNumber } from 'model/BlockNumber';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const Overview = () => {
   const { getTab } = useTabs();
@@ -26,8 +27,8 @@ export const Overview = () => {
   const { getApiStatus, getChainSpec } = useApi();
 
   const activeTab = getTab(activeTabId);
-  const apiStatus = getApiStatus(activeTabId);
-  const chainSpec = getChainSpec(activeTabId);
+  const apiStatus = getApiStatus(tabIdToOwnerId(activeTabId));
+  const chainSpec = getChainSpec(tabIdToOwnerId(activeTabId));
   const chainSpecReady = !!chainSpec;
 
   // NOTE: we know for certain there is an active tab and an associated API instance here, so we can
@@ -54,8 +55,12 @@ export const Overview = () => {
 
   // The latest received block number.
   const [blockNumber, setBlockNumber] = useState<string>(
-    (SubscriptionsController.get(tabId, 'blockNumber') as BlockNumber)
-      ?.blockNumber || '0'
+    (
+      SubscriptionsController.get(
+        tabIdToOwnerId(tabId),
+        'blockNumber'
+      ) as BlockNumber
+    )?.blockNumber || '0'
   );
 
   // Handle new block number callback.
@@ -74,8 +79,12 @@ export const Overview = () => {
   // Update block number on tab change.
   useEffect(() => {
     setBlockNumber(
-      (SubscriptionsController.get(tabId, 'blockNumber') as BlockNumber)
-        ?.blockNumber || '0'
+      (
+        SubscriptionsController.get(
+          tabIdToOwnerId(tabId),
+          'blockNumber'
+        ) as BlockNumber
+      )?.blockNumber || '0'
     );
   }, [tabId]);
 

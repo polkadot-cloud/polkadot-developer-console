@@ -12,6 +12,7 @@ import { Account } from './Account';
 import { useTabs } from 'contexts/Tabs';
 import BigNumber from 'bignumber.js';
 import { useAccounts } from 'contexts/Accounts';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const Accounts = () => {
   const { getTab } = useTabs();
@@ -20,7 +21,7 @@ export const Accounts = () => {
   const activeTabId = useActiveTabId();
 
   const tab = getTab(activeTabId);
-  const chainSpec = getChainSpec(activeTabId);
+  const chainSpec = getChainSpec(tabIdToOwnerId(activeTabId));
 
   const existentialDeposit =
     chainSpec?.consts?.existentialDeposit || new BigNumber(0);

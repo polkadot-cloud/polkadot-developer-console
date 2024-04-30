@@ -10,6 +10,7 @@ import type {
 } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
 import { splitChainStateKey } from './util';
+import type { OwnerId } from 'model/Api/types';
 
 export class ChainState {
   // ------------------------------------------------------
@@ -17,7 +18,7 @@ export class ChainState {
   // ------------------------------------------------------
 
   // The associated owner for this chain state instance.
-  #ownerId: number;
+  #ownerId: OwnerId;
 
   // Chain state subscription results, keyed by subscription key.
   subscriptions: Record<string, AnyJson> = {};
@@ -32,7 +33,7 @@ export class ChainState {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(ownerId: number) {
+  constructor(ownerId: OwnerId) {
     this.#ownerId = ownerId;
   }
 

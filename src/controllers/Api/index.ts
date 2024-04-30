@@ -3,6 +3,7 @@
 
 import type { ChainId } from 'config/networks';
 import { Api } from 'model/Api';
+import type { OwnerId } from 'model/Api/types';
 
 export class ApiController {
   // ------------------------------------------------------
@@ -10,7 +11,7 @@ export class ApiController {
   // ------------------------------------------------------
 
   // The currently instantiated API instances, keyed by ownerId.
-  static instances: Record<string, Api> = {};
+  static instances: Record<OwnerId, Api> = {};
 
   // ------------------------------------------------------
   // Api instance methods.
@@ -18,7 +19,7 @@ export class ApiController {
 
   // Instantiate a new `Api` instance with the supplied owner, chainId and endpoint.
   static async instantiate(
-    ownerId: number,
+    ownerId: OwnerId,
     chainId: ChainId,
     endpoint: string
   ) {
@@ -35,7 +36,7 @@ export class ApiController {
   }
 
   // Gracefully disconnect and then destroy an api instance.
-  static async destroy(ownerId: number) {
+  static async destroy(ownerId: OwnerId) {
     const api = this.instances[ownerId];
     if (api) {
       await api.disconnect(true);

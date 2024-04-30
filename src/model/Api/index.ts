@@ -10,6 +10,7 @@ import type {
   APIChainSpecVersion,
   EventStatus,
   ErrDetail,
+  OwnerId,
 } from './types';
 import { MetadataController } from 'controllers/Metadata';
 import { SubscriptionsController } from 'controllers/Subscriptions';
@@ -22,7 +23,7 @@ export class Api {
   // ------------------------------------------------------
 
   // The associated owner for this api instance.
-  #ownerId: number;
+  #ownerId: OwnerId;
 
   // The supplied chain id.
   #chainId: ChainId;
@@ -73,7 +74,7 @@ export class Api {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(ownerId: number, chainId: ChainId, endpoint: string) {
+  constructor(ownerId: OwnerId, chainId: ChainId, endpoint: string) {
     this.#ownerId = ownerId;
     this.#chainId = chainId;
     this.#rpcEndpoint = endpoint;
@@ -235,7 +236,7 @@ export class Api {
   ) {
     const detail: APIStatusEventDetail = {
       event,
-      tabId: this.ownerId,
+      ownerId: this.ownerId,
       chainId: this.chainId,
     };
     if (options?.err) {

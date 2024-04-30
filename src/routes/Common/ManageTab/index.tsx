@@ -15,6 +15,7 @@ import { useApi } from 'contexts/Api';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import { SubHeadingWrapper } from './Wrappers';
 import { isDirectoryId } from 'config/networks/Utils';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const ManageTab = () => {
   const { getApiStatus } = useApi();
@@ -30,7 +31,7 @@ export const ManageTab = () => {
   } = useTabs();
 
   const activeTab = getTab(activeTabId);
-  const apiStatus = getApiStatus(activeTabId);
+  const apiStatus = getApiStatus(tabIdToOwnerId(activeTabId));
   const showDisconnect = ['ready', 'connected', 'connecting'].includes(
     apiStatus
   );
@@ -113,7 +114,7 @@ export const ManageTab = () => {
                     )
                   ) {
                     setTabForceDisconnect(activeTabId, true);
-                    ApiController.destroy(activeTabId);
+                    ApiController.destroy(tabIdToOwnerId(activeTabId));
                     setActivePage(0);
                   }
                 }}

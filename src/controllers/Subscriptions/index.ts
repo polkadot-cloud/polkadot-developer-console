@@ -1,6 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
+import type { OwnerId } from 'model/Api/types';
 import type { ChainSubscriptions, Subscription } from './types';
 
 // A class to manage subscriptions.
@@ -11,20 +12,20 @@ export class SubscriptionsController {
   // ------------------------------------------------------
 
   // Subscription objects, keyed by a ownerId.
-  static #subs: Partial<Record<string, ChainSubscriptions>> = {};
+  static #subs: Partial<Record<OwnerId, ChainSubscriptions>> = {};
 
   // ------------------------------------------------------
   // Getters.
   // ------------------------------------------------------
 
   // Gets all subscriptions for an owner.
-  static getAll(ownerId: number): ChainSubscriptions | undefined {
+  static getAll(ownerId: OwnerId): ChainSubscriptions | undefined {
     return this.#subs[String(ownerId)];
   }
 
   // Get a subscription by ownerId and subscriptionId.
   static get(
-    ownerId: number,
+    ownerId: OwnerId,
     subscriptionId: string
   ): Subscription | undefined {
     return this.#subs[String(ownerId)]?.[subscriptionId] || undefined;
@@ -36,7 +37,7 @@ export class SubscriptionsController {
 
   // Sets a new subscription for an owner.
   static set(
-    ownerId: number,
+    ownerId: OwnerId,
     subscriptionId: string,
     subscription: Subscription
   ): void {
@@ -59,7 +60,7 @@ export class SubscriptionsController {
   // ------------------------------------------------------
 
   // Unsubscribe from a subscription and remove it from class state.
-  static async remove(ownerId: number, subscriptionId: string): Promise<void> {
+  static async remove(ownerId: OwnerId, subscriptionId: string): Promise<void> {
     if (this.#subs[String(ownerId)]) {
       try {
         delete this.#subs[String(ownerId)]![subscriptionId];

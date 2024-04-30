@@ -21,6 +21,7 @@ import { useApi } from 'contexts/Api';
 import type { AccountBalances } from 'model/AccountBalances';
 import type { BalanceLock } from 'model/AccountBalances/types';
 import BigNumber from 'bignumber.js';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const Accounts = createContext<AccountsContextInterface>(
   defaultAccountsContext
@@ -34,8 +35,10 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
   const { getChainSpec, getApiStatus } = useApi();
   const { getExtensionAccounts } = useExtensionAccounts();
 
-  const apiStatus = getApiStatus(selectedTabId);
-  const chainSpec = getChainSpec(selectedTabId);
+  const ownerId = tabIdToOwnerId(selectedTabId);
+
+  const apiStatus = getApiStatus(ownerId);
+  const chainSpec = getChainSpec(ownerId);
 
   const accounts =
     chainSpec && chainSpec.chain
@@ -58,8 +61,8 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
   // Check all accounts have been synced. App-wide syncing state for all accounts.
   const newAccountBalanceCallback = (e: Event) => {
     if (isCustomEvent(e)) {
-      const { ownerId, address, balance } = e.detail;
-      if (ownerId !== selectedTabId) {
+      const { ownerId: eventOwnerId, address, balance } = e.detail;
+      if (eventOwnerId !== ownerId) {
         return;
       }
 
@@ -76,7 +79,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
 
   const handleSyncAccounts = () => {
     const subscription = SubscriptionsController?.get(
-      selectedTabId,
+      ownerId,
       'accountBalances'
     );
     if (subscription) {
@@ -126,7 +129,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
     setActiveBalances(
       (
         SubscriptionsController?.get(
-          selectedTabId,
+          ownerId,
           'accountBalances'
         ) as AccountBalances
       )?.balances || {}

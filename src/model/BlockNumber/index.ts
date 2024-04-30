@@ -5,6 +5,7 @@ import type { VoidFn } from '@polkadot/api/types';
 import type { ChainId } from 'config/networks';
 import { ApiController } from 'controllers/Api';
 import type { Unsubscribable } from 'controllers/Subscriptions/types';
+import type { OwnerId } from 'model/Api/types';
 
 export class BlockNumber implements Unsubscribable {
   // ------------------------------------------------------
@@ -12,7 +13,7 @@ export class BlockNumber implements Unsubscribable {
   // ------------------------------------------------------
 
   // The associated owner for this block number instance.
-  #ownerId: number;
+  #ownerId: OwnerId;
 
   // The supplied chain id.
   #chainId: ChainId;
@@ -27,7 +28,7 @@ export class BlockNumber implements Unsubscribable {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(ownerId: number, chainId: ChainId) {
+  constructor(ownerId: OwnerId, chainId: ChainId) {
     this.#ownerId = ownerId;
     this.#chainId = chainId;
 

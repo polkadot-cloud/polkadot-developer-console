@@ -8,13 +8,14 @@ import { useTabs } from 'contexts/Tabs';
 import { Chain } from 'routes/Chain';
 import { Default } from 'routes/Home';
 import { useActiveTabId } from 'contexts/ActiveTab';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const Router = () => {
   const { getTab } = useTabs();
   const { getApiStatus } = useApi();
   const activeTabId = useActiveTabId();
 
-  const apiStatus = getApiStatus(activeTabId);
+  const apiStatus = getApiStatus(tabIdToOwnerId(activeTabId));
   const activeTab = getTab(activeTabId);
 
   // Non disconnected API statuses.

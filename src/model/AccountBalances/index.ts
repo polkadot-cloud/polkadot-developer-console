@@ -8,6 +8,7 @@ import type { ChainId } from 'config/networks';
 import { ApiController } from 'controllers/Api';
 import type { Balances } from './types';
 import type { Unsubscribable } from 'controllers/Subscriptions/types';
+import type { OwnerId } from 'model/Api/types';
 
 export class AccountBalances implements Unsubscribable {
   // ------------------------------------------------------
@@ -18,7 +19,7 @@ export class AccountBalances implements Unsubscribable {
   #accounts: string[] = [];
 
   // The associated owner for this block number instance.
-  #ownerId: number;
+  #ownerId: OwnerId;
 
   // The supplied chain id.
   #chainId: ChainId;
@@ -33,7 +34,7 @@ export class AccountBalances implements Unsubscribable {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(ownerId: number, chainId: ChainId) {
+  constructor(ownerId: OwnerId, chainId: ChainId) {
     this.#ownerId = ownerId;
     this.#chainId = chainId;
   }

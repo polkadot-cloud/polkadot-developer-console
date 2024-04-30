@@ -11,11 +11,12 @@ import { PageContent } from 'library/PageContent';
 import { Accounts } from './Accounts';
 import { useActiveTabId } from 'contexts/ActiveTab';
 import { useApi } from 'contexts/Api';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const { getChainSpec } = useApi();
   const activeTabId = useActiveTabId();
-  const chainSpec = getChainSpec(activeTabId);
+  const chainSpec = getChainSpec(tabIdToOwnerId(activeTabId));
 
   const balancesPaleltExists = chainSpec?.metadata?.palletExists('Balances');
 
