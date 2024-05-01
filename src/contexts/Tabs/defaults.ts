@@ -55,7 +55,7 @@ export const defaultTabs: Tabs = [
       units: 10,
       unit: 'DOT',
       api: {
-        instanceId: 0,
+        instanceIndex: 0,
       },
     },
     name: 'Polkadot Relay Chain',
@@ -73,7 +73,7 @@ export const defaultTabs: Tabs = [
       units: 10,
       unit: 'KSM',
       api: {
-        instanceId: 0,
+        instanceIndex: 0,
       },
     },
     name: 'Kusama Relay Chain',
@@ -91,7 +91,7 @@ export const defaultTabs: Tabs = [
       units: 10,
       unit: 'ROC',
       api: {
-        instanceId: 0,
+        instanceIndex: 0,
       },
     },
     name: 'Rococo Relay Chain',

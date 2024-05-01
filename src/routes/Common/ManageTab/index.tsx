@@ -110,7 +110,10 @@ export const ManageTab = () => {
                   ) {
                     if (tab?.chain) {
                       setTabForceDisconnect(tabId, true);
-                      ApiController.destroy(ownerId, tab.chain.api.instanceId);
+                      ApiController.destroy(
+                        ownerId,
+                        tab.chain.api.instanceIndex
+                      );
                     }
                   }
                 }}

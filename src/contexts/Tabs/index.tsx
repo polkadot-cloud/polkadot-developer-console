@@ -329,7 +329,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       ...chainMeta,
       id: chainId,
       endpoint,
-      api: { instanceId: 0 },
+      api: { instanceIndex: 0 },
     };
 
     const newTabs = [...tabs].map((tab) =>
@@ -375,7 +375,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const tab = getTab(tabId);
 
     if (tab && tab.chain) {
-      ApiController.destroy(ownerId, tab.chain.api.instanceId);
+      ApiController.destroy(ownerId, tab.chain.api.instanceIndex);
       ChainStateController.destroy(ownerId);
     }
   };

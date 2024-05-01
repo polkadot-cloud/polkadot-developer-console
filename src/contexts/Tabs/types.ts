@@ -24,7 +24,7 @@ export interface TabChainData {
   units: number;
   unit: string;
   api: {
-    instanceId: number;
+    instanceIndex: number;
   };
 }
 
