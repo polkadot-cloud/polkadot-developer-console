@@ -31,7 +31,7 @@ export const ActiveTabProvider = ({ children }: { children: ReactNode }) => {
       value={{
         tabId: activeTabId,
         ownerId,
-        apiInstanceId: `${ownerId}_${0}`, // NOTE: A tab's instance index is always 0; there is no ned to fetch it from tab metadata.
+        apiInstanceId: `${ownerId}_0`, // NOTE: A tab's instance index is always 0; there is no ned to fetch it from tab metadata.
         tab,
       }}
     >
