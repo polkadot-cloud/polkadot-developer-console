@@ -43,6 +43,7 @@ export class ApiController {
 
     this.#instances[ownerId][instanceIndex] = new Api(
       ownerId,
+      instanceIndex,
       chainId,
       endpoint
     );

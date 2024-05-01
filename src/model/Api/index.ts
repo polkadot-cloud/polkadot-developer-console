@@ -25,6 +25,9 @@ export class Api {
   // The associated owner for this api instance.
   #ownerId: OwnerId;
 
+  // The instance id for this api instance.
+  #instanceId: string;
+
   // The supplied chain id.
   #chainId: ChainId;
 
@@ -54,6 +57,10 @@ export class Api {
     return this.#ownerId;
   }
 
+  get instanceId() {
+    return this.#instanceId;
+  }
+
   get chainId() {
     return this.#chainId;
   }
@@ -74,8 +81,14 @@ export class Api {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(ownerId: OwnerId, chainId: ChainId, endpoint: string) {
+  constructor(
+    ownerId: OwnerId,
+    instanceIndex: number,
+    chainId: ChainId,
+    endpoint: string
+  ) {
     this.#ownerId = ownerId;
+    this.#instanceId = `${ownerId}_${instanceIndex}`;
     this.#chainId = chainId;
     this.#rpcEndpoint = endpoint;
   }
