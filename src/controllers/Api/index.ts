@@ -18,6 +18,10 @@ export class ApiController {
     return this.#instances[ownerId][instanceIndex].api;
   }
 
+  static get instances() {
+    return this.#instances;
+  }
+
   // ------------------------------------------------------
   // Api instance methods.
   // ------------------------------------------------------
