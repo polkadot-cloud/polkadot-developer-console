@@ -3,7 +3,7 @@
 
 import type BigNumber from 'bignumber.js';
 import type { ChainId } from 'config/networks';
-import type { OwnerId } from 'model/Api/types';
+import type { ApiInstanceId, OwnerId } from 'model/Api/types';
 
 export interface Balances {
   nonce?: number;
@@ -25,6 +25,7 @@ export interface BalanceLock {
 
 export interface AccountBalanceEventDetail {
   ownerId: OwnerId;
+  instanceId: ApiInstanceId;
   chainId: ChainId;
   address: string;
   balance: Balances;

@@ -25,6 +25,7 @@ export type ChainSpecState = Record<OwnerId, APIChainSpec>;
 export interface APIStatusEventDetail {
   event: EventStatus;
   ownerId: OwnerId;
+  instanceId: ApiInstanceId;
   chainId: ChainId;
   err?: ErrDetail;
 }

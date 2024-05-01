@@ -117,7 +117,8 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {
     if (isCustomEvent(e)) {
-      const { ownerId, chainId, event, err } = e.detail as APIStatusEventDetail;
+      const { ownerId, instanceId, chainId, event, err } =
+        e.detail as APIStatusEventDetail;
 
       switch (event) {
         case 'ready':
@@ -131,16 +132,16 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
           // per owner. This needs to change for parachain setup. TODO: SubscriptionsController to
           // handle multiple chainIds for owners.
           SubscriptionsController.set(
-            ownerId,
+            instanceId,
             'blockNumber',
-            new BlockNumber(ownerId, chainId)
+            new BlockNumber(ownerId, instanceId, chainId)
           );
 
           // Initialise account balance subscriptions.
           SubscriptionsController.set(
-            ownerId,
+            instanceId,
             'accountBalances',
-            new AccountBalances(ownerId, chainId)
+            new AccountBalances(ownerId, instanceId, chainId)
           );
 
           break;

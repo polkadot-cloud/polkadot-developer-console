@@ -30,7 +30,7 @@ export const Accounts = createContext<AccountsContextInterface>(
 export const useAccounts = () => useContext(Accounts);
 
 export const AccountsProvider = ({ children }: { children: ReactNode }) => {
-  const { tabId } = useActiveTab();
+  const { tabId, apiInstanceId } = useActiveTab();
   const { getVaultAccounts } = useVaultAccounts();
   const { getChainSpec, getApiStatus } = useApi();
   const { getExtensionAccounts } = useExtensionAccounts();
@@ -79,7 +79,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
 
   const handleSyncAccounts = () => {
     const subscription = SubscriptionsController?.get(
-      ownerId,
+      apiInstanceId,
       'accountBalances'
     );
     if (subscription) {

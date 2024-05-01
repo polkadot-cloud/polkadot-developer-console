@@ -20,8 +20,8 @@ import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { BlockNumber } from 'model/BlockNumber';
 
 export const Overview = () => {
-  const { tab, tabId, ownerId } = useActiveTab();
   const { getApiStatus, getChainSpec } = useApi();
+  const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
 
   const apiStatus = getApiStatus(ownerId);
   const chainSpec = getChainSpec(ownerId);
@@ -50,7 +50,7 @@ export const Overview = () => {
 
   // The latest received block number.
   const [blockNumber, setBlockNumber] = useState<string>(
-    (SubscriptionsController.get(ownerId, 'blockNumber') as BlockNumber)
+    (SubscriptionsController.get(apiInstanceId, 'blockNumber') as BlockNumber)
       ?.blockNumber || '0'
   );
 
@@ -70,7 +70,7 @@ export const Overview = () => {
   // Update block number on tab change.
   useEffect(() => {
     setBlockNumber(
-      (SubscriptionsController.get(ownerId, 'blockNumber') as BlockNumber)
+      (SubscriptionsController.get(apiInstanceId, 'blockNumber') as BlockNumber)
         ?.blockNumber || '0'
     );
   }, [tabId]);

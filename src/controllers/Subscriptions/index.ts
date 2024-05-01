@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { OwnerId } from 'model/Api/types';
+import type { ApiInstanceId } from 'model/Api/types';
 import type { ChainSubscriptions, Subscription } from './types';
 
 // A class to manage subscriptions.
@@ -11,48 +11,48 @@ export class SubscriptionsController {
   // Class members.
   // ------------------------------------------------------
 
-  // Subscription objects, keyed by a ownerId.
-  static #subs: Partial<Record<OwnerId, ChainSubscriptions>> = {};
+  // Subscription objects, keyed by an apiInstanceId.
+  static #subs: Partial<Record<ApiInstanceId, ChainSubscriptions>> = {};
 
   // ------------------------------------------------------
   // Getters.
   // ------------------------------------------------------
 
-  // Gets all subscriptions for an owner.
-  static getAll(ownerId: OwnerId): ChainSubscriptions | undefined {
-    return this.#subs[String(ownerId)];
+  // Gets all subscriptions for an api instance.
+  static getAll(instanceId: ApiInstanceId): ChainSubscriptions | undefined {
+    return this.#subs[instanceId];
   }
 
-  // Get a subscription by ownerId and subscriptionId.
+  // Get a subscription by api instance and subscriptionId.
   static get(
-    ownerId: OwnerId,
+    instanceId: ApiInstanceId,
     subscriptionId: string
   ): Subscription | undefined {
-    return this.#subs[String(ownerId)]?.[subscriptionId] || undefined;
+    return this.#subs[instanceId]?.[subscriptionId] || undefined;
   }
 
   // ------------------------------------------------------
   // Setter.
   // ------------------------------------------------------
 
-  // Sets a new subscription for an owner.
+  // Sets a new subscription for an api instance.
   static set(
-    ownerId: OwnerId,
+    instanceId: ApiInstanceId,
     subscriptionId: string,
     subscription: Subscription
   ): void {
     // Ignore if there is already a subscription for this tabId and subscriptionId.
-    if (this.#subs?.[String(ownerId)]?.[subscriptionId]) {
+    if (this.#subs?.[instanceId]?.[subscriptionId]) {
       return;
     }
 
     // Create a new subscriptions record for the tab if one doesn't exist.
-    if (!this.#subs[ownerId]) {
-      this.#subs[String(ownerId)] = {};
+    if (!this.#subs[instanceId]) {
+      this.#subs[instanceId] = {};
     }
 
-    // NOTE: We know for certain that `this.#subs[tabId]` is defined here.
-    this.#subs[String(ownerId)]![subscriptionId] = subscription;
+    // NOTE: We know for certain that `this.#subs[instanceId]` is defined here.
+    this.#subs[instanceId]![subscriptionId] = subscription;
   }
 
   // ------------------------------------------------------
@@ -60,10 +60,13 @@ export class SubscriptionsController {
   // ------------------------------------------------------
 
   // Unsubscribe from a subscription and remove it from class state.
-  static async remove(ownerId: OwnerId, subscriptionId: string): Promise<void> {
-    if (this.#subs[String(ownerId)]) {
+  static async remove(
+    instanceId: ApiInstanceId,
+    subscriptionId: string
+  ): Promise<void> {
+    if (this.#subs[instanceId]) {
       try {
-        delete this.#subs[String(ownerId)]![subscriptionId];
+        delete this.#subs[instanceId]![subscriptionId];
       } catch (e) {
         // Silently fail if the subscription doesn't exist.
       }

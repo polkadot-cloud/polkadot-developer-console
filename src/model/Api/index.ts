@@ -182,6 +182,7 @@ export class Api {
       new CustomEvent('new-chain-spec', {
         detail: {
           ownerId: this.ownerId,
+          instanceId: this.instanceId,
           spec: this.chainSpec,
           consts: this.consts,
         },
@@ -251,6 +252,7 @@ export class Api {
     const detail: APIStatusEventDetail = {
       event,
       ownerId: this.ownerId,
+      instanceId: this.instanceId,
       chainId: this.chainId,
     };
     if (options?.err) {
@@ -266,13 +268,13 @@ export class Api {
 
   // Unsubscribe from all active subscriptions associated with this API instance.
   unsubscribe = () => {
-    const subs = SubscriptionsController.getAll(this.ownerId);
+    const subs = SubscriptionsController.getAll(this.instanceId);
 
     if (subs) {
       Object.entries(subs).forEach(([subscriptionId, subscription]) => {
         subscription.unsubscribe();
         // Remove subscription from controller.
-        SubscriptionsController.remove(this.ownerId, subscriptionId);
+        SubscriptionsController.remove(this.instanceId, subscriptionId);
       });
     }
   };
