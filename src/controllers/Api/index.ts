@@ -65,7 +65,21 @@ export class ApiController {
       ChainStateController.destroy(`${ownerId}_${instanceIndex}`);
 
       await instance.disconnect(true);
-      delete this.#instances[ownerId];
+      delete this.#instances[ownerId][instanceIndex];
     }
+  }
+
+  // Destroy all api instances associated with an owner.
+  static async destroyAll(ownerId: OwnerId) {
+    const instances = this.#instances[ownerId];
+
+    if (instances) {
+      await Promise.all(
+        Object.keys(instances).map((instanceIndex) =>
+          this.destroy(ownerId, parseInt(instanceIndex))
+        )
+      );
+    }
+    delete this.#instances[ownerId];
   }
 }

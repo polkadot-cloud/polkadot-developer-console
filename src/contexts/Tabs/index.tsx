@@ -373,7 +373,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const tab = getTab(tabId);
 
     if (tab && tab.chain) {
-      ApiController.destroy(ownerId, tab.chain.api.instanceIndex);
+      ApiController.destroyAll(ownerId);
     }
   };
 
