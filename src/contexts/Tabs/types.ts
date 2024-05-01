@@ -23,6 +23,9 @@ export interface TabChainData {
   ss58: number;
   units: number;
   unit: string;
+  api: {
+    instanceId: number;
+  };
 }
 
 export interface ChainMeta {

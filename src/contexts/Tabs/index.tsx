@@ -325,7 +325,12 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       chainMeta = localChain || defaultCustomEndpointChainMeta;
     }
 
-    const chainData = { id: chainId, endpoint, ...chainMeta };
+    const chainData = {
+      ...chainMeta,
+      id: chainId,
+      endpoint,
+      api: { instanceId: 0 },
+    };
 
     const newTabs = [...tabs].map((tab) =>
       tab.id === tabId

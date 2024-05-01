@@ -54,6 +54,9 @@ export const defaultTabs: Tabs = [
       ss58: 0,
       units: 10,
       unit: 'DOT',
+      api: {
+        instanceId: 0,
+      },
     },
     name: 'Polkadot Relay Chain',
     forceDisconnect: false,
@@ -69,6 +72,9 @@ export const defaultTabs: Tabs = [
       ss58: 2,
       units: 10,
       unit: 'KSM',
+      api: {
+        instanceId: 0,
+      },
     },
     name: 'Kusama Relay Chain',
     forceDisconnect: false,
@@ -84,6 +90,9 @@ export const defaultTabs: Tabs = [
       ss58: 0,
       units: 10,
       unit: 'ROC',
+      api: {
+        instanceId: 0,
+      },
     },
     name: 'Rococo Relay Chain',
     forceDisconnect: false,
