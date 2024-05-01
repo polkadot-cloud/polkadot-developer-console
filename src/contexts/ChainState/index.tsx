@@ -73,12 +73,13 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     if (isCustomEvent(e)) {
       const {
         ownerId: detailOwnerId,
+        instanceId,
         type,
         subscriptionKey,
         result,
       } = e.detail;
 
-      if (ownerId === detailOwnerId) {
+      if (ownerId === detailOwnerId && apiInstanceId === instanceId) {
         setChainStateItem(type, subscriptionKey, result);
       }
     }

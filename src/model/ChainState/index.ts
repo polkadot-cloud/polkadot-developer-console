@@ -86,6 +86,7 @@ export class ChainState {
                   new CustomEvent('callback-new-chain-state', {
                     detail: {
                       ownerId: this.#ownerId,
+                      instanceId: this.#instanceId,
                       type,
                       subscriptionKey,
                       result,

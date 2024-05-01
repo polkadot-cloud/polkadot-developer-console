@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
-import type { OwnerId } from 'model/Api/types';
+import type { ApiInstanceId, OwnerId } from 'model/Api/types';
 
 export type SubscriptionConfig =
   | RawStorageSubscriptionConfig
@@ -35,6 +35,7 @@ export interface ConstantResult {
 
 export interface ChainStateEventDetail {
   ownerId: OwnerId;
+  instanceId: ApiInstanceId;
   type: StorageSubscriptionType;
   key: string;
   value: AnyJson;

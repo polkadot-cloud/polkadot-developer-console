@@ -72,7 +72,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
   // Gets an api status, keyed by owner.
   const getApiStatus = (instanceId: ApiInstanceId): ApiStatus =>
-    apiStatus[instanceId];
+    apiStatus?.[instanceId] || 'disconnected';
 
   // Gets whether an api is active (not disconnected or undefined).
   const getApiActive = (instanceId: ApiInstanceId): boolean => {

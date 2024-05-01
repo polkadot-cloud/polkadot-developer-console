@@ -61,8 +61,8 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
   // Check all accounts have been synced. App-wide syncing state for all accounts.
   const newAccountBalanceCallback = (e: Event) => {
     if (isCustomEvent(e)) {
-      const { ownerId: eventOwnerId, address, balance } = e.detail;
-      if (eventOwnerId !== ownerId) {
+      const { ownerId: eventOwnerId, instanceId, address, balance } = e.detail;
+      if (eventOwnerId !== ownerId && instanceId === apiInstanceId) {
         return;
       }
 
