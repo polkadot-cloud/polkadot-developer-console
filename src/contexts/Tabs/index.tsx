@@ -364,13 +364,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     const ownerId = tabIdToOwnerId(tabId);
-    const {
-      id,
-      endpoint,
-      api: { instanceId },
-    } = chain;
-
-    await ApiController.instantiate(ownerId, instanceId, id, endpoint);
+    const { id, endpoint } = chain;
+    await ApiController.instantiate(ownerId, id, endpoint);
     ChainStateController.instantiate(ownerId);
   };
 

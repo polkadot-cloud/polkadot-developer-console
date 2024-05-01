@@ -11,7 +11,12 @@ export class ApiController {
   // ------------------------------------------------------
 
   // The currently instantiated API instances, keyed by ownerId.
-  static instances: Record<OwnerId, Api[]> = {};
+  static instances: Record<OwnerId, Record<number, Api>> = {};
+
+  // Get an instance `api` by ownerId and instanceId.
+  static getInstance(ownerId: OwnerId, instanceId: number) {
+    return this.instances[ownerId][instanceId].api;
+  }
 
   // ------------------------------------------------------
   // Api instance methods.
@@ -20,21 +25,20 @@ export class ApiController {
   // Instantiate a new `Api` instance with the supplied owner, chainId and endpoint.
   static async instantiate(
     ownerId: OwnerId,
-    instanceId: number,
     chainId: ChainId,
     endpoint: string
   ) {
-    // NOTE: This method should only be called to connect to a new instance. We therefore assume we
-    // want to disconnect from existing instances for this tab. The following condition will only be
-    // met if there is an existing stale instance in class state, or if this method is used
-    // incorrectly.
-    if (this.instances?.[ownerId]?.[instanceId]) {
-      await this.destroy(ownerId, instanceId);
-    }
-
+    let instanceId = 0;
     // Initialise array of instances for this ownerId if it doesn't exist.
     if (!this.instances[ownerId]) {
-      this.instances[ownerId] = [];
+      this.instances[ownerId] = {};
+    } else {
+      // If instances already exist for this owner, get largest instanceId and increment it.
+      instanceId =
+        Object.keys(this.instances[ownerId] || {}).reduce(
+          (acc, id) => Math.max(acc, parseInt(id, acc)),
+          0
+        ) + 1;
     }
 
     this.instances[ownerId][instanceId] = new Api(ownerId, chainId, endpoint);
