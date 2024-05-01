@@ -7,13 +7,22 @@ import type { MetadataVersion } from 'model/Metadata/types';
 
 export interface ChainUiContextInterface {
   chainUi: ChainUiState;
-  getChainUi: (tabId: number, section: keyof ChainUiItem) => ChainUiItemInner;
-  setChainUiItem: (
+  getChainUi: (
     tabId: number,
-    section: keyof ChainUiItem,
+    namespace: keyof ChainUiNamespace
+  ) => ChainUiNamespaceInner;
+  setChainUiNamespace: (
+    tabId: number,
+    namespace: keyof ChainUiNamespace,
     key: string,
     value: string | boolean
   ) => void;
+  isChainUiValueEmpty: (
+    tabId: number,
+    namespace: keyof ChainUiNamespace,
+    key: keyof ChainUiNamespaceInner
+  ) => boolean;
+  destroyTabChainUi: (tabId: number) => void;
   getPalletVersions: (tabId: number) => Record<string, string> | undefined;
   fetchPalletVersions: (
     tabId: number,
@@ -25,11 +34,6 @@ export interface ChainUiContextInterface {
     tabId: number,
     section: ChainStateSection
   ) => void;
-  isChainUiValueEmpty: (
-    tabId: number,
-    section: keyof ChainUiItem,
-    key: keyof ChainUiItemInner
-  ) => boolean;
   getInputArgs: (tabId: number, section: InputNamespace) => InputArgs | null;
   getInputArgsAtKey: (
     tabId: number,
@@ -43,25 +47,24 @@ export interface ChainUiContextInterface {
     arg: InputArg
   ) => void;
   resetInputArgSection: (tabId: number, section: InputNamespace) => void;
-  destroyTabChainUi: (tabId: number) => void;
 }
 
 // Types associated with chain ui.
 // -------------------------------
 
 // Chain state object used for React state.
-export type ChainUiState = Record<number, ChainUiItem>;
+export type ChainUiState = Record<number, ChainUiNamespace>;
 
 // Chain UI configs for each of the interfaces (storage, constants, calls, raw).
-export interface ChainUiItem {
-  storage: ChainUiItemInner;
-  constants: ChainUiItemInner;
-  calls: ChainUiItemInner;
-  raw: ChainUiItemInner;
+export interface ChainUiNamespace {
+  storage: ChainUiNamespaceInner;
+  constants: ChainUiNamespaceInner;
+  calls: ChainUiNamespaceInner;
+  raw: ChainUiNamespaceInner;
 }
 
 // A single chain UI config.
-export interface ChainUiItemInner {
+export interface ChainUiNamespaceInner {
   // The selected item.
   selected: string;
   // The search term.

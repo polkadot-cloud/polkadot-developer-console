@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
-import type { ChainUiContextInterface, ChainUiItem } from './types';
+import type { ChainUiContextInterface, ChainUiNamespace } from './types';
 
 export const defaultChainUiState = {};
 
@@ -15,7 +15,7 @@ export const defaultChainUiInner = {
   palletSelectOnSearch: true,
 };
 
-export const defaultChainUiItem: ChainUiItem = {
+export const defaultChainUiNamespace: ChainUiNamespace = {
   storage: defaultChainUiInner,
   constants: defaultChainUiInner,
   calls: defaultChainUiInner,
@@ -24,16 +24,16 @@ export const defaultChainUiItem: ChainUiItem = {
 
 export const defaultChainContext: ChainUiContextInterface = {
   chainUi: defaultChainUiState,
-  getChainUi: (tabId, section) => defaultChainUiInner,
-  setChainUiItem: (tabId, section, key, value) => {},
   getPalletVersions: (tabId) => undefined,
+  getChainUi: (tabId, namespace) => defaultChainUiInner,
+  setChainUiNamespace: (tabId, namespace, key, value) => {},
+  isChainUiValueEmpty: (tabId, namespace, key) => true,
+  destroyTabChainUi: (tabId) => {},
   fetchPalletVersions: async (tabId, metadata, apiInstance) => {},
   getActiveChainStateSection: (tabId) => 'storage',
   setActiveChainStateSection: (tabId, section) => {},
-  isChainUiValueEmpty: (tabId, section, key) => true,
   getInputArgs: (tabId, section) => null,
   getInputArgsAtKey: (tabId, section, key) => undefined,
   setInputArgAtKey: (tabId, section, key, value) => {},
   resetInputArgSection: (tabId, section) => {},
-  destroyTabChainUi: (tabId) => {},
 };

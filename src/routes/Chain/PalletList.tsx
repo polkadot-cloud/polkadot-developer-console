@@ -22,7 +22,7 @@ export const PalletList = ({
   onSelect,
 }: PalletListProps) => {
   const { tabId } = useActiveTab();
-  const { getPalletVersions, getChainUi, setChainUiItem } = useChainUi();
+  const { getPalletVersions, getChainUi, setChainUiNamespace } = useChainUi();
 
   const palletVersions = getPalletVersions(tabId) || {};
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -42,7 +42,7 @@ export const PalletList = ({
 
   // Handle pallet search change.
   const handlePalletSearchChange = (value: string) => {
-    setChainUiItem(tabId, chainUiSection, 'palletSearch', value);
+    setChainUiNamespace(tabId, chainUiSection, 'palletSearch', value);
   };
 
   // Gets a filtered list by applying a search term on pallet names, if not empty.
@@ -62,7 +62,7 @@ export const PalletList = ({
     listOpenRef: palletsOpenRef,
     activeValue: activePallet,
     onUpdate: (newItem: string) => {
-      setChainUiItem(tabId, chainUiSection, 'pallet', newItem);
+      setChainUiNamespace(tabId, chainUiSection, 'pallet', newItem);
     },
   });
 

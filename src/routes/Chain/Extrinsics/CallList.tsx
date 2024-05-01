@@ -19,7 +19,8 @@ export const CallList = ({
   inputNamespace,
 }: CallListProps) => {
   const { tabId } = useActiveTab();
-  const { getChainUi, setChainUiItem, resetInputArgSection } = useChainUi();
+  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
+    useChainUi();
 
   const chainUiSection = 'calls';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -34,7 +35,7 @@ export const CallList = ({
 
   // Handle pallet search change.
   const handleCallSearchChange = (value: string) => {
-    setChainUiItem(tabId, chainUiSection, 'search', value);
+    setChainUiNamespace(tabId, chainUiSection, 'search', value);
   };
 
   // Filter calls based on search term, if selection is present.
@@ -115,7 +116,7 @@ export const CallList = ({
               key={`call_select_${name}`}
               className="option"
               onClick={() => {
-                setChainUiItem(tabId, chainUiSection, 'selected', name);
+                setChainUiNamespace(tabId, chainUiSection, 'selected', name);
                 setCallsOpen(false);
               }}
             >

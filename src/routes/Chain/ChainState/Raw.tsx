@@ -16,14 +16,14 @@ import { Results } from './Results';
 
 export const Raw = () => {
   const { tabId, ownerId } = useActiveTab();
-  const { getChainUi, setChainUiItem } = useChainUi();
+  const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUiSection = 'raw';
   const chainUi = getChainUi(tabId, chainUiSection);
 
   // Handle storage key change.
   const handleStorageKeyChange = (value: string) => {
-    setChainUiItem(tabId, chainUiSection, 'selected', value);
+    setChainUiNamespace(tabId, chainUiSection, 'selected', value);
   };
 
   // Handle storage key submission.
@@ -41,7 +41,7 @@ export const Raw = () => {
       args: [[value]],
     });
 
-    setChainUiItem(tabId, chainUiSection, 'selected', '');
+    setChainUiNamespace(tabId, chainUiSection, 'selected', '');
   };
 
   // Test raw storage key for timestamp.now():

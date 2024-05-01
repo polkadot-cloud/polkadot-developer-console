@@ -23,7 +23,7 @@ export const SearchInput = ({
   searchValue,
 }: SearchInputProps) => {
   const { tabId } = useActiveTab();
-  const { getChainUi, setChainUiItem, isChainUiValueEmpty } = useChainUi();
+  const { getChainUi, setChainUiNamespace, isChainUiValueEmpty } = useChainUi();
 
   const chainUi = chainUiSection
     ? getChainUi(tabId, chainUiSection)
@@ -60,7 +60,7 @@ export const SearchInput = ({
                 (searchValue && searchValue.length > 0)
               ) {
                 if (isChainUi) {
-                  setChainUiItem(
+                  setChainUiNamespace(
                     tabId,
                     chainUiSection,
                     chainUiKeys.searchKey,
@@ -86,7 +86,12 @@ export const SearchInput = ({
             }
 
             if (isChainUi) {
-              setChainUiItem(tabId, chainUiSection, chainUiKeys.searchKey, '');
+              setChainUiNamespace(
+                tabId,
+                chainUiSection,
+                chainUiKeys.searchKey,
+                ''
+              );
             }
           }}
         >
@@ -97,7 +102,7 @@ export const SearchInput = ({
         <button
           className={`icon ${chainUi[chainUiKeys.selectOnSearchKey] === true ? 'active' : ''}`}
           onClick={() => {
-            setChainUiItem(
+            setChainUiNamespace(
               tabId,
               chainUiSection,
               chainUiKeys.selectOnSearchKey,

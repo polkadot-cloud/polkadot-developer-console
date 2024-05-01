@@ -6,15 +6,15 @@ import { createContext, useContext, useRef, useState } from 'react';
 import {
   defaultChainContext,
   defaultChainUiInner,
-  defaultChainUiItem,
+  defaultChainUiNamespace,
   defaultChainUiState,
 } from './defaults';
 import type {
   ChainUiState,
   ChainUiContextInterface,
-  ChainUiItem,
+  ChainUiNamespace,
   PalletVersions,
-  ChainUiItemInner,
+  ChainUiNamespaceInner,
   ChainStateSections,
   ChainStateSection,
   InputNamespace,
@@ -73,21 +73,23 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   // Gets a ChainUi record by tabId.
   const getChainUi = (
     tabId: number,
-    section: keyof ChainUiItem
-  ): ChainUiItemInner => chainUi[tabId]?.[section] || defaultChainUiInner;
+    namespace: keyof ChainUiNamespace
+  ): ChainUiNamespaceInner =>
+    chainUi[tabId]?.[namespace] || defaultChainUiInner;
 
   // Sets a ChainUi record for a tabId and inner key.
-  const setChainUiItem = (
+  const setChainUiNamespace = (
     tabId: number,
-    section: keyof ChainUiItem,
+    namespace: keyof ChainUiNamespace,
     key: string,
     value: string | boolean
   ) => {
-    const currentChainUi = chainUi[tabId] || defaultChainUiItem;
-    const currentChainUiItem = currentChainUi[section] || defaultChainUiInner;
+    const currentChainUi = chainUi[tabId] || defaultChainUiNamespace;
+    const currentChainUiNamespace =
+      currentChainUi[namespace] || defaultChainUiInner;
 
     const newChainUiInner = {
-      ...currentChainUiItem,
+      ...currentChainUiNamespace,
       [key]: value,
       // Reset selected value if the pallet is being changed.
       selected:
@@ -95,21 +97,21 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
           ? ''
           : key === 'selected'
             ? value
-            : currentChainUiItem.selected,
+            : currentChainUiNamespace.selected,
       // Reset search value if the pallet is being changed.
       search:
         key === 'pallet'
           ? ''
           : key === 'search'
             ? value
-            : currentChainUiItem.search,
+            : currentChainUiNamespace.search,
     };
 
     setChainUi({
       ...chainUi,
       [tabId]: {
         ...currentChainUi,
-        [section]: newChainUiInner,
+        [namespace]: newChainUiInner,
       },
     });
   };
@@ -164,10 +166,10 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   // Check if a chainUI value is empty. For boolean types, return empty if false. This function should be used on strings, but for type safety booleans are also supported.
   const isChainUiValueEmpty = (
     tabId: number,
-    section: keyof ChainUiItem,
-    key: keyof ChainUiItemInner
+    namespace: keyof ChainUiNamespace,
+    key: keyof ChainUiNamespaceInner
   ): boolean => {
-    const chainUiItem = getChainUi(tabId, section);
+    const chainUiItem = getChainUi(tabId, namespace);
     const val = chainUiItem[key];
 
     if (typeof val === 'string') {
@@ -225,7 +227,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     }
     const updatedInputArgs = { ...inputArgsRef.current };
 
-    // Reset the input args for the given section and update state.
+    // Reset the input args for the given namespace and update state.
     updatedInputArgs[tabId][namespace] = {};
     setInputArgs(updatedInputArgs);
   };
@@ -255,7 +257,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
       value={{
         chainUi,
         getChainUi,
-        setChainUiItem,
+        setChainUiNamespace,
         getPalletVersions,
         fetchPalletVersions,
         isChainUiValueEmpty,

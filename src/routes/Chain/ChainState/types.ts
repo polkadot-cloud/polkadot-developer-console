@@ -4,7 +4,7 @@
 import type { AnyJson } from '@w3ux/utils/types';
 import type {
   ChainStateSection,
-  ChainUiItem,
+  ChainUiNamespace,
   InputNamespace,
 } from 'contexts/ChainUi/types';
 import type { StorageSubscriptionType } from 'model/ChainState/types';
@@ -22,7 +22,7 @@ export interface PalletData {
 export interface PalletListProps {
   pallets: PalletListItem[];
   activePallet: string | null;
-  chainUiSection: keyof ChainUiItem;
+  chainUiSection: keyof ChainUiNamespace;
   onSelect: (value: string) => void;
 }
 

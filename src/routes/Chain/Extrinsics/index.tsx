@@ -19,7 +19,7 @@ import type { InputNamespace } from 'contexts/ChainUi/types';
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
   const { tabId, ownerId } = useActiveTab();
-  const { getChainUi, setChainUiItem } = useChainUi();
+  const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUiSection = 'calls';
   const inputNamespace: InputNamespace = 'call';
@@ -88,7 +88,7 @@ export const Extrinsics = () => {
           pallets={pallets}
           chainUiSection={chainUiSection}
           onSelect={(value) => {
-            setChainUiItem(tabId, chainUiSection, 'pallet', value);
+            setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
           }}
         />
         <CallList

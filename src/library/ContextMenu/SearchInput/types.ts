@@ -3,7 +3,7 @@
 
 import type {
   ChainStateSection,
-  ChainUiItemInner,
+  ChainUiNamespaceInner,
 } from 'contexts/ChainUi/types';
 import type { ChangeEvent, RefObject } from 'react';
 
@@ -15,8 +15,8 @@ export interface SearchInputProps {
   onEscape: () => void;
   chainUiSection?: ChainStateSection;
   chainUiKeys?: {
-    searchKey: keyof ChainUiItemInner;
-    selectOnSearchKey: keyof ChainUiItemInner;
+    searchKey: keyof ChainUiNamespaceInner;
+    selectOnSearchKey: keyof ChainUiNamespaceInner;
   };
   searchValue?: string;
   setSearchValue?: (value: string) => void;

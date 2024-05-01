@@ -25,7 +25,8 @@ export const ChainStateList = ({
   subject,
 }: ChainStateListProps) => {
   const { tabId } = useActiveTab();
-  const { getChainUi, setChainUiItem, resetInputArgSection } = useChainUi();
+  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
+    useChainUi();
   const chainUi = getChainUi(tabId, chainUiSection);
 
   // Whether dropdown is open.
@@ -39,7 +40,7 @@ export const ChainStateList = ({
 
   // Handle search change.
   const handleSearchChange = (value: string) => {
-    setChainUiItem(tabId, chainUiSection, 'search', value);
+    setChainUiNamespace(tabId, chainUiSection, 'search', value);
   };
 
   // Gets a filtered list by applying a search term on list items, if not empty.
@@ -79,7 +80,7 @@ export const ChainStateList = ({
     listOpenRef: dropdownOpenRef,
     activeValue: activeItem,
     onUpdate: (newItem: string) => {
-      setChainUiItem(tabId, chainUiSection, 'selected', newItem);
+      setChainUiNamespace(tabId, chainUiSection, 'selected', newItem);
     },
   });
 
@@ -90,7 +91,7 @@ export const ChainStateList = ({
   useSelectFirst({
     isActive: chainUi['selectOnSearch'] === true,
     onSelect: (value) => {
-      setChainUiItem(tabId, chainUiSection, 'selected', value);
+      setChainUiNamespace(tabId, chainUiSection, 'selected', value);
     },
     activeItem,
     searchTerm: chainUi.search,
@@ -157,7 +158,7 @@ export const ChainStateList = ({
               key={`${chainUiSection}_select_${name}`}
               className={`option${filteredSelectedItem.name === name ? ` selected` : ``}`}
               onClick={() => {
-                setChainUiItem(tabId, chainUiSection, 'selected', name);
+                setChainUiNamespace(tabId, chainUiSection, 'selected', name);
                 setDropdownOpen(false);
               }}
             >

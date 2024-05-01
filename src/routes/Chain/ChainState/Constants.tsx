@@ -23,7 +23,7 @@ export const Constants = () => {
   const { getChainSpec } = useApi();
   const { tabId, ownerId } = useActiveTab();
   const { setConstant } = useChainState();
-  const { getChainUi, setChainUiItem } = useChainUi();
+  const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUiSection = 'constants';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -81,7 +81,7 @@ export const Constants = () => {
           activePallet={activePallet}
           chainUiSection={chainUiSection}
           onSelect={(value) => {
-            setChainUiItem(tabId, chainUiSection, 'pallet', value);
+            setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
           }}
         />
         <ChainStateList

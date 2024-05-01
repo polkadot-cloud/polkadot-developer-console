@@ -19,7 +19,7 @@ import type { InputNamespace } from 'contexts/ChainUi/types';
 export const StorageItems = () => {
   const { getChainSpec } = useApi();
   const { tabId, ownerId } = useActiveTab();
-  const { getChainUi, setChainUiItem } = useChainUi();
+  const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUiSection = 'storage';
   const inputNamespace: InputNamespace = 'storage';
@@ -87,7 +87,7 @@ export const StorageItems = () => {
           activePallet={activePallet}
           chainUiSection={chainUiSection}
           onSelect={(value) => {
-            setChainUiItem(tabId, chainUiSection, 'pallet', value);
+            setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
           }}
         />
         <ChainStateList
