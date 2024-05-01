@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ChainId } from 'config/networks';
+import { ChainStateController } from 'controllers/ChainState';
 import { Api } from 'model/Api';
 import type { OwnerId } from 'model/Api/types';
 
@@ -52,13 +53,18 @@ export class ApiController {
       endpoint
     );
     await this.#instances[ownerId][instanceIndex].initialize();
+
+    // Once the api instance is initialized, we can instantiate the chain state controller.
+    ChainStateController.instantiate(ownerId, `${ownerId}_${instanceIndex}`);
   }
 
   // Gracefully disconnect and then destroy an api instance.
   static async destroy(ownerId: OwnerId, instanceIndex: number) {
-    const api = this.#instances[ownerId][instanceIndex];
-    if (api) {
-      await api.disconnect(true);
+    const instance = this.#instances[ownerId][instanceIndex];
+    if (instance) {
+      ChainStateController.destroy(`${ownerId}_${instanceIndex}`);
+
+      await instance.disconnect(true);
       delete this.#instances[ownerId];
     }
   }
