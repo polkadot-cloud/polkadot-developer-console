@@ -24,7 +24,7 @@ import { SubscriptionsController } from 'controllers/Subscriptions';
 import { BlockNumber } from 'model/BlockNumber';
 import { AccountBalances } from 'model/AccountBalances';
 import { setStateWithRef } from '@w3ux/utils';
-import { ownerIdToTabId, tabIdToOwnerId } from 'contexts/Tabs/Utils';
+import { ownerIdToTabId } from 'contexts/Tabs/Utils';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -32,13 +32,8 @@ export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const { fetchPalletVersions } = useChainUi();
-  const {
-    tabs,
-    getActiveTab,
-    forgetTabChain,
-    instantiateApiFromTab,
-    setTabForceDisconnect,
-  } = useTabs();
+  const { tabs, forgetTabChain, instantiateApiFromTab, setTabForceDisconnect } =
+    useTabs();
 
   // Store API connection status of each api instance. NOTE: requires ref as it is used in event
   // listener.
@@ -86,14 +81,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
   // Gets a chain spec, keyed by owner.
   const getChainSpec = (ownerId: OwnerId): APIChainSpec => chainSpec[ownerId];
-
-  // Gets the `Api` instance of the active tab, if present.
-  const getTabApi = () => {
-    const activeTab = getActiveTab();
-    if (activeTab?.chain) {
-      return ApiController.instances[tabIdToOwnerId(activeTab.id)][0];
-    }
-  };
 
   // Handle a chain disconnect.
   const handleDisconnect = (ownerId: OwnerId, destroy = false) => {
@@ -218,7 +205,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
       value={{
         getApiStatus,
         getApiActive,
-        getTabApi,
         getChainSpec,
       }}
     >

@@ -5,7 +5,6 @@
 import type { ApiContextInterface } from './types';
 
 export const defaultApiContext: ApiContextInterface = {
-  getTabApi: () => undefined,
   getApiStatus: (ownerId) => 'disconnected',
   getApiActive: (ownerId) => false,
   getChainSpec: (ownerId) => null,
