@@ -12,6 +12,7 @@ import { isCustomEvent } from 'Utils';
 import type {
   APIChainSpec,
   APIStatusEventDetail,
+  ApiInstanceId,
   ApiStatus,
   ApiStatusState,
   ChainSpecState,
@@ -42,7 +43,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const apiStatusRef = useRef(apiStatus);
 
   // Setter for api status. Updates state and ref.
-  const setApiStatus = (newApiStatus: Record<OwnerId, ApiStatus>) => {
+  const setApiStatus = (newApiStatus: ApiStatusState) => {
     setStateWithRef(newApiStatus, setApiStatusState, apiStatusRef);
   };
 
@@ -51,8 +52,8 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const chainSpecRef = useRef(chainSpec);
 
   // Setter for chain spec. Updates state and ref.
-  const setChainSpec = (status: Record<number, APIChainSpec>) => {
-    setStateWithRef(status, setChainSpecState, chainSpecRef);
+  const setChainSpec = (newChainSpec: ChainSpecState) => {
+    setStateWithRef(newChainSpec, setChainSpecState, chainSpecRef);
   };
 
   // Remove api status for an owner.
@@ -63,9 +64,9 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Remove chain spec for an owner.
-  const removeChainSpec = (ownerId: OwnerId) => {
+  const removeChainSpec = (instanceId: ApiInstanceId) => {
     const updated = { ...chainSpecRef.current };
-    delete updated[ownerId];
+    delete updated[instanceId];
     setChainSpec(updated);
   };
 
@@ -81,13 +82,18 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Gets a chain spec, keyed by owner.
-  const getChainSpec = (ownerId: OwnerId): APIChainSpec => chainSpec[ownerId];
+  const getChainSpec = (instanceId: ApiInstanceId): APIChainSpec =>
+    chainSpec[instanceId];
 
   // Handle a chain disconnect.
-  const handleDisconnect = (ownerId: OwnerId, destroy = false) => {
+  const handleDisconnect = (
+    ownerId: OwnerId,
+    instanceId: ApiInstanceId,
+    destroy = false
+  ) => {
     if (destroy) {
       removeApiStatus(ownerId);
-      removeChainSpec(ownerId);
+      removeChainSpec(instanceId);
     } else {
       // Update API status to `disconnected`.
       setApiStatus({ ...apiStatusRef.current, [ownerId]: 'disconnected' });
@@ -95,9 +101,13 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Handle a chain error.
-  const handleChainError = (ownerId: OwnerId, err?: ErrDetail) => {
+  const handleChainError = (
+    ownerId: OwnerId,
+    instanceId: ApiInstanceId,
+    err?: ErrDetail
+  ) => {
     removeApiStatus(ownerId);
-    removeChainSpec(ownerId);
+    removeChainSpec(instanceId);
 
     // If the error originated from initialization or bootstrapping of metadata, assume the
     // connection is an invalid chain and forget it. This prevents auto connect on subsequent
@@ -153,13 +163,13 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
           setApiStatus({ ...apiStatusRef.current, [ownerId]: 'connected' });
           break;
         case 'disconnected':
-          handleDisconnect(ownerId);
+          handleDisconnect(ownerId, instanceId);
           break;
         case 'error':
-          handleChainError(ownerId, err);
+          handleChainError(ownerId, instanceId, err);
           break;
         case 'destroyed':
-          handleDisconnect(ownerId, true);
+          handleDisconnect(ownerId, instanceId, true);
           break;
       }
     }
@@ -172,7 +182,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
       setChainSpec({
         ...chainSpecRef.current,
-        [ownerId]: { ...spec, consts },
+        [instanceId]: { ...spec, consts },
       });
 
       // Fetch pallet versions for ChainUi state.

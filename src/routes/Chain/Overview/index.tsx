@@ -24,7 +24,7 @@ export const Overview = () => {
   const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
 
   const apiStatus = getApiStatus(ownerId);
-  const chainSpec = getChainSpec(ownerId);
+  const chainSpec = getChainSpec(apiInstanceId);
   const chainSpecReady = !!chainSpec;
 
   // NOTE: we know for certain there is an active tab and an associated API instance here, so we can

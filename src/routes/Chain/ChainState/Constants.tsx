@@ -22,12 +22,12 @@ import { Results } from './Results';
 export const Constants = () => {
   const { getChainSpec } = useApi();
   const { setConstant } = useChainState();
-  const { tabId, ownerId, apiInstanceId } = useActiveTab();
+  const { tabId, apiInstanceId } = useActiveTab();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUiSection = 'constants';
   const chainUi = getChainUi(tabId, chainUiSection);
-  const Metadata = getChainSpec(ownerId)?.metadata;
+  const Metadata = getChainSpec(apiInstanceId)?.metadata;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const constantsData = useMemo((): PalletData => {

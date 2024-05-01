@@ -38,7 +38,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
   const ownerId = tabIdToOwnerId(tabId);
 
   const apiStatus = getApiStatus(ownerId);
-  const chainSpec = getChainSpec(ownerId);
+  const chainSpec = getChainSpec(apiInstanceId);
 
   const accounts =
     chainSpec && chainSpec.chain

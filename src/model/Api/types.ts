@@ -20,7 +20,7 @@ export type ErrDetail = 'InitializationError' | 'ChainSpecError';
 
 export type ApiStatusState = Record<OwnerId, ApiStatus>;
 
-export type ChainSpecState = Record<OwnerId, APIChainSpec>;
+export type ChainSpecState = Record<ApiInstanceId, APIChainSpec>;
 
 export interface APIStatusEventDetail {
   event: EventStatus;
