@@ -15,8 +15,8 @@ import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 export const Router = () => {
   const { getApiStatus } = useApi();
   const { setTabActivePage } = useTabs();
-  const { ownerId, tab, tabId } = useActiveTab();
-  const apiStatus = getApiStatus(ownerId);
+  const { tab, tabId, apiInstanceId } = useActiveTab();
+  const apiStatus = getApiStatus(apiInstanceId);
 
   // If the active tab is auto connect, & there is a `chain` property to connect to, also go to the
   // Chain tab. Also go to the Chain tab if the API is in a non error / disconnected state.

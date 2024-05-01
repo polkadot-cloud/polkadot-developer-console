@@ -20,13 +20,13 @@ export const PageWithMenu = ({
 }: PageWithMenuProps) => {
   const { getApiStatus } = useApi();
   const routeConfig = routeProvider();
-  const { tab, ownerId } = useActiveTab();
   const { chainColorEnabled } = useSettings();
+  const { tab, apiInstanceId } = useActiveTab();
 
   // Redirect when redirects are present in local storage.
   useRedirect({ route });
 
-  const apiStatus = getApiStatus(ownerId);
+  const apiStatus = getApiStatus(apiInstanceId);
 
   // Get colors from active chain id.
   const chainId: DirectoryId | undefined =

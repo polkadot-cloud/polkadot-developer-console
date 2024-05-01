@@ -10,10 +10,10 @@ import * as local from 'contexts/Tabs/Local';
 
 export const useRedirect = ({ route }: UseRedirectProps) => {
   const { getApiActive } = useApi();
-  const { tabId, ownerId } = useActiveTab();
+  const { tabId, apiInstanceId } = useActiveTab();
   const { redirectCounter, setTabActivePage } = useTabs();
 
-  const apiActive = getApiActive(ownerId);
+  const apiActive = getApiActive(apiInstanceId);
 
   // Handle redirects from local storage, if present.
   useEffect(() => {

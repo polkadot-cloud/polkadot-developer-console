@@ -23,7 +23,7 @@ export const Overview = () => {
   const { getApiStatus, getChainSpec } = useApi();
   const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
 
-  const apiStatus = getApiStatus(ownerId);
+  const apiStatus = getApiStatus(apiInstanceId);
   const chainSpec = getChainSpec(apiInstanceId);
   const chainSpecReady = !!chainSpec;
 

@@ -19,11 +19,11 @@ export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
   const { getApiActive } = useApi();
   const { pathname } = useLocation();
   const { closeTooltip } = useTooltip();
-  const { tab, tabId, ownerId } = useActiveTab();
+  const { tab, tabId, apiInstanceId } = useActiveTab();
   const { tabsHidden, setTabsHidden, setTabActivePage } = useTabs();
 
   // Get whether the api instance associated with this tab is active.
-  const apiActive = getApiActive(ownerId);
+  const apiActive = getApiActive(apiInstanceId);
 
   // Get the active page from tab.
   const activePage = tab?.activePage || 0;

@@ -15,9 +15,9 @@ export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
   const navigate = useNavigate();
   const { getApiActive } = useApi();
   const { setTabActivePage } = useTabs();
-  const { tab, tabId, ownerId } = useActiveTab();
+  const { tab, tabId, apiInstanceId } = useActiveTab();
 
-  const apiActive = getApiActive(ownerId);
+  const apiActive = getApiActive(apiInstanceId);
   const activePage = tab?.activePage || 0;
 
   return (

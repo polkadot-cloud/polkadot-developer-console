@@ -3,6 +3,7 @@
 
 import type { ApiPromise } from '@polkadot/api';
 import type { AnyJson } from '@w3ux/utils/types';
+import type { OwnerId } from 'model/Api/types';
 import type { MetadataVersion } from 'model/Metadata/types';
 
 export interface ChainUiContextInterface {
@@ -23,9 +24,9 @@ export interface ChainUiContextInterface {
     key: keyof ChainUiNamespaceInner
   ) => boolean;
   destroyTabChainUi: (tabId: number) => void;
-  getPalletVersions: (tabId: number) => Record<string, string> | undefined;
+  getPalletVersions: (ownerId: OwnerId) => Record<string, string> | undefined;
   fetchPalletVersions: (
-    tabId: number,
+    ownerId: OwnerId,
     metadata: MetadataVersion,
     apiInstance: ApiPromise
   ) => void;
@@ -79,8 +80,8 @@ export interface ChainUiNamespaceInner {
   palletSelectOnSearch: boolean;
 }
 
-// Store versions of pallets. {tabid: { palletName: version }}.
-export type PalletVersions = Record<string, Record<string, string>>;
+// Store versions of pallets. {ownerId: { palletName: version }}.
+export type PalletVersions = Record<OwnerId, Record<string, string>>;
 
 // The active chain sections, keyed by tab.
 export type ChainStateSections = Record<number, ChainStateSection>;

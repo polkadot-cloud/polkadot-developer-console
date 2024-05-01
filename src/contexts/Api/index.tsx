@@ -56,10 +56,10 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     setStateWithRef(newChainSpec, setChainSpecState, chainSpecRef);
   };
 
-  // Remove api status for an owner.
-  const removeApiStatus = (ownerId: OwnerId) => {
+  // Remove api status for an instance.
+  const removeApiStatus = (instanceId: ApiInstanceId) => {
     const updated = { ...apiStatusRef.current };
-    delete updated[ownerId];
+    delete updated[instanceId];
     setApiStatus(updated);
   };
 
@@ -71,11 +71,12 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Gets an api status, keyed by owner.
-  const getApiStatus = (ownerId: OwnerId): ApiStatus => apiStatus[ownerId];
+  const getApiStatus = (instanceId: ApiInstanceId): ApiStatus =>
+    apiStatus[instanceId];
 
   // Gets whether an api is active (not disconnected or undefined).
-  const getApiActive = (ownerId: OwnerId): boolean => {
-    const status = getApiStatus(ownerId);
+  const getApiActive = (instanceId: ApiInstanceId): boolean => {
+    const status = getApiStatus(instanceId);
     return (
       status === 'ready' || status === 'connected' || status === 'connecting'
     );
@@ -86,17 +87,13 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     chainSpec[instanceId];
 
   // Handle a chain disconnect.
-  const handleDisconnect = (
-    ownerId: OwnerId,
-    instanceId: ApiInstanceId,
-    destroy = false
-  ) => {
+  const handleDisconnect = (instanceId: ApiInstanceId, destroy = false) => {
     if (destroy) {
-      removeApiStatus(ownerId);
+      removeApiStatus(instanceId);
       removeChainSpec(instanceId);
     } else {
       // Update API status to `disconnected`.
-      setApiStatus({ ...apiStatusRef.current, [ownerId]: 'disconnected' });
+      setApiStatus({ ...apiStatusRef.current, [instanceId]: 'disconnected' });
     }
   };
 
@@ -106,7 +103,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     instanceId: ApiInstanceId,
     err?: ErrDetail
   ) => {
-    removeApiStatus(ownerId);
+    removeApiStatus(instanceId);
     removeChainSpec(instanceId);
 
     // If the error originated from initialization or bootstrapping of metadata, assume the
@@ -135,7 +132,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
         case 'ready':
           setApiStatus({
             ...apiStatusRef.current,
-            [ownerId]: 'ready',
+            [instanceId]: 'ready',
           });
 
           // Initialise subscriptions for Overview here. We are currently only subscribing to the
@@ -157,19 +154,19 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
           break;
         case 'connecting':
-          setApiStatus({ ...apiStatusRef.current, [ownerId]: 'connecting' });
+          setApiStatus({ ...apiStatusRef.current, [instanceId]: 'connecting' });
           break;
         case 'connected':
-          setApiStatus({ ...apiStatusRef.current, [ownerId]: 'connected' });
+          setApiStatus({ ...apiStatusRef.current, [instanceId]: 'connected' });
           break;
         case 'disconnected':
-          handleDisconnect(ownerId, instanceId);
+          handleDisconnect(instanceId);
           break;
         case 'error':
           handleChainError(ownerId, instanceId, err);
           break;
         case 'destroyed':
-          handleDisconnect(ownerId, instanceId, true);
+          handleDisconnect(instanceId, true);
           break;
       }
     }
@@ -185,12 +182,14 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
         [instanceId]: { ...spec, consts },
       });
 
-      // Fetch pallet versions for ChainUi state.
-      fetchPalletVersions(
-        ownerId,
-        spec.metadata,
-        ApiController.getInstance(ownerId, getIndexFromInstanceId(instanceId))
-      );
+      // Fetch pallet versions for ChainUi state if this is a tab api instance.
+      if (ownerId.startsWith('tab_')) {
+        fetchPalletVersions(
+          ownerId,
+          spec.metadata,
+          ApiController.getInstance(ownerId, getIndexFromInstanceId(instanceId))
+        );
+      }
     }
   };
 

@@ -20,7 +20,6 @@ import { useApi } from 'contexts/Api';
 import { ConnectionIcon } from './ConectionIcon';
 import * as localTabs from 'contexts/Tabs/Local';
 import { useChainUi } from 'contexts/ChainUi';
-import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 
@@ -38,7 +37,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     addInstantiatedId,
     incrementRedirectCounter,
   } = useTabs();
-  const { tabId } = useActiveTab();
+  const { tabId, apiInstanceId } = useActiveTab();
 
   const { getApiStatus } = useApi();
   const { openMenu, closeMenu } = useMenu();
@@ -54,7 +53,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   } = useSortable({ id });
 
   // Get any api status for the tab, if present.
-  const apiStatus = getApiStatus(tabIdToOwnerId(id));
+  const apiStatus = getApiStatus(apiInstanceId);
 
   // Update the tab to instantiated.
   addInstantiatedId(id);

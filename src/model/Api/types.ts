@@ -18,7 +18,7 @@ export type EventStatus = ApiStatus | 'error' | 'destroyed' | 'fetchedSpec';
 
 export type ErrDetail = 'InitializationError' | 'ChainSpecError';
 
-export type ApiStatusState = Record<OwnerId, ApiStatus>;
+export type ApiStatusState = Record<ApiInstanceId, ApiStatus>;
 
 export type ChainSpecState = Record<ApiInstanceId, APIChainSpec>;
 
@@ -32,6 +32,7 @@ export interface APIStatusEventDetail {
 
 export interface APIChainSpecEventDetail {
   ownerId: OwnerId;
+  instanceId: ApiInstanceId;
   spec: APIChainSpec;
   consts: Record<string, AnyJson>;
 }

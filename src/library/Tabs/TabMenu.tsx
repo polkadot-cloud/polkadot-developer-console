@@ -27,7 +27,7 @@ export const TabContextMenu = ({
 
   const tab = getTab(tabId);
   const ownerId = tabIdToOwnerId(tabId);
-  const apiStatus = getApiStatus(ownerId);
+  const apiStatus = getApiStatus(`${ownerId}_0`);
 
   const apiStatusActive = ['ready', 'connected', 'connecting'].includes(
     apiStatus
