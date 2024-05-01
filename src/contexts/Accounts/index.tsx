@@ -129,7 +129,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
     setActiveBalances(
       (
         SubscriptionsController?.get(
-          ownerId,
+          apiInstanceId,
           'accountBalances'
         ) as AccountBalances
       )?.balances || {}
