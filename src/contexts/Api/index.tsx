@@ -25,6 +25,7 @@ import { BlockNumber } from 'model/BlockNumber';
 import { AccountBalances } from 'model/AccountBalances';
 import { setStateWithRef } from '@w3ux/utils';
 import { ownerIdToTabId } from 'contexts/Tabs/Utils';
+import { getIndexFromInstanceId } from 'model/Api/util';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -167,7 +168,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   // Handle incoming chain spec updates.
   const handleNewChainSpec = (e: Event): void => {
     if (isCustomEvent(e)) {
-      const { ownerId, spec, consts } = e.detail;
+      const { ownerId, instanceId, spec, consts } = e.detail;
 
       setChainSpec({
         ...chainSpecRef.current,
@@ -178,7 +179,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
       fetchPalletVersions(
         ownerId,
         spec.metadata,
-        ApiController.getInstance(ownerId, 0)
+        ApiController.getInstance(ownerId, getIndexFromInstanceId(instanceId))
       );
     }
   };

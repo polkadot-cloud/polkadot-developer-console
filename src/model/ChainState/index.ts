@@ -112,7 +112,10 @@ export class ChainState {
   // ------------------------------------------------------
 
   fetchConstant = (pallet: string, constant: string): ConstantResult | null => {
-    const api = ApiController.getInstance(this.#ownerId, 0);
+    const api = ApiController.getInstance(
+      this.#ownerId,
+      getIndexFromInstanceId(this.#instanceId)
+    );
     const result = api?.consts?.[pallet]?.[constant];
 
     if (result) {
