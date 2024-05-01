@@ -11,11 +11,11 @@ export class ApiController {
   // ------------------------------------------------------
 
   // The currently instantiated API instances, keyed by ownerId.
-  static instances: Record<OwnerId, Record<number, Api>> = {};
+  static #instances: Record<OwnerId, Record<number, Api>> = {};
 
   // Get an instance `api` by ownerId and instanceId.
   static getInstance(ownerId: OwnerId, instanceId: number) {
-    return this.instances[ownerId][instanceId].api;
+    return this.#instances[ownerId][instanceId].api;
   }
 
   // ------------------------------------------------------
@@ -30,27 +30,27 @@ export class ApiController {
   ) {
     let instanceId = 0;
     // Initialise array of instances for this ownerId if it doesn't exist.
-    if (!this.instances[ownerId]) {
-      this.instances[ownerId] = {};
+    if (!this.#instances[ownerId]) {
+      this.#instances[ownerId] = {};
     } else {
-      // If instances already exist for this owner, get largest instanceId and increment it.
+      // If #instances already exist for this owner, get largest instanceId and increment it.
       instanceId =
-        Object.keys(this.instances[ownerId] || {}).reduce(
+        Object.keys(this.#instances[ownerId] || {}).reduce(
           (acc, id) => Math.max(acc, parseInt(id, acc)),
           0
         ) + 1;
     }
 
-    this.instances[ownerId][instanceId] = new Api(ownerId, chainId, endpoint);
-    await this.instances[ownerId][instanceId].initialize();
+    this.#instances[ownerId][instanceId] = new Api(ownerId, chainId, endpoint);
+    await this.#instances[ownerId][instanceId].initialize();
   }
 
   // Gracefully disconnect and then destroy an api instance.
   static async destroy(ownerId: OwnerId, instanceId: number) {
-    const api = this.instances[ownerId][instanceId];
+    const api = this.#instances[ownerId][instanceId];
     if (api) {
       await api.disconnect(true);
-      delete this.instances[ownerId];
+      delete this.#instances[ownerId];
     }
   }
 }
