@@ -10,7 +10,8 @@ import type {
 } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
 import { splitChainStateKey } from './util';
-import type { OwnerId } from 'model/Api/types';
+import type { ApiInstanceId, OwnerId } from 'model/Api/types';
+import { getIndexFromInstanceId } from 'model/Api/util';
 
 export class ChainState {
   // ------------------------------------------------------
@@ -19,6 +20,9 @@ export class ChainState {
 
   // The associated owner for this chain state instance.
   #ownerId: OwnerId;
+
+  // The associated api instance for this chain state instance.
+  #instanceId: ApiInstanceId;
 
   // Chain state subscription results, keyed by subscription key.
   subscriptions: Record<string, AnyJson> = {};
@@ -33,8 +37,9 @@ export class ChainState {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(ownerId: OwnerId) {
+  constructor(ownerId: OwnerId, instanceId: ApiInstanceId) {
     this.#ownerId = ownerId;
+    this.#instanceId = instanceId;
   }
 
   // ------------------------------------------------------
@@ -46,7 +51,10 @@ export class ChainState {
     rawKey: string,
     config: SubscriptionConfig
   ): Promise<void> => {
-    const api = ApiController.instances[this.#ownerId].api;
+    const api = ApiController.getInstance(
+      this.#ownerId,
+      getIndexFromInstanceId(this.#instanceId)
+    );
     const subscriptionKey = this.prependIndexToKey('subscription', rawKey);
 
     if (api) {
@@ -78,6 +86,7 @@ export class ChainState {
                   new CustomEvent('callback-new-chain-state', {
                     detail: {
                       ownerId: this.#ownerId,
+                      instanceId: this.#instanceId,
                       type,
                       subscriptionKey,
                       result,
@@ -104,7 +113,10 @@ export class ChainState {
   // ------------------------------------------------------
 
   fetchConstant = (pallet: string, constant: string): ConstantResult | null => {
-    const api = ApiController.instances[this.#ownerId].api;
+    const api = ApiController.getInstance(
+      this.#ownerId,
+      getIndexFromInstanceId(this.#instanceId)
+    );
     const result = api?.consts?.[pallet]?.[constant];
 
     if (result) {

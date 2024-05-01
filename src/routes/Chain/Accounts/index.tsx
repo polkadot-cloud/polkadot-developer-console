@@ -15,9 +15,9 @@ import { useAccounts } from 'contexts/Accounts';
 export const Accounts = () => {
   const { getChainSpec } = useApi();
   const { accounts } = useAccounts();
-  const { tab, ownerId } = useActiveTab();
+  const { tab, apiInstanceId } = useActiveTab();
 
-  const chainSpec = getChainSpec(ownerId);
+  const chainSpec = getChainSpec(apiInstanceId);
 
   const existentialDeposit =
     chainSpec?.consts?.existentialDeposit || new BigNumber(0);

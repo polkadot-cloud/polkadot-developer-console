@@ -22,7 +22,6 @@ import type { ChainId, DirectoryId } from 'config/networks';
 import { checkLocalTabs } from 'IntegrityChecks/Local';
 import { ApiController } from 'controllers/Api';
 import { isDirectoryId } from 'config/networks/Utils';
-import { ChainStateController } from 'controllers/ChainState';
 import { tabIdToOwnerId } from './Utils';
 import type { Route } from 'App';
 
@@ -325,7 +324,12 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       chainMeta = localChain || defaultCustomEndpointChainMeta;
     }
 
-    const chainData = { id: chainId, endpoint, ...chainMeta };
+    const chainData = {
+      ...chainMeta,
+      id: chainId,
+      endpoint,
+      api: { instanceIndex: 0 },
+    };
 
     const newTabs = [...tabs].map((tab) =>
       tab.id === tabId
@@ -360,16 +364,17 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     }
     const ownerId = tabIdToOwnerId(tabId);
     const { id, endpoint } = chain;
-
     await ApiController.instantiate(ownerId, id, endpoint);
-    ChainStateController.instantiate(ownerId);
   };
 
   // Destroy controller instances for a tab.
   const destroyControllers = (tabId: number) => {
     const ownerId = tabIdToOwnerId(tabId);
-    ApiController.destroy(ownerId);
-    ChainStateController.destroy(ownerId);
+    const tab = getTab(tabId);
+
+    if (tab && tab.chain) {
+      ApiController.destroyAll(ownerId);
+    }
   };
 
   return (

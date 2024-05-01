@@ -8,7 +8,8 @@ import type { ChainId } from 'config/networks';
 import { ApiController } from 'controllers/Api';
 import type { Balances } from './types';
 import type { Unsubscribable } from 'controllers/Subscriptions/types';
-import type { OwnerId } from 'model/Api/types';
+import type { ApiInstanceId, OwnerId } from 'model/Api/types';
+import { getIndexFromInstanceId } from 'model/Api/util';
 
 export class AccountBalances implements Unsubscribable {
   // ------------------------------------------------------
@@ -18,8 +19,11 @@ export class AccountBalances implements Unsubscribable {
   // Accounts that are being subscribed to.
   #accounts: string[] = [];
 
-  // The associated owner for this block number instance.
+  // The associated owner for this instance.
   #ownerId: OwnerId;
+
+  // The associated api instance for this instance.
+  #instanceId: ApiInstanceId;
 
   // The supplied chain id.
   #chainId: ChainId;
@@ -34,8 +38,9 @@ export class AccountBalances implements Unsubscribable {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(ownerId: OwnerId, chainId: ChainId) {
+  constructor(ownerId: OwnerId, instanceId: ApiInstanceId, chainId: ChainId) {
     this.#ownerId = ownerId;
+    this.#instanceId = instanceId;
     this.#chainId = chainId;
   }
 
@@ -60,7 +65,11 @@ export class AccountBalances implements Unsubscribable {
       }
 
       // Get api instance and subscribe to new accounts.
-      const api = ApiController.instances[this.#ownerId].api;
+      const api = ApiController.getInstance(
+        this.#ownerId,
+        getIndexFromInstanceId(this.#instanceId)
+      );
+
       if (api) {
         accountsAdded.forEach(async (address) => {
           this.#accounts.push(address);
@@ -96,6 +105,7 @@ export class AccountBalances implements Unsubscribable {
                 new CustomEvent('callback-account-balance', {
                   detail: {
                     ownerId: this.#ownerId,
+                    instanceId: this.#instanceId,
                     chainId: this.#chainId,
                     address,
                     balance: this.balances[address],

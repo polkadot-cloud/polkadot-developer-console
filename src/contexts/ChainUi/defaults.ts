@@ -24,12 +24,12 @@ export const defaultChainUiNamespace: ChainUiNamespace = {
 
 export const defaultChainContext: ChainUiContextInterface = {
   chainUi: defaultChainUiState,
-  getPalletVersions: (tabId) => undefined,
+  getPalletVersions: (ownerId) => undefined,
   getChainUi: (tabId, namespace) => defaultChainUiInner,
   setChainUiNamespace: (tabId, namespace, key, value) => {},
   isChainUiValueEmpty: (tabId, namespace, key) => true,
   destroyTabChainUi: (tabId) => {},
-  fetchPalletVersions: async (tabId, metadata, apiInstance) => {},
+  fetchPalletVersions: async (ownerId, metadata, apiInstance) => {},
   getActiveChainStateSection: (tabId) => 'storage',
   setActiveChainStateSection: (tabId, section) => {},
   getInputArgs: (tabId, section) => null,

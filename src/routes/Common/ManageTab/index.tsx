@@ -24,9 +24,9 @@ export const ManageTab = () => {
     updateUnit,
   } = useTabs();
   const { getApiStatus } = useApi();
-  const { tab, tabId, ownerId } = useActiveTab();
+  const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
 
-  const apiStatus = getApiStatus(ownerId);
+  const apiStatus = getApiStatus(apiInstanceId);
   const showDisconnect = ['ready', 'connected', 'connecting'].includes(
     apiStatus
   );
@@ -108,8 +108,10 @@ export const ManageTab = () => {
                       'Are you sure you want to disconnect this tab?'
                     )
                   ) {
-                    setTabForceDisconnect(tabId, true);
-                    ApiController.destroy(ownerId);
+                    if (tab?.chain) {
+                      setTabForceDisconnect(tabId, true);
+                      ApiController.destroyAll(ownerId);
+                    }
                   }
                 }}
               >

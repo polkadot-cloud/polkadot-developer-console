@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ChainId } from 'config/networks';
-import type { OwnerId } from 'model/Api/types';
+import type { ApiInstanceId, OwnerId } from 'model/Api/types';
 
 export interface BlockNumberEventDetail {
-  blockNumber: number;
-  chainId: ChainId;
   ownerId: OwnerId;
+  instanceId: ApiInstanceId;
+  chainId: ChainId;
+  blockNumber: number;
 }

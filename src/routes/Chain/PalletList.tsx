@@ -21,10 +21,10 @@ export const PalletList = ({
   chainUiSection,
   onSelect,
 }: PalletListProps) => {
-  const { tabId } = useActiveTab();
+  const { tabId, ownerId } = useActiveTab();
   const { getPalletVersions, getChainUi, setChainUiNamespace } = useChainUi();
 
-  const palletVersions = getPalletVersions(tabId) || {};
+  const palletVersions = getPalletVersions(ownerId) || {};
   const chainUi = getChainUi(tabId, chainUiSection);
   const { palletSearch } = chainUi;
 

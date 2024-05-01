@@ -30,15 +30,15 @@ export const Accounts = createContext<AccountsContextInterface>(
 export const useAccounts = () => useContext(Accounts);
 
 export const AccountsProvider = ({ children }: { children: ReactNode }) => {
-  const { tabId } = useActiveTab();
+  const { tabId, apiInstanceId } = useActiveTab();
   const { getVaultAccounts } = useVaultAccounts();
   const { getChainSpec, getApiStatus } = useApi();
   const { getExtensionAccounts } = useExtensionAccounts();
 
   const ownerId = tabIdToOwnerId(tabId);
 
-  const apiStatus = getApiStatus(ownerId);
-  const chainSpec = getChainSpec(ownerId);
+  const apiStatus = getApiStatus(apiInstanceId);
+  const chainSpec = getChainSpec(apiInstanceId);
 
   const accounts =
     chainSpec && chainSpec.chain
@@ -61,8 +61,8 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
   // Check all accounts have been synced. App-wide syncing state for all accounts.
   const newAccountBalanceCallback = (e: Event) => {
     if (isCustomEvent(e)) {
-      const { ownerId: eventOwnerId, address, balance } = e.detail;
-      if (eventOwnerId !== ownerId) {
+      const { ownerId: eventOwnerId, instanceId, address, balance } = e.detail;
+      if (eventOwnerId !== ownerId && instanceId === apiInstanceId) {
         return;
       }
 
@@ -79,7 +79,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
 
   const handleSyncAccounts = () => {
     const subscription = SubscriptionsController?.get(
-      ownerId,
+      apiInstanceId,
       'accountBalances'
     );
     if (subscription) {
@@ -129,7 +129,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
     setActiveBalances(
       (
         SubscriptionsController?.get(
-          ownerId,
+          apiInstanceId,
           'accountBalances'
         ) as AccountBalances
       )?.balances || {}

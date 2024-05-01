@@ -11,6 +11,7 @@ import type {
   EventStatus,
   ErrDetail,
   OwnerId,
+  ApiInstanceId,
 } from './types';
 import { MetadataController } from 'controllers/Metadata';
 import { SubscriptionsController } from 'controllers/Subscriptions';
@@ -24,6 +25,9 @@ export class Api {
 
   // The associated owner for this api instance.
   #ownerId: OwnerId;
+
+  // The instance id for this api instance.
+  #instanceId: ApiInstanceId;
 
   // The supplied chain id.
   #chainId: ChainId;
@@ -54,6 +58,10 @@ export class Api {
     return this.#ownerId;
   }
 
+  get instanceId() {
+    return this.#instanceId;
+  }
+
   get chainId() {
     return this.#chainId;
   }
@@ -74,8 +82,14 @@ export class Api {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(ownerId: OwnerId, chainId: ChainId, endpoint: string) {
+  constructor(
+    ownerId: OwnerId,
+    instanceIndex: number,
+    chainId: ChainId,
+    endpoint: string
+  ) {
     this.#ownerId = ownerId;
+    this.#instanceId = `${ownerId}_${instanceIndex}`;
     this.#chainId = chainId;
     this.#rpcEndpoint = endpoint;
   }
@@ -168,6 +182,7 @@ export class Api {
       new CustomEvent('new-chain-spec', {
         detail: {
           ownerId: this.ownerId,
+          instanceId: this.instanceId,
           spec: this.chainSpec,
           consts: this.consts,
         },
@@ -237,6 +252,7 @@ export class Api {
     const detail: APIStatusEventDetail = {
       event,
       ownerId: this.ownerId,
+      instanceId: this.instanceId,
       chainId: this.chainId,
     };
     if (options?.err) {
@@ -252,13 +268,13 @@ export class Api {
 
   // Unsubscribe from all active subscriptions associated with this API instance.
   unsubscribe = () => {
-    const subs = SubscriptionsController.getAll(this.ownerId);
+    const subs = SubscriptionsController.getAll(this.instanceId);
 
     if (subs) {
       Object.entries(subs).forEach(([subscriptionId, subscription]) => {
         subscription.unsubscribe();
         // Remove subscription from controller.
-        SubscriptionsController.remove(this.ownerId, subscriptionId);
+        SubscriptionsController.remove(this.instanceId, subscriptionId);
       });
     }
   };

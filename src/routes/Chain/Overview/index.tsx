@@ -20,11 +20,11 @@ import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { BlockNumber } from 'model/BlockNumber';
 
 export const Overview = () => {
-  const { tab, tabId, ownerId } = useActiveTab();
   const { getApiStatus, getChainSpec } = useApi();
+  const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
 
-  const apiStatus = getApiStatus(ownerId);
-  const chainSpec = getChainSpec(ownerId);
+  const apiStatus = getApiStatus(apiInstanceId);
+  const chainSpec = getChainSpec(apiInstanceId);
   const chainSpecReady = !!chainSpec;
 
   // NOTE: we know for certain there is an active tab and an associated API instance here, so we can
@@ -50,14 +50,16 @@ export const Overview = () => {
 
   // The latest received block number.
   const [blockNumber, setBlockNumber] = useState<string>(
-    (SubscriptionsController.get(ownerId, 'blockNumber') as BlockNumber)
+    (SubscriptionsController.get(apiInstanceId, 'blockNumber') as BlockNumber)
       ?.blockNumber || '0'
   );
 
   // Handle new block number callback.
   const newBlockCallback = (e: Event) => {
     if (isCustomEvent(e)) {
-      if (e.detail.ownerId === ownerId) {
+      const { ownerId: eventOwnerId, instanceId } = e.detail;
+
+      if (eventOwnerId === ownerId && instanceId === apiInstanceId) {
         setBlockNumber(e.detail.blockNumber);
       }
     }
@@ -70,7 +72,7 @@ export const Overview = () => {
   // Update block number on tab change.
   useEffect(() => {
     setBlockNumber(
-      (SubscriptionsController.get(ownerId, 'blockNumber') as BlockNumber)
+      (SubscriptionsController.get(apiInstanceId, 'blockNumber') as BlockNumber)
         ?.blockNumber || '0'
     );
   }, [tabId]);

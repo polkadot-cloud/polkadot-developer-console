@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { OwnerId } from 'model/Api/types';
+import type { ApiInstanceId, OwnerId } from 'model/Api/types';
 import { ChainState } from 'model/ChainState';
 
 export class ChainStateController {
@@ -9,27 +9,27 @@ export class ChainStateController {
   // Class members.
   // ------------------------------------------------------
   // The currently instantiated chain state instances, keyed by ownerId.
-  static instances: Record<OwnerId, ChainState> = {};
+  static instances: Record<ApiInstanceId, ChainState> = {};
 
   // ------------------------------------------------------
   // Chain state instance methods.
   // ------------------------------------------------------
 
   // Instantiate a new `ChainState` instance with the supplied ownerId.
-  static async instantiate(ownerId: OwnerId) {
-    if (this.instances[ownerId]) {
-      this.destroy(ownerId);
+  static async instantiate(ownerId: OwnerId, instanceId: ApiInstanceId) {
+    if (this.instances[instanceId]) {
+      this.destroy(instanceId);
     }
 
-    this.instances[ownerId] = new ChainState(ownerId);
+    this.instances[instanceId] = new ChainState(ownerId, instanceId);
   }
 
   // Gracefully disconnect and then destroy an api instance.
-  static destroy(ownerId: OwnerId) {
-    const instance = this.instances[ownerId];
+  static destroy(instanceId: ApiInstanceId) {
+    const instance = this.instances[instanceId];
     if (instance) {
       instance.unsubscribeAll();
-      delete this.instances[ownerId];
+      delete this.instances[instanceId];
     }
   }
 }

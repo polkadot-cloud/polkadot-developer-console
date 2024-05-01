@@ -18,14 +18,14 @@ import type { InputNamespace } from 'contexts/ChainUi/types';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
-  const { tabId, ownerId } = useActiveTab();
+  const { tabId, apiInstanceId } = useActiveTab();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUiSection = 'calls';
   const inputNamespace: InputNamespace = 'call';
 
   const chainUi = getChainUi(tabId, chainUiSection);
-  const Metadata = getChainSpec(ownerId)?.metadata;
+  const Metadata = getChainSpec(apiInstanceId)?.metadata;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const callData = useMemo((): PalletData => {

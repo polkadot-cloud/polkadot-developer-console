@@ -13,7 +13,7 @@ import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const TabOverlay = ({ id, name }: TabProps) => {
   const { getApiStatus } = useApi();
-  const apiStatus = getApiStatus(tabIdToOwnerId(id));
+  const apiStatus = getApiStatus(`${tabIdToOwnerId(id)}_0`);
 
   return (
     <TabWrapper

@@ -15,7 +15,7 @@ import { ChainStateController } from 'controllers/ChainState';
 import { Results } from './Results';
 
 export const Raw = () => {
-  const { tabId, ownerId } = useActiveTab();
+  const { tabId, apiInstanceId } = useActiveTab();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUiSection = 'raw';
@@ -33,7 +33,7 @@ export const Raw = () => {
       return;
     }
 
-    const chainState = ChainStateController.instances[ownerId];
+    const chainState = ChainStateController.instances[apiInstanceId];
     chainState.subscribe(`${value}`, {
       type: 'raw',
       namespace: 'state',

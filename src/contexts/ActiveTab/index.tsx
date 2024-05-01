@@ -16,6 +16,8 @@ export const useActiveTab = () => useContext(ActiveTabContext);
 
 export const ActiveTabProvider = ({ children }: { children: ReactNode }) => {
   const { selectedTabId, getTab } = useTabs();
+  const tab = getTab(selectedTabId);
+  const ownerId = tabIdToOwnerId(selectedTabId);
 
   // Stores the currently active tab id.
   const [activeTabId, setActiveTabId] = useState<number>(selectedTabId);
@@ -28,8 +30,9 @@ export const ActiveTabProvider = ({ children }: { children: ReactNode }) => {
     <ActiveTabContext.Provider
       value={{
         tabId: activeTabId,
-        ownerId: tabIdToOwnerId(activeTabId),
-        tab: getTab(activeTabId),
+        ownerId,
+        apiInstanceId: `${ownerId}_0`, // NOTE: A tab's instance index is always 0; there is no ned to fetch it from tab metadata.
+        tab,
       }}
     >
       {children}

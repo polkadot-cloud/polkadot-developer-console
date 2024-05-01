@@ -33,19 +33,19 @@ export const ChainState = createContext<ChainStateContextInterface>(
 export const useChainState = () => useContext(ChainState);
 
 export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
-  const { tabId, ownerId } = useActiveTab();
+  const { tabId, ownerId, apiInstanceId } = useActiveTab();
 
   // The results of current chain state subscriptions.
   const [chainStateSubscriptions, setChainStateSubscriptions] =
     useState<ChainStateSubscriptions>(
-      ChainStateController.instances?.[ownerId]?.subscriptions || {}
+      ChainStateController.instances?.[apiInstanceId]?.subscriptions || {}
     );
   const chainStateSubscriptionsRef = useRef(chainStateSubscriptions);
 
   // The results of current chain state constants.
   const [chainStateConstants, setChainStateConstants] =
     useState<ChainStateConstants>(
-      ChainStateController.instances?.[ownerId]?.constants || {}
+      ChainStateController.instances?.[apiInstanceId]?.constants || {}
     );
 
   // Get a chain state subscription by key.
@@ -73,12 +73,13 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     if (isCustomEvent(e)) {
       const {
         ownerId: detailOwnerId,
+        instanceId,
         type,
         subscriptionKey,
         result,
       } = e.detail;
 
-      if (ownerId === detailOwnerId) {
+      if (ownerId === detailOwnerId && apiInstanceId === instanceId) {
         setChainStateItem(type, subscriptionKey, result);
       }
     }
@@ -100,7 +101,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     // Handle removal of chain state subscription.
     if (['storage', 'raw'].includes(type)) {
       // Remove key and unsubscribe from controller.
-      ChainStateController.instances?.[ownerId].unsubscribeOne(key);
+      ChainStateController.instances?.[apiInstanceId].unsubscribeOne(key);
       // Remove key from context chain state.
       const updatedChainState = { ...chainStateSubscriptions };
       delete updatedChainState[key];
@@ -117,7 +118,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
       const updated = { ...chainStateConstants };
       delete updated[key];
       setChainStateConstants(updated);
-      ChainStateController.instances?.[ownerId].removeConstant(key);
+      ChainStateController.instances?.[apiInstanceId].removeConstant(key);
     }
   };
 
@@ -138,12 +139,12 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   // Get chain state on mount and selected tab change.
   useEffect(() => {
     setStateWithRef(
-      ChainStateController.instances?.[ownerId]?.subscriptions || {},
+      ChainStateController.instances?.[apiInstanceId]?.subscriptions || {},
       setChainStateSubscriptions,
       chainStateSubscriptionsRef
     );
     setChainStateConstants(
-      ChainStateController.instances?.[ownerId]?.constants || {}
+      ChainStateController.instances?.[apiInstanceId]?.constants || {}
     );
   }, [tabId]);
 

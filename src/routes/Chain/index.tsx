@@ -14,8 +14,8 @@ import { useApi } from 'contexts/Api';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const { getChainSpec } = useApi();
-  const { ownerId } = useActiveTab();
-  const chainSpec = getChainSpec(ownerId);
+  const { apiInstanceId } = useActiveTab();
+  const chainSpec = getChainSpec(apiInstanceId);
 
   const balancesPaleltExists = chainSpec?.metadata?.palletExists('Balances');
 

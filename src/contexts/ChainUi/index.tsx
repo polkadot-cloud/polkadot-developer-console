@@ -28,6 +28,7 @@ import type { AnyJson } from '@w3ux/utils/types';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import type { MetadataVersion } from 'model/Metadata/types';
 import { setStateWithRef } from '@w3ux/utils';
+import type { OwnerId } from 'model/Api/types';
 
 export const ChainUi =
   createContext<ChainUiContextInterface>(defaultChainContext);
@@ -118,12 +119,12 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
 
   // Handle fetching of pallet versions.
   const fetchPalletVersions = async (
-    tabId: number,
+    ownerId: OwnerId,
     metadata: MetadataVersion,
     apiInstance: ApiPromise
   ) => {
     // Exit if pallet versions have already been fetched.
-    if (palletVersions[tabId] !== undefined) {
+    if (palletVersions[ownerId] !== undefined) {
       return;
     }
     // Get pallet list from scraper.
@@ -154,14 +155,14 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     // Set pallet version state for the provided tab.
     setPalletVersions((prev) => ({
       ...prev,
-      [tabId]: newPalletVersions,
+      [ownerId]: newPalletVersions,
     }));
   };
 
   // Get pallet versions by tab Id.
   const getPalletVersions = (
-    tabId: number
-  ): Record<string, string> | undefined => palletVersions[tabId];
+    ownerId: OwnerId
+  ): Record<string, string> | undefined => palletVersions[ownerId];
 
   // Check if a chainUI value is empty. For boolean types, return empty if false. This function should be used on strings, but for type safety booleans are also supported.
   const isChainUiValueEmpty = (

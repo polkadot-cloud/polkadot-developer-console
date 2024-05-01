@@ -5,15 +5,19 @@ import type { VoidFn } from '@polkadot/api/types';
 import type { ChainId } from 'config/networks';
 import { ApiController } from 'controllers/Api';
 import type { Unsubscribable } from 'controllers/Subscriptions/types';
-import type { OwnerId } from 'model/Api/types';
+import type { ApiInstanceId, OwnerId } from 'model/Api/types';
+import { getIndexFromInstanceId } from 'model/Api/util';
 
 export class BlockNumber implements Unsubscribable {
   // ------------------------------------------------------
   // Class members.
   // ------------------------------------------------------
 
-  // The associated owner for this block number instance.
+  // The associated owner for this instance.
   #ownerId: OwnerId;
+
+  // The associated api instance for this instance.
+  #instanceId: ApiInstanceId;
 
   // The supplied chain id.
   #chainId: ChainId;
@@ -28,8 +32,9 @@ export class BlockNumber implements Unsubscribable {
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(ownerId: OwnerId, chainId: ChainId) {
+  constructor(ownerId: OwnerId, instanceId: ApiInstanceId, chainId: ChainId) {
     this.#ownerId = ownerId;
+    this.#instanceId = instanceId;
     this.#chainId = chainId;
 
     // Subscribe immediately.
@@ -43,7 +48,10 @@ export class BlockNumber implements Unsubscribable {
   // Subscribe to block number.
   subscribe = async (): Promise<void> => {
     try {
-      const api = ApiController.instances[this.#ownerId].api;
+      const api = ApiController.getInstance(
+        this.#ownerId,
+        getIndexFromInstanceId(this.#instanceId)
+      );
 
       if (api && this.#unsub === undefined) {
         // Get block numbers.
@@ -56,6 +64,7 @@ export class BlockNumber implements Unsubscribable {
             new CustomEvent('callback-block-number', {
               detail: {
                 ownerId: this.#ownerId,
+                instanceId: this.#instanceId,
                 chainId: this.#chainId,
                 blockNumber: num.toString(),
               },

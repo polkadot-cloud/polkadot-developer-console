@@ -20,9 +20,9 @@ import { useApi } from 'contexts/Api';
 import { ConnectionIcon } from './ConectionIcon';
 import * as localTabs from 'contexts/Tabs/Local';
 import { useChainUi } from 'contexts/ChainUi';
-import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -54,7 +54,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   } = useSortable({ id });
 
   // Get any api status for the tab, if present.
-  const apiStatus = getApiStatus(tabIdToOwnerId(id));
+  const apiStatus = getApiStatus(`${tabIdToOwnerId(id)}_0`);
 
   // Update the tab to instantiated.
   addInstantiatedId(id);
