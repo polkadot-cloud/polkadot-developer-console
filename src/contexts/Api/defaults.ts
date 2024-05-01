@@ -7,7 +7,7 @@ import type { ApiContextInterface } from './types';
 export const defaultApiContext: ApiContextInterface = {
   getApiStatus: (ownerId) => 'disconnected',
   getApiActive: (ownerId) => false,
-  getChainSpec: (ownerId) => null,
+  getChainSpec: (instanceId) => null,
 };
 
 // Non disconnected API statuses.
