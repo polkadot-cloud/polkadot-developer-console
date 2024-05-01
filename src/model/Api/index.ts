@@ -11,6 +11,7 @@ import type {
   EventStatus,
   ErrDetail,
   OwnerId,
+  ApiInstanceId,
 } from './types';
 import { MetadataController } from 'controllers/Metadata';
 import { SubscriptionsController } from 'controllers/Subscriptions';
@@ -26,7 +27,7 @@ export class Api {
   #ownerId: OwnerId;
 
   // The instance id for this api instance.
-  #instanceId: string;
+  #instanceId: ApiInstanceId;
 
   // The supplied chain id.
   #chainId: ChainId;
