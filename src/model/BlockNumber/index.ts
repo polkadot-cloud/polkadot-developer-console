@@ -43,7 +43,7 @@ export class BlockNumber implements Unsubscribable {
   // Subscribe to block number.
   subscribe = async (): Promise<void> => {
     try {
-      const api = ApiController.instances[this.#ownerId].api;
+      const api = ApiController.instances[this.#ownerId][0].api;
 
       if (api && this.#unsub === undefined) {
         // Get block numbers.

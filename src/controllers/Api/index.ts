@@ -11,7 +11,7 @@ export class ApiController {
   // ------------------------------------------------------
 
   // The currently instantiated API instances, keyed by ownerId.
-  static instances: Record<OwnerId, Api> = {};
+  static instances: Record<OwnerId, Api[]> = {};
 
   // ------------------------------------------------------
   // Api instance methods.
@@ -20,6 +20,7 @@ export class ApiController {
   // Instantiate a new `Api` instance with the supplied owner, chainId and endpoint.
   static async instantiate(
     ownerId: OwnerId,
+    instanceId: number,
     chainId: ChainId,
     endpoint: string
   ) {
@@ -27,17 +28,22 @@ export class ApiController {
     // want to disconnect from existing instances for this tab. The following condition will only be
     // met if there is an existing stale instance in class state, or if this method is used
     // incorrectly.
-    if (this.instances[ownerId]) {
-      await this.destroy(ownerId);
+    if (this.instances?.[ownerId]?.[instanceId]) {
+      await this.destroy(ownerId, instanceId);
     }
 
-    this.instances[ownerId] = new Api(ownerId, chainId, endpoint);
-    await this.instances[ownerId].initialize();
+    // Initialise array of instances for this ownerId if it doesn't exist.
+    if (!this.instances[ownerId]) {
+      this.instances[ownerId] = [];
+    }
+
+    this.instances[ownerId][instanceId] = new Api(ownerId, chainId, endpoint);
+    await this.instances[ownerId][instanceId].initialize();
   }
 
   // Gracefully disconnect and then destroy an api instance.
-  static async destroy(ownerId: OwnerId) {
-    const api = this.instances[ownerId];
+  static async destroy(ownerId: OwnerId, instanceId: number) {
+    const api = this.instances[ownerId][instanceId];
     if (api) {
       await api.disconnect(true);
       delete this.instances[ownerId];

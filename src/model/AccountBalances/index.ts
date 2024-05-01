@@ -60,7 +60,7 @@ export class AccountBalances implements Unsubscribable {
       }
 
       // Get api instance and subscribe to new accounts.
-      const api = ApiController.instances[this.#ownerId].api;
+      const api = ApiController.instances[this.#ownerId][0].api;
       if (api) {
         accountsAdded.forEach(async (address) => {
           this.#accounts.push(address);

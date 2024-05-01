@@ -91,7 +91,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const getTabApi = () => {
     const activeTab = getActiveTab();
     if (activeTab?.chain) {
-      return ApiController.instances[tabIdToOwnerId(activeTab.id)];
+      return ApiController.instances[tabIdToOwnerId(activeTab.id)][0];
     }
   };
 
@@ -190,7 +190,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
       fetchPalletVersions(
         ownerId,
         spec.metadata,
-        ApiController.instances[ownerId].api
+        ApiController.instances[ownerId][0].api
       );
     }
   };

@@ -108,8 +108,10 @@ export const ManageTab = () => {
                       'Are you sure you want to disconnect this tab?'
                     )
                   ) {
-                    setTabForceDisconnect(tabId, true);
-                    ApiController.destroy(ownerId);
+                    if (tab?.chain) {
+                      setTabForceDisconnect(tabId, true);
+                      ApiController.destroy(ownerId, tab.chain.api.instanceId);
+                    }
                   }
                 }}
               >

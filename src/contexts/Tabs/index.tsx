@@ -364,17 +364,25 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     const ownerId = tabIdToOwnerId(tabId);
-    const { id, endpoint } = chain;
+    const {
+      id,
+      endpoint,
+      api: { instanceId },
+    } = chain;
 
-    await ApiController.instantiate(ownerId, id, endpoint);
+    await ApiController.instantiate(ownerId, instanceId, id, endpoint);
     ChainStateController.instantiate(ownerId);
   };
 
   // Destroy controller instances for a tab.
   const destroyControllers = (tabId: number) => {
     const ownerId = tabIdToOwnerId(tabId);
-    ApiController.destroy(ownerId);
-    ChainStateController.destroy(ownerId);
+    const tab = getTab(tabId);
+
+    if (tab && tab.chain) {
+      ApiController.destroy(ownerId, tab.chain.api.instanceId);
+      ChainStateController.destroy(ownerId);
+    }
   };
 
   return (

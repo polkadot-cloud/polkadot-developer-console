@@ -66,9 +66,9 @@ export const TabContextMenu = ({
         <li className={`${apiButtonInactive ? `` : ` inactive`}`}>
           <button
             onClick={() => {
-              if (canDisconenct) {
+              if (canDisconenct && tab?.chain) {
                 setTabForceDisconnect(tabId, true);
-                ApiController.destroy(ownerId);
+                ApiController.destroy(ownerId, tab.chain.api.instanceId);
                 closeMenu();
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);

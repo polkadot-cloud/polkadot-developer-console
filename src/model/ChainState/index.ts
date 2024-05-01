@@ -46,7 +46,7 @@ export class ChainState {
     rawKey: string,
     config: SubscriptionConfig
   ): Promise<void> => {
-    const api = ApiController.instances[this.#ownerId].api;
+    const api = ApiController.instances[this.#ownerId][0].api;
     const subscriptionKey = this.prependIndexToKey('subscription', rawKey);
 
     if (api) {
@@ -104,7 +104,7 @@ export class ChainState {
   // ------------------------------------------------------
 
   fetchConstant = (pallet: string, constant: string): ConstantResult | null => {
-    const api = ApiController.instances[this.#ownerId].api;
+    const api = ApiController.instances[this.#ownerId][0].api;
     const result = api?.consts?.[pallet]?.[constant];
 
     if (result) {
