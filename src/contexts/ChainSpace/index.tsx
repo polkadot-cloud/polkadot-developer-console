@@ -26,7 +26,10 @@ export const ChainSpaceProvider = ({ children }: { children: ReactNode }) => {
   return (
     <ChainSpace.Provider
       value={{
-        parachainSetupChainSpaceIndex: parachainSetupChainSpaceIndex.current,
+        parachainSetupChainSpace: {
+          ownerId: GLOBAL_CHAIN_SPACE_OWNER,
+          index: parachainSetupChainSpaceIndex.current,
+        },
       }}
     >
       {children}
