@@ -33,7 +33,7 @@ export class ApiController {
     endpoint: string
   ) {
     let instanceIndex = 0;
-    // Initialise array of instances for this ownerId if it doesn't exist.
+    // Initialise empty record for this ownerId if it doesn't exist.
     if (!this.#instances[ownerId]) {
       this.#instances[ownerId] = {};
     } else {
