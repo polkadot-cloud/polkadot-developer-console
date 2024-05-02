@@ -11,4 +11,12 @@ export class ChainSpaceController {
 
   // The currently instantiated ChainSpace instances, keyed by ownerId.
   static #instances: Record<OwnerId, Record<number, ChainSpace>> = {};
+
+  // ------------------------------------------------------
+  // Getters.
+  // ------------------------------------------------------
+
+  static get instances() {
+    return this.#instances;
+  }
 }

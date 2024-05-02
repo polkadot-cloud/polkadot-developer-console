@@ -23,7 +23,7 @@ export class ApiController {
   }
 
   // ------------------------------------------------------
-  // Api instance methods.
+  // Instance methods.
   // ------------------------------------------------------
 
   // Instantiate a new `Api` instance with the supplied owner, chainId and endpoint.
