@@ -4,7 +4,7 @@
 import type { ChainId } from 'config/networks';
 import { ChainStateController } from 'controllers/ChainState';
 import { Api } from 'model/Api';
-import type { OwnerId } from 'model/Api/types';
+import type { OwnerId } from 'types';
 
 export class ApiController {
   // ------------------------------------------------------
@@ -14,17 +14,16 @@ export class ApiController {
   // The currently instantiated API instances, keyed by ownerId.
   static #instances: Record<OwnerId, Record<number, Api>> = {};
 
-  // Get an instance `api` by ownerId and instanceIndex.
-  static getInstance(ownerId: OwnerId, instanceIndex: number) {
-    return this.#instances[ownerId][instanceIndex].api;
-  }
+  // ------------------------------------------------------
+  // Getters.
+  // ------------------------------------------------------
 
   static get instances() {
     return this.#instances;
   }
 
   // ------------------------------------------------------
-  // Api instance methods.
+  // Instance methods.
   // ------------------------------------------------------
 
   // Instantiate a new `Api` instance with the supplied owner, chainId and endpoint.
@@ -34,7 +33,7 @@ export class ApiController {
     endpoint: string
   ) {
     let instanceIndex = 0;
-    // Initialise array of instances for this ownerId if it doesn't exist.
+    // Initialise empty record for this ownerId if it doesn't exist.
     if (!this.#instances[ownerId]) {
       this.#instances[ownerId] = {};
     } else {
@@ -57,6 +56,15 @@ export class ApiController {
     // Once the api instance is initialized, we can instantiate the chain state controller.
     ChainStateController.instantiate(ownerId, `${ownerId}_${instanceIndex}`);
   }
+
+  // Get an instance `api` by ownerId and instanceIndex.
+  static getInstanceApi(ownerId: OwnerId, instanceIndex: number) {
+    return this.#instances[ownerId][instanceIndex].api;
+  }
+
+  // ------------------------------------------------------
+  // Disconnect and destroy.
+  // ------------------------------------------------------
 
   // Gracefully disconnect and then destroy an api instance.
   static async destroy(ownerId: OwnerId, instanceIndex: number) {

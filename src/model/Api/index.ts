@@ -10,13 +10,13 @@ import type {
   APIChainSpecVersion,
   EventStatus,
   ErrDetail,
-  OwnerId,
   ApiInstanceId,
 } from './types';
 import { MetadataController } from 'controllers/Metadata';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { AnyJson } from '@w3ux/utils/types';
 import BigNumber from 'bignumber.js';
+import type { OwnerId } from 'types';
 
 export class Api {
   // ------------------------------------------------------

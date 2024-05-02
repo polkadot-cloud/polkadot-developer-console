@@ -10,8 +10,9 @@ import type {
 } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
 import { splitChainStateKey } from './util';
-import type { ApiInstanceId, OwnerId } from 'model/Api/types';
+import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';
+import type { OwnerId } from 'types';
 
 export class ChainState {
   // ------------------------------------------------------
@@ -51,7 +52,7 @@ export class ChainState {
     rawKey: string,
     config: SubscriptionConfig
   ): Promise<void> => {
-    const api = ApiController.getInstance(
+    const api = ApiController.getInstanceApi(
       this.#ownerId,
       getIndexFromInstanceId(this.#instanceId)
     );
@@ -113,7 +114,7 @@ export class ChainState {
   // ------------------------------------------------------
 
   fetchConstant = (pallet: string, constant: string): ConstantResult | null => {
-    const api = ApiController.getInstance(
+    const api = ApiController.getInstanceApi(
       this.#ownerId,
       getIndexFromInstanceId(this.#instanceId)
     );

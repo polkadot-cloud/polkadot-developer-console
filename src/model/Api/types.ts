@@ -4,9 +4,7 @@
 import type { AnyJson } from '@w3ux/utils/types';
 import type { ChainId } from 'config/networks';
 import type { MetadataVersion } from 'controllers/Metadata/types';
-
-// Over-arching type for the owner id. Used for api instances.
-export type OwnerId = string;
+import type { OwnerId } from 'types';
 
 // An id associated with an api instance. ChainState, ChainSpec, subscriptions, etc. all use this id
 // to associate with an api instance.
