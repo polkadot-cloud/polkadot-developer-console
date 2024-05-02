@@ -14,10 +14,9 @@ export class ApiController {
   // The currently instantiated API instances, keyed by ownerId.
   static #instances: Record<OwnerId, Record<number, Api>> = {};
 
-  // Get an instance `api` by ownerId and instanceIndex.
-  static getInstanceApi(ownerId: OwnerId, instanceIndex: number) {
-    return this.#instances[ownerId][instanceIndex].api;
-  }
+  // ------------------------------------------------------
+  // Getters.
+  // ------------------------------------------------------
 
   static get instances() {
     return this.#instances;
@@ -57,6 +56,15 @@ export class ApiController {
     // Once the api instance is initialized, we can instantiate the chain state controller.
     ChainStateController.instantiate(ownerId, `${ownerId}_${instanceIndex}`);
   }
+
+  // Get an instance `api` by ownerId and instanceIndex.
+  static getInstanceApi(ownerId: OwnerId, instanceIndex: number) {
+    return this.#instances[ownerId][instanceIndex].api;
+  }
+
+  // ------------------------------------------------------
+  // Disconnect and destroy.
+  // ------------------------------------------------------
 
   // Gracefully disconnect and then destroy an api instance.
   static async destroy(ownerId: OwnerId, instanceIndex: number) {
