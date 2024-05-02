@@ -15,7 +15,7 @@ export class ApiController {
   static #instances: Record<OwnerId, Record<number, Api>> = {};
 
   // Get an instance `api` by ownerId and instanceIndex.
-  static getInstance(ownerId: OwnerId, instanceIndex: number) {
+  static getInstanceApi(ownerId: OwnerId, instanceIndex: number) {
     return this.#instances[ownerId][instanceIndex].api;
   }
 

@@ -52,7 +52,7 @@ export class ChainState {
     rawKey: string,
     config: SubscriptionConfig
   ): Promise<void> => {
-    const api = ApiController.getInstance(
+    const api = ApiController.getInstanceApi(
       this.#ownerId,
       getIndexFromInstanceId(this.#instanceId)
     );
@@ -114,7 +114,7 @@ export class ChainState {
   // ------------------------------------------------------
 
   fetchConstant = (pallet: string, constant: string): ConstantResult | null => {
-    const api = ApiController.getInstance(
+    const api = ApiController.getInstanceApi(
       this.#ownerId,
       getIndexFromInstanceId(this.#instanceId)
     );

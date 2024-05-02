@@ -49,7 +49,7 @@ export class BlockNumber implements Unsubscribable {
   // Subscribe to block number.
   subscribe = async (): Promise<void> => {
     try {
-      const api = ApiController.getInstance(
+      const api = ApiController.getInstanceApi(
         this.#ownerId,
         getIndexFromInstanceId(this.#instanceId)
       );

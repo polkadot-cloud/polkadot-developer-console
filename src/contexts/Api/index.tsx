@@ -187,7 +187,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
         fetchPalletVersions(
           ownerId,
           spec.metadata,
-          ApiController.getInstance(ownerId, getIndexFromInstanceId(instanceId))
+          ApiController.getInstanceApi(ownerId, getIndexFromInstanceId(instanceId))
         );
       }
     }
