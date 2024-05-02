@@ -10,8 +10,9 @@ import type {
 } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
 import { splitChainStateKey } from './util';
-import type { ApiInstanceId, OwnerId } from 'model/Api/types';
+import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';
+import type { OwnerId } from 'types';
 
 export class ChainState {
   // ------------------------------------------------------

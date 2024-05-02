@@ -5,8 +5,9 @@ import type { VoidFn } from '@polkadot/api/types';
 import type { ChainId } from 'config/networks';
 import { ApiController } from 'controllers/Api';
 import type { Unsubscribable } from 'controllers/Subscriptions/types';
-import type { ApiInstanceId, OwnerId } from 'model/Api/types';
+import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';
+import type { OwnerId } from 'types';
 
 export class BlockNumber implements Unsubscribable {
   // ------------------------------------------------------

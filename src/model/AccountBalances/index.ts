@@ -8,8 +8,9 @@ import type { ChainId } from 'config/networks';
 import { ApiController } from 'controllers/Api';
 import type { Balances } from './types';
 import type { Unsubscribable } from 'controllers/Subscriptions/types';
-import type { ApiInstanceId, OwnerId } from 'model/Api/types';
+import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';
+import type { OwnerId } from 'types';
 
 export class AccountBalances implements Unsubscribable {
   // ------------------------------------------------------

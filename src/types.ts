@@ -32,6 +32,9 @@ declare global {
   }
 }
 
+// Over-arching type for an owner id. Used for owners of instances and chain spaces.
+export type OwnerId = string;
+
 export interface ComponentBase {
   children?: ReactNode;
   style?: CSSProperties;

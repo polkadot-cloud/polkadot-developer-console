@@ -3,7 +3,7 @@
 
 import type { ApiPromise } from '@polkadot/api';
 import type { AnyJson } from '@w3ux/utils/types';
-import type { OwnerId } from 'model/Api/types';
+import type { OwnerId } from 'types';
 import type { MetadataVersion } from 'model/Metadata/types';
 
 export interface ChainUiContextInterface {

@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { OwnerId } from 'model/Api/types';
+import type { OwnerId } from 'types';
 
 // Converts a tabId into an owner id. This is currently just converting the tab id to a string.
 export const tabIdToOwnerId = (tabId: number): OwnerId =>

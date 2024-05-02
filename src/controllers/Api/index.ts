@@ -4,7 +4,7 @@
 import type { ChainId } from 'config/networks';
 import { ChainStateController } from 'controllers/ChainState';
 import { Api } from 'model/Api';
-import type { OwnerId } from 'model/Api/types';
+import type { OwnerId } from 'types';
 
 export class ApiController {
   // ------------------------------------------------------

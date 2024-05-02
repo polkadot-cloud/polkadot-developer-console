@@ -17,7 +17,6 @@ import type {
   ApiStatusState,
   ChainSpecState,
   ErrDetail,
-  OwnerId,
 } from 'model/Api/types';
 import { useChainUi } from 'contexts/ChainUi';
 import { NotificationsController } from 'controllers/Notifications';
@@ -27,6 +26,7 @@ import { AccountBalances } from 'model/AccountBalances';
 import { setStateWithRef } from '@w3ux/utils';
 import { ownerIdToTabId } from 'contexts/Tabs/Utils';
 import { getIndexFromInstanceId } from 'model/Api/util';
+import type { OwnerId } from 'types';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
