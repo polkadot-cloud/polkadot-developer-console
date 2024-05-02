@@ -32,13 +32,6 @@ export class ChainSpace {
   constructor(ownerId: OwnerId, instanceIndex: number) {
     this.#ownerId = ownerId;
     this.#chainSpaceId = `${ownerId}_${instanceIndex}`;
-
-    console.log(
-      'instantiated ChainSpace instance:',
-      this.#chainSpaceId,
-      'by owner',
-      this.#ownerId
-    );
   }
 
   // ------------------------------------------------------
