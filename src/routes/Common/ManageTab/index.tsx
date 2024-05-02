@@ -14,6 +14,7 @@ import { useApi } from 'contexts/Api';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { SubHeadingWrapper } from './Wrappers';
 import { isDirectoryId } from 'config/networks/Utils';
+import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 
 export const ManageTab = () => {
   const {
@@ -27,9 +28,7 @@ export const ManageTab = () => {
   const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
 
   const apiStatus = getApiStatus(apiInstanceId);
-  const showDisconnect = ['ready', 'connected', 'connecting'].includes(
-    apiStatus
-  );
+  const apiDisconnected = !ACTIVE_API_STATUSES.includes(apiStatus);
 
   // Determine whether this is a custom endpoint. If it is, we want to allow the chain metadata to
   // be updated.
@@ -51,7 +50,7 @@ export const ManageTab = () => {
         }}
         initialValue={tab?.name || ''}
       />
-      {!isDirectory && (
+      {!isDirectory && !apiDisconnected && (
         <>
           <SubHeadingWrapper>Chain Metadata</SubHeadingWrapper>
 
@@ -90,7 +89,7 @@ export const ManageTab = () => {
         </>
       )}
 
-      {showDisconnect && (
+      {!apiDisconnected && (
         <>
           <SettingsToggleWrapper>
             <div className="text">
