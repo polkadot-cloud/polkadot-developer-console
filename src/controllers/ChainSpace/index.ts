@@ -17,7 +17,7 @@ export class ChainSpaceController {
   // ------------------------------------------------------
 
   // Instantiate a new `ChainSpace` instance with the supplied owner.
-  static async instantiate(ownerId: OwnerId) {
+  static instantiate(ownerId: OwnerId) {
     let instanceIndex = 0;
     // Initialise empty record for this ownerId if it doesn't exist.
     if (!this.#instances[ownerId]) {
@@ -36,6 +36,9 @@ export class ChainSpaceController {
       ownerId,
       instanceIndex
     );
+
+    // Return the instance index.
+    return instanceIndex;
   }
 
   // ------------------------------------------------------
