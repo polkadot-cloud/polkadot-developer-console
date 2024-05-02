@@ -14,7 +14,7 @@ export const useParaSetup = () => useContext(ParaSetupContext);
 
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   // Store the active setup step for a tab.
-  const [activeSteps, setActiveSteps] = useState<Record<string, SetupStep>>({});
+  const [activeSteps, setActiveSteps] = useState<Record<number, SetupStep>>({});
 
   // Get the active step for a tab id, or 1 otherwise.
   const getActiveStep = (tabId: number) =>
