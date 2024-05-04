@@ -55,6 +55,8 @@ export class ApiController {
 
     // Once the api instance is initialized, we can instantiate the chain state controller.
     ChainStateController.instantiate(ownerId, `${ownerId}_${instanceIndex}`);
+
+    return instanceIndex;
   }
 
   // Get an instance `api` by ownerId and instanceIndex.
