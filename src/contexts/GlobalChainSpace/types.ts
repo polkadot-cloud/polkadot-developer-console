@@ -7,7 +7,7 @@ export interface GlobalChainSpaceContextInterface {
   globalChainSpace:
     | {
         ownerId: OwnerId;
-        index: number | undefined;
+        index: number;
       }
     | undefined;
 }
