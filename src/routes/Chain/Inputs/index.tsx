@@ -304,7 +304,6 @@ export const useInput = () => {
           return (
             <Section indent={indent}>
               <Select
-                {...inputArgConfig}
                 label={label}
                 values={values || []}
                 value={
