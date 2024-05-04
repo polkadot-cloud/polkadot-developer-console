@@ -68,6 +68,7 @@ export const FooterWrapper = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
+  margin-top: 1rem;
 
   > div:first-child {
     flex-grow: 1;
