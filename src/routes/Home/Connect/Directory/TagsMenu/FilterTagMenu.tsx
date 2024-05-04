@@ -33,6 +33,7 @@ export const FilterTagMenu = ({
       tagEntries={Object.entries(tags)}
       onSelect={onSelect}
       tagSearchTerm={tagSearchTerm}
+      setTagSearchTerm={setTagSearchTerm}
       handleOnChange={handleOnChange}
       appliedTags={appliedTagIds}
       selectLocked={true}

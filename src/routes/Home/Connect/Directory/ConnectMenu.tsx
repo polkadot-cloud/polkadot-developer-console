@@ -40,6 +40,7 @@ export const ConnectMenu = ({
       : providers;
 
   const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <SelectListWrapper>
       <h5>Select Provider</h5>

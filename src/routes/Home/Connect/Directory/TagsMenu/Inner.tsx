@@ -11,11 +11,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useTags } from 'contexts/Tags';
 import { formatInputString } from 'Utils';
+import { SearchInput } from 'library/ContextMenu/SearchInput';
+import { useRef } from 'react';
 
 export const TagsMenuInner = ({
   tagEntries,
   appliedTags,
   tagSearchTerm,
+  setTagSearchTerm,
   onSelect,
   handleOnChange,
   selectLocked,
@@ -23,6 +26,7 @@ export const TagsMenuInner = ({
   tagEntries: [string, TagItem][];
   appliedTags: string[];
   tagSearchTerm: string;
+  setTagSearchTerm: (value: string) => void;
   onSelect: (tagId: TagId, selected: boolean, current: string[]) => void;
   handleOnChange: (value: string) => void;
   selectLocked: boolean;
@@ -37,20 +41,24 @@ export const TagsMenuInner = ({
         )
       : tagEntries;
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <SelectListWrapper>
       <h5>Select Tags</h5>
       <SearchWrapper className="bg">
-        <input
-          placeholder="Search"
+        <SearchInput
+          inputRef={inputRef}
           value={tagSearchTerm}
-          onFocus={() => {
-            /* Do nothing */
-          }}
-          onBlur={() => {
-            /* Do nothing */
-          }}
+          searchValue={tagSearchTerm}
+          setSearchValue={setTagSearchTerm}
           onChange={(ev) => handleOnChange(ev.currentTarget.value)}
+          onEnter={() => {
+            /* Do nothing */
+          }}
+          onEscape={() => {
+            /* Do nothing */
+          }}
         />
       </SearchWrapper>
       <ListWrapper>

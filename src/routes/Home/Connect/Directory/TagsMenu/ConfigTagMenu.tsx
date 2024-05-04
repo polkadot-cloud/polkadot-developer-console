@@ -36,6 +36,7 @@ export const ConfigTagMenu = ({
       tagEntries={orderedEntries}
       appliedTags={appliedTags}
       tagSearchTerm={tagSearchTerm}
+      setTagSearchTerm={setTagSearchTerm}
       onSelect={onSelect}
       handleOnChange={handleOnChange}
       selectLocked={false}
