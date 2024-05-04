@@ -42,7 +42,7 @@ export const ReserveParaId = () => {
             /* TODO: Implement. */
           }}
         >
-          Connect and Retrieve Para ID
+          Continue
           <FontAwesomeIcon icon={faCaretRight} transform="grow-1" />
         </ButtonSubmit>
       </section>
