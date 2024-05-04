@@ -10,8 +10,8 @@ export const ReserveParaId = () => (
       Reserve a Para ID on the Relay Chain you wish to secure blocks with.
     </h3>
 
-    <div>
+    <section>
       <AccountId32 />
-    </div>
+    </section>
   </FormWrapper>
 );
