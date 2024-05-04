@@ -41,6 +41,11 @@ export class ChainSpaceController {
     return instanceIndex;
   }
 
+  // Get a chain space instance by owner and index.
+  static getInstance(ownerId: OwnerId, instanceIndex: number) {
+    return this.#instances[ownerId]?.[instanceIndex];
+  }
+
   // Gracefully disconnect and then destroy a chain space instance.
   static async destroyInstance(ownerId: OwnerId, instanceIndex: number) {
     const instance = this.#instances[ownerId][instanceIndex];

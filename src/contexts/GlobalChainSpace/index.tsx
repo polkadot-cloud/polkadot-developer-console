@@ -33,6 +33,11 @@ export const GlobalChainSpaceProvider = ({
         globalChainSpace: {
           ownerId: GLOBAL_CHAIN_SPACE_OWNER,
           index: globalChainSpaceIndex.current,
+          getInstance: () =>
+            ChainSpaceController.getInstance(
+              GLOBAL_CHAIN_SPACE_OWNER,
+              globalChainSpaceIndex.current
+            ),
         },
       }}
     >
