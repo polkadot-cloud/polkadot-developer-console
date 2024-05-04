@@ -5,7 +5,7 @@
 import type { ChainSpaceContextInterface } from './types';
 
 export const defaultChainStateContext: ChainSpaceContextInterface = {
-  parachainSetupChainSpace: undefined,
+  globalChainSpace: undefined,
 };
 
 export const GLOBAL_CHAIN_SPACE_OWNER = 'global';

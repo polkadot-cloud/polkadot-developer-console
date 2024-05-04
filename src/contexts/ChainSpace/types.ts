@@ -4,7 +4,7 @@
 import type { OwnerId } from 'types';
 
 export interface ChainSpaceContextInterface {
-  parachainSetupChainSpace:
+  globalChainSpace:
     | {
         ownerId: OwnerId;
         index: number | undefined;

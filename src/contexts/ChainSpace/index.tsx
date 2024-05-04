@@ -15,20 +15,20 @@ export const useChainSpace = () => useContext(ChainSpace);
 
 export const ChainSpaceProvider = ({ children }: { children: ReactNode }) => {
   // The index of the global parachain setup chain space.
-  const parachainSetupChainSpaceIndex = useRef<number | undefined>(undefined);
+  const globalChainSpaceIndex = useRef<number | undefined>(undefined);
 
   // On app start, instantiate a global chain space for parachain setup.
   useEffect(() => {
     const index = ChainSpaceController.instantiate(GLOBAL_CHAIN_SPACE_OWNER);
-    parachainSetupChainSpaceIndex.current = index;
+    globalChainSpaceIndex.current = index;
   }, []);
 
   return (
     <ChainSpace.Provider
       value={{
-        parachainSetupChainSpace: {
+        globalChainSpace: {
           ownerId: GLOBAL_CHAIN_SPACE_OWNER,
-          index: parachainSetupChainSpaceIndex.current,
+          index: globalChainSpaceIndex.current,
         },
       }}
     >
