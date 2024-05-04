@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { InputFormWrapper, SelectFormWrapper } from '../Wrappers';
+import { InputFormWrapper } from '../Wrappers';
 import { useApi } from 'contexts/Api';
 import { useMemo } from 'react';
 import { PalletList } from '../PalletList';
@@ -18,6 +18,7 @@ import { camelize } from '@w3ux/utils';
 import { ChainStateController } from 'controllers/ChainState';
 import { useChainState } from 'contexts/ChainState';
 import { Results } from './Results';
+import { SelectFormWrapper } from 'library/Inputs/Wrappers';
 
 export const Constants = () => {
   const { getChainSpec } = useApi();

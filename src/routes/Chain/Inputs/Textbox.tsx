@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useEffect, useState } from 'react';
-import { TextInputWrapper } from '../Wrappers';
 import type { TextboxProps } from './types';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
+import { TextInputWrapper } from 'library/Inputs/Wrappers';
 
 export const Textbox = ({
   inputKey,

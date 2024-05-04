@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { AccountId32 } from 'routes/Chain/Inputs/AccountId32';
+import { AccountId32 } from 'library/Inputs/AccountId32';
 import { FormWrapper } from './Wrappers';
 
 export const ReserveParaId = () => (

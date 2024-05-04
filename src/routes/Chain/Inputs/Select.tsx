@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useEffect, useState } from 'react';
-import { SelectItemWrapper, SelectTextWrapper } from '../Wrappers';
 import { camelize } from '@w3ux/utils';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,6 +9,7 @@ import { SelectDropdown } from 'library/SelectDropdown';
 import type { SelectProps } from './types';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
+import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
 
 export const Select = ({
   inputKey,

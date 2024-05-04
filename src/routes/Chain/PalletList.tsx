@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SelectItemWrapper, SelectTextWrapper } from './Wrappers';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import { formatInputString } from 'Utils';
@@ -14,6 +13,7 @@ import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
 import { useSelectFirst } from 'hooks/useSelectFirst';
 import { SelectDropdown } from 'library/SelectDropdown';
+import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
 
 export const PalletList = ({
   pallets,

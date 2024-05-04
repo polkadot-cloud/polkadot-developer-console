@@ -2,17 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useChainUi } from 'contexts/ChainUi';
-import {
-  InputFormWrapper,
-  SelectFormWrapper,
-  TextInputWrapper,
-} from '../Wrappers';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { ChainStateController } from 'controllers/ChainState';
 import { Results } from './Results';
+import { SelectFormWrapper, TextInputWrapper } from 'library/Inputs/Wrappers';
+import { InputFormWrapper } from '../Wrappers';
 
 export const Raw = () => {
   const { tabId, apiInstanceId } = useActiveTab();

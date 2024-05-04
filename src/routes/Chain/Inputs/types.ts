@@ -19,15 +19,6 @@ export interface RenderInputArgs {
   key: string;
 }
 
-export interface AccountId32Props {
-  // Custom logic to execute when the component mounts. The initial input value is provided.
-  onMount?: (val: string) => void;
-  // Custom logic to execute when the value changes.
-  onChange?: (val: string) => void;
-  // Custom logic to execute when the component renders. The input type is provided.
-  onRender?: (inputType: string) => void;
-}
-
 export interface InputArgConfig {
   inputKey: string;
   namespace: InputNamespace;

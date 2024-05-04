@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { SelectFormWrapper } from '../Wrappers';
 import { useApi } from 'contexts/Api';
 import { PalletList } from '../PalletList';
 import { CallList } from './CallList';
@@ -15,6 +14,7 @@ import { defaultPalletData } from '../ChainState/defaults';
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 import { InputForm } from '../ChainState/InputForm';
 import type { InputNamespace } from 'contexts/ChainUi/types';
+import { SelectFormWrapper } from 'library/Inputs/Wrappers';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();

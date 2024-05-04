@@ -1,10 +1,10 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { SelectDropdownWrapper } from 'routes/Chain/Wrappers';
 import type { SelectDropdownProps } from './types';
 import { useEffect, useRef } from 'react';
 import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
+import { SelectDropdownWrapper } from 'library/Inputs/Wrappers';
 
 export const SelectDropdown = ({
   open,

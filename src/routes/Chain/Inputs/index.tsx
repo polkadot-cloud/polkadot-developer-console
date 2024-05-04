@@ -12,7 +12,7 @@ import type { InputArgConfig, InputArray, InputItem } from './types';
 import { Hash } from './Hash';
 import { Sequence } from './Sequence';
 import { Checkbox } from './Checkbox';
-import { AccountId32 } from './AccountId32';
+import { AccountId32 } from '../../../library/Inputs/AccountId32';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
 
