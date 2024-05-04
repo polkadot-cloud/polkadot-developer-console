@@ -65,6 +65,7 @@ export const FormWrapper = styled.div`
   > section {
     flex: 1;
     max-width: 650px;
+    margin-bottom: 1rem;
   }
 `;
 
