@@ -43,11 +43,10 @@ export const Progress = () => {
       >
         <h4>Get Coretime</h4>
       </section>
-      {activeStep === 'get_coretime' && (
-        <section className={`spacer`}>
-          <span className="connector"></span>
-        </section>
-      )}
+
+      <section className="spacer smallOnly">
+        <span className="connector"></span>
+      </section>
     </ProgressWrapper>
   );
 };

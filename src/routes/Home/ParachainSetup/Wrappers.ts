@@ -20,7 +20,7 @@ export const Wrapper = styled.div`
 export const ProgressWrapper = styled.div`
   --progress-vertical-padding: 1rem;
 
-  @media (max-width: 750px) {
+  @media (max-width: 850px) {
     --progress-vertical-padding: 0.5rem;
   }
 
@@ -58,14 +58,22 @@ export const ProgressWrapper = styled.div`
     }
 
     &.active {
-      padding-left: 0;
       h4 {
         color: var(--accent-color-primary);
       }
     }
 
-    @media (max-width: 750px) {
+    @media (max-width: 850px) {
       &.inactive {
+        display: none;
+      }
+      &.smallOnly {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 851px) {
+      &.smallOnly {
         display: none;
       }
     }
