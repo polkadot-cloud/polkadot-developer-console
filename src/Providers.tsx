@@ -16,7 +16,7 @@ import { ApiProvider } from 'contexts/Api';
 import { ChainUiProvider } from 'contexts/ChainUi';
 import { ParaSetupProvider } from 'contexts/ParaSetup';
 import { ConnectProvider } from 'contexts/Connect';
-import { AccountsProvider } from 'contexts/Accounts';
+import { TabAccountsProvider } from 'contexts/TabAccounts';
 import {
   ExtensionAccountsProvider,
   ExtensionsProvider,
@@ -43,7 +43,7 @@ export const Providers = () => {
     ExtensionsProvider,
     [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
     VaultAccountsProvider,
-    AccountsProvider,
+    TabAccountsProvider,
     ConnectProvider,
     ChainStateProvider,
   ];

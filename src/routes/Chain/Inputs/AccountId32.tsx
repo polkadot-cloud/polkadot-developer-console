@@ -14,17 +14,17 @@ import {
   remToUnit,
   setStateWithRef,
 } from '@w3ux/utils';
-import { useAccounts } from 'contexts/Accounts';
+import { useTabAccounts } from 'contexts/TabAccounts';
 import { formatInputString } from 'Utils';
 import { SelectDropdown } from 'library/SelectDropdown';
-import type { InputArgConfig } from './types';
+import type { AccountId32Props } from './types';
 
 export const AccountId32 = ({
   onMount,
   onRender,
   onChange,
-}: InputArgConfig) => {
-  const { accounts } = useAccounts();
+}: AccountId32Props) => {
+  const { accounts } = useTabAccounts();
 
   // The input arg type of this component.
   const INPUT_TYPE = 'AccountId32';

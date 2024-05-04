@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import type {
   AccountBalancesState,
-  AccountsContextInterface,
+  TabAccountsContextInterface,
   BalanceLocks,
 } from './types';
 import { defaultAccountsContext } from './defaults';
@@ -20,26 +20,24 @@ import { useApi } from 'contexts/Api';
 import type { AccountBalances } from 'model/AccountBalances';
 import type { BalanceLock } from 'model/AccountBalances/types';
 import BigNumber from 'bignumber.js';
-import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useActiveTab } from 'contexts/ActiveTab';
 
-export const Accounts = createContext<AccountsContextInterface>(
+export const TabAccounts = createContext<TabAccountsContextInterface>(
   defaultAccountsContext
 );
 
-export const useAccounts = () => useContext(Accounts);
+export const useTabAccounts = () => useContext(TabAccounts);
 
-export const AccountsProvider = ({ children }: { children: ReactNode }) => {
-  const { tabId, apiInstanceId } = useActiveTab();
+export const TabAccountsProvider = ({ children }: { children: ReactNode }) => {
   const { getVaultAccounts } = useVaultAccounts();
   const { getChainSpec, getApiStatus } = useApi();
   const { getExtensionAccounts } = useExtensionAccounts();
-
-  const ownerId = tabIdToOwnerId(tabId);
+  const { tabId, ownerId, apiInstanceId } = useActiveTab();
 
   const apiStatus = getApiStatus(apiInstanceId);
   const chainSpec = getChainSpec(apiInstanceId);
 
+  // TODO: this should be a `getAccounts(ss58Prefix: number): Account[]` function.
   const accounts =
     chainSpec && chainSpec.chain
       ? getExtensionAccounts(chainSpec.ss58Prefix).concat(
@@ -153,10 +151,10 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
   );
 
   return (
-    <Accounts.Provider
+    <TabAccounts.Provider
       value={{ getAccountBalance, getBalanceLocks, getEdReserved, accounts }}
     >
       {children}
-    </Accounts.Provider>
+    </TabAccounts.Provider>
   );
 };

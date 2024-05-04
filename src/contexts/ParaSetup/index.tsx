@@ -6,6 +6,8 @@ import { createContext, useContext, useState } from 'react';
 import type { ParaSetupContextInterface, SetupStep } from './types';
 import { defaultParaSetupContext } from './defaults';
 
+// TODO: This data needs to be moved to tab ui data.
+
 export const ParaSetupContext = createContext<ParaSetupContextInterface>(
   defaultParaSetupContext
 );

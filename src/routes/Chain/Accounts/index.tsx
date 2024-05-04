@@ -10,11 +10,11 @@ import { useApi } from 'contexts/Api';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { Account } from './Account';
 import BigNumber from 'bignumber.js';
-import { useAccounts } from 'contexts/Accounts';
+import { useTabAccounts } from 'contexts/TabAccounts';
 
 export const Accounts = () => {
   const { getChainSpec } = useApi();
-  const { accounts } = useAccounts();
+  const { accounts } = useTabAccounts();
   const { tab, apiInstanceId } = useActiveTab();
 
   const chainSpec = getChainSpec(apiInstanceId);

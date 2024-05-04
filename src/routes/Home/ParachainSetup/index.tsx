@@ -8,6 +8,7 @@ import type { SetupStep } from 'contexts/ParaSetup/types';
 import { setupSteps } from 'contexts/ParaSetup/defaults';
 import { Footer } from './Footer';
 import { Progress } from './Progress';
+import { ReserveParaId } from './ReserveParaId';
 
 export const ParachainSetup = () => {
   const { tabId } = useActiveTab();
@@ -38,13 +39,7 @@ export const ParachainSetup = () => {
 
       <Progress />
 
-      {activeStep === 'reserve_para_id' && (
-        <FormWrapper>
-          <h3>
-            Reserve a Para ID on the Relay Chain you wish to secure blocks with.
-          </h3>
-        </FormWrapper>
-      )}
+      {activeStep === 'reserve_para_id' && <ReserveParaId />}
 
       {activeStep === 'configure_node' && (
         <FormWrapper>
