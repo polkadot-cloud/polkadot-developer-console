@@ -17,13 +17,13 @@ import {
 import { useTabAccounts } from 'contexts/TabAccounts';
 import { formatInputString } from 'Utils';
 import { SelectDropdown } from 'library/SelectDropdown';
-import type { AccountId32Props } from './types';
+import type { InputCallbackProps } from '../types';
 
 export const AccountId32 = ({
   onMount,
   onRender,
   onChange,
-}: AccountId32Props) => {
+}: InputCallbackProps) => {
   const { accounts } = useTabAccounts();
 
   // The input arg type of this component.

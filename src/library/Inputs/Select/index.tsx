@@ -6,33 +6,27 @@ import { camelize } from '@w3ux/utils';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SelectDropdown } from 'library/SelectDropdown';
-import type { SelectProps } from './types';
-import { useActiveTab } from 'contexts/ActiveTab';
-import { useChainUi } from 'contexts/ChainUi';
 import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
+import type { SelectProps } from './types';
 
 export const Select = ({
-  inputKey,
-  namespace,
-  inputKeysRef,
   values,
   value,
   label,
+  onMount,
+  onRender,
+  onChange,
 }: SelectProps) => {
-  const { tabId } = useActiveTab();
-  const { setInputArgAtKey } = useChainUi();
-
   // The input arg type of this component.
   const INPUT_TYPE = 'Select';
 
   // Whether select options are open.
   const [open, setOpen] = useState<boolean>(false);
 
-  // Accumulate input key.
-  if (inputKeysRef.current) {
-    inputKeysRef.current[inputKey] = INPUT_TYPE;
+  // Run `onRender` function.
+  if (onRender !== undefined) {
+    onRender(INPUT_TYPE);
   }
-
   // Outside alerter ignore class.
   const ignoreClass = `ignore-outside-alerter-select_${camelize(String(label))}`;
 
@@ -41,7 +35,9 @@ export const Select = ({
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
-    setInputArgAtKey(tabId, namespace, inputKey, currentValue);
+    if (onMount !== undefined) {
+      onMount(currentValue);
+    }
   }, []);
 
   return (
@@ -70,7 +66,9 @@ export const Select = ({
               key={`select_${label}_${camelize(val)}`}
               className={`option`}
               onClick={() => {
-                setInputArgAtKey(tabId, namespace, inputKey, val);
+                if (onChange !== undefined) {
+                  onChange(val);
+                }
                 setOpen(false);
               }}
             >

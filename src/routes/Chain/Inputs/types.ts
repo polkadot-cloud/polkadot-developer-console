@@ -3,6 +3,7 @@
 
 import type { AnyJson } from '@w3ux/utils/types';
 import type { InputNamespace } from 'contexts/ChainUi/types';
+import type { InputCallbackProps } from 'library/Inputs/types';
 import type { RefObject } from 'react';
 
 export interface InputItem {
@@ -19,23 +20,17 @@ export interface RenderInputArgs {
   key: string;
 }
 
-export interface InputArgConfig {
+export type InputArgConfig = InputCallbackProps & {
   inputKey: string;
   namespace: InputNamespace;
   inputKeysRef: RefObject<Record<string, string>>;
-  // Custom logic to execute when the component mounts. The initial input value is provided.
-  onMount?: (val: string) => void;
-  // Custom logic to execute when the value changes.
-  onChange?: (val: string) => void;
-  // Custom logic to execute when the component renders. The input type is provided.
-  onRender?: (inputType: string) => void;
-}
+};
 
 export type HashProps = InputArgConfig & {
   defaultValue: string | number;
 };
 
-export type SelectProps = InputArgConfig & {
+export type SelectProps = InputCallbackProps & {
   values: string[];
   label: string | number;
   value: string;

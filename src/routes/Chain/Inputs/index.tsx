@@ -6,7 +6,7 @@ import { Textbox } from './Textbox';
 import type { AnyJson } from '@w3ux/utils/types';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
-import { Select } from './Select';
+import { Select } from '../../../library/Inputs/Select';
 import { Section } from './Section';
 import type { InputArgConfig, InputArray, InputItem } from './types';
 import { Hash } from './Hash';
@@ -314,6 +314,17 @@ export const useInput = () => {
                     inputArgConfig.inputKey
                   )?.value
                 }
+                onMount={(currentValue) => {
+                  setInputArgAtKey(tabId, namespace, inputKey, currentValue);
+                }}
+                onRender={(inputType) => {
+                  if (inputKeysRef.current) {
+                    inputKeysRef.current[inputKey] = inputType;
+                  }
+                }}
+                onChange={(val) => {
+                  setInputArgAtKey(tabId, namespace, inputKey, val);
+                }}
               />
             </Section>
           );

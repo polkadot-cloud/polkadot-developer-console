@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-export interface AccountId32Props {
+export interface InputCallbackProps {
   // Custom logic to execute when the component mounts. The initial input value is provided.
   onMount?: (val: string) => void;
   // Custom logic to execute when the value changes.
