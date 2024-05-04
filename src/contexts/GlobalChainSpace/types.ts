@@ -3,7 +3,7 @@
 
 import type { OwnerId } from 'types';
 
-export interface ChainSpaceContextInterface {
+export interface GlobalChainSpaceContextInterface {
   globalChainSpace:
     | {
         ownerId: OwnerId;

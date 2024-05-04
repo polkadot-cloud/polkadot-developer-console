@@ -24,7 +24,7 @@ import {
 } from '@w3ux/react-connect-kit';
 import { ChainStateProvider } from 'contexts/ChainState';
 import { ActiveTabProvider } from 'contexts/ActiveTab';
-import { ChainSpaceProvider } from 'contexts/ChainSpace';
+import { GlobalChainSpaceProvider } from 'contexts/GlobalChainSpace';
 
 export const Providers = () => {
   // !! Provider order matters.
@@ -33,7 +33,7 @@ export const Providers = () => {
     TabsProvider,
     ActiveTabProvider,
     TagsProvider,
-    ChainSpaceProvider,
+    GlobalChainSpaceProvider,
     ParaSetupProvider,
     ChainFilterProvider,
     MenuProvider,
