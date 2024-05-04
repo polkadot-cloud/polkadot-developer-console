@@ -244,7 +244,7 @@ export const TextInputWrapper = styled.div`
     }
   }
 
-  .polkicon {
+  .icon {
     position: relative;
     left: 0.5rem;
     padding-right: 0.15rem;

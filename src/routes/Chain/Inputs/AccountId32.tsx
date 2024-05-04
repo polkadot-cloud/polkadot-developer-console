@@ -99,7 +99,7 @@ export const AccountId32 = ({
   return (
     <>
       <TextInputWrapper className="input">
-        <span className="polkicon">
+        <span className="icon">
           <Polkicon
             address={selectedAddress}
             size={remToUnit('1.5rem')}
