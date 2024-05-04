@@ -54,7 +54,15 @@ export const SelectFormWrapper = styled.div`
   }
 `;
 
+export const SelectWrapper = styled.span`
+  position: relative;
+  > h4 {
+    margin-bottom: 0.2rem;
+  }
+`;
+
 export const SelectItemWrapper = styled.button`
+  width: 100%;
   min-height: 2.7rem;
 
   &.standalone {

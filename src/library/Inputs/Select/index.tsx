@@ -6,7 +6,11 @@ import { camelize } from '@w3ux/utils';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SelectDropdown } from 'library/SelectDropdown';
-import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
+import {
+  SelectItemWrapper,
+  SelectTextWrapper,
+  SelectWrapper,
+} from 'library/Inputs/Wrappers';
 import type { SelectProps } from './types';
 
 export const Select = ({
@@ -41,7 +45,7 @@ export const Select = ({
   }, []);
 
   return (
-    <>
+    <SelectWrapper>
       <h4>{label}</h4>
       <SelectItemWrapper
         className={`standalone input${open ? ` open` : ``} ${ignoreClass}`}
@@ -55,31 +59,31 @@ export const Select = ({
         </span>
       </SelectItemWrapper>
 
-      {open && (
-        <SelectDropdown
-          open={open}
-          onOutsideClick={() => setOpen(false)}
-          outsideAlerterIgnore={[ignoreClass]}
-        >
-          {values.map((val) => (
-            <SelectItemWrapper
-              key={`select_${label}_${camelize(val)}`}
-              className={`option`}
-              onClick={() => {
-                if (onChange !== undefined) {
-                  onChange(val);
-                }
-                setOpen(false);
-              }}
-            >
-              <span>
-                <SelectTextWrapper>{val}</SelectTextWrapper>
-              </span>
-              <span />
-            </SelectItemWrapper>
-          ))}
-        </SelectDropdown>
-      )}
-    </>
+      {/* {open && ( */}
+      <SelectDropdown
+        open={open}
+        onOutsideClick={() => setOpen(false)}
+        outsideAlerterIgnore={[ignoreClass]}
+      >
+        {values.map((val) => (
+          <SelectItemWrapper
+            key={`select_${label}_${camelize(val)}`}
+            className={`option`}
+            onClick={() => {
+              if (onChange !== undefined) {
+                onChange(val);
+              }
+              setOpen(false);
+            }}
+          >
+            <span>
+              <SelectTextWrapper>{val}</SelectTextWrapper>
+            </span>
+            <span />
+          </SelectItemWrapper>
+        ))}
+      </SelectDropdown>
+      {/* )} */}
+    </SelectWrapper>
   );
 };
