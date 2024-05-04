@@ -5,8 +5,10 @@
 import type { ParaSetupContextInterface, SetupStep } from './types';
 
 export const defaultParaSetupContext: ParaSetupContextInterface = {
-  getActiveStep: (tabId: number) => 'reserve_para_id',
-  setActiveStep: (tabId: number, step: SetupStep) => {},
+  getActiveStep: (tabId) => 'reserve_para_id',
+  setActiveStep: (tabId, step) => {},
+  registerRelayApi: (tabId) => {},
+  getRelayApi: (tabId) => undefined,
 };
 
 export const setupSteps: SetupStep[] = [

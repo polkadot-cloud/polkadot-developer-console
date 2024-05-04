@@ -7,8 +7,13 @@ import { useState } from 'react';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/pro-duotone-svg-icons';
+import { useParaSetup } from 'contexts/ParaSetup';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const ReserveParaId = () => {
+  const { tabId } = useActiveTab();
+  const { registerRelayApi } = useParaSetup();
+
   // The currently selected relay chain to register a ParaID on.
   const [relayChain, setRelayChain] = useState<string>('Polkadot Relay Chain');
 
@@ -39,7 +44,8 @@ export const ReserveParaId = () => {
         <ButtonSubmit
           className="lg"
           onClick={() => {
-            /* TODO: Implement. */
+            /* TODO: Implement rpc provider before connect. */
+            registerRelayApi(tabId);
           }}
         >
           Connect

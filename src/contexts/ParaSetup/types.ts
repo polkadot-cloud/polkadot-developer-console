@@ -4,6 +4,8 @@
 export interface ParaSetupContextInterface {
   getActiveStep: (tabId: number) => SetupStep;
   setActiveStep: (tabId: number, step: SetupStep) => void;
+  registerRelayApi: (tabId: number) => void;
+  getRelayApi: (tabId: number) => string | undefined;
 }
 
 export type SetupStep =
