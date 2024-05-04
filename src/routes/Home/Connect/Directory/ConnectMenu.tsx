@@ -4,12 +4,13 @@
 import { formatInputString } from 'Utils';
 import type { DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
+import { SearchInput } from 'library/ContextMenu/SearchInput';
 import {
   ListWrapper,
   SearchWrapper,
   SelectListWrapper,
 } from 'library/ContextMenu/Wrappers';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 export const ConnectMenu = ({
   chainId,
@@ -38,20 +39,23 @@ export const ConnectMenu = ({
         )
       : providers;
 
+  const inputRef = useRef<HTMLInputElement>(null);
   return (
     <SelectListWrapper>
       <h5>Select Provider</h5>
       <SearchWrapper className="bg">
-        <input
-          placeholder="Search"
+        <SearchInput
+          inputRef={inputRef}
           value={providerSearchTerm}
-          onFocus={() => {
-            /* Do nothing */
-          }}
-          onBlur={() => {
-            /* Do nothing */
-          }}
+          searchValue={providerSearchTerm}
+          setSearchValue={setProviderSearchTerm}
           onChange={(ev) => handleOnChange(ev.currentTarget.value)}
+          onEnter={() => {
+            /* Do nothing */
+          }}
+          onEscape={() => {
+            /* Do nothing */
+          }}
         />
       </SearchWrapper>
       <ListWrapper>
