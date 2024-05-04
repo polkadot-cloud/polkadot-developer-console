@@ -6,6 +6,7 @@ import styled from 'styled-components';
 // Outer page wrapper that contains all page content.
 export const Wrapper = styled.div`
   flex: 1;
+  padding: 0 1rem;
 
   h3 {
     color: var(--text-color-secondary);
@@ -17,14 +18,20 @@ export const Wrapper = styled.div`
 
 // Wrapper for the progress bar that shows the current step in the setup process.
 export const ProgressWrapper = styled.div`
+  --progress-vertical-padding: 1rem;
+
+  @media (max-width: 750px) {
+    --progress-vertical-padding: 0.5rem;
+  }
+
   flex: 1;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   display: flex;
 
   > section {
     display: flex;
     justify-content: space-between;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem var(--progress-vertical-padding);
     align-items: center;
 
     &:first-child {
@@ -51,8 +58,15 @@ export const ProgressWrapper = styled.div`
     }
 
     &.active {
+      padding-left: 0;
       h4 {
         color: var(--accent-color-primary);
+      }
+    }
+
+    @media (max-width: 750px) {
+      &.inactive {
+        display: none;
       }
     }
   }
