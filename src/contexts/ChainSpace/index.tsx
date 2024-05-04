@@ -18,7 +18,7 @@ export const ChainSpaceProvider = ({ children }: { children: ReactNode }) => {
   const globalChainSpaceIndex = useRef<number | undefined>(undefined);
 
   // Handle initialisation of global chain space.
-  const handleGlobalChainSpaceSetup = async () => {
+  const handleGlobalChainSpaceSetup = () => {
     // Instantiate a global chain space for parachain setup.
     const index = ChainSpaceController.instantiate(GLOBAL_CHAIN_SPACE_OWNER);
     globalChainSpaceIndex.current = index;
