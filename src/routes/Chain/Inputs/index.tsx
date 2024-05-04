@@ -18,7 +18,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 
 export const useInput = () => {
   const { tabId } = useActiveTab();
-  const { getInputArgsAtKey } = useChainUi();
+  const { setInputArgAtKey, getInputArgsAtKey } = useChainUi();
 
   // Reads input and returns input components based on the input type. Called recursively for types
   // that host other types.
@@ -263,15 +263,31 @@ export const useInput = () => {
     indent: boolean,
     values?: string[]
   ) => {
+    const { inputKeysRef, inputKey, namespace } = inputArgConfig;
+
     const label = inputItem?.label || '';
     const form = inputItem?.form || null;
 
     return (() => {
       switch (form) {
-        // Input tailored for account addresses. Polkicon included. NOTE: `<Section>` is not needed
-        // as the parent composite container is already wrapped.
+        // Input tailored for account addresses.
         case 'AccountId32':
-          return <AccountId32 {...inputArgConfig} />;
+          return (
+            <AccountId32
+              {...inputArgConfig}
+              onMount={(selectedAddress) => {
+                setInputArgAtKey(tabId, namespace, inputKey, selectedAddress);
+              }}
+              onRender={(inputType) => {
+                if (inputKeysRef.current) {
+                  inputKeysRef.current[inputKey] = inputType;
+                }
+              }}
+              onChange={(val) => {
+                setInputArgAtKey(tabId, namespace, inputKey, val);
+              }}
+            />
+          );
 
         // A custom input for primitive hash and bytes types.
         case 'Hash':
