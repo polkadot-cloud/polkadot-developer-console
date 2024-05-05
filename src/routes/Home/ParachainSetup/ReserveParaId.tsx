@@ -39,7 +39,7 @@ export const ReserveParaId = () => {
 
       <section>
         <Select
-          label={'Choose Relay chain'}
+          label={'Choose Relay Chain'}
           values={values}
           icons={icons}
           value={relayChain}
