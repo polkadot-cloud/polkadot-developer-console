@@ -18,6 +18,7 @@ export interface NetworkDirectoryItem {
   name: string;
   color: string;
   providers: Record<string, string>;
+  isRelayChain: boolean;
 }
 
 export type NetworkDirectory = Record<DirectoryId, NetworkDirectoryItem>;
@@ -43,6 +44,7 @@ export const NetworkDirectory: NetworkDirectory = {
       RadiumBlock: 'wss://polkadot.public.curie.radiumblock.co/ws',
       Stakeworld: 'wss://dot-rpc.stakeworld.io',
     },
+    isRelayChain: true,
   },
   kusama: {
     system: {
@@ -63,6 +65,7 @@ export const NetworkDirectory: NetworkDirectory = {
       RadiumBlock: 'wss://kusama.public.curie.radiumblock.co/ws',
       Stakeworld: 'wss://ksm-rpc.stakeworld.io',
     },
+    isRelayChain: true,
   },
   rococo: {
     system: {
@@ -76,6 +79,7 @@ export const NetworkDirectory: NetworkDirectory = {
     providers: {
       Parity: 'wss://rococo-rpc.polkadot.io',
     },
+    isRelayChain: true,
   },
   westend: {
     system: {
@@ -95,5 +99,6 @@ export const NetworkDirectory: NetworkDirectory = {
       RadiumBlock: 'wss://westend.public.curie.radiumblock.co/ws',
       Stakeworld: 'wss://wnd-rpc.stakeworld.io',
     },
+    isRelayChain: true,
   },
 };
