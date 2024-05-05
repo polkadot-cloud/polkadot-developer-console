@@ -31,18 +31,20 @@ export const ProgressWrapper = styled.div`
   > section {
     display: flex;
     justify-content: space-between;
-    padding: 0.5rem var(--progress-vertical-padding);
+    padding: 0.5rem var(--progress-vertical-padding) 0.5rem 0;
     align-items: center;
 
     &:first-child {
       padding-left: 0;
     }
 
-    &:last-child {
+    &:last-child,
+    &.last {
       padding-right: 0;
     }
 
     &.spacer {
+      padding-left: 0.5rem;
       flex-grow: 1;
     }
 
@@ -69,6 +71,7 @@ export const ProgressWrapper = styled.div`
       }
       &.smallOnly {
         display: flex;
+        padding-left: 1rem;
       }
     }
 

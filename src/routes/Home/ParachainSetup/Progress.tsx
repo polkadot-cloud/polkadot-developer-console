@@ -39,14 +39,16 @@ export const Progress = () => {
         <span className="connector"></span>
       </section>
       <section
-        className={`${activeStep === 'get_coretime' ? `active` : `inactive`}`}
+        className={`${activeStep === 'get_coretime' ? `active` : `inactive`} last`}
       >
         <h4>Get Coretime</h4>
       </section>
 
-      <section className="spacer smallOnly">
-        <span className="connector"></span>
-      </section>
+      {activeStep === 'get_coretime' && (
+        <section className="spacer smallOnly">
+          <span className="connector"></span>
+        </section>
+      )}
     </ProgressWrapper>
   );
 };
