@@ -6,6 +6,8 @@ import { createContext, useContext, useState } from 'react';
 import type { ParaSetupContextInterface, SetupStep } from './types';
 import { defaultParaSetupContext } from './defaults';
 import { useGlobalChainSpace } from 'contexts/GlobalChainSpace';
+import { ApiController } from 'controllers/Api';
+import type { ChainId } from 'config/networks';
 
 // TODO: This data needs to be moved to tab ui data.
 
@@ -21,8 +23,8 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<Record<number, SetupStep>>({});
 
-  // Register the relay chain api instances for a tab.
-  const [relayApis, setRelayApis] = useState<Record<number, string>>({});
+  // Register the relay chain api instance indexes for a tab.
+  const [relayApis, setRelayApis] = useState<Record<number, number>>({});
 
   // Get the active step for a tab id, or 1 otherwise.
   const getActiveStep = (tabId: number) =>
@@ -37,22 +39,30 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Register a new relay chain instance with the glboal chain space for parachain setup.
-  const registerRelayApi = (tabId: number) => {
+  const registerRelayApi = async (
+    tabId: number,
+    chainId: ChainId,
+    endpoint: string
+  ) => {
     if (!globalChainSpace) {
       return;
     }
-
-    // TODO: call addApi on global chainspace instance and return its instance id.
-    console.log(globalChainSpace.getInstance());
+    // Add api to global chainspace instance and return its instance id.
+    const apiInstanceIndex = await globalChainSpace
+      .getInstance()
+      .addApi(chainId, endpoint);
 
     setRelayApis((prev) => ({
       ...prev,
-      [tabId]: 'relay_chain_instance',
+      [tabId]: apiInstanceIndex,
     }));
   };
 
   // Get a registered api instance for a tab id.
-  const getRelayApi = (tabId: number) => relayApis[tabId];
+  const getRelayApi = (tabId: number) => {
+    const instanceIndex = relayApis[tabId];
+    return ApiController.instances['global']?.[instanceIndex] || undefined;
+  };
 
   return (
     <ParaSetupContext.Provider
