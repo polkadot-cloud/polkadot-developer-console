@@ -12,9 +12,11 @@ import {
   SelectWrapper,
 } from 'library/Inputs/Wrappers';
 import type { SelectProps } from './types';
+import { Icon } from './Icon';
 
 export const Select = ({
   values,
+  icons,
   value,
   label,
   onMount,
@@ -37,6 +39,12 @@ export const Select = ({
   // Get the currently selected value, or fall back to the first value.
   const currentValue = ![undefined, ''].includes(value) ? value : values[0];
 
+  // Get index of the current value.
+  const currentIndex = values.indexOf(currentValue);
+
+  // Get the icon for the current value.
+  const currentIcon = icons ? icons[currentIndex] : '';
+
   // Update input arg value to the default value on initial render.
   useEffect(() => {
     if (onMount !== undefined) {
@@ -52,6 +60,7 @@ export const Select = ({
         onClick={() => setOpen(!open)}
       >
         <span>
+          {currentIcon && <Icon icon={currentIcon} />}
           <SelectTextWrapper>{currentValue || `No Values`}</SelectTextWrapper>
         </span>
         <span>
@@ -65,23 +74,32 @@ export const Select = ({
         onOutsideClick={() => setOpen(false)}
         outsideAlerterIgnore={[ignoreClass]}
       >
-        {values.map((val) => (
-          <SelectItemWrapper
-            key={`select_${label}_${camelize(val)}`}
-            className={`option`}
-            onClick={() => {
-              if (onChange !== undefined) {
-                onChange(val);
-              }
-              setOpen(false);
-            }}
-          >
-            <span>
-              <SelectTextWrapper>{val}</SelectTextWrapper>
-            </span>
-            <span />
-          </SelectItemWrapper>
-        ))}
+        {values.map((val) => {
+          // Get index of the current value.
+          const valIndex = values.indexOf(val);
+
+          // Get the icon for the current value.
+          const valIcon = icons ? icons[valIndex] : '';
+
+          return (
+            <SelectItemWrapper
+              key={`select_${label}_${camelize(val)}`}
+              className={`option`}
+              onClick={() => {
+                if (onChange !== undefined) {
+                  onChange(val);
+                }
+                setOpen(false);
+              }}
+            >
+              <span>
+                {valIcon && <Icon icon={valIcon} />}
+                <SelectTextWrapper>{val}</SelectTextWrapper>
+              </span>
+              <span />
+            </SelectItemWrapper>
+          );
+        })}
       </SelectDropdown>
       {/* )} */}
     </SelectWrapper>

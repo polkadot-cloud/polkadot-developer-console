@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/pro-duotone-svg-icons';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { NetworkDirectory } from 'config/networks';
 
 export const ReserveParaId = () => {
   const { tabId } = useActiveTab();
@@ -16,6 +17,19 @@ export const ReserveParaId = () => {
 
   // The currently selected relay chain to register a ParaID on.
   const [relayChain, setRelayChain] = useState<string>('Polkadot Relay Chain');
+
+  // Get relay chains from the network directory.
+  const relayChains = Object.entries(NetworkDirectory).filter(
+    ([, chain]) => chain.isRelayChain
+  );
+
+  // Get the chain names from the relay chains for select input.
+  const values = relayChains.map(([, chain]) => chain.name);
+
+  // Get chain icons dervied from relay chain keys.
+  const icons = relayChains.map(
+    ([chainId]) => `../../../config/networks/icons/${chainId}/Inline.tsx`
+  );
 
   return (
     <FormWrapper>
@@ -26,14 +40,8 @@ export const ReserveParaId = () => {
       <section>
         <Select
           label={'Choose Relay chain'}
-          values={
-            [
-              'Polkadot Relay Chain',
-              'Kusama Relay Chain',
-              'Westend Relay Chain',
-              'Rococo Relay Chain',
-            ] || []
-          }
+          values={values}
+          icons={icons}
           value={relayChain}
           onChange={(val) => {
             setRelayChain(val);

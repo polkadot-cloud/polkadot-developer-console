@@ -5,6 +5,7 @@ import type { InputCallbackProps } from '../types';
 
 export type SelectProps = InputCallbackProps & {
   values: string[];
+  icons?: string[];
   label: string | number;
   value: string;
 };

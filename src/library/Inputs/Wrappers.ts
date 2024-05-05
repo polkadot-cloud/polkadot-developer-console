@@ -116,6 +116,16 @@ export const SelectItemWrapper = styled.button`
     display: flex;
     align-items: center;
 
+    > .icon {
+      width: 0.95rem;
+      height: 0.95rem;
+      margin-right: 0.65rem;
+
+      > svg {
+        fill: var(--text-color-tertiary);
+      }
+    }
+
     &:first-child {
       flex-grow: 1;
       flex-basis: 40%;
