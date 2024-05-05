@@ -13,7 +13,8 @@ import { useEventListener } from 'usehooks-ts';
 
 export const ReserveParaId = () => {
   const { tabId } = useActiveTab();
-  const { registerRelayApi, getRelayApi } = useParaSetup();
+  const { registerRelayApi, getRelayApi, getRelayInstanceIndex } =
+    useParaSetup();
 
   // The currently selected relay chain to register a ParaID on.
   const [relayChain, setRelayChain] = useState<string>('Polkadot Relay Chain');
@@ -30,6 +31,7 @@ export const ReserveParaId = () => {
 
   const relayInstance = getRelayApi(tabId);
   const relayInstanceId = relayInstance?.instanceId;
+  const relayInstanceIndex = getRelayInstanceIndex(tabId);
 
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {
@@ -93,6 +95,7 @@ export const ReserveParaId = () => {
       setRelayChain={setRelayChain}
       relayApiStatus={relayApiStatus}
       handleConnectApi={handleConnectApi}
+      relayInstanceIndex={relayInstanceIndex}
     />
   );
 };

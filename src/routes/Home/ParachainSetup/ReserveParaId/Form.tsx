@@ -8,9 +8,12 @@ import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/pro-duotone-svg-icons';
 import type { FormProps } from './types';
+import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
+import { ApiController } from 'controllers/Api';
 
 export const Form = ({
   relayChain,
+  relayInstanceIndex,
   setRelayChain,
   relayApiStatus,
   handleConnectApi,
@@ -46,7 +49,7 @@ export const Form = ({
         />
       </section>
       <section>
-        {relayApiStatus === 'disconnected' && (
+        {!ACTIVE_API_STATUSES.includes(relayApiStatus) ? (
           <ButtonSubmit
             className="lg"
             onClick={() => {
@@ -55,6 +58,19 @@ export const Form = ({
             }}
           >
             Connect
+            <FontAwesomeIcon icon={faCaretRight} transform="grow-1" />
+          </ButtonSubmit>
+        ) : (
+          <ButtonSubmit
+            className="lg"
+            onClick={() => {
+              // Disconnect from API.
+              if (relayInstanceIndex !== undefined) {
+                ApiController.destroy('global', relayInstanceIndex);
+              }
+            }}
+          >
+            Disconnect
             <FontAwesomeIcon icon={faCaretRight} transform="grow-1" />
           </ButtonSubmit>
         )}

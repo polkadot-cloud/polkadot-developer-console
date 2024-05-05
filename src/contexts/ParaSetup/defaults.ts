@@ -9,6 +9,7 @@ export const defaultParaSetupContext: ParaSetupContextInterface = {
   setActiveStep: (tabId, step) => {},
   registerRelayApi: (tabId, chainId, endpoint) => Promise.resolve(),
   getRelayApi: (tabId) => undefined,
+  getRelayInstanceIndex: (tabId) => undefined,
 };
 
 export const setupSteps: SetupStep[] = [

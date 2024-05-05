@@ -13,6 +13,7 @@ export interface ParaSetupContextInterface {
     endpoint: string
   ) => Promise<void>;
   getRelayApi: (tabId: number) => Api | undefined;
+  getRelayInstanceIndex: (tabId: number) => number | undefined;
 }
 
 export type SetupStep =

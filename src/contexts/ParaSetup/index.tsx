@@ -58,6 +58,9 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
+  // Get a registered instance index for a tab id.
+  const getRelayInstanceIndex = (tabId: number) => relayApis[tabId];
+
   // Get a registered api instance for a tab id.
   const getRelayApi = (tabId: number) => {
     const instanceIndex = relayApis[tabId];
@@ -71,6 +74,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
         setActiveStep,
         registerRelayApi,
         getRelayApi,
+        getRelayInstanceIndex,
       }}
     >
       {children}
