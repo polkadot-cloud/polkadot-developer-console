@@ -68,40 +68,40 @@ export const Select = ({
         </span>
       </SelectItemWrapper>
 
-      {/* {open && ( */}
-      <SelectDropdown
-        open={open}
-        onOutsideClick={() => setOpen(false)}
-        outsideAlerterIgnore={[ignoreClass]}
-      >
-        {values.map((val) => {
-          // Get index of the current value.
-          const valIndex = values.indexOf(val);
+      {open && (
+        <SelectDropdown
+          open={open}
+          onOutsideClick={() => setOpen(false)}
+          outsideAlerterIgnore={[ignoreClass]}
+        >
+          {values.map((val) => {
+            // Get index of the current value.
+            const valIndex = values.indexOf(val);
 
-          // Get the icon for the current value.
-          const valIcon = icons ? icons[valIndex] : '';
+            // Get the icon for the current value.
+            const valIcon = icons ? icons[valIndex] : '';
 
-          return (
-            <SelectItemWrapper
-              key={`select_${label}_${camelize(val)}`}
-              className={`option`}
-              onClick={() => {
-                if (onChange !== undefined) {
-                  onChange(val);
-                }
-                setOpen(false);
-              }}
-            >
-              <span>
-                {valIcon && <Icon icon={valIcon} />}
-                <SelectTextWrapper>{val}</SelectTextWrapper>
-              </span>
-              <span />
-            </SelectItemWrapper>
-          );
-        })}
-      </SelectDropdown>
-      {/* )} */}
+            return (
+              <SelectItemWrapper
+                key={`select_${label}_${camelize(val)}`}
+                className={`option`}
+                onClick={() => {
+                  if (onChange !== undefined) {
+                    onChange(val);
+                  }
+                  setOpen(false);
+                }}
+              >
+                <span>
+                  {valIcon && <Icon icon={valIcon} />}
+                  <SelectTextWrapper>{val}</SelectTextWrapper>
+                </span>
+                <span />
+              </SelectItemWrapper>
+            );
+          })}
+        </SelectDropdown>
+      )}
     </SelectWrapper>
   );
 };
