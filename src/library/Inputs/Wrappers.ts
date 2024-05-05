@@ -119,10 +119,10 @@ export const SelectItemWrapper = styled.button`
     > .icon {
       width: 0.95rem;
       height: 0.95rem;
-      margin-right: 0.65rem;
+      margin-right: 0.6rem;
 
       > svg {
-        fill: var(--text-color-tertiary);
+        fill: var(--text-color-secondary);
       }
     }
 
