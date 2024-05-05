@@ -1,23 +1,20 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
+import { FormWrapper } from '../Wrappers';
+import { NetworkDirectory } from 'config/networks';
 import { Select } from 'library/Inputs/Select';
-import { FormWrapper } from './Wrappers';
-import { useState } from 'react';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/pro-duotone-svg-icons';
-import { useParaSetup } from 'contexts/ParaSetup';
-import { useActiveTab } from 'contexts/ActiveTab';
-import { NetworkDirectory } from 'config/networks';
+import type { FormProps } from './types';
 
-export const ReserveParaId = () => {
-  const { tabId } = useActiveTab();
-  const { registerRelayApi } = useParaSetup();
-
-  // The currently selected relay chain to register a ParaID on.
-  const [relayChain, setRelayChain] = useState<string>('Polkadot Relay Chain');
-
+export const Form = ({
+  relayChain,
+  setRelayChain,
+  relayApiStatus,
+  handleConnectApi,
+}: FormProps) => {
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
     ([, chain]) => chain.isRelayChain
@@ -49,16 +46,18 @@ export const ReserveParaId = () => {
         />
       </section>
       <section>
-        <ButtonSubmit
-          className="lg"
-          onClick={() => {
-            /* TODO: Implement rpc provider before connect. */
-            registerRelayApi(tabId);
-          }}
-        >
-          Connect
-          <FontAwesomeIcon icon={faCaretRight} transform="grow-1" />
-        </ButtonSubmit>
+        {relayApiStatus === 'disconnected' && (
+          <ButtonSubmit
+            className="lg"
+            onClick={() => {
+              /* TODO: Implement rpc provider before connect. */
+              handleConnectApi();
+            }}
+          >
+            Connect
+            <FontAwesomeIcon icon={faCaretRight} transform="grow-1" />
+          </ButtonSubmit>
+        )}
       </section>
     </FormWrapper>
   );
