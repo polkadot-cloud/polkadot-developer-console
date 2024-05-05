@@ -50,6 +50,9 @@ export class Api {
   // Whether the api has been initialised.
   #initialized = false;
 
+  // The last reported api status.
+  status: EventStatus = 'disconnected';
+
   // ------------------------------------------------------
   // Getters.
   // ------------------------------------------------------
@@ -258,6 +261,11 @@ export class Api {
     if (options?.err) {
       detail['err'] = options.err;
     }
+
+    // Update class status.
+    this.status = event;
+
+    // Dispatch status event to UI.
     document.dispatchEvent(new CustomEvent('api-status', { detail }));
   }
 
