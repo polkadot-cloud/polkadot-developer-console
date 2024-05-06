@@ -13,7 +13,6 @@ import { ApiController } from 'controllers/Api';
 
 export const ConnectRelay = ({
   relayChain,
-  relayInstance,
   relayInstanceIndex,
   setRelayChain,
   relayApiStatus,
@@ -45,7 +44,7 @@ export const ConnectRelay = ({
           onChange={(val) => {
             setRelayChain(val);
           }}
-          disabled={relayInstance !== undefined}
+          disabled={ACTIVE_API_STATUSES.includes(relayApiStatus)}
         />
       </section>
       <section>

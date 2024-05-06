@@ -35,6 +35,8 @@ export const ParachainSetup = () => {
 
   // Handle registering a relay chain api instance.
   const handleConnectApi = async () => {
+    setRelayApiStatus('connecting');
+
     // TODO: Replace hard-coded values.
     await registerRelayApi(tabId, 'polkadot', 'wss://rpc.ibp.network/polkadot');
   };
