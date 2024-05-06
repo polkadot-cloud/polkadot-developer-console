@@ -25,6 +25,7 @@ import {
 import { ChainStateProvider } from 'contexts/ChainState';
 import { ActiveTabProvider } from 'contexts/ActiveTab';
 import { GlobalChainSpaceProvider } from 'contexts/GlobalChainSpace';
+import { ImportedAccountsProvider } from 'contexts/ImportedAccounts';
 
 export const Providers = () => {
   // !! Provider order matters.
@@ -43,6 +44,7 @@ export const Providers = () => {
     ExtensionsProvider,
     [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
     VaultAccountsProvider,
+    ImportedAccountsProvider,
     TabAccountsProvider,
     ConnectProvider,
     ChainStateProvider,
