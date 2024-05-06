@@ -53,7 +53,7 @@ export const ProgressWrapper = styled.div`
   }
 
   flex: 1;
-  margin-top: 0.5rem;
+  margin-top: 0.6rem;
   display: flex;
 
   > section {
@@ -79,6 +79,7 @@ export const ProgressWrapper = styled.div`
     > h4 {
       color: var(--text-color-tertiary);
       font-family: InterSemiBold, sans-serif;
+      transition: color 0.15s;
 
       > svg {
         margin-right: 0.25rem;
