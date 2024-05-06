@@ -6,13 +6,13 @@ import { Textbox } from './Textbox';
 import type { AnyJson } from '@w3ux/utils/types';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
-import { Select } from '../../../library/Inputs/Select';
+import { Select } from 'library/Inputs/Select';
 import { Section } from './Section';
 import type { InputArgConfig, InputArray, InputItem } from './types';
 import { Hash } from './Hash';
 import { Sequence } from './Sequence';
 import { Checkbox } from './Checkbox';
-import { AccountId32 } from '../../../library/Inputs/AccountId32';
+import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
 

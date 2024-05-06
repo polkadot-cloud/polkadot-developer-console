@@ -20,8 +20,8 @@ export const ButtonSubmit = styled.button`
 
   &.lg {
     color: var(--text-color-secondary);
-    font-size: 0.9rem;
     border: 1px solid var(--border-secondary-color);
+    font-size: 0.9rem;
     padding: 0.5rem 0.6rem;
     border-radius: 0.4rem;
 

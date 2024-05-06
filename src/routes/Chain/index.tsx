@@ -6,7 +6,7 @@ import type { PageSections, RouteSectionProvider } from 'routes/Common/types';
 import { Overview } from './Overview';
 import { Extrinsics } from './Extrinsics';
 import { ChainState } from './ChainState';
-import { TabMenu } from '../../library/TabMenu';
+import { TabMenu } from 'library/TabMenu';
 import { PageContent } from 'library/PageContent';
 import { Accounts } from './Accounts';
 import { useActiveTab } from 'contexts/ActiveTab';

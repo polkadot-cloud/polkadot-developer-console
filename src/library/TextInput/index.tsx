@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useRef, useState } from 'react';
-import { Wrapper } from '../../library/TextInput/Wrapper';
+import { Wrapper } from 'library/TextInput/Wrapper';
 import type { TextInputProps } from './types';
 import { formatInputString } from 'Utils';
 
