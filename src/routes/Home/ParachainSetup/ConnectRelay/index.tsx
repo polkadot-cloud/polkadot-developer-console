@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { FormWrapper } from '../Wrappers';
+import type { ChainId, DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { Select } from 'library/Inputs/Select';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
@@ -10,6 +11,8 @@ import { faCaretRight } from '@fortawesome/pro-duotone-svg-icons';
 import type { StepProps } from '../types';
 import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 import { ApiController } from 'controllers/Api';
+import { ConnectContextMenu } from 'library/ConnectContextMenu';
+import { useMenu } from 'contexts/Menu';
 
 export const ConnectRelay = ({
   relayChain,
@@ -18,6 +21,8 @@ export const ConnectRelay = ({
   relayApiStatus,
   handleConnectApi,
 }: StepProps) => {
+  const { openMenu } = useMenu();
+
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
     ([, chain]) => chain.isRelayChain
@@ -31,6 +36,11 @@ export const ConnectRelay = ({
     ([chainId]) => `../../../config/networks/icons/${chainId}/Inline.tsx`
   );
 
+  // Get the chain name of the currently select relay chain.
+  const relayName =
+    relayChains.find(([chainId]) => chainId === relayChain)?.[1]?.name ||
+    'Polkadot Relay Chain';
+
   return (
     <FormWrapper>
       <h3>Connect to the Relay Chain you wish to secure blocks with.</h3>
@@ -40,9 +50,15 @@ export const ConnectRelay = ({
           label={'Relay Chain'}
           values={values}
           icons={icons}
-          value={relayChain}
+          value={relayName}
           onChange={(val) => {
-            setRelayChain(val);
+            const chainId = relayChains.find(
+              ([, chain]) => chain.name === val
+            )?.[0] as ChainId;
+
+            if (chainId !== undefined) {
+              setRelayChain(chainId);
+            }
           }}
           disabled={ACTIVE_API_STATUSES.includes(relayApiStatus)}
         />
@@ -51,9 +67,14 @@ export const ConnectRelay = ({
         {!ACTIVE_API_STATUSES.includes(relayApiStatus) ? (
           <ButtonSubmit
             className="lg"
-            onClick={() => {
-              /* TODO: Implement rpc provider before connect. */
-              handleConnectApi();
+            onClick={(ev) => {
+              openMenu(
+                ev,
+                <ConnectContextMenu
+                  chainId={relayChain as DirectoryId}
+                  onSelect={handleConnectApi}
+                />
+              );
             }}
           >
             Connect

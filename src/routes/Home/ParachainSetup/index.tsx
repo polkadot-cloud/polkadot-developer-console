@@ -14,32 +14,36 @@ import { SubscriptionsController } from 'controllers/Subscriptions';
 import { AccountBalances } from 'model/AccountBalances';
 import { useEventListener } from 'usehooks-ts';
 import { Icon } from './Icon';
+import type { ChainId } from 'config/networks';
+import { useMenu } from 'contexts/Menu';
 
 export const ParachainSetup = () => {
-  const { tabId } = useActiveTab();
   const {
     getRelayApi,
     getActiveStep,
     registerRelayApi,
     getRelayInstanceIndex,
   } = useParaSetup();
+  const { closeMenu } = useMenu();
+  const { tabId } = useActiveTab();
 
   // Get the active step in the setup process.
   const activeStep = getActiveStep(tabId);
 
   // The currently selected relay chain to register a ParaID on.
-  const [relayChain, setRelayChain] = useState<string>('Polkadot Relay Chain');
+  const [relayChain, setRelayChain] = useState<ChainId>('polkadot');
 
   // The API status of the relay chain.
   const [relayApiStatus, setRelayApiStatus] =
     useState<ApiStatus>('disconnected');
 
   // Handle registering a relay chain api instance.
-  const handleConnectApi = async () => {
+  const handleConnectApi = async (provider: string) => {
+    closeMenu();
     setRelayApiStatus('connecting');
 
     // TODO: Replace hard-coded values.
-    await registerRelayApi(tabId, 'polkadot', 'wss://rpc.ibp.network/polkadot');
+    await registerRelayApi(tabId, relayChain, provider);
   };
 
   const relayInstance = getRelayApi(tabId);
