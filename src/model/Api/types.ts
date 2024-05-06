@@ -12,7 +12,7 @@ export type ApiInstanceId = string;
 
 export type ApiStatus = 'connecting' | 'connected' | 'disconnected' | 'ready';
 
-export type EventStatus = ApiStatus | 'error' | 'destroyed' | 'fetchedSpec';
+export type EventStatus = ApiStatus | 'error' | 'destroyed';
 
 export type ErrDetail = 'InitializationError' | 'ChainSpecError';
 

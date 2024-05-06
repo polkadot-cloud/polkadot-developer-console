@@ -112,6 +112,8 @@ export const ParachainSetup = () => {
     setRelayApiStatus('disconnected');
   };
 
+  // TODO: Add event listener for when chain spec has been received.
+
   // Listen for api status updates.
   const documentRef = useRef<Document>(document);
   useEventListener('api-status', handleNewApiStatus, documentRef);
