@@ -16,6 +16,7 @@ import type { ApiInstanceId, ApiStatus } from 'model/Api/types';
 import { defaultBalance } from './defaults';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { AccountBalances } from 'model/AccountBalances';
+import type { ActiveBalancesInterface } from './types';
 
 export const useActiveBalances = ({
   accounts,
@@ -24,18 +25,23 @@ export const useActiveBalances = ({
   dependencies,
 }: {
   accounts: string[];
-  apiInstanceId: ApiInstanceId;
+  apiInstanceId: ApiInstanceId | undefined;
   apiStatus: ApiStatus;
   dependencies: AnyJson[];
-}) => {
+}): ActiveBalancesInterface => {
   // Ensure no account duplicates.
   const uniqueAccounts = [...new Set(accounts)];
 
   // Store active account balances state. Requires ref for use in event listener callbacks.
-  const [activeBalances, setActiveBalances] = useState<AccountBalancesState>(
-    {}
-  );
+  const [activeBalances, setActiveBalancesState] =
+    useState<AccountBalancesState>({});
   const activeBalancesRef = useRef(activeBalances);
+
+  // Setter for active balances.
+  const setActiveBalances = (balances: AccountBalancesState) => {
+    activeBalancesRef.current = balances;
+    setActiveBalancesState(balances);
+  };
 
   // Gets an active balance's balance.
   const getBalance = (address: MaybeAddress) => {
@@ -100,6 +106,10 @@ export const useActiveBalances = ({
   };
 
   const handleSyncAccounts = () => {
+    if (!apiInstanceId) {
+      return;
+    }
+
     const subscription = SubscriptionsController?.get(
       apiInstanceId,
       'accountBalances'
@@ -112,19 +122,29 @@ export const useActiveBalances = ({
   // Sync account balances on imported accounts update or tab change. `api` instance is required in
   // subscription classes so api must be `ready` before syncing.
   useEffect(() => {
-    setActiveBalances(
-      (
-        SubscriptionsController?.get(
-          apiInstanceId,
-          'accountBalances'
-        ) as AccountBalances
-      )?.balances || {}
-    );
+    if (apiInstanceId) {
+      setActiveBalances(
+        (
+          SubscriptionsController?.get(
+            apiInstanceId,
+            'accountBalances'
+          ) as AccountBalances
+        )?.balances || {}
+      );
 
-    if (apiStatus === 'ready') {
-      handleSyncAccounts();
+      if (apiStatus === 'ready') {
+        handleSyncAccounts();
+      }
+    } else {
+      // Reset state if instance id is not available.
+      setActiveBalances({});
     }
-  }, [...dependencies, apiStatus, JSON.stringify(uniqueAccounts)]);
+  }, [
+    ...dependencies,
+    apiInstanceId,
+    apiStatus,
+    JSON.stringify(uniqueAccounts),
+  ]);
 
   // Listen for new account balance events.
   const documentRef = useRef<Document>(document);
