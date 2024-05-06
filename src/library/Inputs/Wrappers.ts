@@ -105,6 +105,7 @@ export const SelectItemWrapper = styled.button`
     &.disabled {
       background-color: var(--background-default);
       border-color: var(--border-primary-color);
+      cursor: default;
 
       /* Overwrite the right span icon hover color */
       > span:last-child {
