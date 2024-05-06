@@ -1,34 +1,23 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { FormWrapper, Wrapper } from './Wrappers';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { Footer } from './Footer';
-import { Progress } from './Progress';
-import { ConnectRelay } from './ConnectRelay';
 import { useEffect, useRef, useState } from 'react';
 import type { APIStatusEventDetail, ApiStatus } from 'model/Api/types';
 import { isCustomEvent } from 'Utils';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { AccountBalances } from 'model/AccountBalances';
 import { useEventListener } from 'usehooks-ts';
-import { Icon } from './Icon';
 import type { ChainId } from 'config/networks';
 import { useMenu } from 'contexts/Menu';
+import { Form } from './Form';
 
 export const ParachainSetup = () => {
-  const {
-    getRelayApi,
-    getActiveStep,
-    registerRelayApi,
-    getRelayInstanceIndex,
-  } = useParaSetup();
+  const { getRelayApi, registerRelayApi, getRelayInstanceIndex } =
+    useParaSetup();
   const { closeMenu } = useMenu();
   const { tabId } = useActiveTab();
-
-  // Get the active step in the setup process.
-  const activeStep = getActiveStep(tabId);
 
   // The currently selected relay chain to register a ParaID on.
   const [relayChain, setRelayChain] = useState<ChainId>('polkadot');
@@ -48,15 +37,6 @@ export const ParachainSetup = () => {
   const relayInstance = getRelayApi(tabId);
   const relayInstanceId = relayInstance?.instanceId;
   const relayInstanceIndex = getRelayInstanceIndex(tabId);
-
-  // Get the relay chain icon, if available.
-  const relayIcon = relayInstance
-    ? `../../../config/networks/icons/${relayInstance.chainId}/Inline.tsx`
-    : undefined;
-
-  // Determine whether next button should be disabled.
-  const nextDisabled =
-    activeStep === 'connect_relay' && relayApiStatus !== 'ready';
 
   // Props to pass to step components.
   const stepProps = {
@@ -123,50 +103,5 @@ export const ParachainSetup = () => {
     setRelayApiStatus(status as ApiStatus);
   }, [relayInstanceId]);
 
-  return (
-    <Wrapper>
-      <h2>
-        Set up a New Parachain
-        {relayIcon && (
-          <div className="icon">
-            <Icon icon={relayIcon} />
-          </div>
-        )}
-      </h2>
-
-      <Progress />
-
-      {activeStep === 'connect_relay' && <ConnectRelay {...stepProps} />}
-
-      {activeStep === 'reserve_para_id' && (
-        <FormWrapper>
-          <h3>
-            Reserve a Para ID or select an existing one from your accounts.
-          </h3>
-        </FormWrapper>
-      )}
-
-      {activeStep === 'configure_node' && (
-        <FormWrapper>
-          <h3>Configure your Parachain Node to connect to the Relay Chain.</h3>
-        </FormWrapper>
-      )}
-
-      {activeStep === 'register_parathread' && (
-        <FormWrapper>
-          <h3>Register your Parathread on the Relay Chain.</h3>
-        </FormWrapper>
-      )}
-
-      {activeStep === 'get_coretime' && (
-        <FormWrapper>
-          <h3>
-            Get bulk or instantaneous Coretime and start processing blocks.
-          </h3>
-        </FormWrapper>
-      )}
-
-      <Footer nextDisabled={nextDisabled} />
-    </Wrapper>
-  );
+  return <Form {...stepProps} />;
 };
