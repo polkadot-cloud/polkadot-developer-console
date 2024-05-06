@@ -53,7 +53,7 @@ export const ProgressWrapper = styled.div`
   }
 
   flex: 1;
-  margin-top: 0.6rem;
+  margin-top: 0.5rem;
   display: flex;
 
   > section {

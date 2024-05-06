@@ -5,7 +5,10 @@ import { Suspense, lazy, useMemo } from 'react';
 
 export const Icon = ({ icon }: { icon: string }) => {
   // Lazily load the icon.
-  const IconSvg = useMemo(() => lazy(() => import(icon)), [icon]);
+  const IconSvg = useMemo(
+    () => lazy(() => import(/* @vite-ignore */ icon)),
+    [icon]
+  );
 
   return (
     <Suspense fallback={<div />}>
