@@ -37,7 +37,7 @@ export const ConnectRelay = ({
 
       <section>
         <Select
-          label={'Choose Relay Chain'}
+          label={'Relay Chain'}
           values={values}
           icons={icons}
           value={relayChain}
