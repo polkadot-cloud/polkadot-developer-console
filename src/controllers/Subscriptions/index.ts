@@ -18,6 +18,10 @@ export class SubscriptionsController {
   // Getters.
   // ------------------------------------------------------
 
+  static get subs() {
+    return this.#subs;
+  }
+
   // Gets all subscriptions for an api instance.
   static getAll(instanceId: ApiInstanceId): ChainSubscriptions | undefined {
     return this.#subs[instanceId];

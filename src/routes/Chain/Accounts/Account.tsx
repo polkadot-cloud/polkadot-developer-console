@@ -19,18 +19,18 @@ export const Account = ({
 }: AccountProps) => {
   const { openMenu } = useMenu();
   const { tab } = useActiveTab();
-  const { getAccountBalance, getBalanceLocks } = useTabAccounts();
+  const { getAccountBalance, getLocks } = useTabAccounts();
 
   const { name, address } = account;
-  const balances = getAccountBalance(address);
-  const { maxLock } = getBalanceLocks(address);
+  const balance = getAccountBalance(address);
+  const { maxLock } = getLocks(address);
 
   // Calculate a forced amount of free balance that needs to be reserved to keep the account alive.
   // Deducts `locks` from free balance reserve needed.
   const edReserved = BigNumber.max(existentialDeposit.minus(maxLock), 0);
 
   // Free balance with locks and reserves not deducted.
-  const balanceFree = balances?.balance?.free || new BigNumber(0);
+  const balanceFree = balance?.free || new BigNumber(0);
 
   // Free balance with locks and reserves deducted.
   const freePlanck = BigNumber.max(
