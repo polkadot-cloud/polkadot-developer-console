@@ -64,7 +64,7 @@ export const ConnectRelay = ({
         />
       </section>
       <section>
-        {!ACTIVE_API_STATUSES.includes(relayApiStatus) ? (
+        {relayApiStatus === 'disconnected' ? (
           <ButtonSubmit
             className="lg"
             onClick={(ev) => {
@@ -83,6 +83,7 @@ export const ConnectRelay = ({
         ) : (
           <ButtonSubmit
             className="lg"
+            disabled={relayApiStatus !== 'ready'}
             onClick={() => {
               // Disconnect from API.
               if (relayInstanceIndex !== undefined) {
@@ -90,8 +91,7 @@ export const ConnectRelay = ({
               }
             }}
           >
-            Disconnect
-            <FontAwesomeIcon icon={faCaretRight} transform="grow-1" />
+            {relayApiStatus === 'ready' ? <>Disconnect</> : 'Connecting...'}
           </ButtonSubmit>
         )}
       </section>

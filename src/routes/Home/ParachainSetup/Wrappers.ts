@@ -20,6 +20,7 @@ export const Wrapper = styled.div`
       width: 1.7rem;
       height: 1.7rem;
       padding: 0.24rem;
+      transition: opacity 0.2s;
 
       > div {
         width: 100%;
