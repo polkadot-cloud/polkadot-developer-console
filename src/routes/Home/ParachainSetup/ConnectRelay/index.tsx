@@ -33,7 +33,7 @@ export const ConnectRelay = ({
 
   return (
     <FormWrapper>
-      <h3>Select the Relay Chain you wish to secure blocks with.</h3>
+      <h3>Connect to the Relay Chain you wish to secure blocks with.</h3>
 
       <section>
         <Select

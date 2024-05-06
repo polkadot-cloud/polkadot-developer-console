@@ -11,7 +11,6 @@ export const Wrapper = styled.div`
   h3 {
     color: var(--text-color-secondary);
     font-size: 0.98rem;
-    margin-top: 0.75rem;
     margin-bottom: 1.5rem;
   }
 `;
@@ -90,6 +89,7 @@ export const ProgressWrapper = styled.div`
 // Setup step form wrapper.
 export const FormWrapper = styled.div`
   flex: 1;
+  margin-top: 1rem;
 
   > section {
     flex: 1;
