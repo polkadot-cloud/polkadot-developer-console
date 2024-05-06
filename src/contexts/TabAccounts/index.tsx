@@ -12,7 +12,6 @@ import { defaultTabAccountsContext } from './defaults';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import { SubscriptionsController } from 'controllers/Subscriptions';
-
 import { useApi } from 'contexts/Api';
 import type { AccountBalances } from 'model/AccountBalances';
 import type { BalanceLock } from 'model/AccountBalances/types';
