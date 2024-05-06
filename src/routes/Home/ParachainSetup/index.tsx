@@ -4,7 +4,11 @@
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useEffect, useRef, useState } from 'react';
-import type { APIStatusEventDetail, ApiStatus } from 'model/Api/types';
+import type {
+  APIChainSpec,
+  APIStatusEventDetail,
+  ApiStatus,
+} from 'model/Api/types';
 import { isCustomEvent } from 'Utils';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { AccountBalances } from 'model/AccountBalances';
@@ -14,6 +18,7 @@ import { useMenu } from 'contexts/Menu';
 import { Form } from './Form';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useActiveBalances } from 'hooks/useActiveBalances';
+import { setStateWithRef } from '@w3ux/utils';
 
 export const ParachainSetup = () => {
   const { getRelayApi, registerRelayApi, getRelayInstanceIndex } =
@@ -24,6 +29,17 @@ export const ParachainSetup = () => {
 
   // The currently selected relay chain to register a ParaID on.
   const [relayChain, setRelayChain] = useState<ChainId>('polkadot');
+
+  // Store chain spec of each api instance. NOTE: requires ref as it is used in event listener.
+  const [relayChainSpec, setRelayChainSpecState] = useState<
+    APIChainSpec | undefined
+  >();
+  const relayChainSpecRef = useRef(relayChainSpec);
+
+  // Setter for chain spec. Updates state and ref.
+  const setRelayChainSpec = (newChainSpec: APIChainSpec | undefined) => {
+    setStateWithRef(newChainSpec, setRelayChainSpecState, relayChainSpecRef);
+  };
 
   // The API status of the relay chain.
   const [relayApiStatus, setRelayApiStatus] =
@@ -40,12 +56,11 @@ export const ParachainSetup = () => {
   const relayInstance = getRelayApi(tabId);
   const relayInstanceId = relayInstance?.instanceId;
   const relayInstanceIndex = getRelayInstanceIndex(tabId);
-  const chainSpec = relayInstance?.chainSpec;
 
   // Get available imported accounts.
   const accounts =
-    chainSpec && chainSpec.chain
-      ? getAccounts(chainSpec.chain, chainSpec.ss58Prefix)
+    relayChainSpec && relayChainSpec.chain
+      ? getAccounts(relayChainSpec.chain, relayChainSpec.ss58Prefix)
       : [];
 
   // Get tab account balances from `useActiveBalances`.
@@ -106,17 +121,30 @@ export const ParachainSetup = () => {
     }
   };
 
+  // Handle incoming chain spec updates.
+  const handleNewChainSpec = (e: Event): void => {
+    if (isCustomEvent(e)) {
+      const { instanceId, spec, consts } = e.detail;
+      if (instanceId === relayInstanceId) {
+        setRelayChainSpec({ ...spec, consts });
+      }
+    }
+  };
+
   // Handle a chain disconnect.
   const handleDisconnect = () => {
     // Update API status to `disconnected`.
     setRelayApiStatus('disconnected');
+    setRelayChainSpec(undefined);
   };
 
-  // TODO: Add event listener for when chain spec has been received.
+  const documentRef = useRef<Document>(document);
 
   // Listen for api status updates.
-  const documentRef = useRef<Document>(document);
   useEventListener('api-status', handleNewApiStatus, documentRef);
+
+  // Listen for new chain spec updates.
+  useEventListener('new-chain-spec', handleNewChainSpec, documentRef);
 
   // Update connection status when relay api instance is received.
   useEffect(() => {
