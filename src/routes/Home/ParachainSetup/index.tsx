@@ -12,12 +12,15 @@ import { useEventListener } from 'usehooks-ts';
 import type { ChainId } from 'config/networks';
 import { useMenu } from 'contexts/Menu';
 import { Form } from './Form';
+import { useImportedAccounts } from 'contexts/ImportedAccounts';
+import { useActiveBalances } from 'hooks/useActiveBalances';
 
 export const ParachainSetup = () => {
   const { getRelayApi, registerRelayApi, getRelayInstanceIndex } =
     useParaSetup();
   const { closeMenu } = useMenu();
   const { tabId } = useActiveTab();
+  const { getAccounts } = useImportedAccounts();
 
   // The currently selected relay chain to register a ParaID on.
   const [relayChain, setRelayChain] = useState<ChainId>('polkadot');
@@ -37,9 +40,25 @@ export const ParachainSetup = () => {
   const relayInstance = getRelayApi(tabId);
   const relayInstanceId = relayInstance?.instanceId;
   const relayInstanceIndex = getRelayInstanceIndex(tabId);
+  const chainSpec = relayInstance?.chainSpec;
+
+  // Get available imported accounts.
+  const accounts =
+    chainSpec && chainSpec.chain
+      ? getAccounts(chainSpec.chain, chainSpec.ss58Prefix)
+      : [];
+
+  // Get tab account balances from `useActiveBalances`.
+  const activeBalances = useActiveBalances({
+    accounts: accounts.map(({ address }) => address),
+    apiInstanceId: relayInstanceId,
+    apiStatus: relayApiStatus,
+    dependencies: [relayInstanceId],
+  });
 
   // Props to pass to step components.
   const stepProps = {
+    activeBalances,
     relayChain,
     relayInstance,
     relayInstanceIndex,
