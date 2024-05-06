@@ -17,4 +17,20 @@ export const ButtonSubmit = styled.button`
   > svg {
     margin-left: 0.4rem;
   }
+
+  &.lg {
+    color: var(--text-color-secondary);
+    border: 1px solid var(--border-secondary-color);
+    font-size: 0.9rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 0.4rem;
+
+    &:hover {
+      color: var(--accent-color-primary);
+    }
+
+    > svg {
+      margin-left: 0.55rem;
+    }
+  }
 `;

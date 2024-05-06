@@ -5,6 +5,11 @@ import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
 import type { ParaSetupContextInterface, SetupStep } from './types';
 import { defaultParaSetupContext } from './defaults';
+import { useGlobalChainSpace } from 'contexts/GlobalChainSpace';
+import { ApiController } from 'controllers/Api';
+import type { ChainId } from 'config/networks';
+
+// TODO: This data needs to be moved to tab ui data.
 
 export const ParaSetupContext = createContext<ParaSetupContextInterface>(
   defaultParaSetupContext
@@ -13,12 +18,17 @@ export const ParaSetupContext = createContext<ParaSetupContextInterface>(
 export const useParaSetup = () => useContext(ParaSetupContext);
 
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
+  const { globalChainSpace } = useGlobalChainSpace();
+
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<Record<number, SetupStep>>({});
 
+  // Register the relay chain api instance indexes for a tab.
+  const [relayApis, setRelayApis] = useState<Record<number, number>>({});
+
   // Get the active step for a tab id, or 1 otherwise.
   const getActiveStep = (tabId: number) =>
-    activeSteps[tabId] || 'reserve_para_id';
+    activeSteps[tabId] || 'connect_relay';
 
   // Set an active step for a tab id.
   const setActiveStep = (tabId: number, step: SetupStep) => {
@@ -28,11 +38,43 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
+  // Register a new relay chain instance with the glboal chain space for parachain setup.
+  const registerRelayApi = async (
+    tabId: number,
+    chainId: ChainId,
+    endpoint: string
+  ) => {
+    if (!globalChainSpace) {
+      return;
+    }
+    // Add api to global chainspace instance and return its instance id.
+    const apiInstanceIndex = await globalChainSpace
+      .getInstance()
+      .addApi(chainId, endpoint);
+
+    setRelayApis((prev) => ({
+      ...prev,
+      [tabId]: apiInstanceIndex,
+    }));
+  };
+
+  // Get a registered instance index for a tab id.
+  const getRelayInstanceIndex = (tabId: number) => relayApis[tabId];
+
+  // Get a registered api instance for a tab id.
+  const getRelayApi = (tabId: number) => {
+    const instanceIndex = relayApis[tabId];
+    return ApiController.instances['global']?.[instanceIndex] || undefined;
+  };
+
   return (
     <ParaSetupContext.Provider
       value={{
         getActiveStep,
         setActiveStep,
+        registerRelayApi,
+        getRelayApi,
+        getRelayInstanceIndex,
       }}
     >
       {children}

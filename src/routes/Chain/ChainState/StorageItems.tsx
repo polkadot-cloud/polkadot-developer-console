@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { SelectFormWrapper } from '../Wrappers';
 import { useApi } from 'contexts/Api';
 import { useMemo } from 'react';
 import { PalletList } from '../PalletList';
@@ -15,6 +14,7 @@ import { defaultPalletData } from './defaults';
 import { EncodedDetails } from './EncodedDetails';
 import { InputForm } from './InputForm';
 import type { InputNamespace } from 'contexts/ChainUi/types';
+import { SelectFormWrapper } from 'library/Inputs/Wrappers';
 
 export const StorageItems = () => {
   const { getChainSpec } = useApi();

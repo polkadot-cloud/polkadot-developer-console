@@ -14,28 +14,24 @@ import {
   remToUnit,
   setStateWithRef,
 } from '@w3ux/utils';
-import { useAccounts } from 'contexts/Accounts';
+import { useTabAccounts } from 'contexts/TabAccounts';
 import { formatInputString } from 'Utils';
 import { SelectDropdown } from 'library/SelectDropdown';
-import type { InputArgConfig } from './types';
-import { useChainUi } from 'contexts/ChainUi';
-import { useActiveTab } from 'contexts/ActiveTab';
+import type { InputCallbackProps } from '../types';
 
 export const AccountId32 = ({
-  inputKey,
-  namespace,
-  inputKeysRef,
-}: InputArgConfig) => {
-  const { tabId } = useActiveTab();
-  const { accounts } = useAccounts();
-  const { setInputArgAtKey } = useChainUi();
+  onMount,
+  onRender,
+  onChange,
+}: InputCallbackProps) => {
+  const { accounts } = useTabAccounts();
 
   // The input arg type of this component.
   const INPUT_TYPE = 'AccountId32';
 
-  // Accumulate input key.
-  if (inputKeysRef.current) {
-    inputKeysRef.current[inputKey] = INPUT_TYPE;
+  // Run `onRender` function.
+  if (onRender !== undefined) {
+    onRender(INPUT_TYPE);
   }
 
   // The current selected address.
@@ -50,17 +46,15 @@ export const AccountId32 = ({
       selectedAddress
   );
 
-  // Handle setting input arg.
-  const handleSetInputArg = (val: string) => {
-    setInputArgAtKey(tabId, namespace, inputKey, val);
-  };
-
   // Handle input value change.
   const handleInputChange = (val: string) => {
     setValue(val);
     setSelectedAddress(val);
     setSearchValue(val);
-    handleSetInputArg(val);
+
+    if (onChange !== undefined) {
+      onChange(val);
+    }
   };
 
   // Handle input blur. If the input value is an imported address, set the input value to be the
@@ -97,13 +91,15 @@ export const AccountId32 = ({
 
   // Update input arg value to the default value on initial render.
   useEffect(() => {
-    setInputArgAtKey(tabId, namespace, inputKey, selectedAddress);
+    if (onMount !== undefined) {
+      onMount(selectedAddress);
+    }
   }, []);
 
   return (
     <>
       <TextInputWrapper className="input">
-        <span className="polkicon">
+        <span className="icon">
           <Polkicon
             address={selectedAddress}
             size={remToUnit('1.5rem')}
@@ -151,7 +147,10 @@ export const AccountId32 = ({
               setDropdownOpen(false);
               setValue(name);
               setSelectedAddress(address);
-              handleSetInputArg(address);
+
+              if (onChange !== undefined) {
+                onChange(address);
+              }
             }}
           >
             <span>

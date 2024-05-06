@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useEffect, useRef, useState } from 'react';
-import { SelectItemWrapper, SelectTextWrapper } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { formatInputString } from 'Utils';
@@ -12,6 +11,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { CallListItem, CallListProps } from './types';
+import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
 
 export const CallList = ({
   items,

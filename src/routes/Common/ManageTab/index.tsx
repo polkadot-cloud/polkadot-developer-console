@@ -3,7 +3,7 @@
 
 import { SettingsHeaderWrapper } from 'library/Settings/Wrappers';
 import { Input } from './Input';
-import { AutoConnect } from '../../../library/AutoConnect';
+import { AutoConnect } from 'library/AutoConnect';
 import {
   SettingsSubmitWrapper,
   SettingsToggleWrapper,

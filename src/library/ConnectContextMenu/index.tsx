@@ -12,7 +12,7 @@ import {
 } from 'library/ContextMenu/Wrappers';
 import { useRef, useState } from 'react';
 
-export const ConnectMenu = ({
+export const ConnectContextMenu = ({
   chainId,
   onSelect,
 }: {

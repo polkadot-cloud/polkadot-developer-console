@@ -16,7 +16,7 @@ import { ApiProvider } from 'contexts/Api';
 import { ChainUiProvider } from 'contexts/ChainUi';
 import { ParaSetupProvider } from 'contexts/ParaSetup';
 import { ConnectProvider } from 'contexts/Connect';
-import { AccountsProvider } from 'contexts/Accounts';
+import { TabAccountsProvider } from 'contexts/TabAccounts';
 import {
   ExtensionAccountsProvider,
   ExtensionsProvider,
@@ -24,7 +24,7 @@ import {
 } from '@w3ux/react-connect-kit';
 import { ChainStateProvider } from 'contexts/ChainState';
 import { ActiveTabProvider } from 'contexts/ActiveTab';
-import { ChainSpaceProvider } from 'contexts/ChainSpace';
+import { GlobalChainSpaceProvider } from 'contexts/GlobalChainSpace';
 
 export const Providers = () => {
   // !! Provider order matters.
@@ -33,7 +33,7 @@ export const Providers = () => {
     TabsProvider,
     ActiveTabProvider,
     TagsProvider,
-    ChainSpaceProvider,
+    GlobalChainSpaceProvider,
     ParaSetupProvider,
     ChainFilterProvider,
     MenuProvider,
@@ -43,7 +43,7 @@ export const Providers = () => {
     ExtensionsProvider,
     [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
     VaultAccountsProvider,
-    AccountsProvider,
+    TabAccountsProvider,
     ConnectProvider,
     ChainStateProvider,
   ];

@@ -13,30 +13,50 @@ export const Progress = () => {
   return (
     <ProgressWrapper>
       <section
-        className={`${activeStep === 'reserve_para_id' ? `active` : ``}`}
+        className={`${activeStep === 'connect_relay' ? `active` : `inactive`}`}
       >
-        <h4>Reserve Para ID</h4>
+        <h4>Select Relay Chain</h4>
       </section>
-      <section className="spacer">
-        <span className="connector"></span>
-      </section>
-      <section className={`${activeStep === 'configure_node' ? `active` : ``}`}>
-        <h4>Configure Node</h4>
-      </section>
-      <section className="spacer">
+      <section className={`spacer inactive`}>
         <span className="connector"></span>
       </section>
       <section
-        className={`${activeStep === 'register_parathread' ? `active` : ``}`}
+        className={`${activeStep === 'reserve_para_id' ? `active` : `inactive`}`}
+      >
+        <h4>Reserve Para ID</h4>
+      </section>
+      <section className={`spacer inactive`}>
+        <span className="connector"></span>
+      </section>
+      <section
+        className={`${activeStep === 'configure_node' ? `active` : `inactive`}`}
+      >
+        <h4>Configure Node</h4>
+      </section>
+      <section className={`spacer inactive`}>
+        <span className="connector"></span>
+      </section>
+      <section
+        className={`${activeStep === 'register_parathread' ? `active` : `inactive`}`}
       >
         <h4>Register Parathread</h4>
       </section>
-      <section className="spacer">
+      <section
+        className={`spacer ${activeStep !== 'get_coretime' ? `` : `inactive`}`}
+      >
         <span className="connector"></span>
       </section>
-      <section className={`${activeStep === 'get_coretime' ? `active` : ``}`}>
+      <section
+        className={`${activeStep === 'get_coretime' ? `active` : `inactive`} last`}
+      >
         <h4>Get Coretime</h4>
       </section>
+
+      {activeStep === 'get_coretime' && (
+        <section className="spacer smallOnly">
+          <span className="connector"></span>
+        </section>
+      )}
     </ProgressWrapper>
   );
 };

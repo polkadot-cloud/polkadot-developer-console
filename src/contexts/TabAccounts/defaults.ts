@@ -3,9 +3,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
 import BigNumber from 'bignumber.js';
-import type { AccountsContextInterface } from './types';
+import type { TabAccountsContextInterface } from './types';
 
-export const defaultAccountsContext: AccountsContextInterface = {
+export const defaultAccountsContext: TabAccountsContextInterface = {
   getAccountBalance: (address) => undefined,
   getBalanceLocks: (address) => ({ locks: [], maxLock: new BigNumber(0) }),
   getEdReserved: (address, existentialDeposit) => new BigNumber(0),

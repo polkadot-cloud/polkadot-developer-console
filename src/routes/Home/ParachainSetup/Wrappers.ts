@@ -6,42 +6,84 @@ import styled from 'styled-components';
 // Outer page wrapper that contains all page content.
 export const Wrapper = styled.div`
   flex: 1;
+  padding: 0 1rem;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    line-height: 1.8rem;
+
+    > .icon {
+      margin-left: 0.6rem;
+      width: 1.7rem;
+      height: 1.7rem;
+      padding: 0.2rem;
+      transition: opacity 0.2s;
+
+      > div {
+        width: 100%;
+        height: 100%;
+        position: relative;
+
+        > svg {
+          fill: var(--accent-color-primary);
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
 
   h3 {
     color: var(--text-color-secondary);
     font-size: 0.98rem;
-    margin-top: 0.75rem;
     margin-bottom: 1.5rem;
   }
 `;
 
 // Wrapper for the progress bar that shows the current step in the setup process.
 export const ProgressWrapper = styled.div`
+  --progress-vertical-padding: 1rem;
+
+  @media (max-width: 850px) {
+    --progress-vertical-padding: 0.5rem;
+  }
+
   flex: 1;
-  margin-top: 1rem;
+  margin-top: 0.6rem;
   display: flex;
 
   > section {
     display: flex;
     justify-content: space-between;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem var(--progress-vertical-padding) 0.5rem 0;
     align-items: center;
 
     &:first-child {
       padding-left: 0;
     }
 
-    &:last-child {
+    &:last-child,
+    &.last {
       padding-right: 0;
     }
 
     &.spacer {
+      padding-left: 0.5rem;
       flex-grow: 1;
     }
 
     > h4 {
       color: var(--text-color-tertiary);
       font-family: InterSemiBold, sans-serif;
+      transition: color 0.15s;
+
+      > svg {
+        margin-right: 0.25rem;
+      }
     }
 
     > .connector {
@@ -55,12 +97,35 @@ export const ProgressWrapper = styled.div`
         color: var(--accent-color-primary);
       }
     }
+
+    @media (max-width: 850px) {
+      &.inactive {
+        display: none;
+      }
+      &.smallOnly {
+        display: flex;
+        padding-left: 1rem;
+      }
+    }
+
+    @media (min-width: 851px) {
+      &.smallOnly {
+        display: none;
+      }
+    }
   }
 `;
 
 // Setup step form wrapper.
 export const FormWrapper = styled.div`
   flex: 1;
+  margin-top: 1rem;
+
+  > section {
+    flex: 1;
+    max-width: 650px;
+    margin-bottom: 1rem;
+  }
 `;
 
 // Wrapper than contains the footer content for navigating setup steps.
@@ -68,6 +133,7 @@ export const FooterWrapper = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
+  margin-top: 1rem;
 
   > div:first-child {
     flex-grow: 1;

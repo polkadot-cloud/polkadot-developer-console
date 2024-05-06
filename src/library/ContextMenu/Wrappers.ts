@@ -185,7 +185,7 @@ export const SelectListWrapper = styled.div`
 export const SearchWrapper = styled.div`
   background-color: var(--background-default);
   position: sticky;
-  padding: 0.2rem 0.3rem;
+  padding: 0.2rem 0.3rem 0 0.2rem;
   top: 0;
   width: 100%;
   z-index: 5;

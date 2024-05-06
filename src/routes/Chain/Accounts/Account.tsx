@@ -9,7 +9,7 @@ import { faBars, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { AccountContextMenu } from './AccountMenu';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useAccounts } from 'contexts/Accounts';
+import { useTabAccounts } from 'contexts/TabAccounts';
 import BigNumber from 'bignumber.js';
 
 export const Account = ({
@@ -19,7 +19,7 @@ export const Account = ({
 }: AccountProps) => {
   const { openMenu } = useMenu();
   const { tab } = useActiveTab();
-  const { getAccountBalance, getBalanceLocks } = useAccounts();
+  const { getAccountBalance, getBalanceLocks } = useTabAccounts();
 
   const { name, address } = account;
   const balances = getAccountBalance(address);

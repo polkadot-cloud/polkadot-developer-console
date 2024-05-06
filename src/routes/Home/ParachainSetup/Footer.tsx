@@ -6,11 +6,31 @@ import { FooterButtonWrapper, FooterWrapper } from './Wrappers';
 import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
-import type { FooterProps } from './types';
+import type { SetupStep } from 'contexts/ParaSetup/types';
+import { setupSteps } from 'contexts/ParaSetup/defaults';
 
-export const Footer = ({ next, prev }: FooterProps) => {
+export const Footer = () => {
   const { tabId } = useActiveTab();
-  const { setActiveStep } = useParaSetup();
+  const { getActiveStep, setActiveStep } = useParaSetup();
+
+  const activeStep = getActiveStep(tabId);
+
+  // Get the next step in the setup process.
+  const getNextStep = (): SetupStep | null => {
+    const currentIndex = setupSteps.indexOf(activeStep);
+    const nextStep = setupSteps[currentIndex + 1];
+    return nextStep || null;
+  };
+
+  // Get the previous step in the setup process.
+  const getPreviousStep = (): SetupStep | null => {
+    const currentIndex = setupSteps.indexOf(activeStep);
+    const prevStep = setupSteps[currentIndex - 1];
+    return prevStep || null;
+  };
+
+  const next = getNextStep();
+  const prev = getPreviousStep();
 
   return (
     <FooterWrapper>

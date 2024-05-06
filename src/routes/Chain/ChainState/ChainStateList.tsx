@@ -6,7 +6,6 @@ import { useChainUi } from 'contexts/ChainUi';
 import { FormatCallSignature } from 'model/Metadata/Format/CallSignature';
 import type { PalletItemScrapedWithSig } from 'model/Metadata/Scraper/types';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { SelectItemWrapper, SelectTextWrapper } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { camelize, setStateWithRef } from '@w3ux/utils';
@@ -16,6 +15,7 @@ import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
 import { useSelectFirst } from 'hooks/useSelectFirst';
 import { SelectDropdown } from 'library/SelectDropdown';
+import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
 
 export const ChainStateList = ({
   items,
