@@ -8,19 +8,27 @@ import { TabSettings } from './TabSettings';
 import { TagSettings } from './TagSettings';
 import type { PageSections, RouteSectionProvider } from 'routes/Common/types';
 import { PageContent } from 'library/PageContent';
+import {
+  faBrowsers,
+  faRectangleHistory,
+  faTags,
+} from '@fortawesome/pro-duotone-svg-icons';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
     0: {
       label: 'Tabs',
+      icon: faRectangleHistory,
       Component: TabSettings,
     },
     1: {
       label: 'Tags',
+      icon: faTags,
       Component: TagSettings,
     },
     2: {
       label: 'Workspace',
+      icon: faBrowsers,
       Component: WorkspaceSettings,
     },
   };

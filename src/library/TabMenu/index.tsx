@@ -14,6 +14,7 @@ import type { RouteSectionProvider } from 'routes/Common/types';
 import { useTooltip } from 'contexts/Tooltip';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useApi } from 'contexts/Api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
   const { getApiActive } = useApi();
@@ -41,6 +42,9 @@ export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
               }}
               className={activePage === Number(key) ? 'active' : undefined}
             >
+              {section?.icon && (
+                <FontAwesomeIcon icon={section.icon} className="icon" />
+              )}
               {section.label}
             </button>
           ))}

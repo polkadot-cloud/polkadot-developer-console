@@ -40,20 +40,29 @@ export const HeaderMenuWrapper = styled.div`
       button {
         padding: 0.7rem 0.5rem 0.7rem 1.1rem;
         font-size: 0.8rem;
+        display: flex;
+        align-items: center;
       }
 
       > button {
         color: var(--text-color-secondary);
 
+        > .icon {
+          margin-right: 0.4rem;
+          opacity: 0.6;
+          transition: opacity 0.2s;
+        }
+
         &:hover {
           color: var(--accent-color-secondary);
         }
+
         &.active {
           color: var(--accent-color-secondary);
-        }
 
-        > .icon {
-          margin-right: 0.4rem;
+          > .icon {
+            opacity: 1;
+          }
         }
       }
     }

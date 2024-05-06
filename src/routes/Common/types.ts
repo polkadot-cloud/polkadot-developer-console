@@ -3,11 +3,13 @@
 
 import type { FC } from 'react';
 import type { PageWidth } from './PageWithMenu/types';
+import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export type PageSections = Record<
   number,
   {
     label: string;
+    icon?: IconProp;
     Component: FC;
     pageWidth?: PageWidth;
   }

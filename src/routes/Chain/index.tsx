@@ -11,6 +11,12 @@ import { PageContent } from 'library/PageContent';
 import { Accounts } from './Accounts';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useApi } from 'contexts/Api';
+import {
+  faDiagramSubtask,
+  faInboxOut,
+  faListTimeline,
+  faTableLayout,
+} from '@fortawesome/pro-duotone-svg-icons';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const { getChainSpec } = useApi();
@@ -22,16 +28,19 @@ export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
     0: {
       label: 'Overview',
+      icon: faTableLayout,
       Component: Overview,
       pageWidth: 'wide',
     },
     1: {
       label: 'Chain State',
+      icon: faDiagramSubtask,
       Component: ChainState,
       pageWidth: 'wide',
     },
     2: {
       label: 'Extrinsics',
+      icon: faInboxOut,
       Component: Extrinsics,
       pageWidth: 'wide',
     },
@@ -40,6 +49,7 @@ export const useRouteSections = (): RouteSectionProvider => {
   if (balancesPaleltExists) {
     sections[3] = {
       label: 'Accounts',
+      icon: faListTimeline,
       Component: Accounts,
       pageWidth: 'wide',
     };

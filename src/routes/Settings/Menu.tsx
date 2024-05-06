@@ -38,6 +38,9 @@ export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
                 setTabActivePage(tabId, 'settings', Number(key), apiActive);
               }}
             >
+              {section?.icon && (
+                <FontAwesomeIcon icon={section.icon} className="icon" />
+              )}
               {section.label}
             </button>
           ))}
