@@ -8,4 +8,5 @@ export type SelectProps = InputCallbackProps & {
   icons?: string[];
   label: string | number;
   value: string;
+  disabled?: boolean;
 };

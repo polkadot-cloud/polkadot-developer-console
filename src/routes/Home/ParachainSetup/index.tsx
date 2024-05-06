@@ -45,6 +45,7 @@ export const ParachainSetup = () => {
 
   const stepProps = {
     relayChain,
+    relayInstance,
     relayInstanceIndex,
     setRelayChain,
     relayApiStatus,

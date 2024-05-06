@@ -13,6 +13,7 @@ import {
 } from 'library/Inputs/Wrappers';
 import type { SelectProps } from './types';
 import { Icon } from './Icon';
+import { faCheck } from '@fortawesome/pro-duotone-svg-icons';
 
 export const Select = ({
   values,
@@ -22,6 +23,7 @@ export const Select = ({
   onMount,
   onRender,
   onChange,
+  disabled,
 }: SelectProps) => {
   // The input arg type of this component.
   const INPUT_TYPE = 'Select';
@@ -56,15 +58,22 @@ export const Select = ({
     <SelectWrapper>
       <h4>{label}</h4>
       <SelectItemWrapper
-        className={`standalone input${open ? ` open` : ``} ${ignoreClass}`}
-        onClick={() => setOpen(!open)}
+        className={`standalone input${open ? ` open` : ``} ${ignoreClass}${disabled ? ` disabled` : ``}`}
+        onClick={() => {
+          if (!disabled) {
+            setOpen(!open);
+          }
+        }}
       >
         <span>
           {currentIcon && <Icon icon={currentIcon} />}
           <SelectTextWrapper>{currentValue || `No Values`}</SelectTextWrapper>
         </span>
         <span>
-          <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
+          <FontAwesomeIcon
+            icon={disabled ? faCheck : faChevronDown}
+            transform="shrink-4"
+          />
         </span>
       </SelectItemWrapper>
 

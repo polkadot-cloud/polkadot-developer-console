@@ -102,8 +102,14 @@ export const SelectItemWrapper = styled.button`
     border: 1px solid var(--border-secondary-color);
     border-radius: 0.25rem;
 
-    &:hover {
-      border-color: var(--accent-color-secondary);
+    &.disabled {
+      background-color: var(--background-default);
+      border-color: var(--border-primary-color);
+
+      /* Overwrite the right span icon hover color */
+      > span:last-child {
+        color: var(--text-color-tertiary);
+      }
     }
   }
 
