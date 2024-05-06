@@ -17,6 +17,7 @@ export interface ParaSetupContextInterface {
 }
 
 export type SetupStep =
+  | 'connect_relay'
   | 'reserve_para_id'
   | 'configure_node'
   | 'register_parathread'

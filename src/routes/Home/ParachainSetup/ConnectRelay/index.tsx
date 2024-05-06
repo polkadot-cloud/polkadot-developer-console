@@ -7,17 +7,17 @@ import { Select } from 'library/Inputs/Select';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/pro-duotone-svg-icons';
-import type { FormProps } from './types';
+import type { StepProps } from '../types';
 import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 import { ApiController } from 'controllers/Api';
 
-export const Form = ({
+export const ConnectRelay = ({
   relayChain,
   relayInstanceIndex,
   setRelayChain,
   relayApiStatus,
   handleConnectApi,
-}: FormProps) => {
+}: StepProps) => {
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
     ([, chain]) => chain.isRelayChain
@@ -33,9 +33,7 @@ export const Form = ({
 
   return (
     <FormWrapper>
-      <h3>
-        Reserve a Para ID on the Relay Chain you wish to secure blocks with.
-      </h3>
+      <h3>Select the Relay Chain you wish to secure blocks with.</h3>
 
       <section>
         <Select

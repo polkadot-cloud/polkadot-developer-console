@@ -28,7 +28,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
 
   // Get the active step for a tab id, or 1 otherwise.
   const getActiveStep = (tabId: number) =>
-    activeSteps[tabId] || 'reserve_para_id';
+    activeSteps[tabId] || 'connect_relay';
 
   // Set an active step for a tab id.
   const setActiveStep = (tabId: number, step: SetupStep) => {

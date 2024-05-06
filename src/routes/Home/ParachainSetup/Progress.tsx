@@ -13,6 +13,14 @@ export const Progress = () => {
   return (
     <ProgressWrapper>
       <section
+        className={`${activeStep === 'connect_relay' ? `active` : `inactive`}`}
+      >
+        <h4>Select Relay Chain</h4>
+      </section>
+      <section className={`spacer inactive`}>
+        <span className="connector"></span>
+      </section>
+      <section
         className={`${activeStep === 'reserve_para_id' ? `active` : `inactive`}`}
       >
         <h4>Reserve Para ID</h4>

@@ -4,34 +4,107 @@
 import { FormWrapper, Wrapper } from './Wrappers';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
-import type { SetupStep } from 'contexts/ParaSetup/types';
-import { setupSteps } from 'contexts/ParaSetup/defaults';
 import { Footer } from './Footer';
 import { Progress } from './Progress';
-import { ReserveParaId } from './ReserveParaId';
+import { ConnectRelay } from './ConnectRelay';
+import { useEffect, useRef, useState } from 'react';
+import type { APIStatusEventDetail, ApiStatus } from 'model/Api/types';
+import { isCustomEvent } from 'Utils';
+import { SubscriptionsController } from 'controllers/Subscriptions';
+import { AccountBalances } from 'model/AccountBalances';
+import { useEventListener } from 'usehooks-ts';
 
 export const ParachainSetup = () => {
   const { tabId } = useActiveTab();
-  const { getActiveStep } = useParaSetup();
+  const {
+    getRelayApi,
+    getActiveStep,
+    registerRelayApi,
+    getRelayInstanceIndex,
+  } = useParaSetup();
 
+  // Get the active step in the setup process.
   const activeStep = getActiveStep(tabId);
 
-  // Get the next step in the setup process.
-  const getNextStep = (): SetupStep | null => {
-    const currentIndex = setupSteps.indexOf(activeStep);
-    const nextStep = setupSteps[currentIndex + 1];
-    return nextStep || null;
+  // The currently selected relay chain to register a ParaID on.
+  const [relayChain, setRelayChain] = useState<string>('Polkadot Relay Chain');
+
+  // The API status of the relay chain.
+  const [relayApiStatus, setRelayApiStatus] =
+    useState<ApiStatus>('disconnected');
+
+  // Handle registering a relay chain api instance.
+  const handleConnectApi = async () => {
+    // TODO: Replace hard-coded values.
+    await registerRelayApi(tabId, 'polkadot', 'wss://rpc.ibp.network/polkadot');
   };
 
-  // Get the previous step in the setup process.
-  const getPreviousStep = (): SetupStep | null => {
-    const currentIndex = setupSteps.indexOf(activeStep);
-    const prevStep = setupSteps[currentIndex - 1];
-    return prevStep || null;
+  const relayInstance = getRelayApi(tabId);
+  const relayInstanceId = relayInstance?.instanceId;
+  const relayInstanceIndex = getRelayInstanceIndex(tabId);
+
+  const stepProps = {
+    relayChain,
+    relayInstanceIndex,
+    setRelayChain,
+    relayApiStatus,
+    handleConnectApi,
   };
 
-  const next = getNextStep();
-  const prev = getPreviousStep();
+  // Handle incoming api status updates.
+  const handleNewApiStatus = (e: Event): void => {
+    if (isCustomEvent(e)) {
+      const { ownerId, instanceId, chainId, event } =
+        e.detail as APIStatusEventDetail;
+
+      // Ensure we are handling the correct api instance here.
+      if (ownerId === 'global' && instanceId === relayInstanceId) {
+        switch (event) {
+          case 'ready':
+            setRelayApiStatus('ready');
+
+            // Initialise account balance subscriptions.
+            SubscriptionsController.set(
+              instanceId,
+              'accountBalances',
+              new AccountBalances(ownerId, instanceId, chainId)
+            );
+            break;
+          case 'connecting':
+            setRelayApiStatus('connecting');
+            break;
+          case 'connected':
+            setRelayApiStatus('connected');
+            break;
+          case 'disconnected':
+            handleDisconnect();
+            break;
+          case 'error':
+            handleDisconnect();
+            break;
+          case 'destroyed':
+            handleDisconnect();
+            break;
+        }
+      }
+    }
+  };
+
+  // Handle a chain disconnect.
+  const handleDisconnect = () => {
+    // Update API status to `disconnected`.
+    setRelayApiStatus('disconnected');
+  };
+
+  // Listen for api status updates.
+  const documentRef = useRef<Document>(document);
+  useEventListener('api-status', handleNewApiStatus, documentRef);
+
+  // Update connection status when relay api instance is received.
+  useEffect(() => {
+    const status = relayInstance?.status || 'disconnected';
+    setRelayApiStatus(status as ApiStatus);
+  }, [relayInstanceId]);
 
   return (
     <Wrapper>
@@ -39,7 +112,15 @@ export const ParachainSetup = () => {
 
       <Progress />
 
-      {activeStep === 'reserve_para_id' && <ReserveParaId />}
+      {activeStep === 'connect_relay' && <ConnectRelay {...stepProps} />}
+
+      {activeStep === 'reserve_para_id' && (
+        <FormWrapper>
+          <h3>
+            Reserve a Para ID or choose an existing one from your accounts.
+          </h3>
+        </FormWrapper>
+      )}
 
       {activeStep === 'configure_node' && (
         <FormWrapper>
@@ -61,7 +142,7 @@ export const ParachainSetup = () => {
         </FormWrapper>
       )}
 
-      <Footer next={next} prev={prev} />
+      <Footer />
     </Wrapper>
   );
 };

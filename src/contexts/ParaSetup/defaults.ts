@@ -5,7 +5,7 @@
 import type { ParaSetupContextInterface, SetupStep } from './types';
 
 export const defaultParaSetupContext: ParaSetupContextInterface = {
-  getActiveStep: (tabId) => 'reserve_para_id',
+  getActiveStep: (tabId) => 'connect_relay',
   setActiveStep: (tabId, step) => {},
   registerRelayApi: (tabId, chainId, endpoint) => Promise.resolve(),
   getRelayApi: (tabId) => undefined,
@@ -13,6 +13,7 @@ export const defaultParaSetupContext: ParaSetupContextInterface = {
 };
 
 export const setupSteps: SetupStep[] = [
+  'connect_relay',
   'reserve_para_id',
   'configure_node',
   'register_parathread',

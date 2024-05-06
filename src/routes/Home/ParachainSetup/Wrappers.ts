@@ -51,6 +51,10 @@ export const ProgressWrapper = styled.div`
     > h4 {
       color: var(--text-color-tertiary);
       font-family: InterSemiBold, sans-serif;
+
+      > svg {
+        margin-right: 0.25rem;
+      }
     }
 
     > .connector {
