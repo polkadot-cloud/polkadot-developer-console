@@ -13,6 +13,7 @@ import { isCustomEvent } from 'Utils';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { AccountBalances } from 'model/AccountBalances';
 import { useEventListener } from 'usehooks-ts';
+import { Icon } from './Icon';
 
 export const ParachainSetup = () => {
   const { tabId } = useActiveTab();
@@ -53,6 +54,10 @@ export const ParachainSetup = () => {
     relayApiStatus,
     handleConnectApi,
   };
+
+  const relayIcon = relayInstance
+    ? `../../../config/networks/icons/${relayInstance.chainId}/Inline.tsx`
+    : undefined;
 
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {
@@ -111,7 +116,14 @@ export const ParachainSetup = () => {
 
   return (
     <Wrapper>
-      <h2>Set up a New Parachain</h2>
+      <h2>
+        Set up a New Parachain
+        {relayIcon && (
+          <div className="icon">
+            <Icon icon={relayIcon} />
+          </div>
+        )}
+      </h2>
 
       <Progress />
 

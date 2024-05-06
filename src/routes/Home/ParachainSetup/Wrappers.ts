@@ -8,6 +8,36 @@ export const Wrapper = styled.div`
   flex: 1;
   padding: 0 1rem;
 
+  h2 {
+    display: flex;
+    align-items: center;
+    line-height: 1.8rem;
+
+    > .icon {
+      border: 0.5px solid var(--border-secondary-color);
+      border-radius: 2rem;
+      margin-left: 0.6rem;
+      width: 1.7rem;
+      height: 1.7rem;
+      padding: 0.24rem;
+
+      > div {
+        width: 100%;
+        height: 100%;
+        position: relative;
+
+        > svg {
+          fill: var(--accent-color-primary);
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
   h3 {
     color: var(--text-color-secondary);
     font-size: 0.98rem;
