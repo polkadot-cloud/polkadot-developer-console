@@ -72,7 +72,8 @@ export const SelectItemWrapper = styled.button`
     transition: border 0.15s;
 
     &:hover {
-      border-color: var(--border-secondary-color);
+      border-color: var(--accent-color-secondary);
+
       > span:last-child {
         color: var(--accent-color-secondary);
       }
