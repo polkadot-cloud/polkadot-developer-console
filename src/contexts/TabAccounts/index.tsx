@@ -8,41 +8,36 @@ import type {
   TabAccountsContextInterface,
   BalanceLocks,
 } from './types';
-import { defaultAccountsContext } from './defaults';
+import { defaultTabAccountsContext } from './defaults';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import { SubscriptionsController } from 'controllers/Subscriptions';
-import {
-  useExtensionAccounts,
-  useVaultAccounts,
-} from '@w3ux/react-connect-kit';
+
 import { useApi } from 'contexts/Api';
 import type { AccountBalances } from 'model/AccountBalances';
 import type { BalanceLock } from 'model/AccountBalances/types';
 import BigNumber from 'bignumber.js';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { useImportedAccounts } from 'contexts/ImportedAccounts';
 
 export const TabAccounts = createContext<TabAccountsContextInterface>(
-  defaultAccountsContext
+  defaultTabAccountsContext
 );
 
 export const useTabAccounts = () => useContext(TabAccounts);
 
 export const TabAccountsProvider = ({ children }: { children: ReactNode }) => {
-  const { getVaultAccounts } = useVaultAccounts();
+  const { getAccounts } = useImportedAccounts();
   const { getChainSpec, getApiStatus } = useApi();
-  const { getExtensionAccounts } = useExtensionAccounts();
   const { tabId, ownerId, apiInstanceId } = useActiveTab();
 
   const apiStatus = getApiStatus(apiInstanceId);
   const chainSpec = getChainSpec(apiInstanceId);
 
-  // TODO: this should be a `getAccounts(ss58Prefix: number): Account[]` function.
+  // Get all imported accounts if chain spec is available.
   const accounts =
     chainSpec && chainSpec.chain
-      ? getExtensionAccounts(chainSpec.ss58Prefix).concat(
-          getVaultAccounts(chainSpec.chain)
-        )
+      ? getAccounts(chainSpec.chain, chainSpec.ss58Prefix)
       : [];
 
   // The currently persisted account balances.

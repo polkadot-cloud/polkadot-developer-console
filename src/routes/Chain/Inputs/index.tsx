@@ -15,9 +15,11 @@ import { Checkbox } from './Checkbox';
 import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { useTabAccounts } from 'contexts/TabAccounts';
 
 export const useInput = () => {
   const { tabId } = useActiveTab();
+  const { accounts } = useTabAccounts();
   const { setInputArgAtKey, getInputArgsAtKey } = useChainUi();
 
   // Reads input and returns input components based on the input type. Called recursively for types
@@ -274,7 +276,7 @@ export const useInput = () => {
         case 'AccountId32':
           return (
             <AccountId32
-              {...inputArgConfig}
+              accounts={accounts}
               onMount={(selectedAddress) => {
                 setInputArgAtKey(tabId, namespace, inputKey, selectedAddress);
               }}

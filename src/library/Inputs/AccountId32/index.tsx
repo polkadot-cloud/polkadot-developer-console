@@ -14,18 +14,16 @@ import {
   remToUnit,
   setStateWithRef,
 } from '@w3ux/utils';
-import { useTabAccounts } from 'contexts/TabAccounts';
 import { formatInputString } from 'Utils';
 import { SelectDropdown } from 'library/SelectDropdown';
-import type { InputCallbackProps } from '../types';
+import type { AccountId32Props } from './types';
 
 export const AccountId32 = ({
+  accounts,
   onMount,
   onRender,
   onChange,
-}: InputCallbackProps) => {
-  const { accounts } = useTabAccounts();
-
+}: AccountId32Props) => {
   // The input arg type of this component.
   const INPUT_TYPE = 'AccountId32';
 
@@ -97,7 +95,7 @@ export const AccountId32 = ({
   }, []);
 
   return (
-    <>
+    <span style={{ position: 'relative' }}>
       <TextInputWrapper className="input">
         <span className="icon">
           <Polkicon
@@ -164,6 +162,6 @@ export const AccountId32 = ({
           </SelectItemWrapper>
         ))}
       </SelectDropdown>
-    </>
+    </span>
   );
 };

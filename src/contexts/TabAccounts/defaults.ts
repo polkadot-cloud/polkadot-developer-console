@@ -5,7 +5,7 @@
 import BigNumber from 'bignumber.js';
 import type { TabAccountsContextInterface } from './types';
 
-export const defaultAccountsContext: TabAccountsContextInterface = {
+export const defaultTabAccountsContext: TabAccountsContextInterface = {
   getAccountBalance: (address) => undefined,
   getBalanceLocks: (address) => ({ locks: [], maxLock: new BigNumber(0) }),
   getEdReserved: (address, existentialDeposit) => new BigNumber(0),
