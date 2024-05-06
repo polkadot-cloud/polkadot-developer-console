@@ -42,7 +42,6 @@ export const ParachainSetup = () => {
     closeMenu();
     setRelayApiStatus('connecting');
 
-    // TODO: Replace hard-coded values.
     await registerRelayApi(tabId, relayChain, provider);
   };
 
