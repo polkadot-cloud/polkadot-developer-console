@@ -7,15 +7,21 @@ import { TabMenu } from 'library/TabMenu';
 import { Connect } from './Connect';
 import { PageContent } from 'library/PageContent';
 import { ParachainSetup } from './ParachainSetup';
+import {
+  faLayerPlus,
+  faPlugCircleBolt,
+} from '@fortawesome/pro-duotone-svg-icons';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
     0: {
       label: 'Connect',
+      icon: faPlugCircleBolt,
       Component: Connect,
     },
     1: {
       label: 'New Parachain',
+      icon: faLayerPlus,
       Component: ParachainSetup,
       pageWidth: 'wide',
     },
