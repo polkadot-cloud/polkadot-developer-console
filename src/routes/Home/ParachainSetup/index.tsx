@@ -41,14 +41,24 @@ export const ParachainSetup = () => {
   const handleConnectApi = async (provider: string) => {
     closeMenu();
     setRelayApiStatus('connecting');
-
     await registerRelayApi(tabId, relayChain, provider);
   };
 
+  // Get relay api instance and its identifiers.
   const relayInstance = getRelayApi(tabId);
   const relayInstanceId = relayInstance?.instanceId;
   const relayInstanceIndex = getRelayInstanceIndex(tabId);
 
+  // Get the relay chain icon, if available.
+  const relayIcon = relayInstance
+    ? `../../../config/networks/icons/${relayInstance.chainId}/Inline.tsx`
+    : undefined;
+
+  // Determine whether next button should be disabled.
+  const nextDisabled =
+    activeStep === 'connect_relay' && relayApiStatus !== 'ready';
+
+  // Props to pass to step components.
   const stepProps = {
     relayChain,
     relayInstance,
@@ -57,10 +67,6 @@ export const ParachainSetup = () => {
     relayApiStatus,
     handleConnectApi,
   };
-
-  const relayIcon = relayInstance
-    ? `../../../config/networks/icons/${relayInstance.chainId}/Inline.tsx`
-    : undefined;
 
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {
@@ -160,7 +166,7 @@ export const ParachainSetup = () => {
         </FormWrapper>
       )}
 
-      <Footer />
+      <Footer nextDisabled={nextDisabled} />
     </Wrapper>
   );
 };

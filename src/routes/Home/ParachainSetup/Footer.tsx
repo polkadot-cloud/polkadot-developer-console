@@ -9,7 +9,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import type { SetupStep } from 'contexts/ParaSetup/types';
 import { setupSteps } from 'contexts/ParaSetup/defaults';
 
-export const Footer = () => {
+export const Footer = ({ nextDisabled }: { nextDisabled: boolean }) => {
   const { tabId } = useActiveTab();
   const { getActiveStep, setActiveStep } = useParaSetup();
 
@@ -31,6 +31,8 @@ export const Footer = () => {
 
   const next = getNextStep();
   const prev = getPreviousStep();
+
+  const disableNext = next === null || nextDisabled;
 
   return (
     <FooterWrapper>
@@ -56,14 +58,14 @@ export const Footer = () => {
           </div>
         </FooterButtonWrapper>
         <FooterButtonWrapper>
-          <div className={`inner${!next ? ` inactive` : ``}`}>
+          <div className={`inner${disableNext ? ` inactive` : ``}`}>
             <button
               onClick={() => {
                 if (next) {
                   setActiveStep(tabId, next);
                 }
               }}
-              disabled={next === null}
+              disabled={disableNext}
             >
               Next
               <FontAwesomeIcon
