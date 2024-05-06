@@ -14,12 +14,10 @@ export const Wrapper = styled.div`
     line-height: 1.8rem;
 
     > .icon {
-      border: 0.5px solid var(--border-secondary-color);
-      border-radius: 2rem;
       margin-left: 0.6rem;
       width: 1.7rem;
       height: 1.7rem;
-      padding: 0.24rem;
+      padding: 0.2rem;
       transition: opacity 0.2s;
 
       > div {
