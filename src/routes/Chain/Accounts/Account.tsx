@@ -19,10 +19,10 @@ export const Account = ({
 }: AccountProps) => {
   const { openMenu } = useMenu();
   const { tab } = useActiveTab();
-  const { getAccountBalance, getLocks } = useTabAccounts();
+  const { getBalance, getLocks } = useTabAccounts();
 
   const { name, address } = account;
-  const balance = getAccountBalance(address);
+  const balance = getBalance(address);
   const { maxLock } = getLocks(address);
 
   // Calculate a forced amount of free balance that needs to be reserved to keep the account alive.

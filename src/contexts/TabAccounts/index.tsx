@@ -41,7 +41,7 @@ export const TabAccountsProvider = ({ children }: { children: ReactNode }) => {
   return (
     <TabAccounts.Provider
       value={{
-        getAccountBalance: getBalance,
+        getBalance,
         getLocks,
         getEdReserved,
         accounts,

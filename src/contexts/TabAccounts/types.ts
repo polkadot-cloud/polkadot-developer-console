@@ -13,7 +13,7 @@ import type {
 } from 'model/AccountBalances/types';
 
 export interface TabAccountsContextInterface {
-  getAccountBalance: (address: MaybeAddress) => Balance;
+  getBalance: (address: MaybeAddress) => Balance;
   getLocks: (address: MaybeAddress) => BalanceLocks;
   getEdReserved: (
     address: MaybeAddress,
