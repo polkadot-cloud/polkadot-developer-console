@@ -135,7 +135,7 @@ export const ParachainSetup = () => {
       {activeStep === 'reserve_para_id' && (
         <FormWrapper>
           <h3>
-            Reserve a Para ID or choose an existing one from your accounts.
+            Reserve a Para ID or select an existing one from your accounts.
           </h3>
         </FormWrapper>
       )}
