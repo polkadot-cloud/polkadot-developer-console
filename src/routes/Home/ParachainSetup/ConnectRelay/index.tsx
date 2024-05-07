@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { FormWrapper } from '../Wrappers';
 import type { ChainId, DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { Select } from 'library/Inputs/Select';
@@ -13,6 +12,7 @@ import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 import { ApiController } from 'controllers/Api';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
 import { useMenu } from 'contexts/Menu';
+import { FormWrapper } from 'routes/Home/Wrappers';
 
 export const ConnectRelay = ({
   relayChain,

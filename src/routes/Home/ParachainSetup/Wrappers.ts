@@ -75,22 +75,6 @@ export const ProgressWrapper = styled.div`
   }
 `;
 
-// Setup step form wrapper.
-export const FormWrapper = styled.div`
-  flex: 1;
-  margin-top: 1rem;
-
-  > section {
-    flex: 1;
-    max-width: 650px;
-    margin-bottom: 1rem;
-
-    > h4 {
-      margin-bottom: 0.2rem;
-    }
-  }
-`;
-
 // Wrapper than contains the footer content for navigating setup steps.
 export const FooterWrapper = styled.div`
   flex: 1;

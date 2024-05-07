@@ -3,14 +3,13 @@
 
 import { useParaSetup } from 'contexts/ParaSetup';
 import { Icon } from './Icon';
-import { FormWrapper } from './Wrappers';
 import type { StepProps } from './types';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { ConnectRelay } from './ConnectRelay';
 import { Progress } from './Progress';
 import { Footer } from './Footer';
 import { ReserveParaId } from './ReserveParaId';
-import { HomePageWrapper } from '../Wrappers';
+import { FormWrapper, HomePageWrapper } from '../Wrappers';
 
 export const Form = (props: StepProps) => {
   const { tabId } = useActiveTab();

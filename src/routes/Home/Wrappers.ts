@@ -43,3 +43,23 @@ export const HomePageWrapper = styled.div`
     margin-bottom: 1.5rem;
   }
 `;
+
+// General purpose form wrapper with limited-width sections and headings.
+export const FormWrapper = styled.div`
+  flex: 1;
+  margin-top: 1rem;
+
+  > section {
+    flex: 1;
+    max-width: 650px;
+    margin-bottom: 1rem;
+
+    &.fullWidth {
+      max-width: none;
+    }
+
+    > h4 {
+      margin-bottom: 0.2rem;
+    }
+  }
+`;
