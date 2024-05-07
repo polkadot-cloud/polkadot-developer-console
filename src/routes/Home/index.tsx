@@ -9,8 +9,10 @@ import { PageContent } from 'library/PageContent';
 import { ParachainSetup } from './ParachainSetup';
 import {
   faLayerPlus,
+  faMicrochip,
   faPlugCircleBolt,
 } from '@fortawesome/pro-duotone-svg-icons';
+import { Coretime } from './Coretime';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
@@ -23,6 +25,12 @@ export const useRouteSections = (): RouteSectionProvider => {
       label: 'New Parachain',
       icon: faLayerPlus,
       Component: ParachainSetup,
+      pageWidth: 'wide',
+    },
+    2: {
+      label: 'Coretime',
+      icon: faMicrochip,
+      Component: Coretime,
       pageWidth: 'wide',
     },
   };

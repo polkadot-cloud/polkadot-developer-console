@@ -3,13 +3,14 @@
 
 import { useParaSetup } from 'contexts/ParaSetup';
 import { Icon } from './Icon';
-import { FormWrapper, Wrapper } from './Wrappers';
+import { FormWrapper } from './Wrappers';
 import type { StepProps } from './types';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { ConnectRelay } from './ConnectRelay';
 import { Progress } from './Progress';
 import { Footer } from './Footer';
 import { ReserveParaId } from './ReserveParaId';
+import { HomePageWrapper } from '../Wrappers';
 
 export const Form = (props: StepProps) => {
   const { tabId } = useActiveTab();
@@ -28,7 +29,7 @@ export const Form = (props: StepProps) => {
     activeStep === 'connect_relay' && relayApiStatus !== 'ready';
 
   return (
-    <Wrapper>
+    <HomePageWrapper>
       <h2>
         Set up a New Parachain
         {relayIcon && (
@@ -65,6 +66,6 @@ export const Form = (props: StepProps) => {
       )}
 
       <Footer nextDisabled={nextDisabled} />
-    </Wrapper>
+    </HomePageWrapper>
   );
 };
