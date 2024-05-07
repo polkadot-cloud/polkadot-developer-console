@@ -3,20 +3,20 @@
 
 import { useParaSetup } from 'contexts/ParaSetup';
 import { Icon } from './Icon';
-import type { StepProps } from './types';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { ConnectRelay } from './ConnectRelay';
 import { Progress } from './Progress';
 import { Footer } from './Footer';
 import { ReserveParaId } from './ReserveParaId';
 import { FormWrapper, HomePageWrapper } from '../Wrappers';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
-export const Form = (props: StepProps) => {
+export const Form = () => {
   const { tabId } = useActiveTab();
   const { getActiveStep } = useParaSetup();
+  const { relayInstance, relayApiStatus } = useChainSpaceEnv();
 
   const activeStep = getActiveStep(tabId);
-  const { relayInstance, relayApiStatus } = props;
 
   // Get the relay chain icon, if available.
   const relayIcon = relayInstance
@@ -40,9 +40,9 @@ export const Form = (props: StepProps) => {
 
       <Progress />
 
-      {activeStep === 'connect_relay' && <ConnectRelay {...props} />}
+      {activeStep === 'connect_relay' && <ConnectRelay />}
 
-      {activeStep === 'reserve_para_id' && <ReserveParaId {...props} />}
+      {activeStep === 'reserve_para_id' && <ReserveParaId />}
 
       {activeStep === 'configure_node' && (
         <FormWrapper>

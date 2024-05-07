@@ -7,20 +7,21 @@ import { Select } from 'library/Inputs/Select';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/pro-duotone-svg-icons';
-import type { StepProps } from '../types';
 import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 import { ApiController } from 'controllers/Api';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
 import { useMenu } from 'contexts/Menu';
 import { FormWrapper } from 'routes/Home/Wrappers';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
-export const ConnectRelay = ({
-  relayChain,
-  relayInstanceIndex,
-  setRelayChain,
-  relayApiStatus,
-  handleConnectApi,
-}: StepProps) => {
+export const ConnectRelay = () => {
+  const {
+    relayChain,
+    setRelayChain,
+    relayApiStatus,
+    handleConnectApi,
+    relayInstanceIndex,
+  } = useChainSpaceEnv();
   const { openMenu } = useMenu();
 
   // Get relay chains from the network directory.

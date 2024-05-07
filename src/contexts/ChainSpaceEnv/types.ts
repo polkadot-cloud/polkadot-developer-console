@@ -6,7 +6,7 @@ import type { ActiveBalancesInterface } from 'hooks/useActiveBalances/types';
 import type { Api } from 'model/Api';
 import type { ApiStatus } from 'model/Api/types';
 
-export interface StepProps {
+export interface ChainSpaceEnvContextInterface {
   activeBalances: ActiveBalancesInterface;
   relayChain: ChainId;
   relayInstance: Api | undefined;

@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { AccountId32 } from 'library/Inputs/AccountId32';
-import type { StepProps } from '../types';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { FormWrapper } from 'routes/Home/Wrappers';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
-export const ReserveParaId = ({ relayInstance }: StepProps) => {
+export const ReserveParaId = () => {
+  const { relayInstance } = useChainSpaceEnv();
   const { getAccounts } = useImportedAccounts();
 
   const chainSpec = relayInstance?.chainSpec;
