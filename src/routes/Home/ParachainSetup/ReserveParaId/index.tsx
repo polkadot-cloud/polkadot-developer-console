@@ -21,6 +21,7 @@ export const ReserveParaId = ({ relayInstance }: StepProps) => {
       <h3>Reserve a Para ID or select an existing one from your accounts.</h3>
 
       <section>
+        <h4>Para ID Owner</h4>
         <AccountId32 accounts={accounts} />
       </section>
     </FormWrapper>
