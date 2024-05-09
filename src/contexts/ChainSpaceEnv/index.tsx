@@ -130,19 +130,16 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     await globalChainSpace.getInstance().addApi(chainId, provider);
   };
 
-  // TODO: abstract this out.
-  const relayChainSpec = Object.values(chainSpecs)?.[0];
-
-  // Get available imported accounts.
-  const accounts =
-    relayChainSpec && relayChainSpec.chain
-      ? getAccounts(relayChainSpec.chain, relayChainSpec.ss58Prefix)
-      : [];
-
   // Accumulate active balance instances.
   const activeBalanceInstances: ActiveBalancesProps = {};
+
   Object.values(apiIndexesRef.current).forEach((indexId: number) => {
     const instanceId = `global_${indexId}`;
+    const chainSpec = chainSpecs[instanceId];
+    const accounts =
+      chainSpec && chainSpec.chain
+        ? getAccounts(chainSpec.chain, chainSpec.ss58Prefix)
+        : [];
 
     if (chainSpecs[instanceId]) {
       activeBalanceInstances[instanceId] = {
