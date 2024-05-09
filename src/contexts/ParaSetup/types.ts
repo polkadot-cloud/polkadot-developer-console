@@ -2,13 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ChainId } from 'config/networks';
-import type { Api } from 'model/Api';
 
 export interface ParaSetupContextInterface {
   getActiveStep: (tabId: number) => SetupStep;
   setActiveStep: (tabId: number, step: SetupStep) => void;
-  getRelayApi: (tabId: number) => Api | undefined;
-  getRelayInstanceIndex: (tabId: number) => number | undefined;
   selectedRelayChain: ChainId;
   setSelectedRelayChain: (chainId: ChainId) => void;
 }

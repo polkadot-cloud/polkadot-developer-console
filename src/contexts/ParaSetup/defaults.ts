@@ -7,8 +7,6 @@ import type { ParaSetupContextInterface, SetupStep } from './types';
 export const defaultParaSetupContext: ParaSetupContextInterface = {
   getActiveStep: (tabId) => 'connect_relay',
   setActiveStep: (tabId, step) => {},
-  getRelayApi: (tabId) => undefined,
-  getRelayInstanceIndex: (tabId) => undefined,
   selectedRelayChain: 'polkadot',
   setSelectedRelayChain: (chainId) => {},
 };
