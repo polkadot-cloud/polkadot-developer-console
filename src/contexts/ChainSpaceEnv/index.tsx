@@ -199,7 +199,10 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   const handleDisconnect = (instanceId: ApiInstanceId) => {
     // Update API status to `disconnected`.
     setApiStatus(instanceId, 'disconnected');
-    setChainSpecs({});
+
+    const updated = { ...chainSpecsRef.current };
+    delete updated[instanceId];
+    setChainSpecs(updated);
   };
 
   // Get next available index for apiIndexes.
