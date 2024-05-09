@@ -26,6 +26,7 @@ import { ChainStateProvider } from 'contexts/ChainState';
 import { ActiveTabProvider } from 'contexts/ActiveTab';
 import { GlobalChainSpaceProvider } from 'contexts/GlobalChainSpace';
 import { ImportedAccountsProvider } from 'contexts/ImportedAccounts';
+import { ChainSpaceEnvProvider } from 'contexts/ChainSpaceEnv';
 
 export const Providers = () => {
   // !! Provider order matters.
@@ -48,6 +49,7 @@ export const Providers = () => {
     TabAccountsProvider,
     ConnectProvider,
     ChainStateProvider,
+    ChainSpaceEnvProvider,
   ];
 
   return withProviders(providers, App);

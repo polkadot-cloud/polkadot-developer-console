@@ -1,27 +1,42 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainId, DirectoryId } from 'config/networks';
+import type { ChainId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { Select } from 'library/Inputs/Select';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/pro-duotone-svg-icons';
-import type { StepProps } from '../types';
 import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
-import { ApiController } from 'controllers/Api';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
 import { useMenu } from 'contexts/Menu';
 import { FormWrapper } from 'routes/Home/Wrappers';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useParaSetup } from 'contexts/ParaSetup';
+import { useActiveTab } from 'contexts/ActiveTab';
 
-export const ConnectRelay = ({
-  relayChain,
-  relayInstanceIndex,
-  setRelayChain,
-  relayApiStatus,
-  handleConnectApi,
-}: StepProps) => {
-  const { openMenu } = useMenu();
+export const ConnectRelay = () => {
+  const { tabId } = useActiveTab();
+  const {
+    getApiStatusByIndex,
+    destroyChainApi,
+    handleConnectApi,
+    getNextApiIndex,
+  } = useChainSpaceEnv();
+  const {
+    getSelectedRelayChain,
+    setSelectedRelayChain,
+    getChainSpaceApiIndex,
+    setChainSpaceApiIndex,
+    removeChainSpaceApiIndex,
+  } = useParaSetup();
+  const { openMenu, closeMenu } = useMenu();
+
+  const selectedRelayChain = getSelectedRelayChain(tabId);
+
+  // API status
+  const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
+  const apiStatus = getApiStatusByIndex(chainSpaceApiIndex);
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -38,8 +53,8 @@ export const ConnectRelay = ({
 
   // Get the chain name of the currently select relay chain.
   const relayName =
-    relayChains.find(([chainId]) => chainId === relayChain)?.[1]?.name ||
-    'Polkadot Relay Chain';
+    relayChains.find(([chainId]) => chainId === selectedRelayChain)?.[1]
+      ?.name || 'Polkadot Relay Chain';
 
   return (
     <FormWrapper>
@@ -55,24 +70,30 @@ export const ConnectRelay = ({
             const chainId = relayChains.find(
               ([, chain]) => chain.name === val
             )?.[0] as ChainId;
-
             if (chainId !== undefined) {
-              setRelayChain(chainId);
+              setSelectedRelayChain(tabId, chainId);
             }
           }}
-          disabled={ACTIVE_API_STATUSES.includes(relayApiStatus)}
+          disabled={ACTIVE_API_STATUSES.includes(apiStatus)}
         />
       </section>
       <section>
-        {relayApiStatus === 'disconnected' ? (
+        {apiStatus === 'disconnected' ? (
           <ButtonSubmit
             className="lg"
             onClick={(ev) => {
               openMenu(
                 ev,
                 <ConnectContextMenu
-                  chainId={relayChain as DirectoryId}
-                  onSelect={handleConnectApi}
+                  chainId={selectedRelayChain}
+                  onSelect={async (provider) => {
+                    closeMenu();
+
+                    const index = getNextApiIndex();
+                    setChainSpaceApiIndex(tabId, index);
+
+                    await handleConnectApi(index, selectedRelayChain, provider);
+                  }}
                 />
               );
             }}
@@ -83,15 +104,16 @@ export const ConnectRelay = ({
         ) : (
           <ButtonSubmit
             className="lg"
-            disabled={relayApiStatus !== 'ready'}
+            disabled={apiStatus !== 'ready'}
             onClick={() => {
-              // Disconnect from API.
-              if (relayInstanceIndex !== undefined) {
-                ApiController.destroy('global', relayInstanceIndex);
+              // Disconnect from API if index exists.
+              if (chainSpaceApiIndex !== undefined) {
+                destroyChainApi(chainSpaceApiIndex);
+                removeChainSpaceApiIndex(tabId);
               }
             }}
           >
-            {relayApiStatus === 'ready' ? <>Disconnect</> : 'Connecting...'}
+            {apiStatus === 'ready' ? <>Disconnect</> : 'Connecting...'}
           </ButtonSubmit>
         )}
       </section>

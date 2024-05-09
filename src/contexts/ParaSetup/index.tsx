@@ -3,10 +3,14 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
-import type { ParaSetupContextInterface, SetupStep } from './types';
+import type {
+  ChainSpaceApiIndexes,
+  ParaSetupContextInterface,
+  SelectedRelayChains,
+  SetupStep,
+  SetupStepsState,
+} from './types';
 import { defaultParaSetupContext } from './defaults';
-import { useGlobalChainSpace } from 'contexts/GlobalChainSpace';
-import { ApiController } from 'controllers/Api';
 import type { ChainId } from 'config/networks';
 
 // TODO: This data needs to be moved to tab ui data.
@@ -18,13 +22,47 @@ export const ParaSetupContext = createContext<ParaSetupContextInterface>(
 export const useParaSetup = () => useContext(ParaSetupContext);
 
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
-  const { globalChainSpace } = useGlobalChainSpace();
-
   // Store the active setup step for a tab.
-  const [activeSteps, setActiveSteps] = useState<Record<number, SetupStep>>({});
+  const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
 
-  // Register the relay chain api instance indexes for a tab.
-  const [relayApis, setRelayApis] = useState<Record<number, number>>({});
+  // Store the currently selected relay chain, keyed by tab.
+  const [selectedRelayChains, setSelectedRelayChains] =
+    useState<SelectedRelayChains>({});
+
+  // Store the index at which to access the relay chain api from the global chain space environment,
+  // for each tab.
+  const [chainSpaceApiIndexes, setChainSpaceApiIndexes] =
+    useState<ChainSpaceApiIndexes>({});
+
+  // Get the selected relay chain for a tab.
+  const getSelectedRelayChain = (tabId: number) =>
+    selectedRelayChains[tabId] || 'polkadot';
+
+  // Set the selected relay chain for a tab.
+  const setSelectedRelayChain = (tabId: number, chainId: ChainId) => {
+    setSelectedRelayChains({
+      ...selectedRelayChains,
+      [tabId]: chainId,
+    });
+  };
+
+  // Get a chain space api index for a tab.
+  const getChainSpaceApiIndex = (tabId: number) => chainSpaceApiIndexes[tabId];
+
+  // Set a chain space api index for a tab.
+  const setChainSpaceApiIndex = (tabId: number, index: number) => {
+    setChainSpaceApiIndexes({
+      ...chainSpaceApiIndexes,
+      [tabId]: index,
+    });
+  };
+
+  // Remove a chain space api index for a tab.
+  const removeChainSpaceApiIndex = (tabId: number) => {
+    const updated = { ...chainSpaceApiIndexes };
+    delete updated[tabId];
+    setChainSpaceApiIndexes(updated);
+  };
 
   // Get the active step for a tab id, or 1 otherwise.
   const getActiveStep = (tabId: number) =>
@@ -38,43 +76,16 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
-  // Register a new relay chain instance with the glboal chain space for parachain setup.
-  const registerRelayApi = async (
-    tabId: number,
-    chainId: ChainId,
-    endpoint: string
-  ) => {
-    if (!globalChainSpace) {
-      return;
-    }
-    // Add api to global chainspace instance and return its instance id.
-    const apiInstanceIndex = await globalChainSpace
-      .getInstance()
-      .addApi(chainId, endpoint);
-
-    setRelayApis((prev) => ({
-      ...prev,
-      [tabId]: apiInstanceIndex,
-    }));
-  };
-
-  // Get a registered instance index for a tab id.
-  const getRelayInstanceIndex = (tabId: number) => relayApis[tabId];
-
-  // Get a registered api instance for a tab id.
-  const getRelayApi = (tabId: number) => {
-    const instanceIndex = relayApis[tabId];
-    return ApiController.instances['global']?.[instanceIndex] || undefined;
-  };
-
   return (
     <ParaSetupContext.Provider
       value={{
         getActiveStep,
         setActiveStep,
-        registerRelayApi,
-        getRelayApi,
-        getRelayInstanceIndex,
+        getChainSpaceApiIndex,
+        setChainSpaceApiIndex,
+        getSelectedRelayChain,
+        setSelectedRelayChain,
+        removeChainSpaceApiIndex,
       }}
     >
       {children}

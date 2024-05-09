@@ -8,13 +8,24 @@ import type {
   BalanceLocks,
 } from 'contexts/TabAccounts/types';
 import type { Balance } from 'model/AccountBalances/types';
+import type { ApiInstanceId, ApiStatus } from 'model/Api/types';
+
+export type ActiveBalancesProps = Record<ApiInstanceId, ActiveBalanceInstance>;
+
+export interface ActiveBalanceInstance {
+  accounts: string[];
+  apiStatus: ApiStatus;
+}
 
 export interface ActiveBalancesInterface {
   activeBalances: AccountBalancesState;
-  getLocks: (address: MaybeAddress) => BalanceLocks;
-  getBalance: (address: MaybeAddress) => Balance;
+  getLocks: (instanceId: ApiInstanceId, address: MaybeAddress) => BalanceLocks;
+  getBalance: (instanceId: ApiInstanceId, address: MaybeAddress) => Balance;
   getEdReserved: (
+    instanceId: ApiInstanceId,
     address: MaybeAddress,
     existentialDeposit: BigNumber
   ) => BigNumber;
 }
+
+export type ActiveBalances = Record<ApiInstanceId, AccountBalancesState>;

@@ -32,17 +32,12 @@ export class ApiController {
     chainId: ChainId,
     endpoint: string
   ) {
-    let instanceIndex = 0;
     // Initialise empty record for this ownerId if it doesn't exist.
+    let instanceIndex = 0;
     if (!this.#instances[ownerId]) {
       this.#instances[ownerId] = {};
     } else {
-      // If #instances already exist for this owner, get largest instanceIndex and increment it.
-      instanceIndex =
-        Object.keys(this.#instances[ownerId] || {}).reduce(
-          (acc, id) => Math.max(acc, parseInt(id, acc)),
-          0
-        ) + 1;
+      instanceIndex = this.getNextIndex(ownerId);
     }
 
     this.#instances[ownerId][instanceIndex] = new Api(
@@ -55,6 +50,23 @@ export class ApiController {
 
     // Once the api instance is initialized, we can instantiate the chain state controller.
     ChainStateController.instantiate(ownerId, `${ownerId}_${instanceIndex}`);
+
+    return instanceIndex;
+  }
+
+  // Get the next instance index for an ownerId.
+  static getNextIndex(ownerId: OwnerId) {
+    let instanceIndex = 0;
+
+    // Initialise empty record for this ownerId if it doesn't exist.
+    if (Object.keys(this.#instances[ownerId] || {}).length > 0) {
+      // If #instances already exist for this owner, get largest instanceIndex and increment it.
+      instanceIndex =
+        Object.keys(this.#instances[ownerId] || {}).reduce(
+          (acc, id) => Math.max(acc, parseInt(id, acc)),
+          0
+        ) + 1;
+    }
 
     return instanceIndex;
   }

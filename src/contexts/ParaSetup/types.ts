@@ -2,18 +2,15 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ChainId } from 'config/networks';
-import type { Api } from 'model/Api';
 
 export interface ParaSetupContextInterface {
   getActiveStep: (tabId: number) => SetupStep;
   setActiveStep: (tabId: number, step: SetupStep) => void;
-  registerRelayApi: (
-    tabId: number,
-    chainId: ChainId,
-    endpoint: string
-  ) => Promise<void>;
-  getRelayApi: (tabId: number) => Api | undefined;
-  getRelayInstanceIndex: (tabId: number) => number | undefined;
+  getChainSpaceApiIndex: (tabId: number) => number | undefined;
+  setChainSpaceApiIndex: (tabId: number, index: number) => void;
+  getSelectedRelayChain: (tabId: number) => ChainId;
+  setSelectedRelayChain: (tabId: number, chainId: ChainId) => void;
+  removeChainSpaceApiIndex: (tabId: number) => void;
 }
 
 export type SetupStep =
@@ -22,3 +19,9 @@ export type SetupStep =
   | 'configure_node'
   | 'register_parathread'
   | 'get_coretime';
+
+export type SetupStepsState = Record<number, SetupStep>;
+
+export type SelectedRelayChains = Record<number, ChainId>;
+
+export type ChainSpaceApiIndexes = Record<number, number>;

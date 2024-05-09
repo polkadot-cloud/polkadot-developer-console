@@ -6,47 +6,59 @@ import { useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import BigNumber from 'bignumber.js';
 import { isCustomEvent } from 'Utils';
-import type {
-  AccountBalancesState,
-  BalanceLocks,
-} from 'contexts/TabAccounts/types';
+import type { BalanceLocks } from 'contexts/TabAccounts/types';
 import type { BalanceLock } from 'model/AccountBalances/types';
-import type { AnyJson } from '@w3ux/utils/types';
-import type { ApiInstanceId, ApiStatus } from 'model/Api/types';
+import type { ApiInstanceId } from 'model/Api/types';
 import { defaultBalance } from './defaults';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { AccountBalances } from 'model/AccountBalances';
-import type { ActiveBalancesInterface } from './types';
+import type {
+  ActiveBalances,
+  ActiveBalancesInterface,
+  ActiveBalancesProps,
+} from './types';
 
-export const useActiveBalances = ({
-  accounts,
-  apiInstanceId,
-  apiStatus,
-  dependencies,
-}: {
-  accounts: string[];
-  apiInstanceId: ApiInstanceId | undefined;
-  apiStatus: ApiStatus;
-  dependencies: AnyJson[];
-}): ActiveBalancesInterface => {
-  // Ensure no account duplicates.
-  const uniqueAccounts = [...new Set(accounts)];
+export const useActiveBalances = (
+  instances: ActiveBalancesProps
+): ActiveBalancesInterface => {
+  // Get api instance ids from instances, if any.
+  const apiInstanceIds = Object.keys(instances) || [];
+
+  // The initial state of active account balances is a map between api instance id and balance data,
+  // which is initially empty.
+  const initialBalances: ActiveBalances = {};
+  apiInstanceIds.forEach((instanceId) => {
+    initialBalances[instanceId] = {};
+  });
+
+  // Gets a concatenation of the accounts supplied for each instance of this hook. Also Ensures no
+  // account duplicates. This value is stringified and used with useEffect to re-render on account
+  // updates.
+  const uniqueAccounts = Object.values(instances).map(({ accounts }) => [
+    ...new Set(accounts),
+  ]);
+
+  // Gets a concatenation of each apiStatus of the instances of this hook. This value is stringified
+  // and used with useEffect to re-render on account updates.
+  const apiStatuses = Object.values(instances).map(
+    ({ apiStatus }) => apiStatus
+  );
 
   // Store active account balances state. Requires ref for use in event listener callbacks.
   const [activeBalances, setActiveBalancesState] =
-    useState<AccountBalancesState>({});
+    useState<ActiveBalances>(initialBalances);
   const activeBalancesRef = useRef(activeBalances);
 
   // Setter for active balances.
-  const setActiveBalances = (balances: AccountBalancesState) => {
+  const setActiveBalances = (balances: ActiveBalances) => {
     activeBalancesRef.current = balances;
     setActiveBalancesState(balances);
   };
 
   // Gets an active balance's balance.
-  const getBalance = (address: MaybeAddress) => {
+  const getBalance = (instanceId: ApiInstanceId, address: MaybeAddress) => {
     if (address) {
-      const maybeBalance = activeBalances[address]?.balance;
+      const maybeBalance = activeBalances[instanceId]?.[address]?.balance;
       if (maybeBalance) {
         return maybeBalance;
       }
@@ -63,9 +75,12 @@ export const useActiveBalances = ({
     )?.amount || new BigNumber(0);
 
   // Gets an active balance's locks.
-  const getLocks = (address: MaybeAddress): BalanceLocks => {
+  const getLocks = (
+    instanceId: ApiInstanceId,
+    address: MaybeAddress
+  ): BalanceLocks => {
     if (address) {
-      const maybeLocks = activeBalances[address]?.locks;
+      const maybeLocks = activeBalances[instanceId]?.[address]?.locks;
       if (maybeLocks) {
         return { locks: maybeLocks, maxLock: getMaxLock(maybeLocks) };
       }
@@ -79,70 +94,86 @@ export const useActiveBalances = ({
 
   // Gets the amount of balance reserved for existential deposit.
   const getEdReserved = (
+    instanceId: ApiInstanceId,
     address: MaybeAddress,
     existentialDeposit: BigNumber
   ): BigNumber => {
-    const { locks, maxLock } = getLocks(address);
+    const { locks, maxLock } = getLocks(instanceId, address);
     if (address && locks) {
       return BigNumber.max(existentialDeposit.minus(maxLock), 0);
     }
     return new BigNumber(0);
   };
 
-  // Check all accounts have been synced. App-wide syncing state for all accounts.
+  // Callback for new account balance events.
   const newAccountBalanceCallback = (e: Event) => {
     if (isCustomEvent(e)) {
       const { instanceId, address, balance } = e.detail;
-      if (instanceId === apiInstanceId) {
+      if (!apiInstanceIds.includes(instanceId)) {
         return;
       }
 
-      // Update state of active accounts.
-      setActiveBalances({
-        ...activeBalancesRef.current,
-        [address]: balance,
-      });
+      // Update active balances state.
+      const updated = { ...activeBalancesRef.current };
+      if (!updated[instanceId]) {
+        updated[instanceId] = {};
+      }
+
+      updated[instanceId][address] = balance;
+      setActiveBalances(updated);
     }
   };
 
-  const handleSyncAccounts = () => {
-    if (!apiInstanceId) {
-      return;
-    }
+  // Attempt to get the active balances for the provided api instance.
+  const handleSyncAccounts = (instanceId: ApiInstanceId) => {
+    const instanceBalances =
+      (
+        SubscriptionsController?.get(
+          instanceId,
+          'accountBalances'
+        ) as AccountBalances
+      )?.balances || {};
 
-    const subscription = SubscriptionsController?.get(
-      apiInstanceId,
-      'accountBalances'
-    );
-    if (subscription) {
-      (subscription as AccountBalances).syncAccounts(uniqueAccounts);
-    }
-  };
+    // Apply current active balances to state.
+    const updated = { ...activeBalancesRef.current };
+    updated[instanceId] = instanceBalances;
 
-  // Sync account balances on imported accounts update or tab change. `api` instance is required in
-  // subscription classes so api must be `ready` before syncing.
-  useEffect(() => {
-    if (apiInstanceId) {
-      setActiveBalances(
-        (
-          SubscriptionsController?.get(
-            apiInstanceId,
-            'accountBalances'
-          ) as AccountBalances
-        )?.balances || {}
+    if (getApiStatus(instanceId) === 'ready') {
+      setActiveBalances(updated);
+      const subscription = SubscriptionsController?.get(
+        instanceId,
+        'accountBalances'
       );
-
-      if (apiStatus === 'ready') {
-        handleSyncAccounts();
+      if (subscription) {
+        (subscription as AccountBalances).syncAccounts(
+          getInstanceAccounts(instanceId)
+        );
       }
     } else {
       // Reset state if instance id is not available.
-      setActiveBalances({});
+      updated[instanceId] = {};
+      setActiveBalances(updated);
+    }
+  };
+
+  // Gets the accounts from an instance.
+  const getInstanceAccounts = (instanceId: ApiInstanceId) => [
+    ...new Set(instances[instanceId]?.accounts || []),
+  ];
+
+  // Gets the api status from an instance.
+  const getApiStatus = (instanceId: ApiInstanceId) =>
+    instances[instanceId]?.apiStatus || 'disconnected';
+
+  // Sync active balances on either account changes, api status changes or api instance changes.
+  // `api` instance is required in subscription classes so api must be `ready` before syncing.
+  useEffect(() => {
+    for (const instanceId of apiInstanceIds) {
+      handleSyncAccounts(instanceId);
     }
   }, [
-    ...dependencies,
-    apiInstanceId,
-    apiStatus,
+    JSON.stringify(apiStatuses),
+    JSON.stringify(apiInstanceIds),
     JSON.stringify(uniqueAccounts),
   ]);
 
