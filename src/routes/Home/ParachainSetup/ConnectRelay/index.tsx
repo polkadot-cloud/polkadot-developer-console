@@ -25,6 +25,7 @@ export const ConnectRelay = () => {
     setSelectedRelayChain,
     getChainSpaceApiIndex,
     setChainSpaceApiIndex,
+    removeChainSpaceApiIndex,
   } = useParaSetup();
 
   const selectedRelayChain = getSelectedRelayChain(tabId);
@@ -101,8 +102,9 @@ export const ConnectRelay = () => {
             disabled={apiStatus !== 'ready'}
             onClick={() => {
               // Disconnect from API if index exists.
-              if (chainSpaceApiIndex) {
+              if (chainSpaceApiIndex !== undefined) {
                 destroyChainApi(chainSpaceApiIndex);
+                removeChainSpaceApiIndex(tabId);
               }
             }}
           >

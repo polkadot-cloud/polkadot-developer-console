@@ -11,6 +11,7 @@ export const defaultParaSetupContext: ParaSetupContextInterface = {
   setChainSpaceApiIndex: (tabId, index) => {},
   getSelectedRelayChain: (tabId) => 'polkadot',
   setSelectedRelayChain: (tabId, chainId) => {},
+  removeChainSpaceApiIndex: (tabId) => {},
 };
 
 export const setupSteps: SetupStep[] = [

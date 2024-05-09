@@ -59,7 +59,7 @@ export class ApiController {
     let instanceIndex = 0;
 
     // Initialise empty record for this ownerId if it doesn't exist.
-    if (this.#instances[ownerId]) {
+    if (Object.keys(this.#instances[ownerId] || {}).length > 0) {
       // If #instances already exist for this owner, get largest instanceIndex and increment it.
       instanceIndex =
         Object.keys(this.#instances[ownerId] || {}).reduce(

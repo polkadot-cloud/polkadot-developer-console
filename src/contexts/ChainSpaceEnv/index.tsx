@@ -196,13 +196,24 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   };
 
   // Handle a chain disconnect.
-  const handleDisconnect = (instanceId: ApiInstanceId) => {
-    // Update API status to `disconnected`.
-    setApiStatus(instanceId, 'disconnected');
+  const handleDisconnect = async (instanceId: ApiInstanceId) => {
+    const index = getIndexFromInstanceId(instanceId);
 
-    const updated = { ...chainSpecsRef.current };
-    delete updated[instanceId];
-    setChainSpecs(updated);
+    await ApiController.destroy(globalChainSpace.ownerId, index);
+
+    const updatedApiIndexes = { ...apiIndexesRef.current };
+    delete updatedApiIndexes[index];
+    setApiIndexes(updatedApiIndexes);
+    apiIndexesRef.current = updatedApiIndexes;
+
+    const updatedApiStatuses = { ...apiStatusesRef.current };
+    delete updatedApiStatuses[instanceId];
+    setApiStatuses(updatedApiStatuses);
+    apiStatusesRef.current = updatedApiStatuses;
+
+    const updatedChainSpecs = { ...chainSpecsRef.current };
+    delete updatedChainSpecs[instanceId];
+    setChainSpecs(updatedChainSpecs);
   };
 
   // Get next available index for apiIndexes.
@@ -219,6 +230,12 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         ) + 1
       );
     }
+  };
+
+  // Get index from instance id.
+  const getIndexFromInstanceId = (instanceId: string): number => {
+    const result = instanceId.split(/_(.*)/s);
+    return Number(result[1]);
   };
 
   const documentRef = useRef<Document>(document);

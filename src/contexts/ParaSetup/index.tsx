@@ -50,6 +50,13 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  // Remove a chain space api index for a tab.
+  const removeChainSpaceApiIndex = (tabId: number) => {
+    const updated = { ...chainSpaceApiIndexes };
+    delete updated[tabId];
+    setChainSpaceApiIndexes(updated);
+  };
+
   // Get the active step for a tab id, or 1 otherwise.
   const getActiveStep = (tabId: number) =>
     activeSteps[tabId] || 'connect_relay';
@@ -71,6 +78,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
         setChainSpaceApiIndex,
         getSelectedRelayChain,
         setSelectedRelayChain,
+        removeChainSpaceApiIndex,
       }}
     >
       {children}
