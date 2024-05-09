@@ -9,6 +9,8 @@ import { useApi } from 'contexts/Api';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useActiveBalances } from 'hooks/useActiveBalances';
+import type { MaybeAddress } from '@w3ux/react-connect-kit/types';
+import type BigNumber from 'bignumber.js';
 
 export const TabAccounts = createContext<TabAccountsContextInterface>(
   defaultTabAccountsContext
@@ -30,13 +32,30 @@ export const TabAccountsProvider = ({ children }: { children: ReactNode }) => {
       ? getAccounts(chainSpec.chain, chainSpec.ss58Prefix)
       : [];
 
-  // Get tab account balances from `useActiveBalances`.
-  const { getLocks, getBalance, getEdReserved } = useActiveBalances({
-    accounts: accounts.map(({ address }) => address),
-    apiInstanceId,
-    apiStatus,
-    dependencies: [apiInstanceId],
-  });
+  // Instance config to be provided to active balances.
+  const activeBalanceInstance = {
+    [apiInstanceId]: {
+      accounts: accounts.map(({ address }) => address),
+      apiStatus,
+    },
+  };
+
+  // Get tab account balances and listen for updates.
+  const activeBalances = useActiveBalances(activeBalanceInstance);
+
+  // Get balances from `activeBalances` at this api instance id.
+  const getBalance = (address: MaybeAddress) =>
+    activeBalances.getBalance(apiInstanceId, address);
+
+  // Gets locks from `activeBalances` at this api instance id.
+  const getLocks = (address: MaybeAddress) =>
+    activeBalances.getLocks(apiInstanceId, address);
+
+  // Gets edReserved from `activeBalances` at this api instance id.
+  const getEdReserved = (
+    address: MaybeAddress,
+    existentialDeposit: BigNumber
+  ) => activeBalances.getEdReserved(apiInstanceId, address, existentialDeposit);
 
   return (
     <TabAccounts.Provider

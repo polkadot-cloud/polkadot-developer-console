@@ -15,3 +15,8 @@ export interface ChainSpaceEnvContextInterface {
   relayInstanceIndex: number | undefined;
   handleConnectApi: (provider: string) => void;
 }
+
+export interface ChainSpaceEnvProps {
+  children: React.ReactNode;
+  chains: Record<number, ChainId>;
+}

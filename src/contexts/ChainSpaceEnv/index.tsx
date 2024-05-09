@@ -16,10 +16,12 @@ import type {
   APIStatusEventDetail,
   ApiStatus,
 } from 'model/Api/types';
-import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
-import type { ChainSpaceEnvContextInterface } from './types';
+import type {
+  ChainSpaceEnvContextInterface,
+  ChainSpaceEnvProps,
+} from './types';
 import { defaultChainSpaceEnvContext } from './defaults';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
@@ -28,11 +30,7 @@ export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
 
 export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
-export const ChainSpaceEnvProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   const { closeMenu } = useMenu();
   const { tabId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
@@ -76,12 +74,16 @@ export const ChainSpaceEnvProvider = ({
       : [];
 
   // Get tab account balances from `useActiveBalances`.
-  const activeBalances = useActiveBalances({
-    accounts: accounts.map(({ address }) => address),
-    apiInstanceId: relayInstanceId,
-    apiStatus: relayApiStatus,
-    dependencies: [relayInstanceId],
-  });
+  const activeBalanceInstances = relayInstanceId
+    ? {
+        [relayInstanceId]: {
+          accounts: accounts.map(({ address }) => address),
+          apiStatus: relayApiStatus,
+        },
+      }
+    : {};
+
+  const activeBalances = useActiveBalances(activeBalanceInstances);
 
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {

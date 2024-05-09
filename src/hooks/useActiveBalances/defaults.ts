@@ -19,7 +19,7 @@ export const defaultLocks = {
 
 export const defaultActiveBalances: ActiveBalancesInterface = {
   activeBalances: {},
-  getLocks: (address) => defaultLocks,
-  getBalance: (address) => defaultBalance,
-  getEdReserved: (address, existentialDeposit) => new BigNumber(0),
+  getLocks: (instanceId, address) => defaultLocks,
+  getBalance: (instanceId, address) => defaultBalance,
+  getEdReserved: (instanceId, address, existentialDeposit) => new BigNumber(0),
 };
