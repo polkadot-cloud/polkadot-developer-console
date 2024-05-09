@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { formatInputString } from 'Utils';
-import type { DirectoryId } from 'config/networks';
+import type { ChainId, DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
 import {
@@ -16,7 +16,7 @@ export const ConnectContextMenu = ({
   chainId,
   onSelect,
 }: {
-  chainId: DirectoryId;
+  chainId: ChainId;
   onSelect: (provider: string) => void;
 }) => {
   // Provider search term.
@@ -27,7 +27,9 @@ export const ConnectContextMenu = ({
     setProviderSearchTerm(value);
   };
 
-  const providers = Object.entries(NetworkDirectory[chainId].providers);
+  const providers = Object.entries(
+    NetworkDirectory[chainId as DirectoryId].providers
+  );
 
   // Filter providers based on search term, if present.
   const filteredProviders =

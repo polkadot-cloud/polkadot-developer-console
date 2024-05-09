@@ -8,15 +8,15 @@ import type { ApiStatus } from 'model/Api/types';
 
 export interface ChainSpaceEnvContextInterface {
   activeBalances: ActiveBalancesInterface;
-  relayChain: ChainId;
   relayInstance: Api | undefined;
-  setRelayChain: (value: ChainId) => void;
+  getChainAtIndex: (index: number) => ChainId | undefined;
+  setChainIdAtIndex: (index: number, chain: ChainId) => void;
   relayApiStatus: ApiStatus;
   relayInstanceIndex: number | undefined;
-  handleConnectApi: (provider: string) => void;
+  handleConnectApi: (index: number, provider: string) => void;
 }
 
 export interface ChainSpaceEnvProps {
   children: React.ReactNode;
-  chains: Record<number, ChainId>;
+  chains?: Record<number, ChainId>;
 }

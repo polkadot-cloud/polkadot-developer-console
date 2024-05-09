@@ -30,15 +30,31 @@ export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
 
 export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
-export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
+export const ChainSpaceEnvProvider = ({
+  children,
+  chains,
+}: ChainSpaceEnvProps) => {
   const { closeMenu } = useMenu();
   const { tabId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
   const { getRelayApi, registerRelayApi, getRelayInstanceIndex } =
     useParaSetup();
 
-  // The currently selected relay chain to register a ParaID on.
-  const [relayChain, setRelayChain] = useState<ChainId>('polkadot');
+  // The provided chains associated with this chainspace.
+  const [chainIds, setChainIds] = useState<Record<number, ChainId>>(
+    chains || {}
+  );
+
+  // Gets a chain id at an index.
+  const getChainAtIndex = (index: number) => chainIds[index];
+
+  // Sets a chain id at an index.
+  const setChainIdAtIndex = (index: number, chainId: ChainId) => {
+    setChainIds((prev) => ({
+      ...prev,
+      [index]: chainId,
+    }));
+  };
 
   // Store chain spec of each api instance. NOTE: requires ref as it is used in event listener.
   const [relayChainSpec, setRelayChainSpecState] = useState<
@@ -56,10 +72,15 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     useState<ApiStatus>('disconnected');
 
   // Handle registering a relay chain api instance.
-  const handleConnectApi = async (provider: string) => {
+  const handleConnectApi = async (index: number, provider: string) => {
     closeMenu();
-    setRelayApiStatus('connecting');
-    await registerRelayApi(tabId, relayChain, provider);
+
+    // If chain exists at index, register the api instance.
+    const chain = chainIds[index];
+    if (chain) {
+      setRelayApiStatus('connecting');
+      await registerRelayApi(tabId, chain, provider);
+    }
   };
 
   // Get relay api instance and its identifiers.
@@ -159,10 +180,10 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     <ChainSpaceEnv.Provider
       value={{
         activeBalances,
-        relayChain,
         relayInstance,
         relayInstanceIndex,
-        setRelayChain,
+        getChainAtIndex,
+        setChainIdAtIndex,
         relayApiStatus,
         handleConnectApi,
       }}

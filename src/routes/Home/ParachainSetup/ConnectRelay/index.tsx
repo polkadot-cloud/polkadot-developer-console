@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainId, DirectoryId } from 'config/networks';
+import type { ChainId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { Select } from 'library/Inputs/Select';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
@@ -16,13 +16,17 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const ConnectRelay = () => {
   const {
-    relayChain,
-    setRelayChain,
+    getChainAtIndex,
+    setChainIdAtIndex,
     relayApiStatus,
     handleConnectApi,
     relayInstanceIndex,
   } = useChainSpaceEnv();
   const { openMenu } = useMenu();
+
+  // Get the relay chain from the chain space. This chain space only contains one chain that we
+  // always set at index 0.
+  const relayChain = getChainAtIndex(0);
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -58,7 +62,8 @@ export const ConnectRelay = () => {
             )?.[0] as ChainId;
 
             if (chainId !== undefined) {
-              setRelayChain(chainId);
+              // NOTE: This chain space only contains one chain that we always set at index 0.
+              setChainIdAtIndex(0, chainId);
             }
           }}
           disabled={ACTIVE_API_STATUSES.includes(relayApiStatus)}
@@ -69,13 +74,15 @@ export const ConnectRelay = () => {
           <ButtonSubmit
             className="lg"
             onClick={(ev) => {
-              openMenu(
-                ev,
-                <ConnectContextMenu
-                  chainId={relayChain as DirectoryId}
-                  onSelect={handleConnectApi}
-                />
-              );
+              if (relayChain) {
+                openMenu(
+                  ev,
+                  <ConnectContextMenu
+                    chainId={relayChain}
+                    onSelect={(provider) => handleConnectApi(0, provider)}
+                  />
+                );
+              }
             }}
           >
             Connect

@@ -5,7 +5,7 @@ import { Form } from './Form';
 import { ChainSpaceEnvProvider } from 'contexts/ChainSpaceEnv';
 
 export const ParachainSetup = () => (
-  <ChainSpaceEnvProvider>
+  <ChainSpaceEnvProvider chains={{ 0: 'polkadot' }}>
     <Form />
   </ChainSpaceEnvProvider>
 );

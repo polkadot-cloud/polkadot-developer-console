@@ -7,10 +7,10 @@ import type { ChainSpaceEnvContextInterface } from './types';
 
 export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
   activeBalances: defaultActiveBalances,
-  relayChain: 'polkadot',
   relayInstance: undefined,
-  setRelayChain: (value) => {},
+  getChainAtIndex: (index) => undefined,
+  setChainIdAtIndex: (index, chain) => {},
   relayApiStatus: 'disconnected',
   relayInstanceIndex: undefined,
-  handleConnectApi: (provider) => {},
+  handleConnectApi: (index, provider) => {},
 };
