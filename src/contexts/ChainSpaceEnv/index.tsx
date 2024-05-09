@@ -148,7 +148,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     if (isCustomEvent(e)) {
       const { ownerId, instanceId, chainId, event } =
         e.detail as APIStatusEventDetail;
-
       // Ensure we are handling the correct api instance here.
       if (ownerId === globalChainSpace?.ownerId) {
         switch (event) {
@@ -254,6 +253,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         getChainApi,
         destroyChainApi,
         getApiStatusByIndex,
+        getNextApiIndex,
       }}
     >
       {children}

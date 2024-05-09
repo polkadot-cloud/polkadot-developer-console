@@ -18,8 +18,12 @@ import { useActiveTab } from 'contexts/ActiveTab';
 export const ConnectRelay = () => {
   const { openMenu } = useMenu();
   const { tabId } = useActiveTab();
-  const { getApiStatusByIndex, destroyChainApi, handleConnectApi } =
-    useChainSpaceEnv();
+  const {
+    getApiStatusByIndex,
+    destroyChainApi,
+    handleConnectApi,
+    getNextApiIndex,
+  } = useChainSpaceEnv();
   const {
     getSelectedRelayChain,
     setSelectedRelayChain,
@@ -83,11 +87,10 @@ export const ConnectRelay = () => {
                 <ConnectContextMenu
                   chainId={selectedRelayChain}
                   onSelect={async (provider) => {
-                    const index = await handleConnectApi(
-                      selectedRelayChain,
-                      provider
-                    );
+                    const index = getNextApiIndex();
                     setChainSpaceApiIndex(tabId, index);
+
+                    await handleConnectApi(selectedRelayChain, provider);
                   }}
                 />
               );

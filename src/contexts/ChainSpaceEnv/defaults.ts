@@ -11,4 +11,5 @@ export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
   getChainApi: (index) => undefined,
   destroyChainApi: (index) => {},
   getApiStatusByIndex: (index) => 'disconnected',
+  getNextApiIndex: () => 0,
 };
