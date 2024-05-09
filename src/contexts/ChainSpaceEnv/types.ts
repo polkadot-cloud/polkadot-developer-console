@@ -8,14 +8,14 @@ import type { APIChainSpec, ApiInstanceId, ApiStatus } from 'model/Api/types';
 
 export interface ChainSpaceEnvContextInterface {
   activeBalances: ActiveBalancesInterface;
-  relayInstance: Api | undefined;
   getApiInstanceIndex: (index: number) => number | undefined;
-  relayInstanceIndex: number | undefined;
   handleConnectApi: (
     index: number,
     chainId: ChainId,
     provider: string
   ) => Promise<void>;
+  getChainApi: (index: number) => Api | undefined;
+  destroyChainApi: (index: number) => void;
   getApiStatusByIndex: (index: number) => ApiStatus;
 }
 

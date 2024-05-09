@@ -7,9 +7,10 @@ import { FormWrapper } from 'routes/Home/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const ReserveParaId = () => {
-  const { relayInstance } = useChainSpaceEnv();
+  const { getChainApi } = useChainSpaceEnv();
   const { getAccounts } = useImportedAccounts();
 
+  const relayInstance = getChainApi(0);
   const chainSpec = relayInstance?.chainSpec;
 
   const accounts =

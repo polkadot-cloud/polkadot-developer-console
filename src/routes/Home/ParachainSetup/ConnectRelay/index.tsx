@@ -8,7 +8,6 @@ import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/pro-duotone-svg-icons';
 import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
-import { ApiController } from 'controllers/Api';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
 import { useMenu } from 'contexts/Menu';
 import { FormWrapper } from 'routes/Home/Wrappers';
@@ -17,7 +16,7 @@ import { useParaSetup } from 'contexts/ParaSetup';
 
 export const ConnectRelay = () => {
   const { openMenu } = useMenu();
-  const { getApiStatusByIndex, handleConnectApi, relayInstanceIndex } =
+  const { getApiStatusByIndex, destroyChainApi, handleConnectApi } =
     useChainSpaceEnv();
   const { selectedRelayChain, setSelectedRelayChain } = useParaSetup();
 
@@ -88,9 +87,7 @@ export const ConnectRelay = () => {
             disabled={apiStatus !== 'ready'}
             onClick={() => {
               // Disconnect from API.
-              if (relayInstanceIndex !== undefined) {
-                ApiController.destroy('global', relayInstanceIndex);
-              }
+              destroyChainApi(0);
             }}
           >
             {apiStatus === 'ready' ? <>Disconnect</> : 'Connecting...'}

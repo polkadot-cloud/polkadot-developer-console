@@ -3,10 +3,8 @@
 
 import { setStateWithRef } from '@w3ux/utils';
 import { isCustomEvent } from 'Utils';
-import { useActiveTab } from 'contexts/ActiveTab';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useMenu } from 'contexts/Menu';
-import { useParaSetup } from 'contexts/ParaSetup';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { useActiveBalances } from 'hooks/useActiveBalances';
 import { AccountBalances } from 'model/AccountBalances';
@@ -37,10 +35,8 @@ export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
 export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   const { closeMenu } = useMenu();
-  const { tabId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
   const { globalChainSpace } = useGlobalChainSpace();
-  const { getRelayApi, getRelayInstanceIndex } = useParaSetup();
 
   // The api instance index associated with this chainspace, keyed by chain index.
   const [apiIndexes, setApiIndexes] = useState<Record<number, number>>({});
@@ -56,6 +52,24 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
 
   // Gets a chain id at an index.
   const getApiInstanceIndex = (index: number) => apiIndexesRef.current[index];
+
+  // Gets a api instance from an index.
+  const getChainApi = (index: number) => {
+    if (!globalChainSpace) {
+      return;
+    }
+    const instanceIndex = apiIndexes[index];
+    return ApiController.instances[globalChainSpace.ownerId]?.[instanceIndex];
+  };
+
+  // Destroy a chain api instance.
+  const destroyChainApi = (index: number) => {
+    if (!globalChainSpace) {
+      return;
+    }
+    const instanceIndex = apiIndexes[index];
+    ApiController.destroy(globalChainSpace.ownerId, instanceIndex);
+  };
 
   // Get an api status for a chain instance.
   const getApiStatusByIndex = (index: number) => {
@@ -110,15 +124,11 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
 
     // Record this api instance.
     setApiIndex(index, ApiController.getNextIndex(globalChainSpace.ownerId));
-    setApiStatus(`global_${index}`, 'connecting');
+    setApiStatus(`${globalChainSpace.ownerId}_${index}`, 'connecting');
 
     // Add api to chain space instance and return its instance id.
     await globalChainSpace.getInstance().addApi(chainId, provider);
   };
-
-  // Get relay api instance and its identifiers.
-  const relayInstance = getRelayApi(tabId);
-  const relayInstanceIndex = getRelayInstanceIndex(tabId);
 
   // TODO: abstract this out.
   const relayChainSpec = Object.values(chainSpecs)?.[0];
@@ -216,10 +226,10 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     <ChainSpaceEnv.Provider
       value={{
         activeBalances,
-        relayInstance,
-        relayInstanceIndex,
         getApiInstanceIndex,
         handleConnectApi,
+        getChainApi,
+        destroyChainApi,
         getApiStatusByIndex,
       }}
     >

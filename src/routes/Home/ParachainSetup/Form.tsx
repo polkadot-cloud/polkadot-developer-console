@@ -14,8 +14,9 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 export const Form = () => {
   const { tabId } = useActiveTab();
   const { getActiveStep } = useParaSetup();
-  const { relayInstance, getApiStatusByIndex } = useChainSpaceEnv();
+  const { getChainApi, getApiStatusByIndex } = useChainSpaceEnv();
 
+  const relayInstance = getChainApi(0);
   const apiStatus = getApiStatusByIndex(0);
   const activeStep = getActiveStep(tabId);
 
