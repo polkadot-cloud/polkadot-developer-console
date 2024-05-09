@@ -55,18 +55,12 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
 
   // Gets a api instance from an index.
   const getChainApi = (index: number) => {
-    if (!globalChainSpace) {
-      return;
-    }
     const instanceIndex = apiIndexes[index];
     return ApiController.instances[globalChainSpace.ownerId]?.[instanceIndex];
   };
 
   // Destroy a chain api instance.
   const destroyChainApi = (index: number) => {
-    if (!globalChainSpace) {
-      return;
-    }
     const instanceIndex = apiIndexes[index];
     ApiController.destroy(globalChainSpace.ownerId, instanceIndex);
   };
@@ -114,9 +108,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   ) => {
     closeMenu();
 
-    if (!globalChainSpace) {
-      return;
-    }
     // If chain already exists at this index, exit early.
     if (apiIndexesRef.current[index]) {
       return;
