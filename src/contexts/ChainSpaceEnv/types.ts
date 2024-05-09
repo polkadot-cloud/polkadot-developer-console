@@ -4,7 +4,7 @@
 import type { ChainId } from 'config/networks';
 import type { ActiveBalancesInterface } from 'hooks/useActiveBalances/types';
 import type { Api } from 'model/Api';
-import type { ApiStatus } from 'model/Api/types';
+import type { APIChainSpec, ApiInstanceId, ApiStatus } from 'model/Api/types';
 
 export interface ChainSpaceEnvContextInterface {
   activeBalances: ActiveBalancesInterface;
@@ -20,3 +20,7 @@ export interface ChainSpaceEnvProps {
   children: React.ReactNode;
   chains?: Record<number, ChainId>;
 }
+
+export type ChainSpaceChainSpecs = Record<ApiInstanceId, APIChainSpec>;
+
+export type ChainSpaceApiStatuses = Record<ApiInstanceId, ApiStatus>;

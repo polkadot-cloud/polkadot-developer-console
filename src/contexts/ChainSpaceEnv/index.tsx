@@ -11,14 +11,11 @@ import { useParaSetup } from 'contexts/ParaSetup';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { useActiveBalances } from 'hooks/useActiveBalances';
 import { AccountBalances } from 'model/AccountBalances';
-import type {
-  APIChainSpec,
-  APIStatusEventDetail,
-  ApiStatus,
-} from 'model/Api/types';
+import type { APIStatusEventDetail, ApiStatus } from 'model/Api/types';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import type {
+  ChainSpaceChainSpecs,
   ChainSpaceEnvContextInterface,
   ChainSpaceEnvProps,
 } from './types';
@@ -40,6 +37,12 @@ export const ChainSpaceEnvProvider = ({
   const { getRelayApi, registerRelayApi, getRelayInstanceIndex } =
     useParaSetup();
 
+  // // The initial api statuses for the provided chains, if any.
+  // const initialApiStatuses: ChainSpaceApiStatuses = {};
+  // Object.values(chains || {}).forEach(
+  //   (chainId) => (initialApiStatuses[chainId] = 'disconnected')
+  // );
+
   // The provided chains associated with this chainspace.
   const [chainIds, setChainIds] = useState<Record<number, ChainId>>(
     chains || {}
@@ -57,15 +60,16 @@ export const ChainSpaceEnvProvider = ({
   };
 
   // Store chain spec of each api instance. NOTE: requires ref as it is used in event listener.
-  const [relayChainSpec, setRelayChainSpecState] = useState<
-    APIChainSpec | undefined
-  >();
-  const relayChainSpecRef = useRef(relayChainSpec);
+  const [chainSpecs, setChainSpecsState] = useState<ChainSpaceChainSpecs>({});
+  const chainSpecsRef = useRef(chainSpecs);
 
   // Setter for chain spec. Updates state and ref.
-  const setRelayChainSpec = (newChainSpec: APIChainSpec | undefined) => {
-    setStateWithRef(newChainSpec, setRelayChainSpecState, relayChainSpecRef);
+  const setChainSpecs = (newChainSpec: ChainSpaceChainSpecs) => {
+    setStateWithRef(newChainSpec, setChainSpecsState, chainSpecsRef);
   };
+
+  // TODO: abstract this out.
+  const relayChainSpec = Object.values(chainSpecs)?.[0];
 
   // The API status of the relay chain.
   const [relayApiStatus, setRelayApiStatus] =
@@ -150,7 +154,10 @@ export const ChainSpaceEnvProvider = ({
     if (isCustomEvent(e)) {
       const { instanceId, spec, consts } = e.detail;
       if (instanceId === relayInstanceId) {
-        setRelayChainSpec({ ...spec, consts });
+        const updated = { ...chainSpecsRef.current };
+        updated[instanceId] = { ...spec, consts };
+
+        setChainSpecs(updated);
       }
     }
   };
@@ -159,7 +166,7 @@ export const ChainSpaceEnvProvider = ({
   const handleDisconnect = () => {
     // Update API status to `disconnected`.
     setRelayApiStatus('disconnected');
-    setRelayChainSpec(undefined);
+    setChainSpecs({});
   };
 
   const documentRef = useRef<Document>(document);
