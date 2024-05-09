@@ -13,15 +13,25 @@ import { useMenu } from 'contexts/Menu';
 import { FormWrapper } from 'routes/Home/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useParaSetup } from 'contexts/ParaSetup';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const ConnectRelay = () => {
   const { openMenu } = useMenu();
+  const { tabId } = useActiveTab();
   const { getApiStatusByIndex, destroyChainApi, handleConnectApi } =
     useChainSpaceEnv();
-  const { selectedRelayChain, setSelectedRelayChain } = useParaSetup();
+  const {
+    getSelectedRelayChain,
+    setSelectedRelayChain,
+    getChainSpaceApiIndex,
+    setChainSpaceApiIndex,
+  } = useParaSetup();
+
+  const selectedRelayChain = getSelectedRelayChain(tabId);
 
   // API status
-  const apiStatus = getApiStatusByIndex(0);
+  const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
+  const apiStatus = getApiStatusByIndex(chainSpaceApiIndex);
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -56,7 +66,7 @@ export const ConnectRelay = () => {
               ([, chain]) => chain.name === val
             )?.[0] as ChainId;
             if (chainId !== undefined) {
-              setSelectedRelayChain(chainId);
+              setSelectedRelayChain(tabId, chainId);
             }
           }}
           disabled={ACTIVE_API_STATUSES.includes(apiStatus)}
@@ -71,9 +81,13 @@ export const ConnectRelay = () => {
                 ev,
                 <ConnectContextMenu
                   chainId={selectedRelayChain}
-                  onSelect={(provider) =>
-                    handleConnectApi(0, selectedRelayChain, provider)
-                  }
+                  onSelect={async (provider) => {
+                    const index = await handleConnectApi(
+                      selectedRelayChain,
+                      provider
+                    );
+                    setChainSpaceApiIndex(tabId, index);
+                  }}
                 />
               );
             }}
@@ -86,8 +100,10 @@ export const ConnectRelay = () => {
             className="lg"
             disabled={apiStatus !== 'ready'}
             onClick={() => {
-              // Disconnect from API.
-              destroyChainApi(0);
+              // Disconnect from API if index exists.
+              if (chainSpaceApiIndex) {
+                destroyChainApi(chainSpaceApiIndex);
+              }
             }}
           >
             {apiStatus === 'ready' ? <>Disconnect</> : 'Connecting...'}

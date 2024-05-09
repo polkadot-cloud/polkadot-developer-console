@@ -8,15 +8,10 @@ import type { APIChainSpec, ApiInstanceId, ApiStatus } from 'model/Api/types';
 
 export interface ChainSpaceEnvContextInterface {
   activeBalances: ActiveBalancesInterface;
-  getApiInstanceIndex: (index: number) => number | undefined;
-  handleConnectApi: (
-    index: number,
-    chainId: ChainId,
-    provider: string
-  ) => Promise<void>;
-  getChainApi: (index: number) => Api | undefined;
+  handleConnectApi: (chainId: ChainId, provider: string) => Promise<number>;
+  getChainApi: (index: number | undefined) => Api | undefined;
   destroyChainApi: (index: number) => void;
-  getApiStatusByIndex: (index: number) => ApiStatus;
+  getApiStatusByIndex: (index: number | undefined) => ApiStatus;
 }
 
 export interface ChainSpaceEnvProps {

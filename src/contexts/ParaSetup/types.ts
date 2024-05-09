@@ -6,8 +6,10 @@ import type { ChainId } from 'config/networks';
 export interface ParaSetupContextInterface {
   getActiveStep: (tabId: number) => SetupStep;
   setActiveStep: (tabId: number, step: SetupStep) => void;
-  selectedRelayChain: ChainId;
-  setSelectedRelayChain: (chainId: ChainId) => void;
+  getChainSpaceApiIndex: (tabId: number) => number | undefined;
+  setChainSpaceApiIndex: (tabId: number, index: number) => void;
+  getSelectedRelayChain: (tabId: number) => ChainId;
+  setSelectedRelayChain: (tabId: number, chainId: ChainId) => void;
 }
 
 export type SetupStep =

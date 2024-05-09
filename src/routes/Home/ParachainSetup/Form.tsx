@@ -13,11 +13,13 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const Form = () => {
   const { tabId } = useActiveTab();
-  const { getActiveStep } = useParaSetup();
+  const { getActiveStep, getChainSpaceApiIndex } = useParaSetup();
   const { getChainApi, getApiStatusByIndex } = useChainSpaceEnv();
 
-  const relayInstance = getChainApi(0);
-  const apiStatus = getApiStatusByIndex(0);
+  const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
+  const relayInstance = getChainApi(chainSpaceApiIndex);
+
+  const apiStatus = getApiStatusByIndex(chainSpaceApiIndex);
   const activeStep = getActiveStep(tabId);
 
   // Get the relay chain icon, if available.

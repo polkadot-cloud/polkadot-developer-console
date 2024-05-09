@@ -19,9 +19,36 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<Record<number, SetupStep>>({});
 
-  // Store the currently selected relay chain.
-  const [selectedRelayChain, setSelectedRelayChain] =
-    useState<ChainId>('polkadot');
+  // Store the currently selected relay chain, keyed by tab.
+  const [selectedRelayChains, setSelectedRelayChains] = useState<
+    Record<number, ChainId>
+  >({});
+
+  const getSelectedRelayChain = (tabId: number) =>
+    selectedRelayChains[tabId] || 'polkadot';
+
+  const setSelectedRelayChain = (tabId: number, chainId: ChainId) => {
+    setSelectedRelayChains({
+      ...selectedRelayChains,
+      [tabId]: chainId,
+    });
+  };
+  // Store the index at which to access the relay chain api from the global chain space environment,
+  // for each tab.
+  const [chainSpaceApiIndexes, setChainSpaceApiIndexes] = useState<
+    Record<number, number | undefined>
+  >({});
+
+  // Get a chain space api index for a tab.
+  const getChainSpaceApiIndex = (tabId: number) => chainSpaceApiIndexes[tabId];
+
+  // Set a chain space api index for a tab.
+  const setChainSpaceApiIndex = (tabId: number, index: number) => {
+    setChainSpaceApiIndexes({
+      ...chainSpaceApiIndexes,
+      [tabId]: index,
+    });
+  };
 
   // Get the active step for a tab id, or 1 otherwise.
   const getActiveStep = (tabId: number) =>
@@ -40,7 +67,9 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
       value={{
         getActiveStep,
         setActiveStep,
-        selectedRelayChain,
+        getChainSpaceApiIndex,
+        setChainSpaceApiIndex,
+        getSelectedRelayChain,
         setSelectedRelayChain,
       }}
     >

@@ -38,7 +38,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   const { getAccounts } = useImportedAccounts();
   const { globalChainSpace } = useGlobalChainSpace();
 
-  // The api instance index associated with this chainspace, keyed by chain index.
+  // The api instance index associated with this chainspace, keyed by a global index.
   const [apiIndexes, setApiIndexes] = useState<Record<number, number>>({});
   const apiIndexesRef = useRef(apiIndexes);
 
@@ -50,11 +50,11 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   const [apiStatuses, setApiStatuses] = useState<ChainSpaceApiStatuses>({});
   const apiStatusesRef = useRef(apiStatuses);
 
-  // Gets a chain id at an index.
-  const getApiInstanceIndex = (index: number) => apiIndexesRef.current[index];
-
   // Gets a api instance from an index.
-  const getChainApi = (index: number) => {
+  const getChainApi = (index: number | undefined) => {
+    if (index === undefined) {
+      return undefined;
+    }
     const instanceIndex = apiIndexes[index];
     return ApiController.instances[globalChainSpace.ownerId]?.[instanceIndex];
   };
@@ -66,7 +66,11 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   };
 
   // Get an api status for a chain instance.
-  const getApiStatusByIndex = (index: number) => {
+  const getApiStatusByIndex = (index: number | undefined) => {
+    if (index === undefined) {
+      return 'disconnected';
+    }
+
     const instanceId = `${globalChainSpace?.ownerId}_${index}`;
     return apiStatusesRef.current[instanceId] || 'disconnected';
   };
@@ -101,17 +105,11 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   };
 
   // Handle connecting to an api instance.
-  const handleConnectApi = async (
-    index: number,
-    chainId: ChainId,
-    provider: string
-  ) => {
+  const handleConnectApi = async (chainId: ChainId, provider: string) => {
     closeMenu();
 
-    // If chain already exists at this index, exit early.
-    if (apiIndexesRef.current[index]) {
-      return;
-    }
+    // Determine this api index.
+    const index = getNextApiIndex();
 
     // Record this api instance.
     setApiIndex(index, ApiController.getNextIndex(globalChainSpace.ownerId));
@@ -119,6 +117,8 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
 
     // Add api to chain space instance and return its instance id.
     await globalChainSpace.getInstance().addApi(chainId, provider);
+
+    return index;
   };
 
   // Accumulate active balance instances.
@@ -202,6 +202,22 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     setChainSpecs({});
   };
 
+  // Get next available index for apiIndexes.
+  const getNextApiIndex = () => {
+    // Initialise empty record for this ownerId if it doesn't exist.
+    if (!Object.keys(apiIndexes).length) {
+      return 0;
+    } else {
+      // Get largest index and increment it.
+      return (
+        Object.keys(Object.keys(apiIndexes) || {}).reduce(
+          (acc, id) => Math.max(acc, parseInt(id, acc)),
+          0
+        ) + 1
+      );
+    }
+  };
+
   const documentRef = useRef<Document>(document);
 
   // Listen for api status updates.
@@ -214,7 +230,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     <ChainSpaceEnv.Provider
       value={{
         activeBalances,
-        getApiInstanceIndex,
         handleConnectApi,
         getChainApi,
         destroyChainApi,
