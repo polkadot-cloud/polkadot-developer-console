@@ -10,6 +10,8 @@ export const defaultParaSetupContext: ParaSetupContextInterface = {
   registerRelayApi: (tabId, chainId, endpoint) => Promise.resolve(),
   getRelayApi: (tabId) => undefined,
   getRelayInstanceIndex: (tabId) => undefined,
+  selectedRelayChain: 'polkadot',
+  setSelectedRelayChain: (chainId) => {},
 };
 
 export const setupSteps: SetupStep[] = [

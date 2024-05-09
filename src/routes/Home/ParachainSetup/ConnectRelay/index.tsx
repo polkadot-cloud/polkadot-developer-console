@@ -13,20 +13,13 @@ import { ConnectContextMenu } from 'library/ConnectContextMenu';
 import { useMenu } from 'contexts/Menu';
 import { FormWrapper } from 'routes/Home/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useParaSetup } from 'contexts/ParaSetup';
 
 export const ConnectRelay = () => {
-  const {
-    getChainAtIndex,
-    setChainIdAtIndex,
-    relayApiStatus,
-    handleConnectApi,
-    relayInstanceIndex,
-  } = useChainSpaceEnv();
   const { openMenu } = useMenu();
-
-  // Get the relay chain from the chain space. This chain space only contains one chain that we
-  // always set at index 0.
-  const relayChain = getChainAtIndex(0);
+  const { relayApiStatus, handleConnectApi, relayInstanceIndex } =
+    useChainSpaceEnv();
+  const { selectedRelayChain, setSelectedRelayChain } = useParaSetup();
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -43,8 +36,8 @@ export const ConnectRelay = () => {
 
   // Get the chain name of the currently select relay chain.
   const relayName =
-    relayChains.find(([chainId]) => chainId === relayChain)?.[1]?.name ||
-    'Polkadot Relay Chain';
+    relayChains.find(([chainId]) => chainId === selectedRelayChain)?.[1]
+      ?.name || 'Polkadot Relay Chain';
 
   return (
     <FormWrapper>
@@ -60,10 +53,8 @@ export const ConnectRelay = () => {
             const chainId = relayChains.find(
               ([, chain]) => chain.name === val
             )?.[0] as ChainId;
-
             if (chainId !== undefined) {
-              // NOTE: This chain space only contains one chain that we always set at index 0.
-              setChainIdAtIndex(0, chainId);
+              setSelectedRelayChain(chainId);
             }
           }}
           disabled={ACTIVE_API_STATUSES.includes(relayApiStatus)}
@@ -74,15 +65,15 @@ export const ConnectRelay = () => {
           <ButtonSubmit
             className="lg"
             onClick={(ev) => {
-              if (relayChain) {
-                openMenu(
-                  ev,
-                  <ConnectContextMenu
-                    chainId={relayChain}
-                    onSelect={(provider) => handleConnectApi(0, provider)}
-                  />
-                );
-              }
+              openMenu(
+                ev,
+                <ConnectContextMenu
+                  chainId={selectedRelayChain}
+                  onSelect={(provider) =>
+                    handleConnectApi(0, selectedRelayChain, provider)
+                  }
+                />
+              );
             }}
           >
             Connect

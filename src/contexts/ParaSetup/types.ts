@@ -14,6 +14,8 @@ export interface ParaSetupContextInterface {
   ) => Promise<void>;
   getRelayApi: (tabId: number) => Api | undefined;
   getRelayInstanceIndex: (tabId: number) => number | undefined;
+  selectedRelayChain: ChainId;
+  setSelectedRelayChain: (chainId: ChainId) => void;
 }
 
 export type SetupStep =
