@@ -7,11 +7,6 @@ import type { Api } from 'model/Api';
 export interface ParaSetupContextInterface {
   getActiveStep: (tabId: number) => SetupStep;
   setActiveStep: (tabId: number, step: SetupStep) => void;
-  registerRelayApi: (
-    tabId: number,
-    chainId: ChainId,
-    endpoint: string
-  ) => Promise<void>;
   getRelayApi: (tabId: number) => Api | undefined;
   getRelayInstanceIndex: (tabId: number) => number | undefined;
   selectedRelayChain: ChainId;

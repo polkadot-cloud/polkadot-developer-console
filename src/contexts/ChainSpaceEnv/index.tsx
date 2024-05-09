@@ -3,7 +3,6 @@
 
 import { setStateWithRef } from '@w3ux/utils';
 import { isCustomEvent } from 'Utils';
-import type { ChainId } from 'config/networks';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useMenu } from 'contexts/Menu';
@@ -20,6 +19,8 @@ import type {
   ChainSpaceEnvProps,
 } from './types';
 import { defaultChainSpaceEnvContext } from './defaults';
+import { useGlobalChainSpace } from 'contexts/GlobalChainSpace';
+import type { ChainId } from 'config/networks';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
   defaultChainSpaceEnvContext
@@ -27,15 +28,13 @@ export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
 
 export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
-export const ChainSpaceEnvProvider = ({
-  children,
-  chains,
-}: ChainSpaceEnvProps) => {
+export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   const { closeMenu } = useMenu();
   const { tabId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
-  const { getRelayApi, registerRelayApi, getRelayInstanceIndex } =
-    useParaSetup();
+  // TODO: provide a chain space instead of always using global.
+  const { globalChainSpace } = useGlobalChainSpace();
+  const { getRelayApi, getRelayInstanceIndex } = useParaSetup();
 
   // // The initial api statuses for the provided chains, if any.
   // const initialApiStatuses: ChainSpaceApiStatuses = {};
@@ -43,19 +42,17 @@ export const ChainSpaceEnvProvider = ({
   //   (chainId) => (initialApiStatuses[chainId] = 'disconnected')
   // );
 
-  // The provided chains associated with this chainspace.
-  const [chainIds, setChainIds] = useState<Record<number, ChainId>>(
-    chains || {}
-  );
+  // The api instances associated with this chainspace.
+  const [apiInstances, setApiInstances] = useState<Record<number, number>>({});
 
   // Gets a chain id at an index.
-  const getChainAtIndex = (index: number) => chainIds[index];
+  const getApiInstanceIndex = (index: number) => apiInstances[index];
 
   // Sets a chain id at an index.
-  const setChainIdAtIndex = (index: number, chainId: ChainId) => {
-    setChainIds((prev) => ({
+  const setApiInstanceIndex = (index: number, instanceId: number) => {
+    setApiInstances((prev) => ({
       ...prev,
-      [index]: chainId,
+      [index]: instanceId,
     }));
   };
 
@@ -75,16 +72,30 @@ export const ChainSpaceEnvProvider = ({
   const [relayApiStatus, setRelayApiStatus] =
     useState<ApiStatus>('disconnected');
 
-  // Handle registering a relay chain api instance.
-  const handleConnectApi = async (index: number, provider: string) => {
+  // Handle connecting to an api instance.
+  const handleConnectApi = async (
+    index: number,
+    chainId: ChainId,
+    provider: string
+  ) => {
     closeMenu();
 
-    // If chain exists at index, register the api instance.
-    const chain = chainIds[index];
-    if (chain) {
-      setRelayApiStatus('connecting');
-      await registerRelayApi(tabId, chain, provider);
+    if (!globalChainSpace) {
+      return;
     }
+    // If chain already exists, exit early.
+    if (!apiInstances[index]) {
+      return;
+    }
+
+    // Add api to chain space instance and return its instance id.
+    const apiInstanceIndex = await globalChainSpace
+      .getInstance()
+      .addApi(chainId, provider);
+
+    // Record this api instance.
+    setApiInstanceIndex(index, apiInstanceIndex);
+    setRelayApiStatus('connecting');
   };
 
   // Get relay api instance and its identifiers.
@@ -189,8 +200,8 @@ export const ChainSpaceEnvProvider = ({
         activeBalances,
         relayInstance,
         relayInstanceIndex,
-        getChainAtIndex,
-        setChainIdAtIndex,
+        getApiInstanceIndex,
+        setApiInstanceIndex,
         relayApiStatus,
         handleConnectApi,
       }}
