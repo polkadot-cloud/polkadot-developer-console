@@ -4,7 +4,6 @@
 import { setStateWithRef } from '@w3ux/utils';
 import { isCustomEvent } from 'Utils';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
-import { useMenu } from 'contexts/Menu';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { useActiveBalances } from 'hooks/useActiveBalances';
 import { AccountBalances } from 'model/AccountBalances';
@@ -34,23 +33,36 @@ export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
 export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
 export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
-  const { closeMenu } = useMenu();
   const { getAccounts } = useImportedAccounts();
   const { globalChainSpace } = useGlobalChainSpace();
 
-  // The api instance index associated with this chainspace, keyed by a global index.
+  // The api instances index associated with this chainspace, keyed by a global index.
   const [apiIndexes, setApiIndexes] = useState<Record<number, number>>({});
   const apiIndexesRef = useRef(apiIndexes);
 
-  // Store chain spec of each api instance. NOTE: requires ref as it is used in event listener.
+  // The chain spec of each api instance associated with this chain space. NOTE: Requires ref as it
+  // is used in event listener.
   const [chainSpecs, setChainSpecsState] = useState<ChainSpaceChainSpecs>({});
   const chainSpecsRef = useRef(chainSpecs);
 
-  // The API status of the relay chain. NOTE: requires ref as it is used in event listener.
+  // The API status of the api instances associated with this chain space. NOTE: Requires ref as it
+  // is used in event listener.
   const [apiStatuses, setApiStatuses] = useState<ChainSpaceApiStatuses>({});
   const apiStatusesRef = useRef(apiStatuses);
 
-  // Gets a api instance from an index.
+  // Sets a chain id at an index.
+  const setApiIndex = (index: number, instanceId: number) => {
+    setStateWithRef(
+      {
+        ...apiIndexesRef.current,
+        [index]: instanceId,
+      },
+      setApiIndexes,
+      apiIndexesRef
+    );
+  };
+
+  // Gets an api instance from an index.
   const getChainApi = (index: number | undefined) => {
     if (index === undefined) {
       return undefined;
@@ -75,18 +87,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     return apiStatusesRef.current[instanceId] || 'disconnected';
   };
 
-  // Sets a chain id at an index.
-  const setApiIndex = (index: number, instanceId: number) => {
-    setStateWithRef(
-      {
-        ...apiIndexesRef.current,
-        [index]: instanceId,
-      },
-      setApiIndexes,
-      apiIndexesRef
-    );
-  };
-
   // Setter for chain spec. Updates state and ref.
   const setChainSpecs = (newChainSpec: ChainSpaceChainSpecs) => {
     setStateWithRef(newChainSpec, setChainSpecsState, chainSpecsRef);
@@ -105,25 +105,21 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   };
 
   // Handle connecting to an api instance.
-  const handleConnectApi = async (chainId: ChainId, provider: string) => {
-    closeMenu();
-
-    // Determine this api index.
-    const index = getNextApiIndex();
-
+  const handleConnectApi = async (
+    index: number,
+    chainId: ChainId,
+    provider: string
+  ) => {
     // Record this api instance.
     setApiIndex(index, ApiController.getNextIndex(globalChainSpace.ownerId));
     setApiStatus(`${globalChainSpace.ownerId}_${index}`, 'connecting');
 
-    // Add api to chain space instance and return its instance id.
+    // Add api to chain space instance.
     await globalChainSpace.getInstance().addApi(chainId, provider);
-
-    return index;
   };
 
-  // Accumulate active balance instances.
+  // Accumulate active balance configuration from api indexes.
   const activeBalanceInstances: ActiveBalancesProps = {};
-
   Object.values(apiIndexesRef.current).forEach((indexId: number) => {
     const instanceId = `global_${indexId}`;
     const chainSpec = chainSpecs[instanceId];

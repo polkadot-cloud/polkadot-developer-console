@@ -19,3 +19,9 @@ export type SetupStep =
   | 'configure_node'
   | 'register_parathread'
   | 'get_coretime';
+
+export type SetupStepsState = Record<number, SetupStep>;
+
+export type SelectedRelayChains = Record<number, ChainId>;
+
+export type ChainSpaceApiIndexes = Record<number, number>;
