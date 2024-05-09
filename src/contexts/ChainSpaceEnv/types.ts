@@ -10,14 +10,13 @@ export interface ChainSpaceEnvContextInterface {
   activeBalances: ActiveBalancesInterface;
   relayInstance: Api | undefined;
   getApiInstanceIndex: (index: number) => number | undefined;
-  setApiInstanceIndex: (index: number, instanceIndex: number) => void;
-  relayApiStatus: ApiStatus;
   relayInstanceIndex: number | undefined;
   handleConnectApi: (
     index: number,
     chainId: ChainId,
     provider: string
   ) => Promise<void>;
+  getApiStatusByIndex: (index: number) => ApiStatus;
 }
 
 export interface ChainSpaceEnvProps {

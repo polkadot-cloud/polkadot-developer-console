@@ -9,8 +9,7 @@ export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
   activeBalances: defaultActiveBalances,
   relayInstance: undefined,
   getApiInstanceIndex: (index) => undefined,
-  setApiInstanceIndex: (index, instanceIndex) => {},
-  relayApiStatus: 'disconnected',
   relayInstanceIndex: undefined,
   handleConnectApi: (index, chainId, rovider) => Promise.resolve(),
+  getApiStatusByIndex: (index) => 'disconnected',
 };

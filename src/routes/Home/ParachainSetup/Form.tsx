@@ -14,8 +14,9 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 export const Form = () => {
   const { tabId } = useActiveTab();
   const { getActiveStep } = useParaSetup();
-  const { relayInstance, relayApiStatus } = useChainSpaceEnv();
+  const { relayInstance, getApiStatusByIndex } = useChainSpaceEnv();
 
+  const apiStatus = getApiStatusByIndex(0);
   const activeStep = getActiveStep(tabId);
 
   // Get the relay chain icon, if available.
@@ -24,8 +25,7 @@ export const Form = () => {
     : undefined;
 
   // Determine whether next button should be disabled.
-  const nextDisabled =
-    activeStep === 'connect_relay' && relayApiStatus !== 'ready';
+  const nextDisabled = activeStep === 'connect_relay' && apiStatus !== 'ready';
 
   return (
     <HomePageWrapper>

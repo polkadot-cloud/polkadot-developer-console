@@ -10,10 +10,15 @@ import { useParaSetup } from 'contexts/ParaSetup';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { useActiveBalances } from 'hooks/useActiveBalances';
 import { AccountBalances } from 'model/AccountBalances';
-import type { APIStatusEventDetail, ApiStatus } from 'model/Api/types';
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import type {
+  APIStatusEventDetail,
+  ApiInstanceId,
+  ApiStatus,
+} from 'model/Api/types';
+import { createContext, useContext, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import type {
+  ChainSpaceApiStatuses,
   ChainSpaceChainSpecs,
   ChainSpaceEnvContextInterface,
   ChainSpaceEnvProps,
@@ -21,6 +26,8 @@ import type {
 import { defaultChainSpaceEnvContext } from './defaults';
 import { useGlobalChainSpace } from 'contexts/GlobalChainSpace';
 import type { ChainId } from 'config/networks';
+import type { ActiveBalancesProps } from 'hooks/useActiveBalances/types';
+import { ApiController } from 'controllers/Api';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
   defaultChainSpaceEnvContext
@@ -32,45 +39,58 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   const { closeMenu } = useMenu();
   const { tabId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
-  // TODO: provide a chain space instead of always using global.
   const { globalChainSpace } = useGlobalChainSpace();
   const { getRelayApi, getRelayInstanceIndex } = useParaSetup();
 
-  // // The initial api statuses for the provided chains, if any.
-  // const initialApiStatuses: ChainSpaceApiStatuses = {};
-  // Object.values(chains || {}).forEach(
-  //   (chainId) => (initialApiStatuses[chainId] = 'disconnected')
-  // );
-
-  // The api instances associated with this chainspace.
-  const [apiInstances, setApiInstances] = useState<Record<number, number>>({});
-
-  // Gets a chain id at an index.
-  const getApiInstanceIndex = (index: number) => apiInstances[index];
-
-  // Sets a chain id at an index.
-  const setApiInstanceIndex = (index: number, instanceId: number) => {
-    setApiInstances((prev) => ({
-      ...prev,
-      [index]: instanceId,
-    }));
-  };
+  // The api instance index associated with this chainspace, keyed by chain index.
+  const [apiIndexes, setApiIndexes] = useState<Record<number, number>>({});
+  const apiIndexesRef = useRef(apiIndexes);
 
   // Store chain spec of each api instance. NOTE: requires ref as it is used in event listener.
   const [chainSpecs, setChainSpecsState] = useState<ChainSpaceChainSpecs>({});
   const chainSpecsRef = useRef(chainSpecs);
+
+  // The API status of the relay chain. NOTE: requires ref as it is used in event listener.
+  const [apiStatuses, setApiStatuses] = useState<ChainSpaceApiStatuses>({});
+  const apiStatusesRef = useRef(apiStatuses);
+
+  // Gets a chain id at an index.
+  const getApiInstanceIndex = (index: number) => apiIndexesRef.current[index];
+
+  // Get an api status for a chain instance.
+  const getApiStatusByIndex = (index: number) => {
+    const instanceId = `${globalChainSpace?.ownerId}_${index}`;
+    return apiStatusesRef.current[instanceId] || 'disconnected';
+  };
+
+  // Sets a chain id at an index.
+  const setApiIndex = (index: number, instanceId: number) => {
+    setStateWithRef(
+      {
+        ...apiIndexesRef.current,
+        [index]: instanceId,
+      },
+      setApiIndexes,
+      apiIndexesRef
+    );
+  };
 
   // Setter for chain spec. Updates state and ref.
   const setChainSpecs = (newChainSpec: ChainSpaceChainSpecs) => {
     setStateWithRef(newChainSpec, setChainSpecsState, chainSpecsRef);
   };
 
-  // TODO: abstract this out.
-  const relayChainSpec = Object.values(chainSpecs)?.[0];
-
-  // The API status of the relay chain.
-  const [relayApiStatus, setRelayApiStatus] =
-    useState<ApiStatus>('disconnected');
+  // Set an api status for a chain instance.
+  const setApiStatus = (instanceId: string, status: ApiStatus) => {
+    setStateWithRef(
+      {
+        ...apiStatusesRef.current,
+        [instanceId]: status,
+      },
+      setApiStatuses,
+      apiStatusesRef
+    );
+  };
 
   // Handle connecting to an api instance.
   const handleConnectApi = async (
@@ -83,25 +103,25 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     if (!globalChainSpace) {
       return;
     }
-    // If chain already exists, exit early.
-    if (!apiInstances[index]) {
+    // If chain already exists at this index, exit early.
+    if (apiIndexesRef.current[index]) {
       return;
     }
 
-    // Add api to chain space instance and return its instance id.
-    const apiInstanceIndex = await globalChainSpace
-      .getInstance()
-      .addApi(chainId, provider);
-
     // Record this api instance.
-    setApiInstanceIndex(index, apiInstanceIndex);
-    setRelayApiStatus('connecting');
+    setApiIndex(index, ApiController.getNextIndex(globalChainSpace.ownerId));
+    setApiStatus(`global_${index}`, 'connecting');
+
+    // Add api to chain space instance and return its instance id.
+    await globalChainSpace.getInstance().addApi(chainId, provider);
   };
 
   // Get relay api instance and its identifiers.
   const relayInstance = getRelayApi(tabId);
-  const relayInstanceId = relayInstance?.instanceId;
   const relayInstanceIndex = getRelayInstanceIndex(tabId);
+
+  // TODO: abstract this out.
+  const relayChainSpec = Object.values(chainSpecs)?.[0];
 
   // Get available imported accounts.
   const accounts =
@@ -109,16 +129,20 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
       ? getAccounts(relayChainSpec.chain, relayChainSpec.ss58Prefix)
       : [];
 
-  // Get tab account balances from `useActiveBalances`.
-  const activeBalanceInstances = relayInstanceId
-    ? {
-        [relayInstanceId]: {
-          accounts: accounts.map(({ address }) => address),
-          apiStatus: relayApiStatus,
-        },
-      }
-    : {};
+  // Accumulate active balance instances.
+  const activeBalanceInstances: ActiveBalancesProps = {};
+  Object.values(apiIndexesRef.current).forEach((indexId: number) => {
+    const instanceId = `global_${indexId}`;
 
+    if (chainSpecs[instanceId]) {
+      activeBalanceInstances[instanceId] = {
+        accounts: accounts.map(({ address }) => address),
+        apiStatus: apiStatuses[instanceId] || 'disconnected',
+      };
+    }
+  });
+
+  // Get active account balances.
   const activeBalances = useActiveBalances(activeBalanceInstances);
 
   // Handle incoming api status updates.
@@ -128,10 +152,10 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         e.detail as APIStatusEventDetail;
 
       // Ensure we are handling the correct api instance here.
-      if (ownerId === 'global' && instanceId === relayInstanceId) {
+      if (ownerId === globalChainSpace?.ownerId) {
         switch (event) {
           case 'ready':
-            setRelayApiStatus('ready');
+            setApiStatus(instanceId, 'ready');
 
             // Initialise account balance subscriptions.
             SubscriptionsController.set(
@@ -141,19 +165,19 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
             );
             break;
           case 'connecting':
-            setRelayApiStatus('connecting');
+            setApiStatus(instanceId, 'connecting');
             break;
           case 'connected':
-            setRelayApiStatus('connected');
+            setApiStatus(instanceId, 'connected');
             break;
           case 'disconnected':
-            handleDisconnect();
+            handleDisconnect(instanceId);
             break;
           case 'error':
-            handleDisconnect();
+            handleDisconnect(instanceId);
             break;
           case 'destroyed':
-            handleDisconnect();
+            handleDisconnect(instanceId);
             break;
         }
       }
@@ -163,8 +187,8 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   // Handle incoming chain spec updates.
   const handleNewChainSpec = (e: Event): void => {
     if (isCustomEvent(e)) {
-      const { instanceId, spec, consts } = e.detail;
-      if (instanceId === relayInstanceId) {
+      const { instanceId, ownerId, spec, consts } = e.detail;
+      if (ownerId === globalChainSpace?.ownerId) {
         const updated = { ...chainSpecsRef.current };
         updated[instanceId] = { ...spec, consts };
 
@@ -174,9 +198,9 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   };
 
   // Handle a chain disconnect.
-  const handleDisconnect = () => {
+  const handleDisconnect = (instanceId: ApiInstanceId) => {
     // Update API status to `disconnected`.
-    setRelayApiStatus('disconnected');
+    setApiStatus(instanceId, 'disconnected');
     setChainSpecs({});
   };
 
@@ -188,12 +212,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   // Listen for new chain spec updates.
   useEventListener('new-chain-spec', handleNewChainSpec, documentRef);
 
-  // Update connection status when relay api instance is received.
-  useEffect(() => {
-    const status = relayInstance?.status || 'disconnected';
-    setRelayApiStatus(status as ApiStatus);
-  }, [relayInstanceId]);
-
   return (
     <ChainSpaceEnv.Provider
       value={{
@@ -201,9 +219,8 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         relayInstance,
         relayInstanceIndex,
         getApiInstanceIndex,
-        setApiInstanceIndex,
-        relayApiStatus,
         handleConnectApi,
+        getApiStatusByIndex,
       }}
     >
       {children}

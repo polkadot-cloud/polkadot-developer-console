@@ -17,9 +17,12 @@ import { useParaSetup } from 'contexts/ParaSetup';
 
 export const ConnectRelay = () => {
   const { openMenu } = useMenu();
-  const { relayApiStatus, handleConnectApi, relayInstanceIndex } =
+  const { getApiStatusByIndex, handleConnectApi, relayInstanceIndex } =
     useChainSpaceEnv();
   const { selectedRelayChain, setSelectedRelayChain } = useParaSetup();
+
+  // API status
+  const apiStatus = getApiStatusByIndex(0);
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -57,11 +60,11 @@ export const ConnectRelay = () => {
               setSelectedRelayChain(chainId);
             }
           }}
-          disabled={ACTIVE_API_STATUSES.includes(relayApiStatus)}
+          disabled={ACTIVE_API_STATUSES.includes(apiStatus)}
         />
       </section>
       <section>
-        {relayApiStatus === 'disconnected' ? (
+        {apiStatus === 'disconnected' ? (
           <ButtonSubmit
             className="lg"
             onClick={(ev) => {
@@ -82,7 +85,7 @@ export const ConnectRelay = () => {
         ) : (
           <ButtonSubmit
             className="lg"
-            disabled={relayApiStatus !== 'ready'}
+            disabled={apiStatus !== 'ready'}
             onClick={() => {
               // Disconnect from API.
               if (relayInstanceIndex !== undefined) {
@@ -90,7 +93,7 @@ export const ConnectRelay = () => {
               }
             }}
           >
-            {relayApiStatus === 'ready' ? <>Disconnect</> : 'Connecting...'}
+            {apiStatus === 'ready' ? <>Disconnect</> : 'Connecting...'}
           </ButtonSubmit>
         )}
       </section>

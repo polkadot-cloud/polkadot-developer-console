@@ -40,7 +40,7 @@ export class ChainSpace {
 
   // Instantiate an api instance for this chain space.
   async addApi(chainId: ChainId, endpoint: string) {
-    const instanceId = ApiController.instantiate(
+    const instanceId = await ApiController.instantiate(
       this.#ownerId,
       chainId,
       endpoint
