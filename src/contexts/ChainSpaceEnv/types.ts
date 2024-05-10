@@ -9,6 +9,7 @@ import type { APIChainSpec, ApiInstanceId, ApiStatus } from 'model/Api/types';
 export interface ChainSpaceEnvContextInterface {
   activeBalances: ActiveBalancesInterface;
   handleConnectApi: (
+    tabId: number,
     index: number,
     chainId: ChainId,
     provider: string
@@ -17,12 +18,15 @@ export interface ChainSpaceEnvContextInterface {
   destroyChainApi: (index: number) => void;
   getApiStatusByIndex: (index: number | undefined) => ApiStatus;
   getNextApiIndex: () => number;
+  destroyTabChainSpaceEnv: (tabId: number) => void;
 }
 
 export interface ChainSpaceEnvProps {
   children: React.ReactNode;
   chains?: Record<number, ChainId>;
 }
+
+export type TabToApiIndexes = Record<number, number[]>;
 
 export type ChainSpaceChainSpecs = Record<ApiInstanceId, APIChainSpec>;
 

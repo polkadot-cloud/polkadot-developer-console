@@ -24,6 +24,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useParaSetup } from 'contexts/ParaSetup';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -41,6 +42,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   } = useTabs();
   const { tabId } = useActiveTab();
   const { destroyTabParaSetup } = useParaSetup();
+  const { destroyTabChainSpaceEnv } = useChainSpaceEnv();
 
   const { getApiStatus } = useApi();
   const { openMenu, closeMenu } = useMenu();
@@ -171,6 +173,9 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
 
               // Destroy Parachain state associated with this tab.
               destroyTabParaSetup(id);
+
+              // Destroy ChainSpaceEnv state associated with this tab.
+              destroyTabChainSpaceEnv(id);
 
               // Destroy tab instance.
               destroyTab(index, id);
