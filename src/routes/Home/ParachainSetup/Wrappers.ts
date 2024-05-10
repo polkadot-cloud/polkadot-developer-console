@@ -52,14 +52,26 @@ export const ProgressWrapper = styled.div`
     }
 
     > .status {
-      background-color: var(--background-primary);
+      background-color: var(--background-default);
+      border: 1px solid var(--accent-color-secondary);
       border-radius: 0.4rem;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 0.4rem;
+      margin-top: 0.35rem;
       width: 100%;
-      height: 1.65rem;
+      height: 1.5rem;
+      overflow: hidden;
+      transition: height 0.2s;
+
+      &.collapsed {
+        border-color: transparent;
+        height: 0;
+      }
+      &.hidden {
+        border-color: transparent;
+        opacity: 0;
+      }
     }
 
     > .connector {
@@ -95,8 +107,8 @@ export const ProgressWrapper = styled.div`
 
 export const RelayIconWrapper = styled.div`
   margin-left: 0.6rem;
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 1.25rem;
+  height: 1.25rem;
   padding: 0.2rem;
   transition: opacity 0.2s;
 

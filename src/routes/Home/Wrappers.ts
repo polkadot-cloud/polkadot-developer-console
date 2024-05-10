@@ -24,7 +24,11 @@ export const HomePageWrapper = styled.div`
 // General purpose form wrapper with limited-width sections and headings.
 export const FormWrapper = styled.div`
   flex: 1;
-  margin-top: 1.25rem;
+  margin-top: 0.75rem;
+
+  > h3 {
+    font-family: InterBold, sans-serif;
+  }
 
   > section {
     flex: 1;

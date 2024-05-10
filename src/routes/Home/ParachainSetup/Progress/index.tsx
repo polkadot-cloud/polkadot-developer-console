@@ -3,9 +3,10 @@
 
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useParaSetup } from 'contexts/ParaSetup';
-import { ProgressWrapper, RelayIconWrapper } from './Wrappers';
+import { ProgressWrapper, RelayIconWrapper } from '../Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { Icon } from './Icon';
+import { Icon } from '../Icon';
+import { Section } from './Section';
 
 export const Progress = () => {
   const { tabId } = useActiveTab();
@@ -21,58 +22,64 @@ export const Progress = () => {
     ? `../../../config/networks/icons/${relayInstance.chainId}/Inline.tsx`
     : undefined;
 
+  // Whether to show the status icons.
+  const showStatus = relayIcon !== undefined;
+
+  // Temporary flag for incomplete status items until proper state is introduced.
+  const incompleteStatus = true;
+
   return (
     <ProgressWrapper>
-      <section
-        className={`label ${activeStep === 'connect_relay' ? `active` : `inactive`}`}
-      >
-        <h4>Select Relay Chain</h4>
-        <div className={`status`}>
+      <Section stepId="connect_relay" label="Select Relay Chain">
+        <div className={`status ${!showStatus ? `collapsed` : ``}`}>
           {relayIcon && (
             <RelayIconWrapper>
               <Icon icon={relayIcon} />
             </RelayIconWrapper>
           )}
         </div>
-      </section>
+      </Section>
       <section className={`spacer inactive`}>
         <span className="connector"></span>
       </section>
-      <section
-        className={`label ${activeStep === 'reserve_para_id' ? `active` : `inactive`}`}
-      >
-        <h4>Reserve Para ID</h4>
-        <div className={`status`}></div>
-      </section>
+
+      <Section stepId="reserve_para_id" label="Reserve Para ID">
+        <div
+          className={`status ${!showStatus ? `collapsed` : incompleteStatus ? `hidden` : ``}`}
+        ></div>
+      </Section>
+
       <section className={`spacer inactive`}>
         <span className="connector"></span>
       </section>
-      <section
-        className={`label ${activeStep === 'configure_node' ? `active` : `inactive`}`}
-      >
-        <h4>Configure Node</h4>
-        <div className={`status`}></div>
-      </section>
+
+      <Section stepId="configure_node" label="Configure Node">
+        <div
+          className={`status ${!showStatus ? `collapsed` : incompleteStatus ? `hidden` : ``}`}
+        ></div>
+      </Section>
+
       <section className={`spacer inactive`}>
         <span className="connector"></span>
       </section>
-      <section
-        className={`label ${activeStep === 'register_parathread' ? `active` : `inactive`}`}
-      >
-        <h4>Register Parathread</h4>
-        <div className={`status`}></div>
-      </section>
+
+      <Section stepId="register_parathread" label="Register Parathread">
+        <div
+          className={`status ${!showStatus ? `collapsed` : incompleteStatus ? `hidden` : ``}`}
+        ></div>
+      </Section>
+
       <section
         className={`spacer ${activeStep !== 'get_coretime' ? `` : `inactive`}`}
       >
         <span className="connector"></span>
       </section>
-      <section
-        className={`label ${activeStep === 'get_coretime' ? `active` : `inactive`} last`}
-      >
-        <h4>Get Coretime</h4>
-        <div className={`status`}></div>
-      </section>
+
+      <Section stepId="get_coretime" label="Get Coretime">
+        <div
+          className={`status ${!showStatus ? `collapsed` : incompleteStatus ? `hidden` : ``}`}
+        ></div>
+      </Section>
 
       {activeStep === 'get_coretime' && (
         <section className="spacer smallOnly">
