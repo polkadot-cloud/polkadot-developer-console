@@ -19,9 +19,7 @@ export const Progress = () => {
   const relayInstance = getChainApi(chainSpaceApiIndex);
 
   // Get the relay chain icon, if available.
-  const relayIcon = relayInstance
-    ? `../../../config/networks/icons/${relayInstance.chainId}/Inline.tsx`
-    : undefined;
+  const relayIcon = relayInstance ? relayInstance.chainId : undefined;
 
   // Whether to show the status icons.
   const collapsedStatus = relayIcon !== undefined;

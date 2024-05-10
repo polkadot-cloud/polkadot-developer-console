@@ -54,9 +54,7 @@ export const ConnectRelay = () => {
   const values = relayChains.map(([, chain]) => chain.name);
 
   // Get chain icons dervied from relay chain keys.
-  const icons = relayChains.map(
-    ([chainId]) => `../../../config/networks/icons/${chainId}/Inline.tsx`
-  );
+  const icons = relayChains.map(([chainId]) => chainId);
 
   // Get the chain name of the currently select relay chain.
   const relayName =
