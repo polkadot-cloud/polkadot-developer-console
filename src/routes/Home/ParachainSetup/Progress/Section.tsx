@@ -5,17 +5,28 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useParaSetup } from 'contexts/ParaSetup';
 import type { SectionProps } from './types';
 
-export const Section = ({ stepId, label, children }: SectionProps) => {
+export const Section = ({
+  stepId,
+  label,
+  collapsedStatus,
+  showStatus,
+  children,
+  className,
+}: SectionProps) => {
   const { tabId } = useActiveTab();
   const { getActiveStep } = useParaSetup();
   const activeStep = getActiveStep(tabId);
 
   return (
     <section
-      className={`label ${activeStep === stepId ? `active` : `inactive`}`}
+      className={`label ${activeStep === stepId ? `active` : `inactive`} ${className ? className : ``}`}
     >
       <h4>{label}</h4>
-      {children}
+      <div
+        className={`status ${activeStep === stepId ? `active` : ``} ${!collapsedStatus ? `collapsed` : !showStatus ? `hidden` : ``}`}
+      >
+        {children}
+      </div>
     </section>
   );
 };

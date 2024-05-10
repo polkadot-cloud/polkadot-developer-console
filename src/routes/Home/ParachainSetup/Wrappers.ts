@@ -53,7 +53,7 @@ export const ProgressWrapper = styled.div`
 
     > .status {
       background-color: var(--background-default);
-      border: 1px solid var(--accent-color-secondary);
+      border: 1px solid var(--text-color-tertiary);
       border-radius: 0.4rem;
       display: flex;
       justify-content: center;
@@ -62,7 +62,15 @@ export const ProgressWrapper = styled.div`
       width: 100%;
       height: 1.5rem;
       overflow: hidden;
-      transition: height 0.2s;
+      opacity: 0.75;
+      transition:
+        height 0.2s,
+        opacity 0.2s;
+
+      &.active {
+        opacity: 1;
+        border-color: var(--accent-color-primary);
+      }
 
       &.collapsed {
         border-color: transparent;
@@ -118,12 +126,18 @@ export const RelayIconWrapper = styled.div`
     position: relative;
 
     > svg {
-      fill: var(--accent-color-primary);
+      fill: var(--text-color-tertiary);
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+    }
+  }
+
+  &.active {
+    > div > svg {
+      fill: var(--accent-color-primary);
     }
   }
 `;
