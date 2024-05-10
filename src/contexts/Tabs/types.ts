@@ -82,4 +82,5 @@ export interface TabsContextInterface {
   ) => void;
   setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
   switchTab: (tabId: number, tabIndex: number, connected: boolean) => void;
+  setTabActiveTask: (tabId: number, task: TabTask | null) => void;
 }

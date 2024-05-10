@@ -38,6 +38,7 @@ export const defaultTabsContext: TabsContextInterface = {
   setTabActivePage: (id, route, page, apiActive, persist) => {},
   switchTab: (tabId, tabIndex, connected) => {},
   setTabConnectFrom: (tabId, connectFrom) => {},
+  setTabActiveTask: (id, activeTask) => {},
 };
 
 export const DEFAULT_TAB_WIDTH_PX = 160;

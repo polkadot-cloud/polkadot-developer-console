@@ -382,7 +382,13 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  console.log(tabs);
+  // Set an active task for a tab.
+  const setTabActiveTask = (tabId: number, task: TabTask | null) => {
+    const newTabs = tabs.map((tab) =>
+      tab.id === tabId ? { ...tab, activeTask: task } : tab
+    );
+    setTabs(newTabs);
+  };
 
   return (
     <TabsContext.Provider
@@ -419,6 +425,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         setTabForceDisconnect,
         setTabActivePage,
         switchTab,
+        setTabActiveTask,
         instantiatedIds: instantiatedIds.current,
       }}
     >
