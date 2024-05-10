@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { TagControlsWrapper } from '../Wrappers';
 import { TagControl } from 'library/TagControl';
 import { useChainFilter } from 'contexts/ChainFilter';
@@ -9,6 +8,8 @@ import { useMenu } from 'contexts/Menu';
 import { FilterTagMenu } from './TagsMenu/FilterTagMenu';
 import type { TagId } from 'contexts/Tags/types';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { faPlus } from '@fortawesome/pro-duotone-svg-icons';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 export const TagControls = () => {
   const { openMenu } = useMenu();

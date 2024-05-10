@@ -23,7 +23,7 @@ export const ChainInputWrapper = styled.div`
 `;
 
 export const ChainListWrapper = styled.div`
-  --chain-list-item-border-radius: 0.9rem;
+  --chain-list-item-border-radius: 0.75rem;
 
   display: flex;
   flex-direction: column;
@@ -109,7 +109,7 @@ export const SelectOptionWrapper = styled.div`
       border-bottom: 1px solid var(--border-primary-color);
       border-top-left-radius: var(--chain-list-item-border-radius);
       border-top-right-radius: var(--chain-list-item-border-radius);
-      padding: 0.7rem 0.75rem 0.7rem 0.75rem;
+      padding: 0.65rem 0.75rem 0.65rem 0.75rem;
 
       > section {
         display: flex;
@@ -120,15 +120,15 @@ export const SelectOptionWrapper = styled.div`
           flex-grow: 1;
 
           h3 {
-            color: var(--text-color-secondary);
-            font-family: InterBold, sans-serif;
+            color: var(--text-color-primary);
+            font-family: InterSemiBold, sans-serif;
             transition: color 0.25s;
           }
 
           > .icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            margin-right: 0.55rem;
+            width: 1.05rem;
+            height: 1.05rem;
+            margin-right: 0.45rem;
 
             > svg {
               width: 100%;
@@ -140,7 +140,15 @@ export const SelectOptionWrapper = styled.div`
         /* Header connect button display */
         &:last-child {
           flex-shrink: 1;
-          padding: 0 0.15rem 0 0.5rem;
+          padding: 0 0 0 0.5rem;
+
+          > button {
+            color: var(--text-color-secondary);
+
+            .fa-secondary {
+              opacity: 0.2;
+            }
+          }
         }
       }
 
@@ -168,6 +176,10 @@ export const SelectOptionWrapper = styled.div`
       padding: 0.4rem 0.75rem 0rem 0.75rem;
       > h5 {
         margin-top: 0.15rem;
+
+        > svg {
+          margin-right: 0.15rem;
+        }
       }
     }
 
