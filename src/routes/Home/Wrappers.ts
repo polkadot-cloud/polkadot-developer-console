@@ -64,7 +64,7 @@ export const FormWrapper = styled.div`
       &.note {
         color: var(--text-color-secondary);
         font-family: InterSemiBold, sans-serif;
-        margin: 0rem 0 0.45rem 0;
+        margin: 0rem 0 0.5rem 0;
 
         > .icon {
           margin-right: 0.35rem;
