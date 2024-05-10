@@ -16,8 +16,8 @@ SPDX-License-Identifier: GPL-3.0-only */
   --button-primary-background: #efeeee;
   --button-secondary-background: #e7e5e5;
   --button-tertiary-background: #e7e7e7;
-  --button-tab-background: #e4e2e2;
-  --button-hover-background: #e3e3e3;
+  --button-tab-background: #dedddd;
+  --button-hover-background: #e2e2e2;
 
   --status-success-color: green;
   --status-success-color-transparent: rgb(0 128 0 / 25%);

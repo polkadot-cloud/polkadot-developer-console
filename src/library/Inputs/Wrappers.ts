@@ -101,7 +101,7 @@ export const SelectItemWrapper = styled.button`
   &.input {
     background-color: var(--background-default);
     border: 1px solid var(--border-secondary-color);
-    border-radius: 0.25rem;
+    border-radius: 0.4rem;
 
     &.disabled {
       background-color: var(--background-default);
