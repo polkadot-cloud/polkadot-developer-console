@@ -61,7 +61,7 @@ export const ProgressWrapper = styled.div`
       align-items: center;
       margin-top: 0.35rem;
       width: 100%;
-      height: 1.5rem;
+      height: 1.6rem;
       overflow: hidden;
       opacity: 0.75;
       transition:
