@@ -70,7 +70,11 @@ export const Raw = () => {
             disabled={!chainUi.selected}
           >
             Submit
-            <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
+            <FontAwesomeIcon
+              icon={faCircleRight}
+              transform="shrink-1"
+              className="iconRight"
+            />
           </ButtonSubmit>
         </section>
       </InputFormWrapper>

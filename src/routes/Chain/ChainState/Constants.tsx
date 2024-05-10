@@ -96,7 +96,11 @@ export const Constants = () => {
         <section className="footer">
           <ButtonSubmit onClick={() => handleSubmit()}>
             Submit
-            <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
+            <FontAwesomeIcon
+              icon={faCircleRight}
+              transform="shrink-1"
+              className="iconRight"
+            />
           </ButtonSubmit>
         </section>
       </InputFormWrapper>

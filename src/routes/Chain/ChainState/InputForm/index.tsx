@@ -63,7 +63,11 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
           }}
         >
           Submit
-          <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
+          <FontAwesomeIcon
+            icon={faCircleRight}
+            transform="shrink-1"
+            className="iconRight"
+          />
         </ButtonSubmit>
       </section>
     </InputFormWrapper>

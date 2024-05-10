@@ -46,7 +46,11 @@ export const CustomEndpointInput = () => {
           }}
         >
           Connect
-          <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
+          <FontAwesomeIcon
+            icon={faCircleRight}
+            transform="shrink-1"
+            className="iconRight"
+          />
         </ButtonSubmit>
       </div>
     </ChainInputWrapper>

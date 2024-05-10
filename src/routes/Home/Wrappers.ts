@@ -6,7 +6,7 @@ import styled from 'styled-components';
 // Outer page wrapper that contains all page content.
 export const HomePageWrapper = styled.div`
   flex: 1;
-  padding: 0 1rem;
+  padding: 0 0.5rem;
 
   h2 {
     display: flex;
@@ -47,7 +47,7 @@ export const HomePageWrapper = styled.div`
 // General purpose form wrapper with limited-width sections and headings.
 export const FormWrapper = styled.div`
   flex: 1;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 
   > section {
     flex: 1;
@@ -60,6 +60,16 @@ export const FormWrapper = styled.div`
 
     > h4 {
       margin-bottom: 0.2rem;
+
+      &.note {
+        color: var(--text-color-secondary);
+        font-family: InterSemiBold, sans-serif;
+        margin: 0rem 0 0.45rem 0;
+
+        > .icon {
+          margin-right: 0.35rem;
+        }
+      }
     }
   }
 `;

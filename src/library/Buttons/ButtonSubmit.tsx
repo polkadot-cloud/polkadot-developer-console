@@ -14,22 +14,31 @@ export const ButtonSubmit = styled.button`
     color: var(--accent-color-secondary);
   }
 
-  > svg {
+  > .iconLeft {
+    margin-right: 0.4rem;
+  }
+
+  > .iconRight {
     margin-left: 0.4rem;
   }
 
   &.lg {
     color: var(--text-color-secondary);
+    background-color: var(--background-default);
     border: 1px solid var(--border-secondary-color);
     font-size: 0.9rem;
-    padding: 0.5rem 0.6rem;
+    padding: 0.53rem 0.75rem;
     border-radius: 0.4rem;
 
     &:hover {
       color: var(--accent-color-primary);
     }
 
-    > svg {
+    > .iconLeft {
+      margin-right: 0.4rem;
+    }
+
+    > .iconRight {
       margin-left: 0.55rem;
     }
   }

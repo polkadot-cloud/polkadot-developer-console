@@ -81,7 +81,11 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
             }}
           >
             Connect
-            <FontAwesomeIcon icon={faCircleRight} transform="shrink-1" />
+            <FontAwesomeIcon
+              icon={faCircleRight}
+              transform="shrink-1"
+              className="iconRight"
+            />
           </ButtonSubmit>
         </section>
       </div>

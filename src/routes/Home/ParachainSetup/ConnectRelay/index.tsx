@@ -6,7 +6,10 @@ import { NetworkDirectory } from 'config/networks';
 import { Select } from 'library/Inputs/Select';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretRight } from '@fortawesome/pro-duotone-svg-icons';
+import {
+  faArrowLeftToBracket,
+  faCaretRight,
+} from '@fortawesome/pro-duotone-svg-icons';
 import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
 import { useMenu } from 'contexts/Menu';
@@ -14,6 +17,7 @@ import { FormWrapper } from 'routes/Home/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
 
 export const ConnectRelay = () => {
   const {
@@ -104,22 +108,57 @@ export const ConnectRelay = () => {
             }}
           >
             Connect
-            <FontAwesomeIcon icon={faCaretRight} transform="grow-1" />
+            <FontAwesomeIcon
+              icon={faCaretRight}
+              transform="grow-1"
+              className="iconRight"
+            />
           </ButtonSubmit>
         ) : (
-          <ButtonSubmit
-            className="lg"
-            disabled={apiStatus !== 'ready'}
-            onClick={() => {
-              // Disconnect from API if index exists.
-              if (chainSpaceApiIndex !== undefined) {
-                destroyChainApi(chainSpaceApiIndex);
-                removeChainSpaceApiIndex(tabId);
-              }
-            }}
-          >
-            {apiStatus === 'ready' ? <>Disconnect</> : 'Connecting...'}
-          </ButtonSubmit>
+          <>
+            {apiStatus === 'connecting' && (
+              <h4 className="note">Connecting to {relayName}...</h4>
+            )}
+            {['connected', 'ready'].includes(apiStatus) && (
+              <h4 className="note">
+                <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  transform="grow-1"
+                  className="icon"
+                />
+                Connected to {relayName}. Go to the next step to reserve a Para
+                ID.
+              </h4>
+            )}
+            <ButtonSubmit
+              className="lg"
+              disabled={apiStatus !== 'ready'}
+              onClick={() => {
+                if (
+                  confirm(
+                    'Are you sure you want to disconnect? This will reset your setup progress.'
+                  )
+                ) {
+                  if (chainSpaceApiIndex !== undefined) {
+                    destroyChainApi(chainSpaceApiIndex);
+                    removeChainSpaceApiIndex(tabId);
+                  }
+                }
+              }}
+            >
+              {apiStatus === 'ready' ? (
+                <>
+                  <FontAwesomeIcon
+                    icon={faArrowLeftToBracket}
+                    className="iconLeft"
+                  />{' '}
+                  Disconnect &amp; Cancel Setup
+                </>
+              ) : (
+                'Connecting...'
+              )}
+            </ButtonSubmit>
+          </>
         )}
       </section>
     </FormWrapper>
