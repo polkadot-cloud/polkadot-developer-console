@@ -12,29 +12,6 @@ export const HomePageWrapper = styled.div`
     display: flex;
     align-items: center;
     line-height: 1.8rem;
-
-    > .icon {
-      margin-left: 0.6rem;
-      width: 1.7rem;
-      height: 1.7rem;
-      padding: 0.2rem;
-      transition: opacity 0.2s;
-
-      > div {
-        width: 100%;
-        height: 100%;
-        position: relative;
-
-        > svg {
-          fill: var(--accent-color-primary);
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
   }
 
   h3 {

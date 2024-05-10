@@ -19,7 +19,13 @@ export const ProgressWrapper = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 0.5rem var(--progress-vertical-padding) 0.5rem 0;
-    align-items: center;
+    align-items: flex-start;
+
+    &.label {
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
 
     &:first-child {
       padding-left: 0;
@@ -45,9 +51,21 @@ export const ProgressWrapper = styled.div`
       }
     }
 
+    > .status {
+      background-color: var(--background-primary);
+      border-radius: 0.4rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 0.4rem;
+      width: 100%;
+      height: 1.65rem;
+    }
+
     > .connector {
       border-top: 1px solid var(--border-secondary-color);
       width: 100%;
+      margin-top: 0.65rem;
       height: 1px;
     }
 
@@ -71,6 +89,29 @@ export const ProgressWrapper = styled.div`
       &.smallOnly {
         display: none;
       }
+    }
+  }
+`;
+
+export const RelayIconWrapper = styled.div`
+  margin-left: 0.6rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0.2rem;
+  transition: opacity 0.2s;
+
+  > div {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    > svg {
+      fill: var(--accent-color-primary);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
   }
 `;

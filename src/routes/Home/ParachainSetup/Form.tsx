@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useParaSetup } from 'contexts/ParaSetup';
-import { Icon } from './Icon';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { ConnectRelay } from './ConnectRelay';
 import { Progress } from './Progress';
@@ -13,33 +12,20 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const Form = () => {
   const { tabId } = useActiveTab();
+  const { getApiStatusByIndex } = useChainSpaceEnv();
   const { getActiveStep, getChainSpaceApiIndex } = useParaSetup();
-  const { getChainApi, getApiStatusByIndex } = useChainSpaceEnv();
 
   const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
-  const relayInstance = getChainApi(chainSpaceApiIndex);
 
   const apiStatus = getApiStatusByIndex(chainSpaceApiIndex);
   const activeStep = getActiveStep(tabId);
-
-  // Get the relay chain icon, if available.
-  const relayIcon = relayInstance
-    ? `../../../config/networks/icons/${relayInstance.chainId}/Inline.tsx`
-    : undefined;
 
   // Determine whether next button should be disabled.
   const nextDisabled = activeStep === 'connect_relay' && apiStatus !== 'ready';
 
   return (
     <HomePageWrapper>
-      <h2>
-        Set up a New Parachain
-        {relayIcon && (
-          <div className="icon">
-            <Icon icon={relayIcon} />
-          </div>
-        )}
-      </h2>
+      <h2>Set up a New Parachain</h2>
 
       <Progress />
 
