@@ -36,7 +36,7 @@ export const Select = ({
     onRender(INPUT_TYPE);
   }
   // Outside alerter ignore class.
-  const ignoreClass = `ignore-outside-alerter-select_${camelize(String(label))}`;
+  const ignoreClass = `ignore-outside-alerter-select_${camelize(String(label || ''))}`;
 
   // Get the currently selected value, or fall back to the first value.
   const currentValue = ![undefined, ''].includes(value) ? value : values[0];
@@ -56,7 +56,7 @@ export const Select = ({
 
   return (
     <SelectWrapper>
-      <h4>{label}</h4>
+      {label && <h4>{label}</h4>}
       <SelectItemWrapper
         className={`standalone input${open ? ` open` : ``} ${ignoreClass}${disabled ? ` disabled` : ``}`}
         onClick={() => {
