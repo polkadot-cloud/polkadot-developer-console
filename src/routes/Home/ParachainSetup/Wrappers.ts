@@ -64,9 +64,6 @@ export const ProgressWrapper = styled.div`
       height: 1.6rem;
       overflow: hidden;
       opacity: 0.75;
-      transition:
-        height 0.2s,
-        opacity 0.2s;
 
       &.active {
         opacity: 1;
@@ -76,6 +73,9 @@ export const ProgressWrapper = styled.div`
       &.collapsed {
         border-color: transparent;
         height: 0;
+        transition:
+          height 0.2s,
+          opacity 0.2s;
       }
       &.hidden {
         border-color: transparent;
