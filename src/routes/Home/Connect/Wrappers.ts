@@ -93,7 +93,7 @@ export const SelectOptionWrapper = styled.div`
   border: 1px solid var(--border-primary-color);
   background-color: var(--background-primary);
   border-radius: var(--chain-list-item-border-radius);
-  margin-top: 0.45rem;
+  margin-top: 0.5rem;
   flex: 1;
   display: flex;
   flex-direction: column;
