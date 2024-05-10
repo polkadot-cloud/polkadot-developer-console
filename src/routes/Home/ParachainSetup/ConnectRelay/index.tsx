@@ -22,6 +22,7 @@ import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
 export const ConnectRelay = () => {
   const {
     getApiStatusByIndex,
+    getChainSpecByIndex,
     destroyChainApi,
     handleConnectApi,
     getNextApiIndex,
@@ -38,9 +39,10 @@ export const ConnectRelay = () => {
 
   const selectedRelayChain = getSelectedRelayChain(tabId);
 
-  // API status
+  // Chain space api data.
   const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
   const apiStatus = getApiStatusByIndex(chainSpaceApiIndex);
+  const chainSpec = getChainSpecByIndex(chainSpaceApiIndex);
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -59,6 +61,17 @@ export const ConnectRelay = () => {
   const relayName =
     relayChains.find(([chainId]) => chainId === selectedRelayChain)?.[1]
       ?.name || 'Polkadot Relay Chain';
+
+  // API can be assumed as valid when it is ready and the chain spec has been fetched.
+  const apiValid = ['ready'].includes(apiStatus) && chainSpec !== undefined;
+
+  // Handle disconnect from api instance.
+  const handleDisconnect = () => {
+    if (chainSpaceApiIndex !== undefined) {
+      destroyChainApi(chainSpaceApiIndex);
+      removeChainSpaceApiIndex(tabId);
+    }
+  };
 
   return (
     <FormWrapper>
@@ -115,10 +128,9 @@ export const ConnectRelay = () => {
           </ButtonSubmit>
         ) : (
           <>
-            {apiStatus === 'connecting' && (
+            {!apiValid ? (
               <h4 className="note">Connecting to {relayName}...</h4>
-            )}
-            {['connected', 'ready'].includes(apiStatus) && (
+            ) : (
               <h4 className="note">
                 <FontAwesomeIcon
                   icon={faCheckCircle}
@@ -128,33 +140,30 @@ export const ConnectRelay = () => {
                 Connected to {relayName}. Ready to reserve a Para ID.
               </h4>
             )}
+
             <ButtonSubmit
               className="lg"
-              disabled={apiStatus !== 'ready'}
               onClick={() => {
-                if (
-                  confirm(
-                    'Are you sure you want to disconnect? This will reset your setup progress.'
-                  )
-                ) {
-                  if (chainSpaceApiIndex !== undefined) {
-                    destroyChainApi(chainSpaceApiIndex);
-                    removeChainSpaceApiIndex(tabId);
+                if (apiStatus !== 'ready') {
+                  handleDisconnect();
+                } else {
+                  if (
+                    confirm(
+                      'Are you sure you want to disconnect? This will reset your setup progress.'
+                    )
+                  ) {
+                    handleDisconnect();
                   }
                 }
               }}
             >
-              {apiStatus === 'ready' ? (
-                <>
-                  <FontAwesomeIcon
-                    icon={faArrowLeftToBracket}
-                    className="iconLeft"
-                  />{' '}
-                  Disconnect &amp; Cancel Setup
-                </>
-              ) : (
-                'Connecting...'
-              )}
+              <>
+                <FontAwesomeIcon
+                  icon={faArrowLeftToBracket}
+                  className="iconLeft"
+                />
+                {apiValid ? 'Disconnect & Cancel Setup' : 'Cancel Connect'}
+              </>
             </ButtonSubmit>
           </>
         )}
