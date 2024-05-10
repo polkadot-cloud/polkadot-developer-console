@@ -12,14 +12,21 @@ export const ProgressWrapper = styled.div`
   }
 
   flex: 1;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 1.35rem;
   display: flex;
 
   > section {
     display: flex;
     justify-content: space-between;
     padding: 0.5rem var(--progress-vertical-padding) 0.5rem 0;
-    align-items: center;
+    align-items: flex-start;
+
+    &.label {
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
 
     &:first-child {
       padding-left: 0;
@@ -45,9 +52,41 @@ export const ProgressWrapper = styled.div`
       }
     }
 
+    > .status {
+      background-color: var(--background-default);
+      border: 1px solid var(--text-color-tertiary);
+      border-radius: 0.4rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 0.35rem;
+      width: 100%;
+      height: 1.6rem;
+      overflow: hidden;
+      opacity: 0.75;
+
+      &.active {
+        opacity: 1;
+        border-color: var(--accent-color-primary);
+      }
+
+      &.collapsed {
+        border-color: transparent;
+        height: 0;
+        transition:
+          height 0.2s,
+          opacity 0.2s;
+      }
+      &.hidden {
+        border-color: transparent;
+        opacity: 0;
+      }
+    }
+
     > .connector {
       border-top: 1px solid var(--border-secondary-color);
       width: 100%;
+      margin-top: 0.65rem;
       height: 1px;
     }
 
@@ -71,6 +110,35 @@ export const ProgressWrapper = styled.div`
       &.smallOnly {
         display: none;
       }
+    }
+  }
+`;
+
+export const RelayIconWrapper = styled.div`
+  margin-left: 0.6rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0.2rem;
+  transition: opacity 0.2s;
+
+  > div {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    > svg {
+      fill: var(--text-color-tertiary);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &.active {
+    > div > svg {
+      fill: var(--accent-color-primary);
     }
   }
 `;

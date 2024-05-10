@@ -6,7 +6,7 @@ import type { InputCallbackProps } from '../types';
 export type SelectProps = InputCallbackProps & {
   values: string[];
   icons?: string[];
-  label: string | number;
+  label?: string | number;
   value: string;
   disabled?: boolean;
 };

@@ -12,29 +12,6 @@ export const HomePageWrapper = styled.div`
     display: flex;
     align-items: center;
     line-height: 1.8rem;
-
-    > .icon {
-      margin-left: 0.6rem;
-      width: 1.7rem;
-      height: 1.7rem;
-      padding: 0.2rem;
-      transition: opacity 0.2s;
-
-      > div {
-        width: 100%;
-        height: 100%;
-        position: relative;
-
-        > svg {
-          fill: var(--accent-color-primary);
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
   }
 
   h3 {
@@ -47,7 +24,10 @@ export const HomePageWrapper = styled.div`
 // General purpose form wrapper with limited-width sections and headings.
 export const FormWrapper = styled.div`
   flex: 1;
-  margin-top: 1.25rem;
+
+  > h3 {
+    margin-bottom: 1rem;
+  }
 
   > section {
     flex: 1;
@@ -64,7 +44,7 @@ export const FormWrapper = styled.div`
       &.note {
         color: var(--text-color-secondary);
         font-family: InterSemiBold, sans-serif;
-        margin: 0rem 0 0.5rem 0;
+        margin: 1.5rem 0 0.5rem 0;
 
         > .icon {
           margin-right: 0.35rem;

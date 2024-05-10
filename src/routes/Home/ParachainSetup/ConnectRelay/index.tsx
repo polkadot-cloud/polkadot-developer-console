@@ -66,7 +66,6 @@ export const ConnectRelay = () => {
 
       <section>
         <Select
-          label={'Relay Chain'}
           values={values}
           icons={icons}
           value={relayName}
@@ -126,8 +125,7 @@ export const ConnectRelay = () => {
                   transform="grow-1"
                   className="icon"
                 />
-                Connected to {relayName}. Go to the next step to reserve a Para
-                ID.
+                Connected to {relayName}. Ready to reserve a Para ID.
               </h4>
             )}
             <ButtonSubmit
