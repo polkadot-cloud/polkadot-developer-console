@@ -29,6 +29,10 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   const [selectedRelayChains, setSelectedRelayChains] =
     useState<SelectedRelayChains>({});
 
+  // Store  confirmed relay chains, keyed by tab.
+  const [confirmedRelayChains, setConfirmedRelayChains] =
+    useState<SelectedRelayChains>({});
+
   // Store the index at which to access the relay chain api from the global chain space environment,
   // for each tab.
   const [chainSpaceApiIndexes, setChainSpaceApiIndexes] =
@@ -42,6 +46,17 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   const setSelectedRelayChain = (tabId: number, chainId: ChainId) => {
     setSelectedRelayChains({
       ...selectedRelayChains,
+      [tabId]: chainId,
+    });
+  };
+
+  // Get the confirmed relay chain for a tab.
+  const getConfirmedRelayChain = (tabId: number) => confirmedRelayChains[tabId];
+
+  // Set the confirmed relay chain for a tab.
+  const setConfirmedRelayChain = (tabId: number, chainId: ChainId) => {
+    setConfirmedRelayChains({
+      ...confirmedRelayChains,
       [tabId]: chainId,
     });
   };
@@ -82,9 +97,13 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     delete updated[tabId];
     setActiveSteps(updated);
 
-    const updatedRelayChains = { ...selectedRelayChains };
-    delete updatedRelayChains[tabId];
-    setSelectedRelayChains(updatedRelayChains);
+    const updatedSelectedRelayChains = { ...selectedRelayChains };
+    delete updatedSelectedRelayChains[tabId];
+    setSelectedRelayChains(updatedSelectedRelayChains);
+
+    const updatedConfirmedRelayChains = { ...confirmedRelayChains };
+    delete updatedConfirmedRelayChains[tabId];
+    setSelectedRelayChains(updatedConfirmedRelayChains);
 
     const updatedIndexes = { ...chainSpaceApiIndexes };
     delete updatedIndexes[tabId];
@@ -100,6 +119,8 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
         setChainSpaceApiIndex,
         getSelectedRelayChain,
         setSelectedRelayChain,
+        getConfirmedRelayChain,
+        setConfirmedRelayChain,
         removeChainSpaceApiIndex,
         destroyTabParaSetup,
       }}

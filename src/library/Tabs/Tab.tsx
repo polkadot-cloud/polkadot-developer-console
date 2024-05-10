@@ -41,8 +41,8 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     incrementRedirectCounter,
   } = useTabs();
   const { tabId } = useActiveTab();
-  const { destroyTabParaSetup } = useParaSetup();
-  const { destroyTabChainSpaceEnv } = useChainSpaceEnv();
+  const { destroyChainSpaceEnvIndex } = useChainSpaceEnv();
+  const { destroyTabParaSetup, getChainSpaceApiIndex } = useParaSetup();
 
   const { getApiStatus } = useApi();
   const { openMenu, closeMenu } = useMenu();
@@ -171,11 +171,14 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
               // Destroy chainUi state associated with this tab.
               destroyTabChainUi(id);
 
+              // Destroy ChainSpaceEnv state associated with this tab's parachain setup.
+              const maybeIndex = getChainSpaceApiIndex(id);
+              if (maybeIndex !== undefined) {
+                destroyChainSpaceEnvIndex(maybeIndex);
+              }
+
               // Destroy Parachain state associated with this tab.
               destroyTabParaSetup(id);
-
-              // Destroy ChainSpaceEnv state associated with this tab.
-              destroyTabChainSpaceEnv(id);
 
               // Destroy tab instance.
               destroyTab(index, id);

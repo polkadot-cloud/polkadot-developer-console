@@ -8,20 +8,17 @@ import { Progress } from './Progress';
 import { Footer } from './Footer';
 import { ReserveParaId } from './ReserveParaId';
 import { FormWrapper, HomePageWrapper } from '../Wrappers';
-import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const ParachainSetup = () => {
   const { tabId } = useActiveTab();
-  const { getApiStatusByIndex } = useChainSpaceEnv();
-  const { getActiveStep, getChainSpaceApiIndex } = useParaSetup();
+  const { getActiveStep, getConfirmedRelayChain } = useParaSetup();
 
-  const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
-
-  const apiStatus = getApiStatusByIndex(chainSpaceApiIndex);
   const activeStep = getActiveStep(tabId);
+  const confirmedRelayChain = getConfirmedRelayChain(tabId);
 
   // Determine whether next button should be disabled.
-  const nextDisabled = activeStep === 'connect_relay' && apiStatus !== 'ready';
+  const nextDisabled =
+    activeStep === 'connect_relay' && confirmedRelayChain === undefined;
 
   return (
     <HomePageWrapper>

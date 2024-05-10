@@ -15,7 +15,6 @@ import type {
 import { createContext, useContext, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import type {
-  TabToApiIndexes,
   ChainSpaceApiStatuses,
   ChainSpaceChainSpecs,
   ChainSpaceEnvContextInterface,
@@ -40,9 +39,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   // The api instances index associated with this chainspace, keyed by a global index.
   const [apiIndexes, setApiIndexes] = useState<Record<number, number>>({});
   const apiIndexesRef = useRef(apiIndexes);
-
-  // A mapping between tab indexes and api indexes it hosts.
-  const [tabToApiIndexes, setTabToApiIndexes] = useState<TabToApiIndexes>({});
 
   // The chain spec of each api instance associated with this chain space. NOTE: Requires ref as it
   // is used in event listener.
@@ -81,7 +77,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     ApiController.destroy(globalChainSpace.ownerId, instanceIndex);
   };
 
-  // Get an api status for a chain instance.
+  // Get an api status for a chain instance by index.
   const getApiStatusByIndex = (index: number | undefined) => {
     if (index === undefined) {
       return 'disconnected';
@@ -89,6 +85,15 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
 
     const instanceId = `${globalChainSpace?.ownerId}_${index}`;
     return apiStatusesRef.current[instanceId] || 'disconnected';
+  };
+
+  // Get chain spec for a chain instance by index.
+  const getChainSpecByIndex = (index: number | undefined) => {
+    if (index === undefined) {
+      return undefined;
+    }
+    const instanceId = `${globalChainSpace?.ownerId}_${index}`;
+    return chainSpecsRef.current[instanceId];
   };
 
   // Setter for chain spec. Updates state and ref.
@@ -115,12 +120,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     chainId: ChainId,
     provider: string
   ) => {
-    // Record this api instance index for this tab.
-    setTabToApiIndexes({
-      ...tabToApiIndexes,
-      [tabId]: [...(tabToApiIndexes?.[tabId] || []), index],
-    });
-
     setApiIndex(index, ApiController.getNextIndex(globalChainSpace.ownerId));
     setApiStatus(`${globalChainSpace.ownerId}_${index}`, 'connecting');
 
@@ -222,19 +221,10 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   };
 
   // Destroy state associated with a tab. Should only be used on tab close.
-  const destroyTabChainSpaceEnv = (tabId: number) => {
-    const indexes = tabToApiIndexes[tabId] || [];
-
+  const destroyChainSpaceEnvIndex = (index: number) => {
     // Disconnect from all instances associated with this tab.
-    for (const index of indexes) {
-      const instanceId = `${globalChainSpace.ownerId}_${index}`;
-      handleDisconnect(instanceId);
-    }
-
-    // Update tabs to index record to delete current tabId.
-    const updatedTabToApiIndexes = { ...tabToApiIndexes };
-    delete updatedTabToApiIndexes[tabId];
-    setTabToApiIndexes(updatedTabToApiIndexes);
+    const instanceId = `${globalChainSpace.ownerId}_${index}`;
+    handleDisconnect(instanceId);
   };
 
   // Get next available index for apiIndexes.
@@ -275,8 +265,9 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         getChainApi,
         destroyChainApi,
         getApiStatusByIndex,
+        getChainSpecByIndex,
         getNextApiIndex,
-        destroyTabChainSpaceEnv,
+        destroyChainSpaceEnvIndex,
       }}
     >
       {children}
