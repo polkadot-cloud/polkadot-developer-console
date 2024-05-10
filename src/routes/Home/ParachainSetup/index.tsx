@@ -14,9 +14,7 @@ export const ParachainSetup = () => {
   const { getActiveStep, getConfirmedRelayChain } = useParaSetup();
 
   const activeStep = getActiveStep(tabId);
-
   const confirmedRelayChain = getConfirmedRelayChain(tabId);
-  console.log(confirmedRelayChain);
 
   // Determine whether next button should be disabled.
   const nextDisabled =
