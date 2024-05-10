@@ -7,6 +7,7 @@ import type {
   ChainMeta,
   ConnectFrom,
   TabChainData,
+  TabTask,
   Tabs,
   TabsContextInterface,
 } from './types';
@@ -136,6 +137,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         name: 'New Tab',
         forceDisconnect: !autoConnect,
         autoConnect,
+        activeTask: null,
         activePage: 0,
       },
     ];
@@ -226,6 +228,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         if (tab.id === id) {
           return {
             ...tab,
+            activeTask: null,
             forceDisconnect: checked,
           };
         }
@@ -339,6 +342,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
             name:
               autoTabNaming && isDirectory ? getAutoTabName(chainId) : tab.name,
             chain: chainData,
+            // Chain is now assigned the `connectChain` task.
+            activeTask: 'connectChain' as TabTask,
           }
         : tab
     );
@@ -376,6 +381,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       ApiController.destroyAll(ownerId);
     }
   };
+
+  console.log(tabs);
 
   return (
     <TabsContext.Provider

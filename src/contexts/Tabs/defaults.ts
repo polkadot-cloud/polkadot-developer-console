@@ -61,6 +61,7 @@ export const defaultTabs: Tabs = [
     name: 'Polkadot Relay Chain',
     forceDisconnect: false,
     autoConnect: true,
+    activeTask: 'connectChain',
     activePage: 0,
   },
   {
@@ -79,6 +80,7 @@ export const defaultTabs: Tabs = [
     name: 'Kusama Relay Chain',
     forceDisconnect: false,
     autoConnect: true,
+    activeTask: 'connectChain',
     activePage: 0,
   },
   {
@@ -97,6 +99,7 @@ export const defaultTabs: Tabs = [
     name: 'Rococo Relay Chain',
     forceDisconnect: false,
     autoConnect: true,
+    activeTask: 'connectChain',
     activePage: 0,
   },
   {
@@ -106,6 +109,7 @@ export const defaultTabs: Tabs = [
     name: 'New Tab',
     forceDisconnect: false,
     autoConnect: false,
+    activeTask: null,
     activePage: 0,
   },
 ];
@@ -117,6 +121,7 @@ export const defaultEemptyTab: Tab = {
   name: '',
   forceDisconnect: false,
   autoConnect: false,
+  activeTask: null,
   activePage: 0,
 };
 export const defaultCustomEndpointChainMeta = {

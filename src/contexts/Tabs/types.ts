@@ -5,6 +5,9 @@ import type { Route } from 'App';
 import type { ChainId, NetworkDirectoryItem } from 'config/networks';
 import type { Dispatch, SetStateAction } from 'react';
 
+// The tasks that developer console supports.
+export type TabTask = 'connectChain' | 'newParachain';
+
 export type Tabs = Tab[];
 
 export interface Tab {
@@ -14,6 +17,7 @@ export interface Tab {
   name: string;
   forceDisconnect: boolean;
   autoConnect: boolean;
+  activeTask: TabTask | null;
   activePage: number;
 }
 
