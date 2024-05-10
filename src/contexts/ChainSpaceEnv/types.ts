@@ -17,6 +17,7 @@ export interface ChainSpaceEnvContextInterface {
   getChainApi: (index: number | undefined) => Api | undefined;
   destroyChainApi: (index: number) => void;
   getApiStatusByIndex: (index: number | undefined) => ApiStatus;
+  getChainSpecByIndex: (index: number | undefined) => APIChainSpec | undefined;
   getNextApiIndex: () => number;
   destroyChainSpaceEnvIndex: (index: number) => void;
 }

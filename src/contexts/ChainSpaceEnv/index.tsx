@@ -77,7 +77,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     ApiController.destroy(globalChainSpace.ownerId, instanceIndex);
   };
 
-  // Get an api status for a chain instance.
+  // Get an api status for a chain instance by index.
   const getApiStatusByIndex = (index: number | undefined) => {
     if (index === undefined) {
       return 'disconnected';
@@ -85,6 +85,15 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
 
     const instanceId = `${globalChainSpace?.ownerId}_${index}`;
     return apiStatusesRef.current[instanceId] || 'disconnected';
+  };
+
+  // Get chain spec for a chain instance by index.
+  const getChainSpecByIndex = (index: number | undefined) => {
+    if (index === undefined) {
+      return undefined;
+    }
+    const instanceId = `${globalChainSpace?.ownerId}_${index}`;
+    return chainSpecsRef.current[instanceId];
   };
 
   // Setter for chain spec. Updates state and ref.
@@ -256,6 +265,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         getChainApi,
         destroyChainApi,
         getApiStatusByIndex,
+        getChainSpecByIndex,
         getNextApiIndex,
         destroyChainSpaceEnvIndex,
       }}
