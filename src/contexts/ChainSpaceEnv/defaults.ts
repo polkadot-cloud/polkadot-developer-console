@@ -12,5 +12,5 @@ export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
   destroyChainApi: (index) => {},
   getApiStatusByIndex: (index) => 'disconnected',
   getNextApiIndex: () => 0,
-  destroyTabChainSpaceEnv: (tabId) => {},
+  destroyChainSpaceEnvIndex: (index) => {},
 };
