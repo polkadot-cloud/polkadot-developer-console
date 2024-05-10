@@ -16,7 +16,6 @@ import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
 
 export const ConnectRelay = () => {
-  const { tabId } = useActiveTab();
   const {
     getApiStatusByIndex,
     destroyChainApi,
@@ -30,6 +29,7 @@ export const ConnectRelay = () => {
     setChainSpaceApiIndex,
     removeChainSpaceApiIndex,
   } = useParaSetup();
+  const { tabId } = useActiveTab();
   const { openMenu, closeMenu } = useMenu();
 
   const selectedRelayChain = getSelectedRelayChain(tabId);
@@ -92,7 +92,12 @@ export const ConnectRelay = () => {
                     const index = getNextApiIndex();
                     setChainSpaceApiIndex(tabId, index);
 
-                    await handleConnectApi(index, selectedRelayChain, provider);
+                    await handleConnectApi(
+                      tabId,
+                      index,
+                      selectedRelayChain,
+                      provider
+                    );
                   }}
                 />
               );

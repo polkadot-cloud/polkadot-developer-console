@@ -76,6 +76,21 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
+  // Destroy state associated with a tab. Should only be used on tab close.
+  const destroyTabParaSetup = (tabId: number) => {
+    const updated = { ...activeSteps };
+    delete updated[tabId];
+    setActiveSteps(updated);
+
+    const updatedRelayChains = { ...selectedRelayChains };
+    delete updatedRelayChains[tabId];
+    setSelectedRelayChains(updatedRelayChains);
+
+    const updatedIndexes = { ...chainSpaceApiIndexes };
+    delete updatedIndexes[tabId];
+    setChainSpaceApiIndexes(updatedIndexes);
+  };
+
   return (
     <ParaSetupContext.Provider
       value={{
@@ -86,6 +101,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
         getSelectedRelayChain,
         setSelectedRelayChain,
         removeChainSpaceApiIndex,
+        destroyTabParaSetup,
       }}
     >
       {children}
