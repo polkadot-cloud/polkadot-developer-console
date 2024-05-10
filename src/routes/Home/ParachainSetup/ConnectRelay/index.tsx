@@ -30,6 +30,7 @@ export const ConnectRelay = () => {
   const {
     getSelectedRelayChain,
     setSelectedRelayChain,
+    setConfirmedRelayChain,
     getChainSpaceApiIndex,
     setChainSpaceApiIndex,
     removeChainSpaceApiIndex,
@@ -104,10 +105,14 @@ export const ConnectRelay = () => {
                   chainId={selectedRelayChain}
                   onSelect={async (provider) => {
                     closeMenu();
-
+                    // Get and register the chain space index.
                     const index = getNextApiIndex();
                     setChainSpaceApiIndex(tabId, index);
 
+                    // Store the confirmed relay chain to state.
+                    setConfirmedRelayChain(tabId, selectedRelayChain);
+
+                    // Connect to chain space api.
                     await handleConnectApi(
                       tabId,
                       index,

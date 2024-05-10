@@ -10,6 +10,8 @@ export interface ParaSetupContextInterface {
   setChainSpaceApiIndex: (tabId: number, index: number) => void;
   getSelectedRelayChain: (tabId: number) => ChainId;
   setSelectedRelayChain: (tabId: number, chainId: ChainId) => void;
+  getConfirmedRelayChain: (tabId: number) => ChainId | undefined;
+  setConfirmedRelayChain: (tabId: number, chainId: ChainId) => void;
   removeChainSpaceApiIndex: (tabId: number) => void;
   destroyTabParaSetup: (tabId: number) => void;
 }
