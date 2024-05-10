@@ -11,6 +11,7 @@ export interface ParaSetupContextInterface {
   getSelectedRelayChain: (tabId: number) => ChainId;
   setSelectedRelayChain: (tabId: number, chainId: ChainId) => void;
   removeChainSpaceApiIndex: (tabId: number) => void;
+  destroyTabParaSetup: (tabId: number) => void;
 }
 
 export type SetupStep =
