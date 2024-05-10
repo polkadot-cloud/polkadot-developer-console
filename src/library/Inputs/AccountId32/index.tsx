@@ -124,7 +124,13 @@ export const AccountId32 = ({
             }
           }}
         />
-        <span>
+        <span
+          onClick={() => {
+            if (!dropdownOpen) {
+              setDropdownOpen(true);
+            }
+          }}
+        >
           <h5>
             {isValidAddress(selectedAddress)
               ? ellipsisFn(selectedAddress, 14)
