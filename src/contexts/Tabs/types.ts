@@ -92,6 +92,7 @@ export interface TabsContextInterface {
 // Active pages structure used in local storage to keep track of active page indexes for each tab.
 
 export type TabsActivePages = Record<string, TabActivePages> | undefined;
+
 export interface TabActivePages {
   default?: number;
   settings?: number;
