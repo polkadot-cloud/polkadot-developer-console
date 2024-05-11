@@ -40,12 +40,11 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     incrementRedirectCounter,
   } = useTabs();
   const { tabId } = useActiveTab();
-  const { destroyChainSpaceEnvIndex } = useChainSpaceEnv();
-  const { destroyTabParaSetup, getChainSpaceApiIndex } = useParaSetup();
-
   const { getApiStatus } = useApi();
   const { openMenu, closeMenu } = useMenu();
   const { destroyTabChainUi } = useChainUi();
+  const { destroyChainSpaceEnvIndex } = useChainSpaceEnv();
+  const { destroyTabParaSetup, getChainSpaceApiIndex } = useParaSetup();
 
   const {
     listeners,
