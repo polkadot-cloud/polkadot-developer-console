@@ -38,15 +38,16 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     instantiatedIds,
     setTabHoverIndex,
     addInstantiatedId,
+    getChainSpaceApiIndex,
     incrementRedirectCounter,
   } = useTabs();
   const { tabId } = useActiveTab();
   const { getApiStatus } = useApi();
   const { openMenu, closeMenu } = useMenu();
   const { destroyTabChainUi } = useChainUi();
+  const { destroyTabParaSetup } = useParaSetup();
   const { destroyControllers } = useChainBrowser();
   const { destroyChainSpaceEnvIndex } = useChainSpaceEnv();
-  const { destroyTabParaSetup, getChainSpaceApiIndex } = useParaSetup();
 
   const {
     listeners,

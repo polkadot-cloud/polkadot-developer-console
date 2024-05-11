@@ -85,13 +85,22 @@ export interface TabsContextInterface {
   setTabActiveTask: (tabId: number, task: TabTask | null) => void;
   getTabTaskData: (tabId: number) => TaskData;
   setTabTaskData: (tabId: number, value: TaskData) => void;
+  getChainSpaceApiIndex: (tabId: number) => ChainSpaceIndex | undefined;
+  setChainSpaceApiIndex: (tabId: number, index: ChainSpaceIndex) => void;
+  removeChainSpaceApiIndex: (tabId: number) => void;
 }
 
 // Active pages structure used in local storage to keep track of active page indexes for each tab.
-
 export type TabsActivePages = Record<string, TabActivePages> | undefined;
 
 export interface TabActivePages {
   default?: number;
   settings?: number;
+}
+
+export type ChainSpaceApiIndexes = Record<number, ChainSpaceIndex>;
+
+export interface ChainSpaceIndex {
+  index: number;
+  label: string;
 }

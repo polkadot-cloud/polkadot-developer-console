@@ -29,15 +29,17 @@ export const ConnectRelay = () => {
     getNextApiIndex,
   } = useChainSpaceEnv();
   const {
-    getSelectedRelayChain,
-    setSelectedRelayChain,
-    setConfirmedRelayChain,
+    setTabActiveTask,
     getChainSpaceApiIndex,
     setChainSpaceApiIndex,
     removeChainSpaceApiIndex,
+  } = useTabs();
+  const {
+    getSelectedRelayChain,
+    setSelectedRelayChain,
+    setConfirmedRelayChain,
   } = useParaSetup();
   const { tabId } = useActiveTab();
-  const { setTabActiveTask } = useTabs();
   const { openMenu, closeMenu } = useMenu();
 
   const selectedRelayChain = getSelectedRelayChain(tabId);

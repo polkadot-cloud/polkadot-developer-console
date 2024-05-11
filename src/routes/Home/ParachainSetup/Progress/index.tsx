@@ -8,11 +8,13 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { Icon } from '../Icon';
 import { Section } from './Section';
 import { Connector } from './Connector';
+import { useTabs } from 'contexts/Tabs';
 
 export const Progress = () => {
   const { tabId } = useActiveTab();
+  const { getActiveStep } = useParaSetup();
   const { getChainApi } = useChainSpaceEnv();
-  const { getActiveStep, getChainSpaceApiIndex } = useParaSetup();
+  const { getChainSpaceApiIndex } = useTabs();
 
   const activeStep = getActiveStep(tabId);
   const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);

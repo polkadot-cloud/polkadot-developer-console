@@ -4,6 +4,8 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
 import type {
+  ChainSpaceApiIndexes,
+  ChainSpaceIndex,
   ConnectFrom,
   TabTask,
   Tabs,
@@ -54,6 +56,28 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Redirect counter to trigger redirect effects.
   const [redirectCounter, setRedirectCounter] = useState<number>(0);
+
+  // Store the indexes at which to access apis from the global chain space. for each tab.
+  const [chainSpaceApiIndexes, setChainSpaceApiIndexes] =
+    useState<ChainSpaceApiIndexes>({});
+
+  // Get a chain space api index for a tab.
+  const getChainSpaceApiIndex = (tabId: number) => chainSpaceApiIndexes[tabId];
+
+  // Set a chain space api index for a tab.
+  const setChainSpaceApiIndex = (tabId: number, index: ChainSpaceIndex) => {
+    setChainSpaceApiIndexes({
+      ...chainSpaceApiIndexes,
+      [tabId]: index,
+    });
+  };
+
+  // Remove a chain space api index for a tab.
+  const removeChainSpaceApiIndex = (tabId: number) => {
+    const updated = { ...chainSpaceApiIndexes };
+    delete updated[tabId];
+    setChainSpaceApiIndexes(updated);
+  };
 
   // Increment redirect counter.
   const incrementRedirectCounter = () => {
@@ -291,6 +315,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         getTabTaskData,
         setTabTaskData,
         setTabConnectFrom,
+        getChainSpaceApiIndex,
+        setChainSpaceApiIndex,
+        removeChainSpaceApiIndex,
         instantiatedIds: instantiatedIds.current,
       }}
     >

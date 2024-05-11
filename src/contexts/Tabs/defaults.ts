@@ -41,6 +41,9 @@ export const defaultTabsContext: TabsContextInterface = {
   setTabActiveTask: (id, activeTask) => {},
   getTabTaskData: (tabId) => undefined,
   setTabTaskData: (tabId, value) => {},
+  getChainSpaceApiIndex: (tabId) => undefined,
+  setChainSpaceApiIndex: (tabId, index) => {},
+  removeChainSpaceApiIndex: (tabId) => {},
 };
 
 export const defaultTabs: Tabs = [
