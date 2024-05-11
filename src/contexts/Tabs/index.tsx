@@ -404,9 +404,12 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const newTabs = tabsRef.current.map((tab) =>
       tab.id === tabId ? { ...tab, activeTask: task } : tab
     );
-    console.log(tabId);
+
     // If a null task is provided, reset the active page of the tab's default route.
-    setTabActivePage(tabId, 'default', 0);
+    if (task === null) {
+      setTabActivePage(tabId, 'default', 0);
+    }
+
     setTabs(newTabs);
   };
 
