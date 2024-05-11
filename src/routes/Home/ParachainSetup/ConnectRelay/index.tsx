@@ -10,7 +10,6 @@ import {
   faArrowLeftToBracket,
   faCaretRight,
 } from '@fortawesome/pro-duotone-svg-icons';
-import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
 import { useMenu } from 'contexts/Menu';
 import { FormWrapper } from 'routes/Home/Wrappers';
@@ -19,6 +18,7 @@ import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { useTabs } from 'contexts/Tabs';
+import { ACTIVE_API_STATUSES } from 'model/Api/defaults';
 
 export const ConnectRelay = () => {
   const {

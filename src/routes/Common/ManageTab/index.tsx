@@ -14,8 +14,8 @@ import { useApi } from 'contexts/Api';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { SubHeadingWrapper } from './Wrappers';
 import { isDirectoryId } from 'config/networks/Utils';
-import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 import { useChainBrowser } from 'contexts/ChainBrowser';
+import { ACTIVE_API_STATUSES } from 'model/Api/defaults';
 
 export const ManageTab = () => {
   const { renameTab } = useTabs();
