@@ -55,15 +55,15 @@ export const defaultTabs: Tabs = [
       connectFrom: 'directory',
       forceDisconnect: false,
       autoConnect: true,
-    },
-    chain: {
-      id: 'polkadot',
-      endpoint: 'wss://rpc.ibp.network/polkadot',
-      ss58: 0,
-      units: 10,
-      unit: 'DOT',
-      api: {
-        instanceIndex: 0,
+      chain: {
+        id: 'polkadot',
+        endpoint: 'wss://rpc.ibp.network/polkadot',
+        ss58: 0,
+        units: 10,
+        unit: 'DOT',
+        api: {
+          instanceIndex: 0,
+        },
       },
     },
     name: 'Polkadot Relay Chain',
@@ -76,15 +76,15 @@ export const defaultTabs: Tabs = [
       connectFrom: 'directory',
       forceDisconnect: false,
       autoConnect: true,
-    },
-    chain: {
-      id: 'kusama',
-      endpoint: 'wss://rpc.ibp.network/kusama',
-      ss58: 2,
-      units: 10,
-      unit: 'KSM',
-      api: {
-        instanceIndex: 0,
+      chain: {
+        id: 'kusama',
+        endpoint: 'wss://rpc.ibp.network/kusama',
+        ss58: 2,
+        units: 10,
+        unit: 'KSM',
+        api: {
+          instanceIndex: 0,
+        },
       },
     },
     name: 'Kusama Relay Chain',
@@ -97,15 +97,15 @@ export const defaultTabs: Tabs = [
       connectFrom: 'directory',
       forceDisconnect: false,
       autoConnect: true,
-    },
-    chain: {
-      id: 'rococo',
-      endpoint: 'wss://rococo-rpc.polkadot.io',
-      ss58: 0,
-      units: 10,
-      unit: 'ROC',
-      api: {
-        instanceIndex: 0,
+      chain: {
+        id: 'rococo',
+        endpoint: 'wss://rococo-rpc.polkadot.io',
+        ss58: 0,
+        units: 10,
+        unit: 'ROC',
+        api: {
+          instanceIndex: 0,
+        },
       },
     },
     name: 'Rococo Relay Chain',
@@ -118,8 +118,8 @@ export const defaultTabs: Tabs = [
       connectFrom: 'directory',
       forceDisconnect: false,
       autoConnect: false,
+      chain: undefined,
     },
-    chain: undefined,
     name: 'New Tab',
     activeTask: null,
     activePage: 0,
@@ -129,7 +129,6 @@ export const defaultTabs: Tabs = [
 export const defaultEemptyTab: Tab = {
   id: -1,
   tabData: undefined,
-  chain: undefined,
   name: '',
   activeTask: null,
   activePage: 0,

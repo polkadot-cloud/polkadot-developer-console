@@ -40,7 +40,8 @@ export const TabContextMenu = ({
   const canDisconenct = ['ready', 'connected', 'connecting'].includes(
     apiStatus
   );
-  const canReconnect = !!tab?.chain?.id && !canDisconenct && !apiStatusActive;
+  const canReconnect =
+    !!tab?.tabData?.chain?.id && !canDisconenct && !apiStatusActive;
 
   const apiStatusText = canDisconenct
     ? 'Disconnect'
@@ -73,7 +74,7 @@ export const TabContextMenu = ({
         <li className={`${apiButtonInactive ? `` : ` inactive`}`}>
           <button
             onClick={() => {
-              if (canDisconenct && tab?.chain) {
+              if (canDisconenct && tab?.tabData?.chain) {
                 setTabForceDisconnect(tabId, true, true);
                 ApiController.destroyAll(ownerId);
                 closeMenu();

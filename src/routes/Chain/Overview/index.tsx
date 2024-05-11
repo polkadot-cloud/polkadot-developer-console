@@ -30,7 +30,7 @@ export const Overview = () => {
 
   // NOTE: we know for certain there is an active tab and an associated API instance here, so we can
   // safely use the non-null assertion.
-  const chainId = tab!.chain!.id;
+  const chainId = tab!.tabData!.chain!.id;
 
   const isDirectory = isDirectoryId(chainId);
   const chainSpecChain = chainSpec?.chain || 'Unknown';

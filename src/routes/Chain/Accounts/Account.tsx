@@ -39,8 +39,8 @@ export const Account = ({
   );
 
   // NOTE: assuming tab and chain definitely exist here.
-  const unit = tab!.chain!.unit;
-  const units = tab!.chain!.units;
+  const unit = tab!.tabData!.chain!.unit;
+  const units = tab!.tabData!.chain!.units;
 
   return (
     <section>

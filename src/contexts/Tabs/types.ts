@@ -16,20 +16,12 @@ export interface Tab {
   activeTask: TabTask | null;
   activePage: number;
   tabData: TabData;
-  // TODO: move these values into `tabData` object.
-  chain: TabChainData | undefined;
 }
 
-export type TabData =
-  | {
-      connectFrom: ConnectFrom;
-      forceDisconnect: boolean;
-      autoConnect: boolean;
-    }
-  | undefined;
+export type TabData = TabDataConnectChain | undefined;
 
 export interface TabDataConnectChain {
-  chain: TabChainData;
+  chain: TabChainData | undefined;
   connectFrom: ConnectFrom;
   forceDisconnect: boolean;
   autoConnect: boolean;

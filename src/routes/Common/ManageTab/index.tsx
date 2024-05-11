@@ -32,7 +32,7 @@ export const ManageTab = () => {
 
   // Determine whether this is a custom endpoint. If it is, we want to allow the chain metadata to
   // be updated.
-  const isDirectory = isDirectoryId(tab?.chain?.id || '');
+  const isDirectory = isDirectoryId(tab?.tabData?.chain?.id || '');
 
   return (
     <>
@@ -64,7 +64,7 @@ export const ManageTab = () => {
                 updateSs58(tabId, valueInt);
               }
             }}
-            initialValue={String(tab?.chain?.ss58 || '0')}
+            initialValue={String(tab?.tabData?.chain?.ss58 || '0')}
           />
           <Input
             label="Chain Units"
@@ -76,7 +76,7 @@ export const ManageTab = () => {
                 updateUnits(tabId, valueInt);
               }
             }}
-            initialValue={String(tab?.chain?.units || '')}
+            initialValue={String(tab?.tabData?.chain?.units || '')}
           />
           <Input
             label="Chain Unit"
@@ -84,7 +84,7 @@ export const ManageTab = () => {
             onSubmit={(value: string) => {
               updateUnit(tabId, value);
             }}
-            initialValue={String(tab?.chain?.unit || '')}
+            initialValue={String(tab?.tabData?.chain?.unit || '')}
           />
         </>
       )}
@@ -107,7 +107,7 @@ export const ManageTab = () => {
                       'Are you sure you want to disconnect this tab?'
                     )
                   ) {
-                    if (tab?.chain) {
+                    if (tab?.tabData?.chain) {
                       setTabForceDisconnect(tabId, true, true);
                       ApiController.destroyAll(ownerId);
                     }
