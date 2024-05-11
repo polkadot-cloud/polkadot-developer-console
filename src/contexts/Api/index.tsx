@@ -16,7 +16,6 @@ import type {
   ApiStatus,
   ApiStatusState,
   ChainSpecState,
-  ErrDetail,
 } from 'model/Api/types';
 import { useChainUi } from 'contexts/ChainUi';
 import { NotificationsController } from 'controllers/Notifications';
@@ -33,14 +32,9 @@ export const Api = createContext<ApiContextInterface>(defaultApiContext);
 export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
-  const {
-    tabs,
-    forgetTabChain,
-    setTabActiveTask,
-    instantiateApiFromTab,
-    setTabForceDisconnect,
-  } = useTabs();
   const { fetchPalletVersions } = useChainUi();
+  const { tabs, forgetTabChain, setTabActiveTask, instantiateApiFromTab } =
+    useTabs();
 
   // Store API connection status of each api instance. NOTE: requires ref as it is used in event
   // listener.
@@ -105,34 +99,28 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Handle a chain error.
-  const handleChainError = (
-    ownerId: OwnerId,
-    instanceId: ApiInstanceId,
-    err?: ErrDetail
-  ) => {
+  const handleChainError = (ownerId: OwnerId, instanceId: ApiInstanceId) => {
     removeApiStatus(instanceId);
     removeChainSpec(instanceId);
 
     // If the error originated from initialization or bootstrapping of metadata, assume the
     // connection is an invalid chain and forget it. This prevents auto connect on subsequent
     // visits.
-    if (err && ['InitializationError', 'ChainSpecError'].includes(err)) {
-      // If this owner is a tab, disconnect and forget the chain.
-      if (ownerId.startsWith('tab_')) {
-        forgetTabChain(ownerIdToTabId(ownerId));
-        setTabForceDisconnect(ownerIdToTabId(ownerId), true, true);
-      }
-      NotificationsController.emit({
-        title: 'Error Initializing Chain',
-        subtitle: `Failed to initialize the chain.`,
-      });
+
+    // If this owner is a tab, disconnect and forget the chain.
+    if (ownerId.startsWith('tab_')) {
+      forgetTabChain(ownerIdToTabId(ownerId));
     }
+    NotificationsController.emit({
+      title: 'Error Initializing Chain',
+      subtitle: `Failed to initialize the chain.`,
+    });
   };
 
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {
     if (isCustomEvent(e)) {
-      const { ownerId, instanceId, chainId, event, err } =
+      const { ownerId, instanceId, chainId, event } =
         e.detail as APIStatusEventDetail;
 
       switch (event) {
@@ -170,7 +158,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
           handleDisconnect(instanceId);
           break;
         case 'error':
-          handleChainError(ownerId, instanceId, err);
+          handleChainError(ownerId, instanceId);
           break;
         case 'destroyed':
           handleDisconnect(instanceId, true);

@@ -138,6 +138,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         name: 'New Tab',
         activeTask: null,
         taskData: undefined,
+        ui: {
+          activeConnectFrom: 'directory' as ConnectFrom,
+        },
         activePage: 0,
       },
     ];
@@ -241,32 +244,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
-  // Set a tab's forceDisconnect setting. NOTE: This function is called within event listeners, so
-  // tabsRef is used to ensure the latest tabs config is used.
-  const setTabForceDisconnect = (
-    id: number,
-    checked: boolean,
-    resetActiveTask: boolean
-  ) => {
-    const newTabs = tabsRef.current.map((tab) => {
-      if (tab.id === id) {
-        const updated = { ...tab };
-        if (resetActiveTask) {
-          updated.activeTask = null;
-        }
-
-        if (updated.taskData) {
-          updated.taskData.forceDisconnect = checked;
-        }
-        return updated;
-      } else {
-        return tab;
-      }
-    });
-
-    setTabs(newTabs);
-  };
-
   // Set a tab's active page. NOTE: This function is called indirectly from within event listeners,
   // so tabsRef is used to ensure the latest tabs config is used.
   const setTabActivePage = (
@@ -306,15 +283,12 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
-  // Set a tab's `connectFrom` property.
+  // Set a tab's `activeConnectFrom` property.
   const setTabConnectFrom = (id: number, connectFrom: ConnectFrom) => {
     const newTabs = tabs.map((tab) => {
       if (tab.id === id) {
         const updated = { ...tab };
-
-        if (updated.taskData) {
-          updated.taskData.connectFrom = connectFrom;
-        }
+        updated.ui.activeConnectFrom = connectFrom;
         return updated;
       } else {
         return tab;
@@ -389,7 +363,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
               connectFrom: isDirectory
                 ? 'directory'
                 : ('customEndpoint' as ConnectFrom),
-              forceDisconnect: false,
               autoConnect,
             },
           }
@@ -409,7 +382,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     ) {
       // This api instance is about to be reconnected to, so the active task here needs to be
       // persisted.
-      setTabForceDisconnect(tabId, false, false);
       instantiateControllers(tab.id, tab?.taskData?.chain);
     }
   };
@@ -484,7 +456,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         forgetTabChain,
         setTabConnectFrom,
         setTabAutoConnect,
-        setTabForceDisconnect,
         setTabActivePage,
         switchTab,
         getTabActiveTask,

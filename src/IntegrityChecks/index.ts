@@ -30,6 +30,7 @@ export const performTabsCheck = ({
           'id' in tab &&
           'name' in tab &&
           'activeTask' in tab &&
+          'ui' in tab &&
           'taskData' in tab
         )
       ) {
@@ -43,7 +44,6 @@ export const performTabsCheck = ({
             !(
               taskData &&
               'connectFrom' in taskData &&
-              'forceDisconnect' in taskData &&
               'autoConnect' in taskData &&
               'chain' in taskData
             )
