@@ -61,18 +61,26 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const [chainSpaceApiIndexes, setChainSpaceApiIndexes] =
     useState<ChainSpaceApiIndexes>({});
 
-  // Get a chain space api index for a tab.
-  const getChainSpaceApiIndex = (tabId: number) => chainSpaceApiIndexes[tabId];
+  // Get all chain space api indexes for a tab.
+  const getTabChainSpaceApiIndexes = (tabId: number) =>
+    chainSpaceApiIndexes[tabId] || [];
+
+  // Get a chain space api index for a tab by its label.
+  const getChainSpaceApiIndex = (tabId: number, label: string) =>
+    chainSpaceApiIndexes[tabId]?.find((index) => index.label === label);
 
   // Set a chain space api index for a tab.
   const setChainSpaceApiIndex = (tabId: number, index: ChainSpaceIndex) => {
-    setChainSpaceApiIndexes({
-      ...chainSpaceApiIndexes,
-      [tabId]: index,
-    });
+    const updated = { ...chainSpaceApiIndexes };
+    if (updated[tabId]) {
+      updated[tabId].push(index);
+    } else {
+      updated[tabId] = [index];
+    }
+    setChainSpaceApiIndexes(updated);
   };
 
-  // Remove a chain space api index for a tab.
+  // Remove chain space api indexes for a tab.
   const removeChainSpaceApiIndex = (tabId: number) => {
     const updated = { ...chainSpaceApiIndexes };
     delete updated[tabId];
@@ -315,6 +323,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         getTabTaskData,
         setTabTaskData,
         setTabConnectFrom,
+        getTabChainSpaceApiIndexes,
         getChainSpaceApiIndex,
         setChainSpaceApiIndex,
         removeChainSpaceApiIndex,

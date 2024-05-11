@@ -17,7 +17,10 @@ export const Progress = () => {
   const { getChainSpaceApiIndex } = useTabs();
 
   const activeStep = getActiveStep(tabId);
-  const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
+  const chainSpaceApiIndex = getChainSpaceApiIndex(
+    tabId,
+    'parachainSetup:relay'
+  );
   const relayInstance = getChainApi(chainSpaceApiIndex?.index);
 
   // Get the relay chain icon, if available.

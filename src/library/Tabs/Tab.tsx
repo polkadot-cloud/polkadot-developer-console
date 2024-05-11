@@ -38,8 +38,8 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     instantiatedIds,
     setTabHoverIndex,
     addInstantiatedId,
-    getChainSpaceApiIndex,
     incrementRedirectCounter,
+    getTabChainSpaceApiIndexes,
   } = useTabs();
   const { tabId } = useActiveTab();
   const { getApiStatus } = useApi();
@@ -172,10 +172,12 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
               // Destroy chainUi state associated with this tab.
               destroyTabChainUi(id);
 
-              // Destroy ChainSpaceEnv state associated with this tab.
-              const maybeIndex = getChainSpaceApiIndex(id);
-              if (maybeIndex !== undefined) {
-                destroyChainSpaceEnvIndex(maybeIndex.index);
+              // Destroy chain space apis and state associated with this tab.
+              const chainSpaceIndexes = getTabChainSpaceApiIndexes(id);
+              if (chainSpaceIndexes.length) {
+                for (const chainSpaceIndex of chainSpaceIndexes) {
+                  destroyChainSpaceEnvIndex(chainSpaceIndex.index);
+                }
               }
 
               // Destroy Parachain state associated with this tab.

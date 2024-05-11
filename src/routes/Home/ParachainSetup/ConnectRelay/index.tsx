@@ -45,7 +45,10 @@ export const ConnectRelay = () => {
   const selectedRelayChain = getSelectedRelayChain(tabId);
 
   // Chain space api data.
-  const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
+  const chainSpaceApiIndex = getChainSpaceApiIndex(
+    tabId,
+    'parachainSetup:relay'
+  );
   const apiStatus = getApiStatusByIndex(chainSpaceApiIndex?.index);
   const chainSpec = getChainSpecByIndex(chainSpaceApiIndex?.index);
 

@@ -14,7 +14,10 @@ export const ReserveParaId = () => {
   const { getChainSpaceApiIndex } = useTabs();
   const { getAccounts } = useImportedAccounts();
 
-  const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
+  const chainSpaceApiIndex = getChainSpaceApiIndex(
+    tabId,
+    'parachainSetup:relay'
+  );
   const relayInstance = getChainApi(chainSpaceApiIndex?.index);
   const chainSpec = relayInstance?.chainSpec;
 
