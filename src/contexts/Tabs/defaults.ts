@@ -12,6 +12,7 @@ import type { Tab, Tabs, TabsContextInterface } from './types';
 
 export const defaultTabsContext: TabsContextInterface = {
   tabs: [],
+  tabsRef: [],
   setTabs: (tabs) => {},
   selectedTabId: 0,
   setSelectedTabId: (id) => {},
@@ -30,19 +31,11 @@ export const defaultTabsContext: TabsContextInterface = {
   setTabsHidden: (hidden) => {},
   instantiatedIds: [],
   renameTab: (id, name) => {},
-  updateSs58: (id, ss58) => {},
-  updateUnits: (id, units) => {},
-  updateUnit: (id, unit) => {},
   redirectCounter: 0,
   incrementRedirectCounter: () => {},
-  connectTab: (tabId, chainId, endpoint) => {},
-  instantiateApiFromTab: (tabId) => {},
-  getStoredChain: (tabId) => undefined,
-  forgetTabChain: (tabId) => {},
   setTabAutoConnect: (id, autoConnect) => {},
   setTabActivePage: (id, route, activePage, persist) => {},
   switchTab: (tabId, tabIndex) => {},
-  setTabConnectFrom: (tabId, connectFrom) => {},
   getTabActiveTask: (tabId) => null,
   setTabActiveTask: (id, activeTask) => {},
 };
@@ -143,11 +136,6 @@ export const defaultEemptyTab: Tab = {
     autoConnect: false,
   },
   activePage: 0,
-};
-export const defaultCustomEndpointChainMeta = {
-  ss58: 0,
-  units: 10,
-  unit: 'UNIT',
 };
 
 export const DEFAULT_TAB_WIDTH_PX = 160;

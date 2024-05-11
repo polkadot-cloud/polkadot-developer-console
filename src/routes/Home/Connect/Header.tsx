@@ -1,15 +1,15 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useTabs } from 'contexts/Tabs';
 import { AutoConnect } from 'library/AutoConnect';
 import { ConnectHeaderWrapper } from './Wrappers';
 import { HeaderToggleWrapper } from 'library/HeaderToggle/Wrapper';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { useChainBrowser } from 'contexts/ChainBrowser';
 
 export const Header = () => {
   const { tabId, tab } = useActiveTab();
-  const { setTabConnectFrom } = useTabs();
+  const { setTabConnectFrom } = useChainBrowser();
 
   return (
     <ConnectHeaderWrapper>

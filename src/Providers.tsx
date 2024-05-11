@@ -27,6 +27,7 @@ import { ActiveTabProvider } from 'contexts/ActiveTab';
 import { GlobalChainSpaceProvider } from 'contexts/GlobalChainSpace';
 import { ImportedAccountsProvider } from 'contexts/ImportedAccounts';
 import { ChainSpaceEnvProvider } from 'contexts/ChainSpaceEnv';
+import { ChainBrowserProvider } from 'contexts/ChainBrowser';
 
 export const Providers = () => {
   // !! Provider order matters.
@@ -36,6 +37,7 @@ export const Providers = () => {
     ActiveTabProvider,
     TagsProvider,
     GlobalChainSpaceProvider,
+    ChainBrowserProvider,
     ParaSetupProvider,
     ChainFilterProvider,
     MenuProvider,
@@ -46,10 +48,10 @@ export const Providers = () => {
     [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
     VaultAccountsProvider,
     ImportedAccountsProvider,
+    ChainSpaceEnvProvider,
     TabAccountsProvider,
     ConnectProvider,
     ChainStateProvider,
-    ChainSpaceEnvProvider,
   ];
 
   return withProviders(providers, App);

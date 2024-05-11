@@ -5,16 +5,16 @@ import { ChainListWrapper, Separator } from '../Wrappers';
 import type { DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { ChainListItem } from './ChainListItem';
-import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { useTags } from 'contexts/Tags';
 import type { TagItem } from 'contexts/Tags/types';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { useChainBrowser } from 'contexts/ChainBrowser';
 
 export const ChainList = () => {
   const { tabId } = useActiveTab();
   const { getTagsForChain } = useTags();
-  const { getStoredChain } = useTabs();
+  const { getStoredChain } = useChainBrowser();
   const { getAppliedTags, getSearchTerm } = useChainFilter();
   const tabStoredChain = getStoredChain(tabId);
 

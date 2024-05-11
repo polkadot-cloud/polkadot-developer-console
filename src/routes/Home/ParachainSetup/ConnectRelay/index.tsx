@@ -106,7 +106,8 @@ export const ConnectRelay = () => {
                   chainId={selectedRelayChain}
                   onSelect={async (provider) => {
                     closeMenu();
-                    // Get and register the chain space index.
+                    // Get and register the chain space index. TODO: Add label alongside chain space
+                    // index to easily identify what chain it is (e.g. relay chain, coretime chain).
                     const index = getNextApiIndex();
                     setChainSpaceApiIndex(tabId, index);
 

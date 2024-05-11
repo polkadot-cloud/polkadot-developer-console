@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { Route } from 'App';
-import type { ChainId, NetworkDirectoryItem } from 'config/networks';
+import type { ChainId } from 'config/networks';
 import type { Dispatch, SetStateAction } from 'react';
 
 // The tasks that developer console supports.
@@ -51,6 +51,7 @@ export type ConnectFrom = 'directory' | 'customEndpoint';
 
 export interface TabsContextInterface {
   tabs: Tabs;
+  tabsRef: Tabs;
   setTabs: (tabs: Tabs) => void;
   createTab: () => void;
   selectedTabId: number;
@@ -69,17 +70,8 @@ export interface TabsContextInterface {
   setTabsHidden: (hidden: boolean) => void;
   instantiatedIds: number[];
   renameTab: (id: number, name: string) => void;
-  updateSs58: (id: number, ss58: number) => void;
-  updateUnits: (id: number, units: number) => void;
-  updateUnit: (id: number, unit: string) => void;
   redirectCounter: number;
   incrementRedirectCounter: () => void;
-  connectTab: (tabId: number, chainId: ChainId, endpoint: string) => void;
-  instantiateApiFromTab: (tabId: number) => void;
-  getStoredChain: (
-    tabId: number
-  ) => { id: ChainId; chain: NetworkDirectoryItem } | undefined;
-  forgetTabChain: (tabId: number) => void;
   setTabAutoConnect: (id: number, autoConnect: boolean) => void;
   setTabActivePage: (
     id: number,
@@ -87,7 +79,6 @@ export interface TabsContextInterface {
     activePage: number,
     persist?: boolean
   ) => void;
-  setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
   switchTab: (tabId: number, tabIndex: number) => void;
   getTabActiveTask: (tabId: number) => TabTask | null;
   setTabActiveTask: (tabId: number, task: TabTask | null) => void;

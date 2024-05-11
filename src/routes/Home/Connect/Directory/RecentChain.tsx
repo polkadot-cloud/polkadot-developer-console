@@ -1,17 +1,17 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useTabs } from 'contexts/Tabs';
 import { ChainListWrapper, Separator } from '../Wrappers';
 import { ChainListItem } from './ChainListItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import type { DirectoryId } from 'config/networks';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { useChainBrowser } from 'contexts/ChainBrowser';
 
 export const RecentChain = () => {
   const { tab, tabId } = useActiveTab();
-  const { getStoredChain, forgetTabChain } = useTabs();
+  const { getStoredChain, forgetTabChain } = useChainBrowser();
 
   const result = getStoredChain(tabId);
 

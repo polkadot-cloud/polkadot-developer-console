@@ -24,6 +24,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useChainBrowser } from 'contexts/ChainBrowser';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -43,6 +44,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const { getApiStatus } = useApi();
   const { openMenu, closeMenu } = useMenu();
   const { destroyTabChainUi } = useChainUi();
+  const { destroyControllers } = useChainBrowser();
   const { destroyChainSpaceEnvIndex } = useChainSpaceEnv();
   const { destroyTabParaSetup, getChainSpaceApiIndex } = useParaSetup();
 
@@ -177,6 +179,9 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
 
               // Destroy Parachain state associated with this tab.
               destroyTabParaSetup(id);
+
+              // Destroy controllers associated with the tab.
+              destroyControllers(id);
 
               // Destroy tab instance.
               destroyTab(index, id);

@@ -15,11 +15,13 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { SubHeadingWrapper } from './Wrappers';
 import { isDirectoryId } from 'config/networks/Utils';
 import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
+import { useChainBrowser } from 'contexts/ChainBrowser';
 
 export const ManageTab = () => {
+  const { renameTab } = useTabs();
   const { getApiStatus } = useApi();
   const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
-  const { renameTab, updateSs58, updateUnits, updateUnit } = useTabs();
+  const { updateSs58, updateUnits, updateUnit } = useChainBrowser();
 
   const apiStatus = getApiStatus(apiInstanceId);
   const apiDisconnected = !ACTIVE_API_STATUSES.includes(apiStatus);
