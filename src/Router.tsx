@@ -12,7 +12,6 @@ import { useSetActivePage } from 'hooks/useSetActivePage';
 export const Router = () => {
   const { tab, tabId } = useActiveTab();
   const { getTabActiveTask } = useTabs();
-
   const tabActiveTask = getTabActiveTask(tabId);
 
   // on tab / location / task changes, check if a local active page exists for that route, and move
