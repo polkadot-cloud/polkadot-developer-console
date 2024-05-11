@@ -59,7 +59,7 @@ export const TabWrapper = styled(motion.div)`
   &:hover,
   &.active,
   &:active {
-    background-color: var(--button-tab-background);
+    background-color: var(--tab-active-background);
     border-right-color: var(--background-default);
     border-radius: var(--tab-border-radius);
     color: var(--text-color-primary);
