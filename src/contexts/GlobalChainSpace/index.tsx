@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useRef } from 'react';
+import { createContext, useContext } from 'react';
 import type { GlobalChainSpaceContextInterface } from './types';
 import {
   GLOBAL_CHAIN_SPACE_OWNER,
@@ -17,31 +17,22 @@ export const GlobalChainSpace = createContext<GlobalChainSpaceContextInterface>(
 export const useGlobalChainSpace = () => useContext(GlobalChainSpace);
 
 // Instantiate a global chain space.
-const index = ChainSpaceController.instantiate(GLOBAL_CHAIN_SPACE_OWNER);
+ChainSpaceController.instantiate(GLOBAL_CHAIN_SPACE_OWNER);
 
 export const GlobalChainSpaceProvider = ({
   children,
 }: {
   children: ReactNode;
-}) => {
-  // The index of the global parachain setup chain space.
-  const globalChainSpaceIndex = useRef<number>(index);
-
-  return (
-    <GlobalChainSpace.Provider
-      value={{
-        globalChainSpace: {
-          ownerId: GLOBAL_CHAIN_SPACE_OWNER,
-          index: globalChainSpaceIndex.current,
-          getInstance: () =>
-            ChainSpaceController.getInstance(
-              GLOBAL_CHAIN_SPACE_OWNER,
-              globalChainSpaceIndex.current
-            ),
-        },
-      }}
-    >
-      {children}
-    </GlobalChainSpace.Provider>
-  );
-};
+}) => (
+  <GlobalChainSpace.Provider
+    value={{
+      globalChainSpace: {
+        ownerId: GLOBAL_CHAIN_SPACE_OWNER,
+        getInstance: () =>
+          ChainSpaceController.getInstance(GLOBAL_CHAIN_SPACE_OWNER),
+      },
+    }}
+  >
+    {children}
+  </GlobalChainSpace.Provider>
+);

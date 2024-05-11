@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { OwnerId } from 'types';
-import type { ChainSpaceInstanceId } from './types';
 import { ApiController } from 'controllers/Api';
 import type { ChainId } from 'config/networks';
 
@@ -14,24 +13,16 @@ export class ChainSpace {
   // The associated owner for this instance.
   #ownerId: OwnerId;
 
-  // The chain space id for this instance.
-  #chainSpaceId: ChainSpaceInstanceId;
-
   get ownerId() {
     return this.#ownerId;
-  }
-
-  get chainSpaceId() {
-    return this.#chainSpaceId;
   }
 
   // ------------------------------------------------------
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(ownerId: OwnerId, instanceIndex: number) {
+  constructor(ownerId: OwnerId) {
     this.#ownerId = ownerId;
-    this.#chainSpaceId = `${ownerId}_${instanceIndex}`;
   }
 
   // ------------------------------------------------------
@@ -51,12 +42,12 @@ export class ChainSpace {
 
   // Get an api instance associated with this chain space.
   getApi(index: number) {
-    return ApiController.getInstanceApi(this.#chainSpaceId, index);
+    return ApiController.getInstanceApi(this.#ownerId, index);
   }
 
   // Destroy an api instance associated with this chain space.
   async destroyApi(index: number) {
-    await ApiController.destroy(this.#chainSpaceId, index);
+    await ApiController.destroy(this.#ownerId, index);
   }
 
   // ------------------------------------------------------

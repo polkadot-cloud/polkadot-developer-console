@@ -11,8 +11,7 @@ export const defaultGlboalChainSpaceContext: GlobalChainSpaceContextInterface =
   {
     globalChainSpace: {
       ownerId: GLOBAL_CHAIN_SPACE_OWNER,
-      index: 0,
       getInstance: () =>
-        ChainSpaceController.getInstance(GLOBAL_CHAIN_SPACE_OWNER, 0),
+        ChainSpaceController.getInstance(GLOBAL_CHAIN_SPACE_OWNER),
     },
   };
