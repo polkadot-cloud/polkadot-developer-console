@@ -134,6 +134,10 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       ...tabs,
       {
         id: newTabId,
+        tabData: {
+          task: undefined,
+          ui: undefined,
+        },
         connectFrom: 'directory' as ConnectFrom,
         chain: undefined,
         name: 'New Tab',

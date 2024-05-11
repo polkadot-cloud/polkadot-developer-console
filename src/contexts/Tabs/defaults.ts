@@ -51,6 +51,10 @@ export const defaultTabsContext: TabsContextInterface = {
 export const defaultTabs: Tabs = [
   {
     id: 1,
+    tabData: {
+      task: undefined,
+      ui: undefined,
+    },
     connectFrom: 'directory',
     chain: {
       id: 'polkadot',
@@ -70,6 +74,10 @@ export const defaultTabs: Tabs = [
   },
   {
     id: 2,
+    tabData: {
+      task: undefined,
+      ui: undefined,
+    },
     connectFrom: 'directory',
     chain: {
       id: 'kusama',
@@ -89,6 +97,10 @@ export const defaultTabs: Tabs = [
   },
   {
     id: 3,
+    tabData: {
+      task: undefined,
+      ui: undefined,
+    },
     connectFrom: 'directory',
     chain: {
       id: 'rococo',
@@ -108,6 +120,10 @@ export const defaultTabs: Tabs = [
   },
   {
     id: 4,
+    tabData: {
+      task: undefined,
+      ui: undefined,
+    },
     connectFrom: 'directory',
     chain: undefined,
     name: 'New Tab',
@@ -120,6 +136,10 @@ export const defaultTabs: Tabs = [
 
 export const defaultEemptyTab: Tab = {
   id: -1,
+  tabData: {
+    task: undefined,
+    ui: undefined,
+  },
   connectFrom: 'directory',
   chain: undefined,
   name: '',
