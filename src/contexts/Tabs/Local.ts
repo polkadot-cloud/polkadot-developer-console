@@ -125,12 +125,7 @@ export const setSelectedTabIndex = (index: number) => {
   localStorage.setItem('activeTabIndex', index.toString());
 };
 
-export const setActivePage = (
-  tabId: number,
-  route: Route,
-  connected: boolean,
-  value: number
-) => {
+export const setActivePage = (tabId: number, route: Route, value: number) => {
   const current =
     (localStorageOrDefault('activePages', undefined, true) as
       | Record<string, number>
@@ -138,7 +133,7 @@ export const setActivePage = (
 
   const updated = {
     ...current,
-    [`${tabId}:${connected ? 1 : 0}:${route}`]: value,
+    [`${tabId}:${route}`]: value,
   };
   localStorage.setItem('activePages', JSON.stringify(updated));
 };

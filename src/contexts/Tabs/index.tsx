@@ -247,12 +247,11 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const setTabActivePage = (
     tabId: number,
     route: Route,
-    page: number,
-    apiActive: boolean,
+    activePage: number,
     persist = true
   ) => {
     if (persist) {
-      local.setActivePage(tabId, route, apiActive, page);
+      local.setActivePage(tabId, route, activePage);
     }
 
     setTabs(
@@ -260,7 +259,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         if (tab.id === tabId) {
           return {
             ...tab,
-            activePage: page,
+            activePage,
           };
         }
         return tab;
@@ -308,7 +307,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const localActivePage = local.getActivePage(tabId, 'default', connected);
 
     if (localActivePage !== undefined) {
-      setTabActivePage(tabId, 'default', localActivePage, connected, false);
+      setTabActivePage(tabId, 'default', localActivePage, false);
     }
 
     setSelectedTabId(tabId);

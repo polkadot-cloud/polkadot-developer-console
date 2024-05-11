@@ -80,8 +80,7 @@ export interface TabsContextInterface {
   setTabActivePage: (
     id: number,
     route: Route,
-    page: number,
-    apiActive: boolean,
+    activePage: number,
     persist?: boolean
   ) => void;
   setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
