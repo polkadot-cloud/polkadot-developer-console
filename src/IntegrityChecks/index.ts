@@ -26,13 +26,7 @@ export const performTabsCheck = ({
   try {
     activeTabs.forEach((tab) => {
       if (
-        !(
-          'id' in tab &&
-          'name' in tab &&
-          'activeTask' in tab &&
-          'ui' in tab &&
-          'taskData' in tab
-        )
+        !('id' in tab && 'name' in tab && 'activeTask' in tab && 'ui' in tab)
       ) {
         throw new Error('Invalid tab');
       }

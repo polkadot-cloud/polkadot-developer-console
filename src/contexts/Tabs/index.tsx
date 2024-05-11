@@ -140,6 +140,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         taskData: undefined,
         ui: {
           activeConnectFrom: 'directory' as ConnectFrom,
+          autoConnect,
         },
         activePage: 0,
       },
@@ -232,6 +233,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const newTabs = tabs.map((tab) => {
       if (tab.id === id) {
         const updated = { ...tab };
+        updated.ui.autoConnect = checked;
 
         if (updated.taskData) {
           updated.taskData.autoConnect = checked;
@@ -363,7 +365,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
               connectFrom: isDirectory
                 ? 'directory'
                 : ('customEndpoint' as ConnectFrom),
-              autoConnect,
+              autoConnect: tab.ui.autoConnect,
             },
           }
         : tab

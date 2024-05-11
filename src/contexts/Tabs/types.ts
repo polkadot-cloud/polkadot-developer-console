@@ -17,6 +17,7 @@ export interface Tab {
   taskData: taskData;
   ui: {
     activeConnectFrom: ConnectFrom;
+    autoConnect: boolean;
   };
   activePage: number;
 }

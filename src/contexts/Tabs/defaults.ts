@@ -68,6 +68,7 @@ export const defaultTabs: Tabs = [
     },
     ui: {
       activeConnectFrom: 'directory',
+      autoConnect: true,
     },
     activePage: 0,
   },
@@ -91,6 +92,7 @@ export const defaultTabs: Tabs = [
     },
     ui: {
       activeConnectFrom: 'directory',
+      autoConnect: true,
     },
     activePage: 0,
   },
@@ -114,6 +116,7 @@ export const defaultTabs: Tabs = [
     },
     ui: {
       activeConnectFrom: 'directory',
+      autoConnect: true,
     },
     activePage: 0,
   },
@@ -124,6 +127,7 @@ export const defaultTabs: Tabs = [
     taskData: undefined,
     ui: {
       activeConnectFrom: 'directory',
+      autoConnect: false,
     },
     activePage: 0,
   },
@@ -136,6 +140,7 @@ export const defaultEemptyTab: Tab = {
   taskData: undefined,
   ui: {
     activeConnectFrom: 'directory',
+    autoConnect: false,
   },
   activePage: 0,
 };
