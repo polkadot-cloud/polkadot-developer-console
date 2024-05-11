@@ -17,15 +17,9 @@ import { isDirectoryId } from 'config/networks/Utils';
 import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 
 export const ManageTab = () => {
-  const {
-    renameTab,
-    updateSs58,
-    updateUnits,
-    updateUnit,
-    setTabForceDisconnect,
-  } = useTabs();
   const { getApiStatus } = useApi();
   const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
+  const { renameTab, updateSs58, updateUnits, updateUnit } = useTabs();
 
   const apiStatus = getApiStatus(apiInstanceId);
   const apiDisconnected = !ACTIVE_API_STATUSES.includes(apiStatus);
@@ -108,7 +102,6 @@ export const ManageTab = () => {
                     )
                   ) {
                     if (tab?.taskData?.chain) {
-                      setTabForceDisconnect(tabId, true, true);
                       ApiController.destroyAll(ownerId);
                     }
                   }

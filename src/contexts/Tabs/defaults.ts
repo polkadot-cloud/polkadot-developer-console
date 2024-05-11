@@ -40,7 +40,6 @@ export const defaultTabsContext: TabsContextInterface = {
   getStoredChain: (tabId) => undefined,
   forgetTabChain: (tabId) => {},
   setTabAutoConnect: (id, autoConnect) => {},
-  setTabForceDisconnect: (id, forceDisconnect, resetActiveTask) => {},
   setTabActivePage: (id, route, activePage, persist) => {},
   switchTab: (tabId, tabIndex) => {},
   setTabConnectFrom: (tabId, connectFrom) => {},
@@ -55,7 +54,6 @@ export const defaultTabs: Tabs = [
     activeTask: 'connectChain',
     taskData: {
       connectFrom: 'directory',
-      forceDisconnect: false,
       autoConnect: true,
       chain: {
         id: 'polkadot',
@@ -68,6 +66,9 @@ export const defaultTabs: Tabs = [
         },
       },
     },
+    ui: {
+      activeConnectFrom: 'directory',
+    },
     activePage: 0,
   },
   {
@@ -76,7 +77,6 @@ export const defaultTabs: Tabs = [
     activeTask: 'connectChain',
     taskData: {
       connectFrom: 'directory',
-      forceDisconnect: false,
       autoConnect: true,
       chain: {
         id: 'kusama',
@@ -89,6 +89,9 @@ export const defaultTabs: Tabs = [
         },
       },
     },
+    ui: {
+      activeConnectFrom: 'directory',
+    },
     activePage: 0,
   },
   {
@@ -97,7 +100,6 @@ export const defaultTabs: Tabs = [
     activeTask: 'connectChain',
     taskData: {
       connectFrom: 'directory',
-      forceDisconnect: false,
       autoConnect: true,
       chain: {
         id: 'rococo',
@@ -110,6 +112,9 @@ export const defaultTabs: Tabs = [
         },
       },
     },
+    ui: {
+      activeConnectFrom: 'directory',
+    },
     activePage: 0,
   },
   {
@@ -117,6 +122,9 @@ export const defaultTabs: Tabs = [
     name: 'New Tab',
     activeTask: null,
     taskData: undefined,
+    ui: {
+      activeConnectFrom: 'directory',
+    },
     activePage: 0,
   },
 ];
@@ -126,6 +134,9 @@ export const defaultEemptyTab: Tab = {
   name: '',
   activeTask: null,
   taskData: undefined,
+  ui: {
+    activeConnectFrom: 'directory',
+  },
   activePage: 0,
 };
 export const defaultCustomEndpointChainMeta = {

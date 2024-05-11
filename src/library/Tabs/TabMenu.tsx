@@ -21,14 +21,9 @@ export const TabContextMenu = ({
   tabId: number;
   onSettings: () => void;
 }) => {
-  const {
-    getTab,
-    setTabActiveTask,
-    setTabForceDisconnect,
-    instantiateApiFromTab,
-  } = useTabs();
   const { closeMenu } = useMenu();
   const { getApiStatus } = useApi();
+  const { getTab, setTabActiveTask, instantiateApiFromTab } = useTabs();
 
   const tab = getTab(tabId);
   const ownerId = tabIdToOwnerId(tabId);
@@ -75,7 +70,6 @@ export const TabContextMenu = ({
           <button
             onClick={() => {
               if (canDisconenct && tab?.taskData?.chain) {
-                setTabForceDisconnect(tabId, true, true);
                 ApiController.destroyAll(ownerId);
                 closeMenu();
               } else if (canReconnect) {

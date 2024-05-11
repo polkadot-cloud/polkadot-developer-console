@@ -15,6 +15,9 @@ export interface Tab {
   name: string;
   activeTask: TabTask | null;
   taskData: taskData;
+  ui: {
+    activeConnectFrom: ConnectFrom;
+  };
   activePage: number;
 }
 
@@ -23,7 +26,6 @@ export type taskData = taskDataConnectChain | undefined;
 export interface taskDataConnectChain {
   chain: TabChainData | undefined;
   connectFrom: ConnectFrom;
-  forceDisconnect: boolean;
   autoConnect: boolean;
 }
 
@@ -78,11 +80,6 @@ export interface TabsContextInterface {
   ) => { id: ChainId; chain: NetworkDirectoryItem } | undefined;
   forgetTabChain: (tabId: number) => void;
   setTabAutoConnect: (id: number, autoConnect: boolean) => void;
-  setTabForceDisconnect: (
-    id: number,
-    forceDisconnect: boolean,
-    resetActiveTask: boolean
-  ) => void;
   setTabActivePage: (
     id: number,
     route: Route,
