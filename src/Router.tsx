@@ -10,7 +10,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useSetActivePage } from 'hooks/useSetActivePage';
 
 export const Router = () => {
-  const { tab, tabId } = useActiveTab();
+  const { tabId } = useActiveTab();
   const { getTabActiveTask } = useTabs();
   const tabActiveTask = getTabActiveTask(tabId);
 
@@ -23,13 +23,7 @@ export const Router = () => {
       <Route
         key={`route_default`}
         path={'/'}
-        element={
-          tabActiveTask === 'connectChain' && tab?.chain ? (
-            <Chain />
-          ) : (
-            <Default />
-          )
-        }
+        element={tabActiveTask === 'connectChain' ? <Chain /> : <Default />}
       />
       <Route key={`route_settings`} path={'/settings'} element={<Settings />} />
       {/* Fallback route to chain */}

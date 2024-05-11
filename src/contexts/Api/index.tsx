@@ -33,7 +33,6 @@ export const Api = createContext<ApiContextInterface>(defaultApiContext);
 export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
-  const { fetchPalletVersions } = useChainUi();
   const {
     tabs,
     forgetTabChain,
@@ -41,6 +40,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     instantiateApiFromTab,
     setTabForceDisconnect,
   } = useTabs();
+  const { fetchPalletVersions } = useChainUi();
 
   // Store API connection status of each api instance. NOTE: requires ref as it is used in event
   // listener.

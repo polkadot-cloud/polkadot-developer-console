@@ -36,8 +36,9 @@ export const useTabs = () => useContext(TabsContext);
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const { autoConnect, autoTabNaming } = useSettings();
 
-  // Created tabs.
+  // Created tabs. NOTE: Requires ref as it is used in event listeners.
   const [tabs, setTabsState] = useState<Tabs>(local.getTabs() || defaultTabs);
+  const tabsRef = useRef(tabs);
 
   // Current active tab id.
   const [selectedTabId, setSelectedTabIdState] = useState<number>(
@@ -78,7 +79,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Sets tabs state, and updates local storage.
   const setTabs = (newTabs: Tabs) => {
+    console.log('setting tabs', newTabs);
     local.setTabs(newTabs);
+    tabsRef.current = newTabs;
     setTabsState(newTabs);
   };
 
@@ -223,14 +226,15 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  // Set a tab's forceDisconnect setting.
+  // Set a tab's forceDisconnect setting. NOTE: This function is called within event listeners, so
+  // tabsRef is used to ensure the latest tabs config is used.
   const setTabForceDisconnect = (
     id: number,
     checked: boolean,
     resetActiveTask: boolean
   ) => {
     setTabs(
-      tabs.map((tab) => {
+      tabsRef.current.map((tab) => {
         if (tab.id === id) {
           return {
             ...tab,
@@ -267,14 +271,15 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  // Forget a tab's chain.
+  // Forget a tab's chain. NOTE: This function is called within event listeners, so tabsRef is used
+  // to ensure the latest tabs config is used.
   const forgetTabChain = (tabId: number) => {
     // Disconnect from Api instance if present.
     if (getTab(tabId)?.chain) {
       destroyControllers(tabId);
     }
     // Update tab state.
-    const newTabs = tabs.map((tab) =>
+    const newTabs = tabsRef.current.map((tab) =>
       tab.id === tabId ? { ...tab, chain: undefined } : tab
     );
     setTabs(newTabs);
@@ -392,9 +397,10 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Get an active task for a tab.
   const getTabActiveTask = (tabId: number) => getTab(tabId)?.activeTask || null;
 
-  // Set an active task for a tab.
+  // Set an active task for a tab. NOTE: This function is called within event listeners, so tabsRef
+  // is used to ensure the latest tabs config is used.
   const setTabActiveTask = (tabId: number, task: TabTask | null) => {
-    const newTabs = tabs.map((tab) =>
+    const newTabs = tabsRef.current.map((tab) =>
       tab.id === tabId ? { ...tab, activeTask: task } : tab
     );
     setTabs(newTabs);
