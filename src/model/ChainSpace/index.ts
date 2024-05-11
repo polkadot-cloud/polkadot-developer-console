@@ -67,6 +67,6 @@ export class ChainSpace {
   // space is being destroyed.
   async destroy() {
     // Destroy all api instances for this owner.
-    await ApiController.destroyAll(this.#chainSpaceId);
+    await ApiController.destroyAll(this.#ownerId);
   }
 }
