@@ -38,6 +38,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     instantiatedIds,
     setTabHoverIndex,
     addInstantiatedId,
+    removeTabChainSpaceIndexes,
     incrementRedirectCounter,
     getTabChainSpaceApiIndexes,
   } = useTabs();
@@ -185,6 +186,9 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
 
               // Destroy controllers associated with the tab.
               destroyControllers(id);
+
+              // Remove api instances from tab chain space indexes.
+              removeTabChainSpaceIndexes(id);
 
               // Destroy tab instance.
               destroyTab(index, id);

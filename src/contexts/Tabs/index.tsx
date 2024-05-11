@@ -80,8 +80,18 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setChainSpaceApiIndexes(updated);
   };
 
+  // Remove a chain space api index for a tab, given its label.
+  const removeChainSpaceApiIndex = (tabId: number, label: string) => {
+    const updated = { ...chainSpaceApiIndexes };
+    updated[tabId] = updated[tabId]?.filter((index) => index.label !== label);
+    if (updated[tabId]?.length === 0) {
+      delete updated[tabId];
+    }
+    setChainSpaceApiIndexes(updated);
+  };
+
   // Remove chain space api indexes for a tab.
-  const removeChainSpaceApiIndex = (tabId: number) => {
+  const removeTabChainSpaceIndexes = (tabId: number) => {
     const updated = { ...chainSpaceApiIndexes };
     delete updated[tabId];
     setChainSpaceApiIndexes(updated);
@@ -326,6 +336,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         getTabChainSpaceApiIndexes,
         getChainSpaceApiIndex,
         setChainSpaceApiIndex,
+        removeTabChainSpaceIndexes,
         removeChainSpaceApiIndex,
         instantiatedIds: instantiatedIds.current,
       }}

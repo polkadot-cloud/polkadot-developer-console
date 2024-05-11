@@ -74,8 +74,13 @@ export const ConnectRelay = () => {
   // Handle disconnect from api instance.
   const handleDisconnect = () => {
     if (chainSpaceApiIndex !== undefined) {
+      // Destroy the chain space instance.
       destroyChainApi(chainSpaceApiIndex.index);
-      removeChainSpaceApiIndex(tabId);
+
+      // Destroy the relay chain space index record.
+      removeChainSpaceApiIndex(tabId, 'parachainSetup:relay');
+
+      // Reset tab active task.
       setTabActiveTask(tabId, null);
     }
   };

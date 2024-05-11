@@ -91,7 +91,8 @@ export interface TabsContextInterface {
     label: string
   ) => ChainSpaceIndex | undefined;
   setChainSpaceApiIndex: (tabId: number, index: ChainSpaceIndex) => void;
-  removeChainSpaceApiIndex: (tabId: number) => void;
+  removeTabChainSpaceIndexes: (tabId: number) => void;
+  removeChainSpaceApiIndex: (tabId: number, label: string) => void;
 }
 
 // Active pages structure used in local storage to keep track of active page indexes for each tab.

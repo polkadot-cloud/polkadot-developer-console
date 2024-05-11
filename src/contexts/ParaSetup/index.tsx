@@ -11,7 +11,6 @@ import type {
 } from './types';
 import { defaultParaSetupContext } from './defaults';
 import type { ChainId } from 'config/networks';
-import { useTabs } from 'contexts/Tabs';
 
 export const ParaSetupContext = createContext<ParaSetupContextInterface>(
   defaultParaSetupContext
@@ -20,8 +19,6 @@ export const ParaSetupContext = createContext<ParaSetupContextInterface>(
 export const useParaSetup = () => useContext(ParaSetupContext);
 
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
-  const { removeChainSpaceApiIndex } = useTabs();
-
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
 
@@ -68,7 +65,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
-  // Destroy state associated with a tab. Should only be used on tab close.
+  // Destroy parachain setup state associated with a tab. Currently only being used on tab close.
   const destroyTabParaSetup = (tabId: number) => {
     const updated = { ...activeSteps };
     delete updated[tabId];
@@ -81,9 +78,6 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     const updatedConfirmedRelayChains = { ...confirmedRelayChains };
     delete updatedConfirmedRelayChains[tabId];
     setSelectedRelayChains(updatedConfirmedRelayChains);
-
-    // Remove api instances from tab chain space indexes.
-    removeChainSpaceApiIndex(tabId);
   };
 
   return (
