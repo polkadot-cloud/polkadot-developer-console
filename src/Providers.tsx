@@ -27,29 +27,44 @@ import { ActiveTabProvider } from 'contexts/ActiveTab';
 import { GlobalChainSpaceProvider } from 'contexts/GlobalChainSpace';
 import { ImportedAccountsProvider } from 'contexts/ImportedAccounts';
 import { ChainSpaceEnvProvider } from 'contexts/ChainSpaceEnv';
+import { ChainBrowserProvider } from 'contexts/ChainBrowser';
 
 export const Providers = () => {
+  // !! --------------------------------
   // !! Provider order matters.
+  // !! --------------------------------
   const providers: Provider<AnyJson>[] = [
+    // Workspace and tab providers.
     SettingsProvider,
     TabsProvider,
     ActiveTabProvider,
     TagsProvider,
     GlobalChainSpaceProvider,
-    ParaSetupProvider,
-    ChainFilterProvider,
+
+    // UI providers.
     MenuProvider,
     TooltipProvider,
-    ChainUiProvider,
-    ApiProvider,
+    ConnectProvider,
+
+    // Account related providers.
     ExtensionsProvider,
     [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
     VaultAccountsProvider,
     ImportedAccountsProvider,
-    TabAccountsProvider,
-    ConnectProvider,
-    ChainStateProvider,
+
+    // Chain space environment hosting api instances.
     ChainSpaceEnvProvider,
+
+    // Task: `chainBrowser` related providers.
+    ChainBrowserProvider,
+    ChainFilterProvider,
+    ChainUiProvider,
+    ChainStateProvider,
+    ApiProvider,
+    TabAccountsProvider,
+
+    // Task: `parachainSetup` related providers.
+    ParaSetupProvider,
   ];
 
   return withProviders(providers, App);

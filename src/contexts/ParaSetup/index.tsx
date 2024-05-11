@@ -36,9 +36,11 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
 
   // Store the index at which to access the relay chain api from the global chain space environment,
   // for each tab.
+  // TODO: Move to Tabs context and add label alongside index
   const [chainSpaceApiIndexes, setChainSpaceApiIndexes] =
     useState<ChainSpaceApiIndexes>({});
 
+  console.log(chainSpaceApiIndexes);
   // Get the selected relay chain for a tab.
   const getSelectedRelayChain = (tabId: number) =>
     selectedRelayChains[tabId] || 'polkadot';

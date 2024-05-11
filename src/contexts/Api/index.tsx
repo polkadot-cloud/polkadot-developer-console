@@ -26,6 +26,7 @@ import { setStateWithRef } from '@w3ux/utils';
 import { ownerIdToTabId } from 'contexts/Tabs/Utils';
 import { getIndexFromInstanceId } from 'model/Api/util';
 import type { OwnerId } from 'types';
+import { useChainBrowser } from 'contexts/ChainBrowser';
 
 export const Api = createContext<ApiContextInterface>(defaultApiContext);
 
@@ -33,8 +34,8 @@ export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const { fetchPalletVersions } = useChainUi();
-  const { tabs, forgetTabChain, setTabActiveTask, instantiateApiFromTab } =
-    useTabs();
+  const { tabs, setTabActiveTask } = useTabs();
+  const { instantiateApiFromTab, forgetTabChain } = useChainBrowser();
 
   // Store API connection status of each api instance. NOTE: requires ref as it is used in event
   // listener.

@@ -7,15 +7,15 @@ import {
   faChevronRight,
   faCircleRight,
 } from '@fortawesome/free-solid-svg-icons';
-import { useTabs } from 'contexts/Tabs';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { ChainInputWrapper } from '../Wrappers';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { useChainBrowser } from 'contexts/ChainBrowser';
 
 export const CustomEndpointInput = () => {
-  const { connectTab } = useTabs();
   const { tabId } = useActiveTab();
+  const { connectChainBrowser } = useChainBrowser();
   const { getCustomEndpoint, setCustomEndpoint } = useChainFilter();
 
   // The editable value of the input.
@@ -42,7 +42,7 @@ export const CustomEndpointInput = () => {
       <div className="footer">
         <ButtonSubmit
           onClick={() => {
-            connectTab(tabId, 'custom', customEndpoint);
+            connectChainBrowser(tabId, 'custom', customEndpoint);
           }}
         >
           Connect

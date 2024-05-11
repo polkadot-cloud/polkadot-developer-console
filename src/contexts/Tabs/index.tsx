@@ -4,26 +4,16 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
 import type {
-  ChainMeta,
   ConnectFrom,
-  TabChainData,
   TabTask,
   Tabs,
   TabsContextInterface,
+  TaskData,
 } from './types';
-import {
-  defaultCustomEndpointChainMeta,
-  defaultTabs,
-  defaultTabsContext,
-} from './defaults';
+import { defaultTabs, defaultTabsContext } from './defaults';
 import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
-import { NetworkDirectory } from 'config/networks';
-import type { ChainId, DirectoryId } from 'config/networks';
 import { checkLocalTabs } from 'IntegrityChecks/Local';
-import { ApiController } from 'controllers/Api';
-import { isDirectoryId } from 'config/networks/Utils';
-import { tabIdToOwnerId } from './Utils';
 import type { Route } from 'App';
 
 checkLocalTabs();
@@ -34,7 +24,7 @@ export const TabsContext =
 export const useTabs = () => useContext(TabsContext);
 
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
-  const { autoConnect, autoTabNaming } = useSettings();
+  const { autoConnect } = useSettings();
 
   // Created tabs. NOTE: Requires ref as it is used in event listeners.
   const [tabs, setTabsState] = useState<Tabs>(local.getTabs() || defaultTabs);
@@ -109,18 +99,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Gets the active tab.
   const getActiveTab = () => getTab(selectedTabId);
 
-  // Gets the previously connected to chain from network directory, if present.
-  const getStoredChain = (tabId: number) => {
-    const tab = getTab(tabId);
-    const chainId = tab?.taskData?.chain?.id;
-
-    if (!chainId || !isDirectoryId(chainId)) {
-      return undefined;
-    }
-
-    return { id: chainId, chain: NetworkDirectory[chainId] };
-  };
-
   // Get the largest id from a list of tabs.
   const getLargestId = (list: Tabs) =>
     [...list].sort((a, b) => b.id - a.id)?.[0].id || 0;
@@ -170,9 +148,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       setSelectedTabIndex(activeTabIndex - 1);
     }
 
-    // Destroy any controller instances associated with tab.
-    destroyControllers(id);
-
     // Remove this tab's activePages from local storage.
     local.removeTabActivePages(id);
   };
@@ -180,51 +155,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Rename a tab.
   const renameTab = (id: number, name: string) => {
     const newTabs = tabs.map((tab) => (tab.id === id ? { ...tab, name } : tab));
-    setTabs(newTabs);
-  };
-
-  // Update a tab's ss58 prefix.
-  const updateSs58 = (id: number, ss58: number) => {
-    const newTabs = tabs.map((tab) => {
-      if (tab.id !== id) {
-        const updated = { ...tab };
-        if (updated.taskData?.chain) {
-          updated.taskData.chain.ss58 = ss58;
-        }
-        return updated;
-      }
-      return tab;
-    });
-    setTabs(newTabs);
-  };
-
-  // Update a tab's units.
-  const updateUnits = (id: number, units: number) => {
-    const newTabs = tabs.map((tab) => {
-      if (tab.id !== id) {
-        const updated = { ...tab };
-        if (updated.taskData?.chain) {
-          updated.taskData.chain.units = units;
-        }
-        return updated;
-      }
-      return tab;
-    });
-    setTabs(newTabs);
-  };
-
-  // Update a tab's unit.
-  const updateUnit = (id: number, unit: string) => {
-    const newTabs = tabs.map((tab) => {
-      if (tab.id !== id) {
-        const updated = { ...tab };
-        if (updated.taskData?.chain) {
-          updated.taskData.chain.unit = unit;
-        }
-        return updated;
-      }
-      return tab;
-    });
     setTabs(newTabs);
   };
 
@@ -271,21 +201,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  // Forget a tab's chain. NOTE: This function is called within event listeners, so tabsRef is used
-  // to ensure the latest tabs config is used.
-  const forgetTabChain = (tabId: number) => {
-    // Disconnect from Api instance if present.
-    if (getTab(tabId)?.taskData?.chain) {
-      destroyControllers(tabId);
-    }
-    // Update tab state.
-    const newTabs = tabsRef.current.map((tab) =>
-      tab.id === tabId ? { ...tab, chain: undefined } : tab
-    );
-    setTabs(newTabs);
-  };
-
-  // Set a tab's `activeConnectFrom` property.
+  // Update `activeConnectFrom` in tab's ui property.
   const setTabConnectFrom = (id: number, connectFrom: ConnectFrom) => {
     const newTabs = tabs.map((tab) => {
       if (tab.id === id) {
@@ -299,20 +215,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
-  // Gets the amount of tab names starting with the provided string.
-  const getTabNameCount = (name: string) =>
-    tabs.filter((tab) => tab.name.startsWith(name)).length;
-
-  // Generate tab name for chain.
-  const getAutoTabName = (chainId: DirectoryId) => {
-    const chainName = NetworkDirectory[chainId].name;
-    const existingNames = getTabNameCount(chainName);
-    const tabName =
-      existingNames === 0 ? chainName : `${chainName} ${existingNames + 1}`;
-
-    return tabName;
-  };
-
   // Switch tab.
   const switchTab = (tabId: number, tabIndex: number) => {
     const localActivePage = local.getActivePage(tabId, 'default');
@@ -320,92 +222,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     if (localActivePage !== undefined) {
       setTabActivePage(tabId, 'default', localActivePage, false);
     }
-
     setSelectedTabId(tabId);
     setSelectedTabIndex(tabIndex);
-  };
-
-  // Connect tab to an Api instance and update its chain data.
-  const connectTab = (tabId: number, chainId: ChainId, endpoint: string) => {
-    const isDirectory = isDirectoryId(chainId);
-
-    // Inject chain meta from network directory or custom endpoint.
-    let chainMeta: ChainMeta;
-    if (isDirectory) {
-      const system = NetworkDirectory[chainId].system;
-      chainMeta = {
-        ss58: system.ss58,
-        units: system.units,
-        unit: system.unit,
-      };
-    } else {
-      const localChain = local.getTabs()?.find(({ id }) => id === tabId)
-        ?.taskData?.chain;
-      chainMeta = localChain || defaultCustomEndpointChainMeta;
-    }
-
-    const chainData = {
-      ...chainMeta,
-      id: chainId,
-      endpoint,
-      api: { instanceIndex: 0 },
-    };
-
-    const newTabs = [...tabs].map((tab) =>
-      tab.id === tabId
-        ? {
-            ...tab,
-            // Auto rename the tab here if the setting is turned on.
-            name:
-              autoTabNaming && isDirectory ? getAutoTabName(chainId) : tab.name,
-            // Chain is now assigned the `chainBrowser` task.
-            activeTask: 'chainBrowser' as TabTask,
-            taskData: {
-              chain: chainData,
-              connectFrom: isDirectory
-                ? 'directory'
-                : ('customEndpoint' as ConnectFrom),
-              autoConnect: tab.ui.autoConnect,
-            },
-          }
-        : tab
-    );
-    setTabs(newTabs);
-    instantiateControllers(tabId, chainData);
-  };
-
-  // Instantiate an Api instance from tab chain data.
-  const instantiateApiFromTab = async (tabId: number) => {
-    const tab = getTab(tabId);
-    if (
-      tab?.activeTask === 'chainBrowser' &&
-      tab?.taskData?.chain &&
-      tab?.taskData?.autoConnect
-    ) {
-      // This api instance is about to be reconnected to, so the active task here needs to be
-      // persisted.
-      instantiateControllers(tab.id, tab?.taskData?.chain);
-    }
-  };
-
-  // Instantiate controllers for a new tab.
-  const instantiateControllers = async (tabId: number, chain: TabChainData) => {
-    if (!chain) {
-      return;
-    }
-    const ownerId = tabIdToOwnerId(tabId);
-    const { id, endpoint } = chain;
-    await ApiController.instantiate(ownerId, id, endpoint);
-  };
-
-  // Destroy controller instances for a tab.
-  const destroyControllers = (tabId: number) => {
-    const ownerId = tabIdToOwnerId(tabId);
-    const tab = getTab(tabId);
-
-    if (tab && tab.taskData?.chain) {
-      ApiController.destroyAll(ownerId);
-    }
   };
 
   // Get an active task for a tab.
@@ -422,7 +240,22 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     if (task === null) {
       setTabActivePage(tabId, 'default', 0);
     }
+    setTabs(newTabs);
+  };
 
+  // Get at tab's taskData, if any.
+  const getTabTaskData = (tabId: number) => getTab(tabId)?.taskData;
+
+  // Set a tab's `taskData` property.
+  const setTabTaskData = (tabId: number, value: TaskData) => {
+    const newTabs = tabs.map((tab) => {
+      if (tab.id === tabId) {
+        const updated = { ...tab };
+        updated.taskData = value;
+        return updated;
+      }
+      return tab;
+    });
     setTabs(newTabs);
   };
 
@@ -430,6 +263,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     <TabsContext.Provider
       value={{
         tabs,
+        tabsRef: tabsRef.current,
         setTabs,
         createTab,
         selectedTabId,
@@ -447,21 +281,16 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         tabsHidden,
         setTabsHidden,
         renameTab,
-        updateSs58,
-        updateUnits,
-        updateUnit,
-        connectTab,
-        instantiateApiFromTab,
         redirectCounter,
         incrementRedirectCounter,
-        getStoredChain,
-        forgetTabChain,
-        setTabConnectFrom,
         setTabAutoConnect,
         setTabActivePage,
         switchTab,
         getTabActiveTask,
         setTabActiveTask,
+        getTabTaskData,
+        setTabTaskData,
+        setTabConnectFrom,
         instantiatedIds: instantiatedIds.current,
       }}
     >
