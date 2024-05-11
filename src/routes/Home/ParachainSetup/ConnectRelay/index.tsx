@@ -108,10 +108,12 @@ export const ConnectRelay = () => {
                   chainId={selectedRelayChain}
                   onSelect={async (provider) => {
                     closeMenu();
-                    // Get and register the chain space index. TODO: Add label alongside chain space
-                    // index to easily identify what chain it is (e.g. relay chain, coretime chain).
+                    // Get and register the chain space index.
                     const index = getNextApiIndex();
-                    setChainSpaceApiIndex(tabId, { index, label: 'relay' });
+                    setChainSpaceApiIndex(tabId, {
+                      index,
+                      label: 'parachainSetup:relay',
+                    });
 
                     // Store the confirmed relay chain to state.
                     setConfirmedRelayChain(tabId, selectedRelayChain);
