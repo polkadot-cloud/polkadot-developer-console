@@ -4,6 +4,12 @@
 
 import type { Tab, Tabs, TabsContextInterface } from './types';
 
+// export const TAB_TASK_INDEXES: Record<TabTask | 'default', number> = {
+//   default: 0,
+//   connectChain: 1,
+//   newParachain: 2,
+// };
+
 export const defaultTabsContext: TabsContextInterface = {
   tabs: [],
   setTabs: (tabs) => {},
@@ -34,16 +40,13 @@ export const defaultTabsContext: TabsContextInterface = {
   getStoredChain: (tabId) => undefined,
   forgetTabChain: (tabId) => {},
   setTabAutoConnect: (id, autoConnect) => {},
-  setTabForceDisconnect: (id, forceDisconnect) => {},
+  setTabForceDisconnect: (id, forceDisconnect, resetActiveTask) => {},
   setTabActivePage: (id, route, page, apiActive, persist) => {},
   switchTab: (tabId, tabIndex, connected) => {},
   setTabConnectFrom: (tabId, connectFrom) => {},
+  getTabActiveTask: (tabId) => null,
   setTabActiveTask: (id, activeTask) => {},
 };
-
-export const DEFAULT_TAB_WIDTH_PX = 160;
-
-export const TAB_TRANSITION_DURATION_MS = 300;
 
 export const defaultTabs: Tabs = [
   {
@@ -130,3 +133,7 @@ export const defaultCustomEndpointChainMeta = {
   units: 10,
   unit: 'UNIT',
 };
+
+export const DEFAULT_TAB_WIDTH_PX = 160;
+
+export const TAB_TRANSITION_DURATION_MS = 300;

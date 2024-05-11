@@ -152,6 +152,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     // Remove instantiated id.
     removeInstantiatedId(id);
 
+    // TODO: Remove `activePage` from local storage.
+
     // Remove destroyed tab from state.
     const newTabs = [...tabs].filter((t) => t.id !== id);
     setTabs(newTabs);
@@ -222,13 +224,17 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Set a tab's forceDisconnect setting.
-  const setTabForceDisconnect = (id: number, checked: boolean) => {
+  const setTabForceDisconnect = (
+    id: number,
+    checked: boolean,
+    resetActiveTask: boolean
+  ) => {
     setTabs(
       tabs.map((tab) => {
         if (tab.id === id) {
           return {
             ...tab,
-            activeTask: null,
+            activeTask: resetActiveTask ? null : tab.activeTask,
             forceDisconnect: checked,
           };
         }
@@ -239,19 +245,19 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Set a tab's active page.
   const setTabActivePage = (
-    id: number,
+    tabId: number,
     route: Route,
     page: number,
     apiActive: boolean,
     persist = true
   ) => {
     if (persist) {
-      local.setActivePage(route, id, apiActive, page);
+      local.setActivePage(tabId, route, apiActive, page);
     }
 
     setTabs(
       tabs.map((tab) => {
-        if (tab.id === id) {
+        if (tab.id === tabId) {
           return {
             ...tab,
             activePage: page,
@@ -299,7 +305,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Switch tab.
   const switchTab = (tabId: number, tabIndex: number, connected: boolean) => {
-    const localActivePage = local.getActivePage('default', tabId, connected);
+    const localActivePage = local.getActivePage(tabId, 'default', connected);
 
     if (localActivePage !== undefined) {
       setTabActivePage(tabId, 'default', localActivePage, connected, false);
@@ -356,7 +362,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const tab = getTab(tabId);
     if (tab?.chain) {
       if (tab?.autoConnect) {
-        setTabForceDisconnect(tabId, false);
+        // This api instance is about to be reconnected to, so the active task here needs to be
+        // persisted.
+        setTabForceDisconnect(tabId, false, false);
       }
       instantiateControllers(tab.id, tab?.chain);
     }
@@ -381,6 +389,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       ApiController.destroyAll(ownerId);
     }
   };
+
+  // Get an active task for a tab.
+  const getTabActiveTask = (tabId: number) => getTab(tabId)?.activeTask || null;
 
   // Set an active task for a tab.
   const setTabActiveTask = (tabId: number, task: TabTask | null) => {
@@ -425,6 +436,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         setTabForceDisconnect,
         setTabActivePage,
         switchTab,
+        getTabActiveTask,
         setTabActiveTask,
         instantiatedIds: instantiatedIds.current,
       }}

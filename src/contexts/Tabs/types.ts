@@ -72,7 +72,11 @@ export interface TabsContextInterface {
   ) => { id: ChainId; chain: NetworkDirectoryItem } | undefined;
   forgetTabChain: (tabId: number) => void;
   setTabAutoConnect: (id: number, autoConnect: boolean) => void;
-  setTabForceDisconnect: (id: number, forceDisconnect: boolean) => void;
+  setTabForceDisconnect: (
+    id: number,
+    forceDisconnect: boolean,
+    resetActiveTask: boolean
+  ) => void;
   setTabActivePage: (
     id: number,
     route: Route,
@@ -82,5 +86,6 @@ export interface TabsContextInterface {
   ) => void;
   setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
   switchTab: (tabId: number, tabIndex: number, connected: boolean) => void;
+  getTabActiveTask: (tabId: number) => TabTask | null;
   setTabActiveTask: (tabId: number, task: TabTask | null) => void;
 }

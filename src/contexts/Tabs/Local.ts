@@ -17,10 +17,17 @@ export const getTabs = (): Tabs | undefined => {
 
   if (result) {
     try {
-      const formatted = result.map((tab) => ({
-        ...tab,
-        activePage: getActivePage('default', tab.id, false),
-      }));
+      const formatted = result.map((tab) => {
+        const autoConnect = tab?.autoConnect || false;
+
+        return {
+          ...tab,
+          // If this tab is configured to auto-connect, set the active task to connectChain
+          // immediately.
+          activeTask: autoConnect ? 'connectChain' : tab.activeTask,
+          activePage: getActivePage(tab.id, 'default', false),
+        };
+      });
 
       return formatted as Tabs;
     } catch (e) {
@@ -54,8 +61,8 @@ export const getActiveTabIndex = (): number | undefined => {
 
 // Gets saved active page from local storage, or returns undefined otherwise.
 export const getActivePage = (
-  route: Route,
   tabId: number,
+  route: Route,
   connected: boolean
 ): number | undefined => {
   const result = localStorageOrDefault('activePages', undefined, true) as
@@ -63,9 +70,10 @@ export const getActivePage = (
     | undefined;
 
   if (result) {
-    const value = result[`${tabId}:${connected ? 1 : 0}:${route}`];
-    if (value) {
-      return value as number;
+    // TODO: get from new structure.
+    const activeIndex = result[`${tabId}:${connected ? 1 : 0}:${route}`];
+    if (activeIndex) {
+      return activeIndex as number;
     }
   }
 };
@@ -118,8 +126,8 @@ export const setSelectedTabIndex = (index: number) => {
 };
 
 export const setActivePage = (
-  route: Route,
   tabId: number,
+  route: Route,
   connected: boolean,
   value: number
 ) => {

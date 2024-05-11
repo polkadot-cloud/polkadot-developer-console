@@ -34,8 +34,13 @@ export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const { fetchPalletVersions } = useChainUi();
-  const { tabs, forgetTabChain, instantiateApiFromTab, setTabForceDisconnect } =
-    useTabs();
+  const {
+    tabs,
+    forgetTabChain,
+    setTabActiveTask,
+    instantiateApiFromTab,
+    setTabForceDisconnect,
+  } = useTabs();
 
   // Store API connection status of each api instance. NOTE: requires ref as it is used in event
   // listener.
@@ -95,6 +100,8 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
       // Update API status to `disconnected`.
       setApiStatus({ ...apiStatusRef.current, [instanceId]: 'disconnected' });
     }
+    // Remove tab's activeTask.
+    setTabActiveTask(ownerIdToTabId(instanceId), null);
   };
 
   // Handle a chain error.
@@ -113,7 +120,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
       // If this owner is a tab, disconnect and forget the chain.
       if (ownerId.startsWith('tab_')) {
         forgetTabChain(ownerIdToTabId(ownerId));
-        setTabForceDisconnect(ownerIdToTabId(ownerId), true);
+        setTabForceDisconnect(ownerIdToTabId(ownerId), true, true);
       }
       NotificationsController.emit({
         title: 'Error Initializing Chain',
