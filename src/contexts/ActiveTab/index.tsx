@@ -4,7 +4,7 @@
 import { useTabs } from 'contexts/Tabs';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import type { ReactNode } from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext } from 'react';
 import type { ActiveTabContextInterface } from './types';
 import { defaultActiveTabContext } from './defaults';
 
@@ -19,17 +19,10 @@ export const ActiveTabProvider = ({ children }: { children: ReactNode }) => {
   const tab = getTab(selectedTabId);
   const ownerId = tabIdToOwnerId(selectedTabId);
 
-  // Stores the currently active tab id.
-  const [activeTabId, setActiveTabId] = useState<number>(selectedTabId);
-
-  useEffect(() => {
-    setActiveTabId(selectedTabId);
-  }, [selectedTabId]);
-
   return (
     <ActiveTabContext.Provider
       value={{
-        tabId: activeTabId,
+        tabId: selectedTabId,
         ownerId,
         apiInstanceId: `${ownerId}_0`, // NOTE: A tab's instance index is always 0; there is no ned to fetch it from tab metadata.
         tab,

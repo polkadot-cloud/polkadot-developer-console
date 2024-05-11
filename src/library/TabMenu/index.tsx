@@ -13,18 +13,13 @@ import { ButtonWithTooltip } from '../ButtonWithTooltip';
 import type { RouteSectionProvider } from 'routes/Common/types';
 import { useTooltip } from 'contexts/Tooltip';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useApi } from 'contexts/Api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
-  const { getApiActive } = useApi();
   const { pathname } = useLocation();
   const { closeTooltip } = useTooltip();
-  const { tab, tabId, apiInstanceId } = useActiveTab();
+  const { tab, tabId } = useActiveTab();
   const { tabsHidden, setTabsHidden, setTabActivePage } = useTabs();
-
-  // Get whether the api instance associated with this tab is active.
-  const apiActive = getApiActive(apiInstanceId);
 
   // Get the active page from tab.
   const activePage = tab?.activePage || 0;
@@ -38,7 +33,7 @@ export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
             <button
               key={`menu-section-${key}-${index}`}
               onClick={() => {
-                setTabActivePage(tabId, 'default', Number(key), apiActive);
+                setTabActivePage(tabId, 'default', Number(key));
               }}
               className={activePage === Number(key) ? 'active' : undefined}
             >
@@ -57,7 +52,7 @@ export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
           active={activePage === 9}
           onClick={() => {
             closeTooltip();
-            setTabActivePage(tabId, 'default', Number(9), apiActive, false);
+            setTabActivePage(tabId, 'default', Number(9), false);
           }}
           icon={faBarsProgress}
           disabled={false}

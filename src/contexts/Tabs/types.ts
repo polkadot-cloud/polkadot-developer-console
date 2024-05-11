@@ -5,6 +5,9 @@ import type { Route } from 'App';
 import type { ChainId, NetworkDirectoryItem } from 'config/networks';
 import type { Dispatch, SetStateAction } from 'react';
 
+// The tasks that developer console supports.
+export type TabTask = 'connectChain' | 'newParachain';
+
 export type Tabs = Tab[];
 
 export interface Tab {
@@ -14,6 +17,7 @@ export interface Tab {
   name: string;
   forceDisconnect: boolean;
   autoConnect: boolean;
+  activeTask: TabTask | null;
   activePage: number;
 }
 
@@ -68,14 +72,28 @@ export interface TabsContextInterface {
   ) => { id: ChainId; chain: NetworkDirectoryItem } | undefined;
   forgetTabChain: (tabId: number) => void;
   setTabAutoConnect: (id: number, autoConnect: boolean) => void;
-  setTabForceDisconnect: (id: number, forceDisconnect: boolean) => void;
+  setTabForceDisconnect: (
+    id: number,
+    forceDisconnect: boolean,
+    resetActiveTask: boolean
+  ) => void;
   setTabActivePage: (
     id: number,
     route: Route,
-    page: number,
-    apiActive: boolean,
+    activePage: number,
     persist?: boolean
   ) => void;
   setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
-  switchTab: (tabId: number, tabIndex: number, connected: boolean) => void;
+  switchTab: (tabId: number, tabIndex: number) => void;
+  getTabActiveTask: (tabId: number) => TabTask | null;
+  setTabActiveTask: (tabId: number, task: TabTask | null) => void;
+}
+
+// Active pages structure used in local storage to keep track of active page indexes for each tab.
+
+export type TabsActivePages = Record<string, TabActivePages> | undefined;
+
+export interface TabActivePages {
+  default?: number;
+  settings?: number;
 }

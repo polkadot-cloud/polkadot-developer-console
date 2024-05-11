@@ -3,12 +3,13 @@
 
 import type { OwnerId } from 'types';
 
-// Converts a tabId into an owner id. This is currently just converting the tab id to a string.
+// Converts a tabId into an owner id.
 export const tabIdToOwnerId = (tabId: number): OwnerId =>
   String(`tab_${tabId}`);
 
-// Converts an `ownerId` to a tab id. This is currently just converting the owner id to a number.
+// Converts an `ownerId` to a tab id. This takes the first number in the string, after the first
+// underscore.
 export const ownerIdToTabId = (ownerId: OwnerId): number => {
-  const result = ownerId.split(/_(.*)/s);
+  const result = ownerId.split('_');
   return Number(result[1]) || 0;
 };

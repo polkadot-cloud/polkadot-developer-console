@@ -4,8 +4,6 @@
 import { Suspense, lazy, useMemo } from 'react';
 
 export const Icon = ({ icon }: { icon: string }) => {
-  console.log(icon);
-
   const IconSvg = useMemo(
     () =>
       lazy(() => import(`../../../config/networks/icons/${icon}/Inline.tsx`)),

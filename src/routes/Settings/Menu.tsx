@@ -9,15 +9,12 @@ import { accentColors } from 'styles/accents/developer-console';
 import type { RouteSectionProvider } from 'routes/Common/types';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useTabs } from 'contexts/Tabs';
-import { useApi } from 'contexts/Api';
 
 export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
   const navigate = useNavigate();
-  const { getApiActive } = useApi();
+  const { tab, tabId } = useActiveTab();
   const { setTabActivePage } = useTabs();
-  const { tab, tabId, apiInstanceId } = useActiveTab();
 
-  const apiActive = getApiActive(apiInstanceId);
   const activePage = tab?.activePage || 0;
 
   return (
@@ -35,7 +32,7 @@ export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
               key={`menu-section-${key}-${index}`}
               className={activePage === Number(key) ? 'active' : undefined}
               onClick={() => {
-                setTabActivePage(tabId, 'settings', Number(key), apiActive);
+                setTabActivePage(tabId, 'settings', Number(key));
               }}
             >
               {section?.icon && (

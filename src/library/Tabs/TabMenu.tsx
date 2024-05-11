@@ -21,9 +21,14 @@ export const TabContextMenu = ({
   tabId: number;
   onSettings: () => void;
 }) => {
+  const {
+    getTab,
+    setTabActiveTask,
+    setTabForceDisconnect,
+    instantiateApiFromTab,
+  } = useTabs();
   const { closeMenu } = useMenu();
   const { getApiStatus } = useApi();
-  const { getTab, instantiateApiFromTab, setTabForceDisconnect } = useTabs();
 
   const tab = getTab(tabId);
   const ownerId = tabIdToOwnerId(tabId);
@@ -32,7 +37,9 @@ export const TabContextMenu = ({
   const apiStatusActive = ['ready', 'connected', 'connecting'].includes(
     apiStatus
   );
-  const canDisconenct = ['ready', 'connected'].includes(apiStatus);
+  const canDisconenct = ['ready', 'connected', 'connecting'].includes(
+    apiStatus
+  );
   const canReconnect = !!tab?.chain?.id && !canDisconenct && !apiStatusActive;
 
   const apiStatusText = canDisconenct
@@ -67,11 +74,14 @@ export const TabContextMenu = ({
           <button
             onClick={() => {
               if (canDisconenct && tab?.chain) {
-                setTabForceDisconnect(tabId, true);
+                setTabForceDisconnect(tabId, true, true);
                 ApiController.destroyAll(ownerId);
                 closeMenu();
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);
+                // Update tab task.
+                setTabActiveTask(tabId, 'connectChain');
+
                 closeMenu();
               }
             }}

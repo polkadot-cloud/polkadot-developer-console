@@ -18,6 +18,7 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
+import { useTabs } from 'contexts/Tabs';
 
 export const ConnectRelay = () => {
   const {
@@ -36,6 +37,7 @@ export const ConnectRelay = () => {
     removeChainSpaceApiIndex,
   } = useParaSetup();
   const { tabId } = useActiveTab();
+  const { setTabActiveTask } = useTabs();
   const { openMenu, closeMenu } = useMenu();
 
   const selectedRelayChain = getSelectedRelayChain(tabId);
@@ -69,6 +71,7 @@ export const ConnectRelay = () => {
     if (chainSpaceApiIndex !== undefined) {
       destroyChainApi(chainSpaceApiIndex);
       removeChainSpaceApiIndex(tabId);
+      setTabActiveTask(tabId, null);
     }
   };
 
@@ -109,6 +112,9 @@ export const ConnectRelay = () => {
 
                     // Store the confirmed relay chain to state.
                     setConfirmedRelayChain(tabId, selectedRelayChain);
+
+                    // Update tab task.
+                    setTabActiveTask(tabId, 'newParachain');
 
                     // Connect to chain space api.
                     await handleConnectApi(

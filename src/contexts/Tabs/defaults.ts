@@ -4,6 +4,12 @@
 
 import type { Tab, Tabs, TabsContextInterface } from './types';
 
+// export const TAB_TASK_INDEXES: Record<TabTask | 'default', number> = {
+//   default: 0,
+//   connectChain: 1,
+//   newParachain: 2,
+// };
+
 export const defaultTabsContext: TabsContextInterface = {
   tabs: [],
   setTabs: (tabs) => {},
@@ -34,15 +40,13 @@ export const defaultTabsContext: TabsContextInterface = {
   getStoredChain: (tabId) => undefined,
   forgetTabChain: (tabId) => {},
   setTabAutoConnect: (id, autoConnect) => {},
-  setTabForceDisconnect: (id, forceDisconnect) => {},
-  setTabActivePage: (id, route, page, apiActive, persist) => {},
-  switchTab: (tabId, tabIndex, connected) => {},
+  setTabForceDisconnect: (id, forceDisconnect, resetActiveTask) => {},
+  setTabActivePage: (id, route, activePage, persist) => {},
+  switchTab: (tabId, tabIndex) => {},
   setTabConnectFrom: (tabId, connectFrom) => {},
+  getTabActiveTask: (tabId) => null,
+  setTabActiveTask: (id, activeTask) => {},
 };
-
-export const DEFAULT_TAB_WIDTH_PX = 160;
-
-export const TAB_TRANSITION_DURATION_MS = 300;
 
 export const defaultTabs: Tabs = [
   {
@@ -61,6 +65,7 @@ export const defaultTabs: Tabs = [
     name: 'Polkadot Relay Chain',
     forceDisconnect: false,
     autoConnect: true,
+    activeTask: 'connectChain',
     activePage: 0,
   },
   {
@@ -79,6 +84,7 @@ export const defaultTabs: Tabs = [
     name: 'Kusama Relay Chain',
     forceDisconnect: false,
     autoConnect: true,
+    activeTask: 'connectChain',
     activePage: 0,
   },
   {
@@ -97,6 +103,7 @@ export const defaultTabs: Tabs = [
     name: 'Rococo Relay Chain',
     forceDisconnect: false,
     autoConnect: true,
+    activeTask: 'connectChain',
     activePage: 0,
   },
   {
@@ -106,6 +113,7 @@ export const defaultTabs: Tabs = [
     name: 'New Tab',
     forceDisconnect: false,
     autoConnect: false,
+    activeTask: null,
     activePage: 0,
   },
 ];
@@ -117,6 +125,7 @@ export const defaultEemptyTab: Tab = {
   name: '',
   forceDisconnect: false,
   autoConnect: false,
+  activeTask: null,
   activePage: 0,
 };
 export const defaultCustomEndpointChainMeta = {
@@ -124,3 +133,7 @@ export const defaultCustomEndpointChainMeta = {
   units: 10,
   unit: 'UNIT',
 };
+
+export const DEFAULT_TAB_WIDTH_PX = 160;
+
+export const TAB_TRANSITION_DURATION_MS = 300;

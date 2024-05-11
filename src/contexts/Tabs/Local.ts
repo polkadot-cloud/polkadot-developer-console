@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { localStorageOrDefault } from '@w3ux/utils';
-import type { Tabs } from './types';
+import type { Tabs, TabsActivePages } from './types';
 import type { Route } from 'App';
 
 // ------------------------------------------------------
@@ -17,10 +17,17 @@ export const getTabs = (): Tabs | undefined => {
 
   if (result) {
     try {
-      const formatted = result.map((tab) => ({
-        ...tab,
-        activePage: getActivePage('default', tab.id, false),
-      }));
+      const formatted = result.map((tab) => {
+        const autoConnect = tab?.autoConnect || false;
+
+        return {
+          ...tab,
+          // If this tab is configured to auto-connect, set the active task to connectChain
+          // immediately.
+          activeTask: autoConnect ? 'connectChain' : tab.activeTask,
+          activePage: getActivePage(tab.id, 'default'),
+        };
+      });
 
       return formatted as Tabs;
     } catch (e) {
@@ -54,20 +61,20 @@ export const getActiveTabIndex = (): number | undefined => {
 
 // Gets saved active page from local storage, or returns undefined otherwise.
 export const getActivePage = (
-  route: Route,
   tabId: number,
-  connected: boolean
+  route: Route
 ): number | undefined => {
-  const result = localStorageOrDefault('activePages', undefined, true) as
-    | Record<string, number>
-    | undefined;
+  const result = localStorageOrDefault(
+    'activePages',
+    undefined,
+    true
+  ) as TabsActivePages;
 
-  if (result) {
-    const value = result[`${tabId}:${connected ? 1 : 0}:${route}`];
-    if (value) {
-      return value as number;
-    }
+  const activePage = result?.[String(tabId)]?.[route];
+  if (activePage) {
+    return activePage as number;
   }
+  return 0;
 };
 
 // Gets temporary redirect from local storage, or returns undefined otherwise. If a redirect is
@@ -117,22 +124,58 @@ export const setSelectedTabIndex = (index: number) => {
   localStorage.setItem('activeTabIndex', index.toString());
 };
 
-export const setActivePage = (
-  route: Route,
-  tabId: number,
-  connected: boolean,
-  value: number
-) => {
-  const current =
-    (localStorageOrDefault('activePages', undefined, true) as
-      | Record<string, number>
-      | undefined) || {};
+// Sets an active page for a tab route to local storage.
+export const setActivePage = (tabId: number, route: Route, value: number) => {
+  const current = localStorageOrDefault(
+    'activePages',
+    undefined,
+    true
+  ) as TabsActivePages;
 
-  const updated = {
-    ...current,
-    [`${tabId}:${connected ? 1 : 0}:${route}`]: value,
-  };
+  let updated = current;
+  if (!current) {
+    updated = {
+      [tabId]: {
+        [route]: value,
+      },
+    };
+  } else if (!current[tabId]) {
+    updated = {
+      ...current,
+      [tabId]: {
+        [route]: value,
+      },
+    };
+  } else {
+    updated = {
+      ...current,
+      [tabId]: {
+        ...current[tabId],
+        [route]: value,
+      },
+    };
+  }
   localStorage.setItem('activePages', JSON.stringify(updated));
+};
+
+// Removes active pages for a tab from local storage.
+export const removeTabActivePages = (tabId: number) => {
+  const current = localStorageOrDefault(
+    'activePages',
+    undefined,
+    true
+  ) as TabsActivePages;
+
+  if (current) {
+    const updated = { ...current };
+    delete updated[tabId];
+
+    if (Object.keys(updated).length === 0) {
+      localStorage.removeItem('activePages');
+    } else {
+      localStorage.setItem('activePages', JSON.stringify(updated));
+    }
+  }
 };
 
 // Sets a temporary redirect to local storage.
