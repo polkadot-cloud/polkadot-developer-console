@@ -7,6 +7,7 @@ import { StorageItems } from './StorageItems';
 import { useChainUi } from 'contexts/ChainUi';
 import { Raw } from './Raw';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { FlexWrapper } from 'routes/Common/Wrappers';
 
 export const ChainState = () => {
   const { tabId } = useActiveTab();
@@ -30,9 +31,9 @@ export const ChainState = () => {
   }
 
   return (
-    <>
+    <FlexWrapper>
       <Header />
       {content}
-    </>
+    </FlexWrapper>
   );
 };

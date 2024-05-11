@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { FlexWrapper, StatsWrapper } from '../Wrappers';
+import { StatsWrapper } from '../Wrappers';
 import { AccountsWrapper } from './Wrappers';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +11,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { Account } from './Account';
 import BigNumber from 'bignumber.js';
 import { useTabAccounts } from 'contexts/TabAccounts';
+import { FlexWrapper } from 'routes/Common/Wrappers';
 
 export const Accounts = () => {
   const { getChainSpec } = useApi();

@@ -6,7 +6,6 @@ import styled from 'styled-components';
 // Outer page wrapper that contains all page content.
 export const HomePageWrapper = styled.div`
   flex: 1;
-  padding: 0 0.5rem;
 
   h2 {
     display: flex;

@@ -8,6 +8,7 @@ import { Progress } from './Progress';
 import { Footer } from './Footer';
 import { ReserveParaId } from './ReserveParaId';
 import { FormWrapper, HomePageWrapper } from '../Wrappers';
+import { FlexWrapper } from 'routes/Common/Wrappers';
 
 export const ParachainSetup = () => {
   const { tabId } = useActiveTab();
@@ -21,36 +22,40 @@ export const ParachainSetup = () => {
     activeStep === 'connect_relay' && confirmedRelayChain === undefined;
 
   return (
-    <HomePageWrapper>
-      <h2>Set up a New Parachain</h2>
+    <FlexWrapper>
+      <HomePageWrapper>
+        <h2>Set up a New Parachain</h2>
 
-      <Progress />
+        <Progress />
 
-      {activeStep === 'connect_relay' && <ConnectRelay />}
+        {activeStep === 'connect_relay' && <ConnectRelay />}
 
-      {activeStep === 'reserve_para_id' && <ReserveParaId />}
+        {activeStep === 'reserve_para_id' && <ReserveParaId />}
 
-      {activeStep === 'configure_node' && (
-        <FormWrapper>
-          <h3>Configure your Parachain Node to connect to the Relay Chain.</h3>
-        </FormWrapper>
-      )}
+        {activeStep === 'configure_node' && (
+          <FormWrapper>
+            <h3>
+              Configure your Parachain Node to connect to the Relay Chain.
+            </h3>
+          </FormWrapper>
+        )}
 
-      {activeStep === 'register_parathread' && (
-        <FormWrapper>
-          <h3>Register your Parathread on the Relay Chain.</h3>
-        </FormWrapper>
-      )}
+        {activeStep === 'register_parathread' && (
+          <FormWrapper>
+            <h3>Register your Parathread on the Relay Chain.</h3>
+          </FormWrapper>
+        )}
 
-      {activeStep === 'get_coretime' && (
-        <FormWrapper>
-          <h3>
-            Get bulk or instantaneous Coretime and start processing blocks.
-          </h3>
-        </FormWrapper>
-      )}
+        {activeStep === 'get_coretime' && (
+          <FormWrapper>
+            <h3>
+              Get bulk or instantaneous Coretime and start processing blocks.
+            </h3>
+          </FormWrapper>
+        )}
 
-      <Footer nextDisabled={nextDisabled} />
-    </HomePageWrapper>
+        <Footer nextDisabled={nextDisabled} />
+      </HomePageWrapper>
+    </FlexWrapper>
   );
 };

@@ -96,7 +96,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
 
       <div className="body">
         <h5>
-          <FontAwesomeIcon icon={faHashtag} transform="shrink-1" />
+          <FontAwesomeIcon icon={faHashtag} transform="shrink-2" />
           {chainId}
         </h5>
       </div>

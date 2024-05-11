@@ -15,6 +15,7 @@ import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 import { InputForm } from '../ChainState/InputForm';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
+import { FlexWrapper } from 'routes/Common/Wrappers';
 
 export const Extrinsics = () => {
   const { getChainSpec } = useApi();
@@ -80,7 +81,7 @@ export const Extrinsics = () => {
       : null;
 
   return (
-    <>
+    <FlexWrapper>
       <Header />
       <SelectFormWrapper className="withHeader">
         <PalletList
@@ -102,6 +103,6 @@ export const Extrinsics = () => {
         namespace={inputNamespace}
         activeItem={activeItem}
       />
-    </>
+    </FlexWrapper>
   );
 };

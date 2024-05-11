@@ -15,9 +15,10 @@ import { isCustomEvent } from 'Utils';
 import { useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import BigNumber from 'bignumber.js';
-import { FlexWrapper, StatsWrapper } from '../Wrappers';
+import { StatsWrapper } from '../Wrappers';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { BlockNumber } from 'model/BlockNumber';
+import { FlexWrapper } from 'routes/Common/Wrappers';
 
 export const Overview = () => {
   const { getApiStatus, getChainSpec } = useApi();

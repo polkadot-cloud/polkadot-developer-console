@@ -12,13 +12,14 @@ export type Tabs = Tab[];
 
 export interface Tab {
   id: number;
-  connectFrom: ConnectFrom;
-  chain: TabChainData | undefined;
   name: string;
-  forceDisconnect: boolean;
-  autoConnect: boolean;
   activeTask: TabTask | null;
   activePage: number;
+  // TODO: move these values into `tabData.task` object.
+  connectFrom: ConnectFrom;
+  chain: TabChainData | undefined;
+  forceDisconnect: boolean;
+  autoConnect: boolean;
 }
 
 export interface TabChainData {

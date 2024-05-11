@@ -3,10 +3,6 @@
 
 import styled from 'styled-components';
 
-export const FlexWrapper = styled.div`
-  flex: 1;
-`;
-
 export const StatsWrapper = styled.div`
   font-family: InterSemiBold, sans-serif;
   color: var(--text-color-secondary);

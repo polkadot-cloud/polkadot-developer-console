@@ -12,7 +12,6 @@ export const ProgressWrapper = styled.div`
   }
 
   flex: 1;
-  margin-top: 0.75rem;
   margin-bottom: 1.35rem;
   display: flex;
 
@@ -59,7 +58,7 @@ export const ProgressWrapper = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 0.35rem;
+      margin-top: 0.45rem;
       width: 100%;
       height: 1.6rem;
       overflow: hidden;
