@@ -13,8 +13,6 @@ import type {
 import { defaultParaSetupContext } from './defaults';
 import type { ChainId } from 'config/networks';
 
-// TODO: This data needs to be moved to tab ui data.
-
 export const ParaSetupContext = createContext<ParaSetupContextInterface>(
   defaultParaSetupContext
 );
@@ -23,13 +21,16 @@ export const useParaSetup = () => useContext(ParaSetupContext);
 
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   // Store the active setup step for a tab.
+  // TODO: Move to tab taskData.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
 
   // Store the currently selected relay chain, keyed by tab.
+  // TODO: Move to tab taskData.
   const [selectedRelayChains, setSelectedRelayChains] =
     useState<SelectedRelayChains>({});
 
   // Store  confirmed relay chains, keyed by tab.
+  // TODO: Move to tab taskData.
   const [confirmedRelayChains, setConfirmedRelayChains] =
     useState<SelectedRelayChains>({});
 
