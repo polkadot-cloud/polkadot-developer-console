@@ -140,7 +140,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         },
         chain: undefined,
         name: 'New Tab',
-        forceDisconnect: !autoConnect,
         autoConnect,
         activeTask: null,
         activePage: 0,
@@ -236,18 +235,23 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     checked: boolean,
     resetActiveTask: boolean
   ) => {
-    setTabs(
-      tabsRef.current.map((tab) => {
-        if (tab.id === id) {
-          return {
-            ...tab,
-            activeTask: resetActiveTask ? null : tab.activeTask,
-            forceDisconnect: checked,
-          };
+    const newTabs = tabsRef.current.map((tab) => {
+      if (tab.id === id) {
+        const updated = { ...tab };
+        if (resetActiveTask) {
+          updated.activeTask = null;
         }
+
+        if (updated.tabData.task) {
+          updated.tabData.task.forceDisconnect = checked;
+        }
+        return updated;
+      } else {
         return tab;
-      })
-    );
+      }
+    });
+
+    setTabs(newTabs);
   };
 
   // Set a tab's active page. NOTE: This function is called indirectly from within event listeners,

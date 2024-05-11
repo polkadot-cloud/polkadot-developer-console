@@ -54,6 +54,7 @@ export const defaultTabs: Tabs = [
     tabData: {
       task: {
         connectFrom: 'directory',
+        forceDisconnect: false,
       },
       ui: undefined,
     },
@@ -68,7 +69,6 @@ export const defaultTabs: Tabs = [
       },
     },
     name: 'Polkadot Relay Chain',
-    forceDisconnect: false,
     autoConnect: true,
     activeTask: 'connectChain',
     activePage: 0,
@@ -78,6 +78,7 @@ export const defaultTabs: Tabs = [
     tabData: {
       task: {
         connectFrom: 'directory',
+        forceDisconnect: false,
       },
       ui: undefined,
     },
@@ -92,7 +93,6 @@ export const defaultTabs: Tabs = [
       },
     },
     name: 'Kusama Relay Chain',
-    forceDisconnect: false,
     autoConnect: true,
     activeTask: 'connectChain',
     activePage: 0,
@@ -102,6 +102,7 @@ export const defaultTabs: Tabs = [
     tabData: {
       task: {
         connectFrom: 'directory',
+        forceDisconnect: false,
       },
       ui: undefined,
     },
@@ -116,7 +117,6 @@ export const defaultTabs: Tabs = [
       },
     },
     name: 'Rococo Relay Chain',
-    forceDisconnect: false,
     autoConnect: true,
     activeTask: 'connectChain',
     activePage: 0,
@@ -126,12 +126,12 @@ export const defaultTabs: Tabs = [
     tabData: {
       task: {
         connectFrom: 'directory',
+        forceDisconnect: false,
       },
       ui: undefined,
     },
     chain: undefined,
     name: 'New Tab',
-    forceDisconnect: false,
     autoConnect: false,
     activeTask: null,
     activePage: 0,
@@ -146,7 +146,6 @@ export const defaultEemptyTab: Tab = {
   },
   chain: undefined,
   name: '',
-  forceDisconnect: false,
   autoConnect: false,
   activeTask: null,
   activePage: 0,

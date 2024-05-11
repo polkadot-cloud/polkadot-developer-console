@@ -18,11 +18,11 @@ import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 
 export const ManageTab = () => {
   const {
-    setTabForceDisconnect,
     renameTab,
     updateSs58,
     updateUnits,
     updateUnit,
+    setTabForceDisconnect,
   } = useTabs();
   const { getApiStatus } = useApi();
   const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();

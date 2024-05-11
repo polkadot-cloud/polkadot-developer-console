@@ -31,7 +31,6 @@ export const performTabsCheck = ({
           'tabData' in tab &&
           'activeTask' in tab &&
           'name' in tab &&
-          'forceDisconnect' in tab &&
           'autoConnect' in tab
         )
       ) {
