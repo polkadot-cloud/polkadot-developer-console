@@ -26,8 +26,6 @@ export const defaultTabsContext: TabsContextInterface = {
   addInstantiatedId: (id) => {},
   dragId: null,
   setDragId: (index) => {},
-  tabsHidden: false,
-  setTabsHidden: (hidden) => {},
   instantiatedIds: [],
   renameTab: (id, name) => {},
   redirectCounter: 0,

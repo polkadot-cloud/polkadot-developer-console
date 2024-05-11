@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 export interface SettingsContextInterface {
+  tabsHidden: boolean;
+  setTabsHidden: (hidden: boolean) => void;
   autoConnect: boolean;
   autoTabNaming: boolean;
   chainColorEnabled: boolean;
@@ -11,6 +13,7 @@ export interface SettingsContextInterface {
 }
 
 export interface LocalSettings {
+  tabsHidden?: boolean;
   autoConnect?: boolean;
   autoTabNaming?: boolean;
   chainColorEnabled?: boolean;

@@ -65,8 +65,6 @@ export interface TabsContextInterface {
   addInstantiatedId: (id: number) => void;
   setDragId: Dispatch<SetStateAction<number | null>>;
   dragId: number | null;
-  tabsHidden: boolean;
-  setTabsHidden: (hidden: boolean) => void;
   instantiatedIds: number[];
   renameTab: (id: number, name: string) => void;
   redirectCounter: number;

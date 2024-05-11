@@ -5,6 +5,8 @@
 import type { SettingsContextInterface } from './types';
 
 export const defaultSettingsContext: SettingsContextInterface = {
+  tabsHidden: false,
+  setTabsHidden: (hidden) => {},
   autoConnect: true,
   autoTabNaming: true,
   chainColorEnabled: true,

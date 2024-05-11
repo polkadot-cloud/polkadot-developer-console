@@ -14,12 +14,14 @@ import type { RouteSectionProvider } from 'routes/Common/types';
 import { useTooltip } from 'contexts/Tooltip';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSettings } from 'contexts/Settings';
 
 export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
   const { pathname } = useLocation();
   const { closeTooltip } = useTooltip();
   const { tab, tabId } = useActiveTab();
-  const { tabsHidden, setTabsHidden, setTabActivePage } = useTabs();
+  const { setTabActivePage } = useTabs();
+  const { tabsHidden, setTabsHidden } = useSettings();
 
   // Get the active page from tab.
   const activePage = tab?.activePage || 0;
