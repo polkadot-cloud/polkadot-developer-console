@@ -5,11 +5,11 @@ import { AutoConnect } from 'library/AutoConnect';
 import { ConnectHeaderWrapper } from './Wrappers';
 import { HeaderToggleWrapper } from 'library/HeaderToggle/Wrapper';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useChainBrowser } from 'contexts/ChainBrowser';
+import { useTabs } from 'contexts/Tabs';
 
 export const Header = () => {
   const { tabId, tab } = useActiveTab();
-  const { setTabConnectFrom } = useChainBrowser();
+  const { setTabConnectFrom } = useTabs();
 
   return (
     <ConnectHeaderWrapper>

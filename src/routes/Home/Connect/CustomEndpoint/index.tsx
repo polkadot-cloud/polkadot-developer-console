@@ -15,7 +15,7 @@ import { useChainBrowser } from 'contexts/ChainBrowser';
 
 export const CustomEndpointInput = () => {
   const { tabId } = useActiveTab();
-  const { connectTab } = useChainBrowser();
+  const { connectChainBrowser } = useChainBrowser();
   const { getCustomEndpoint, setCustomEndpoint } = useChainFilter();
 
   // The editable value of the input.
@@ -42,7 +42,7 @@ export const CustomEndpointInput = () => {
       <div className="footer">
         <ButtonSubmit
           onClick={() => {
-            connectTab(tabId, 'custom', customEndpoint);
+            connectChainBrowser(tabId, 'custom', customEndpoint);
           }}
         >
           Connect

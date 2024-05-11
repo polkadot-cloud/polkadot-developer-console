@@ -28,8 +28,8 @@ export interface ChainListItemProps {
 
 export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   const { tabId } = useActiveTab();
-  const { connectTab } = useChainBrowser();
   const { openMenu, closeMenu } = useMenu();
+  const { connectChainBrowser } = useChainBrowser();
   const { tags, getTagsForChain, addChainToTag, removeChainFromTag } =
     useTags();
 
@@ -47,7 +47,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   // Handle tag provider select. Connect to chain on successful selection.
   const handleOnProviderSelect = (endpoint: string) => {
     // Update tab data and connect to Api instance.
-    connectTab(tabId, chainId, endpoint);
+    connectChainBrowser(tabId, chainId, endpoint);
     // Close menu.
     closeMenu();
   };

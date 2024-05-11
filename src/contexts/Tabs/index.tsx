@@ -201,6 +201,20 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
+  // Update `activeConnectFrom` in tab's ui property.
+  const setTabConnectFrom = (id: number, connectFrom: ConnectFrom) => {
+    const newTabs = tabs.map((tab) => {
+      if (tab.id === id) {
+        const updated = { ...tab };
+        updated.ui.activeConnectFrom = connectFrom;
+        return updated;
+      } else {
+        return tab;
+      }
+    });
+    setTabs(newTabs);
+  };
+
   // Switch tab.
   const switchTab = (tabId: number, tabIndex: number) => {
     const localActivePage = local.getActivePage(tabId, 'default');
@@ -276,6 +290,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         setTabActiveTask,
         getTabTaskData,
         setTabTaskData,
+        setTabConnectFrom,
         instantiatedIds: instantiatedIds.current,
       }}
     >

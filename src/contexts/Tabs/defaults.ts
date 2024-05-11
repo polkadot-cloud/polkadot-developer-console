@@ -34,6 +34,7 @@ export const defaultTabsContext: TabsContextInterface = {
   redirectCounter: 0,
   incrementRedirectCounter: () => {},
   setTabAutoConnect: (id, autoConnect) => {},
+  setTabConnectFrom: (tabId, connectFrom) => {},
   setTabActivePage: (id, route, activePage, persist) => {},
   switchTab: (tabId, tabIndex) => {},
   getTabActiveTask: (tabId) => null,

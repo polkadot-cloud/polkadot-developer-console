@@ -46,22 +46,12 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
     return { id: chainId, chain: NetworkDirectory[chainId] };
   };
 
-  // Update the chain's `activeConnectFrom` in tab's taskData.
-  const setTabConnectFrom = (id: number, connectFrom: ConnectFrom) => {
-    const newTabs = tabs.map((tab) => {
-      if (tab.id === id) {
-        const updated = { ...tab };
-        updated.ui.activeConnectFrom = connectFrom;
-        return updated;
-      } else {
-        return tab;
-      }
-    });
-    setTabs(newTabs);
-  };
-
   // Connect tab to an Api instance and update its chain data.
-  const connectTab = (tabId: number, chainId: ChainId, endpoint: string) => {
+  const connectChainBrowser = (
+    tabId: number,
+    chainId: ChainId,
+    endpoint: string
+  ) => {
     const isDirectory = isDirectoryId(chainId);
 
     // Inject chain meta from network directory or custom endpoint.
@@ -216,8 +206,7 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
         updateSs58,
         updateUnits,
         updateUnit,
-        setTabConnectFrom,
-        connectTab,
+        connectChainBrowser,
         instantiateApiFromTab,
         forgetTabChain,
         destroyControllers,

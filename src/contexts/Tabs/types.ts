@@ -73,6 +73,7 @@ export interface TabsContextInterface {
   redirectCounter: number;
   incrementRedirectCounter: () => void;
   setTabAutoConnect: (id: number, autoConnect: boolean) => void;
+  setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;
   setTabActivePage: (
     id: number,
     route: Route,
