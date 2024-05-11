@@ -28,7 +28,7 @@ export const performTabsCheck = ({
       if (
         !(
           'id' in tab &&
-          'connectFrom' in tab &&
+          'tabData' in tab &&
           'activeTask' in tab &&
           'name' in tab &&
           'forceDisconnect' in tab &&

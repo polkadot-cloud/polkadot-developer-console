@@ -138,7 +138,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
           task: undefined,
           ui: undefined,
         },
-        connectFrom: 'directory' as ConnectFrom,
         chain: undefined,
         name: 'New Tab',
         forceDisconnect: !autoConnect,
@@ -292,9 +291,18 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Set a tab's `connectFrom` property.
   const setTabConnectFrom = (id: number, connectFrom: ConnectFrom) => {
-    const newTabs = tabs.map((tab) =>
-      tab.id === id ? { ...tab, connectFrom } : tab
-    );
+    const newTabs = tabs.map((tab) => {
+      if (tab.id === id) {
+        const updated = { ...tab };
+
+        if (updated.tabData.task) {
+          updated.tabData.task.connectFrom = connectFrom;
+        }
+        return updated;
+      } else {
+        return tab;
+      }
+    });
     setTabs(newTabs);
   };
 

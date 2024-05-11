@@ -18,15 +18,25 @@ export interface Tab {
   activePage: number;
   tabData: TabData;
   // TODO: move these values into `tabData.task` object.
-  connectFrom: ConnectFrom;
   chain: TabChainData | undefined;
   forceDisconnect: boolean;
   autoConnect: boolean;
 }
 
 export interface TabData {
-  task: TabChainData | undefined;
+  task:
+    | {
+        connectFrom: ConnectFrom;
+      }
+    | undefined;
   ui: AnyJson;
+}
+
+export interface TabDataConnectChain {
+  chain: TabChainData;
+  connectFrom: ConnectFrom;
+  forceDisconnect: boolean;
+  autoConnect: boolean;
 }
 
 export interface TabChainData {

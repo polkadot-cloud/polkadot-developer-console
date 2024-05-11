@@ -52,10 +52,11 @@ export const defaultTabs: Tabs = [
   {
     id: 1,
     tabData: {
-      task: undefined,
+      task: {
+        connectFrom: 'directory',
+      },
       ui: undefined,
     },
-    connectFrom: 'directory',
     chain: {
       id: 'polkadot',
       endpoint: 'wss://rpc.ibp.network/polkadot',
@@ -75,10 +76,11 @@ export const defaultTabs: Tabs = [
   {
     id: 2,
     tabData: {
-      task: undefined,
+      task: {
+        connectFrom: 'directory',
+      },
       ui: undefined,
     },
-    connectFrom: 'directory',
     chain: {
       id: 'kusama',
       endpoint: 'wss://rpc.ibp.network/kusama',
@@ -98,10 +100,11 @@ export const defaultTabs: Tabs = [
   {
     id: 3,
     tabData: {
-      task: undefined,
+      task: {
+        connectFrom: 'directory',
+      },
       ui: undefined,
     },
-    connectFrom: 'directory',
     chain: {
       id: 'rococo',
       endpoint: 'wss://rococo-rpc.polkadot.io',
@@ -121,10 +124,11 @@ export const defaultTabs: Tabs = [
   {
     id: 4,
     tabData: {
-      task: undefined,
+      task: {
+        connectFrom: 'directory',
+      },
       ui: undefined,
     },
-    connectFrom: 'directory',
     chain: undefined,
     name: 'New Tab',
     forceDisconnect: false,
@@ -140,7 +144,6 @@ export const defaultEemptyTab: Tab = {
     task: undefined,
     ui: undefined,
   },
-  connectFrom: 'directory',
   chain: undefined,
   name: '',
   forceDisconnect: false,
