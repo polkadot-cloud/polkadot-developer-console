@@ -16,7 +16,7 @@ export const Progress = () => {
 
   const activeStep = getActiveStep(tabId);
   const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
-  const relayInstance = getChainApi(chainSpaceApiIndex);
+  const relayInstance = getChainApi(chainSpaceApiIndex?.index);
 
   // Get the relay chain icon, if available.
   const relayIcon = relayInstance ? relayInstance.chainId : undefined;

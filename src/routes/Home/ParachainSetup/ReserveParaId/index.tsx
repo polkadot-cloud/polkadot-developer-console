@@ -15,7 +15,7 @@ export const ReserveParaId = () => {
   const { getChainSpaceApiIndex } = useParaSetup();
 
   const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
-  const relayInstance = getChainApi(chainSpaceApiIndex);
+  const relayInstance = getChainApi(chainSpaceApiIndex?.index);
   const chainSpec = relayInstance?.chainSpec;
 
   const accounts =

@@ -44,8 +44,8 @@ export const ConnectRelay = () => {
 
   // Chain space api data.
   const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
-  const apiStatus = getApiStatusByIndex(chainSpaceApiIndex);
-  const chainSpec = getChainSpecByIndex(chainSpaceApiIndex);
+  const apiStatus = getApiStatusByIndex(chainSpaceApiIndex?.index);
+  const chainSpec = getChainSpecByIndex(chainSpaceApiIndex?.index);
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -69,7 +69,7 @@ export const ConnectRelay = () => {
   // Handle disconnect from api instance.
   const handleDisconnect = () => {
     if (chainSpaceApiIndex !== undefined) {
-      destroyChainApi(chainSpaceApiIndex);
+      destroyChainApi(chainSpaceApiIndex.index);
       removeChainSpaceApiIndex(tabId);
       setTabActiveTask(tabId, null);
     }
@@ -109,7 +109,7 @@ export const ConnectRelay = () => {
                     // Get and register the chain space index. TODO: Add label alongside chain space
                     // index to easily identify what chain it is (e.g. relay chain, coretime chain).
                     const index = getNextApiIndex();
-                    setChainSpaceApiIndex(tabId, index);
+                    setChainSpaceApiIndex(tabId, { index, label: 'relay' });
 
                     // Store the confirmed relay chain to state.
                     setConfirmedRelayChain(tabId, selectedRelayChain);

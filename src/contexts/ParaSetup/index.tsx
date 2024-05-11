@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
 import type {
   ChainSpaceApiIndexes,
+  ChainSpaceIndex,
   ParaSetupContextInterface,
   SelectedRelayChains,
   SetupStep,
@@ -21,22 +22,19 @@ export const useParaSetup = () => useContext(ParaSetupContext);
 
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   // Store the active setup step for a tab.
-  // TODO: Move to tab taskData.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
 
   // Store the currently selected relay chain, keyed by tab.
-  // TODO: Move to tab taskData.
   const [selectedRelayChains, setSelectedRelayChains] =
     useState<SelectedRelayChains>({});
 
   // Store  confirmed relay chains, keyed by tab.
-  // TODO: Move to tab taskData.
   const [confirmedRelayChains, setConfirmedRelayChains] =
     useState<SelectedRelayChains>({});
 
   // Store the index at which to access the relay chain api from the global chain space environment,
   // for each tab.
-  // TODO: Move to Tabs context and add label alongside index
+  // TODO: Move to Tabs context.
   const [chainSpaceApiIndexes, setChainSpaceApiIndexes] =
     useState<ChainSpaceApiIndexes>({});
 
@@ -67,7 +65,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   const getChainSpaceApiIndex = (tabId: number) => chainSpaceApiIndexes[tabId];
 
   // Set a chain space api index for a tab.
-  const setChainSpaceApiIndex = (tabId: number, index: number) => {
+  const setChainSpaceApiIndex = (tabId: number, index: ChainSpaceIndex) => {
     setChainSpaceApiIndexes({
       ...chainSpaceApiIndexes,
       [tabId]: index,

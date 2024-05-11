@@ -171,10 +171,10 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
               // Destroy chainUi state associated with this tab.
               destroyTabChainUi(id);
 
-              // Destroy ChainSpaceEnv state associated with this tab's parachain setup.
+              // Destroy ChainSpaceEnv state associated with this tab.
               const maybeIndex = getChainSpaceApiIndex(id);
               if (maybeIndex !== undefined) {
-                destroyChainSpaceEnvIndex(maybeIndex);
+                destroyChainSpaceEnvIndex(maybeIndex.index);
               }
 
               // Destroy Parachain state associated with this tab.

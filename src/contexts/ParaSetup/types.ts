@@ -6,8 +6,8 @@ import type { ChainId } from 'config/networks';
 export interface ParaSetupContextInterface {
   getActiveStep: (tabId: number) => SetupStep;
   setActiveStep: (tabId: number, step: SetupStep) => void;
-  getChainSpaceApiIndex: (tabId: number) => number | undefined;
-  setChainSpaceApiIndex: (tabId: number, index: number) => void;
+  getChainSpaceApiIndex: (tabId: number) => ChainSpaceIndex | undefined;
+  setChainSpaceApiIndex: (tabId: number, index: ChainSpaceIndex) => void;
   getSelectedRelayChain: (tabId: number) => ChainId;
   setSelectedRelayChain: (tabId: number, chainId: ChainId) => void;
   getConfirmedRelayChain: (tabId: number) => ChainId | undefined;
@@ -27,4 +27,9 @@ export type SetupStepsState = Record<number, SetupStep>;
 
 export type SelectedRelayChains = Record<number, ChainId>;
 
-export type ChainSpaceApiIndexes = Record<number, number>;
+export type ChainSpaceApiIndexes = Record<number, ChainSpaceIndex>;
+
+export interface ChainSpaceIndex {
+  index: number;
+  label: string;
+}
