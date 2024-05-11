@@ -247,7 +247,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  // Set a tab's active page.
+  // Set a tab's active page. NOTE: This function is called indirectly from within event listeners,
+  // so tabsRef is used to ensure the latest tabs config is used.
   const setTabActivePage = (
     tabId: number,
     route: Route,
@@ -259,7 +260,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setTabs(
-      tabs.map((tab) => {
+      tabsRef.current.map((tab) => {
         if (tab.id === tabId) {
           return {
             ...tab,
@@ -403,6 +404,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const newTabs = tabsRef.current.map((tab) =>
       tab.id === tabId ? { ...tab, activeTask: task } : tab
     );
+    // If a null task is provided, reset the active page of the tab's default route.
+    setTabActivePage(tabId, 'default', 0);
     setTabs(newTabs);
   };
 
