@@ -6,8 +6,8 @@ import type { Tab, Tabs, TabsContextInterface } from './types';
 
 // export const TAB_TASK_INDEXES: Record<TabTask | 'default', number> = {
 //   default: 0,
-//   connectChain: 1,
-//   newParachain: 2,
+//   chainBrowser: 1,
+//   parachainSetup: 2,
 // };
 
 export const defaultTabsContext: TabsContextInterface = {
@@ -51,7 +51,7 @@ export const defaultTabs: Tabs = [
   {
     id: 1,
     name: 'Polkadot Relay Chain',
-    activeTask: 'connectChain',
+    activeTask: 'chainBrowser',
     taskData: {
       connectFrom: 'directory',
       autoConnect: true,
@@ -75,7 +75,7 @@ export const defaultTabs: Tabs = [
   {
     id: 2,
     name: 'Kusama Relay Chain',
-    activeTask: 'connectChain',
+    activeTask: 'chainBrowser',
     taskData: {
       connectFrom: 'directory',
       autoConnect: true,
@@ -99,7 +99,7 @@ export const defaultTabs: Tabs = [
   {
     id: 3,
     name: 'Rococo Relay Chain',
-    activeTask: 'connectChain',
+    activeTask: 'chainBrowser',
     taskData: {
       connectFrom: 'directory',
       autoConnect: true,

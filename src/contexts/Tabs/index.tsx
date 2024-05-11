@@ -358,8 +358,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
             // Auto rename the tab here if the setting is turned on.
             name:
               autoTabNaming && isDirectory ? getAutoTabName(chainId) : tab.name,
-            // Chain is now assigned the `connectChain` task.
-            activeTask: 'connectChain' as TabTask,
+            // Chain is now assigned the `chainBrowser` task.
+            activeTask: 'chainBrowser' as TabTask,
             taskData: {
               chain: chainData,
               connectFrom: isDirectory
@@ -378,7 +378,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const instantiateApiFromTab = async (tabId: number) => {
     const tab = getTab(tabId);
     if (
-      tab?.activeTask === 'connectChain' &&
+      tab?.activeTask === 'chainBrowser' &&
       tab?.taskData?.chain &&
       tab?.taskData?.autoConnect
     ) {

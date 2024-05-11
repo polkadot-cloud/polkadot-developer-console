@@ -23,7 +23,7 @@ export const Router = () => {
       <Route
         key={`route_default`}
         path={'/'}
-        element={tabActiveTask === 'connectChain' ? <Chain /> : <Default />}
+        element={tabActiveTask === 'chainBrowser' ? <Chain /> : <Default />}
       />
       <Route key={`route_settings`} path={'/settings'} element={<Settings />} />
       {/* Fallback route to chain */}

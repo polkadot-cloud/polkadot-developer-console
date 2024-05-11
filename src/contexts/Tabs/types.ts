@@ -6,7 +6,7 @@ import type { ChainId, NetworkDirectoryItem } from 'config/networks';
 import type { Dispatch, SetStateAction } from 'react';
 
 // The tasks that developer console supports.
-export type TabTask = 'connectChain' | 'newParachain';
+export type TabTask = 'chainBrowser' | 'parachainSetup';
 
 export type Tabs = Tab[];
 
@@ -22,9 +22,9 @@ export interface Tab {
   activePage: number;
 }
 
-export type taskData = taskDataConnectChain | undefined;
+export type taskData = taskDatachainBrowser | undefined;
 
-export interface taskDataConnectChain {
+export interface taskDatachainBrowser {
   chain: TabChainData | undefined;
   connectFrom: ConnectFrom;
   autoConnect: boolean;

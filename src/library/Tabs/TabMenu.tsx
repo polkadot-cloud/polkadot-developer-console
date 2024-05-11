@@ -75,7 +75,7 @@ export const TabContextMenu = ({
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);
                 // Update tab task.
-                setTabActiveTask(tabId, 'connectChain');
+                setTabActiveTask(tabId, 'chainBrowser');
 
                 closeMenu();
               }
