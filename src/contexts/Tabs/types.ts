@@ -56,7 +56,6 @@ export interface TabsContextInterface {
   createTab: () => void;
   selectedTabId: number;
   getTab: (id: number) => Tab | undefined;
-  getActiveTab: () => Tab | undefined;
   destroyTab: (index: number, id: number) => void;
   setSelectedTabId: (index: number) => void;
   tabHoverIndex: number;

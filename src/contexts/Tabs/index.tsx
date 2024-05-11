@@ -138,9 +138,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Gets a tab by its id.
   const getTab = (tabId: number) => tabs.find((tab) => tab.id === tabId);
 
-  // Gets the active tab.
-  const getActiveTab = () => getTab(selectedTabId);
-
   // Get the largest id from a list of tabs.
   const getLargestId = (list: Tabs) =>
     [...list].sort((a, b) => b.id - a.id)?.[0].id || 0;
@@ -310,7 +307,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         createTab,
         selectedTabId,
         getTab,
-        getActiveTab,
         destroyTab,
         setSelectedTabId,
         tabHoverIndex,
