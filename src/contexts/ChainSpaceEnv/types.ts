@@ -9,7 +9,6 @@ import type { APIChainSpec, ApiInstanceId, ApiStatus } from 'model/Api/types';
 export interface ChainSpaceEnvContextInterface {
   activeBalances: ActiveBalancesInterface;
   handleConnectApi: (
-    tabId: number,
     index: number,
     chainId: ChainId,
     provider: string

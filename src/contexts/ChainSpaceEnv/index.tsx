@@ -115,7 +115,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
 
   // Handle connecting to an api instance.
   const handleConnectApi = async (
-    tabId: number,
     index: number,
     chainId: ChainId,
     provider: string

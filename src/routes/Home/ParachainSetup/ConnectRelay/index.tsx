@@ -117,12 +117,7 @@ export const ConnectRelay = () => {
                     setTabActiveTask(tabId, 'newParachain');
 
                     // Connect to chain space api.
-                    await handleConnectApi(
-                      tabId,
-                      index,
-                      selectedRelayChain,
-                      provider
-                    );
+                    await handleConnectApi(index, selectedRelayChain, provider);
                   }}
                 />
               );
