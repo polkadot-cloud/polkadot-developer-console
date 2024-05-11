@@ -37,7 +37,9 @@ export const TabContextMenu = ({
   const apiStatusActive = ['ready', 'connected', 'connecting'].includes(
     apiStatus
   );
-  const canDisconenct = ['ready', 'connected'].includes(apiStatus);
+  const canDisconenct = ['ready', 'connected', 'connecting'].includes(
+    apiStatus
+  );
   const canReconnect = !!tab?.chain?.id && !canDisconenct && !apiStatusActive;
 
   const apiStatusText = canDisconenct
