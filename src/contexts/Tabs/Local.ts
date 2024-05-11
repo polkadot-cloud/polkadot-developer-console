@@ -124,6 +124,7 @@ export const setSelectedTabIndex = (index: number) => {
   localStorage.setItem('activeTabIndex', index.toString());
 };
 
+// Sets an active page for a tab route to local storage.
 export const setActivePage = (tabId: number, route: Route, value: number) => {
   const current = localStorageOrDefault(
     'activePages',
@@ -154,8 +155,27 @@ export const setActivePage = (tabId: number, route: Route, value: number) => {
       },
     };
   }
-
   localStorage.setItem('activePages', JSON.stringify(updated));
+};
+
+// Removes active pages for a tab from local storage.
+export const removeTabActivePages = (tabId: number) => {
+  const current = localStorageOrDefault(
+    'activePages',
+    undefined,
+    true
+  ) as TabsActivePages;
+
+  if (current) {
+    const updated = { ...current };
+    delete updated[tabId];
+
+    if (Object.keys(updated).length === 0) {
+      localStorage.removeItem('activePages');
+    } else {
+      localStorage.setItem('activePages', JSON.stringify(updated));
+    }
+  }
 };
 
 // Sets a temporary redirect to local storage.

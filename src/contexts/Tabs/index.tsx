@@ -79,7 +79,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Sets tabs state, and updates local storage.
   const setTabs = (newTabs: Tabs) => {
-    console.log('setting tabs', newTabs);
     local.setTabs(newTabs);
     tabsRef.current = newTabs;
     setTabsState(newTabs);
@@ -155,8 +154,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     // Remove instantiated id.
     removeInstantiatedId(id);
 
-    // TODO: Remove `activePage` from local storage.
-
     // Remove destroyed tab from state.
     const newTabs = [...tabs].filter((t) => t.id !== id);
     setTabs(newTabs);
@@ -173,6 +170,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
     // Destroy any controller instances associated with tab.
     destroyControllers(id);
+
+    // Remove this tab's activePages from local storage.
+    local.removeTabActivePages(id);
   };
 
   // Rename a tab.
@@ -404,6 +404,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const newTabs = tabsRef.current.map((tab) =>
       tab.id === tabId ? { ...tab, activeTask: task } : tab
     );
+    console.log(tabId);
     // If a null task is provided, reset the active page of the tab's default route.
     setTabActivePage(tabId, 'default', 0);
     setTabs(newTabs);
