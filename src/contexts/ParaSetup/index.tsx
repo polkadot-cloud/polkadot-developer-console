@@ -40,7 +40,6 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   const [chainSpaceApiIndexes, setChainSpaceApiIndexes] =
     useState<ChainSpaceApiIndexes>({});
 
-  console.log(chainSpaceApiIndexes);
   // Get the selected relay chain for a tab.
   const getSelectedRelayChain = (tabId: number) =>
     selectedRelayChains[tabId] || 'polkadot';
