@@ -4,6 +4,8 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
 import type {
+  ChainSpaceApiIndexes,
+  ChainSpaceIndex,
   ConnectFrom,
   TabTask,
   Tabs,
@@ -46,14 +48,51 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Current drag tab index.
   const [dragId, setDragId] = useState<number | null>(null);
 
-  // Whether the tab menu is hidden.
-  const [tabsHidden, setTabsHidden] = useState<boolean>(false);
-
   // Instantiated tab ids.
   const instantiatedIds = useRef<number[]>([]);
 
   // Redirect counter to trigger redirect effects.
   const [redirectCounter, setRedirectCounter] = useState<number>(0);
+
+  // Store the indexes at which to access apis from the global chain space. for each tab.
+  const [chainSpaceApiIndexes, setChainSpaceApiIndexes] =
+    useState<ChainSpaceApiIndexes>({});
+
+  // Get all chain space api indexes for a tab.
+  const getTabChainSpaceApiIndexes = (tabId: number) =>
+    chainSpaceApiIndexes[tabId] || [];
+
+  // Get a chain space api index for a tab by its label.
+  const getChainSpaceApiIndex = (tabId: number, label: string) =>
+    chainSpaceApiIndexes[tabId]?.find((index) => index.label === label);
+
+  // Set a chain space api index for a tab.
+  const setChainSpaceApiIndex = (tabId: number, index: ChainSpaceIndex) => {
+    const updated = { ...chainSpaceApiIndexes };
+    if (updated[tabId]) {
+      updated[tabId].push(index);
+    } else {
+      updated[tabId] = [index];
+    }
+    setChainSpaceApiIndexes(updated);
+  };
+
+  // Remove a chain space api index for a tab, given its label.
+  const removeChainSpaceApiIndex = (tabId: number, label: string) => {
+    const updated = { ...chainSpaceApiIndexes };
+    updated[tabId] = updated[tabId]?.filter((index) => index.label !== label);
+    if (updated[tabId]?.length === 0) {
+      delete updated[tabId];
+    }
+    setChainSpaceApiIndexes(updated);
+  };
+
+  // Remove chain space api indexes for a tab.
+  const removeTabChainSpaceIndexes = (tabId: number) => {
+    const updated = { ...chainSpaceApiIndexes };
+    delete updated[tabId];
+    setChainSpaceApiIndexes(updated);
+  };
 
   // Increment redirect counter.
   const incrementRedirectCounter = () => {
@@ -95,9 +134,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Gets a tab by its id.
   const getTab = (tabId: number) => tabs.find((tab) => tab.id === tabId);
-
-  // Gets the active tab.
-  const getActiveTab = () => getTab(selectedTabId);
 
   // Get the largest id from a list of tabs.
   const getLargestId = (list: Tabs) =>
@@ -268,7 +304,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         createTab,
         selectedTabId,
         getTab,
-        getActiveTab,
         destroyTab,
         setSelectedTabId,
         tabHoverIndex,
@@ -278,8 +313,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         addInstantiatedId,
         setDragId,
         dragId,
-        tabsHidden,
-        setTabsHidden,
         renameTab,
         redirectCounter,
         incrementRedirectCounter,
@@ -291,6 +324,11 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         getTabTaskData,
         setTabTaskData,
         setTabConnectFrom,
+        getTabChainSpaceApiIndexes,
+        getChainSpaceApiIndex,
+        setChainSpaceApiIndex,
+        removeTabChainSpaceIndexes,
+        removeChainSpaceApiIndex,
         instantiatedIds: instantiatedIds.current,
       }}
     >

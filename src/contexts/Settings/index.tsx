@@ -14,6 +14,11 @@ export const SettingsContext = createContext<SettingsContextInterface>(
 export const useSettings = () => useContext(SettingsContext);
 
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
+  // Whether tabs are currently hidden.
+  const [tabsHidden, setTabsHiddenState] = useState<boolean>(
+    local.getSetting('tabsHidden')
+  );
+
   // Whether to Turn on auto connect by default when opening new tabs.
   const [autoConnect, setAutoConnectState] = useState<boolean>(
     local.getSetting('autoConnect')
@@ -27,6 +32,12 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   // Whether to use chain colors.
   const [chainColorEnabled, setChainColorEnabledState] =
     useState<boolean>(true);
+
+  // Set tabs hidden state, to save to local storage.
+  const setTabsHidden = (value: boolean) => {
+    local.setSetting('tabsHidden', value);
+    setTabsHiddenState(value);
+  };
 
   // Set auto connect state, to save to local storage.
   const setAutoConnect = (value: boolean) => {
@@ -49,6 +60,8 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   return (
     <SettingsContext.Provider
       value={{
+        tabsHidden,
+        setTabsHidden,
         autoConnect,
         setAutoConnect,
         autoTabNaming,

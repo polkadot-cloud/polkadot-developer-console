@@ -3,13 +3,13 @@
 
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTabs } from 'contexts/Tabs';
 import { useLocation } from 'react-router-dom';
 import { ButtonWrapper } from './Wrappers';
+import { useSettings } from 'contexts/Settings';
 
 export const TabsToggle = () => {
   const { pathname } = useLocation();
-  const { tabsHidden, setTabsHidden } = useTabs();
+  const { tabsHidden, setTabsHidden } = useSettings();
 
   return (
     <div className="config">

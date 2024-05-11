@@ -4,7 +4,6 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
 import type {
-  ChainSpaceApiIndexes,
   ParaSetupContextInterface,
   SelectedRelayChains,
   SetupStep,
@@ -21,24 +20,15 @@ export const useParaSetup = () => useContext(ParaSetupContext);
 
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   // Store the active setup step for a tab.
-  // TODO: Move to tab taskData.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
 
   // Store the currently selected relay chain, keyed by tab.
-  // TODO: Move to tab taskData.
   const [selectedRelayChains, setSelectedRelayChains] =
     useState<SelectedRelayChains>({});
 
   // Store  confirmed relay chains, keyed by tab.
-  // TODO: Move to tab taskData.
   const [confirmedRelayChains, setConfirmedRelayChains] =
     useState<SelectedRelayChains>({});
-
-  // Store the index at which to access the relay chain api from the global chain space environment,
-  // for each tab.
-  // TODO: Move to Tabs context and add label alongside index
-  const [chainSpaceApiIndexes, setChainSpaceApiIndexes] =
-    useState<ChainSpaceApiIndexes>({});
 
   // Get the selected relay chain for a tab.
   const getSelectedRelayChain = (tabId: number) =>
@@ -63,24 +53,6 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  // Get a chain space api index for a tab.
-  const getChainSpaceApiIndex = (tabId: number) => chainSpaceApiIndexes[tabId];
-
-  // Set a chain space api index for a tab.
-  const setChainSpaceApiIndex = (tabId: number, index: number) => {
-    setChainSpaceApiIndexes({
-      ...chainSpaceApiIndexes,
-      [tabId]: index,
-    });
-  };
-
-  // Remove a chain space api index for a tab.
-  const removeChainSpaceApiIndex = (tabId: number) => {
-    const updated = { ...chainSpaceApiIndexes };
-    delete updated[tabId];
-    setChainSpaceApiIndexes(updated);
-  };
-
   // Get the active step for a tab id, or 1 otherwise.
   const getActiveStep = (tabId: number) =>
     activeSteps[tabId] || 'connect_relay';
@@ -93,7 +65,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
-  // Destroy state associated with a tab. Should only be used on tab close.
+  // Destroy parachain setup state associated with a tab. Currently only being used on tab close.
   const destroyTabParaSetup = (tabId: number) => {
     const updated = { ...activeSteps };
     delete updated[tabId];
@@ -106,10 +78,6 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     const updatedConfirmedRelayChains = { ...confirmedRelayChains };
     delete updatedConfirmedRelayChains[tabId];
     setSelectedRelayChains(updatedConfirmedRelayChains);
-
-    const updatedIndexes = { ...chainSpaceApiIndexes };
-    delete updatedIndexes[tabId];
-    setChainSpaceApiIndexes(updatedIndexes);
   };
 
   return (
@@ -117,13 +85,10 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
       value={{
         getActiveStep,
         setActiveStep,
-        getChainSpaceApiIndex,
-        setChainSpaceApiIndex,
         getSelectedRelayChain,
         setSelectedRelayChain,
         getConfirmedRelayChain,
         setConfirmedRelayChain,
-        removeChainSpaceApiIndex,
         destroyTabParaSetup,
       }}
     >

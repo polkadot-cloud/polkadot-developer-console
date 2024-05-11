@@ -5,17 +5,20 @@ import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { FormWrapper } from 'routes/Home/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { useTabs } from 'contexts/Tabs';
 
 export const ReserveParaId = () => {
   const { tabId } = useActiveTab();
   const { getChainApi } = useChainSpaceEnv();
+  const { getChainSpaceApiIndex } = useTabs();
   const { getAccounts } = useImportedAccounts();
-  const { getChainSpaceApiIndex } = useParaSetup();
 
-  const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
-  const relayInstance = getChainApi(chainSpaceApiIndex);
+  const chainSpaceApiIndex = getChainSpaceApiIndex(
+    tabId,
+    'parachainSetup:relay'
+  );
+  const relayInstance = getChainApi(chainSpaceApiIndex?.index);
   const chainSpec = relayInstance?.chainSpec;
 
   const accounts =

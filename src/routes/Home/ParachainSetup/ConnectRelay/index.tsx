@@ -29,23 +29,28 @@ export const ConnectRelay = () => {
     getNextApiIndex,
   } = useChainSpaceEnv();
   const {
-    getSelectedRelayChain,
-    setSelectedRelayChain,
-    setConfirmedRelayChain,
+    setTabActiveTask,
     getChainSpaceApiIndex,
     setChainSpaceApiIndex,
     removeChainSpaceApiIndex,
+  } = useTabs();
+  const {
+    getSelectedRelayChain,
+    setSelectedRelayChain,
+    setConfirmedRelayChain,
   } = useParaSetup();
   const { tabId } = useActiveTab();
-  const { setTabActiveTask } = useTabs();
   const { openMenu, closeMenu } = useMenu();
 
   const selectedRelayChain = getSelectedRelayChain(tabId);
 
   // Chain space api data.
-  const chainSpaceApiIndex = getChainSpaceApiIndex(tabId);
-  const apiStatus = getApiStatusByIndex(chainSpaceApiIndex);
-  const chainSpec = getChainSpecByIndex(chainSpaceApiIndex);
+  const chainSpaceApiIndex = getChainSpaceApiIndex(
+    tabId,
+    'parachainSetup:relay'
+  );
+  const apiStatus = getApiStatusByIndex(chainSpaceApiIndex?.index);
+  const chainSpec = getChainSpecByIndex(chainSpaceApiIndex?.index);
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -69,8 +74,13 @@ export const ConnectRelay = () => {
   // Handle disconnect from api instance.
   const handleDisconnect = () => {
     if (chainSpaceApiIndex !== undefined) {
-      destroyChainApi(chainSpaceApiIndex);
-      removeChainSpaceApiIndex(tabId);
+      // Destroy the chain space instance.
+      destroyChainApi(chainSpaceApiIndex.index);
+
+      // Destroy the relay chain space index record.
+      removeChainSpaceApiIndex(tabId, 'parachainSetup:relay');
+
+      // Reset tab active task.
       setTabActiveTask(tabId, null);
     }
   };
@@ -106,10 +116,12 @@ export const ConnectRelay = () => {
                   chainId={selectedRelayChain}
                   onSelect={async (provider) => {
                     closeMenu();
-                    // Get and register the chain space index. TODO: Add label alongside chain space
-                    // index to easily identify what chain it is (e.g. relay chain, coretime chain).
+                    // Get and register the chain space index.
                     const index = getNextApiIndex();
-                    setChainSpaceApiIndex(tabId, index);
+                    setChainSpaceApiIndex(tabId, {
+                      index,
+                      label: 'parachainSetup:relay',
+                    });
 
                     // Store the confirmed relay chain to state.
                     setConfirmedRelayChain(tabId, selectedRelayChain);
