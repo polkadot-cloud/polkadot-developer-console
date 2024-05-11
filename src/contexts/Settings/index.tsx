@@ -21,7 +21,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
 
   // Whether to Turn on auto connect by default when opening new tabs.
   const [autoConnect, setAutoConnectState] = useState<boolean>(
-    local.getSetting('autoConnect')
+    local.getSetting('autoConnect', true)
   );
 
   // Whether to automatically rename tabs based on chain being connected to.
