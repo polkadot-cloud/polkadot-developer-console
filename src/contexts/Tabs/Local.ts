@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { localStorageOrDefault } from '@w3ux/utils';
-import type { Tabs } from './types';
+import type { Tabs, TabsActivePages } from './types';
 import type { Route } from 'App';
 
 // ------------------------------------------------------
@@ -64,17 +64,17 @@ export const getActivePage = (
   tabId: number,
   route: Route
 ): number | undefined => {
-  const result = localStorageOrDefault('activePages', undefined, true) as
-    | Record<string, number>
-    | undefined;
+  const result = localStorageOrDefault(
+    'activePages',
+    undefined,
+    true
+  ) as TabsActivePages;
 
-  if (result) {
-    // TODO: get from new structure.
-    const activeIndex = result[`${tabId}:${route}`];
-    if (activeIndex) {
-      return activeIndex as number;
-    }
+  const activePage = result?.[String(tabId)]?.[route];
+  if (activePage) {
+    return activePage as number;
   }
+  return 0;
 };
 
 // Gets temporary redirect from local storage, or returns undefined otherwise. If a redirect is
@@ -125,15 +125,36 @@ export const setSelectedTabIndex = (index: number) => {
 };
 
 export const setActivePage = (tabId: number, route: Route, value: number) => {
-  const current =
-    (localStorageOrDefault('activePages', undefined, true) as
-      | Record<string, number>
-      | undefined) || {};
+  const current = localStorageOrDefault(
+    'activePages',
+    undefined,
+    true
+  ) as TabsActivePages;
 
-  const updated = {
-    ...current,
-    [`${tabId}:${route}`]: value,
-  };
+  let updated = current;
+  if (!current) {
+    updated = {
+      [tabId]: {
+        [route]: value,
+      },
+    };
+  } else if (!current[tabId]) {
+    updated = {
+      ...current,
+      [tabId]: {
+        [route]: value,
+      },
+    };
+  } else {
+    updated = {
+      ...current,
+      [tabId]: {
+        ...current[tabId],
+        [route]: value,
+      },
+    };
+  }
+
   localStorage.setItem('activePages', JSON.stringify(updated));
 };
 

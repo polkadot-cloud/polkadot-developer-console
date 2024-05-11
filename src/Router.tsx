@@ -15,10 +15,9 @@ export const Router = () => {
   const { setTabActivePage, getTabActiveTask } = useTabs();
   const tabActiveTask = getTabActiveTask(tabId);
 
-  // Upon an activeTask assignment, move to a locally persisted activePage if it is different from
-  // the tab's current activePage.
-  const onActiveTaskChanged = () => {
-    // TODO: Amend to take into consideration the `activeTask`, rather than `connected`.
+  // Upon an activeTask change, check if a local active page exists for that route, and
+  // move to it if so.
+  const onTaskUpdated = () => {
     const activePage = local.getActivePage(tabId, 'default');
     if (tab && activePage !== undefined && activePage !== tab.activePage) {
       // TODO: Amend to take into consideration the `activeTask`, rather than `apiActive`.
@@ -27,7 +26,7 @@ export const Router = () => {
   };
 
   // Redirect to local default page on disconnect if activeTask is no longer assigned.
-  const onActiveTaskRemoved = () => {
+  const onTaskRemoved = () => {
     const localActivePage = local.getActivePage(tabId, 'default');
     setTabActivePage(tabId, 'default', localActivePage || 0);
   };
@@ -35,9 +34,9 @@ export const Router = () => {
   // Handle active page changes on tab and `activeTask` changes.
   useEffect(() => {
     if (tabActiveTask === null) {
-      onActiveTaskRemoved();
+      onTaskRemoved();
     } else {
-      onActiveTaskChanged();
+      onTaskUpdated();
     }
   }, [tabId, tabActiveTask]);
 
