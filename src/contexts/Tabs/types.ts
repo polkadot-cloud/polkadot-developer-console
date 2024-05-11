@@ -22,9 +22,9 @@ export interface Tab {
   activePage: number;
 }
 
-export type TaskData = taskDatachainBrowser | undefined;
+export type TaskData = TaskDataChainBrowser | undefined;
 
-export interface taskDatachainBrowser {
+export interface TaskDataChainBrowser {
   chain: TabChainData | undefined;
   connectFrom: ConnectFrom;
   autoConnect: boolean;
