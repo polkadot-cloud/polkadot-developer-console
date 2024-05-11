@@ -7,7 +7,6 @@ import type { OwnerId } from 'types';
 export interface GlobalChainSpaceContextInterface {
   globalChainSpace: {
     ownerId: OwnerId;
-    index: number;
     getInstance: () => ChainSpace;
   };
 }

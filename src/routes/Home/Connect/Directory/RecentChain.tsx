@@ -15,7 +15,7 @@ export const RecentChain = () => {
 
   const result = getStoredChain(tabId);
 
-  if (!result || !tab?.chain?.id) {
+  if (!result || !tab?.taskData?.chain?.id) {
     return null;
   }
 

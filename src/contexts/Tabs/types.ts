@@ -14,10 +14,15 @@ export interface Tab {
   id: number;
   name: string;
   activeTask: TabTask | null;
+  taskData: taskData;
   activePage: number;
-  // TODO: move these values into `tabData.task` object.
-  connectFrom: ConnectFrom;
+}
+
+export type taskData = taskDataConnectChain | undefined;
+
+export interface taskDataConnectChain {
   chain: TabChainData | undefined;
+  connectFrom: ConnectFrom;
   forceDisconnect: boolean;
   autoConnect: boolean;
 }

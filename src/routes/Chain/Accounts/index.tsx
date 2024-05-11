@@ -41,7 +41,7 @@ export const Accounts = () => {
           <Account
             existentialDeposit={existentialDeposit}
             account={account}
-            chainId={tab?.chain?.id}
+            chainId={tab?.taskData?.chain?.id}
             key={`imported_account_${i}`}
           />
         ))}

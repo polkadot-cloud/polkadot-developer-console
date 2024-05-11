@@ -39,8 +39,8 @@ export const Account = ({
   );
 
   // NOTE: assuming tab and chain definitely exist here.
-  const unit = tab!.chain!.unit;
-  const units = tab!.chain!.units;
+  const unit = tab!.taskData!.chain!.unit;
+  const units = tab!.taskData!.chain!.units;
 
   return (
     <section>
@@ -50,7 +50,7 @@ export const Account = ({
         </div>
         <div className="content">
           {/* NOTE: Currently hiding menu on custom endpoint connections as there is no guarantee Subscan will have the connected chain supported. Once menu contains more links, this check can happen inside the menu. */}
-          {chainId && tab?.connectFrom !== 'customEndpoint' && (
+          {chainId && tab?.taskData?.connectFrom !== 'customEndpoint' && (
             <div className="menu">
               <button
                 onClick={(ev) => {

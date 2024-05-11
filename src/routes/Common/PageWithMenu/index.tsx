@@ -30,7 +30,7 @@ export const PageWithMenu = ({
 
   // Get colors from active chain id.
   const chainId: DirectoryId | undefined =
-    (tab?.chain?.id as DirectoryId) || undefined;
+    (tab?.taskData?.chain?.id as DirectoryId) || undefined;
 
   const apiConnected = ['ready', 'connected', 'connecting'].includes(apiStatus);
   const networkColor = NetworkDirectory[chainId]?.color;

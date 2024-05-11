@@ -18,11 +18,11 @@ import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 
 export const ManageTab = () => {
   const {
-    setTabForceDisconnect,
     renameTab,
     updateSs58,
     updateUnits,
     updateUnit,
+    setTabForceDisconnect,
   } = useTabs();
   const { getApiStatus } = useApi();
   const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
@@ -32,7 +32,7 @@ export const ManageTab = () => {
 
   // Determine whether this is a custom endpoint. If it is, we want to allow the chain metadata to
   // be updated.
-  const isDirectory = isDirectoryId(tab?.chain?.id || '');
+  const isDirectory = isDirectoryId(tab?.taskData?.chain?.id || '');
 
   return (
     <>
@@ -64,7 +64,7 @@ export const ManageTab = () => {
                 updateSs58(tabId, valueInt);
               }
             }}
-            initialValue={String(tab?.chain?.ss58 || '0')}
+            initialValue={String(tab?.taskData?.chain?.ss58 || '0')}
           />
           <Input
             label="Chain Units"
@@ -76,7 +76,7 @@ export const ManageTab = () => {
                 updateUnits(tabId, valueInt);
               }
             }}
-            initialValue={String(tab?.chain?.units || '')}
+            initialValue={String(tab?.taskData?.chain?.units || '')}
           />
           <Input
             label="Chain Unit"
@@ -84,7 +84,7 @@ export const ManageTab = () => {
             onSubmit={(value: string) => {
               updateUnit(tabId, value);
             }}
-            initialValue={String(tab?.chain?.unit || '')}
+            initialValue={String(tab?.taskData?.chain?.unit || '')}
           />
         </>
       )}
@@ -107,7 +107,7 @@ export const ManageTab = () => {
                       'Are you sure you want to disconnect this tab?'
                     )
                   ) {
-                    if (tab?.chain) {
+                    if (tab?.taskData?.chain) {
                       setTabForceDisconnect(tabId, true, true);
                       ApiController.destroyAll(ownerId);
                     }

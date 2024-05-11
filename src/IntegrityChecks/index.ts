@@ -28,14 +28,44 @@ export const performTabsCheck = ({
       if (
         !(
           'id' in tab &&
-          'connectFrom' in tab &&
-          'activeTask' in tab &&
           'name' in tab &&
-          'forceDisconnect' in tab &&
-          'autoConnect' in tab
+          'activeTask' in tab &&
+          'taskData' in tab
         )
       ) {
         throw new Error('Invalid tab');
+      }
+
+      const { activeTask, taskData } = tab;
+      if (activeTask === 'connectChain') {
+        {
+          if (
+            !(
+              taskData &&
+              'connectFrom' in taskData &&
+              'forceDisconnect' in taskData &&
+              'autoConnect' in taskData &&
+              'chain' in taskData
+            )
+          ) {
+            throw new Error('Invalid tab');
+          }
+
+          const { chain } = taskData;
+          if (
+            !(
+              chain &&
+              'id' in chain &&
+              'endpoint' in chain &&
+              'ss58' in chain &&
+              'units' in chain &&
+              'unit' in chain &&
+              'api' in chain
+            )
+          ) {
+            throw new Error('Invalid tab');
+          }
+        }
       }
     });
     selectedTabsValid = true;

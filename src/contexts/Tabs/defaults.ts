@@ -51,81 +51,81 @@ export const defaultTabsContext: TabsContextInterface = {
 export const defaultTabs: Tabs = [
   {
     id: 1,
-    connectFrom: 'directory',
-    chain: {
-      id: 'polkadot',
-      endpoint: 'wss://rpc.ibp.network/polkadot',
-      ss58: 0,
-      units: 10,
-      unit: 'DOT',
-      api: {
-        instanceIndex: 0,
+    name: 'Polkadot Relay Chain',
+    activeTask: 'connectChain',
+    taskData: {
+      connectFrom: 'directory',
+      forceDisconnect: false,
+      autoConnect: true,
+      chain: {
+        id: 'polkadot',
+        endpoint: 'wss://rpc.ibp.network/polkadot',
+        ss58: 0,
+        units: 10,
+        unit: 'DOT',
+        api: {
+          instanceIndex: 0,
+        },
       },
     },
-    name: 'Polkadot Relay Chain',
-    forceDisconnect: false,
-    autoConnect: true,
-    activeTask: 'connectChain',
     activePage: 0,
   },
   {
     id: 2,
-    connectFrom: 'directory',
-    chain: {
-      id: 'kusama',
-      endpoint: 'wss://rpc.ibp.network/kusama',
-      ss58: 2,
-      units: 10,
-      unit: 'KSM',
-      api: {
-        instanceIndex: 0,
+    name: 'Kusama Relay Chain',
+    activeTask: 'connectChain',
+    taskData: {
+      connectFrom: 'directory',
+      forceDisconnect: false,
+      autoConnect: true,
+      chain: {
+        id: 'kusama',
+        endpoint: 'wss://rpc.ibp.network/kusama',
+        ss58: 2,
+        units: 10,
+        unit: 'KSM',
+        api: {
+          instanceIndex: 0,
+        },
       },
     },
-    name: 'Kusama Relay Chain',
-    forceDisconnect: false,
-    autoConnect: true,
-    activeTask: 'connectChain',
     activePage: 0,
   },
   {
     id: 3,
-    connectFrom: 'directory',
-    chain: {
-      id: 'rococo',
-      endpoint: 'wss://rococo-rpc.polkadot.io',
-      ss58: 0,
-      units: 10,
-      unit: 'ROC',
-      api: {
-        instanceIndex: 0,
+    name: 'Rococo Relay Chain',
+    activeTask: 'connectChain',
+    taskData: {
+      connectFrom: 'directory',
+      forceDisconnect: false,
+      autoConnect: true,
+      chain: {
+        id: 'rococo',
+        endpoint: 'wss://rococo-rpc.polkadot.io',
+        ss58: 0,
+        units: 10,
+        unit: 'ROC',
+        api: {
+          instanceIndex: 0,
+        },
       },
     },
-    name: 'Rococo Relay Chain',
-    forceDisconnect: false,
-    autoConnect: true,
-    activeTask: 'connectChain',
     activePage: 0,
   },
   {
     id: 4,
-    connectFrom: 'directory',
-    chain: undefined,
     name: 'New Tab',
-    forceDisconnect: false,
-    autoConnect: false,
     activeTask: null,
+    taskData: undefined,
     activePage: 0,
   },
 ];
 
 export const defaultEemptyTab: Tab = {
   id: -1,
-  connectFrom: 'directory',
-  chain: undefined,
   name: '',
-  forceDisconnect: false,
-  autoConnect: false,
   activeTask: null,
+  taskData: undefined,
   activePage: 0,
 };
 export const defaultCustomEndpointChainMeta = {
