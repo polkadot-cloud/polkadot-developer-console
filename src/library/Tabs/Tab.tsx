@@ -21,7 +21,6 @@ import { ConnectionIcon } from './ConectionIcon';
 import * as localTabs from 'contexts/Tabs/Local';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { ACTIVE_API_STATUSES } from 'contexts/Api/defaults';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
@@ -151,7 +150,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
         onMouseDown={(ev) => {
           // Only handle left click.
           if (ev.button === 0) {
-            switchTab(id, index, ACTIVE_API_STATUSES.includes(apiStatus));
+            switchTab(id, index);
           }
         }}
         {...attributes}

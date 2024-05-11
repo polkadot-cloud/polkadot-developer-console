@@ -19,7 +19,7 @@ export const Router = () => {
   // the tab's current activePage.
   const onActiveTaskChanged = () => {
     // TODO: Amend to take into consideration the `activeTask`, rather than `connected`.
-    const activePage = local.getActivePage(tabId, 'default', true);
+    const activePage = local.getActivePage(tabId, 'default');
     if (tab && activePage !== undefined && activePage !== tab.activePage) {
       // TODO: Amend to take into consideration the `activeTask`, rather than `apiActive`.
       setTabActivePage(tabId, 'default', activePage, true);
@@ -28,7 +28,7 @@ export const Router = () => {
 
   // Redirect to local default page on disconnect if activeTask is no longer assigned.
   const onActiveTaskRemoved = () => {
-    const localActivePage = local.getActivePage(tabId, 'default', false);
+    const localActivePage = local.getActivePage(tabId, 'default');
     setTabActivePage(tabId, 'default', localActivePage || 0);
   };
 

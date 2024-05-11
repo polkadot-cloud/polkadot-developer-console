@@ -303,8 +303,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Switch tab.
-  const switchTab = (tabId: number, tabIndex: number, connected: boolean) => {
-    const localActivePage = local.getActivePage(tabId, 'default', connected);
+  const switchTab = (tabId: number, tabIndex: number) => {
+    const localActivePage = local.getActivePage(tabId, 'default');
 
     if (localActivePage !== undefined) {
       setTabActivePage(tabId, 'default', localActivePage, false);

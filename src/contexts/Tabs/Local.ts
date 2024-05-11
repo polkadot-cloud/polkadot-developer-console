@@ -25,7 +25,7 @@ export const getTabs = (): Tabs | undefined => {
           // If this tab is configured to auto-connect, set the active task to connectChain
           // immediately.
           activeTask: autoConnect ? 'connectChain' : tab.activeTask,
-          activePage: getActivePage(tab.id, 'default', false),
+          activePage: getActivePage(tab.id, 'default'),
         };
       });
 
@@ -62,8 +62,7 @@ export const getActiveTabIndex = (): number | undefined => {
 // Gets saved active page from local storage, or returns undefined otherwise.
 export const getActivePage = (
   tabId: number,
-  route: Route,
-  connected: boolean
+  route: Route
 ): number | undefined => {
   const result = localStorageOrDefault('activePages', undefined, true) as
     | Record<string, number>
@@ -71,7 +70,7 @@ export const getActivePage = (
 
   if (result) {
     // TODO: get from new structure.
-    const activeIndex = result[`${tabId}:${connected ? 1 : 0}:${route}`];
+    const activeIndex = result[`${tabId}:${route}`];
     if (activeIndex) {
       return activeIndex as number;
     }
