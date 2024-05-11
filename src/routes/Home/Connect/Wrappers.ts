@@ -4,12 +4,14 @@
 import styled from 'styled-components';
 
 export const ConnectHeaderWrapper = styled.div`
+  border-bottom: 1px solid var(--border-primary-color);
   display: flex;
   align-items: center;
+  margin-top: 0.65rem;
   margin-bottom: 1.25rem;
-  padding-bottom: 0.9rem;
-  border-bottom: 1px solid var(--border-primary-color);
+  padding-bottom: 0.5rem;
 `;
+
 export const ChainInputWrapper = styled.div`
   width: 100%;
 

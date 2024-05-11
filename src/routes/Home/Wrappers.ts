@@ -7,13 +7,13 @@ import styled from 'styled-components';
 export const HomePageWrapper = styled.div`
   flex: 1;
 
-  h2 {
+  > h2 {
     display: flex;
     align-items: center;
     line-height: 1.8rem;
   }
 
-  h3 {
+  > h3 {
     color: var(--text-color-secondary);
     font-size: 0.98rem;
     margin-bottom: 1.5rem;
