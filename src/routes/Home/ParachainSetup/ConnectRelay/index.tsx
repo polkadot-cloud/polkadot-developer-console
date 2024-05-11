@@ -8,7 +8,7 @@ import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowLeftToBracket,
-  faCaretRight,
+  faArrowRightFromLine,
 } from '@fortawesome/pro-duotone-svg-icons';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
 import { useMenu } from 'contexts/Menu';
@@ -138,8 +138,7 @@ export const ConnectRelay = () => {
           >
             Connect
             <FontAwesomeIcon
-              icon={faCaretRight}
-              transform="grow-1"
+              icon={faArrowRightFromLine}
               className="iconRight"
             />
           </ButtonSubmit>
