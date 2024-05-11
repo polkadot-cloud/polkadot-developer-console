@@ -38,6 +38,7 @@ export const defaultTabsContext: TabsContextInterface = {
   switchTab: (tabId, tabIndex) => {},
   getTabActiveTask: (tabId) => null,
   setTabActiveTask: (id, activeTask) => {},
+  getTabTaskData: (tabId) => undefined,
 };
 
 export const defaultTabs: Tabs = [

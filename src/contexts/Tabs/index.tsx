@@ -221,9 +221,11 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     if (task === null) {
       setTabActivePage(tabId, 'default', 0);
     }
-
     setTabs(newTabs);
   };
+
+  // Get at tab's taskData, if any.
+  const getTabTaskData = (tabId: number) => getTab(tabId)?.taskData;
 
   return (
     <TabsContext.Provider
@@ -254,6 +256,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         switchTab,
         getTabActiveTask,
         setTabActiveTask,
+        getTabTaskData,
         instantiatedIds: instantiatedIds.current,
       }}
     >

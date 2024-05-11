@@ -31,12 +31,12 @@ export const useChainBrowser = () => useContext(ChainBrowser);
 
 export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   const { autoTabNaming } = useSettings();
-  const { tabs, tabsRef, getTab, setTabs } = useTabs();
+  const { tabs, tabsRef, getTab, getTabTaskData, setTabs } = useTabs();
 
   // Gets the previously connected to chain from network directory, if present.
   const getStoredChain = (tabId: number) => {
-    const tab = getTab(tabId);
-    const chainId = tab?.taskData?.chain?.id;
+    const taskData = getTabTaskData(tabId);
+    const chainId = taskData?.chain?.id;
 
     if (!chainId || !isDirectoryId(chainId)) {
       return undefined;
@@ -111,14 +111,16 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   // Instantiate an Api instance from tab chain data.
   const instantiateApiFromTab = async (tabId: number) => {
     const tab = getTab(tabId);
+    const taskData = getTabTaskData(tabId);
+
     if (
       tab?.activeTask === 'chainBrowser' &&
-      tab?.taskData?.chain &&
-      tab?.taskData?.autoConnect
+      taskData?.chain &&
+      taskData?.autoConnect
     ) {
       // This api instance is about to be reconnected to, so the active task here needs to be
       // persisted.
-      instantiateControllers(tab.id, tab?.taskData?.chain);
+      instantiateControllers(tab.id, taskData?.chain);
     }
   };
 
@@ -195,7 +197,7 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   // to ensure the latest tabs config is used.
   const forgetTabChain = (tabId: number) => {
     // Disconnect from Api instance if present.
-    if (getTab(tabId)?.taskData?.chain) {
+    if (getTabTaskData(tabId)?.chain) {
       destroyControllers(tabId);
     }
     // Update tab state.
@@ -218,9 +220,9 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   // Destroy controller instances for a tab.
   const destroyControllers = (tabId: number) => {
     const ownerId = tabIdToOwnerId(tabId);
-    const tab = getTab(tabId);
+    const taskData = getTabTaskData(tabId);
 
-    if (tab && tab.taskData?.chain) {
+    if (taskData && taskData?.chain) {
       ApiController.destroyAll(ownerId);
     }
   };

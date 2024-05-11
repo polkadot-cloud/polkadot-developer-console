@@ -14,7 +14,7 @@ export interface Tab {
   id: number;
   name: string;
   activeTask: TabTask | null;
-  taskData: taskData;
+  taskData: TaskData;
   ui: {
     activeConnectFrom: ConnectFrom;
     autoConnect: boolean;
@@ -22,7 +22,7 @@ export interface Tab {
   activePage: number;
 }
 
-export type taskData = taskDatachainBrowser | undefined;
+export type TaskData = taskDatachainBrowser | undefined;
 
 export interface taskDatachainBrowser {
   chain: TabChainData | undefined;
@@ -82,6 +82,7 @@ export interface TabsContextInterface {
   switchTab: (tabId: number, tabIndex: number) => void;
   getTabActiveTask: (tabId: number) => TabTask | null;
   setTabActiveTask: (tabId: number, task: TabTask | null) => void;
+  getTabTaskData: (tabId: number) => TaskData;
 }
 
 // Active pages structure used in local storage to keep track of active page indexes for each tab.
