@@ -21,9 +21,14 @@ export const TabContextMenu = ({
   tabId: number;
   onSettings: () => void;
 }) => {
+  const {
+    getTab,
+    setTabActiveTask,
+    setTabForceDisconnect,
+    instantiateApiFromTab,
+  } = useTabs();
   const { closeMenu } = useMenu();
   const { getApiStatus } = useApi();
-  const { getTab, instantiateApiFromTab, setTabForceDisconnect } = useTabs();
 
   const tab = getTab(tabId);
   const ownerId = tabIdToOwnerId(tabId);
@@ -72,6 +77,9 @@ export const TabContextMenu = ({
                 closeMenu();
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);
+                // Update tab task.
+                setTabActiveTask(tabId, 'connectChain');
+
                 closeMenu();
               }
             }}
