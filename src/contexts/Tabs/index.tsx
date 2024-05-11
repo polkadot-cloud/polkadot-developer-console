@@ -134,10 +134,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       ...tabs,
       {
         id: newTabId,
-        tabData: {
-          task: undefined,
-          ui: undefined,
-        },
+        tabData: undefined,
         chain: undefined,
         name: 'New Tab',
         activeTask: null,
@@ -218,8 +215,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       if (tab.id === id) {
         const updated = { ...tab };
 
-        if (updated.tabData.task) {
-          updated.tabData.task.autoConnect = checked;
+        if (updated.tabData) {
+          updated.tabData.autoConnect = checked;
         }
         return updated;
       } else {
@@ -243,8 +240,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
           updated.activeTask = null;
         }
 
-        if (updated.tabData.task) {
-          updated.tabData.task.forceDisconnect = checked;
+        if (updated.tabData) {
+          updated.tabData.forceDisconnect = checked;
         }
         return updated;
       } else {
@@ -300,8 +297,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       if (tab.id === id) {
         const updated = { ...tab };
 
-        if (updated.tabData.task) {
-          updated.tabData.task.connectFrom = connectFrom;
+        if (updated.tabData) {
+          updated.tabData.connectFrom = connectFrom;
         }
         return updated;
       } else {
@@ -383,7 +380,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const instantiateApiFromTab = async (tabId: number) => {
     const tab = getTab(tabId);
     if (tab?.chain) {
-      if (tab?.tabData.task?.autoConnect) {
+      if (tab?.tabData?.autoConnect) {
         // This api instance is about to be reconnected to, so the active task here needs to be
         // persisted.
         setTabForceDisconnect(tabId, false, false);

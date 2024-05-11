@@ -16,9 +16,7 @@ export const Header = () => {
       <HeaderToggleWrapper>
         <button
           className={
-            tab?.tabData.task?.connectFrom === 'directory'
-              ? 'active'
-              : undefined
+            tab?.tabData?.connectFrom === 'directory' ? 'active' : undefined
           }
           onClick={() => setTabConnectFrom(tabId, 'directory')}
         >
@@ -26,7 +24,7 @@ export const Header = () => {
         </button>
         <button
           className={
-            tab?.tabData.task?.connectFrom === 'customEndpoint'
+            tab?.tabData?.connectFrom === 'customEndpoint'
               ? 'active'
               : undefined
           }

@@ -215,7 +215,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Instantiate Api instances from tabs.
     tabs.forEach((tab) => {
-      if (tab.tabData.task?.autoConnect) {
+      if (tab.tabData?.autoConnect) {
         instantiateApiFromTab(tab.id);
       }
     });

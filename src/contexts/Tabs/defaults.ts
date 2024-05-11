@@ -52,12 +52,9 @@ export const defaultTabs: Tabs = [
   {
     id: 1,
     tabData: {
-      task: {
-        connectFrom: 'directory',
-        forceDisconnect: false,
-        autoConnect: true,
-      },
-      ui: undefined,
+      connectFrom: 'directory',
+      forceDisconnect: false,
+      autoConnect: true,
     },
     chain: {
       id: 'polkadot',
@@ -76,12 +73,9 @@ export const defaultTabs: Tabs = [
   {
     id: 2,
     tabData: {
-      task: {
-        connectFrom: 'directory',
-        forceDisconnect: false,
-        autoConnect: true,
-      },
-      ui: undefined,
+      connectFrom: 'directory',
+      forceDisconnect: false,
+      autoConnect: true,
     },
     chain: {
       id: 'kusama',
@@ -100,12 +94,9 @@ export const defaultTabs: Tabs = [
   {
     id: 3,
     tabData: {
-      task: {
-        connectFrom: 'directory',
-        forceDisconnect: false,
-        autoConnect: true,
-      },
-      ui: undefined,
+      connectFrom: 'directory',
+      forceDisconnect: false,
+      autoConnect: true,
     },
     chain: {
       id: 'rococo',
@@ -124,12 +115,9 @@ export const defaultTabs: Tabs = [
   {
     id: 4,
     tabData: {
-      task: {
-        connectFrom: 'directory',
-        forceDisconnect: false,
-        autoConnect: false,
-      },
-      ui: undefined,
+      connectFrom: 'directory',
+      forceDisconnect: false,
+      autoConnect: false,
     },
     chain: undefined,
     name: 'New Tab',
@@ -140,10 +128,7 @@ export const defaultTabs: Tabs = [
 
 export const defaultEemptyTab: Tab = {
   id: -1,
-  tabData: {
-    task: undefined,
-    ui: undefined,
-  },
+  tabData: undefined,
   chain: undefined,
   name: '',
   activeTask: null,

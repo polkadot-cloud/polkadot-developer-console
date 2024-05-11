@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/utils/types';
 import type { Route } from 'App';
 import type { ChainId, NetworkDirectoryItem } from 'config/networks';
 import type { Dispatch, SetStateAction } from 'react';
@@ -17,20 +16,17 @@ export interface Tab {
   activeTask: TabTask | null;
   activePage: number;
   tabData: TabData;
-  // TODO: move these values into `tabData.task` object.
+  // TODO: move these values into `tabData` object.
   chain: TabChainData | undefined;
 }
 
-export interface TabData {
-  task:
-    | {
-        connectFrom: ConnectFrom;
-        forceDisconnect: boolean;
-        autoConnect: boolean;
-      }
-    | undefined;
-  ui: AnyJson;
-}
+export type TabData =
+  | {
+      connectFrom: ConnectFrom;
+      forceDisconnect: boolean;
+      autoConnect: boolean;
+    }
+  | undefined;
 
 export interface TabDataConnectChain {
   chain: TabChainData;

@@ -10,7 +10,7 @@ export const AutoConnect = () => {
   const { tab, tabId } = useActiveTab();
   const { setTabAutoConnect } = useTabs();
 
-  let autoConnectEnabled = tab?.tabData.task?.autoConnect;
+  let autoConnectEnabled = tab?.tabData?.autoConnect;
   if (autoConnectEnabled == undefined) {
     autoConnectEnabled = true;
   }
