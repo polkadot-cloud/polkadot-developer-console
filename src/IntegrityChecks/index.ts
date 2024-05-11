@@ -28,9 +28,9 @@ export const performTabsCheck = ({
       if (
         !(
           'id' in tab &&
-          'taskData' in tab &&
+          'name' in tab &&
           'activeTask' in tab &&
-          'name' in tab
+          'taskData' in tab
         )
       ) {
         throw new Error('Invalid tab');

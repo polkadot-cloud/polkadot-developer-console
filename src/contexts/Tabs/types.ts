@@ -14,8 +14,8 @@ export interface Tab {
   id: number;
   name: string;
   activeTask: TabTask | null;
-  activePage: number;
   taskData: taskData;
+  activePage: number;
 }
 
 export type taskData = taskDataConnectChain | undefined;

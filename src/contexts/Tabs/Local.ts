@@ -19,12 +19,11 @@ export const getTabs = (): Tabs | undefined => {
     try {
       const formatted = result.map((tab) => {
         const autoConnect = tab?.taskData?.autoConnect || false;
-
         return {
           ...tab,
           // If this tab is configured to auto-connect, set the active task to connectChain
-          // immediately.
-          activeTask: autoConnect ? 'connectChain' : tab.activeTask,
+          // immediately. TODO: abstract this into a per-task integrity check.
+          activeTask: !autoConnect ? null : 'connectChain',
           activePage: getActivePage(tab.id, 'default'),
         };
       });

@@ -51,6 +51,8 @@ export const defaultTabsContext: TabsContextInterface = {
 export const defaultTabs: Tabs = [
   {
     id: 1,
+    name: 'Polkadot Relay Chain',
+    activeTask: 'connectChain',
     taskData: {
       connectFrom: 'directory',
       forceDisconnect: false,
@@ -66,12 +68,12 @@ export const defaultTabs: Tabs = [
         },
       },
     },
-    name: 'Polkadot Relay Chain',
-    activeTask: 'connectChain',
     activePage: 0,
   },
   {
     id: 2,
+    name: 'Kusama Relay Chain',
+    activeTask: 'connectChain',
     taskData: {
       connectFrom: 'directory',
       forceDisconnect: false,
@@ -87,12 +89,12 @@ export const defaultTabs: Tabs = [
         },
       },
     },
-    name: 'Kusama Relay Chain',
-    activeTask: 'connectChain',
     activePage: 0,
   },
   {
     id: 3,
+    name: 'Rococo Relay Chain',
+    activeTask: 'connectChain',
     taskData: {
       connectFrom: 'directory',
       forceDisconnect: false,
@@ -108,29 +110,22 @@ export const defaultTabs: Tabs = [
         },
       },
     },
-    name: 'Rococo Relay Chain',
-    activeTask: 'connectChain',
     activePage: 0,
   },
   {
     id: 4,
-    taskData: {
-      connectFrom: 'directory',
-      forceDisconnect: false,
-      autoConnect: false,
-      chain: undefined,
-    },
     name: 'New Tab',
     activeTask: null,
+    taskData: undefined,
     activePage: 0,
   },
 ];
 
 export const defaultEemptyTab: Tab = {
   id: -1,
-  taskData: undefined,
   name: '',
   activeTask: null,
+  taskData: undefined,
   activePage: 0,
 };
 export const defaultCustomEndpointChainMeta = {

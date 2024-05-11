@@ -135,10 +135,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       ...tabs,
       {
         id: newTabId,
-        taskData: undefined,
-        chain: undefined,
         name: 'New Tab',
         activeTask: null,
+        taskData: undefined,
         activePage: 0,
       },
     ];
@@ -383,6 +382,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
             // Auto rename the tab here if the setting is turned on.
             name:
               autoTabNaming && isDirectory ? getAutoTabName(chainId) : tab.name,
+            // Chain is now assigned the `connectChain` task.
+            activeTask: 'connectChain' as TabTask,
             taskData: {
               chain: chainData,
               connectFrom: isDirectory
@@ -391,8 +392,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
               forceDisconnect: false,
               autoConnect,
             },
-            // Chain is now assigned the `connectChain` task.
-            activeTask: 'connectChain' as TabTask,
           }
         : tab
     );
