@@ -112,7 +112,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Gets the previously connected to chain from network directory, if present.
   const getStoredChain = (tabId: number) => {
     const tab = getTab(tabId);
-    const chainId = tab?.tabData?.chain?.id;
+    const chainId = tab?.taskData?.chain?.id;
 
     if (!chainId || !isDirectoryId(chainId)) {
       return undefined;
@@ -135,7 +135,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       ...tabs,
       {
         id: newTabId,
-        tabData: undefined,
+        taskData: undefined,
         chain: undefined,
         name: 'New Tab',
         activeTask: null,
@@ -185,8 +185,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const newTabs = tabs.map((tab) => {
       if (tab.id !== id) {
         const updated = { ...tab };
-        if (updated.tabData?.chain) {
-          updated.tabData.chain.ss58 = ss58;
+        if (updated.taskData?.chain) {
+          updated.taskData.chain.ss58 = ss58;
         }
         return updated;
       }
@@ -200,8 +200,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const newTabs = tabs.map((tab) => {
       if (tab.id !== id) {
         const updated = { ...tab };
-        if (updated.tabData?.chain) {
-          updated.tabData.chain.units = units;
+        if (updated.taskData?.chain) {
+          updated.taskData.chain.units = units;
         }
         return updated;
       }
@@ -215,8 +215,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const newTabs = tabs.map((tab) => {
       if (tab.id !== id) {
         const updated = { ...tab };
-        if (updated.tabData?.chain) {
-          updated.tabData.chain.unit = unit;
+        if (updated.taskData?.chain) {
+          updated.taskData.chain.unit = unit;
         }
         return updated;
       }
@@ -231,8 +231,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       if (tab.id === id) {
         const updated = { ...tab };
 
-        if (updated.tabData) {
-          updated.tabData.autoConnect = checked;
+        if (updated.taskData) {
+          updated.taskData.autoConnect = checked;
         }
         return updated;
       } else {
@@ -256,8 +256,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
           updated.activeTask = null;
         }
 
-        if (updated.tabData) {
-          updated.tabData.forceDisconnect = checked;
+        if (updated.taskData) {
+          updated.taskData.forceDisconnect = checked;
         }
         return updated;
       } else {
@@ -297,7 +297,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // to ensure the latest tabs config is used.
   const forgetTabChain = (tabId: number) => {
     // Disconnect from Api instance if present.
-    if (getTab(tabId)?.tabData?.chain) {
+    if (getTab(tabId)?.taskData?.chain) {
       destroyControllers(tabId);
     }
     // Update tab state.
@@ -313,8 +313,8 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       if (tab.id === id) {
         const updated = { ...tab };
 
-        if (updated.tabData) {
-          updated.tabData.connectFrom = connectFrom;
+        if (updated.taskData) {
+          updated.taskData.connectFrom = connectFrom;
         }
         return updated;
       } else {
@@ -365,7 +365,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       };
     } else {
       const localChain = local.getTabs()?.find(({ id }) => id === tabId)
-        ?.tabData?.chain;
+        ?.taskData?.chain;
       chainMeta = localChain || defaultCustomEndpointChainMeta;
     }
 
@@ -383,7 +383,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
             // Auto rename the tab here if the setting is turned on.
             name:
               autoTabNaming && isDirectory ? getAutoTabName(chainId) : tab.name,
-            tabData: {
+            taskData: {
               chain: chainData,
               connectFrom: isDirectory
                 ? 'directory'
@@ -405,13 +405,13 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const tab = getTab(tabId);
     if (
       tab?.activeTask === 'connectChain' &&
-      tab?.tabData?.chain &&
-      tab?.tabData?.autoConnect
+      tab?.taskData?.chain &&
+      tab?.taskData?.autoConnect
     ) {
       // This api instance is about to be reconnected to, so the active task here needs to be
       // persisted.
       setTabForceDisconnect(tabId, false, false);
-      instantiateControllers(tab.id, tab?.tabData?.chain);
+      instantiateControllers(tab.id, tab?.taskData?.chain);
     }
   };
 
@@ -430,7 +430,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const ownerId = tabIdToOwnerId(tabId);
     const tab = getTab(tabId);
 
-    if (tab && tab.tabData?.chain) {
+    if (tab && tab.taskData?.chain) {
       ApiController.destroyAll(ownerId);
     }
   };

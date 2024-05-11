@@ -28,7 +28,7 @@ export const performTabsCheck = ({
       if (
         !(
           'id' in tab &&
-          'tabData' in tab &&
+          'taskData' in tab &&
           'activeTask' in tab &&
           'name' in tab
         )

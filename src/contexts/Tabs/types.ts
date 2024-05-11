@@ -15,12 +15,12 @@ export interface Tab {
   name: string;
   activeTask: TabTask | null;
   activePage: number;
-  tabData: TabData;
+  taskData: taskData;
 }
 
-export type TabData = TabDataConnectChain | undefined;
+export type taskData = taskDataConnectChain | undefined;
 
-export interface TabDataConnectChain {
+export interface taskDataConnectChain {
   chain: TabChainData | undefined;
   connectFrom: ConnectFrom;
   forceDisconnect: boolean;

@@ -51,7 +51,7 @@ export const defaultTabsContext: TabsContextInterface = {
 export const defaultTabs: Tabs = [
   {
     id: 1,
-    tabData: {
+    taskData: {
       connectFrom: 'directory',
       forceDisconnect: false,
       autoConnect: true,
@@ -72,7 +72,7 @@ export const defaultTabs: Tabs = [
   },
   {
     id: 2,
-    tabData: {
+    taskData: {
       connectFrom: 'directory',
       forceDisconnect: false,
       autoConnect: true,
@@ -93,7 +93,7 @@ export const defaultTabs: Tabs = [
   },
   {
     id: 3,
-    tabData: {
+    taskData: {
       connectFrom: 'directory',
       forceDisconnect: false,
       autoConnect: true,
@@ -114,7 +114,7 @@ export const defaultTabs: Tabs = [
   },
   {
     id: 4,
-    tabData: {
+    taskData: {
       connectFrom: 'directory',
       forceDisconnect: false,
       autoConnect: false,
@@ -128,7 +128,7 @@ export const defaultTabs: Tabs = [
 
 export const defaultEemptyTab: Tab = {
   id: -1,
-  tabData: undefined,
+  taskData: undefined,
   name: '',
   activeTask: null,
   activePage: 0,
