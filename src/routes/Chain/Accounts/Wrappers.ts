@@ -86,7 +86,7 @@ export const AccountsWrapper = styled.div`
 
           > .name {
             position: relative;
-            height: 1.1rem;
+            height: 1.2rem;
           }
 
           > .address {
@@ -110,7 +110,7 @@ export const AccountsWrapper = styled.div`
           > .name > h3 {
             color: var(--text-color-primary);
             font-size: 0.8rem;
-            line-height: 0.8rem;
+            line-height: 0.95rem;
           }
 
           > .address > h5 {
