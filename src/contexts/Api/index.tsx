@@ -132,9 +132,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
           });
 
           // Initialise subscriptions for Overview here. We are currently only subscribing to the
-          // block number. NOTE: SubscriptionsController is currently only assuming one `chainId`
-          // per owner. This needs to change for parachain setup. TODO: SubscriptionsController to
-          // handle multiple chainIds for owners.
+          // block number.
           SubscriptionsController.set(
             instanceId,
             'blockNumber',

@@ -77,7 +77,6 @@ export const AccountId32 = ({
   };
 
   // Filter accounts based on search term, if present.
-  // TODO: Remove read only accounts once supported.
   const filteredAccounts =
     searchValue !== ''
       ? accounts.filter(
