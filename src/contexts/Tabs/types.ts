@@ -19,7 +19,6 @@ export interface Tab {
   tabData: TabData;
   // TODO: move these values into `tabData.task` object.
   chain: TabChainData | undefined;
-  autoConnect: boolean;
 }
 
 export interface TabData {
@@ -27,6 +26,7 @@ export interface TabData {
     | {
         connectFrom: ConnectFrom;
         forceDisconnect: boolean;
+        autoConnect: boolean;
       }
     | undefined;
   ui: AnyJson;

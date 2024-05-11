@@ -18,7 +18,7 @@ export const getTabs = (): Tabs | undefined => {
   if (result) {
     try {
       const formatted = result.map((tab) => {
-        const autoConnect = tab?.autoConnect || false;
+        const autoConnect = tab?.tabData.task?.autoConnect || false;
 
         return {
           ...tab,

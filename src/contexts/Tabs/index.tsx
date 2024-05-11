@@ -34,7 +34,7 @@ export const TabsContext =
 export const useTabs = () => useContext(TabsContext);
 
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
-  const { autoConnect, autoTabNaming } = useSettings();
+  const { autoTabNaming } = useSettings();
 
   // Created tabs. NOTE: Requires ref as it is used in event listeners.
   const [tabs, setTabsState] = useState<Tabs>(local.getTabs() || defaultTabs);
@@ -140,7 +140,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         },
         chain: undefined,
         name: 'New Tab',
-        autoConnect,
         activeTask: null,
         activePage: 0,
       },
@@ -215,17 +214,19 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Set a tab's autoConnect setting.
   const setTabAutoConnect = (id: number, checked: boolean) => {
-    setTabs(
-      tabs.map((tab) => {
-        if (tab.id === id) {
-          return {
-            ...tab,
-            autoConnect: checked,
-          };
+    const newTabs = tabs.map((tab) => {
+      if (tab.id === id) {
+        const updated = { ...tab };
+
+        if (updated.tabData.task) {
+          updated.tabData.task.autoConnect = checked;
         }
+        return updated;
+      } else {
         return tab;
-      })
-    );
+      }
+    });
+    setTabs(newTabs);
   };
 
   // Set a tab's forceDisconnect setting. NOTE: This function is called within event listeners, so
@@ -382,7 +383,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const instantiateApiFromTab = async (tabId: number) => {
     const tab = getTab(tabId);
     if (tab?.chain) {
-      if (tab?.autoConnect) {
+      if (tab?.tabData.task?.autoConnect) {
         // This api instance is about to be reconnected to, so the active task here needs to be
         // persisted.
         setTabForceDisconnect(tabId, false, false);

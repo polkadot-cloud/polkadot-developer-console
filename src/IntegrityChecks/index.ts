@@ -30,8 +30,7 @@ export const performTabsCheck = ({
           'id' in tab &&
           'tabData' in tab &&
           'activeTask' in tab &&
-          'name' in tab &&
-          'autoConnect' in tab
+          'name' in tab
         )
       ) {
         throw new Error('Invalid tab');
