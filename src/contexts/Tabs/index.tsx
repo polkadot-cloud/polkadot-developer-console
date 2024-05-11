@@ -3,7 +3,13 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
-import type { ConnectFrom, TabTask, Tabs, TabsContextInterface } from './types';
+import type {
+  ConnectFrom,
+  TabTask,
+  Tabs,
+  TabsContextInterface,
+  TaskData,
+} from './types';
 import { defaultTabs, defaultTabsContext } from './defaults';
 import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
@@ -202,7 +208,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     if (localActivePage !== undefined) {
       setTabActivePage(tabId, 'default', localActivePage, false);
     }
-
     setSelectedTabId(tabId);
     setSelectedTabIndex(tabIndex);
   };
@@ -226,6 +231,19 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Get at tab's taskData, if any.
   const getTabTaskData = (tabId: number) => getTab(tabId)?.taskData;
+
+  // Set a tab's `taskData` property.
+  const setTabTaskData = (tabId: number, value: TaskData) => {
+    const newTabs = tabs.map((tab) => {
+      if (tab.id === tabId) {
+        const updated = { ...tab };
+        updated.taskData = value;
+        return updated;
+      }
+      return tab;
+    });
+    setTabs(newTabs);
+  };
 
   return (
     <TabsContext.Provider
@@ -257,6 +275,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         getTabActiveTask,
         setTabActiveTask,
         getTabTaskData,
+        setTabTaskData,
         instantiatedIds: instantiatedIds.current,
       }}
     >

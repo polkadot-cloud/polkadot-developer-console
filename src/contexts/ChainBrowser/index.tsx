@@ -31,7 +31,8 @@ export const useChainBrowser = () => useContext(ChainBrowser);
 
 export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   const { autoTabNaming } = useSettings();
-  const { tabs, tabsRef, getTab, getTabTaskData, setTabs } = useTabs();
+  const { tabs, tabsRef, getTab, getTabTaskData, setTabs, setTabTaskData } =
+    useTabs();
 
   // Gets the previously connected to chain from network directory, if present.
   const getStoredChain = (tabId: number) => {
@@ -135,48 +136,30 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Update the chain's ss58 prefix in tab's taskData.
-  const updateSs58 = (id: number, ss58: number) => {
-    const newTabs = tabs.map((tab) => {
-      if (tab.id !== id) {
-        const updated = { ...tab };
-        if (updated.taskData?.chain) {
-          updated.taskData.chain.ss58 = ss58;
-        }
-        return updated;
-      }
-      return tab;
-    });
-    setTabs(newTabs);
+  const updateSs58 = (tabId: number, ss58: number) => {
+    const taskData = getTabTaskData(tabId);
+    if (taskData?.chain) {
+      taskData.chain.ss58 = ss58;
+      setTabTaskData(tabId, taskData);
+    }
   };
 
   // Update the chain's units in tab's taskData.
-  const updateUnits = (id: number, units: number) => {
-    const newTabs = tabs.map((tab) => {
-      if (tab.id !== id) {
-        const updated = { ...tab };
-        if (updated.taskData?.chain) {
-          updated.taskData.chain.units = units;
-        }
-        return updated;
-      }
-      return tab;
-    });
-    setTabs(newTabs);
+  const updateUnits = (tabId: number, units: number) => {
+    const taskData = getTabTaskData(tabId);
+    if (taskData?.chain) {
+      taskData.chain.units = units;
+      setTabTaskData(tabId, taskData);
+    }
   };
 
   // Update the chain's unit in tab's taskData.
-  const updateUnit = (id: number, unit: string) => {
-    const newTabs = tabs.map((tab) => {
-      if (tab.id !== id) {
-        const updated = { ...tab };
-        if (updated.taskData?.chain) {
-          updated.taskData.chain.unit = unit;
-        }
-        return updated;
-      }
-      return tab;
-    });
-    setTabs(newTabs);
+  const updateUnit = (tabId: number, unit: string) => {
+    const taskData = getTabTaskData(tabId);
+    if (taskData?.chain) {
+      taskData.chain.unit = unit;
+      setTabTaskData(tabId, taskData);
+    }
   };
 
   // Gets the amount of tab names starting with the provided string.
@@ -213,7 +196,6 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
         return tab;
       }
     });
-
     setTabs(newTabs);
   };
 

@@ -39,6 +39,7 @@ export const defaultTabsContext: TabsContextInterface = {
   getTabActiveTask: (tabId) => null,
   setTabActiveTask: (id, activeTask) => {},
   getTabTaskData: (tabId) => undefined,
+  setTabTaskData: (tabId, value) => {},
 };
 
 export const defaultTabs: Tabs = [

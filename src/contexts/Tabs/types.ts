@@ -83,6 +83,7 @@ export interface TabsContextInterface {
   getTabActiveTask: (tabId: number) => TabTask | null;
   setTabActiveTask: (tabId: number, task: TabTask | null) => void;
   getTabTaskData: (tabId: number) => TaskData;
+  setTabTaskData: (tabId: number, value: TaskData) => void;
 }
 
 // Active pages structure used in local storage to keep track of active page indexes for each tab.
