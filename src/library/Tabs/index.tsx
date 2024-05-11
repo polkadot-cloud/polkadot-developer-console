@@ -91,10 +91,10 @@ export const Tabs = () => {
   return (
     <TabsWrapper
       ref={tabContainerRef}
-      className={tabsHidden ? 'hidden' : undefined}
-      initial={hideTabs ? 'hidden' : 'show'}
+      className={tabsHidden || pathname !== '/' ? 'hidden' : undefined}
+      initial={hideTabs || pathname !== '/' ? 'hidden' : 'show'}
       animate={
-        isInitial && tabsHidden
+        isInitial && hideTabs
           ? undefined
           : !tabsHidden && !hideTabs
             ? 'show'
