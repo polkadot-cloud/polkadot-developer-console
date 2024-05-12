@@ -3,7 +3,6 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { ApiController } from 'controllers/Api';
 import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
@@ -11,16 +10,13 @@ import type {
   APIStatusEventDetail,
   ApiInstanceId,
   ApiStatusState,
-  ChainSpecState,
 } from 'model/Api/types';
-import { useChainUi } from 'contexts/ChainUi';
 import { NotificationsController } from 'controllers/Notifications';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { BlockNumber } from 'model/BlockNumber';
 import { AccountBalances } from 'model/AccountBalances';
 import { setStateWithRef } from '@w3ux/utils';
 import { ownerIdToTabId } from 'contexts/Tabs/Utils';
-import { getIndexFromInstanceId } from 'model/Api/util';
 import type { OwnerId } from 'types';
 import { useChainBrowser } from 'contexts/ChainBrowser';
 import type { AnyJson } from '@w3ux/utils/types';
@@ -30,7 +26,6 @@ export const Api = createContext<AnyJson>({});
 export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
-  const { fetchPalletVersions } = useChainUi();
   const { tabs, setTabActiveTask } = useTabs();
   const { instantiateApiFromTab, forgetTabChain } = useChainBrowser();
 
@@ -44,15 +39,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     setStateWithRef(newApiStatus, setApiStatusState, apiStatusRef);
   };
 
-  // Store chain spec of each api instance. NOTE: requires ref as it is used in event listener.
-  const [chainSpec, setChainSpecState] = useState<ChainSpecState>({});
-  const chainSpecRef = useRef(chainSpec);
-
-  // Setter for chain spec. Updates state and ref.
-  const setChainSpec = (newChainSpec: ChainSpecState) => {
-    setStateWithRef(newChainSpec, setChainSpecState, chainSpecRef);
-  };
-
   // Remove api status for an instance.
   const removeApiStatus = (instanceId: ApiInstanceId) => {
     const updated = { ...apiStatusRef.current };
@@ -60,18 +46,10 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     setApiStatus(updated);
   };
 
-  // Remove chain spec for an owner.
-  const removeChainSpec = (instanceId: ApiInstanceId) => {
-    const updated = { ...chainSpecRef.current };
-    delete updated[instanceId];
-    setChainSpec(updated);
-  };
-
   // Handle a chain disconnect.
   const handleDisconnect = (instanceId: ApiInstanceId, destroy = false) => {
     if (destroy) {
       removeApiStatus(instanceId);
-      removeChainSpec(instanceId);
     } else {
       // Update API status to `disconnected`.
       setApiStatus({ ...apiStatusRef.current, [instanceId]: 'disconnected' });
@@ -83,7 +61,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   // Handle a chain error.
   const handleChainError = (ownerId: OwnerId, instanceId: ApiInstanceId) => {
     removeApiStatus(instanceId);
-    removeChainSpec(instanceId);
 
     // If the error originated from initialization or bootstrapping of metadata, assume the
     // connection is an invalid chain and forget it. This prevents auto connect on subsequent
@@ -148,37 +125,10 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Handle incoming chain spec updates.
-  const handleNewChainSpec = (e: Event): void => {
-    if (isCustomEvent(e)) {
-      const { ownerId, instanceId, spec, consts } = e.detail;
-
-      setChainSpec({
-        ...chainSpecRef.current,
-        [instanceId]: { ...spec, consts },
-      });
-
-      // Fetch pallet versions for ChainUi state if this is a tab api instance.
-      if (ownerId.startsWith('tab_')) {
-        fetchPalletVersions(
-          ownerId,
-          spec.metadata,
-          ApiController.getInstanceApi(
-            ownerId,
-            getIndexFromInstanceId(instanceId)
-          )
-        );
-      }
-    }
-  };
-
   const documentRef = useRef<Document>(document);
 
   // Listen for api status updates.
   useEventListener('api-status', handleNewApiStatus, documentRef);
-
-  // Listen for new chain spec updates.
-  useEventListener('new-chain-spec', handleNewChainSpec, documentRef);
 
   // Initialisation of Api.
   useEffect(() => {
