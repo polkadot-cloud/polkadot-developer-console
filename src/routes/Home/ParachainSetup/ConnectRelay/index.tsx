@@ -23,10 +23,10 @@ import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const ConnectRelay = () => {
   const {
-    getApiStatusByIndex,
-    getChainSpecByIndex,
     destroyChainApi,
     handleConnectApi,
+    getApiStatusByIndex,
+    getChainSpecByIndex,
   } = useChainSpaceEnv();
   const {
     getSelectedRelayChain,
