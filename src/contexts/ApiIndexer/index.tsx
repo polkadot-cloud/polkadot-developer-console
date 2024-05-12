@@ -62,9 +62,9 @@ export const ApiIndexerProvider = ({ children }: { children: ReactNode }) => {
   // Remove an api index for an owner.
   const removeTabApiIndex = (ownerId: OwnerId, index: number) => {
     const updated = { ...apiIndexesRef.current };
-    updated[ownerId] = updated[ownerId]?.filter(
-      (apiIndex) => apiIndex.index !== index
-    );
+    updated[ownerId] =
+      updated[ownerId]?.filter((apiIndex) => apiIndex.index !== index) || [];
+
     if (updated[ownerId]?.length === 0) {
       delete updated[ownerId];
     }

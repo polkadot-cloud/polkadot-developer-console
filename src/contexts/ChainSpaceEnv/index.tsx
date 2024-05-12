@@ -258,9 +258,9 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
 
   // Destroy state associated with a tab. Should only be used on tab close.
   const destroyChainSpaceEnvIndex = (ownerId: OwnerId) => {
-    const apiIndexes = getTabApiIndexes(ownerId);
-    if (apiIndexes.length) {
-      for (const apiIndex of apiIndexes) {
+    const indexes = getTabApiIndexes(ownerId);
+    if (indexes.length) {
+      for (const apiIndex of indexes) {
         handleDisconnect(ownerId, `${ownerId}_${apiIndex.index}`);
       }
     }

@@ -89,7 +89,9 @@ export class ApiController {
     if (instance) {
       ChainStateController.destroy(`${ownerId}_${instanceIndex}`);
 
-      await instance.disconnect(true);
+      // NOTE: This is async, but not currently waiting for it to disconnect before state is
+      // deleted.
+      instance.disconnect(true);
       delete this.#instances[ownerId][instanceIndex];
     }
   }
