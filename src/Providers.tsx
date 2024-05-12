@@ -46,6 +46,7 @@ export const Providers = () => {
     MenuProvider,
     TooltipProvider,
     ConnectProvider,
+    ChainUiProvider,
 
     // Account related providers.
     ExtensionsProvider,
@@ -60,7 +61,6 @@ export const Providers = () => {
     // Task: `chainBrowser` related providers.
     ChainBrowserProvider,
     ChainFilterProvider,
-    ChainUiProvider,
     ChainStateProvider,
     ApiProvider,
     TabAccountsProvider,

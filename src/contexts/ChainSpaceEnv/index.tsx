@@ -29,6 +29,7 @@ import { BlockNumber } from 'model/BlockNumber';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 import { useActiveTab } from 'contexts/ActiveTab';
 import type { OwnerId } from 'types';
+import { useChainUi } from 'contexts/ChainUi';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
   defaultChainSpaceEnvContext
@@ -37,6 +38,7 @@ export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
 export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
 export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
+  const { fetchPalletVersions } = useChainUi();
   const { getAccounts } = useImportedAccounts();
   const { ownerId: activeOwnerId } = useActiveTab();
   const { globalChainSpace } = useGlobalChainSpace();
@@ -205,13 +207,21 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   // Handle incoming chain spec updates.
   const handleNewChainSpec = (e: Event): void => {
     if (isCustomEvent(e)) {
-      const { instanceId, spec, consts } = e.detail;
+      const { instanceId, ownerId, spec, consts } = e.detail;
 
       const updated = { ...chainSpecsRef.current };
       updated[instanceId] = { ...spec, consts };
       setChainSpecs(updated);
 
-      // TODO: Find a way to fetch pallet versions once chainSpec is updated.
+      // NOTE: This is only used for `chainBrowser` task. Could be optimised.
+      fetchPalletVersions(
+        ownerId,
+        spec.metadata,
+        ApiController.getInstanceApi(
+          ownerId,
+          getIndexFromInstanceId(instanceId)
+        )
+      );
     }
   };
 
@@ -245,8 +255,9 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
 
   // Get index from instance id.
   const getIndexFromInstanceId = (instanceId: string): number => {
-    const result = instanceId.split(/_(.*)/s);
-    return Number(result[1]);
+    // NOTE: assumes instanceId is in the format `ownerId_index`. E.g. `tab_0_1`.
+    const result = instanceId.split('_');
+    return Number(result[2]);
   };
 
   const documentRef = useRef<Document>(document);
