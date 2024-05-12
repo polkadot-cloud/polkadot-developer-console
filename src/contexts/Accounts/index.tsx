@@ -3,8 +3,8 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext } from 'react';
-import type { TabAccountsContextInterface } from './types';
-import { defaultTabAccountsContext } from './defaults';
+import type { AccountsContextInterface } from './types';
+import { defaultAccountsContext } from './defaults';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useActiveBalances } from 'hooks/useActiveBalances';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
@@ -13,13 +13,13 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import type { APIChainSpec } from 'model/Api/types';
 import type { ActiveBalancesProps } from 'hooks/useActiveBalances/types';
 
-export const TabAccounts = createContext<TabAccountsContextInterface>(
-  defaultTabAccountsContext
+export const Accounts = createContext<AccountsContextInterface>(
+  defaultAccountsContext
 );
 
-export const useTabAccounts = () => useContext(TabAccounts);
+export const useAccounts = () => useContext(Accounts);
 
-export const TabAccountsProvider = ({ children }: { children: ReactNode }) => {
+export const AccountsProvider = ({ children }: { children: ReactNode }) => {
   const { ownerId } = useActiveTab();
   const { getTabApiIndexes } = useApiIndexer();
   const { getApiStatus, getChainSpec } = useChainSpaceEnv();
@@ -51,13 +51,13 @@ export const TabAccountsProvider = ({ children }: { children: ReactNode }) => {
   const activeBalances = useActiveBalances(activeBalanceInstances);
 
   return (
-    <TabAccounts.Provider
+    <Accounts.Provider
       value={{
         getAccounts,
         ...activeBalances,
       }}
     >
       {children}
-    </TabAccounts.Provider>
+    </Accounts.Provider>
   );
 };

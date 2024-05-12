@@ -9,14 +9,14 @@ import { faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { Account } from './Account';
 import BigNumber from 'bignumber.js';
-import { useTabAccounts } from 'contexts/TabAccounts';
+import { useAccounts } from 'contexts/Accounts';
 import { FlexWrapper } from 'routes/Common/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const Accounts = () => {
   const { tab, ownerId } = useActiveTab();
-  const { getAccounts } = useTabAccounts();
+  const { getAccounts } = useAccounts();
   const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec } = useChainSpaceEnv();
 

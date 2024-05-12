@@ -15,7 +15,7 @@ import { TooltipProvider } from 'contexts/Tooltip';
 import { ChainUiProvider } from 'contexts/ChainUi';
 import { ParaSetupProvider } from 'contexts/ParaSetup';
 import { ConnectProvider } from 'contexts/Connect';
-import { TabAccountsProvider } from 'contexts/TabAccounts';
+import { AccountsProvider } from 'contexts/Accounts';
 import {
   ExtensionAccountsProvider,
   ExtensionsProvider,
@@ -47,7 +47,7 @@ export const Providers = () => {
     ConnectProvider,
     ChainUiProvider,
 
-    // Account related providers.
+    // Account import related providers.
     ExtensionsProvider,
     [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
     VaultAccountsProvider,
@@ -57,11 +57,13 @@ export const Providers = () => {
     ApiIndexerProvider,
     ChainSpaceEnvProvider,
 
+    // Account balance provider.
+    AccountsProvider,
+
     // Task: `chainBrowser` related providers.
     ChainBrowserProvider,
     ChainFilterProvider,
     ChainStateProvider,
-    TabAccountsProvider,
 
     // Task: `parachainSetup` related providers.
     ParaSetupProvider,

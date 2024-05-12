@@ -7,8 +7,8 @@ import type { ActiveBalancesInterface } from 'hooks/useActiveBalances/types';
 import type { BalanceLock, Balances } from 'model/AccountBalances/types';
 import type { APIChainSpec } from 'model/Api/types';
 
-export type TabAccountsContextInterface = ActiveBalancesInterface & {
-  getAccounts: (spec?: APIChainSpec) => ImportedAccount[];
+export type AccountsContextInterface = ActiveBalancesInterface & {
+  getAccounts: (chainSpec?: APIChainSpec) => ImportedAccount[];
 };
 
 // Account balances, keyed by address.

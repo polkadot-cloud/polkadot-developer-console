@@ -15,12 +15,12 @@ import { Checkbox } from './Checkbox';
 import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useTabAccounts } from 'contexts/TabAccounts';
+import { useAccounts } from 'contexts/Accounts';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const useInput = () => {
-  const { getAccounts } = useTabAccounts();
+  const { getAccounts } = useAccounts();
   const { tabId, ownerId } = useActiveTab();
   const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec } = useChainSpaceEnv();

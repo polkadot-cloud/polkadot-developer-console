@@ -6,7 +6,7 @@ import type BigNumber from 'bignumber.js';
 import type {
   AccountBalancesState,
   BalanceLocks,
-} from 'contexts/TabAccounts/types';
+} from 'contexts/Accounts/types';
 import type { Balance } from 'model/AccountBalances/types';
 import type { ApiInstanceId, ApiStatus } from 'model/Api/types';
 

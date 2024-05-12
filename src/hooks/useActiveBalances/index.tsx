@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import BigNumber from 'bignumber.js';
 import { isCustomEvent } from 'Utils';
-import type { BalanceLocks } from 'contexts/TabAccounts/types';
+import type { BalanceLocks } from 'contexts/Accounts/types';
 import type { BalanceLock } from 'model/AccountBalances/types';
 import type { ApiInstanceId } from 'model/Api/types';
 import { defaultBalance } from './defaults';
