@@ -199,7 +199,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
           handleDisconnect(ownerId, instanceId);
           break;
         case 'error':
-          // TODO: Check how this behaves with invalid custom websocket.
           handleDisconnect(ownerId, instanceId);
           break;
         case 'destroyed':
