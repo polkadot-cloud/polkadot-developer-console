@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { OwnerId } from 'types';
+import type { ChainSpaceId } from 'types';
 import { ChainSpace } from 'model/ChainSpace';
 
 export class ChainSpaceController {
@@ -9,34 +9,34 @@ export class ChainSpaceController {
   // Class members.
   // ------------------------------------------------------
 
-  // The currently instantiated ChainSpace instances, keyed by ownerId.
-  static #instances: Record<OwnerId, ChainSpace> = {};
+  // The currently instantiated ChainSpace instances.
+  static #instances: Record<ChainSpaceId, ChainSpace> = {};
 
   // ------------------------------------------------------
   // Instance methods.
   // ------------------------------------------------------
 
   // Instantiate a new `ChainSpace` instance with the supplied owner.
-  static instantiate(ownerId: OwnerId) {
+  static instantiate(id: ChainSpaceId) {
     // Exit if instance already exists.
-    if (this.#instances[ownerId]) {
+    if (this.#instances[id]) {
       return;
     }
     // Instantiate instance.
-    this.#instances[ownerId] = new ChainSpace(ownerId);
+    this.#instances[id] = new ChainSpace(id);
   }
 
   // Get a chain space instance by owner and index.
-  static getInstance(ownerId: OwnerId) {
-    return this.#instances[ownerId];
+  static getInstance(id: ChainSpaceId) {
+    return this.#instances[id];
   }
 
   // Gracefully disconnect and then destroy a chain space instance.
-  static async destroyInstance(ownerId: OwnerId) {
-    const instance = this.#instances[ownerId];
+  static async destroyInstance(id: ChainSpaceId) {
+    const instance = this.#instances[id];
     if (instance) {
       await instance.destroy();
-      delete this.#instances[ownerId];
+      delete this.#instances[id];
     }
   }
 

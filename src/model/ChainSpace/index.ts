@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { OwnerId } from 'types';
+import type { ChainSpaceId } from 'types';
 import { ApiController } from 'controllers/Api';
 import type { ChainId } from 'config/networks';
 
@@ -11,18 +11,18 @@ export class ChainSpace {
   // ------------------------------------------------------
 
   // The associated owner for this instance.
-  #ownerId: OwnerId;
+  #id: ChainSpaceId;
 
-  get ownerId() {
-    return this.#ownerId;
+  get id() {
+    return this.#id;
   }
 
   // ------------------------------------------------------
   // Constructor.
   // ------------------------------------------------------
 
-  constructor(ownerId: OwnerId) {
-    this.#ownerId = ownerId;
+  constructor(id: ChainSpaceId) {
+    this.#id = id;
   }
 
   // ------------------------------------------------------
@@ -32,7 +32,7 @@ export class ChainSpace {
   // Instantiate an api instance for this chain space.
   async addApi(chainId: ChainId, endpoint: string) {
     const instanceId = await ApiController.instantiate(
-      this.#ownerId,
+      this.#id,
       chainId,
       endpoint
     );
@@ -42,12 +42,12 @@ export class ChainSpace {
 
   // Get an api instance associated with this chain space.
   getApi(index: number) {
-    return ApiController.getInstanceApi(this.#ownerId, index);
+    return ApiController.getInstanceApi(this.#id, index);
   }
 
   // Destroy an api instance associated with this chain space.
   async destroyApi(index: number) {
-    await ApiController.destroy(this.#ownerId, index);
+    await ApiController.destroy(this.#id, index);
   }
 
   // ------------------------------------------------------
@@ -57,7 +57,7 @@ export class ChainSpace {
   // Disconnect gracefully from all API instances owned by this chain space. Called when this chain
   // space is being destroyed.
   async destroy() {
-    // Destroy all api instances for this owner.
-    await ApiController.destroyAll(this.#ownerId);
+    // Destroy all api instances for this chainspace id.
+    await ApiController.destroyAll(this.#id);
   }
 }

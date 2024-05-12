@@ -72,6 +72,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     if (apiIndex !== undefined) {
       // Destory the API instance.
       ApiController.destroy(globalChainSpace.ownerId, apiIndex.index);
+
       // Remove from api indexer.
       removeTabApiIndex(tabId, label);
     }
@@ -84,15 +85,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     }
     const instanceId = `${globalChainSpace.ownerId}_${index}`;
     return apiStatusesRef.current[instanceId] || 'disconnected';
-  };
-
-  // Gets whether an api is active (not disconnected or undefined).
-  const getApiActiveByIndex = (tabId: number, label: string): boolean => {
-    const apiIndex = getTabApiIndex(tabId, label);
-    const status = getApiStatusByIndex(apiIndex?.index);
-    return (
-      status === 'ready' || status === 'connected' || status === 'connecting'
-    );
   };
 
   // Get chainSpec for a chain instance by index.
@@ -118,6 +110,15 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
       },
       setApiStatuses,
       apiStatusesRef
+    );
+  };
+
+  // Gets whether an api is active (not disconnected or undefined).
+  const getApiActive = (tabId: number, label: string): boolean => {
+    const apiIndex = getTabApiIndex(tabId, label);
+    const status = getApiStatusByIndex(apiIndex?.index);
+    return (
+      status === 'ready' || status === 'connected' || status === 'connecting'
     );
   };
 
@@ -272,7 +273,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
       value={{
         // Getters
         getApiStatusByIndex,
-        getApiActiveByIndex,
+        getApiActive,
         getChainSpecByIndex,
         getChainApi,
 

@@ -40,11 +40,10 @@ export const ConnectRelay = () => {
 
   const selectedRelayChain = getSelectedRelayChain(tabId);
 
-  // Chain space api data.
-  const chainSpaceApiIndex = getTabApiIndex(tabId, 'parachainSetup:relay');
-
-  const apiStatus = getApiStatusByIndex(chainSpaceApiIndex?.index);
-  const chainSpec = getChainSpecByIndex(chainSpaceApiIndex?.index);
+  // Get API instance data.
+  const apiIndex = getTabApiIndex(tabId, 'parachainSetup:relay');
+  const apiStatus = getApiStatusByIndex(apiIndex?.index);
+  const chainSpec = getChainSpecByIndex(apiIndex?.index);
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -65,10 +64,11 @@ export const ConnectRelay = () => {
   // API can be assumed as valid when it is ready and the chain spec has been fetched.
   const apiValid = ['ready'].includes(apiStatus) && chainSpec !== undefined;
 
-  // Handle disconnect from api instance.
+  // Handle disconnect from api instance. This will destroy the api instance and reset the tab
+  // active task.
   const handleDisconnect = () => {
-    if (chainSpaceApiIndex !== undefined) {
-      // Destroy the chain space instance.
+    if (apiIndex !== undefined) {
+      // Destroy the API instance.
       destroyChainApi(tabId, 'parachainSetup:relay');
 
       // Reset tab active task.
