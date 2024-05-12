@@ -8,18 +8,18 @@ import type { APIChainSpec, ApiInstanceId, ApiStatus } from 'model/Api/types';
 import type { OwnerId } from 'types';
 
 export interface ChainSpaceEnvContextInterface {
-  getApiStatus: (instanceId?: ApiInstanceId) => ApiStatus;
-  getChainSpec: (instanceId?: ApiInstanceId) => APIChainSpec | undefined;
-  activeBalances: ActiveBalancesInterface;
   handleConnectApi: (
     ownerId: OwnerId,
     label: string,
     chainId: ChainId,
     provider: string
   ) => Promise<void>;
+  getApiStatus: (instanceId?: ApiInstanceId) => ApiStatus;
+  getChainSpec: (instanceId?: ApiInstanceId) => APIChainSpec | undefined;
   getApiInstance: (ownerId: OwnerId, label: string) => Api | undefined;
   destroyApiInstance: (ownerId: OwnerId, label: string) => void;
   destroyAllApiInstances: (ownerId: OwnerId) => void;
+  activeBalances: ActiveBalancesInterface;
 }
 
 export interface ChainSpaceEnvProps {
