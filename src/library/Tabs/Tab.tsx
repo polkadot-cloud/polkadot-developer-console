@@ -24,7 +24,6 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { useChainBrowser } from 'contexts/ChainBrowser';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
@@ -46,9 +45,8 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const { openMenu, closeMenu } = useMenu();
   const { destroyTabChainUi } = useChainUi();
   const { destroyTabParaSetup } = useParaSetup();
-  const { destroyControllers } = useChainBrowser();
-  const { destroyChainSpaceEnvIndex } = useChainSpaceEnv();
   const { removeTabApiIndexes, getTabApiIndexes } = useApiIndexer();
+  const { destroyChainSpaceEnvIndex, destroyAllChainApis } = useChainSpaceEnv();
 
   const {
     listeners,
@@ -174,20 +172,20 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
               destroyTabChainUi(id);
 
               // Destroy chain space apis and state associated with this tab.
-              const chainSpaceIndexes = getTabApiIndexes(id);
-              if (chainSpaceIndexes.length) {
-                for (const chainSpaceIndex of chainSpaceIndexes) {
-                  destroyChainSpaceEnvIndex(chainSpaceIndex.index);
+              const apiIndexes = getTabApiIndexes(id);
+              if (apiIndexes.length) {
+                for (const apiIndex of apiIndexes) {
+                  destroyChainSpaceEnvIndex(id, apiIndex.index);
                 }
               }
 
               // Destroy Parachain state associated with this tab.
               destroyTabParaSetup(id);
 
-              // Destroy controllers associated with the tab.
-              destroyControllers(id);
+              // Destroy api instances associated with the tab.
+              destroyAllChainApis(id);
 
-              // Remove api instances from tab chain space indexes.
+              // Remove api indexer entries associated with the tab.
               removeTabApiIndexes(id);
 
               // Destroy tab instance.

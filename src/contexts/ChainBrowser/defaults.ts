@@ -12,7 +12,6 @@ export const defaultChainBrowserContext: ChainBrowserContextInterface = {
   connectChainBrowser: (tabId, chainId, endpoint) => {},
   instantiateApiFromTab: (tabId) => {},
   forgetTabChain: (tabId) => {},
-  destroyControllers: (tabId) => {},
 };
 
 export const defaultCustomEndpointChainMeta = {

@@ -15,8 +15,6 @@ import { isDirectoryId } from 'config/networks/Utils';
 import type { ChainMeta, ConnectFrom, TabTask } from 'contexts/Tabs/types';
 import { useSettings } from 'contexts/Settings';
 import * as local from 'contexts/Tabs/Local';
-import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
-import { ApiController } from 'controllers/Api';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const ChainBrowser = createContext<ChainBrowserContextInterface>(
@@ -161,10 +159,6 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   // Forget a tab's chain. NOTE: This function is called within event listeners, so tabsRef is used
   // to ensure the latest tabs config is used.
   const forgetTabChain = (tabId: number) => {
-    // Disconnect from Api instance if present.
-    if (getTabTaskData(tabId)?.chain) {
-      destroyControllers(tabId);
-    }
     // Update tab state.
     const newTabs = tabsRef.map((tab) => {
       if (tab.id === tabId) {
@@ -181,16 +175,6 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
-  // Destroy controller instances for a tab.
-  const destroyControllers = (tabId: number) => {
-    const ownerId = tabIdToOwnerId(tabId);
-    const taskData = getTabTaskData(tabId);
-
-    if (taskData && taskData?.chain) {
-      ApiController.destroyAll(ownerId);
-    }
-  };
-
   return (
     <ChainBrowser.Provider
       value={{
@@ -201,7 +185,6 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
         connectChainBrowser,
         instantiateApiFromTab,
         forgetTabChain,
-        destroyControllers,
       }}
     >
       {children}

@@ -84,7 +84,8 @@ export class ApiController {
 
   // Gracefully disconnect and then destroy an api instance.
   static async destroy(ownerId: OwnerId, instanceIndex: number) {
-    const instance = this.#instances[ownerId][instanceIndex];
+    const instance = this.#instances[ownerId]?.[instanceIndex];
+
     if (instance) {
       ChainStateController.destroy(`${ownerId}_${instanceIndex}`);
 

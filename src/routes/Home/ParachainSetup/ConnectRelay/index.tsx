@@ -42,8 +42,8 @@ export const ConnectRelay = () => {
 
   // Get API instance data.
   const apiIndex = getTabApiIndex(tabId, 'parachainSetup:relay');
-  const apiStatus = getApiStatusByIndex(apiIndex?.index);
-  const chainSpec = getChainSpecByIndex(apiIndex?.index);
+  const apiStatus = getApiStatusByIndex(tabId, apiIndex?.index);
+  const chainSpec = getChainSpecByIndex(tabId, apiIndex?.index);
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(

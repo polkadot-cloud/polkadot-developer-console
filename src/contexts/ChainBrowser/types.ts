@@ -17,5 +17,4 @@ export interface ChainBrowserContextInterface {
   ) => void;
   instantiateApiFromTab: (tabId: number) => void;
   forgetTabChain: (tabId: number) => void;
-  destroyControllers: (tabId: number) => void;
 }

@@ -7,9 +7,12 @@ import type { Api } from 'model/Api';
 import type { APIChainSpec, ApiInstanceId, ApiStatus } from 'model/Api/types';
 
 export interface ChainSpaceEnvContextInterface {
-  getApiStatusByIndex: (index: number | undefined) => ApiStatus;
+  getApiStatusByIndex: (tabId: number, index: number | undefined) => ApiStatus;
   getApiActive: (tabId: number, label: string) => boolean;
-  getChainSpecByIndex: (index: number | undefined) => APIChainSpec | undefined;
+  getChainSpecByIndex: (
+    tabId: number,
+    index: number | undefined
+  ) => APIChainSpec | undefined;
   activeBalances: ActiveBalancesInterface;
   handleConnectApi: (
     tabId: number,
@@ -19,7 +22,8 @@ export interface ChainSpaceEnvContextInterface {
   ) => Promise<void>;
   getChainApi: (tabId: number, label: string) => Api | undefined;
   destroyChainApi: (tabId: number, label: string) => void;
-  destroyChainSpaceEnvIndex: (index: number) => void;
+  destroyAllChainApis: (tabId: number) => void;
+  destroyChainSpaceEnvIndex: (tabId: number, index: number) => void;
 }
 
 export interface ChainSpaceEnvProps {
