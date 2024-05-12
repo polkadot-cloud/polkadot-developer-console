@@ -56,8 +56,11 @@ export const useActiveBalances = (
   };
 
   // Gets an active balance's balance.
-  const getBalance = (instanceId: ApiInstanceId, address: MaybeAddress) => {
-    if (address) {
+  const getBalance = (
+    instanceId: ApiInstanceId | undefined,
+    address: MaybeAddress
+  ) => {
+    if (address && instanceId !== undefined) {
       const maybeBalance = activeBalances[instanceId]?.[address]?.balance;
       if (maybeBalance) {
         return maybeBalance;
@@ -76,10 +79,10 @@ export const useActiveBalances = (
 
   // Gets an active balance's locks.
   const getLocks = (
-    instanceId: ApiInstanceId,
+    instanceId: ApiInstanceId | undefined,
     address: MaybeAddress
   ): BalanceLocks => {
-    if (address) {
+    if (address && instanceId !== undefined) {
       const maybeLocks = activeBalances[instanceId]?.[address]?.locks;
       if (maybeLocks) {
         return { locks: maybeLocks, maxLock: getMaxLock(maybeLocks) };
@@ -94,7 +97,7 @@ export const useActiveBalances = (
 
   // Gets the amount of balance reserved for existential deposit.
   const getEdReserved = (
-    instanceId: ApiInstanceId,
+    instanceId: ApiInstanceId | undefined,
     address: MaybeAddress,
     existentialDeposit: BigNumber
   ): BigNumber => {

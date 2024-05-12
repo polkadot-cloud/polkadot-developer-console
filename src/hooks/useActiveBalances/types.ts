@@ -19,10 +19,16 @@ export interface ActiveBalanceInstance {
 
 export interface ActiveBalancesInterface {
   activeBalances: AccountBalancesState;
-  getLocks: (instanceId: ApiInstanceId, address: MaybeAddress) => BalanceLocks;
-  getBalance: (instanceId: ApiInstanceId, address: MaybeAddress) => Balance;
+  getLocks: (
+    instanceId: ApiInstanceId | undefined,
+    address: MaybeAddress
+  ) => BalanceLocks;
+  getBalance: (
+    instanceId: ApiInstanceId | undefined,
+    address: MaybeAddress
+  ) => Balance;
   getEdReserved: (
-    instanceId: ApiInstanceId,
+    instanceId: ApiInstanceId | undefined,
     address: MaybeAddress,
     existentialDeposit: BigNumber
   ) => BigNumber;
