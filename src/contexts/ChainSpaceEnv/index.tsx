@@ -30,6 +30,8 @@ import { useApiIndexer } from 'contexts/ApiIndexer';
 import { useActiveTab } from 'contexts/ActiveTab';
 import type { OwnerId } from 'types';
 import { useChainUi } from 'contexts/ChainUi';
+import { useTabs } from 'contexts/Tabs';
+import { ownerIdToTabId } from 'contexts/Tabs/Utils';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
   defaultChainSpaceEnvContext
@@ -38,6 +40,7 @@ export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
 export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
 export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
+  const { setTabActiveTask } = useTabs();
   const { fetchPalletVersions } = useChainUi();
   const { getAccounts } = useImportedAccounts();
   const { ownerId: activeOwnerId } = useActiveTab();
@@ -75,7 +78,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
       ApiController.destroy(ownerId, apiIndex.index);
 
       // Remove from api indexer.
-      removeTabApiIndex(ownerId, label);
+      removeTabApiIndex(ownerId, apiIndex.index);
     }
   };
 
@@ -232,25 +235,35 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   ) => {
     const index = getIndexFromInstanceId(instanceId);
 
-    await ApiController.destroy(ownerId, index);
+    // Destory api instances associated with this owner.
+    ApiController.destroyAll(ownerId);
 
-    // TODO: remove Api index from indexer.
+    // Remove api instance index from indexer.
+    removeTabApiIndex(ownerId, index);
 
+    // Remove api status.
     const updatedApiStatuses = { ...apiStatusesRef.current };
     delete updatedApiStatuses[instanceId];
     setApiStatuses(updatedApiStatuses);
     apiStatusesRef.current = updatedApiStatuses;
 
+    // Remove chain spec.
     const updatedChainSpecs = { ...chainSpecsRef.current };
     delete updatedChainSpecs[instanceId];
     setChainSpecs(updatedChainSpecs);
+
+    // Reset active task.
+    setTabActiveTask(ownerIdToTabId(ownerId), null);
   };
 
   // Destroy state associated with a tab. Should only be used on tab close.
-  const destroyChainSpaceEnvIndex = (ownerId: OwnerId, index: number) => {
-    // Disconnect from all instances associated with this tab.
-    const instanceId = `${ownerId}_${index}`;
-    handleDisconnect(ownerId, instanceId);
+  const destroyChainSpaceEnvIndex = (ownerId: OwnerId) => {
+    const apiIndexes = getTabApiIndexes(ownerId);
+    if (apiIndexes.length) {
+      for (const apiIndex of apiIndexes) {
+        handleDisconnect(ownerId, `${ownerId}_${apiIndex.index}`);
+      }
+    }
   };
 
   // Get index from instance id.

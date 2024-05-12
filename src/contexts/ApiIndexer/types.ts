@@ -16,7 +16,7 @@ export interface ApiIndexerContextInterface {
     | undefined;
   setTabApiIndex: (ownerId: OwnerId, index: ApiIndex) => void;
   removeTabApiIndexes: (ownerId: OwnerId) => void;
-  removeTabApiIndex: (ownerId: OwnerId, label: string) => void;
+  removeTabApiIndex: (ownerId: OwnerId, index: number) => void;
 }
 
 // A mapping of tab owner ids to their api indexes.

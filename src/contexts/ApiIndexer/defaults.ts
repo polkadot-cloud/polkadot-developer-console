@@ -10,5 +10,5 @@ export const defaultApiIndexerContext: ApiIndexerContextInterface = {
   getTabApiIndex: (ownerId, label) => undefined,
   setTabApiIndex: (ownerId, index) => {},
   removeTabApiIndexes: (ownerId) => {},
-  removeTabApiIndex: (ownerId, label) => {},
+  removeTabApiIndex: (ownerId, index) => {},
 };
