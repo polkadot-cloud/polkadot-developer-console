@@ -42,9 +42,9 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const { tabId } = useActiveTab();
   const { openMenu, closeMenu } = useMenu();
   const { destroyTabChainUi } = useChainUi();
+  const { getTabApiIndexes } = useApiIndexer();
   const { destroyTabParaSetup } = useParaSetup();
-  const { removeTabApiIndexes, getTabApiIndexes } = useApiIndexer();
-  const { destroyChainSpaceEnvIndex, destroyOwnerApis, getApiStatus } =
+  const { destroyChainSpaceEnvIndex, destroyAllApiInstances, getApiStatus } =
     useChainSpaceEnv();
 
   const {
@@ -182,10 +182,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
               destroyTabParaSetup(id);
 
               // Destroy api instances associated with the tab.
-              destroyOwnerApis(tabIdToOwnerId(id));
-
-              // Remove api indexer entries associated with the tab.
-              removeTabApiIndexes(tabIdToOwnerId(id));
+              destroyAllApiInstances(tabIdToOwnerId(id));
 
               // Destroy tab instance.
               destroyTab(index, id);

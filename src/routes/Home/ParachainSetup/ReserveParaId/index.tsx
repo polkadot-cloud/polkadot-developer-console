@@ -9,10 +9,10 @@ import { useActiveTab } from 'contexts/ActiveTab';
 
 export const ReserveParaId = () => {
   const { ownerId } = useActiveTab();
-  const { getChainApi } = useChainSpaceEnv();
+  const { getApiInstance } = useChainSpaceEnv();
   const { getAccounts } = useImportedAccounts();
 
-  const relayInstance = getChainApi(ownerId, 'parachainSetup:relay');
+  const relayInstance = getApiInstance(ownerId, 'parachainSetup:relay');
   const chainSpec = relayInstance?.chainSpec;
 
   const accounts =

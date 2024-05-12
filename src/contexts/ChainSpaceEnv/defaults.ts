@@ -10,8 +10,8 @@ export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
   getChainSpec: (instanceId) => undefined,
   activeBalances: defaultActiveBalances,
   handleConnectApi: (ownerId, label, chainId, rovider) => Promise.resolve(),
-  getChainApi: (ownerId, label) => undefined,
-  destroyChainApi: (ownerId, label) => {},
-  destroyOwnerApis: (ownerId) => {},
+  getApiInstance: (ownerId, label) => undefined,
+  destroyApiInstance: (ownerId, label) => {},
+  destroyAllApiInstances: (ownerId) => {},
   destroyChainSpaceEnvIndex: (ownerId, index) => {},
 };
