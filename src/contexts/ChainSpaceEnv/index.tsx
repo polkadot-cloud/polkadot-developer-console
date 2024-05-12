@@ -129,7 +129,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   // Accumulate active balance configuration from api indexes.
   const activeBalanceInstances: ActiveBalancesProps = {};
   Object.values(apiIndexesRef.current).forEach((indexId: number) => {
-    const instanceId = `global_${indexId}`;
+    const instanceId = `${globalChainSpace.ownerId}_${indexId}`;
     const chainSpec = chainSpecs[instanceId];
     const accounts =
       chainSpec && chainSpec.chain

@@ -41,14 +41,6 @@ export interface TabsContextInterface {
   setTabActiveTask: (tabId: number, task: TabTask | null) => void;
   getTabTaskData: (tabId: number) => TaskData;
   setTabTaskData: (tabId: number, value: TaskData) => void;
-  getTabChainSpaceApiIndexes: (tabId: number) => ChainSpaceIndex[];
-  getChainSpaceApiIndex: (
-    tabId: number,
-    label: string
-  ) => ChainSpaceIndex | undefined;
-  setChainSpaceApiIndex: (tabId: number, index: ChainSpaceIndex) => void;
-  removeTabChainSpaceIndexes: (tabId: number) => void;
-  removeChainSpaceApiIndex: (tabId: number, label: string) => void;
 }
 
 export type Tabs = Tab[];
@@ -98,11 +90,4 @@ export type TabsActivePages = Record<string, TabActivePages> | undefined;
 export interface TabActivePages {
   default?: number;
   settings?: number;
-}
-
-export type ChainSpaceApiIndexes = Record<number, ChainSpaceIndex[]>;
-
-export interface ChainSpaceIndex {
-  index: number;
-  label: string;
 }

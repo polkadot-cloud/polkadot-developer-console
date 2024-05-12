@@ -19,6 +19,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { useTabs } from 'contexts/Tabs';
 import { ACTIVE_API_STATUSES } from 'model/Api/defaults';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const ConnectRelay = () => {
   const {
@@ -28,12 +29,7 @@ export const ConnectRelay = () => {
     handleConnectApi,
     getNextApiIndex,
   } = useChainSpaceEnv();
-  const {
-    setTabActiveTask,
-    getChainSpaceApiIndex,
-    setChainSpaceApiIndex,
-    removeChainSpaceApiIndex,
-  } = useTabs();
+  const { setTabActiveTask } = useTabs();
   const {
     getSelectedRelayChain,
     setSelectedRelayChain,
@@ -41,14 +37,13 @@ export const ConnectRelay = () => {
   } = useParaSetup();
   const { tabId } = useActiveTab();
   const { openMenu, closeMenu } = useMenu();
+  const { getTabApiIndex, setTabApiIndex, removeTabApiIndex } = useApiIndexer();
 
   const selectedRelayChain = getSelectedRelayChain(tabId);
 
   // Chain space api data.
-  const chainSpaceApiIndex = getChainSpaceApiIndex(
-    tabId,
-    'parachainSetup:relay'
-  );
+  const chainSpaceApiIndex = getTabApiIndex(tabId, 'parachainSetup:relay');
+
   const apiStatus = getApiStatusByIndex(chainSpaceApiIndex?.index);
   const chainSpec = getChainSpecByIndex(chainSpaceApiIndex?.index);
 
@@ -78,7 +73,7 @@ export const ConnectRelay = () => {
       destroyChainApi(chainSpaceApiIndex.index);
 
       // Destroy the relay chain space index record.
-      removeChainSpaceApiIndex(tabId, 'parachainSetup:relay');
+      removeTabApiIndex(tabId, 'parachainSetup:relay');
 
       // Reset tab active task.
       setTabActiveTask(tabId, null);
@@ -118,7 +113,7 @@ export const ConnectRelay = () => {
                     closeMenu();
                     // Get and register the chain space index.
                     const index = getNextApiIndex();
-                    setChainSpaceApiIndex(tabId, {
+                    setTabApiIndex(tabId, {
                       index,
                       label: 'parachainSetup:relay',
                     });

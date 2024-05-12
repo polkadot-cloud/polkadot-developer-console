@@ -8,19 +8,16 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { Icon } from '../Icon';
 import { Section } from './Section';
 import { Connector } from './Connector';
-import { useTabs } from 'contexts/Tabs';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const Progress = () => {
   const { tabId } = useActiveTab();
   const { getActiveStep } = useParaSetup();
   const { getChainApi } = useChainSpaceEnv();
-  const { getChainSpaceApiIndex } = useTabs();
+  const { getTabApiIndex } = useApiIndexer();
 
   const activeStep = getActiveStep(tabId);
-  const chainSpaceApiIndex = getChainSpaceApiIndex(
-    tabId,
-    'parachainSetup:relay'
-  );
+  const chainSpaceApiIndex = getTabApiIndex(tabId, 'parachainSetup:relay');
   const relayInstance = getChainApi(chainSpaceApiIndex?.index);
 
   // Get the relay chain icon, if available.

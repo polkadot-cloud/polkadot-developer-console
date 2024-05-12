@@ -4,8 +4,6 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
 import type {
-  ChainSpaceApiIndexes,
-  ChainSpaceIndex,
   ConnectFrom,
   TabTask,
   Tabs,
@@ -53,46 +51,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Redirect counter to trigger redirect effects.
   const [redirectCounter, setRedirectCounter] = useState<number>(0);
-
-  // Store the indexes at which to access apis from the global chain space. for each tab.
-  const [chainSpaceApiIndexes, setChainSpaceApiIndexes] =
-    useState<ChainSpaceApiIndexes>({});
-
-  // Get all chain space api indexes for a tab.
-  const getTabChainSpaceApiIndexes = (tabId: number) =>
-    chainSpaceApiIndexes[tabId] || [];
-
-  // Get a chain space api index for a tab by its label.
-  const getChainSpaceApiIndex = (tabId: number, label: string) =>
-    chainSpaceApiIndexes[tabId]?.find((index) => index.label === label);
-
-  // Set a chain space api index for a tab.
-  const setChainSpaceApiIndex = (tabId: number, index: ChainSpaceIndex) => {
-    const updated = { ...chainSpaceApiIndexes };
-    if (updated[tabId]) {
-      updated[tabId].push(index);
-    } else {
-      updated[tabId] = [index];
-    }
-    setChainSpaceApiIndexes(updated);
-  };
-
-  // Remove a chain space api index for a tab, given its label.
-  const removeChainSpaceApiIndex = (tabId: number, label: string) => {
-    const updated = { ...chainSpaceApiIndexes };
-    updated[tabId] = updated[tabId]?.filter((index) => index.label !== label);
-    if (updated[tabId]?.length === 0) {
-      delete updated[tabId];
-    }
-    setChainSpaceApiIndexes(updated);
-  };
-
-  // Remove chain space api indexes for a tab.
-  const removeTabChainSpaceIndexes = (tabId: number) => {
-    const updated = { ...chainSpaceApiIndexes };
-    delete updated[tabId];
-    setChainSpaceApiIndexes(updated);
-  };
 
   // Increment redirect counter.
   const incrementRedirectCounter = () => {
@@ -324,11 +282,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         getTabTaskData,
         setTabTaskData,
         setTabConnectFrom,
-        getTabChainSpaceApiIndexes,
-        getChainSpaceApiIndex,
-        setChainSpaceApiIndex,
-        removeTabChainSpaceIndexes,
-        removeChainSpaceApiIndex,
         instantiatedIds: instantiatedIds.current,
       }}
     >

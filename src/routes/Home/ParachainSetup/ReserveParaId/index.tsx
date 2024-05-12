@@ -6,18 +6,15 @@ import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { FormWrapper } from 'routes/Home/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useTabs } from 'contexts/Tabs';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const ReserveParaId = () => {
   const { tabId } = useActiveTab();
   const { getChainApi } = useChainSpaceEnv();
-  const { getChainSpaceApiIndex } = useTabs();
+  const { getTabApiIndex } = useApiIndexer();
   const { getAccounts } = useImportedAccounts();
 
-  const chainSpaceApiIndex = getChainSpaceApiIndex(
-    tabId,
-    'parachainSetup:relay'
-  );
+  const chainSpaceApiIndex = getTabApiIndex(tabId, 'parachainSetup:relay');
   const relayInstance = getChainApi(chainSpaceApiIndex?.index);
   const chainSpec = relayInstance?.chainSpec;
 

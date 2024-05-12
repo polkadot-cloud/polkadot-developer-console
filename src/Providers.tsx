@@ -28,6 +28,7 @@ import { GlobalChainSpaceProvider } from 'contexts/GlobalChainSpace';
 import { ImportedAccountsProvider } from 'contexts/ImportedAccounts';
 import { ChainSpaceEnvProvider } from 'contexts/ChainSpaceEnv';
 import { ChainBrowserProvider } from 'contexts/ChainBrowser';
+import { ApiIndexerProvider } from 'contexts/ApiIndexer';
 
 export const Providers = () => {
   // !! --------------------------------
@@ -52,8 +53,9 @@ export const Providers = () => {
     VaultAccountsProvider,
     ImportedAccountsProvider,
 
-    // Chain space environment hosting api instances.
+    // Chain space environment and api indexer.
     ChainSpaceEnvProvider,
+    ApiIndexerProvider,
 
     // Task: `chainBrowser` related providers.
     ChainBrowserProvider,
