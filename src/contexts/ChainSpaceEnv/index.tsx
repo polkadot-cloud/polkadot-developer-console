@@ -3,9 +3,7 @@
 
 import { setStateWithRef } from '@w3ux/utils';
 import { isCustomEvent } from 'Utils';
-import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { SubscriptionsController } from 'controllers/Subscriptions';
-import { useActiveBalances } from 'hooks/useActiveBalances';
 import { AccountBalances } from 'model/AccountBalances';
 import type {
   APIStatusEventDetail,
@@ -23,11 +21,9 @@ import type {
 import { defaultChainSpaceEnvContext } from './defaults';
 import { useGlobalChainSpace } from 'contexts/GlobalChainSpace';
 import type { ChainId } from 'config/networks';
-import type { ActiveBalancesProps } from 'hooks/useActiveBalances/types';
 import { ApiController } from 'controllers/Api';
 import { BlockNumber } from 'model/BlockNumber';
 import { useApiIndexer } from 'contexts/ApiIndexer';
-import { useActiveTab } from 'contexts/ActiveTab';
 import type { OwnerId } from 'types';
 import { useChainUi } from 'contexts/ChainUi';
 import { useTabs } from 'contexts/Tabs';
@@ -49,8 +45,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   } = useApiIndexer();
   const { resetTabActiveTask } = useTabs();
   const { fetchPalletVersions } = useChainUi();
-  const { getAccounts } = useImportedAccounts();
-  const { ownerId: activeOwnerId } = useActiveTab();
   const { globalChainSpace } = useGlobalChainSpace();
 
   // The chain spec of each api instance associated with this chain space. NOTE: Requires ref as it
@@ -136,28 +130,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     // Add api to chain space instance.
     await globalChainSpace.getInstance().addApi(ownerId, chainId, provider);
   };
-
-  // Accumulate active balance configuration from api indexes for the current tab.
-  const activeBalanceInstances: ActiveBalancesProps = {};
-  Object.values(getTabApiIndexes(activeOwnerId)).forEach(({ index }) => {
-    const instanceId = `${activeOwnerId}_${index}`;
-    const chainSpec = chainSpecs[instanceId];
-
-    const accounts =
-      chainSpec && chainSpec.chain
-        ? getAccounts(chainSpec.chain, chainSpec.ss58Prefix)
-        : [];
-
-    if (chainSpecs[instanceId]) {
-      activeBalanceInstances[instanceId] = {
-        accounts: accounts.map(({ address }) => address),
-        apiStatus: apiStatuses[instanceId] || 'disconnected',
-      };
-    }
-  });
-
-  // Get active account balances.
-  const activeBalances = useActiveBalances(activeBalanceInstances);
 
   // Handle incoming api status updates.
   const handleNewApiStatus = (e: Event): void => {
@@ -289,9 +261,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         getApiStatus,
         getChainSpec,
         getApiInstance,
-
-        // Balances
-        activeBalances,
 
         // Connect and Disconnect
         handleConnectApi,

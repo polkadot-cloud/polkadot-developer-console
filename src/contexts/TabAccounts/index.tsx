@@ -11,6 +11,7 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 import { useActiveTab } from 'contexts/ActiveTab';
 import type { APIChainSpec } from 'model/Api/types';
+import type { ActiveBalancesProps } from 'hooks/useActiveBalances/types';
 
 export const TabAccounts = createContext<TabAccountsContextInterface>(
   defaultTabAccountsContext
@@ -20,36 +21,34 @@ export const useTabAccounts = () => useContext(TabAccounts);
 
 export const TabAccountsProvider = ({ children }: { children: ReactNode }) => {
   const { ownerId } = useActiveTab();
-  const { getTabApiIndex } = useApiIndexer();
-  const { getAccounts: getImportedAccounts } = useImportedAccounts();
+  const { getTabApiIndexes } = useApiIndexer();
   const { getApiStatus, getChainSpec } = useChainSpaceEnv();
+  const { getAccounts: getImportedAccounts } = useImportedAccounts();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
-  const apiStatus = getApiStatus(apiInstanceId);
-  const chainSpec = getChainSpec(apiInstanceId);
-
-  // Get accounts given a chainSpec.
-  const getAccounts = (spec?: APIChainSpec) =>
-    spec && spec.chain ? getImportedAccounts(spec.chain, spec.ss58Prefix) : [];
-
-  // Get all imported accounts if chain spec is available.
-  const accounts =
+  // Get accounts given a chain spec.
+  const getAccounts = (chainSpec?: APIChainSpec) =>
     chainSpec && chainSpec.chain
       ? getImportedAccounts(chainSpec.chain, chainSpec.ss58Prefix)
       : [];
 
-  // Instance config to be provided to active balances.
-  const activeBalanceInstance = apiInstanceId
-    ? {
-        [apiInstanceId]: {
-          accounts: accounts.map(({ address }) => address),
-          apiStatus,
-        },
-      }
-    : {};
+  // Accumulate active balance configuration from api indexes for the current tab.
+  const activeBalanceInstances: ActiveBalancesProps = {};
+  Object.values(getTabApiIndexes(ownerId)).forEach(({ index }) => {
+    const instanceId = `${ownerId}_${index}`;
+    const chainSpec = getChainSpec(instanceId);
 
-  // Get tab account balances and listen for updates.
-  const activeBalances = useActiveBalances(activeBalanceInstance);
+    if (chainSpec) {
+      const accounts = chainSpec.chain ? getAccounts(chainSpec) : [];
+
+      activeBalanceInstances[instanceId] = {
+        accounts: accounts.map(({ address }) => address),
+        apiStatus: getApiStatus(instanceId),
+      };
+    }
+  });
+
+  // Get active account balances for all api instances associated with the current tab.
+  const activeBalances = useActiveBalances(activeBalanceInstances);
 
   return (
     <TabAccounts.Provider
