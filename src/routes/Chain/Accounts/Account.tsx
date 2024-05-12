@@ -9,8 +9,9 @@ import { faBars, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { AccountContextMenu } from './AccountMenu';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useTabAccounts } from 'contexts/TabAccounts';
+import { useAccounts } from 'contexts/Accounts';
 import BigNumber from 'bignumber.js';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const Account = ({
   account,
@@ -18,12 +19,15 @@ export const Account = ({
   existentialDeposit,
 }: AccountProps) => {
   const { openMenu } = useMenu();
-  const { tab } = useActiveTab();
-  const { getBalance, getLocks } = useTabAccounts();
+  const { tab, ownerId } = useActiveTab();
+  const { getTabApiIndex } = useApiIndexer();
+  const { getBalance, getLocks } = useAccounts();
 
   const { name, address } = account;
-  const balance = getBalance(address);
-  const { maxLock } = getLocks(address);
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
+
+  const balance = getBalance(apiInstanceId, address);
+  const { maxLock } = getLocks(apiInstanceId, address);
 
   // Calculate a forced amount of free balance that needs to be reserved to keep the account alive.
   // Deducts `locks` from free balance reserve needed.

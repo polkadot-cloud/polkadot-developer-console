@@ -6,7 +6,7 @@ import type BigNumber from 'bignumber.js';
 import type {
   AccountBalancesState,
   BalanceLocks,
-} from 'contexts/TabAccounts/types';
+} from 'contexts/Accounts/types';
 import type { Balance } from 'model/AccountBalances/types';
 import type { ApiInstanceId, ApiStatus } from 'model/Api/types';
 
@@ -19,10 +19,16 @@ export interface ActiveBalanceInstance {
 
 export interface ActiveBalancesInterface {
   activeBalances: AccountBalancesState;
-  getLocks: (instanceId: ApiInstanceId, address: MaybeAddress) => BalanceLocks;
-  getBalance: (instanceId: ApiInstanceId, address: MaybeAddress) => Balance;
+  getLocks: (
+    instanceId: ApiInstanceId | undefined,
+    address: MaybeAddress
+  ) => BalanceLocks;
+  getBalance: (
+    instanceId: ApiInstanceId | undefined,
+    address: MaybeAddress
+  ) => Balance;
   getEdReserved: (
-    instanceId: ApiInstanceId,
+    instanceId: ApiInstanceId | undefined,
     address: MaybeAddress,
     existentialDeposit: BigNumber
   ) => BigNumber;

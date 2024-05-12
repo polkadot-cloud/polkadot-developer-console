@@ -3,7 +3,6 @@
 
 import type { ChainId } from 'config/networks';
 import type { ApiIndexLabel } from 'contexts/ApiIndexer/types';
-import type { ActiveBalancesInterface } from 'hooks/useActiveBalances/types';
 import type { Api } from 'model/Api';
 import type { APIChainSpec, ApiInstanceId, ApiStatus } from 'model/Api/types';
 import type { OwnerId } from 'types';
@@ -20,7 +19,6 @@ export interface ChainSpaceEnvContextInterface {
   getApiInstance: (ownerId: OwnerId, label: ApiIndexLabel) => Api | undefined;
   destroyApiInstance: (ownerId: OwnerId, label: ApiIndexLabel) => void;
   destroyAllApiInstances: (ownerId: OwnerId) => void;
-  activeBalances: ActiveBalancesInterface;
 }
 
 export interface ChainSpaceEnvProps {
