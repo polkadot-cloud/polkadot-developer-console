@@ -7,6 +7,7 @@ import type { TabAccountsContextInterface } from './types';
 import { defaultBalance } from 'hooks/useActiveBalances/defaults';
 
 export const defaultTabAccountsContext: TabAccountsContextInterface = {
+  getAccounts: (spec) => [],
   getBalance: (address) => defaultBalance,
   getLocks: (address) => ({ locks: [], maxLock: new BigNumber(0) }),
   getEdReserved: (address, existentialDeposit) => new BigNumber(0),

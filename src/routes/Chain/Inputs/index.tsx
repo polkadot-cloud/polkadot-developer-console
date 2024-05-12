@@ -16,11 +16,19 @@ import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useTabAccounts } from 'contexts/TabAccounts';
+import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const useInput = () => {
-  const { tabId } = useActiveTab();
-  const { accounts } = useTabAccounts();
+  const { getAccounts } = useTabAccounts();
+  const { tabId, ownerId } = useActiveTab();
+  const { getTabApiIndex } = useApiIndexer();
+  const { getChainSpec } = useChainSpaceEnv();
   const { setInputArgAtKey, getInputArgsAtKey } = useChainUi();
+
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
+  const chainSpec = getChainSpec(apiInstanceId);
+  const accounts = getAccounts(chainSpec);
 
   // Reads input and returns input components based on the input type. Called recursively for types
   // that host other types.

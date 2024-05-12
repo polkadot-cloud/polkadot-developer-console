@@ -11,8 +11,10 @@ import type {
   BalanceLock,
   Balances,
 } from 'model/AccountBalances/types';
+import type { APIChainSpec } from 'model/Api/types';
 
 export interface TabAccountsContextInterface {
+  getAccounts: (spec?: APIChainSpec) => ImportedAccount[];
   getBalance: (address: MaybeAddress) => Balance;
   getLocks: (address: MaybeAddress) => BalanceLocks;
   getEdReserved: (

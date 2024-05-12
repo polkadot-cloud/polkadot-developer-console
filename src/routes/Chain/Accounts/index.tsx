@@ -16,7 +16,7 @@ import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const Accounts = () => {
   const { tab, ownerId } = useActiveTab();
-  const { accounts } = useTabAccounts();
+  const { getAccounts } = useTabAccounts();
   const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec } = useChainSpaceEnv();
 
@@ -25,6 +25,8 @@ export const Accounts = () => {
 
   const existentialDeposit =
     chainSpec?.consts?.existentialDeposit || new BigNumber(0);
+
+  const accounts = getAccounts(chainSpec);
 
   return (
     <FlexWrapper>
