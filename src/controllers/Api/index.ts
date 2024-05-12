@@ -91,6 +91,10 @@ export class ApiController {
 
       await instance.disconnect(true);
       delete this.#instances[ownerId][instanceIndex];
+
+      if (Object.keys(this.#instances[ownerId]).length === 0) {
+        delete this.#instances[ownerId];
+      }
     }
   }
 

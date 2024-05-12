@@ -236,6 +236,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     instanceId: ApiInstanceId
   ) => {
     const index = getIndexFromInstanceId(instanceId);
+
     await ApiController.destroy(ownerId, index);
 
     // TODO: remove Api index from indexer.
