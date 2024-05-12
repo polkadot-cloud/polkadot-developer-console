@@ -23,27 +23,27 @@ import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const ConnectRelay = () => {
   const {
-    destroyChainApi,
-    handleConnectApi,
-    getApiStatusByIndex,
-    getChainSpecByIndex,
-  } = useChainSpaceEnv();
-  const {
     getSelectedRelayChain,
     setSelectedRelayChain,
     setConfirmedRelayChain,
   } = useParaSetup();
-  const { tabId } = useActiveTab();
   const { setTabActiveTask } = useTabs();
+  const { tabId, ownerId } = useActiveTab();
   const { openMenu, closeMenu } = useMenu();
   const { getTabApiIndex } = useApiIndexer();
+  const { getApiStatus, destroyChainApi, handleConnectApi, getChainSpec } =
+    useChainSpaceEnv();
 
   const selectedRelayChain = getSelectedRelayChain(tabId);
 
   // Get API instance data.
-  const apiIndex = getTabApiIndex(tabId, 'parachainSetup:relay');
-  const apiStatus = getApiStatusByIndex(tabId, apiIndex?.index);
-  const chainSpec = getChainSpecByIndex(tabId, apiIndex?.index);
+  const instanceId = getTabApiIndex(
+    ownerId,
+    'parachainSetup:relay'
+  )?.instanceId;
+
+  const apiStatus = getApiStatus(instanceId);
+  const chainSpec = getChainSpec(instanceId);
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -67,9 +67,9 @@ export const ConnectRelay = () => {
   // Handle disconnect from api instance. This will destroy the api instance and reset the tab
   // active task.
   const handleDisconnect = () => {
-    if (apiIndex !== undefined) {
+    if (instanceId !== undefined) {
       // Destroy the API instance.
-      destroyChainApi(tabId, 'parachainSetup:relay');
+      destroyChainApi(ownerId, 'parachainSetup:relay');
 
       // Reset tab active task.
       setTabActiveTask(tabId, null);
@@ -114,9 +114,9 @@ export const ConnectRelay = () => {
                     // Update tab task.
                     setTabActiveTask(tabId, 'parachainSetup');
 
-                    // Connect to chain space api.
+                    // Connect to api instance.
                     await handleConnectApi(
-                      tabId,
+                      ownerId,
                       'parachainSetup:relay',
                       selectedRelayChain,
                       provider

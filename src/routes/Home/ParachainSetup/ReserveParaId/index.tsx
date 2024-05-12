@@ -8,11 +8,11 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useActiveTab } from 'contexts/ActiveTab';
 
 export const ReserveParaId = () => {
-  const { tabId } = useActiveTab();
+  const { ownerId } = useActiveTab();
   const { getChainApi } = useChainSpaceEnv();
   const { getAccounts } = useImportedAccounts();
 
-  const relayInstance = getChainApi(tabId, 'parachainSetup:relay');
+  const relayInstance = getChainApi(ownerId, 'parachainSetup:relay');
   const chainSpec = relayInstance?.chainSpec;
 
   const accounts =

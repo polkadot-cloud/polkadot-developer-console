@@ -16,6 +16,7 @@ import type { ChainMeta, ConnectFrom, TabTask } from 'contexts/Tabs/types';
 import { useSettings } from 'contexts/Settings';
 import * as local from 'contexts/Tabs/Local';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const ChainBrowser = createContext<ChainBrowserContextInterface>(
   defaultChainBrowserContext
@@ -28,18 +29,6 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   const { handleConnectApi } = useChainSpaceEnv();
   const { tabs, tabsRef, getTab, getTabTaskData, setTabs, setTabTaskData } =
     useTabs();
-
-  // Gets the previously connected to chain from network directory, if present.
-  const getStoredChain = (tabId: number) => {
-    const taskData = getTabTaskData(tabId);
-    const chainId = taskData?.chain?.id;
-
-    if (!chainId || !isDirectoryId(chainId)) {
-      return undefined;
-    }
-
-    return { id: chainId, chain: NetworkDirectory[chainId] };
-  };
 
   // Connect tab to an Api instance and update its chain data.
   const connectChainBrowser = (
@@ -93,7 +82,12 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
 
     // Instantiate API instance.
-    handleConnectApi(tabId, 'chainBrowser', chainData.id, chainData.endpoint);
+    handleConnectApi(
+      tabIdToOwnerId(tabId),
+      'chainBrowser',
+      chainData.id,
+      chainData.endpoint
+    );
   };
 
   // Instantiate an Api instance from tab chain data.
@@ -107,12 +101,23 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
       taskData?.autoConnect
     ) {
       handleConnectApi(
-        tabId,
+        tabIdToOwnerId(tabId),
         'chainBrowser',
         taskData.chain.id,
         taskData.chain.endpoint
       );
     }
+  };
+
+  // Gets the previously connected to chain from network directory, if present.
+  const getStoredChain = (tabId: number) => {
+    const taskData = getTabTaskData(tabId);
+    const chainId = taskData?.chain?.id;
+
+    if (!chainId || !isDirectoryId(chainId)) {
+      return undefined;
+    }
+    return { id: chainId, chain: NetworkDirectory[chainId] };
   };
 
   // Update the chain's ss58 prefix in tab's taskData.

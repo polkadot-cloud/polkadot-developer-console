@@ -16,7 +16,6 @@ import {
   DEFAULT_TAB_WIDTH_PX,
   TAB_TRANSITION_DURATION_MS,
 } from 'contexts/Tabs/defaults';
-import { useApi } from 'contexts/Api';
 import { ConnectionIcon } from './ConectionIcon';
 import * as localTabs from 'contexts/Tabs/Local';
 import { useChainUi } from 'contexts/ChainUi';
@@ -41,12 +40,12 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     incrementRedirectCounter,
   } = useTabs();
   const { tabId } = useActiveTab();
-  const { getApiStatus } = useApi();
   const { openMenu, closeMenu } = useMenu();
   const { destroyTabChainUi } = useChainUi();
   const { destroyTabParaSetup } = useParaSetup();
   const { removeTabApiIndexes, getTabApiIndexes } = useApiIndexer();
-  const { destroyChainSpaceEnvIndex, destroyAllChainApis } = useChainSpaceEnv();
+  const { destroyChainSpaceEnvIndex, destroyOwnerApis, getApiStatus } =
+    useChainSpaceEnv();
 
   const {
     listeners,
@@ -172,10 +171,10 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
               destroyTabChainUi(id);
 
               // Destroy chain space apis and state associated with this tab.
-              const apiIndexes = getTabApiIndexes(id);
+              const apiIndexes = getTabApiIndexes(tabIdToOwnerId(id));
               if (apiIndexes.length) {
                 for (const apiIndex of apiIndexes) {
-                  destroyChainSpaceEnvIndex(id, apiIndex.index);
+                  destroyChainSpaceEnvIndex(tabIdToOwnerId(id), apiIndex.index);
                 }
               }
 
@@ -183,10 +182,10 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
               destroyTabParaSetup(id);
 
               // Destroy api instances associated with the tab.
-              destroyAllChainApis(id);
+              destroyOwnerApis(tabIdToOwnerId(id));
 
               // Remove api indexer entries associated with the tab.
-              removeTabApiIndexes(id);
+              removeTabApiIndexes(tabIdToOwnerId(id));
 
               // Destroy tab instance.
               destroyTab(index, id);

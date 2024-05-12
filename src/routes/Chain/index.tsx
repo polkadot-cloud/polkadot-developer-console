@@ -10,17 +10,17 @@ import { TabMenu } from 'library/TabMenu';
 import { PageContent } from 'library/PageContent';
 import { Accounts } from './Accounts';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useApi } from 'contexts/Api';
 import {
   faDiagramSubtask,
   faInboxOut,
   faListTimeline,
   faTableLayout,
 } from '@fortawesome/pro-duotone-svg-icons';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const useRouteSections = (): RouteSectionProvider => {
-  const { getChainSpec } = useApi();
   const { apiInstanceId } = useActiveTab();
+  const { getChainSpec } = useChainSpaceEnv();
   const chainSpec = getChainSpec(apiInstanceId);
 
   const balancesPaleltExists = chainSpec?.metadata?.palletExists('Balances');

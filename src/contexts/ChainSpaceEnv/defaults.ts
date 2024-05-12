@@ -6,13 +6,12 @@ import { defaultActiveBalances } from 'hooks/useActiveBalances/defaults';
 import type { ChainSpaceEnvContextInterface } from './types';
 
 export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
-  getApiStatusByIndex: (tabId, index) => 'disconnected',
-  getApiActive: (tabId, label) => false,
-  getChainSpecByIndex: (tabId, index) => undefined,
+  getApiStatus: (instanceId) => 'disconnected',
+  getChainSpec: (instanceId) => undefined,
   activeBalances: defaultActiveBalances,
-  handleConnectApi: (tabId, label, chainId, rovider) => Promise.resolve(),
-  getChainApi: (tabId, label) => undefined,
-  destroyChainApi: (tabId, label) => {},
-  destroyAllChainApis: (tabId) => {},
-  destroyChainSpaceEnvIndex: (tabId, index) => {},
+  handleConnectApi: (ownerId, label, chainId, rovider) => Promise.resolve(),
+  getChainApi: (ownerId, label) => undefined,
+  destroyChainApi: (ownerId, label) => {},
+  destroyOwnerApis: (ownerId) => {},
+  destroyChainSpaceEnvIndex: (ownerId, index) => {},
 };

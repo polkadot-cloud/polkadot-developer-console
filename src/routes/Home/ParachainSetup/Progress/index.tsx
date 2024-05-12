@@ -10,12 +10,12 @@ import { Section } from './Section';
 import { Connector } from './Connector';
 
 export const Progress = () => {
-  const { tabId } = useActiveTab();
   const { getActiveStep } = useParaSetup();
+  const { tabId, ownerId } = useActiveTab();
   const { getChainApi } = useChainSpaceEnv();
 
   const activeStep = getActiveStep(tabId);
-  const relayInstance = getChainApi(tabId, 'parachainSetup:relay');
+  const relayInstance = getChainApi(ownerId, 'parachainSetup:relay');
 
   // Get the relay chain icon, if available.
   const relayIcon = relayInstance ? relayInstance.chainId : undefined;

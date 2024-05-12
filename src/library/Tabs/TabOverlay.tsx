@@ -7,12 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import type { TabProps } from './types';
 import { DEFAULT_TAB_WIDTH_PX } from 'contexts/Tabs/defaults';
-import { useApi } from 'contexts/Api';
 import { ConnectionIcon } from './ConectionIcon';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const TabOverlay = ({ id, name }: TabProps) => {
-  const { getApiStatus } = useApi();
+  const { getApiStatus } = useChainSpaceEnv();
   const apiStatus = getApiStatus(`${tabIdToOwnerId(id)}_0`);
 
   return (

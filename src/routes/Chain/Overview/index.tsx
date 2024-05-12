@@ -3,7 +3,6 @@
 
 import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
-import { useApi } from 'contexts/Api';
 import { CardsWrapper } from './Wrappers';
 import ConnectedSVG from 'svg/Connected.svg?react';
 import Odometer from '@w3ux/react-odometer';
@@ -19,9 +18,10 @@ import { StatsWrapper } from '../Wrappers';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { BlockNumber } from 'model/BlockNumber';
 import { FlexWrapper } from 'routes/Common/Wrappers';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const Overview = () => {
-  const { getApiStatus, getChainSpec } = useApi();
+  const { getApiStatus, getChainSpec } = useChainSpaceEnv();
   const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
 
   const apiStatus = getApiStatus(apiInstanceId);

@@ -28,7 +28,6 @@ import { ApiController } from 'controllers/Api';
 import { BlockNumber } from 'model/BlockNumber';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import type { OwnerId } from 'types';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
@@ -38,14 +37,14 @@ export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
 export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
 export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
-  const { tabId: activeTabId, ownerId: activeOwnerId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
+  const { ownerId: activeOwnerId } = useActiveTab();
   const { globalChainSpace } = useGlobalChainSpace();
   const {
     getTabApiIndex,
     setTabApiIndex,
-    removeTabApiIndex,
     getTabApiIndexes,
+    removeTabApiIndex,
   } = useApiIndexer();
 
   // The chain spec of each api instance associated with this chain space. NOTE: Requires ref as it
@@ -59,46 +58,35 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   const apiStatusesRef = useRef(apiStatuses);
 
   // Gets an api instance tab and label.
-  const getChainApi = (tabId: number, label: string) => {
-    const apiIndex = getTabApiIndex(tabId, label);
+  const getChainApi = (ownerId: OwnerId, label: string) => {
+    const apiIndex = getTabApiIndex(ownerId, label);
     if (apiIndex !== undefined) {
-      return ApiController.instances[tabIdToOwnerId(tabId)]?.[apiIndex.index];
+      return ApiController.instances[ownerId]?.[apiIndex.index];
     }
   };
 
   // Destroy an api instance given a tab and label.
-  const destroyChainApi = (tabId: number, label: string) => {
-    const apiIndex = getTabApiIndex(tabId, label);
+  const destroyChainApi = (ownerId: OwnerId, label: string) => {
+    const apiIndex = getTabApiIndex(ownerId, label);
     if (apiIndex !== undefined) {
       // Destory the API instance.
-      ApiController.destroy(tabIdToOwnerId(tabId), apiIndex.index);
+      ApiController.destroy(ownerId, apiIndex.index);
 
       // Remove from api indexer.
-      removeTabApiIndex(tabId, label);
+      removeTabApiIndex(ownerId, label);
     }
   };
 
-  // Destroy all api instances associated with a tab.
-  const destroyAllChainApis = (tabId: number) => {
-    const ownerId = tabIdToOwnerId(tabId);
+  // Destroy all api instances associated with an owner.
+  const destroyOwnerApis = (ownerId: OwnerId) => {
     ApiController.destroyAll(ownerId);
   };
 
-  // Get an api status for an instance by index.
-  const getApiStatusByIndex = (tabId: number, index: number | undefined) => {
-    if (index === undefined) {
-      return 'disconnected';
-    }
-    const instanceId = `${tabIdToOwnerId(tabId)}_${index}`;
-    return apiStatusesRef.current[instanceId] || 'disconnected';
-  };
-
   // Get chainSpec for a chain instance by index.
-  const getChainSpecByIndex = (tabId: number, index: number | undefined) => {
-    if (index === undefined) {
+  const getChainSpec = (instanceId?: ApiInstanceId) => {
+    if (instanceId === undefined) {
       return undefined;
     }
-    const instanceId = `${tabIdToOwnerId(tabId)}_${index}`;
     return chainSpecsRef.current[instanceId];
   };
 
@@ -108,7 +96,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   };
 
   // Set an api status for a chain instance.
-  const setApiStatus = (instanceId: string, status: ApiStatus) => {
+  const setApiStatus = (instanceId: ApiInstanceId, status: ApiStatus) => {
     setStateWithRef(
       {
         ...apiStatusesRef.current,
@@ -119,41 +107,38 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     );
   };
 
-  // Gets whether an api is active (not disconnected or undefined).
-  const getApiActive = (tabId: number, label: string): boolean => {
-    const apiIndex = getTabApiIndex(tabId, label);
-    const status = getApiStatusByIndex(tabId, apiIndex?.index);
-    return (
-      status === 'ready' || status === 'connected' || status === 'connecting'
-    );
+  // Get an api status for an instance.
+  const getApiStatus = (instanceId?: ApiInstanceId) => {
+    if (instanceId === undefined) {
+      return 'disconnected';
+    }
+    return apiStatusesRef.current[instanceId] || 'disconnected';
   };
 
   // Handle connecting to an api instance.
   const handleConnectApi = async (
-    tabId: number,
+    ownerId: OwnerId,
     label: string,
     chainId: ChainId,
     provider: string
   ) => {
     // Register a new api index for this instance.
-    const index = ApiController.getNextIndex(tabIdToOwnerId(tabId));
-    setTabApiIndex(tabId, {
+    const index = ApiController.getNextIndex(ownerId);
+    setTabApiIndex(ownerId, {
       index,
       label,
     });
 
     // Set api status to connecting.
-    setApiStatus(`${tabIdToOwnerId(tabId)}_${index}`, 'connecting');
+    setApiStatus(`${ownerId}_${index}`, 'connecting');
 
     // Add api to chain space instance.
-    await globalChainSpace
-      .getInstance()
-      .addApi(tabIdToOwnerId(tabId), chainId, provider);
+    await globalChainSpace.getInstance().addApi(ownerId, chainId, provider);
   };
 
   // Accumulate active balance configuration from api indexes for the current tab.
   const activeBalanceInstances: ActiveBalancesProps = {};
-  Object.values(getTabApiIndexes(activeTabId)).forEach(({ index }) => {
+  Object.values(getTabApiIndexes(activeOwnerId)).forEach(({ index }) => {
     const instanceId = `${activeOwnerId}_${index}`;
     const chainSpec = chainSpecs[instanceId];
 
@@ -252,10 +237,10 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   };
 
   // Destroy state associated with a tab. Should only be used on tab close.
-  const destroyChainSpaceEnvIndex = (tabId: number, index: number) => {
+  const destroyChainSpaceEnvIndex = (ownerId: OwnerId, index: number) => {
     // Disconnect from all instances associated with this tab.
-    const instanceId = `${tabIdToOwnerId(tabId)}_${index}`;
-    handleDisconnect(tabIdToOwnerId(tabId), instanceId);
+    const instanceId = `${ownerId}_${index}`;
+    handleDisconnect(ownerId, instanceId);
   };
 
   // Get index from instance id.
@@ -276,9 +261,8 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     <ChainSpaceEnv.Provider
       value={{
         // Getters
-        getApiStatusByIndex,
-        getApiActive,
-        getChainSpecByIndex,
+        getApiStatus,
+        getChainSpec,
         getChainApi,
 
         // Balances
@@ -287,7 +271,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         // Connect and Disconnect
         handleConnectApi,
         destroyChainApi,
-        destroyAllChainApis,
+        destroyOwnerApis,
         destroyChainSpaceEnvIndex,
       }}
     >

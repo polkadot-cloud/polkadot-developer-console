@@ -3,17 +3,13 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { defaultApiContext } from './defaults';
-import type { ApiContextInterface } from './types';
 import { ApiController } from 'controllers/Api';
 import { useTabs } from 'contexts/Tabs';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import type {
-  APIChainSpec,
   APIStatusEventDetail,
   ApiInstanceId,
-  ApiStatus,
   ApiStatusState,
   ChainSpecState,
 } from 'model/Api/types';
@@ -27,8 +23,9 @@ import { ownerIdToTabId } from 'contexts/Tabs/Utils';
 import { getIndexFromInstanceId } from 'model/Api/util';
 import type { OwnerId } from 'types';
 import { useChainBrowser } from 'contexts/ChainBrowser';
+import type { AnyJson } from '@w3ux/utils/types';
 
-export const Api = createContext<ApiContextInterface>(defaultApiContext);
+export const Api = createContext<AnyJson>({});
 
 export const useApi = () => useContext(Api);
 
@@ -69,22 +66,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     delete updated[instanceId];
     setChainSpec(updated);
   };
-
-  // Gets an api status, keyed by owner.
-  const getApiStatus = (instanceId: ApiInstanceId): ApiStatus =>
-    apiStatus?.[instanceId] || 'disconnected';
-
-  // Gets whether an api is active (not disconnected or undefined).
-  const getApiActive = (instanceId: ApiInstanceId): boolean => {
-    const status = getApiStatus(instanceId);
-    return (
-      status === 'ready' || status === 'connected' || status === 'connecting'
-    );
-  };
-
-  // Gets a chain spec, keyed by owner.
-  const getChainSpec = (instanceId: ApiInstanceId): APIChainSpec =>
-    chainSpec[instanceId];
 
   // Handle a chain disconnect.
   const handleDisconnect = (instanceId: ApiInstanceId, destroy = false) => {
@@ -209,15 +190,5 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     });
   }, []);
 
-  return (
-    <Api.Provider
-      value={{
-        getApiStatus,
-        getApiActive,
-        getChainSpec,
-      }}
-    >
-      {children}
-    </Api.Provider>
-  );
+  return <Api.Provider value={{}}>{children}</Api.Provider>;
 };

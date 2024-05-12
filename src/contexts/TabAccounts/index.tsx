@@ -5,12 +5,12 @@ import type { ReactNode } from 'react';
 import { createContext, useContext } from 'react';
 import type { TabAccountsContextInterface } from './types';
 import { defaultTabAccountsContext } from './defaults';
-import { useApi } from 'contexts/Api';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useActiveBalances } from 'hooks/useActiveBalances';
 import type { MaybeAddress } from '@w3ux/react-connect-kit/types';
 import type BigNumber from 'bignumber.js';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const TabAccounts = createContext<TabAccountsContextInterface>(
   defaultTabAccountsContext
@@ -21,7 +21,7 @@ export const useTabAccounts = () => useContext(TabAccounts);
 export const TabAccountsProvider = ({ children }: { children: ReactNode }) => {
   const { apiInstanceId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
-  const { getChainSpec, getApiStatus } = useApi();
+  const { getApiStatus, getChainSpec } = useChainSpaceEnv();
 
   const apiStatus = getApiStatus(apiInstanceId);
   const chainSpec = getChainSpec(apiInstanceId);
