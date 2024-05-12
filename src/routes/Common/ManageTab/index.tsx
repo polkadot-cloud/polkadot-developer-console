@@ -105,9 +105,7 @@ export const ManageTab = () => {
                       'Are you sure you want to disconnect this tab?'
                     )
                   ) {
-                    if (tab?.taskData?.chain) {
-                      destroyAllApiInstances(ownerId);
-                    }
+                    destroyAllApiInstances(ownerId);
                   }
                 }}
               >
