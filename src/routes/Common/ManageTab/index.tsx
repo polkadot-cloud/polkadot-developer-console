@@ -8,7 +8,6 @@ import {
   SettingsSubmitWrapper,
   SettingsToggleWrapper,
 } from 'routes/Settings/TabSettings/Wrappers';
-import { ApiController } from 'controllers/Api';
 import { useTabs } from 'contexts/Tabs';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { SubHeadingWrapper } from './Wrappers';
@@ -21,9 +20,9 @@ import { useApiIndexer } from 'contexts/ApiIndexer';
 export const ManageTab = () => {
   const { renameTab } = useTabs();
   const { getTabApiIndex } = useApiIndexer();
-  const { getApiStatus } = useChainSpaceEnv();
   const { tab, tabId, ownerId } = useActiveTab();
   const { updateSs58, updateUnits, updateUnit } = useChainBrowser();
+  const { getApiStatus, destroyAllApiInstances } = useChainSpaceEnv();
 
   const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
   const apiStatus = getApiStatus(apiInstanceId);
@@ -107,7 +106,7 @@ export const ManageTab = () => {
                     )
                   ) {
                     if (tab?.taskData?.chain) {
-                      ApiController.destroyAll(ownerId);
+                      destroyAllApiInstances(ownerId);
                     }
                   }
                 }}
