@@ -26,7 +26,7 @@ export const Api = createContext<AnyJson>({});
 export const useApi = () => useContext(Api);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
-  const { tabs, setTabActiveTask } = useTabs();
+  const { tabs } = useTabs();
   const { instantiateApiFromTab, forgetTabChain } = useChainBrowser();
 
   // Store API connection status of each api instance. NOTE: requires ref as it is used in event
@@ -44,18 +44,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     const updated = { ...apiStatusRef.current };
     delete updated[instanceId];
     setApiStatus(updated);
-  };
-
-  // Handle a chain disconnect.
-  const handleDisconnect = (instanceId: ApiInstanceId, destroy = false) => {
-    if (destroy) {
-      removeApiStatus(instanceId);
-    } else {
-      // Update API status to `disconnected`.
-      setApiStatus({ ...apiStatusRef.current, [instanceId]: 'disconnected' });
-    }
-    // Remove tab's activeTask.
-    setTabActiveTask(ownerIdToTabId(instanceId), null);
   };
 
   // Handle a chain error.
@@ -112,14 +100,8 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
         case 'connected':
           setApiStatus({ ...apiStatusRef.current, [instanceId]: 'connected' });
           break;
-        case 'disconnected':
-          handleDisconnect(instanceId);
-          break;
         case 'error':
           handleChainError(ownerId, instanceId);
-          break;
-        case 'destroyed':
-          handleDisconnect(instanceId, true);
           break;
       }
     }

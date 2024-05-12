@@ -73,14 +73,12 @@ export const TabContextMenu = ({
             onClick={() => {
               if (canDisconenct && tab?.taskData?.chain) {
                 ApiController.destroyAll(ownerId);
-                closeMenu();
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);
                 // Update tab task.
                 setTabActiveTask(tabId, 'chainBrowser');
-
-                closeMenu();
               }
+              closeMenu();
             }}
           ></button>
           <div className="inner">
