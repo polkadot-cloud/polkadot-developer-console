@@ -16,13 +16,16 @@ import { isDirectoryId } from 'config/networks/Utils';
 import { useChainBrowser } from 'contexts/ChainBrowser';
 import { ACTIVE_API_STATUSES } from 'model/Api/defaults';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const ManageTab = () => {
   const { renameTab } = useTabs();
+  const { getTabApiIndex } = useApiIndexer();
   const { getApiStatus } = useChainSpaceEnv();
-  const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
+  const { tab, tabId, ownerId } = useActiveTab();
   const { updateSs58, updateUnits, updateUnit } = useChainBrowser();
 
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
   const apiStatus = getApiStatus(apiInstanceId);
   const apiDisconnected = !ACTIVE_API_STATUSES.includes(apiStatus);
 

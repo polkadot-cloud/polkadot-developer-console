@@ -19,13 +19,16 @@ import { useChainState } from 'contexts/ChainState';
 import { Results } from './Results';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const Constants = () => {
   const { setConstant } = useChainState();
+  const { tabId, ownerId } = useActiveTab();
+  const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec } = useChainSpaceEnv();
-  const { tabId, apiInstanceId } = useActiveTab();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
   const chainUiSection = 'constants';
   const chainUi = getChainUi(tabId, chainUiSection);
   const Metadata = getChainSpec(apiInstanceId)?.metadata;
@@ -61,6 +64,10 @@ export const Constants = () => {
 
   // Handle retrieval of constant from scraped items.
   const handleSubmit = () => {
+    if (!apiInstanceId) {
+      return;
+    }
+
     const chainState = ChainStateController.instances[apiInstanceId];
 
     if (activePallet && activeItem) {

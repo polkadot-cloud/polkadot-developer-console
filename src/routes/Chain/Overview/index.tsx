@@ -19,11 +19,14 @@ import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { BlockNumber } from 'model/BlockNumber';
 import { FlexWrapper } from 'routes/Common/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const Overview = () => {
+  const { getTabApiIndex } = useApiIndexer();
+  const { tab, tabId, ownerId } = useActiveTab();
   const { getApiStatus, getChainSpec } = useChainSpaceEnv();
-  const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
 
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
   const apiStatus = getApiStatus(apiInstanceId);
   const chainSpec = getChainSpec(apiInstanceId);
   const chainSpecReady = !!chainSpec;
@@ -51,8 +54,14 @@ export const Overview = () => {
 
   // The latest received block number.
   const [blockNumber, setBlockNumber] = useState<string>(
-    (SubscriptionsController.get(apiInstanceId, 'blockNumber') as BlockNumber)
-      ?.blockNumber || '0'
+    apiInstanceId
+      ? (
+          SubscriptionsController.get(
+            apiInstanceId,
+            'blockNumber'
+          ) as BlockNumber
+        )?.blockNumber || '0'
+      : '0'
   );
 
   // Handle new block number callback.
@@ -73,8 +82,14 @@ export const Overview = () => {
   // Update block number on tab change.
   useEffect(() => {
     setBlockNumber(
-      (SubscriptionsController.get(apiInstanceId, 'blockNumber') as BlockNumber)
-        ?.blockNumber || '0'
+      apiInstanceId
+        ? (
+            SubscriptionsController.get(
+              apiInstanceId,
+              'blockNumber'
+            ) as BlockNumber
+          )?.blockNumber || '0'
+        : '0'
     );
   }, [tabId]);
 

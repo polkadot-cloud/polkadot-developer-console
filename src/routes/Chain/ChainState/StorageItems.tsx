@@ -15,12 +15,15 @@ import { InputForm } from './InputForm';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const StorageItems = () => {
+  const { tabId, ownerId } = useActiveTab();
+  const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec } = useChainSpaceEnv();
-  const { tabId, apiInstanceId } = useActiveTab();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
   const chainUiSection = 'storage';
   const inputNamespace: InputNamespace = 'storage';
 

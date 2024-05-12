@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ChainId } from 'config/networks';
+import type { ApiIndexLabel } from 'contexts/ApiIndexer/types';
 import type { ActiveBalancesInterface } from 'hooks/useActiveBalances/types';
 import type { Api } from 'model/Api';
 import type { APIChainSpec, ApiInstanceId, ApiStatus } from 'model/Api/types';
@@ -10,14 +11,14 @@ import type { OwnerId } from 'types';
 export interface ChainSpaceEnvContextInterface {
   handleConnectApi: (
     ownerId: OwnerId,
-    label: string,
+    label: ApiIndexLabel,
     chainId: ChainId,
     provider: string
   ) => Promise<void>;
   getApiStatus: (instanceId?: ApiInstanceId) => ApiStatus;
   getChainSpec: (instanceId?: ApiInstanceId) => APIChainSpec | undefined;
-  getApiInstance: (ownerId: OwnerId, label: string) => Api | undefined;
-  destroyApiInstance: (ownerId: OwnerId, label: string) => void;
+  getApiInstance: (ownerId: OwnerId, label: ApiIndexLabel) => Api | undefined;
+  destroyApiInstance: (ownerId: OwnerId, label: ApiIndexLabel) => void;
   destroyAllApiInstances: (ownerId: OwnerId) => void;
   activeBalances: ActiveBalancesInterface;
 }

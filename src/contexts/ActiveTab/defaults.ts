@@ -7,6 +7,5 @@ import type { ActiveTabContextInterface } from './types';
 export const defaultActiveTabContext: ActiveTabContextInterface = {
   tabId: 0,
   ownerId: tabIdToOwnerId(0),
-  apiInstanceId: 'tab_0_0',
   tab: undefined,
 };

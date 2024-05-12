@@ -17,10 +17,14 @@ import {
   faTableLayout,
 } from '@fortawesome/pro-duotone-svg-icons';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const useRouteSections = (): RouteSectionProvider => {
-  const { apiInstanceId } = useActiveTab();
+  const { ownerId } = useActiveTab();
+  const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec } = useChainSpaceEnv();
+
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
   const chainSpec = getChainSpec(apiInstanceId);
 
   const balancesPaleltExists = chainSpec?.metadata?.palletExists('Balances');

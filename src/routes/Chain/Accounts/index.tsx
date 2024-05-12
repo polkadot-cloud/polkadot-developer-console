@@ -12,12 +12,15 @@ import BigNumber from 'bignumber.js';
 import { useTabAccounts } from 'contexts/TabAccounts';
 import { FlexWrapper } from 'routes/Common/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const Accounts = () => {
+  const { tab, ownerId } = useActiveTab();
   const { accounts } = useTabAccounts();
+  const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec } = useChainSpaceEnv();
-  const { tab, apiInstanceId } = useActiveTab();
 
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
   const chainSpec = getChainSpec(apiInstanceId);
 
   const existentialDeposit =
