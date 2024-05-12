@@ -28,6 +28,7 @@ import { ApiController } from 'controllers/Api';
 import { BlockNumber } from 'model/BlockNumber';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
   defaultChainSpaceEnvContext
@@ -140,7 +141,9 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     setApiStatus(`${globalChainSpace.ownerId}_${index}`, 'connecting');
 
     // Add api to chain space instance.
-    await globalChainSpace.getInstance().addApi(chainId, provider);
+    await globalChainSpace
+      .getInstance()
+      .addApi(tabIdToOwnerId(tabId), chainId, provider);
   };
 
   // Accumulate active balance configuration from api indexes for the current tab.

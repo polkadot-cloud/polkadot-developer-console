@@ -12,16 +12,12 @@ import { useTabs } from 'contexts/Tabs';
 import type { ChainId, DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
-import type {
-  ChainMeta,
-  ConnectFrom,
-  TabChainData,
-  TabTask,
-} from 'contexts/Tabs/types';
+import type { ChainMeta, ConnectFrom, TabTask } from 'contexts/Tabs/types';
 import { useSettings } from 'contexts/Settings';
 import * as local from 'contexts/Tabs/Local';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { ApiController } from 'controllers/Api';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const ChainBrowser = createContext<ChainBrowserContextInterface>(
   defaultChainBrowserContext
@@ -31,6 +27,7 @@ export const useChainBrowser = () => useContext(ChainBrowser);
 
 export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   const { autoTabNaming } = useSettings();
+  const { handleConnectApi } = useChainSpaceEnv();
   const { tabs, tabsRef, getTab, getTabTaskData, setTabs, setTabTaskData } =
     useTabs();
 
@@ -96,7 +93,9 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
         : tab
     );
     setTabs(newTabs);
-    instantiateControllers(tabId, chainData);
+
+    // Instantiate API instance.
+    handleConnectApi(tabId, 'chainBrowser', chainData.id, chainData.endpoint);
   };
 
   // Instantiate an Api instance from tab chain data.
@@ -109,20 +108,13 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
       taskData?.chain &&
       taskData?.autoConnect
     ) {
-      // This api instance is about to be reconnected to, so the active task here needs to be
-      // persisted.
-      instantiateControllers(tab.id, taskData?.chain);
+      handleConnectApi(
+        tabId,
+        'chainBrowser',
+        taskData.chain.id,
+        taskData.chain.endpoint
+      );
     }
-  };
-
-  // Instantiate controllers for a new tab.
-  const instantiateControllers = async (tabId: number, chain: TabChainData) => {
-    if (!chain) {
-      return;
-    }
-    const ownerId = tabIdToOwnerId(tabId);
-    const { id, endpoint } = chain;
-    await ApiController.instantiate(ownerId, id, endpoint);
   };
 
   // Update the chain's ss58 prefix in tab's taskData.

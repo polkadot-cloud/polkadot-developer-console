@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainSpaceId } from 'types';
+import type { ChainSpaceId, OwnerId } from 'types';
 import { ApiController } from 'controllers/Api';
 import type { ChainId } from 'config/networks';
 
@@ -30,9 +30,10 @@ export class ChainSpace {
   // ------------------------------------------------------
 
   // Instantiate an api instance for this chain space.
-  async addApi(chainId: ChainId, endpoint: string) {
+  async addApi(ownerId: OwnerId, chainId: ChainId, endpoint: string) {
     const instanceId = await ApiController.instantiate(
       this.#id,
+      ownerId,
       chainId,
       endpoint
     );

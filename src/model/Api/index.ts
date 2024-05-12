@@ -11,17 +11,21 @@ import type {
   EventStatus,
   ErrDetail,
   ApiInstanceId,
+  APIChainSpecEventDetail,
 } from './types';
 import { MetadataController } from 'controllers/Metadata';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { AnyJson } from '@w3ux/utils/types';
 import BigNumber from 'bignumber.js';
-import type { OwnerId } from 'types';
+import type { ChainSpaceId, OwnerId } from 'types';
 
 export class Api {
   // ------------------------------------------------------
   // Class members.
   // ------------------------------------------------------
+
+  // The associated chain space for this api instance.
+  #chainSpaceId: ChainSpaceId;
 
   // The associated owner for this api instance.
   #ownerId: OwnerId;
@@ -57,6 +61,10 @@ export class Api {
   // Getters.
   // ------------------------------------------------------
 
+  get chainSpaceId() {
+    return this.#chainSpaceId;
+  }
+
   get ownerId() {
     return this.#ownerId;
   }
@@ -86,11 +94,13 @@ export class Api {
   // ------------------------------------------------------
 
   constructor(
+    chainSpaceId: ChainSpaceId,
     ownerId: OwnerId,
     instanceIndex: number,
     chainId: ChainId,
     endpoint: string
   ) {
+    this.#chainSpaceId = chainSpaceId;
     this.#ownerId = ownerId;
     this.#instanceId = `${ownerId}_${instanceIndex}`;
     this.#chainId = chainId;
@@ -180,15 +190,17 @@ export class Api {
       // Fetch chain constants.
       this.fetchConsts();
     }
+    const detail: APIChainSpecEventDetail = {
+      chainSpaceId: this.chainSpaceId,
+      ownerId: this.ownerId,
+      instanceId: this.instanceId,
+      spec: this.chainSpec,
+      consts: this.consts,
+    };
 
     document.dispatchEvent(
       new CustomEvent('new-chain-spec', {
-        detail: {
-          ownerId: this.ownerId,
-          instanceId: this.instanceId,
-          spec: this.chainSpec,
-          consts: this.consts,
-        },
+        detail,
       })
     );
   }
@@ -254,6 +266,7 @@ export class Api {
   ) {
     const detail: APIStatusEventDetail = {
       event,
+      chainSpaceId: this.chainSpaceId,
       ownerId: this.ownerId,
       instanceId: this.instanceId,
       chainId: this.chainId,
