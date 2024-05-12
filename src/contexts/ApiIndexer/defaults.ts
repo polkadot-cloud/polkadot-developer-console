@@ -5,6 +5,7 @@
 import type { ApiIndexerContextInterface } from './types';
 
 export const defaultApiIndexerContext: ApiIndexerContextInterface = {
+  apiIndexes: {},
   getTabApiIndexes: (tabId) => [],
   getTabApiIndex: (tabId, label) => undefined,
   setTabApiIndex: (tabId, index) => {},

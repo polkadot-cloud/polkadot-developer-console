@@ -8,7 +8,7 @@ import type { APIChainSpec, ApiInstanceId, ApiStatus } from 'model/Api/types';
 
 export interface ChainSpaceEnvContextInterface {
   getApiStatusByIndex: (index: number | undefined) => ApiStatus;
-  getApiActiveByIndex: (index: number | undefined) => boolean;
+  getApiActiveByIndex: (tabId: number, label: string) => boolean;
   getChainSpecByIndex: (index: number | undefined) => APIChainSpec | undefined;
   activeBalances: ActiveBalancesInterface;
   handleConnectApi: (
@@ -17,9 +17,8 @@ export interface ChainSpaceEnvContextInterface {
     chainId: ChainId,
     provider: string
   ) => Promise<void>;
-  getChainApi: (index: number | undefined) => Api | undefined;
-  destroyChainApi: (index: number) => void;
-  getNextApiIndex: () => number;
+  getChainApi: (tabId: number, label: string) => Api | undefined;
+  destroyChainApi: (tabId: number, label: string) => void;
   destroyChainSpaceEnvIndex: (index: number) => void;
 }
 

@@ -36,7 +36,7 @@ export const ConnectRelay = () => {
   const { tabId } = useActiveTab();
   const { setTabActiveTask } = useTabs();
   const { openMenu, closeMenu } = useMenu();
-  const { getTabApiIndex, removeTabApiIndex } = useApiIndexer();
+  const { getTabApiIndex } = useApiIndexer();
 
   const selectedRelayChain = getSelectedRelayChain(tabId);
 
@@ -69,10 +69,7 @@ export const ConnectRelay = () => {
   const handleDisconnect = () => {
     if (chainSpaceApiIndex !== undefined) {
       // Destroy the chain space instance.
-      destroyChainApi(chainSpaceApiIndex.index);
-
-      // Destroy the relay chain space index record.
-      removeTabApiIndex(tabId, 'parachainSetup:relay');
+      destroyChainApi(tabId, 'parachainSetup:relay');
 
       // Reset tab active task.
       setTabActiveTask(tabId, null);

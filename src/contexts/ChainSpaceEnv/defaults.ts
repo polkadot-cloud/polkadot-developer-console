@@ -7,12 +7,11 @@ import type { ChainSpaceEnvContextInterface } from './types';
 
 export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
   getApiStatusByIndex: (index) => 'disconnected',
-  getApiActiveByIndex: (index) => false,
+  getApiActiveByIndex: (tabId, label) => false,
   getChainSpecByIndex: (index) => undefined,
   activeBalances: defaultActiveBalances,
   handleConnectApi: (tabId, label, chainId, rovider) => Promise.resolve(),
-  getChainApi: (index) => undefined,
-  destroyChainApi: (index) => {},
-  getNextApiIndex: () => 0,
+  getChainApi: (tabId, label) => undefined,
+  destroyChainApi: (tabId, label) => {},
   destroyChainSpaceEnvIndex: (index) => {},
 };

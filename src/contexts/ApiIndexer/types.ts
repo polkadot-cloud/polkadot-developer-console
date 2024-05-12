@@ -2,8 +2,12 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 export interface ApiIndexerContextInterface {
+  apiIndexes: ApiIndexes;
   getTabApiIndexes: (tabId: number) => ApiIndex[];
-  getTabApiIndex: (tabId: number, label: string) => ApiIndex | undefined;
+  getTabApiIndex: (
+    tabId: number,
+    label: string | undefined
+  ) => ApiIndex | undefined;
   setTabApiIndex: (tabId: number, index: ApiIndex) => void;
   removeTabApiIndexes: (tabId: number) => void;
   removeTabApiIndex: (tabId: number, label: string) => void;
