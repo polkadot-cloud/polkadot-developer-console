@@ -41,17 +41,17 @@ export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
 export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
 export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
-  const { setTabActiveTask } = useTabs();
-  const { fetchPalletVersions } = useChainUi();
-  const { getAccounts } = useImportedAccounts();
-  const { ownerId: activeOwnerId } = useActiveTab();
-  const { globalChainSpace } = useGlobalChainSpace();
   const {
     getTabApiIndex,
     setTabApiIndex,
     getTabApiIndexes,
     removeTabApiIndex,
   } = useApiIndexer();
+  const { resetTabActiveTask } = useTabs();
+  const { fetchPalletVersions } = useChainUi();
+  const { getAccounts } = useImportedAccounts();
+  const { ownerId: activeOwnerId } = useActiveTab();
+  const { globalChainSpace } = useGlobalChainSpace();
 
   // The chain spec of each api instance associated with this chain space. NOTE: Requires ref as it
   // is used in event listener.
@@ -250,7 +250,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
       setChainSpecs(updatedChainSpecs);
 
       // Reset active task.
-      setTabActiveTask(ownerIdToTabId(ownerId), null);
+      resetTabActiveTask(ownerIdToTabId(ownerId));
     } else {
       // Set api status to disconnected.
       setApiStatus(instanceId, 'disconnected');

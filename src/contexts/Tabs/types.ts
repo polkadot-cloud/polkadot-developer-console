@@ -39,6 +39,7 @@ export interface TabsContextInterface {
   switchTab: (tabId: number, tabIndex: number) => void;
   getTabActiveTask: (tabId: number) => TabTask | null;
   setTabActiveTask: (tabId: number, task: TabTask | null) => void;
+  resetTabActiveTask: (tabId: number) => void;
   getTabTaskData: (tabId: number) => TaskData;
   setTabTaskData: (tabId: number, value: TaskData) => void;
 }

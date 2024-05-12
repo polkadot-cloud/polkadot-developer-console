@@ -10,7 +10,11 @@ import type {
   TabsContextInterface,
   TaskData,
 } from './types';
-import { defaultTabs, defaultTabsContext } from './defaults';
+import {
+  TASK_HOME_PAGE_INDEXES,
+  defaultTabs,
+  defaultTabsContext,
+} from './defaults';
 import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
 import { checkLocalTabs } from 'IntegrityChecks/Local';
@@ -229,12 +233,17 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const newTabs = tabsRef.current.map((tab) =>
       tab.id === tabId ? { ...tab, activeTask: task } : tab
     );
-
-    // If a null task is provided, reset the active page of the tab's default route.
-    if (task === null) {
-      setTabActivePage(tabId, 'default', 0);
-    }
     setTabs(newTabs);
+  };
+
+  // Reset a tab task to null. The previously used task is provided to set the correct active home
+  // page index.
+  const resetTabActiveTask = (tabId: number) => {
+    const currentTask = getTabActiveTask(tabId);
+    const homePageIndex = currentTask ? TASK_HOME_PAGE_INDEXES[currentTask] : 0;
+
+    local.setActivePage(tabId, 'default', homePageIndex);
+    setTabActiveTask(tabId, null);
   };
 
   // Get at tab's taskData, if any.
@@ -279,6 +288,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         switchTab,
         getTabActiveTask,
         setTabActiveTask,
+        resetTabActiveTask,
         getTabTaskData,
         setTabTaskData,
         setTabConnectFrom,

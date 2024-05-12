@@ -2,13 +2,12 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
-import type { Tab, Tabs, TabsContextInterface } from './types';
+import type { Tab, TabTask, Tabs, TabsContextInterface } from './types';
 
-// export const TAB_TASK_INDEXES: Record<TabTask | 'default', number> = {
-//   default: 0,
-//   chainBrowser: 1,
-//   parachainSetup: 2,
-// };
+export const TASK_HOME_PAGE_INDEXES: Record<TabTask, number> = {
+  chainBrowser: 0,
+  parachainSetup: 1,
+};
 
 export const defaultTabsContext: TabsContextInterface = {
   tabs: [],
@@ -36,6 +35,7 @@ export const defaultTabsContext: TabsContextInterface = {
   switchTab: (tabId, tabIndex) => {},
   getTabActiveTask: (tabId) => null,
   setTabActiveTask: (id, activeTask) => {},
+  resetTabActiveTask: (tabId) => {},
   getTabTaskData: (tabId) => undefined,
   setTabTaskData: (tabId, value) => {},
 };
