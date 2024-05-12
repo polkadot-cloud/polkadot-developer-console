@@ -110,6 +110,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
 
     // If this owner is a tab, disconnect and forget the chain.
     if (ownerId.startsWith('tab_')) {
+      // NOTE: this will no longer destroy the api instance.
       forgetTabChain(ownerIdToTabId(ownerId));
     }
     NotificationsController.emit({
