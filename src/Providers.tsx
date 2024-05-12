@@ -12,7 +12,6 @@ import { TagsProvider } from 'contexts/Tags';
 import { ChainFilterProvider } from 'contexts/ChainFilter';
 import { SettingsProvider } from 'contexts/Settings';
 import { TooltipProvider } from 'contexts/Tooltip';
-import { ApiProvider } from 'contexts/Api';
 import { ChainUiProvider } from 'contexts/ChainUi';
 import { ParaSetupProvider } from 'contexts/ParaSetup';
 import { ConnectProvider } from 'contexts/Connect';
@@ -62,7 +61,6 @@ export const Providers = () => {
     ChainBrowserProvider,
     ChainFilterProvider,
     ChainStateProvider,
-    ApiProvider,
     TabAccountsProvider,
 
     // Task: `parachainSetup` related providers.

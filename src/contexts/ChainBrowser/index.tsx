@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 import type { ChainBrowserContextInterface } from './types';
 import {
   defaultChainBrowserContext,
@@ -179,6 +179,16 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
     });
     setTabs(newTabs);
   };
+
+  // Initialisation of Apis.
+  useEffect(() => {
+    // Instantiate Api instances from tabs.
+    tabs.forEach((tab) => {
+      if (tab.taskData?.autoConnect) {
+        instantiateApiFromTab(tab.id);
+      }
+    });
+  }, []);
 
   return (
     <ChainBrowser.Provider
