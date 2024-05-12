@@ -12,7 +12,6 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useMenu } from 'contexts/Menu';
 import { useTabs } from 'contexts/Tabs';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
-import { ApiController } from 'controllers/Api';
 import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
 
 export const TabContextMenu = ({
@@ -23,9 +22,9 @@ export const TabContextMenu = ({
   onSettings: () => void;
 }) => {
   const { closeMenu } = useMenu();
-  const { getApiStatus } = useChainSpaceEnv();
   const { getTab, setTabActiveTask } = useTabs();
   const { instantiateApiFromTab } = useChainBrowser();
+  const { getApiStatus, destroyAllApiInstances } = useChainSpaceEnv();
 
   const tab = getTab(tabId);
   const ownerId = tabIdToOwnerId(tabId);
@@ -72,7 +71,7 @@ export const TabContextMenu = ({
           <button
             onClick={() => {
               if (canDisconenct && tab?.taskData?.chain) {
-                ApiController.destroyAll(ownerId);
+                destroyAllApiInstances(ownerId);
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);
                 // Update tab task.

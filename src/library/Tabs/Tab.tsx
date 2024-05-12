@@ -23,7 +23,6 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -42,10 +41,8 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const { tabId } = useActiveTab();
   const { openMenu, closeMenu } = useMenu();
   const { destroyTabChainUi } = useChainUi();
-  const { getTabApiIndexes } = useApiIndexer();
   const { destroyTabParaSetup } = useParaSetup();
-  const { destroyChainSpaceEnvIndex, destroyAllApiInstances, getApiStatus } =
-    useChainSpaceEnv();
+  const { destroyAllApiInstances, getApiStatus } = useChainSpaceEnv();
 
   const {
     listeners,
@@ -170,19 +167,11 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
               // Destroy chainUi state associated with this tab.
               destroyTabChainUi(id);
 
-              // Destroy chain space apis and state associated with this tab.
-              const apiIndexes = getTabApiIndexes(tabIdToOwnerId(id));
-              if (apiIndexes.length) {
-                for (const apiIndex of apiIndexes) {
-                  destroyChainSpaceEnvIndex(tabIdToOwnerId(id), apiIndex.index);
-                }
-              }
+              // Destroy all apis and api state associated with this tab.
+              destroyAllApiInstances(tabIdToOwnerId(id));
 
               // Destroy Parachain state associated with this tab.
               destroyTabParaSetup(id);
-
-              // Destroy api instances associated with the tab.
-              destroyAllApiInstances(tabIdToOwnerId(id));
 
               // Destroy tab instance.
               destroyTab(index, id);

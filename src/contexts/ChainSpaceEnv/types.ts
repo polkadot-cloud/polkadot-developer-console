@@ -20,7 +20,6 @@ export interface ChainSpaceEnvContextInterface {
   getApiInstance: (ownerId: OwnerId, label: string) => Api | undefined;
   destroyApiInstance: (ownerId: OwnerId, label: string) => void;
   destroyAllApiInstances: (ownerId: OwnerId) => void;
-  destroyChainSpaceEnvIndex: (ownerId: OwnerId, index: number) => void;
 }
 
 export interface ChainSpaceEnvProps {

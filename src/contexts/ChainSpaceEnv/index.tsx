@@ -50,7 +50,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     setTabApiIndex,
     getTabApiIndexes,
     removeTabApiIndex,
-    removeTabApiIndexes,
   } = useApiIndexer();
 
   // The chain spec of each api instance associated with this chain space. NOTE: Requires ref as it
@@ -81,12 +80,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
       // Remove from api indexer.
       removeTabApiIndex(ownerId, apiIndex.index);
     }
-  };
-
-  // Destroy all api instances associated with an owner.
-  const destroyAllApiInstances = (ownerId: OwnerId) => {
-    ApiController.destroyAll(ownerId);
-    removeTabApiIndexes(ownerId);
   };
 
   // Get chainSpec for a chain instance by index.
@@ -199,7 +192,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
           handleDisconnect(ownerId, instanceId);
           break;
         case 'error':
-          handleDisconnect(ownerId, instanceId);
+          handleDisconnect(ownerId, instanceId, true);
           break;
         case 'destroyed':
           handleDisconnect(ownerId, instanceId);
@@ -232,37 +225,43 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   // Handle a chain disconnect.
   const handleDisconnect = async (
     ownerId: OwnerId,
-    instanceId: ApiInstanceId
+    instanceId: ApiInstanceId,
+    destroy = false
   ) => {
     const index = getIndexFromInstanceId(instanceId);
 
-    // Destory api instances associated with this owner.
-    ApiController.destroy(ownerId, index);
+    if (destroy) {
+      // Destory api instances associated with this owner.
+      ApiController.destroy(ownerId, index);
 
-    // Remove api instance index from indexer.
-    removeTabApiIndex(ownerId, index);
+      // Remove api instance index from indexer.
+      removeTabApiIndex(ownerId, index);
 
-    // Remove api status.
-    const updatedApiStatuses = { ...apiStatusesRef.current };
-    delete updatedApiStatuses[instanceId];
-    setApiStatuses(updatedApiStatuses);
-    apiStatusesRef.current = updatedApiStatuses;
+      // Remove api status.
+      const updatedApiStatuses = { ...apiStatusesRef.current };
+      delete updatedApiStatuses[instanceId];
+      setApiStatuses(updatedApiStatuses);
+      apiStatusesRef.current = updatedApiStatuses;
 
-    // Remove chain spec.
-    const updatedChainSpecs = { ...chainSpecsRef.current };
-    delete updatedChainSpecs[instanceId];
-    setChainSpecs(updatedChainSpecs);
+      // Remove chain spec.
+      const updatedChainSpecs = { ...chainSpecsRef.current };
+      delete updatedChainSpecs[instanceId];
+      setChainSpecs(updatedChainSpecs);
 
-    // Reset active task.
-    setTabActiveTask(ownerIdToTabId(ownerId), null);
+      // Reset active task.
+      setTabActiveTask(ownerIdToTabId(ownerId), null);
+    } else {
+      // Set api status to disconnected.
+      setApiStatus(instanceId, 'disconnected');
+    }
   };
 
-  // Destroy state associated with an owner. Should only be used on tab close.
-  const destroyChainSpaceEnvIndex = (ownerId: OwnerId) => {
+  // Destroy state associated with an owner. Should only be used on tab close and tab disconnect.
+  const destroyAllApiInstances = (ownerId: OwnerId) => {
     const indexes = getTabApiIndexes(ownerId);
     if (indexes.length) {
       for (const apiIndex of indexes) {
-        handleDisconnect(ownerId, `${ownerId}_${apiIndex.index}`);
+        handleDisconnect(ownerId, `${ownerId}_${apiIndex.index}`, true);
       }
     }
   };
@@ -297,7 +296,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         handleConnectApi,
         destroyApiInstance,
         destroyAllApiInstances,
-        destroyChainSpaceEnvIndex,
       }}
     >
       {children}

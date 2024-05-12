@@ -13,5 +13,4 @@ export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
   getApiInstance: (ownerId, label) => undefined,
   destroyApiInstance: (ownerId, label) => {},
   destroyAllApiInstances: (ownerId) => {},
-  destroyChainSpaceEnvIndex: (ownerId, index) => {},
 };
