@@ -54,8 +54,8 @@ export const Providers = () => {
     ImportedAccountsProvider,
 
     // Chain space environment and api indexer.
-    ChainSpaceEnvProvider,
     ApiIndexerProvider,
+    ChainSpaceEnvProvider,
 
     // Task: `chainBrowser` related providers.
     ChainBrowserProvider,
