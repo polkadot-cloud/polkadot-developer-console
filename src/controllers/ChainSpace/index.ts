@@ -31,15 +31,6 @@ export class ChainSpaceController {
     return this.#instances[id];
   }
 
-  // Gracefully disconnect and then destroy a chain space instance.
-  static async destroyInstance(id: ChainSpaceId) {
-    const instance = this.#instances[id];
-    if (instance) {
-      await instance.destroy();
-      delete this.#instances[id];
-    }
-  }
-
   // ------------------------------------------------------
   // Getters.
   // ------------------------------------------------------

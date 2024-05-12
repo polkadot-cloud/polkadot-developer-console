@@ -40,25 +40,4 @@ export class ChainSpace {
 
     return instanceId;
   }
-
-  // Get an api instance associated with this chain space.
-  getApi(index: number) {
-    return ApiController.getInstanceApi(this.#id, index);
-  }
-
-  // Destroy an api instance associated with this chain space.
-  async destroyApi(index: number) {
-    await ApiController.destroy(this.#id, index);
-  }
-
-  // ------------------------------------------------------
-  // Disconnect.
-  // ------------------------------------------------------
-
-  // Disconnect gracefully from all API instances owned by this chain space. Called when this chain
-  // space is being destroyed.
-  async destroy() {
-    // Destroy all api instances for this chainspace id.
-    await ApiController.destroyAll(this.#id);
-  }
 }
