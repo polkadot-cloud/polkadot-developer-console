@@ -10,16 +10,16 @@ import {
 } from 'routes/Settings/TabSettings/Wrappers';
 import { ApiController } from 'controllers/Api';
 import { useTabs } from 'contexts/Tabs';
-import { useApi } from 'contexts/Api';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { SubHeadingWrapper } from './Wrappers';
 import { isDirectoryId } from 'config/networks/Utils';
 import { useChainBrowser } from 'contexts/ChainBrowser';
 import { ACTIVE_API_STATUSES } from 'model/Api/defaults';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const ManageTab = () => {
   const { renameTab } = useTabs();
-  const { getApiStatus } = useApi();
+  const { getApiStatus } = useChainSpaceEnv();
   const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
   const { updateSs58, updateUnits, updateUnit } = useChainBrowser();
 

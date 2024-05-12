@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 import type { ChainBrowserContextInterface } from './types';
 import {
   defaultChainBrowserContext,
@@ -12,16 +12,11 @@ import { useTabs } from 'contexts/Tabs';
 import type { ChainId, DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
-import type {
-  ChainMeta,
-  ConnectFrom,
-  TabChainData,
-  TabTask,
-} from 'contexts/Tabs/types';
+import type { ChainMeta, ConnectFrom, TabTask } from 'contexts/Tabs/types';
 import { useSettings } from 'contexts/Settings';
 import * as local from 'contexts/Tabs/Local';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
-import { ApiController } from 'controllers/Api';
 
 export const ChainBrowser = createContext<ChainBrowserContextInterface>(
   defaultChainBrowserContext
@@ -31,20 +26,9 @@ export const useChainBrowser = () => useContext(ChainBrowser);
 
 export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   const { autoTabNaming } = useSettings();
+  const { handleConnectApi } = useChainSpaceEnv();
   const { tabs, tabsRef, getTab, getTabTaskData, setTabs, setTabTaskData } =
     useTabs();
-
-  // Gets the previously connected to chain from network directory, if present.
-  const getStoredChain = (tabId: number) => {
-    const taskData = getTabTaskData(tabId);
-    const chainId = taskData?.chain?.id;
-
-    if (!chainId || !isDirectoryId(chainId)) {
-      return undefined;
-    }
-
-    return { id: chainId, chain: NetworkDirectory[chainId] };
-  };
 
   // Connect tab to an Api instance and update its chain data.
   const connectChainBrowser = (
@@ -96,7 +80,14 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
         : tab
     );
     setTabs(newTabs);
-    instantiateControllers(tabId, chainData);
+
+    // Instantiate API instance.
+    handleConnectApi(
+      tabIdToOwnerId(tabId),
+      'chainBrowser',
+      chainData.id,
+      chainData.endpoint
+    );
   };
 
   // Instantiate an Api instance from tab chain data.
@@ -109,20 +100,24 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
       taskData?.chain &&
       taskData?.autoConnect
     ) {
-      // This api instance is about to be reconnected to, so the active task here needs to be
-      // persisted.
-      instantiateControllers(tab.id, taskData?.chain);
+      handleConnectApi(
+        tabIdToOwnerId(tabId),
+        'chainBrowser',
+        taskData.chain.id,
+        taskData.chain.endpoint
+      );
     }
   };
 
-  // Instantiate controllers for a new tab.
-  const instantiateControllers = async (tabId: number, chain: TabChainData) => {
-    if (!chain) {
-      return;
+  // Gets the previously connected to chain from network directory, if present.
+  const getStoredChain = (tabId: number) => {
+    const taskData = getTabTaskData(tabId);
+    const chainId = taskData?.chain?.id;
+
+    if (!chainId || !isDirectoryId(chainId)) {
+      return undefined;
     }
-    const ownerId = tabIdToOwnerId(tabId);
-    const { id, endpoint } = chain;
-    await ApiController.instantiate(ownerId, id, endpoint);
+    return { id: chainId, chain: NetworkDirectory[chainId] };
   };
 
   // Update the chain's ss58 prefix in tab's taskData.
@@ -169,10 +164,6 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   // Forget a tab's chain. NOTE: This function is called within event listeners, so tabsRef is used
   // to ensure the latest tabs config is used.
   const forgetTabChain = (tabId: number) => {
-    // Disconnect from Api instance if present.
-    if (getTabTaskData(tabId)?.chain) {
-      destroyControllers(tabId);
-    }
     // Update tab state.
     const newTabs = tabsRef.map((tab) => {
       if (tab.id === tabId) {
@@ -189,15 +180,15 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
-  // Destroy controller instances for a tab.
-  const destroyControllers = (tabId: number) => {
-    const ownerId = tabIdToOwnerId(tabId);
-    const taskData = getTabTaskData(tabId);
-
-    if (taskData && taskData?.chain) {
-      ApiController.destroyAll(ownerId);
-    }
-  };
+  // Initialisation of Apis.
+  useEffect(() => {
+    // Instantiate Api instances from tabs.
+    tabs.forEach((tab) => {
+      if (tab.taskData?.autoConnect) {
+        instantiateApiFromTab(tab.id);
+      }
+    });
+  }, []);
 
   return (
     <ChainBrowser.Provider
@@ -209,7 +200,6 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
         connectChainBrowser,
         instantiateApiFromTab,
         forgetTabChain,
-        destroyControllers,
       }}
     >
       {children}

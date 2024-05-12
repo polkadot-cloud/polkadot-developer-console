@@ -4,7 +4,7 @@
 import type { ChainId } from 'config/networks';
 import { ChainStateController } from 'controllers/ChainState';
 import { Api } from 'model/Api';
-import type { OwnerId } from 'types';
+import type { ChainSpaceId, OwnerId } from 'types';
 
 export class ApiController {
   // ------------------------------------------------------
@@ -28,6 +28,7 @@ export class ApiController {
 
   // Instantiate a new `Api` instance with the supplied owner, chainId and endpoint.
   static async instantiate(
+    chainSpaceId: ChainSpaceId,
     ownerId: OwnerId,
     chainId: ChainId,
     endpoint: string
@@ -41,6 +42,7 @@ export class ApiController {
     }
 
     this.#instances[ownerId][instanceIndex] = new Api(
+      chainSpaceId,
       ownerId,
       instanceIndex,
       chainId,
@@ -82,11 +84,14 @@ export class ApiController {
 
   // Gracefully disconnect and then destroy an api instance.
   static async destroy(ownerId: OwnerId, instanceIndex: number) {
-    const instance = this.#instances[ownerId][instanceIndex];
+    const instance = this.#instances[ownerId]?.[instanceIndex];
+
     if (instance) {
       ChainStateController.destroy(`${ownerId}_${instanceIndex}`);
 
-      await instance.disconnect(true);
+      // NOTE: This is async, but not currently waiting for it to disconnect before state is
+      // deleted.
+      instance.disconnect(true);
       delete this.#instances[ownerId][instanceIndex];
     }
   }

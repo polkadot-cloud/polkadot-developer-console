@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useApi } from 'contexts/Api';
 import { PalletList } from '../PalletList';
 import { CallList } from './CallList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
@@ -16,9 +15,10 @@ import { InputForm } from '../ChainState/InputForm';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
 import { FlexWrapper } from 'routes/Common/Wrappers';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const Extrinsics = () => {
-  const { getChainSpec } = useApi();
+  const { getChainSpec } = useChainSpaceEnv();
   const { tabId, apiInstanceId } = useActiveTab();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 

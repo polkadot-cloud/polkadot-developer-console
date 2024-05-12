@@ -4,7 +4,7 @@
 import type { AnyJson } from '@w3ux/utils/types';
 import type { ChainId } from 'config/networks';
 import type { MetadataVersion } from 'controllers/Metadata/types';
-import type { OwnerId } from 'types';
+import type { ChainSpaceId, OwnerId } from 'types';
 
 // An id associated with an api instance. ChainState, ChainSpec, subscriptions, etc. all use this id
 // to associate with an api instance.
@@ -22,6 +22,7 @@ export type ChainSpecState = Record<ApiInstanceId, APIChainSpec>;
 
 export interface APIStatusEventDetail {
   event: EventStatus;
+  chainSpaceId: ChainSpaceId;
   ownerId: OwnerId;
   instanceId: ApiInstanceId;
   chainId: ChainId;
@@ -29,9 +30,10 @@ export interface APIStatusEventDetail {
 }
 
 export interface APIChainSpecEventDetail {
+  chainSpaceId: ChainSpaceId;
   ownerId: OwnerId;
   instanceId: ApiInstanceId;
-  spec: APIChainSpec;
+  spec: APIChainSpec | undefined;
   consts: Record<string, AnyJson>;
 }
 

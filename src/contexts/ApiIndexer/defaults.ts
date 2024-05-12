@@ -5,9 +5,10 @@
 import type { ApiIndexerContextInterface } from './types';
 
 export const defaultApiIndexerContext: ApiIndexerContextInterface = {
-  getTabApiIndexes: (tabId) => [],
-  getTabApiIndex: (tabId, label) => undefined,
-  setTabApiIndex: (tabId, index) => {},
-  removeTabApiIndexes: (tabId) => {},
-  removeTabApiIndex: (tabId, label) => {},
+  apiIndexes: {},
+  getTabApiIndexes: (ownerId) => [],
+  getTabApiIndex: (ownerId, label) => undefined,
+  setTabApiIndex: (ownerId, index) => {},
+  removeTabApiIndexes: (ownerId) => {},
+  removeTabApiIndex: (ownerId, index) => {},
 };

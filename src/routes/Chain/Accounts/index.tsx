@@ -6,16 +6,16 @@ import { AccountsWrapper } from './Wrappers';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
-import { useApi } from 'contexts/Api';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { Account } from './Account';
 import BigNumber from 'bignumber.js';
 import { useTabAccounts } from 'contexts/TabAccounts';
 import { FlexWrapper } from 'routes/Common/Wrappers';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const Accounts = () => {
-  const { getChainSpec } = useApi();
   const { accounts } = useTabAccounts();
+  const { getChainSpec } = useChainSpaceEnv();
   const { tab, apiInstanceId } = useActiveTab();
 
   const chainSpec = getChainSpec(apiInstanceId);

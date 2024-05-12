@@ -5,20 +5,21 @@ import type { ChainId } from 'config/networks';
 import type { ActiveBalancesInterface } from 'hooks/useActiveBalances/types';
 import type { Api } from 'model/Api';
 import type { APIChainSpec, ApiInstanceId, ApiStatus } from 'model/Api/types';
+import type { OwnerId } from 'types';
 
 export interface ChainSpaceEnvContextInterface {
-  activeBalances: ActiveBalancesInterface;
   handleConnectApi: (
-    index: number,
+    ownerId: OwnerId,
+    label: string,
     chainId: ChainId,
     provider: string
   ) => Promise<void>;
-  getChainApi: (index: number | undefined) => Api | undefined;
-  destroyChainApi: (index: number) => void;
-  getApiStatusByIndex: (index: number | undefined) => ApiStatus;
-  getChainSpecByIndex: (index: number | undefined) => APIChainSpec | undefined;
-  getNextApiIndex: () => number;
-  destroyChainSpaceEnvIndex: (index: number) => void;
+  getApiStatus: (instanceId?: ApiInstanceId) => ApiStatus;
+  getChainSpec: (instanceId?: ApiInstanceId) => APIChainSpec | undefined;
+  getApiInstance: (ownerId: OwnerId, label: string) => Api | undefined;
+  destroyApiInstance: (ownerId: OwnerId, label: string) => void;
+  destroyAllApiInstances: (ownerId: OwnerId) => void;
+  activeBalances: ActiveBalancesInterface;
 }
 
 export interface ChainSpaceEnvProps {

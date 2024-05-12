@@ -7,12 +7,11 @@ import {
   faLinkSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useApi } from 'contexts/Api';
 import { useChainBrowser } from 'contexts/ChainBrowser';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useMenu } from 'contexts/Menu';
 import { useTabs } from 'contexts/Tabs';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
-import { ApiController } from 'controllers/Api';
 import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
 
 export const TabContextMenu = ({
@@ -23,9 +22,9 @@ export const TabContextMenu = ({
   onSettings: () => void;
 }) => {
   const { closeMenu } = useMenu();
-  const { getApiStatus } = useApi();
   const { getTab, setTabActiveTask } = useTabs();
   const { instantiateApiFromTab } = useChainBrowser();
+  const { getApiStatus, destroyAllApiInstances } = useChainSpaceEnv();
 
   const tab = getTab(tabId);
   const ownerId = tabIdToOwnerId(tabId);
@@ -72,15 +71,13 @@ export const TabContextMenu = ({
           <button
             onClick={() => {
               if (canDisconenct && tab?.taskData?.chain) {
-                ApiController.destroyAll(ownerId);
-                closeMenu();
+                destroyAllApiInstances(ownerId);
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);
                 // Update tab task.
                 setTabActiveTask(tabId, 'chainBrowser');
-
-                closeMenu();
               }
+              closeMenu();
             }}
           ></button>
           <div className="inner">

@@ -1,9 +1,16 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { createContext, useContext, useRef, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import type { ApiIndexerContextInterface, ApiIndexes, ApiIndex } from './types';
 import { defaultApiIndexerContext } from './defaults';
+import type { OwnerId } from 'types';
 
 export const ApiIndexer = createContext<ApiIndexerContextInterface>(
   defaultApiIndexerContext
@@ -12,48 +19,69 @@ export const ApiIndexer = createContext<ApiIndexerContextInterface>(
 export const useApiIndexer = () => useContext(ApiIndexer);
 
 export const ApiIndexerProvider = ({ children }: { children: ReactNode }) => {
-  // Store the api indexes at which to access apis managed by the global chain space. Keyed by tab.
-  const apiIndexesRef = useRef<ApiIndexes>({});
+  // Store active api indexes and labels, keyed by tab owner id.
+  const [apiIndexes, setApiIndexesState] = useState<ApiIndexes>({});
+  const apiIndexesRef = useRef<ApiIndexes>(apiIndexes);
 
-  // Get all api indexes for a tab.
-  const getTabApiIndexes = (tabId: number) =>
-    apiIndexesRef.current[tabId] || [];
+  const setApiIndexes = (indexes: ApiIndexes) => {
+    apiIndexesRef.current = indexes;
+    setApiIndexesState(indexes);
+  };
 
-  // Get an api index for a tab by its label.
-  const getTabApiIndex = (tabId: number, label: string) =>
-    apiIndexesRef.current[tabId]?.find((index) => index.label === label);
+  // Get all api indexes for an owner.
+  const getTabApiIndexes = (ownerId: OwnerId) =>
+    apiIndexesRef.current[ownerId] || [];
+
+  // Get an api index for an owner by its label.
+  const getTabApiIndex = (ownerId: OwnerId, label: string | undefined) => {
+    const apiIndex = apiIndexesRef.current[ownerId]?.find(
+      (index) => index.label === label
+    );
+
+    if (!apiIndex) {
+      return undefined;
+    }
+
+    return {
+      ...apiIndex,
+      instanceId: `${ownerId}_${apiIndex.index}`,
+    };
+  };
 
   // Set an api index for a tab.
-  const setTabApiIndex = (tabId: number, index: ApiIndex) => {
+  const setTabApiIndex = (ownerId: OwnerId, index: ApiIndex) => {
     const updated = { ...apiIndexesRef.current };
-    if (updated[tabId]) {
-      updated[tabId].push(index);
+    if (updated[ownerId]) {
+      updated[ownerId].push(index);
     } else {
-      updated[tabId] = [index];
+      updated[ownerId] = [index];
     }
-    apiIndexesRef.current = updated;
+    setApiIndexes(updated);
   };
 
-  // Remove an api index for a tab, given its label.
-  const removeTabApiIndex = (tabId: number, label: string) => {
+  // Remove an api index for an owner.
+  const removeTabApiIndex = (ownerId: OwnerId, index: number) => {
     const updated = { ...apiIndexesRef.current };
-    updated[tabId] = updated[tabId]?.filter((index) => index.label !== label);
-    if (updated[tabId]?.length === 0) {
-      delete updated[tabId];
+    updated[ownerId] =
+      updated[ownerId]?.filter((apiIndex) => apiIndex.index !== index) || [];
+
+    if (updated[ownerId]?.length === 0) {
+      delete updated[ownerId];
     }
-    apiIndexesRef.current = updated;
+    setApiIndexes(updated);
   };
 
-  // Remove api indexes for a tab.
-  const removeTabApiIndexes = (tabId: number) => {
+  // Remove api indexes for an owner.
+  const removeTabApiIndexes = (ownerId: OwnerId) => {
     const updated = { ...apiIndexesRef.current };
-    delete updated[tabId];
-    apiIndexesRef.current = updated;
+    delete updated[ownerId];
+    setApiIndexes(updated);
   };
 
   return (
     <ApiIndexer.Provider
       value={{
+        apiIndexes,
         getTabApiIndexes,
         getTabApiIndex,
         setTabApiIndex,

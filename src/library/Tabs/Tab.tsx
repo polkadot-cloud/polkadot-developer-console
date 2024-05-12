@@ -16,7 +16,6 @@ import {
   DEFAULT_TAB_WIDTH_PX,
   TAB_TRANSITION_DURATION_MS,
 } from 'contexts/Tabs/defaults';
-import { useApi } from 'contexts/Api';
 import { ConnectionIcon } from './ConectionIcon';
 import * as localTabs from 'contexts/Tabs/Local';
 import { useChainUi } from 'contexts/ChainUi';
@@ -24,8 +23,6 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { useChainBrowser } from 'contexts/ChainBrowser';
-import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -42,13 +39,10 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     incrementRedirectCounter,
   } = useTabs();
   const { tabId } = useActiveTab();
-  const { getApiStatus } = useApi();
   const { openMenu, closeMenu } = useMenu();
   const { destroyTabChainUi } = useChainUi();
   const { destroyTabParaSetup } = useParaSetup();
-  const { destroyControllers } = useChainBrowser();
-  const { destroyChainSpaceEnvIndex } = useChainSpaceEnv();
-  const { removeTabApiIndexes, getTabApiIndexes } = useApiIndexer();
+  const { destroyAllApiInstances, getApiStatus } = useChainSpaceEnv();
 
   const {
     listeners,
@@ -173,22 +167,11 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
               // Destroy chainUi state associated with this tab.
               destroyTabChainUi(id);
 
-              // Destroy chain space apis and state associated with this tab.
-              const chainSpaceIndexes = getTabApiIndexes(id);
-              if (chainSpaceIndexes.length) {
-                for (const chainSpaceIndex of chainSpaceIndexes) {
-                  destroyChainSpaceEnvIndex(chainSpaceIndex.index);
-                }
-              }
+              // Destroy all apis and api state associated with this tab.
+              destroyAllApiInstances(tabIdToOwnerId(id));
 
               // Destroy Parachain state associated with this tab.
               destroyTabParaSetup(id);
-
-              // Destroy controllers associated with the tab.
-              destroyControllers(id);
-
-              // Remove api instances from tab chain space indexes.
-              removeTabApiIndexes(id);
 
               // Destroy tab instance.
               destroyTab(index, id);

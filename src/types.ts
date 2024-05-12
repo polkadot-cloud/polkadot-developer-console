@@ -32,8 +32,11 @@ declare global {
   }
 }
 
-// Over-arching type for an owner id. Used for owners of instances and chain spaces.
+// Over-arching type for an owner id. Used for owners of api instances.
 export type OwnerId = string;
+
+// Over-arching type for a chainspace id. Used for chain space keys.
+export type ChainSpaceId = string;
 
 export interface ComponentBase {
   children?: ReactNode;

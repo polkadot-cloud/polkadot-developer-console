@@ -5,14 +5,13 @@
 import type { ChainBrowserContextInterface } from './types';
 
 export const defaultChainBrowserContext: ChainBrowserContextInterface = {
+  connectChainBrowser: (ownerId, chainId, endpoint) => {},
   getStoredChain: (tabId) => undefined,
   updateSs58: (id, ss58) => {},
   updateUnits: (id, units) => {},
   updateUnit: (id, unit) => {},
-  connectChainBrowser: (tabId, chainId, endpoint) => {},
   instantiateApiFromTab: (tabId) => {},
   forgetTabChain: (tabId) => {},
-  destroyControllers: (tabId) => {},
 };
 
 export const defaultCustomEndpointChainMeta = {

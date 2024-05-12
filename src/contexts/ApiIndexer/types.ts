@@ -1,15 +1,26 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
+import type { OwnerId } from 'types';
+
 export interface ApiIndexerContextInterface {
-  getTabApiIndexes: (tabId: number) => ApiIndex[];
-  getTabApiIndex: (tabId: number, label: string) => ApiIndex | undefined;
-  setTabApiIndex: (tabId: number, index: ApiIndex) => void;
-  removeTabApiIndexes: (tabId: number) => void;
-  removeTabApiIndex: (tabId: number, label: string) => void;
+  apiIndexes: ApiIndexes;
+  getTabApiIndexes: (ownerId: OwnerId) => ApiIndex[];
+  getTabApiIndex: (
+    ownerId: OwnerId,
+    label: string | undefined
+  ) =>
+    | (ApiIndex & {
+        instanceId: string;
+      })
+    | undefined;
+  setTabApiIndex: (ownerId: OwnerId, index: ApiIndex) => void;
+  removeTabApiIndexes: (ownerId: OwnerId) => void;
+  removeTabApiIndex: (ownerId: OwnerId, index: number) => void;
 }
 
-export type ApiIndexes = Record<number, ApiIndex[]>;
+// A mapping of tab owner ids to their api indexes.
+export type ApiIndexes = Record<OwnerId, ApiIndex[]>;
 
 export interface ApiIndex {
   index: number;

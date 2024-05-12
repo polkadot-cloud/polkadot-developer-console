@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useApi } from 'contexts/Api';
 import { useMemo } from 'react';
 import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
@@ -15,9 +14,10 @@ import { EncodedDetails } from './EncodedDetails';
 import { InputForm } from './InputForm';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const StorageItems = () => {
-  const { getChainSpec } = useApi();
+  const { getChainSpec } = useChainSpaceEnv();
   const { tabId, apiInstanceId } = useActiveTab();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 

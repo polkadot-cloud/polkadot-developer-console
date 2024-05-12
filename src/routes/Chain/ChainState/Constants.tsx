@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { InputFormWrapper } from '../Wrappers';
-import { useApi } from 'contexts/Api';
 import { useMemo } from 'react';
 import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
@@ -19,10 +18,11 @@ import { ChainStateController } from 'controllers/ChainState';
 import { useChainState } from 'contexts/ChainState';
 import { Results } from './Results';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const Constants = () => {
-  const { getChainSpec } = useApi();
   const { setConstant } = useChainState();
+  const { getChainSpec } = useChainSpaceEnv();
   const { tabId, apiInstanceId } = useActiveTab();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 

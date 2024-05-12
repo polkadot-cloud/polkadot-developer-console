@@ -12,7 +12,6 @@ import { TagsProvider } from 'contexts/Tags';
 import { ChainFilterProvider } from 'contexts/ChainFilter';
 import { SettingsProvider } from 'contexts/Settings';
 import { TooltipProvider } from 'contexts/Tooltip';
-import { ApiProvider } from 'contexts/Api';
 import { ChainUiProvider } from 'contexts/ChainUi';
 import { ParaSetupProvider } from 'contexts/ParaSetup';
 import { ConnectProvider } from 'contexts/Connect';
@@ -46,6 +45,7 @@ export const Providers = () => {
     MenuProvider,
     TooltipProvider,
     ConnectProvider,
+    ChainUiProvider,
 
     // Account related providers.
     ExtensionsProvider,
@@ -54,15 +54,13 @@ export const Providers = () => {
     ImportedAccountsProvider,
 
     // Chain space environment and api indexer.
-    ChainSpaceEnvProvider,
     ApiIndexerProvider,
+    ChainSpaceEnvProvider,
 
     // Task: `chainBrowser` related providers.
     ChainBrowserProvider,
     ChainFilterProvider,
-    ChainUiProvider,
     ChainStateProvider,
-    ApiProvider,
     TabAccountsProvider,
 
     // Task: `parachainSetup` related providers.
