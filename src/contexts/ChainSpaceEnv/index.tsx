@@ -25,6 +25,8 @@ import { useGlobalChainSpace } from 'contexts/GlobalChainSpace';
 import type { ChainId } from 'config/networks';
 import type { ActiveBalancesProps } from 'hooks/useActiveBalances/types';
 import { ApiController } from 'controllers/Api';
+import { BlockNumber } from 'model/BlockNumber';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
   defaultChainSpaceEnvContext
@@ -33,6 +35,7 @@ export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
 export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
 export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
+  const { setTabApiIndex } = useApiIndexer();
   const { getAccounts } = useImportedAccounts();
   const { globalChainSpace } = useGlobalChainSpace();
 
@@ -71,20 +74,27 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     return ApiController.instances[globalChainSpace.ownerId]?.[instanceIndex];
   };
 
-  // Destroy a chain api instance.
+  // Destroy an api instance.
   const destroyChainApi = (index: number) => {
     const instanceIndex = apiIndexes[index];
     ApiController.destroy(globalChainSpace.ownerId, instanceIndex);
   };
 
-  // Get an api status for a chain instance by index.
+  // Get an api status for an instance by index.
   const getApiStatusByIndex = (index: number | undefined) => {
     if (index === undefined) {
       return 'disconnected';
     }
-
     const instanceId = `${globalChainSpace?.ownerId}_${index}`;
     return apiStatusesRef.current[instanceId] || 'disconnected';
+  };
+
+  // Gets whether an api is active (not disconnected or undefined).
+  const getApiActiveByIndex = (index: number | undefined): boolean => {
+    const status = getApiStatusByIndex(index);
+    return (
+      status === 'ready' || status === 'connected' || status === 'connecting'
+    );
   };
 
   // Get chain spec for a chain instance by index.
@@ -115,11 +125,22 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
 
   // Handle connecting to an api instance.
   const handleConnectApi = async (
-    index: number,
+    tabId: number,
+    label: string,
     chainId: ChainId,
     provider: string
   ) => {
+    // Register a new chain space index for this instance.
+    const index = getNextApiIndex();
+    setTabApiIndex(tabId, {
+      index,
+      label,
+    });
+
+    // Register a new api instance index for this chain space index.
     setApiIndex(index, ApiController.getNextIndex(globalChainSpace.ownerId));
+
+    // Set api status to connecting.
     setApiStatus(`${globalChainSpace.ownerId}_${index}`, 'connecting');
 
     // Add api to chain space instance.
@@ -158,6 +179,13 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
           case 'ready':
             setApiStatus(instanceId, 'ready');
 
+            // Initialise block number subscription.
+            SubscriptionsController.set(
+              instanceId,
+              'blockNumber',
+              new BlockNumber(ownerId, instanceId, chainId)
+            );
+
             // Initialise account balance subscriptions.
             SubscriptionsController.set(
               instanceId,
@@ -175,6 +203,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
             handleDisconnect(instanceId);
             break;
           case 'error':
+            // TODO: Check how this behaves with invalid custom websocket.
             handleDisconnect(instanceId);
             break;
           case 'destroyed':
@@ -192,9 +221,10 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
       if (ownerId === globalChainSpace?.ownerId) {
         const updated = { ...chainSpecsRef.current };
         updated[instanceId] = { ...spec, consts };
-
         setChainSpecs(updated);
       }
+
+      // TODO: Find a way to fetch pallet versions once chainSpec is updated.
     }
   };
 
@@ -259,13 +289,19 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   return (
     <ChainSpaceEnv.Provider
       value={{
-        activeBalances,
-        handleConnectApi,
-        getChainApi,
-        destroyChainApi,
+        // Getters
         getApiStatusByIndex,
+        getApiActiveByIndex,
         getChainSpecByIndex,
         getNextApiIndex,
+        getChainApi,
+
+        // Balances
+        activeBalances,
+
+        // Connect and Disconnect
+        handleConnectApi,
+        destroyChainApi,
         destroyChainSpaceEnvIndex,
       }}
     >

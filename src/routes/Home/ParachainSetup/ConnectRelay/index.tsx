@@ -27,17 +27,16 @@ export const ConnectRelay = () => {
     getChainSpecByIndex,
     destroyChainApi,
     handleConnectApi,
-    getNextApiIndex,
   } = useChainSpaceEnv();
-  const { setTabActiveTask } = useTabs();
   const {
     getSelectedRelayChain,
     setSelectedRelayChain,
     setConfirmedRelayChain,
   } = useParaSetup();
   const { tabId } = useActiveTab();
+  const { setTabActiveTask } = useTabs();
   const { openMenu, closeMenu } = useMenu();
-  const { getTabApiIndex, setTabApiIndex, removeTabApiIndex } = useApiIndexer();
+  const { getTabApiIndex, removeTabApiIndex } = useApiIndexer();
 
   const selectedRelayChain = getSelectedRelayChain(tabId);
 
@@ -111,12 +110,6 @@ export const ConnectRelay = () => {
                   chainId={selectedRelayChain}
                   onSelect={async (provider) => {
                     closeMenu();
-                    // Get and register the chain space index.
-                    const index = getNextApiIndex();
-                    setTabApiIndex(tabId, {
-                      index,
-                      label: 'parachainSetup:relay',
-                    });
 
                     // Store the confirmed relay chain to state.
                     setConfirmedRelayChain(tabId, selectedRelayChain);
@@ -125,7 +118,12 @@ export const ConnectRelay = () => {
                     setTabActiveTask(tabId, 'parachainSetup');
 
                     // Connect to chain space api.
-                    await handleConnectApi(index, selectedRelayChain, provider);
+                    await handleConnectApi(
+                      tabId,
+                      'parachainSetup:relay',
+                      selectedRelayChain,
+                      provider
+                    );
                   }}
                 />
               );
