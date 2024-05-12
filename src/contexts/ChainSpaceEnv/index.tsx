@@ -237,7 +237,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     const index = getIndexFromInstanceId(instanceId);
 
     // Destory api instances associated with this owner.
-    ApiController.destroyAll(ownerId);
+    ApiController.destroy(ownerId, index);
 
     // Remove api instance index from indexer.
     removeTabApiIndex(ownerId, index);
