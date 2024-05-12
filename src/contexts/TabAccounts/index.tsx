@@ -5,12 +5,14 @@ import type { ReactNode } from 'react';
 import { createContext, useContext } from 'react';
 import type { TabAccountsContextInterface } from './types';
 import { defaultTabAccountsContext } from './defaults';
-import { useActiveTab } from 'contexts/ActiveTab';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useActiveBalances } from 'hooks/useActiveBalances';
 import type { MaybeAddress } from '@w3ux/react-connect-kit/types';
-import type BigNumber from 'bignumber.js';
+import BigNumber from 'bignumber.js';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useActiveTab } from 'contexts/ActiveTab';
+import { defaultBalance, defaultLocks } from 'hooks/useActiveBalances/defaults';
 
 export const TabAccounts = createContext<TabAccountsContextInterface>(
   defaultTabAccountsContext
@@ -19,9 +21,12 @@ export const TabAccounts = createContext<TabAccountsContextInterface>(
 export const useTabAccounts = () => useContext(TabAccounts);
 
 export const TabAccountsProvider = ({ children }: { children: ReactNode }) => {
-  const { apiInstanceId } = useActiveTab();
+  const { ownerId } = useActiveTab();
+  const { getTabApiIndex } = useApiIndexer();
   const { getAccounts } = useImportedAccounts();
   const { getApiStatus, getChainSpec } = useChainSpaceEnv();
+
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
 
   const apiStatus = getApiStatus(apiInstanceId);
   const chainSpec = getChainSpec(apiInstanceId);
@@ -33,29 +38,38 @@ export const TabAccountsProvider = ({ children }: { children: ReactNode }) => {
       : [];
 
   // Instance config to be provided to active balances.
-  const activeBalanceInstance = {
-    [apiInstanceId]: {
-      accounts: accounts.map(({ address }) => address),
-      apiStatus,
-    },
-  };
+  const activeBalanceInstance = apiInstanceId
+    ? {
+        [apiInstanceId]: {
+          accounts: accounts.map(({ address }) => address),
+          apiStatus,
+        },
+      }
+    : {};
 
   // Get tab account balances and listen for updates.
   const activeBalances = useActiveBalances(activeBalanceInstance);
 
   // Get balances from `activeBalances` at this api instance id.
   const getBalance = (address: MaybeAddress) =>
-    activeBalances.getBalance(apiInstanceId, address);
+    apiInstanceId
+      ? activeBalances.getBalance(apiInstanceId, address)
+      : defaultBalance;
 
   // Gets locks from `activeBalances` at this api instance id.
   const getLocks = (address: MaybeAddress) =>
-    activeBalances.getLocks(apiInstanceId, address);
+    apiInstanceId
+      ? activeBalances.getLocks(apiInstanceId, address)
+      : defaultLocks;
 
   // Gets edReserved from `activeBalances` at this api instance id.
   const getEdReserved = (
     address: MaybeAddress,
     existentialDeposit: BigNumber
-  ) => activeBalances.getEdReserved(apiInstanceId, address, existentialDeposit);
+  ) =>
+    apiInstanceId
+      ? activeBalances.getEdReserved(apiInstanceId, address, existentialDeposit)
+      : new BigNumber(0);
 
   return (
     <TabAccounts.Provider

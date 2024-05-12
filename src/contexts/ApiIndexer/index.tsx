@@ -8,7 +8,12 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import type { ApiIndexerContextInterface, ApiIndexes, ApiIndex } from './types';
+import type {
+  ApiIndexerContextInterface,
+  ApiIndexes,
+  ApiIndex,
+  ApiIndexLabel,
+} from './types';
 import { defaultApiIndexerContext } from './defaults';
 import type { OwnerId } from 'types';
 
@@ -33,7 +38,10 @@ export const ApiIndexerProvider = ({ children }: { children: ReactNode }) => {
     apiIndexesRef.current[ownerId] || [];
 
   // Get an api index for an owner by its label.
-  const getTabApiIndex = (ownerId: OwnerId, label: string | undefined) => {
+  const getTabApiIndex = (
+    ownerId: OwnerId,
+    label: ApiIndexLabel | undefined
+  ) => {
     const apiIndex = apiIndexesRef.current[ownerId]?.find(
       (index) => index.label === label
     );

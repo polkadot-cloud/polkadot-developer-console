@@ -30,7 +30,7 @@ export const Account = ({
   const edReserved = BigNumber.max(existentialDeposit.minus(maxLock), 0);
 
   // Free balance with locks and reserves not deducted.
-  const balanceFree = balance?.free || new BigNumber(0);
+  const balanceFree = balance.free || new BigNumber(0);
 
   // Free balance with locks and reserves deducted.
   const freePlanck = BigNumber.max(

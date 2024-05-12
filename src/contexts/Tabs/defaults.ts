@@ -76,7 +76,7 @@ export const defaultTabs: Tabs = [
         id: 'kusama',
         endpoint: 'wss://rpc.ibp.network/kusama',
         ss58: 2,
-        units: 10,
+        units: 12,
         unit: 'KSM',
         api: {
           instanceIndex: 0,
@@ -100,7 +100,7 @@ export const defaultTabs: Tabs = [
         id: 'rococo',
         endpoint: 'wss://rococo-rpc.polkadot.io',
         ss58: 0,
-        units: 10,
+        units: 12,
         unit: 'ROC',
         api: {
           instanceIndex: 0,

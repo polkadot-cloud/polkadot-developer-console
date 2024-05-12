@@ -3,12 +3,15 @@
 
 import type { OwnerId } from 'types';
 
+// The currently accepted api index labels.
+export type ApiIndexLabel = 'chainBrowser' | 'parachainSetup:relay';
+
 export interface ApiIndexerContextInterface {
   apiIndexes: ApiIndexes;
   getTabApiIndexes: (ownerId: OwnerId) => ApiIndex[];
   getTabApiIndex: (
     ownerId: OwnerId,
-    label: string | undefined
+    label: ApiIndexLabel | undefined
   ) =>
     | (ApiIndex & {
         instanceId: string;
@@ -24,5 +27,5 @@ export type ApiIndexes = Record<OwnerId, ApiIndex[]>;
 
 export interface ApiIndex {
   index: number;
-  label: string;
+  label: ApiIndexLabel;
 }

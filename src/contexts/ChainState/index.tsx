@@ -25,6 +25,7 @@ import type {
   StorageType,
 } from 'model/ChainState/types';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const ChainState = createContext<ChainStateContextInterface>(
   defaultChainStateContext
@@ -33,19 +34,26 @@ export const ChainState = createContext<ChainStateContextInterface>(
 export const useChainState = () => useContext(ChainState);
 
 export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
-  const { tabId, ownerId, apiInstanceId } = useActiveTab();
+  const { tabId, ownerId } = useActiveTab();
+  const { getTabApiIndex } = useApiIndexer();
+
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
 
   // The results of current chain state subscriptions.
   const [chainStateSubscriptions, setChainStateSubscriptions] =
     useState<ChainStateSubscriptions>(
-      ChainStateController.instances?.[apiInstanceId]?.subscriptions || {}
+      apiInstanceId
+        ? ChainStateController.instances?.[apiInstanceId]?.subscriptions || {}
+        : {}
     );
   const chainStateSubscriptionsRef = useRef(chainStateSubscriptions);
 
   // The results of current chain state constants.
   const [chainStateConstants, setChainStateConstants] =
     useState<ChainStateConstants>(
-      ChainStateController.instances?.[apiInstanceId]?.constants || {}
+      apiInstanceId
+        ? ChainStateController.instances?.[apiInstanceId]?.constants || {}
+        : {}
     );
 
   // Get a chain state subscription by key.
@@ -98,10 +106,13 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   // Remove a subscription from chain state.
   const removeChainStateItem = (type: StorageType, key: string) => {
+    if (!apiInstanceId) {
+      return;
+    }
     // Handle removal of chain state subscription.
     if (['storage', 'raw'].includes(type)) {
       // Remove key and unsubscribe from controller.
-      ChainStateController.instances?.[apiInstanceId].unsubscribeOne(key);
+      ChainStateController.instances?.[apiInstanceId]?.unsubscribeOne(key);
       // Remove key from context chain state.
       const updatedChainState = { ...chainStateSubscriptions };
       delete updatedChainState[key];
@@ -138,6 +149,9 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   // Get chain state on mount and selected tab change.
   useEffect(() => {
+    if (!apiInstanceId) {
+      return;
+    }
     setStateWithRef(
       ChainStateController.instances?.[apiInstanceId]?.subscriptions || {},
       setChainStateSubscriptions,

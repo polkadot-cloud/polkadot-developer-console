@@ -8,7 +8,6 @@ import {
   SettingsSubmitWrapper,
   SettingsToggleWrapper,
 } from 'routes/Settings/TabSettings/Wrappers';
-import { ApiController } from 'controllers/Api';
 import { useTabs } from 'contexts/Tabs';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { SubHeadingWrapper } from './Wrappers';
@@ -16,13 +15,16 @@ import { isDirectoryId } from 'config/networks/Utils';
 import { useChainBrowser } from 'contexts/ChainBrowser';
 import { ACTIVE_API_STATUSES } from 'model/Api/defaults';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const ManageTab = () => {
   const { renameTab } = useTabs();
-  const { getApiStatus } = useChainSpaceEnv();
-  const { tab, tabId, ownerId, apiInstanceId } = useActiveTab();
+  const { getTabApiIndex } = useApiIndexer();
+  const { tab, tabId, ownerId } = useActiveTab();
   const { updateSs58, updateUnits, updateUnit } = useChainBrowser();
+  const { getApiStatus, destroyAllApiInstances } = useChainSpaceEnv();
 
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
   const apiStatus = getApiStatus(apiInstanceId);
   const apiDisconnected = !ACTIVE_API_STATUSES.includes(apiStatus);
 
@@ -103,9 +105,7 @@ export const ManageTab = () => {
                       'Are you sure you want to disconnect this tab?'
                     )
                   ) {
-                    if (tab?.taskData?.chain) {
-                      ApiController.destroyAll(ownerId);
-                    }
+                    destroyAllApiInstances(ownerId);
                   }
                 }}
               >

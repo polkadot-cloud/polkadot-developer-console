@@ -11,6 +11,7 @@ import { PageWrapper } from 'library/PageContent/Wrappers';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useTabs } from 'contexts/Tabs';
+import { useApiIndexer } from 'contexts/ApiIndexer';
 
 // Renders a page and menu, with state controlling the active section of the page.
 export const PageWithMenu = ({
@@ -21,13 +22,15 @@ export const PageWithMenu = ({
 }: PageWithMenuProps) => {
   const routeConfig = routeProvider();
   const { getTabActiveTask } = useTabs();
+  const { tab, ownerId } = useActiveTab();
+  const { getTabApiIndex } = useApiIndexer();
   const { chainColorEnabled } = useSettings();
   const { getApiStatus } = useChainSpaceEnv();
-  const { tab, apiInstanceId } = useActiveTab();
 
   // Redirect when redirects are present in local storage.
   useRedirect({ route });
 
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
   const activeTask = tab?.id && getTabActiveTask(tab.id);
   const apiStatus = getApiStatus(apiInstanceId);
 

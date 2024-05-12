@@ -32,6 +32,7 @@ import type { OwnerId } from 'types';
 import { useChainUi } from 'contexts/ChainUi';
 import { useTabs } from 'contexts/Tabs';
 import { ownerIdToTabId } from 'contexts/Tabs/Utils';
+import type { ApiIndexLabel } from 'contexts/ApiIndexer/types';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
   defaultChainSpaceEnvContext
@@ -63,7 +64,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   const apiStatusesRef = useRef(apiStatuses);
 
   // Gets an api instance tab and label.
-  const getApiInstance = (ownerId: OwnerId, label: string) => {
+  const getApiInstance = (ownerId: OwnerId, label: ApiIndexLabel) => {
     const apiIndex = getTabApiIndex(ownerId, label);
     if (apiIndex !== undefined) {
       return ApiController.instances[ownerId]?.[apiIndex.index];
@@ -71,7 +72,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   };
 
   // Destroy an api instance given a tab and label.
-  const destroyApiInstance = (ownerId: OwnerId, label: string) => {
+  const destroyApiInstance = (ownerId: OwnerId, label: ApiIndexLabel) => {
     const apiIndex = getTabApiIndex(ownerId, label);
     if (apiIndex !== undefined) {
       // Destory the API instance.
@@ -118,7 +119,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   // Handle connecting to an api instance.
   const handleConnectApi = async (
     ownerId: OwnerId,
-    label: string,
+    label: ApiIndexLabel,
     chainId: ChainId,
     provider: string
   ) => {

@@ -50,7 +50,7 @@ export const NetworkDirectory: NetworkDirectory = {
     system: {
       chain: 'Kusama',
       ss58: 2,
-      units: 10,
+      units: 12,
       unit: 'KSM',
     },
     name: 'Kusama Relay Chain',
@@ -71,7 +71,7 @@ export const NetworkDirectory: NetworkDirectory = {
     system: {
       chain: 'Rococo',
       ss58: 0,
-      units: 10,
+      units: 12,
       unit: 'ROC',
     },
     name: 'Rococo Relay Chain',
@@ -85,7 +85,7 @@ export const NetworkDirectory: NetworkDirectory = {
     system: {
       chain: 'Westend',
       ss58: 42,
-      units: 10,
+      units: 12,
       unit: 'WND',
     },
     name: 'Westend Relay Chain',
