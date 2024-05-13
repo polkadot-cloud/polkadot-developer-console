@@ -244,7 +244,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Set an active task for a tab. NOTE: This function is called within event listeners, so tabsRef
   // is used to ensure the latest tabs config is used.
   const setTabActiveTask = (tabId: number, task: TabTask | null) => {
-    console.log('setTabActiveTask', tabId, task);
     const newTabs = tabsRef.current.map((tab) =>
       tab.id === tabId ? { ...tab, activeTask: task } : tab
     );
@@ -257,7 +256,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const currentTask = getTabActiveTask(tabId);
     const homePageIndex = currentTask ? TASK_HOME_PAGE_INDEXES[currentTask] : 0;
     local.setActivePage(tabId, 'default', homePageIndex);
-    console.log(homePageIndex);
     setTabActiveTask(tabId, null);
   };
 
