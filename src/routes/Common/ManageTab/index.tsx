@@ -13,32 +13,34 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { SubHeadingWrapper } from './Wrappers';
 import { isDirectoryId } from 'config/networks/Utils';
 import { useChainBrowser } from 'contexts/ChainBrowser';
-import { ACTIVE_API_STATUSES } from 'model/Api/defaults';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const ManageTab = () => {
-  const { renameTab } = useTabs();
-  const { getTabApiIndex } = useApiIndexer();
+  const { getTabApiIndexes } = useApiIndexer();
   const { tab, tabId, ownerId } = useActiveTab();
+  const { renameTab, getTabActiveTask } = useTabs();
+  const { destroyAllApiInstances } = useChainSpaceEnv();
   const { updateSs58, updateUnits, updateUnit } = useChainBrowser();
-  const { getApiStatus, destroyAllApiInstances } = useChainSpaceEnv();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
-  const apiStatus = getApiStatus(apiInstanceId);
-  const apiDisconnected = !ACTIVE_API_STATUSES.includes(apiStatus);
+  const activeTask = getTabActiveTask(tabId);
+  const apiInstances = getTabApiIndexes(ownerId);
 
   // Determine whether this is a custom endpoint. If it is, we want to allow the chain metadata to
-  // be updated.
-  const isDirectory = isDirectoryId(tab?.taskData?.chain?.id || '');
+  // be updated. Only used in `chainExplorer` task.
+  const isCustomChain =
+    tab?.taskData?.chain !== undefined &&
+    !isDirectoryId(tab.taskData.chain?.id || '');
 
   return (
     <>
       <SettingsHeaderWrapper>
         <h2>Manage Tab</h2>
-        <div>
-          <AutoConnect />
-        </div>
+        {activeTask === 'chainExplorer' && (
+          <div>
+            <AutoConnect />
+          </div>
+        )}
       </SettingsHeaderWrapper>
       <Input
         label="Rename Tab"
@@ -48,7 +50,7 @@ export const ManageTab = () => {
         }}
         initialValue={tab?.name || ''}
       />
-      {!isDirectory && !apiDisconnected && (
+      {isCustomChain && apiInstances.length && (
         <>
           <SubHeadingWrapper>Chain Metadata</SubHeadingWrapper>
 
@@ -87,12 +89,18 @@ export const ManageTab = () => {
         </>
       )}
 
-      {!apiDisconnected && (
+      {apiInstances.length && (
         <>
           <SettingsToggleWrapper>
             <div className="text">
               <h4>Disconnect</h4>
-              <h3>This tab is currently connected to an API instance.</h3>
+              <h3>
+                This tab is currently connected to{' '}
+                {apiInstances.length === 1
+                  ? 'an API instance'
+                  : `${apiInstances.length} API instances`}
+                .
+              </h3>
             </div>
           </SettingsToggleWrapper>
 

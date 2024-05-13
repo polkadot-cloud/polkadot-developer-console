@@ -21,9 +21,9 @@ export const getTabs = (): Tabs | undefined => {
         const autoConnect = tab?.taskData?.autoConnect || false;
         return {
           ...tab,
-          // If this tab is configured to auto-connect, set the active task to chainBrowser
+          // If this tab is configured to auto-connect, set the active task to chainExplorer
           // immediately. TODO: abstract this into a per-task integrity check.
-          activeTask: !autoConnect ? null : 'chainBrowser',
+          activeTask: !autoConnect ? null : 'chainExplorer',
           activePage: getActivePage(tab.id, 'default'),
         };
       });

@@ -22,7 +22,7 @@ export const Router = () => {
   // Gets the active task component for the tab, or the default component otherwise.
   const getActiveTaskComponent = () => {
     switch (tabActiveTask) {
-      case 'chainBrowser':
+      case 'chainExplorer':
         return Chain;
       case 'parachainSetup':
         return ParachainSetup;

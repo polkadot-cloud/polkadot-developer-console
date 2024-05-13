@@ -26,7 +26,7 @@ export const useInput = () => {
   const { getChainSpec } = useChainSpaceEnv();
   const { setInputArgAtKey, getInputArgsAtKey } = useChainUi();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const chainSpec = getChainSpec(apiInstanceId);
   const accounts = getAccounts(chainSpec);
 

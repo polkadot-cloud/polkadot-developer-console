@@ -60,7 +60,7 @@ export const Providers = () => {
     // Account formatting and balances provider.
     AccountsProvider,
 
-    // Task: `chainBrowser` related providers.
+    // Task: `chainExplorer` related providers.
     ChainBrowserProvider,
     ChainFilterProvider,
     ChainStateProvider,

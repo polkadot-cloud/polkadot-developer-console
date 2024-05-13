@@ -17,7 +17,7 @@ export const Raw = () => {
   const { getTabApiIndex } = useApiIndexer();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const chainUiSection = 'raw';
   const chainUi = getChainUi(tabId, chainUiSection);
 

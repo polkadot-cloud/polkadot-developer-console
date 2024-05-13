@@ -37,7 +37,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   const { tabId, ownerId } = useActiveTab();
   const { getTabApiIndex } = useApiIndexer();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
 
   // The results of current chain state subscriptions.
   const [chainStateSubscriptions, setChainStateSubscriptions] =

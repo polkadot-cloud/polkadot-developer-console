@@ -24,7 +24,7 @@ export const Account = ({
   const { getBalance, getLocks } = useAccounts();
 
   const { name, address } = account;
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
 
   const balance = getBalance(apiInstanceId, address);
   const { maxLock } = getLocks(apiInstanceId, address);

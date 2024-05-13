@@ -6,7 +6,7 @@ import type { ChainId } from 'config/networks';
 import type { Dispatch, SetStateAction } from 'react';
 
 // The tasks that developer console supports.
-export type TabTask = 'chainBrowser' | 'parachainSetup';
+export type TabTask = 'chainExplorer' | 'parachainSetup';
 
 export interface TabsContextInterface {
   tabs: Tabs;

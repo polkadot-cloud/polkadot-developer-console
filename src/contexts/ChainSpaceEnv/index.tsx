@@ -180,7 +180,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
       updated[instanceId] = { ...spec, consts };
       setChainSpecs(updated);
 
-      // NOTE: This is only used for `chainBrowser` task. Could be optimised.
+      // NOTE: This is only used for `chainExplorer` task. Could be optimised.
       fetchPalletVersions(
         ownerId,
         spec.metadata,
