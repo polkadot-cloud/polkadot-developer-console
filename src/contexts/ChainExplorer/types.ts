@@ -18,7 +18,7 @@ export interface ChainExplorerContextInterface {
   ) => void;
   instantiateApiFromTab: (tabId: number) => void;
   forgetTabChain: (tabId: number) => void;
-  chainExplorerTaskIntegrityChecks: (
+  chainExplorerIntegrityCheck: (
     tabId: number
   ) => IntegrityCheckedChainContextProps | false;
 }

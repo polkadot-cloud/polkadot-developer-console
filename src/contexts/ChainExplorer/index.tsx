@@ -196,7 +196,7 @@ export const ChainExplorerProvider = ({
   }, []);
 
   // Check that the correct state exists for chain explorer task to be active.
-  const chainExplorerTaskIntegrityChecks = (
+  const chainExplorerIntegrityCheck = (
     tabId: number
   ): IntegrityCheckedChainContextProps | false => {
     const ownerId = tabIdToOwnerId(tabId);
@@ -237,7 +237,7 @@ export const ChainExplorerProvider = ({
         forgetTabChain,
         connectChainExplorer,
         instantiateApiFromTab,
-        chainExplorerTaskIntegrityChecks,
+        chainExplorerIntegrityCheck,
       }}
     >
       {children}

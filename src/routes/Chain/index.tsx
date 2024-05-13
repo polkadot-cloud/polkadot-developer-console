@@ -25,7 +25,7 @@ export const useRouteSections = (): RouteSectionProvider => {
   const { ownerId } = useActiveTab();
   const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec } = useChainSpaceEnv();
-  const { chainExplorerTaskIntegrityChecks } = useChainExplorer();
+  const { chainExplorerIntegrityCheck } = useChainExplorer();
 
   const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const chainSpec = getChainSpec(apiInstanceId);
@@ -67,7 +67,7 @@ export const useRouteSections = (): RouteSectionProvider => {
     sections,
     pageWidth: 'wide',
     integrityCheck: {
-      fn: chainExplorerTaskIntegrityChecks,
+      fn: chainExplorerIntegrityCheck,
       Context: ChainContext,
       preloadWidth: 'wide',
       Preload,
