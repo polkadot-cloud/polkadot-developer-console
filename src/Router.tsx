@@ -18,13 +18,22 @@ export const Router = () => {
   // to that page if so.
   useSetActivePage();
 
+  // Gets the active task component for the tab, or the default component otherwise.
+  const getActiveTaskComponent = () => {
+    switch (tabActiveTask) {
+      case 'chainBrowser':
+        return Chain;
+      default:
+        return Default;
+    }
+  };
+
+  // Active task to be rendered as the default route.
+  const ActiveTask: () => JSX.Element = getActiveTaskComponent();
+
   return (
     <Routes>
-      <Route
-        key={`route_default`}
-        path={'/'}
-        element={tabActiveTask === 'chainBrowser' ? <Chain /> : <Default />}
-      />
+      <Route key={`route_default`} path={'/'} element={<ActiveTask />} />
       <Route key={`route_settings`} path={'/settings'} element={<Settings />} />
       {/* Fallback route to chain */}
       <Route key="route_fallback" path="*" element={<Navigate to="/" />} />
