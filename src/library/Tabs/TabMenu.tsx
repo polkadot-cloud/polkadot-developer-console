@@ -70,7 +70,7 @@ export const TabContextMenu = ({
         <li className={`${apiButtonInactive ? `` : ` inactive`}`}>
           <button
             onClick={() => {
-              if (canDisconenct && tab?.taskData?.chain) {
+              if (canDisconenct) {
                 destroyAllApiInstances(ownerId);
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);
