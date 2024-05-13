@@ -32,12 +32,12 @@ export const PageContent = ({
       // the integrity check is passed to the task Context to prevent child components from having
       // to check for undefined values and general data integrity tests.
       if (integrityCheck) {
-        const { Preload, Context, fn } = integrityCheck;
+        const { Preload, Context, fn, preloadWidth } = integrityCheck;
         const integrityCheckResult = fn(tabId);
 
         if (!integrityCheckResult) {
           Component = <Preload />;
-          width = 'wide';
+          width = preloadWidth;
         } else {
           Component = (
             <Context {...integrityCheckResult}>

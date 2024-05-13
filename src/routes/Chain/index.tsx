@@ -69,6 +69,7 @@ export const useRouteSections = (): RouteSectionProvider => {
     integrityCheck: {
       fn: chainExplorerTaskIntegrityChecks,
       Context: ChainContext,
+      preloadWidth: 'wide',
       Preload,
     },
   };

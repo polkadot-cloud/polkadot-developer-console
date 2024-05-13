@@ -20,9 +20,12 @@ export interface RouteSectionProvider {
   label: string;
   sections: PageSections;
   pageWidth: PageWidth;
-  integrityCheck?: {
-    fn: AnyFunction;
-    Context: FC<AnyJson>;
-    Preload: FC;
-  };
+  integrityCheck?: RouteIntegrityCheckProp;
+}
+
+export interface RouteIntegrityCheckProp {
+  fn: AnyFunction;
+  Context: FC<AnyJson>;
+  preloadWidth: PageWidth;
+  Preload: FC;
 }
