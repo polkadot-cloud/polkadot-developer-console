@@ -11,7 +11,7 @@ import { AccountContextMenu } from './AccountMenu';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import BigNumber from 'bignumber.js';
-import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useChain } from '../Provider';
 
 export const Account = ({
   account,
@@ -19,12 +19,11 @@ export const Account = ({
   existentialDeposit,
 }: AccountProps) => {
   const { openMenu } = useMenu();
-  const { tab, ownerId } = useActiveTab();
-  const { getTabApiIndex } = useApiIndexer();
+  const { tab } = useActiveTab();
+  const { apiInstanceId } = useChain();
   const { getBalance, getLocks } = useAccounts();
 
   const { name, address } = account;
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
 
   const balance = getBalance(apiInstanceId, address);
   const { maxLock } = getLocks(apiInstanceId, address);

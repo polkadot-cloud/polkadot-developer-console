@@ -12,6 +12,7 @@ export const defaultChainExplorerContext: ChainExplorerContextInterface = {
   updateUnit: (id, unit) => {},
   instantiateApiFromTab: (tabId) => {},
   forgetTabChain: (tabId) => {},
+  chainExplorerTaskIntegrityChecks: (tabId) => false,
 };
 
 export const defaultCustomEndpointChainMeta = {

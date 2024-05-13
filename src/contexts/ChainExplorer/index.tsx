@@ -17,6 +17,8 @@ import { useSettings } from 'contexts/Settings';
 import * as local from 'contexts/Tabs/Local';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
+import { useApiIndexer } from 'contexts/ApiIndexer';
+import type { IntegrityCheckedChainContextProps } from 'routes/Chain/Provider/types';
 
 export const ChainExplorer = createContext<ChainExplorerContextInterface>(
   defaultChainExplorerContext
@@ -30,6 +32,7 @@ export const ChainExplorerProvider = ({
   children: ReactNode;
 }) => {
   const { autoTabNaming } = useSettings();
+  const { getTabApiIndex } = useApiIndexer();
   const { handleConnectApi } = useChainSpaceEnv();
   const {
     tabs,
@@ -192,6 +195,31 @@ export const ChainExplorerProvider = ({
     });
   }, []);
 
+  // Check that the correct state exists for chain explorer task to be active.
+  const chainExplorerTaskIntegrityChecks = (
+    tabId: number
+  ): IntegrityCheckedChainContextProps | false => {
+    const ownerId = tabIdToOwnerId(tabId);
+    const taskData = getTabTaskData(tabId);
+    const chain = taskData?.chain;
+
+    // Ensure that tab `taskData` contains a `chain` object.
+    if (!chain) {
+      return false;
+    }
+
+    // Ensure that the api indexer has an active index for the `chainExplorer` task for this tab.
+    const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
+    if (!apiInstanceId) {
+      return false;
+    }
+
+    return {
+      chain,
+      apiInstanceId,
+    };
+  };
+
   return (
     <ChainExplorer.Provider
       value={{
@@ -199,9 +227,10 @@ export const ChainExplorerProvider = ({
         updateSs58,
         updateUnits,
         updateUnit,
+        forgetTabChain,
         connectChainExplorer,
         instantiateApiFromTab,
-        forgetTabChain,
+        chainExplorerTaskIntegrityChecks,
       }}
     >
       {children}

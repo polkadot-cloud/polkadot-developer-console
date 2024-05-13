@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ChainId, NetworkDirectoryItem } from 'config/networks';
+import type { IntegrityCheckedChainContextProps } from 'routes/Chain/Provider/types';
 
 export interface ChainExplorerContextInterface {
   getStoredChain: (
@@ -17,4 +18,7 @@ export interface ChainExplorerContextInterface {
   ) => void;
   instantiateApiFromTab: (tabId: number) => void;
   forgetTabChain: (tabId: number) => void;
+  chainExplorerTaskIntegrityChecks: (
+    tabId: number
+  ) => IntegrityCheckedChainContextProps | false;
 }
