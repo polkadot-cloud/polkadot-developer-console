@@ -34,7 +34,7 @@ export const ChainListWrapper = styled.div`
 
   > h4 {
     color: var(--text-color-secondary);
-    margin-top: 0.75rem;
+    margin-top: 1rem;
     display: flex;
     align-items: center;
     padding-left: 0.25rem;

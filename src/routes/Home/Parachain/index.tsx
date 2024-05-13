@@ -41,18 +41,38 @@ export const Parachain = () => {
     );
   };
 
+  const mainChains = relayChains.filter(([key]) =>
+    ['polkadot', 'kusama'].includes(key)
+  );
+
+  const testChains = relayChains.filter(([key]) =>
+    ['westend', 'rococo'].includes(key)
+  );
+
   return (
     <HomePageWrapper>
       <h2>Parachain Setup</h2>
       <h3 className="subtitle">
-        Reserve a Para ID and register your parachain.
+        Select a Relay Chain to reserve a Para ID and register your parachain.
       </h3>
 
       <ChainListWrapper>
         <Separator />
-        <h4>Start by Choosing Relay Chain:</h4>
 
-        {relayChains.map(([key, { name }]) => (
+        <h4>Main Networks</h4>
+
+        {mainChains.map(([key, { name }]) => (
+          <ChainItem
+            onSelect={handleConnect}
+            key={`chain_index_${key}`}
+            chainId={key as DirectoryId}
+            name={name}
+          />
+        ))}
+
+        <h4>Test Networks</h4>
+
+        {testChains.map(([key, { name }]) => (
           <ChainItem
             onSelect={handleConnect}
             key={`chain_index_${key}`}
