@@ -1,7 +1,6 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { Select } from 'library/Inputs/Select';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
@@ -13,14 +12,13 @@ import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { useTabs } from 'contexts/Tabs';
-import { ACTIVE_API_STATUSES } from 'model/Api/defaults';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const ConnectRelay = () => {
-  const { getSelectedRelayChain, setSelectedRelayChain } = useParaSetup();
   const { setTabActiveTask } = useTabs();
   const { tabId, ownerId } = useActiveTab();
   const { getTabApiIndex } = useApiIndexer();
+  const { getSelectedRelayChain } = useParaSetup();
   const { getApiStatus, getChainSpec, destroyAllApiInstances } =
     useChainSpaceEnv();
 
@@ -40,11 +38,10 @@ export const ConnectRelay = () => {
     ([, chain]) => chain.isRelayChain
   );
 
-  // Get the chain names from the relay chains for select input.
-  const values = relayChains.map(([, chain]) => chain.name);
-
   // Get chain icons dervied from relay chain keys.
-  const icons = relayChains.map(([chainId]) => chainId);
+  const icon = relayChains
+    .map(([chainId]) => chainId)
+    .filter((chainId) => chainId === selectedRelayChain)[0];
 
   // Get the chain name of the currently select relay chain.
   const relayName =
@@ -68,22 +65,17 @@ export const ConnectRelay = () => {
 
   return (
     <FormWrapper>
-      <h3>Connect to the Relay Chain you wish to secure blocks with.</h3>
+      <h3>Selected Relay Chain:</h3>
 
       <section>
         <Select
-          values={values}
-          icons={icons}
+          values={[relayName]}
+          icons={[icon]}
           value={relayName}
-          onChange={(val) => {
-            const chainId = relayChains.find(
-              ([, chain]) => chain.name === val
-            )?.[0] as ChainId;
-            if (chainId !== undefined) {
-              setSelectedRelayChain(tabId, chainId);
-            }
+          onChange={() => {
+            /* Do nothing: permanently disabled. */
           }}
-          disabled={ACTIVE_API_STATUSES.includes(apiStatus)}
+          disabled={true}
         />
       </section>
       <section>
