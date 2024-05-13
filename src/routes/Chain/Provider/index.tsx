@@ -11,7 +11,7 @@ export const ChainProvider = createContext<IntegrityCheckedChainContext>(
 
 export const useChain = () => useContext(ChainProvider);
 
-// Post-integrity checks provider for chain explorer tasks.
+// Post-integrity checks provider for chain explorer task.
 export const ChainContext = ({ children, ...rest }: ChainContextProps) => (
   <ChainProvider.Provider value={rest}>{children}</ChainProvider.Provider>
 );

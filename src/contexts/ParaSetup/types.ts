@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ChainId } from 'config/networks';
+import type { IntegrityCheckedParachainContext } from 'routes/ParachainSetup/Provider/types';
 
 export interface ParaSetupContextInterface {
   getActiveStep: (tabId: number) => SetupStep;
@@ -9,6 +10,9 @@ export interface ParaSetupContextInterface {
   getSelectedRelayChain: (tabId: number) => ChainId | undefined;
   setSelectedRelayChain: (tabId: number, chainId: ChainId) => void;
   destroyTabParaSetup: (tabId: number) => void;
+  setupParachainIntegrityCheck: (
+    tabId: number
+  ) => IntegrityCheckedParachainContext | false;
 }
 
 export type SetupStep =

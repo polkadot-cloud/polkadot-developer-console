@@ -3,6 +3,7 @@
 
 import type { TabChainData } from 'contexts/Tabs/types';
 import type { IntegrityCheckedChainContext } from './types';
+import { dummyChainSpec } from 'contexts/ChainSpaceEnv/defaults';
 
 // NOTE: Only dummy values to keep the type checker happy. They are over-written by the
 // initial context values upon initialisation.
@@ -15,26 +16,6 @@ export const dummyChain: TabChainData = {
   api: {
     instanceIndex: 0,
   },
-};
-
-// NOTE: Only dummy values to keep the type checker happy. They are over-written by the
-// initial context values upon initialisation.
-export const dummyChainSpec = {
-  chain: '',
-  version: {
-    apis: {},
-    authoringVersion: 0,
-    implName: '',
-    implVersion: 0,
-    specName: '',
-    specVersion: 0,
-    stateVersion: 0,
-    transactionVersion: 0,
-  },
-  ss58Prefix: 0,
-  magicNumber: 0,
-  metadata: {},
-  consts: {},
 };
 
 export const defaultChainContextInterface: IntegrityCheckedChainContext = {

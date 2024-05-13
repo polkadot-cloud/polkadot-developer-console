@@ -11,6 +11,10 @@ import type {
 } from './types';
 import { defaultParaSetupContext } from './defaults';
 import type { ChainId } from 'config/networks';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useApiIndexer } from 'contexts/ApiIndexer';
+import type { IntegrityCheckedParachainContext } from 'routes/ParachainSetup/Provider/types';
 
 export const ParaSetupContext = createContext<ParaSetupContextInterface>(
   defaultParaSetupContext
@@ -19,6 +23,9 @@ export const ParaSetupContext = createContext<ParaSetupContextInterface>(
 export const useParaSetup = () => useContext(ParaSetupContext);
 
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
+  const { getTabApiIndex } = useApiIndexer();
+  const { getChainSpec } = useChainSpaceEnv();
+
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
 
@@ -60,6 +67,34 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     setSelectedRelayChains(updatedChains);
   };
 
+  // Check that the correct state exists for parachain setup task to be active.
+  const setupParachainIntegrityCheck = (
+    tabId: number
+  ): IntegrityCheckedParachainContext | false => {
+    const ownerId = tabIdToOwnerId(tabId);
+
+    // Ensure that the api indexer has an active index for the `parachainSetup:relay` instance for
+    // this tab.
+    const apiInstanceId = getTabApiIndex(
+      ownerId,
+      'parachainSetup:relay'
+    )?.instanceId;
+    if (!apiInstanceId) {
+      return false;
+    }
+
+    // Ensure that there is a chainSpec for the chain.
+    const chainSpec = getChainSpec(apiInstanceId);
+    if (!chainSpec) {
+      return false;
+    }
+
+    return {
+      chainSpec,
+      apiInstanceId,
+    };
+  };
+
   return (
     <ParaSetupContext.Provider
       value={{
@@ -68,6 +103,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
         getSelectedRelayChain,
         setSelectedRelayChain,
         destroyTabParaSetup,
+        setupParachainIntegrityCheck,
       }}
     >
       {children}
