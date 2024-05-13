@@ -42,7 +42,7 @@ export interface APIChainSpec {
   version: APIChainSpecVersion;
   ss58Prefix: number;
   magicNumber: number;
-  metadata: MetadataVersion;
+  metadata: MetadataVersion | AnyJson; // NOTE: This could be improved, but no significant impact on the app.
   consts: AnyJson;
 }
 
