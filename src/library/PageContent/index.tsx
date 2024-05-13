@@ -4,45 +4,58 @@
 import { PageContentWrapper } from './Wrappers';
 import type { PageProps } from 'routes/Common/PageWithMenu/types';
 import { ManageTab } from 'routes/Common/ManageTab';
-import { Directory } from 'routes/Home/Connect/Directory';
 import { useActiveTab } from 'contexts/ActiveTab';
+import type { ReactNode } from 'react';
 
-export const PageContent = ({ sections, pageWidth }: PageProps) => {
-  const { tab } = useActiveTab();
+export const PageContent = ({
+  sections,
+  pageWidth,
+  integrityCheck,
+}: PageProps) => {
+  const { tab, tabId } = useActiveTab();
 
   const activePage = tab?.activePage || 0;
 
-  let Component;
+  let Component: ReactNode;
   let width;
 
   // NOTE: page section 9 is a reserved id for `ManageTab`.
-  if (activePage === 9) {
-    Component = ManageTab;
-    width = 'thin';
-  } else {
+  if (activePage !== 9) {
     // Attempt to get the component and width from the sections object.
-    Component = sections?.[activePage]?.Component;
+    const ActiveComponent = sections?.[activePage]?.Component;
     width = sections?.[activePage]?.pageWidth || pageWidth;
 
-    // If no component was found, attempt to get the first section of the active page.
-    if (!Component) {
-      Component = sections?.[0]?.Component;
-      width = sections?.[0]?.pageWidth || pageWidth;
+    // If component exists, continue to process any integrity checks, or just render the component
+    // otherwise.
+    if (ActiveComponent !== undefined) {
+      // The provided component is only rendered if the task integrity check passes. The result of
+      // the integrity check is passed to the task Context to prevent child components from having
+      // to check for undefined values and general data integrity tests.
+      if (integrityCheck) {
+        const { Preload, Context, fn } = integrityCheck;
+        const integrityCheckResult = fn(tabId);
+
+        if (!integrityCheckResult) {
+          Component = <Preload />;
+          width = 'wide';
+        } else {
+          Component = (
+            <Context {...integrityCheckResult}>
+              <ActiveComponent />
+            </Context>
+          );
+        }
+      } else {
+        Component = <ActiveComponent />;
+      }
     }
   }
 
-  return (
-    <PageContentWrapper className={width}>
-      {Component !== undefined ? (
-        <Component />
-      ) : activePage === 9 ? (
-        <ManageTab />
-      ) : (
-        <>
-          {/* In worse case scenario where no component was found, fall back to directory. */}
-          <Directory />
-        </>
-      )}
-    </PageContentWrapper>
-  );
+  // If no component was found, default to the ManageTab component.
+  if (activePage === 9 || !Component) {
+    Component = <ManageTab />;
+    width = 'thin';
+  }
+
+  return <PageContentWrapper className={width}>{Component}</PageContentWrapper>;
 };
