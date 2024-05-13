@@ -4,16 +4,11 @@
 import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { FormWrapper } from 'routes/Home/Wrappers';
-import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { useActiveTab } from 'contexts/ActiveTab';
+import { useParachain } from 'routes/ParachainSetup/Provider';
 
 export const ReserveParaId = () => {
-  const { ownerId } = useActiveTab();
-  const { getApiInstance } = useChainSpaceEnv();
+  const { chainSpec } = useParachain();
   const { getAccounts } = useImportedAccounts();
-
-  const relayInstance = getApiInstance(ownerId, 'parachainSetup:relay');
-  const chainSpec = relayInstance?.chainSpec;
 
   const accounts =
     chainSpec && chainSpec.chain
