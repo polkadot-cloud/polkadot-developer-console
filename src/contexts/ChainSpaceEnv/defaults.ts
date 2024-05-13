@@ -12,3 +12,23 @@ export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
   destroyApiInstance: (ownerId, label) => {},
   destroyAllApiInstances: (ownerId) => {},
 };
+
+// NOTE: Only dummy values to keep the type checker happy. They should be over-written by the
+// initial context values upon initialisation.
+export const dummyChainSpec = {
+  chain: '',
+  version: {
+    apis: {},
+    authoringVersion: 0,
+    implName: '',
+    implVersion: 0,
+    specName: '',
+    specVersion: 0,
+    stateVersion: 0,
+    transactionVersion: 0,
+  },
+  ss58Prefix: 0,
+  magicNumber: 0,
+  metadata: {},
+  consts: {},
+};

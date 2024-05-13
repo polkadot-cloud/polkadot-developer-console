@@ -7,6 +7,6 @@ import type { ChainId } from 'config/networks';
 
 export interface AccountProps {
   account: ImportedAccount;
-  chainId?: ChainId;
+  chainId: ChainId;
   existentialDeposit: BigNumber;
 }

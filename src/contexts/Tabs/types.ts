@@ -59,9 +59,9 @@ export interface Tab {
   activePage: number;
 }
 
-export type TaskData = TaskDataChainBrowser | undefined;
+export type TaskData = TaskDataChainExplorer | undefined;
 
-export interface TaskDataChainBrowser {
+export interface TaskDataChainExplorer {
   chain: TabChainData | undefined;
   connectFrom: ConnectFrom;
   autoConnect: boolean;

@@ -26,7 +26,7 @@ import { ActiveTabProvider } from 'contexts/ActiveTab';
 import { GlobalChainSpaceProvider } from 'contexts/GlobalChainSpace';
 import { ImportedAccountsProvider } from 'contexts/ImportedAccounts';
 import { ChainSpaceEnvProvider } from 'contexts/ChainSpaceEnv';
-import { ChainBrowserProvider } from 'contexts/ChainBrowser';
+import { ChainExplorerProvider } from 'contexts/ChainExplorer';
 import { ApiIndexerProvider } from 'contexts/ApiIndexer';
 
 export const Providers = () => {
@@ -61,7 +61,7 @@ export const Providers = () => {
     AccountsProvider,
 
     // Task: `chainExplorer` related providers.
-    ChainBrowserProvider,
+    ChainExplorerProvider,
     ChainFilterProvider,
     ChainStateProvider,
 

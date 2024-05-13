@@ -7,7 +7,6 @@ import { Overview } from './Overview';
 import { Extrinsics } from './Extrinsics';
 import { ChainState } from './ChainState';
 import { TabMenu } from 'library/TabMenu';
-import { PageContent } from 'library/PageContent';
 import { Accounts } from './Accounts';
 import { useActiveTab } from 'contexts/ActiveTab';
 import {
@@ -18,11 +17,15 @@ import {
 } from '@fortawesome/pro-duotone-svg-icons';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useChainExplorer } from 'contexts/ChainExplorer';
+import { Preload } from './Preload';
+import { ChainContext } from './Provider';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const { ownerId } = useActiveTab();
   const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec } = useChainSpaceEnv();
+  const { chainExplorerIntegrityCheck } = useChainExplorer();
 
   const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const chainSpec = getChainSpec(apiInstanceId);
@@ -59,13 +62,22 @@ export const useRouteSections = (): RouteSectionProvider => {
     };
   }
 
-  return { label: 'Chain', sections, pageWidth: 'thin' };
+  return {
+    label: 'Chain',
+    sections,
+    pageWidth: 'wide',
+    integrityCheck: {
+      fn: chainExplorerIntegrityCheck,
+      Context: ChainContext,
+      preloadWidth: 'wide',
+      Preload,
+    },
+  };
 };
 
 export const Chain = () => (
   <PageWithMenu
     route="default"
-    Page={PageContent}
     Menu={TabMenu}
     routeProvider={useRouteSections}
   />

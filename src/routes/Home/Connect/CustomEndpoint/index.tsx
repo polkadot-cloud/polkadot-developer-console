@@ -11,11 +11,11 @@ import { useChainFilter } from 'contexts/ChainFilter';
 import { ChainInputWrapper } from '../Wrappers';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useChainBrowser } from 'contexts/ChainBrowser';
+import { useChainExplorer } from 'contexts/ChainExplorer';
 
 export const CustomEndpointInput = () => {
   const { tabId } = useActiveTab();
-  const { connectChainBrowser } = useChainBrowser();
+  const { connectChainExplorer } = useChainExplorer();
   const { getCustomEndpoint, setCustomEndpoint } = useChainFilter();
 
   // The editable value of the input.
@@ -42,7 +42,7 @@ export const CustomEndpointInput = () => {
       <div className="footer">
         <ButtonSubmit
           onClick={() => {
-            connectChainBrowser(tabId, 'custom', customEndpoint);
+            connectChainExplorer(tabId, 'custom', customEndpoint);
           }}
         >
           Connect

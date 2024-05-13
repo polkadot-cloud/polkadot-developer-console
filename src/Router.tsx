@@ -9,6 +9,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useSetActivePage } from 'hooks/useSetActivePage';
 import { ParachainSetup } from 'routes/ParachainSetup';
 import { Default } from 'routes/Home';
+import type { ReactNode } from 'react';
 
 export const Router = () => {
   const { tabId } = useActiveTab();
@@ -20,23 +21,24 @@ export const Router = () => {
   useSetActivePage();
 
   // Gets the active task component for the tab, or the default component otherwise.
-  const getActiveTaskComponent = () => {
+  const getActiveTaskComponent = (): ReactNode => {
     switch (tabActiveTask) {
       case 'chainExplorer':
-        return Chain;
+        return <Chain />;
       case 'parachainSetup':
-        return ParachainSetup;
+        return <ParachainSetup />;
       default:
-        return Default;
+        return <Default />;
     }
   };
 
-  // Active task to be rendered as the default route.
-  const ActiveTask: () => JSX.Element = getActiveTaskComponent();
-
   return (
     <Routes>
-      <Route key={`route_default`} path={'/'} element={<ActiveTask />} />
+      <Route
+        key={`route_default`}
+        path={'/'}
+        element={getActiveTaskComponent()}
+      />
       <Route key={`route_settings`} path={'/settings'} element={<Settings />} />
       {/* Fallback route to chain */}
       <Route key="route_fallback" path="*" element={<Navigate to="/" />} />

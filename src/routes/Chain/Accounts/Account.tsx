@@ -11,20 +11,21 @@ import { AccountContextMenu } from './AccountMenu';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import BigNumber from 'bignumber.js';
-import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useChain } from '../Provider';
 
 export const Account = ({
   account,
   chainId,
   existentialDeposit,
 }: AccountProps) => {
+  const { tab } = useActiveTab();
   const { openMenu } = useMenu();
-  const { tab, ownerId } = useActiveTab();
-  const { getTabApiIndex } = useApiIndexer();
+  const { chain, apiInstanceId } = useChain();
   const { getBalance, getLocks } = useAccounts();
 
   const { name, address } = account;
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
+  const unit = chain.unit;
+  const units = chain.units;
 
   const balance = getBalance(apiInstanceId, address);
   const { maxLock } = getLocks(apiInstanceId, address);
@@ -41,10 +42,6 @@ export const Account = ({
     0,
     balanceFree.minus(edReserved).minus(maxLock)
   );
-
-  // NOTE: assuming tab and chain definitely exist here.
-  const unit = tab!.taskData!.chain!.unit;
-  const units = tab!.taskData!.chain!.units;
 
   return (
     <section>

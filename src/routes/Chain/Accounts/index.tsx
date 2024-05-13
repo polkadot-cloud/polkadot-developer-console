@@ -6,27 +6,17 @@ import { AccountsWrapper } from './Wrappers';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
-import { useActiveTab } from 'contexts/ActiveTab';
 import { Account } from './Account';
-import BigNumber from 'bignumber.js';
 import { useAccounts } from 'contexts/Accounts';
 import { FlexWrapper } from 'routes/Common/Wrappers';
-import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useChain } from '../Provider';
 
 export const Accounts = () => {
-  const { tab, ownerId } = useActiveTab();
   const { getAccounts } = useAccounts();
-  const { getTabApiIndex } = useApiIndexer();
-  const { getChainSpec } = useChainSpaceEnv();
-
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
-  const chainSpec = getChainSpec(apiInstanceId);
-
-  const existentialDeposit =
-    chainSpec?.consts?.existentialDeposit || new BigNumber(0);
+  const { chain, chainSpec } = useChain();
 
   const accounts = getAccounts(chainSpec);
+  const existentialDeposit = chainSpec.consts.existentialDeposit;
 
   return (
     <FlexWrapper>
@@ -46,7 +36,7 @@ export const Accounts = () => {
           <Account
             existentialDeposit={existentialDeposit}
             account={account}
-            chainId={tab?.taskData?.chain?.id}
+            chainId={chain?.id}
             key={`imported_account_${i}`}
           />
         ))}

@@ -9,34 +9,25 @@ import { Header } from './Header';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useMemo } from 'react';
 import type { PalletData } from '../ChainState/types';
-import { defaultPalletData } from '../ChainState/defaults';
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 import { InputForm } from '../ChainState/InputForm';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
 import { FlexWrapper } from 'routes/Common/Wrappers';
-import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useChain } from '../Provider';
 
 export const Extrinsics = () => {
-  const { tabId, ownerId } = useActiveTab();
-  const { getTabApiIndex } = useApiIndexer();
-  const { getChainSpec } = useChainSpaceEnv();
+  const { tabId } = useActiveTab();
+  const { chainSpec } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const chainUiSection = 'calls';
   const inputNamespace: InputNamespace = 'call';
-
   const chainUi = getChainUi(tabId, chainUiSection);
-  const Metadata = getChainSpec(apiInstanceId)?.metadata;
+  const Metadata = chainSpec.metadata;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const callData = useMemo((): PalletData => {
-    if (!Metadata) {
-      return defaultPalletData;
-    }
-
     const scraper = new PalletScraper(Metadata, {
       maxDepth: 7,
     });
@@ -69,7 +60,7 @@ export const Extrinsics = () => {
 
   // Get the whole call item record from metadata for input formatting.
   const activeListItem = useMemo(() => {
-    if (!Metadata || !activePallet || !activeItem) {
+    if (!activePallet || !activeItem) {
       return null;
     }
     // NOTE: Currently limiting scraper to 7 recursive levels to avoid app freezing.

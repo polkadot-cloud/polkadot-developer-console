@@ -16,18 +16,14 @@ import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
-import { useApiIndexer } from 'contexts/ApiIndexer';
-import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useChain } from '../Provider';
 
 export const useInput = () => {
+  const { tabId } = useActiveTab();
+  const { chainSpec } = useChain();
   const { getAccounts } = useAccounts();
-  const { tabId, ownerId } = useActiveTab();
-  const { getTabApiIndex } = useApiIndexer();
-  const { getChainSpec } = useChainSpaceEnv();
   const { setInputArgAtKey, getInputArgsAtKey } = useChainUi();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
-  const chainSpec = getChainSpec(apiInstanceId);
   const accounts = getAccounts(chainSpec);
 
   // Reads input and returns input components based on the input type. Called recursively for types

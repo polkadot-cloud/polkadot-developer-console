@@ -19,30 +19,26 @@ import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { BlockNumber } from 'model/BlockNumber';
 import { FlexWrapper } from 'routes/Common/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useChain } from '../Provider';
 
 export const Overview = () => {
-  const { getTabApiIndex } = useApiIndexer();
-  const { tab, tabId, ownerId } = useActiveTab();
-  const { getApiStatus, getChainSpec } = useChainSpaceEnv();
+  const { getApiStatus } = useChainSpaceEnv();
+  const { tabId, ownerId } = useActiveTab();
+  const { chainSpec, apiInstanceId, chain } = useChain();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const apiStatus = getApiStatus(apiInstanceId);
-  const chainSpec = getChainSpec(apiInstanceId);
+
+  // TODO: abstract this state into fetching component while integrity checks fail.
+  const chainId = chain.id;
   const chainSpecReady = !!chainSpec;
-
-  // NOTE: we know for certain there is an active tab and an associated API instance here, so we can
-  // safely use the non-null assertion.
-  const chainId = tab!.taskData!.chain!.id;
-
   const isDirectory = isDirectoryId(chainId);
-  const chainSpecChain = chainSpec?.chain || 'Unknown';
+  const chainSpecChain = chainSpec.chain || 'Unknown';
 
   // Determine chain name based on chain spec.
   let displayName;
   if (isDirectory) {
     // Display directory name if the chain name matches that of directory.
-    const match = NetworkDirectory[chainId].system?.chain === chainSpec?.chain;
+    const match = NetworkDirectory[chainId].system.chain === chainSpec.chain;
     displayName = match ? NetworkDirectory[chainId].name : chainSpecChain;
   } else {
     // Custom endpoint: Default to chain spec chain name or 'Unknown' otherwise.
@@ -54,14 +50,8 @@ export const Overview = () => {
 
   // The latest received block number.
   const [blockNumber, setBlockNumber] = useState<string>(
-    apiInstanceId
-      ? (
-          SubscriptionsController.get(
-            apiInstanceId,
-            'blockNumber'
-          ) as BlockNumber
-        )?.blockNumber || '0'
-      : '0'
+    (SubscriptionsController.get(apiInstanceId, 'blockNumber') as BlockNumber)
+      ?.blockNumber || '0'
   );
 
   // Handle new block number callback.
@@ -82,14 +72,8 @@ export const Overview = () => {
   // Update block number on tab change.
   useEffect(() => {
     setBlockNumber(
-      apiInstanceId
-        ? (
-            SubscriptionsController.get(
-              apiInstanceId,
-              'blockNumber'
-            ) as BlockNumber
-          )?.blockNumber || '0'
-        : '0'
+      (SubscriptionsController.get(apiInstanceId, 'blockNumber') as BlockNumber)
+        ?.blockNumber || '0'
     );
   }, [tabId]);
 

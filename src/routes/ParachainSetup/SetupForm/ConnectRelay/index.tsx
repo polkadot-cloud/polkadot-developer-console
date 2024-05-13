@@ -11,25 +11,16 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
-import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useParachain } from 'routes/ParachainSetup/Provider';
 
 export const ConnectRelay = () => {
   const { tabId, ownerId } = useActiveTab();
-  const { getTabApiIndex } = useApiIndexer();
   const { getSelectedRelayChain } = useParaSetup();
-  const { getApiStatus, getChainSpec, destroyAllApiInstances } =
-    useChainSpaceEnv();
+  const { chainSpec, apiInstanceId } = useParachain();
+  const { getApiStatus, destroyAllApiInstances } = useChainSpaceEnv();
 
   const relayChain = getSelectedRelayChain(tabId);
-
-  // Get API instance data.
-  const instanceId = getTabApiIndex(
-    ownerId,
-    'parachainSetup:relay'
-  )?.instanceId;
-
-  const apiStatus = getApiStatus(instanceId);
-  const chainSpec = getChainSpec(instanceId);
+  const apiStatus = getApiStatus(apiInstanceId);
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -52,10 +43,7 @@ export const ConnectRelay = () => {
   // Handle disconnect from api instance. This will destroy the api instance and reset the tab
   // active task.
   const handleDisconnect = () => {
-    if (instanceId !== undefined) {
-      // Destroy the API instance.
-      destroyAllApiInstances(ownerId);
-    }
+    destroyAllApiInstances(ownerId);
   };
 
   return (

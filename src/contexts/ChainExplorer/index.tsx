@@ -3,9 +3,9 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect } from 'react';
-import type { ChainBrowserContextInterface } from './types';
+import type { ChainExplorerContextInterface } from './types';
 import {
-  defaultChainBrowserContext,
+  defaultChainExplorerContext,
   defaultCustomEndpointChainMeta,
 } from './defaults';
 import { useTabs } from 'contexts/Tabs';
@@ -17,16 +17,20 @@ import { useSettings } from 'contexts/Settings';
 import * as local from 'contexts/Tabs/Local';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
+import { useApiIndexer } from 'contexts/ApiIndexer';
+import type { IntegrityCheckedChainContext } from 'routes/Chain/Provider/types';
 
-export const ChainBrowser = createContext<ChainBrowserContextInterface>(
-  defaultChainBrowserContext
+export const ChainExplorer = createContext<ChainExplorerContextInterface>(
+  defaultChainExplorerContext
 );
 
-export const useChainBrowser = () => useContext(ChainBrowser);
+export const useChainExplorer = () => useContext(ChainExplorer);
 
-export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
-  const { autoTabNaming } = useSettings();
-  const { handleConnectApi } = useChainSpaceEnv();
+export const ChainExplorerProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const {
     tabs,
     tabsRef,
@@ -36,9 +40,12 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
     setTabTaskData,
     getAutoTabName,
   } = useTabs();
+  const { autoTabNaming } = useSettings();
+  const { getTabApiIndex } = useApiIndexer();
+  const { handleConnectApi, getChainSpec } = useChainSpaceEnv();
 
   // Connect tab to an Api instance and update its chain data.
-  const connectChainBrowser = (
+  const connectChainExplorer = (
     tabId: number,
     chainId: ChainId,
     endpoint: string
@@ -188,19 +195,52 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
     });
   }, []);
 
+  // Check that the correct state exists for chain explorer task to be active.
+  const chainExplorerIntegrityCheck = (
+    tabId: number
+  ): IntegrityCheckedChainContext | false => {
+    const ownerId = tabIdToOwnerId(tabId);
+    const taskData = getTabTaskData(tabId);
+    const chain = taskData?.chain;
+
+    // Ensure that tab `taskData` contains a `chain` object.
+    if (!chain) {
+      return false;
+    }
+
+    // Ensure that the api indexer has an active index for the `chainExplorer` task for this tab.
+    const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
+    if (!apiInstanceId) {
+      return false;
+    }
+
+    // Ensure that there is a chainSpec for the chain.
+    const chainSpec = getChainSpec(apiInstanceId);
+    if (!chainSpec) {
+      return false;
+    }
+
+    return {
+      chain,
+      chainSpec,
+      apiInstanceId,
+    };
+  };
+
   return (
-    <ChainBrowser.Provider
+    <ChainExplorer.Provider
       value={{
         getStoredChain,
         updateSs58,
         updateUnits,
         updateUnit,
-        connectChainBrowser,
-        instantiateApiFromTab,
         forgetTabChain,
+        connectChainExplorer,
+        instantiateApiFromTab,
+        chainExplorerIntegrityCheck,
       }}
     >
       {children}
-    </ChainBrowser.Provider>
+    </ChainExplorer.Provider>
   );
 };

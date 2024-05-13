@@ -10,14 +10,13 @@ import { ChainStateController } from 'controllers/ChainState';
 import { Results } from './Results';
 import { SelectFormWrapper, TextInputWrapper } from 'library/Inputs/Wrappers';
 import { InputFormWrapper } from '../Wrappers';
-import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useChain } from '../Provider';
 
 export const Raw = () => {
-  const { tabId, ownerId } = useActiveTab();
-  const { getTabApiIndex } = useApiIndexer();
+  const { tabId } = useActiveTab();
+  const { apiInstanceId } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const chainUiSection = 'raw';
   const chainUi = getChainUi(tabId, chainUiSection);
 
@@ -29,7 +28,7 @@ export const Raw = () => {
   // Handle storage key submission.
   const handleSubmit = () => {
     const value = chainUi.selected;
-    if (!value || !value.length || !apiInstanceId) {
+    if (!value || !value.length) {
       return;
     }
 

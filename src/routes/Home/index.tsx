@@ -5,7 +5,6 @@ import { PageWithMenu } from 'routes/Common/PageWithMenu';
 import type { PageSections, RouteSectionProvider } from 'routes/Common/types';
 import { TabMenu } from 'library/TabMenu';
 import { Connect } from './Connect';
-import { PageContent } from 'library/PageContent';
 import { Parachain } from './Parachain';
 import {
   faLayerPlus,
@@ -40,7 +39,6 @@ export const Default = () => (
   <PageWithMenu
     route="default"
     routeProvider={useRouteSections}
-    Page={PageContent}
     Menu={TabMenu}
   />
 );
