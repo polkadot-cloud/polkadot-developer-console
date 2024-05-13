@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { ChainListWrapper, Separator } from '../Wrappers';
-import { ChainListItem } from './ChainListItem';
+import { ChainDirectoryItem } from './ChainDirectoryItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import type { DirectoryId } from 'config/networks';
@@ -39,7 +39,7 @@ export const RecentChain = () => {
           </button>
         </span>
       </h4>
-      <ChainListItem
+      <ChainDirectoryItem
         chainId={result.id as DirectoryId}
         name={result.chain.name}
       />

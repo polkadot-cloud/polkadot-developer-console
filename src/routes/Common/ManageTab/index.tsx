@@ -89,7 +89,7 @@ export const ManageTab = () => {
         </>
       )}
 
-      {apiInstances.length && (
+      {apiInstances.length > 0 && (
         <>
           <SettingsToggleWrapper>
             <div className="text">

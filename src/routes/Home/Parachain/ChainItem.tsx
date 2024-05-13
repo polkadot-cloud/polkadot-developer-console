@@ -11,7 +11,7 @@ import {
   faArrowRightFromLine,
   faHashtag,
 } from '@fortawesome/pro-duotone-svg-icons';
-import { SelectOptionWrapper } from '../Connect/Wrappers';
+import { ChainItemWrapper } from '../Connect/Wrappers';
 
 export interface ChainItemProps {
   chainId: DirectoryId;
@@ -41,7 +41,7 @@ export const ChainItem = ({ chainId, name, onSelect }: ChainItemProps) => {
   };
 
   return (
-    <SelectOptionWrapper>
+    <ChainItemWrapper>
       <div className="header">
         <section>
           <Suspense fallback={<div />}>
@@ -80,6 +80,6 @@ export const ChainItem = ({ chainId, name, onSelect }: ChainItemProps) => {
         </h5>
       </div>
       <div className="footer empty"></div>
-    </SelectOptionWrapper>
+    </ChainItemWrapper>
   );
 };

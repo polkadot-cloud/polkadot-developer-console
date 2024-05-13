@@ -91,7 +91,7 @@ export const TagControlsWrapper = styled.div`
   }
 `;
 
-export const SelectOptionWrapper = styled.div`
+export const ChainItemWrapper = styled.div`
   border: 1px solid var(--border-primary-color);
   background-color: var(--background-primary);
   border-radius: var(--chain-list-item-border-radius);
