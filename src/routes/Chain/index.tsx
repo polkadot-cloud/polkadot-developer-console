@@ -7,7 +7,6 @@ import { Overview } from './Overview';
 import { Extrinsics } from './Extrinsics';
 import { ChainState } from './ChainState';
 import { TabMenu } from 'library/TabMenu';
-import { PageContent } from 'library/PageContent';
 import { Accounts } from './Accounts';
 import { useActiveTab } from 'contexts/ActiveTab';
 import {
@@ -18,6 +17,7 @@ import {
 } from '@fortawesome/pro-duotone-svg-icons';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
+import { Preload } from './Preload';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const { ownerId } = useActiveTab();
@@ -59,13 +59,12 @@ export const useRouteSections = (): RouteSectionProvider => {
     };
   }
 
-  return { label: 'Chain', sections, pageWidth: 'thin' };
+  return { label: 'Chain', sections, pageWidth: 'wide', preload: Preload };
 };
 
 export const Chain = () => (
   <PageWithMenu
     route="default"
-    Page={PageContent}
     Menu={TabMenu}
     routeProvider={useRouteSections}
   />

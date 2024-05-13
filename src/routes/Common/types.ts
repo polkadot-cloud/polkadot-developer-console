@@ -19,4 +19,5 @@ export interface RouteSectionProvider {
   label: string;
   sections: PageSections;
   pageWidth: PageWidth;
+  preload?: FC;
 }
