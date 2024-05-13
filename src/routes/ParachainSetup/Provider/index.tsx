@@ -13,7 +13,7 @@ export const ParachainProvider =
     defaultParachainContextInterface
   );
 
-export const useParahain = () => useContext(ParachainProvider);
+export const useParachain = () => useContext(ParachainProvider);
 
 // Post-integrity checks provider for parachain setup task.
 export const ParachainContext = ({
