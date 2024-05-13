@@ -159,13 +159,21 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Generate auto tab name.
-  const getAutoTabName = (startsWith: string) => {
-    const existingNames = tabs.filter((tab) =>
+  const getAutoTabName = (id: number, startsWith: string) => {
+    // If tab already starts with the provided string, return it.
+    const currentName = getTab(id)?.name || '';
+    if (currentName.startsWith(startsWith)) {
+      return currentName;
+    }
+
+    const tabsStartingWith = tabs.filter((tab) =>
       tab.name.startsWith(startsWith)
     ).length;
 
     const tabName =
-      existingNames === 0 ? startsWith : `${startsWith} ${existingNames + 1}`;
+      tabsStartingWith === 0
+        ? startsWith
+        : `${startsWith} ${tabsStartingWith + 1}`;
 
     return tabName;
   };

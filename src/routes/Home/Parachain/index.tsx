@@ -38,7 +38,7 @@ export const Parachain = () => {
 
     // Rename tab if auto tab naming is enabled.
     if (autoTabNaming) {
-      renameTab(tabId, getAutoTabName('Parachain Setup'));
+      renameTab(tabId, getAutoTabName(tabId, 'Parachain Setup'));
     }
 
     // Connect to api instance.

@@ -77,7 +77,7 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
             // Auto rename the tab here if the setting is turned on.
             name:
               autoTabNaming && isDirectory
-                ? getAutoTabName(NetworkDirectory[chainId].name)
+                ? getAutoTabName(tab.id, NetworkDirectory[chainId].name)
                 : tab.name,
             // Chain is now assigned the `chainExplorer` task.
             activeTask: 'chainExplorer' as TabTask,
