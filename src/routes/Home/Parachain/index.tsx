@@ -11,12 +11,14 @@ import { useTabs } from 'contexts/Tabs';
 import { ChainListWrapper, Separator } from '../Connect/Wrappers';
 import { ChainItem } from './ChainItem';
 import * as local from 'contexts/Tabs/Local';
+import { useSettings } from 'contexts/Settings';
 
 export const Parachain = () => {
-  const { setTabActiveTask } = useTabs();
+  const { autoTabNaming } = useSettings();
   const { tabId, ownerId } = useActiveTab();
   const { handleConnectApi } = useChainSpaceEnv();
   const { setSelectedRelayChain } = useParaSetup();
+  const { setTabActiveTask, renameTab, getAutoTabName } = useTabs();
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -33,6 +35,11 @@ export const Parachain = () => {
 
     // Update tab task.
     setTabActiveTask(tabId, 'parachainSetup');
+
+    // Rename tab if auto tab naming is enabled.
+    if (autoTabNaming) {
+      renameTab(tabId, getAutoTabName('Parachain Setup'));
+    }
 
     // Connect to api instance.
     await handleConnectApi(ownerId, 'parachainSetup:relay', chainId, endpoint);

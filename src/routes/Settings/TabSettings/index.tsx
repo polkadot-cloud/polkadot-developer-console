@@ -65,7 +65,9 @@ export const TabSettings = () => {
       <SettingsToggleWrapper>
         <div className="text">
           <h4>Auto Tab Naming</h4>
-          <h3>Automatically rename tabs based on chain being connected to.</h3>
+          <h3>
+            Automatically rename tabs based on chain or task being connected to.
+          </h3>
         </div>
 
         <Switch

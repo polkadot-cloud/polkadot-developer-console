@@ -27,6 +27,7 @@ export interface TabsContextInterface {
   addInstantiatedId: (id: number) => void;
   setDragId: Dispatch<SetStateAction<number | null>>;
   renameTab: (id: number, name: string) => void;
+  getAutoTabName: (startsWith: string) => string;
   incrementRedirectCounter: () => void;
   setTabAutoConnect: (id: number, autoConnect: boolean) => void;
   setTabConnectFrom: (tabId: number, connectFrom: ConnectFrom) => void;

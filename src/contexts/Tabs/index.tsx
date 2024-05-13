@@ -152,8 +152,22 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Rename a tab.
   const renameTab = (id: number, name: string) => {
-    const newTabs = tabs.map((tab) => (tab.id === id ? { ...tab, name } : tab));
+    const newTabs = tabsRef.current.map((tab) =>
+      tab.id === id ? { ...tab, name } : tab
+    );
     setTabs(newTabs);
+  };
+
+  // Generate auto tab name.
+  const getAutoTabName = (startsWith: string) => {
+    const existingNames = tabs.filter((tab) =>
+      tab.name.startsWith(startsWith)
+    ).length;
+
+    const tabName =
+      existingNames === 0 ? startsWith : `${startsWith} ${existingNames + 1}`;
+
+    return tabName;
   };
 
   // Set a tab's autoConnect setting.
@@ -282,6 +296,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         setDragId,
         dragId,
         renameTab,
+        getAutoTabName,
         redirectCounter,
         incrementRedirectCounter,
         setTabAutoConnect,

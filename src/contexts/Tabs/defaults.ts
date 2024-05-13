@@ -28,6 +28,7 @@ export const defaultTabsContext: TabsContextInterface = {
   addInstantiatedId: (id) => {},
   setDragId: (index) => {},
   renameTab: (id, name) => {},
+  getAutoTabName: (startsWith) => '',
   incrementRedirectCounter: () => {},
   setTabAutoConnect: (id, autoConnect) => {},
   setTabConnectFrom: (tabId, connectFrom) => {},
