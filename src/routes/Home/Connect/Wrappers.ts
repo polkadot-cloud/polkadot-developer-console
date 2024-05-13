@@ -192,6 +192,9 @@ export const SelectOptionWrapper = styled.div`
       flex-direction: column;
       align-items: flex-start;
 
+      &.empty {
+        padding-top: 0;
+      }
       > .tags {
         display: flex;
         margin-top: 0.4rem;

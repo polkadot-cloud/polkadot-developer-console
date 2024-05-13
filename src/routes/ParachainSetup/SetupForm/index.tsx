@@ -7,10 +7,10 @@ import { ConnectRelay } from './ConnectRelay';
 import { Progress } from './Progress';
 import { Footer } from './Footer';
 import { ReserveParaId } from './ReserveParaId';
-import { FormWrapper, HomePageWrapper } from '../Wrappers';
+import { FormWrapper, HomePageWrapper } from '../../Home/Wrappers';
 import { FlexWrapper } from 'routes/Common/Wrappers';
 
-export const ParachainSetup = () => {
+export const SetupForm = () => {
   const { tabId } = useActiveTab();
   const { getActiveStep, getConfirmedRelayChain } = useParaSetup();
 

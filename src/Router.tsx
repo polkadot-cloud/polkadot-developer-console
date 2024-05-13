@@ -4,10 +4,11 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Settings } from 'routes/Settings';
 import { Chain } from 'routes/Chain';
-import { Default } from 'routes/Home';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useTabs } from 'contexts/Tabs';
 import { useSetActivePage } from 'hooks/useSetActivePage';
+import { ParachainSetup } from 'routes/ParachainSetup';
+import { Default } from 'routes/Home';
 
 export const Router = () => {
   const { tabId } = useActiveTab();
@@ -23,6 +24,8 @@ export const Router = () => {
     switch (tabActiveTask) {
       case 'chainBrowser':
         return Chain;
+      case 'parachainSetup':
+        return ParachainSetup;
       default:
         return Default;
     }

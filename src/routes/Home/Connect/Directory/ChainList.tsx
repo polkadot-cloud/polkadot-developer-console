@@ -18,8 +18,6 @@ export const ChainList = () => {
   const { getAppliedTags, getSearchTerm } = useChainFilter();
   const tabStoredChain = getStoredChain(tabId);
 
-  // NOTE: Currently naively filtering simple chain list.
-
   const results = NetworkDirectory;
 
   // Filter chains based on applied tags.
