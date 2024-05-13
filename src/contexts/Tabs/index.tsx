@@ -262,7 +262,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // page index.
   const resetTabActiveTask = (tabId: number) => {
     const currentTask = getTabActiveTask(tabId);
-    const homePageIndex = currentTask ? TASK_HOME_PAGE_INDEXES[currentTask] : 0;
+    const homePageIndex = currentTask
+      ? TASK_HOME_PAGE_INDEXES[currentTask][0]
+      : 0;
     local.setActivePage(tabId, 'default', homePageIndex);
     setTabActiveTask(tabId, null);
   };

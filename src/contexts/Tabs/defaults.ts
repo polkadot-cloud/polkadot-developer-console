@@ -4,9 +4,9 @@
 
 import type { Tab, TabTask, Tabs, TabsContextInterface } from './types';
 
-export const TASK_HOME_PAGE_INDEXES: Record<TabTask, number> = {
-  chainExplorer: 0,
-  parachainSetup: 1,
+export const TASK_HOME_PAGE_INDEXES: Record<TabTask, [number, string]> = {
+  chainExplorer: [0, 'Chain'],
+  parachainSetup: [1, 'Parachain'],
 };
 
 export const defaultTabsContext: TabsContextInterface = {

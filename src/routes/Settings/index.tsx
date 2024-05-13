@@ -7,7 +7,6 @@ import { WorkspaceSettings } from './WorkspaceSettings';
 import { TabSettings } from './TabSettings';
 import { TagSettings } from './TagSettings';
 import type { PageSections, RouteSectionProvider } from 'routes/Common/types';
-import { PageContent } from 'library/PageContent';
 import {
   faBrowsers,
   faRectangleHistory,
@@ -40,7 +39,6 @@ export const Settings = () => (
   <PageWithMenu
     route="settings"
     routeProvider={useRouteSections}
-    Page={PageContent}
     Menu={SettingsMenu}
   />
 );

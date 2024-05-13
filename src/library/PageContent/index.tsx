@@ -12,10 +12,10 @@ export const PageContent = ({ sections, pageWidth }: PageProps) => {
 
   const activePage = tab?.activePage || 0;
 
-  // NOTE: page section 9 is a reserved id for `ManageTab`.
   let Component;
   let width;
 
+  // NOTE: page section 9 is a reserved id for `ManageTab`.
   if (activePage === 9) {
     Component = ManageTab;
     width = 'thin';

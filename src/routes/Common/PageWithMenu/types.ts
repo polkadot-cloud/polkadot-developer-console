@@ -3,13 +3,16 @@
 
 import type { Route } from 'App';
 import type { FC } from 'react';
+import type { IntegrityCheckedChainContextProps } from 'routes/Chain/Provider/types';
 import type { RouteSectionProvider, PageSections } from 'routes/Common/types';
 
 export type PageWidth = 'thin' | 'wide';
 export interface PageWithMenuProps {
   route: Route;
-  Page: FC<PageProps>;
   Menu: FC<RouteSectionProvider>;
+  integrityChecksFn?: (
+    tabId: number
+  ) => IntegrityCheckedChainContextProps | false;
   routeProvider: () => RouteSectionProvider;
 }
 

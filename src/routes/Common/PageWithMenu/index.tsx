@@ -12,11 +12,11 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useTabs } from 'contexts/Tabs';
 import { useApiIndexer } from 'contexts/ApiIndexer';
+import { PageContent } from 'library/PageContent';
 
 // Renders a page and menu, with state controlling the active section of the page.
 export const PageWithMenu = ({
   route,
-  Page,
   Menu,
   routeProvider,
 }: PageWithMenuProps) => {
@@ -63,7 +63,7 @@ export const PageWithMenu = ({
       <Menu {...routeConfig} />
       <Body>
         <PageWrapper>
-          <Page {...routeConfig} />
+          <PageContent {...routeConfig} />
         </PageWrapper>
       </Body>
     </div>
