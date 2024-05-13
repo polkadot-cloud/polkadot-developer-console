@@ -3,7 +3,11 @@
 
 import type { DirectoryId, NetworkDirectoryItem } from './types';
 
-// The currently supported networks.
+// Chain directory.
+//
+// NOTE: Data is based on Subwallet ChainInfo data, at:
+// `https://github.com/Koniverse/SubWallet-ChainList/blob/master/packages/chain-list/src/data/ChainInfo.json`.
+
 export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
   polkadot: {
     system: {
