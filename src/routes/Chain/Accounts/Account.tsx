@@ -18,9 +18,9 @@ export const Account = ({
   chainId,
   existentialDeposit,
 }: AccountProps) => {
-  const { openMenu } = useMenu();
   const { tab } = useActiveTab();
-  const { apiInstanceId } = useChain();
+  const { openMenu } = useMenu();
+  const { chain, apiInstanceId } = useChain();
   const { getBalance, getLocks } = useAccounts();
 
   const { name, address } = account;
@@ -41,9 +41,8 @@ export const Account = ({
     balanceFree.minus(edReserved).minus(maxLock)
   );
 
-  // NOTE: assuming tab and chain definitely exist here.
-  const unit = tab!.taskData!.chain!.unit;
-  const units = tab!.taskData!.chain!.units;
+  const unit = chain.unit;
+  const units = chain.units;
 
   return (
     <section>
