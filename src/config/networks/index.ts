@@ -42,6 +42,33 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       StakeWorld: 'wss://dot-rpc.stakeworld.io/assethub',
     },
   },
+  bridgeHubPolkadot: {
+    system: {
+      chain: 'Polkadot BridgeHub',
+      ss58: 0,
+      units: 10,
+      unit: 'DOT',
+    },
+    name: 'Polkadot Bridge Hub',
+    color: '#552bbf',
+    providers: {
+      Parity: 'wss://polkadot-bridge-hub-rpc.polkadot.io',
+      Stakeworld: 'wss://dot-rpc.stakeworld.io/bridgehub',
+    },
+  },
+  collectives: {
+    system: {
+      chain: 'Polkadot Collectives',
+      ss58: 0,
+      units: 10,
+      unit: 'DOT',
+    },
+    name: 'Polkadot Collectives',
+    color: '#552bbf',
+    providers: {
+      Parity: 'wss://polkadot-collectives-rpc.polkadot.io',
+    },
+  },
   kusama: {
     system: {
       chain: 'Kusama',

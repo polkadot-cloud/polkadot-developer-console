@@ -6,7 +6,9 @@ export type DirectoryId =
   | 'kusama'
   | 'rococo'
   | 'westend'
-  | 'statemint';
+  | 'statemint'
+  | 'bridgeHubPolkadot'
+  | 'collectives';
 
 export type ChainId = DirectoryId | 'custom';
 
