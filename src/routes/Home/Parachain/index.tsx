@@ -57,7 +57,7 @@ export const Parachain = () => {
     <HomePageWrapper>
       <h2>Parachain Setup</h2>
       <h3 className="subtitle">
-        Select a Relay Chain to reserve a Para ID and register your parachain.
+        Select a Relay Chain to reserve a Para ID and register as a parathread.
       </h3>
 
       <ChainListWrapper>
