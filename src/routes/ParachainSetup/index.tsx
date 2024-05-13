@@ -6,7 +6,6 @@ import type { PageSections, RouteSectionProvider } from 'routes/Common/types';
 import { TabMenu } from 'library/TabMenu';
 import { faRectangleList } from '@fortawesome/pro-duotone-svg-icons';
 import { SetupForm } from 'routes/ParachainSetup/SetupForm';
-import { Preload } from './Preload';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
@@ -18,7 +17,7 @@ export const useRouteSections = (): RouteSectionProvider => {
     },
   };
 
-  return { label: 'Parachain', sections, pageWidth: 'wide', preload: Preload };
+  return { label: 'Parachain', sections, pageWidth: 'wide' };
 };
 
 export const ParachainSetup = () => (

@@ -4,6 +4,7 @@
 import type { FC } from 'react';
 import type { PageWidth } from './PageWithMenu/types';
 import type { IconProp } from '@fortawesome/fontawesome-svg-core';
+import type { AnyFunction, AnyJson } from '@w3ux/utils/types';
 
 export type PageSections = Record<
   number,
@@ -19,5 +20,9 @@ export interface RouteSectionProvider {
   label: string;
   sections: PageSections;
   pageWidth: PageWidth;
-  preload?: FC;
+  integrityCheck?: {
+    fn: AnyFunction;
+    Context: FC<AnyJson>;
+    Preload: FC;
+  };
 }

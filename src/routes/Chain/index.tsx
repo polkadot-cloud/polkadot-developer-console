@@ -17,12 +17,15 @@ import {
 } from '@fortawesome/pro-duotone-svg-icons';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useChainExplorer } from 'contexts/ChainExplorer';
 import { Preload } from './Preload';
+import { ChainContext } from './Provider';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const { ownerId } = useActiveTab();
   const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec } = useChainSpaceEnv();
+  const { chainExplorerTaskIntegrityChecks } = useChainExplorer();
 
   const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const chainSpec = getChainSpec(apiInstanceId);
@@ -59,7 +62,16 @@ export const useRouteSections = (): RouteSectionProvider => {
     };
   }
 
-  return { label: 'Chain', sections, pageWidth: 'wide', preload: Preload };
+  return {
+    label: 'Chain',
+    sections,
+    pageWidth: 'wide',
+    integrityCheck: {
+      fn: chainExplorerTaskIntegrityChecks,
+      Context: ChainContext,
+      Preload,
+    },
+  };
 };
 
 export const Chain = () => (
