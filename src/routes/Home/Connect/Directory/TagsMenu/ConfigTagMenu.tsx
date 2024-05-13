@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useTags } from 'contexts/Tags';
-import type { DirectoryId } from 'config/networks';
+import type { DirectoryId } from 'config/networks/types';
 import type { TagId } from 'contexts/Tags/types';
 import { useState } from 'react';
 import { TagsMenuInner } from './Inner';

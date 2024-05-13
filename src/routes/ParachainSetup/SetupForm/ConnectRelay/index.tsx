@@ -24,7 +24,7 @@ export const ConnectRelay = () => {
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
-    ([, chain]) => chain.isRelayChain
+    ([, chain]) => chain?.isRelayChain
   );
 
   // Get chain icons dervied from relay chain keys.

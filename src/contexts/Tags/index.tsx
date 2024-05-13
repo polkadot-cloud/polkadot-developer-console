@@ -12,7 +12,7 @@ import type {
   TagsList,
 } from './types';
 import { setStateWithRef } from '@w3ux/utils';
-import type { DirectoryId } from 'config/networks';
+import type { DirectoryId } from 'config/networks/types';
 import * as local from './Local';
 import { checkLocalTags } from 'IntegrityChecks/Local';
 

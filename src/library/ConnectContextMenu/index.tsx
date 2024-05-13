@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { formatInputString } from 'Utils';
-import type { ChainId, DirectoryId } from 'config/networks';
+import type { ChainId, DirectoryId } from 'config/networks/types';
 import { NetworkDirectory } from 'config/networks';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
 import {

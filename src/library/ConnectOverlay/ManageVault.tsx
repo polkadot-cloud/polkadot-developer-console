@@ -7,7 +7,7 @@ import { ChainSearchInput } from './ChainSearchInput';
 import { useState } from 'react';
 import type { ManageHardwareProps } from './types';
 import { motion } from 'framer-motion';
-import { NetworkDirectory, type DirectoryId } from 'config/networks';
+import type { DirectoryId } from 'config/networks/types';
 import { ImportButtonWrapper, SubHeadingWrapper } from './Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQrcode } from '@fortawesome/free-solid-svg-icons';
@@ -16,6 +16,7 @@ import { QrReader } from './QrReader';
 import { useVaultAccounts } from '@w3ux/react-connect-kit';
 import type { VaultAccount } from '@w3ux/react-connect-kit/types';
 import { remToUnit } from '@w3ux/utils';
+import { NetworkDirectory } from 'config/networks';
 
 export const ManageVault = ({
   getMotionProps,

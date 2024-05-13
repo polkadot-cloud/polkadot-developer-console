@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainId, DirectoryId } from 'config/networks';
+import type { ChainId, DirectoryId } from 'config/networks/types';
 import { NetworkDirectory } from 'config/networks';
 import { HomePageWrapper } from 'routes/Home/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
@@ -22,7 +22,7 @@ export const Parachain = () => {
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
-    ([, chain]) => chain.isRelayChain
+    ([, chain]) => chain?.isRelayChain
   );
 
   // Handle connect on relay chain selection.

@@ -3,7 +3,7 @@
 
 import { Suspense, lazy, useMemo } from 'react';
 import { useMenu } from 'contexts/Menu';
-import type { ChainId, DirectoryId } from 'config/networks';
+import type { ChainId, DirectoryId } from 'config/networks/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';

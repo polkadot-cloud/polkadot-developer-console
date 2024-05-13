@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainId } from 'config/networks';
+import type { ChainId } from 'config/networks/types';
 import { ChainStateController } from 'controllers/ChainState';
 import { Api } from 'model/Api';
 import type { ChainSpaceId, OwnerId } from 'types';

@@ -4,7 +4,7 @@
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { ImportedAccount } from '@w3ux/react-connect-kit/types';
-import type { ChainId } from 'config/networks';
+import type { ChainId } from 'config/networks/types';
 import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
 import SubscanIconGrayscaleSVG from 'svg/SubscanIconGrayscale.svg?react';
 

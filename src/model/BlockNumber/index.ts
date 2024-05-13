@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { VoidFn } from '@polkadot/api/types';
-import type { ChainId } from 'config/networks';
+import type { ChainId } from 'config/networks/types';
 import { ApiController } from 'controllers/Api';
 import type { Unsubscribable } from 'controllers/Subscriptions/types';
 import type { ApiInstanceId } from 'model/Api/types';

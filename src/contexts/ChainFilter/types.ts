@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { DirectoryId } from 'config/networks';
+import type { DirectoryId } from 'config/networks/types';
 import type { TagId, TagItem } from 'contexts/Tags/types';
 
 export interface ChainFilterInterface {

@@ -3,7 +3,7 @@
 
 import { ApiPromise } from '@polkadot/api';
 import { WsProvider } from '@polkadot/rpc-provider';
-import type { ChainId } from 'config/networks';
+import type { ChainId } from 'config/networks/types';
 import type {
   APIChainSpec,
   APIStatusEventDetail,

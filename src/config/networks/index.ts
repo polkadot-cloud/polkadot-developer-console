@@ -1,30 +1,10 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-// NOTE: This file is temporary until the @polkadot-cloud/network-directory package is ready to be
-// used.
-
-export type DirectoryId = 'polkadot' | 'kusama' | 'rococo' | 'westend';
-
-export type ChainId = DirectoryId | 'custom';
-
-export interface NetworkDirectoryItem {
-  system: {
-    chain: string;
-    ss58: number;
-    units: number;
-    unit: string;
-  };
-  name: string;
-  color: string;
-  providers: Record<string, string>;
-  isRelayChain: boolean;
-}
-
-export type NetworkDirectory = Record<DirectoryId, NetworkDirectoryItem>;
+import type { DirectoryId, NetworkDirectoryItem } from './types';
 
 // The currently supported networks.
-export const NetworkDirectory: NetworkDirectory = {
+export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
   polkadot: {
     system: {
       chain: 'Polkadot',
@@ -45,6 +25,22 @@ export const NetworkDirectory: NetworkDirectory = {
       Stakeworld: 'wss://dot-rpc.stakeworld.io',
     },
     isRelayChain: true,
+  },
+  statemint: {
+    system: {
+      chain: 'Statemint',
+      ss58: 0,
+      units: 10,
+      unit: 'DOT',
+    },
+    name: 'Polkadot Asset Hub',
+    color: '#552bbf',
+    providers: {
+      'Dwellir Tunisia': 'wss://statemint-rpc-tn.dwellir.com',
+      'IBP-GeoDNS1': 'wss://sys.ibp.network/statemint',
+      'IBP-GeoDNS2': 'wss://sys.dotters.network/statemint',
+      StakeWorld: 'wss://dot-rpc.stakeworld.io/assethub',
+    },
   },
   kusama: {
     system: {

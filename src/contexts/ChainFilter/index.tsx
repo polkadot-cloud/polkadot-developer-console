@@ -17,7 +17,7 @@ import {
 } from './defaults';
 import { useTags } from 'contexts/Tags';
 import type { TagId, TagItem } from 'contexts/Tags/types';
-import type { DirectoryId } from 'config/networks';
+import type { DirectoryId } from 'config/networks/types';
 import * as local from './Local';
 import { checkLocalChainFilter } from 'IntegrityChecks/Local';
 
