@@ -13,6 +13,7 @@ import { Suspense, lazy, useMemo, useState } from 'react';
 import type { ChainSearchInputProps } from './types';
 import type { DirectoryId } from 'config/networks/types';
 import { NetworkDirectory } from 'config/networks';
+import { getDirectoryIcon } from 'config/networks/Utils';
 
 export const ChainSearchInput = ({
   onSearchFocused,
@@ -34,7 +35,10 @@ export const ChainSearchInput = ({
   const Icon = useMemo(() => {
     try {
       return lazy(
-        () => import(`../../config/networks/icons/${directoryId}/Inline.tsx`)
+        () =>
+          import(
+            `../../config/networks/icons/${getDirectoryIcon(directoryId)}/Inline.tsx`
+          )
       );
     } catch (e) {
       return undefined;

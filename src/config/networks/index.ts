@@ -13,6 +13,7 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'DOT',
     },
     name: 'Polkadot Relay Chain',
+    icon: 'polkadot',
     color: '#c10e7d',
     providers: {
       'Automata 1RPC': 'wss://1rpc.io/dot',
@@ -34,6 +35,7 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'DOT',
     },
     name: 'Polkadot Asset Hub',
+    icon: 'polkadot',
     color: '#552bbf',
     providers: {
       'Dwellir Tunisia': 'wss://statemint-rpc-tn.dwellir.com',
@@ -41,6 +43,7 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       'IBP-GeoDNS2': 'wss://sys.dotters.network/statemint',
       StakeWorld: 'wss://dot-rpc.stakeworld.io/assethub',
     },
+    relayChain: 'polkadot',
   },
   bridgeHubPolkadot: {
     system: {
@@ -50,11 +53,13 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'DOT',
     },
     name: 'Polkadot Bridge Hub',
+    icon: 'polkadot',
     color: '#552bbf',
     providers: {
       Parity: 'wss://polkadot-bridge-hub-rpc.polkadot.io',
       Stakeworld: 'wss://dot-rpc.stakeworld.io/bridgehub',
     },
+    relayChain: 'polkadot',
   },
   collectives: {
     system: {
@@ -64,10 +69,12 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'DOT',
     },
     name: 'Polkadot Collectives',
+    icon: 'polkadot',
     color: '#552bbf',
     providers: {
       Parity: 'wss://polkadot-collectives-rpc.polkadot.io',
     },
+    relayChain: 'polkadot',
   },
   kusama: {
     system: {
@@ -77,6 +84,7 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'KSM',
     },
     name: 'Kusama Relay Chain',
+    icon: 'kusama',
     color: '#000',
     providers: {
       'Automata 1RPC': 'wss://1rpc.io/ksm',
@@ -98,6 +106,7 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'ROC',
     },
     name: 'Rococo Relay Chain',
+    icon: 'rococo',
     color: '#552bbf',
     providers: {
       Parity: 'wss://rococo-rpc.polkadot.io',
@@ -112,6 +121,7 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'WND',
     },
     name: 'Westend Relay Chain',
+    icon: 'westend',
     color: '#c63860',
     providers: {
       Dwellir: 'wss://westend-rpc.dwellir.com',

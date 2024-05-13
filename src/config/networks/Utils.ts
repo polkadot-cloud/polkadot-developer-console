@@ -6,3 +6,5 @@ import { NetworkDirectory } from '.';
 
 export const isDirectoryId = (id: DirectoryId | string): id is DirectoryId =>
   NetworkDirectory[id as DirectoryId] !== undefined;
+
+export const getDirectoryIcon = (id: DirectoryId) => NetworkDirectory[id].icon;

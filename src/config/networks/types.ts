@@ -20,7 +20,9 @@ export interface NetworkDirectoryItem {
     unit: string;
   };
   name: string;
+  icon: DirectoryId;
   color: string;
   providers: Record<string, string>;
   isRelayChain?: boolean;
+  relayChain?: DirectoryId;
 }

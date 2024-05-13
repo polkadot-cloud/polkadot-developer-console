@@ -20,6 +20,7 @@ import {
   faPlus,
 } from '@fortawesome/pro-duotone-svg-icons';
 import { useChainExplorer } from 'contexts/ChainExplorer';
+import { getDirectoryIcon } from 'config/networks/Utils';
 
 export interface ChainDirectoryItemProps {
   chainId: DirectoryId;
@@ -42,7 +43,10 @@ export const ChainDirectoryItem = ({
   const Icon = useMemo(
     () =>
       lazy(
-        () => import(`../../../../config/networks/icons/${chainId}/Inline.tsx`)
+        () =>
+          import(
+            `../../../../config/networks/icons/${getDirectoryIcon(chainId)}/Inline.tsx`
+          )
       ),
     []
   );
