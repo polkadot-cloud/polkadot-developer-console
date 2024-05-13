@@ -11,11 +11,9 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
-import { useTabs } from 'contexts/Tabs';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 
 export const ConnectRelay = () => {
-  const { setTabActiveTask } = useTabs();
   const { tabId, ownerId } = useActiveTab();
   const { getTabApiIndex } = useApiIndexer();
   const { getSelectedRelayChain } = useParaSetup();
@@ -57,9 +55,6 @@ export const ConnectRelay = () => {
     if (instanceId !== undefined) {
       // Destroy the API instance.
       destroyAllApiInstances(ownerId);
-
-      // Reset tab active task.
-      setTabActiveTask(tabId, null);
     }
   };
 

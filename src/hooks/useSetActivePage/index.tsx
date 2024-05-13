@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 export const useSetActivePage = () => {
   const { pathname } = useLocation();
   const { tab, tabId } = useActiveTab();
-  const { setTabActivePage, getTabActiveTask, resetTabActiveTask } = useTabs();
+  const { setTabActivePage, getTabActiveTask } = useTabs();
 
   const tabActiveTask = getTabActiveTask(tabId);
 
@@ -26,7 +26,10 @@ export const useSetActivePage = () => {
 
   // Redirect to local default page on disconnect if activeTask is no longer assigned.
   const onTaskRemoved = () => {
-    resetTabActiveTask(tabId);
+    const activePage = local.getActivePage(tabId, 'default');
+    if (activePage) {
+      setTabActivePage(tabId, 'default', activePage, true);
+    }
   };
 
   // Handle active page changes on tab and `activeTask` changes.
