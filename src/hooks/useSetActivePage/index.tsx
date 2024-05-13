@@ -27,7 +27,7 @@ export const useSetActivePage = () => {
   // Redirect to local default page on disconnect if activeTask is no longer assigned.
   const onTaskRemoved = () => {
     const activePage = local.getActivePage(tabId, 'default');
-    if (activePage) {
+    if (activePage !== undefined) {
       setTabActivePage(tabId, 'default', activePage, true);
     }
   };
