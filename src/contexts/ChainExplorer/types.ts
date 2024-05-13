@@ -3,14 +3,14 @@
 
 import type { ChainId, NetworkDirectoryItem } from 'config/networks';
 
-export interface ChainBrowserContextInterface {
+export interface ChainExplorerContextInterface {
   getStoredChain: (
     tabId: number
   ) => { id: ChainId; chain: NetworkDirectoryItem } | undefined;
   updateSs58: (id: number, ss58: number) => void;
   updateUnits: (id: number, units: number) => void;
   updateUnit: (id: number, unit: string) => void;
-  connectChainBrowser: (
+  connectChainExplorer: (
     tabId: number,
     chainId: ChainId,
     endpoint: string

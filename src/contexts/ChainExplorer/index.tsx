@@ -3,9 +3,9 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect } from 'react';
-import type { ChainBrowserContextInterface } from './types';
+import type { ChainExplorerContextInterface } from './types';
 import {
-  defaultChainBrowserContext,
+  defaultChainExplorerContext,
   defaultCustomEndpointChainMeta,
 } from './defaults';
 import { useTabs } from 'contexts/Tabs';
@@ -18,13 +18,17 @@ import * as local from 'contexts/Tabs/Local';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 
-export const ChainBrowser = createContext<ChainBrowserContextInterface>(
-  defaultChainBrowserContext
+export const ChainExplorer = createContext<ChainExplorerContextInterface>(
+  defaultChainExplorerContext
 );
 
-export const useChainBrowser = () => useContext(ChainBrowser);
+export const useChainExplorer = () => useContext(ChainExplorer);
 
-export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
+export const ChainExplorerProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const { autoTabNaming } = useSettings();
   const { handleConnectApi } = useChainSpaceEnv();
   const {
@@ -38,7 +42,7 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   } = useTabs();
 
   // Connect tab to an Api instance and update its chain data.
-  const connectChainBrowser = (
+  const connectChainExplorer = (
     tabId: number,
     chainId: ChainId,
     endpoint: string
@@ -189,18 +193,18 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <ChainBrowser.Provider
+    <ChainExplorer.Provider
       value={{
         getStoredChain,
         updateSs58,
         updateUnits,
         updateUnit,
-        connectChainBrowser,
+        connectChainExplorer,
         instantiateApiFromTab,
         forgetTabChain,
       }}
     >
       {children}
-    </ChainBrowser.Provider>
+    </ChainExplorer.Provider>
   );
 };

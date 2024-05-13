@@ -7,11 +7,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import type { DirectoryId } from 'config/networks';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useChainBrowser } from 'contexts/ChainBrowser';
+import { useChainExplorer } from 'contexts/ChainExplorer';
 
 export const RecentChain = () => {
   const { tab, tabId } = useActiveTab();
-  const { getStoredChain, forgetTabChain } = useChainBrowser();
+  const { getStoredChain, forgetTabChain } = useChainExplorer();
 
   const result = getStoredChain(tabId);
 

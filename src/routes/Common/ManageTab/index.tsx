@@ -12,7 +12,7 @@ import { useTabs } from 'contexts/Tabs';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { SubHeadingWrapper } from './Wrappers';
 import { isDirectoryId } from 'config/networks/Utils';
-import { useChainBrowser } from 'contexts/ChainBrowser';
+import { useChainExplorer } from 'contexts/ChainExplorer';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 
@@ -21,7 +21,7 @@ export const ManageTab = () => {
   const { tab, tabId, ownerId } = useActiveTab();
   const { renameTab, getTabActiveTask } = useTabs();
   const { destroyAllApiInstances } = useChainSpaceEnv();
-  const { updateSs58, updateUnits, updateUnit } = useChainBrowser();
+  const { updateSs58, updateUnits, updateUnit } = useChainExplorer();
 
   const activeTask = getTabActiveTask(tabId);
   const apiInstances = getTabApiIndexes(ownerId);

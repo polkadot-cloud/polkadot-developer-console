@@ -19,7 +19,7 @@ import {
   faHashtag,
   faPlus,
 } from '@fortawesome/pro-duotone-svg-icons';
-import { useChainBrowser } from 'contexts/ChainBrowser';
+import { useChainExplorer } from 'contexts/ChainExplorer';
 
 export interface ChainDirectoryItemProps {
   chainId: DirectoryId;
@@ -32,7 +32,7 @@ export const ChainDirectoryItem = ({
 }: ChainDirectoryItemProps) => {
   const { tabId } = useActiveTab();
   const { openMenu, closeMenu } = useMenu();
-  const { connectChainBrowser } = useChainBrowser();
+  const { connectChainExplorer } = useChainExplorer();
   const { tags, getTagsForChain, addChainToTag, removeChainFromTag } =
     useTags();
 
@@ -50,7 +50,7 @@ export const ChainDirectoryItem = ({
   // Handle tag provider select. Connect to chain on successful selection.
   const handleOnProviderSelect = (endpoint: string) => {
     // Update tab data and connect to Api instance.
-    connectChainBrowser(tabId, chainId, endpoint);
+    connectChainExplorer(tabId, chainId, endpoint);
     // Close menu.
     closeMenu();
   };
