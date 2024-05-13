@@ -34,7 +34,7 @@ export const ChainListWrapper = styled.div`
 
   > h4 {
     color: var(--text-color-secondary);
-    margin-top: 0.75rem;
+    margin-top: 1rem;
     display: flex;
     align-items: center;
     padding-left: 0.25rem;
@@ -91,7 +91,7 @@ export const TagControlsWrapper = styled.div`
   }
 `;
 
-export const SelectOptionWrapper = styled.div`
+export const ChainItemWrapper = styled.div`
   border: 1px solid var(--border-primary-color);
   background-color: var(--background-primary);
   border-radius: var(--chain-list-item-border-radius);
@@ -192,6 +192,9 @@ export const SelectOptionWrapper = styled.div`
       flex-direction: column;
       align-items: flex-start;
 
+      &.empty {
+        padding-top: 0;
+      }
       > .tags {
         display: flex;
         margin-top: 0.4rem;

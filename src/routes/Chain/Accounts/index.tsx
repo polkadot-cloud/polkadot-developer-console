@@ -20,7 +20,7 @@ export const Accounts = () => {
   const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec } = useChainSpaceEnv();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const chainSpec = getChainSpec(apiInstanceId);
 
   const existentialDeposit =

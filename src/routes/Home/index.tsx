@@ -6,7 +6,7 @@ import type { PageSections, RouteSectionProvider } from 'routes/Common/types';
 import { TabMenu } from 'library/TabMenu';
 import { Connect } from './Connect';
 import { PageContent } from 'library/PageContent';
-import { ParachainSetup } from './ParachainSetup';
+import { Parachain } from './Parachain';
 import {
   faLayerPlus,
   faPlugCircleBolt,
@@ -22,8 +22,7 @@ export const useRouteSections = (): RouteSectionProvider => {
     1: {
       label: 'New Parachain',
       icon: faLayerPlus,
-      Component: ParachainSetup,
-      pageWidth: 'wide',
+      Component: Parachain,
     },
     // Coretime tab is disabled until more iterations are made with chain spaces.
     // 2: {

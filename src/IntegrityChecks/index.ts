@@ -32,7 +32,7 @@ export const performTabsCheck = ({
       }
 
       const { activeTask, taskData } = tab;
-      if (activeTask === 'chainBrowser') {
+      if (activeTask === 'chainExplorer') {
         {
           if (
             !(

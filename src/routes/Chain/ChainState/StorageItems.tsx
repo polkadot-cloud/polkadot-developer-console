@@ -23,7 +23,7 @@ export const StorageItems = () => {
   const { getChainSpec } = useChainSpaceEnv();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const chainUiSection = 'storage';
   const inputNamespace: InputNamespace = 'storage';
 

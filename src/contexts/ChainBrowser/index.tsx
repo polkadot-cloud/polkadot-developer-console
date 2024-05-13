@@ -9,7 +9,7 @@ import {
   defaultCustomEndpointChainMeta,
 } from './defaults';
 import { useTabs } from 'contexts/Tabs';
-import type { ChainId, DirectoryId } from 'config/networks';
+import type { ChainId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
 import type { ChainMeta, ConnectFrom, TabTask } from 'contexts/Tabs/types';
@@ -27,8 +27,15 @@ export const useChainBrowser = () => useContext(ChainBrowser);
 export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
   const { autoTabNaming } = useSettings();
   const { handleConnectApi } = useChainSpaceEnv();
-  const { tabs, tabsRef, getTab, getTabTaskData, setTabs, setTabTaskData } =
-    useTabs();
+  const {
+    tabs,
+    tabsRef,
+    getTab,
+    setTabs,
+    getTabTaskData,
+    setTabTaskData,
+    getAutoTabName,
+  } = useTabs();
 
   // Connect tab to an Api instance and update its chain data.
   const connectChainBrowser = (
@@ -36,6 +43,9 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
     chainId: ChainId,
     endpoint: string
   ) => {
+    // Reset local active page on connect.
+    local.setActivePage(tabId, 'default', 0);
+
     const isDirectory = isDirectoryId(chainId);
 
     // Inject chain meta from network directory or custom endpoint.
@@ -66,9 +76,11 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
             ...tab,
             // Auto rename the tab here if the setting is turned on.
             name:
-              autoTabNaming && isDirectory ? getAutoTabName(chainId) : tab.name,
-            // Chain is now assigned the `chainBrowser` task.
-            activeTask: 'chainBrowser' as TabTask,
+              autoTabNaming && isDirectory
+                ? getAutoTabName(tab.id, NetworkDirectory[chainId].name)
+                : tab.name,
+            // Chain is now assigned the `chainExplorer` task.
+            activeTask: 'chainExplorer' as TabTask,
             taskData: {
               chain: chainData,
               connectFrom: isDirectory
@@ -84,7 +96,7 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
     // Instantiate API instance.
     handleConnectApi(
       tabIdToOwnerId(tabId),
-      'chainBrowser',
+      'chainExplorer',
       chainData.id,
       chainData.endpoint
     );
@@ -96,13 +108,13 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
     const taskData = getTabTaskData(tabId);
 
     if (
-      tab?.activeTask === 'chainBrowser' &&
+      tab?.activeTask === 'chainExplorer' &&
       taskData?.chain &&
       taskData?.autoConnect
     ) {
       handleConnectApi(
         tabIdToOwnerId(tabId),
-        'chainBrowser',
+        'chainExplorer',
         taskData.chain.id,
         taskData.chain.endpoint
       );
@@ -145,20 +157,6 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
       taskData.chain.unit = unit;
       setTabTaskData(tabId, taskData);
     }
-  };
-
-  // Gets the amount of tab names starting with the provided string.
-  const getTabNameCount = (name: string) =>
-    tabs.filter((tab) => tab.name.startsWith(name)).length;
-
-  // Generate tab name for chain.
-  const getAutoTabName = (chainId: DirectoryId) => {
-    const chainName = NetworkDirectory[chainId].name;
-    const existingNames = getTabNameCount(chainName);
-    const tabName =
-      existingNames === 0 ? chainName : `${chainName} ${existingNames + 1}`;
-
-    return tabName;
   };
 
   // Forget a tab's chain. NOTE: This function is called within event listeners, so tabsRef is used

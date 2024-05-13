@@ -26,7 +26,7 @@ export const Overview = () => {
   const { tab, tabId, ownerId } = useActiveTab();
   const { getApiStatus, getChainSpec } = useChainSpaceEnv();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const apiStatus = getApiStatus(apiInstanceId);
   const chainSpec = getChainSpec(apiInstanceId);
   const chainSpecReady = !!chainSpec;

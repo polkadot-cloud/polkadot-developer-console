@@ -30,7 +30,7 @@ export const PageWithMenu = ({
   // Redirect when redirects are present in local storage.
   useRedirect({ route });
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const activeTask = tab?.id && getTabActiveTask(tab.id);
   const apiStatus = getApiStatus(apiInstanceId);
 
@@ -43,7 +43,7 @@ export const PageWithMenu = ({
 
   // Get chain color, if present.
   const getChainColor = () =>
-    activeTask !== 'chainBrowser' || !apiConnected || !chainColorEnabled
+    activeTask !== 'chainExplorer' || !apiConnected || !chainColorEnabled
       ? accentColors.primary.light
       : networkColor
         ? networkColor

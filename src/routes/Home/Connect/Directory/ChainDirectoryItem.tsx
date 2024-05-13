@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Suspense, lazy, useMemo } from 'react';
-import { SelectOptionWrapper } from '../Wrappers';
+import { ChainItemWrapper } from '../Wrappers';
 import { Tag } from 'library/Tag';
 import { useTags } from 'contexts/Tags';
 import { TagControl } from 'library/TagControl';
@@ -21,12 +21,15 @@ import {
 } from '@fortawesome/pro-duotone-svg-icons';
 import { useChainBrowser } from 'contexts/ChainBrowser';
 
-export interface ChainListItemProps {
+export interface ChainDirectoryItemProps {
   chainId: DirectoryId;
   name: string;
 }
 
-export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
+export const ChainDirectoryItem = ({
+  chainId,
+  name,
+}: ChainDirectoryItemProps) => {
   const { tabId } = useActiveTab();
   const { openMenu, closeMenu } = useMenu();
   const { connectChainBrowser } = useChainBrowser();
@@ -62,7 +65,7 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
   };
 
   return (
-    <SelectOptionWrapper>
+    <ChainItemWrapper>
       <div className="header">
         <section>
           <Suspense fallback={<div />}>
@@ -121,6 +124,6 @@ export const ChainListItem = ({ chainId, name }: ChainListItemProps) => {
           />
         </div>
       </div>
-    </SelectOptionWrapper>
+    </ChainItemWrapper>
   );
 };

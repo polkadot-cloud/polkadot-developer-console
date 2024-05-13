@@ -4,7 +4,7 @@
 import { ChainListWrapper, Separator } from '../Wrappers';
 import type { DirectoryId } from 'config/networks';
 import { NetworkDirectory } from 'config/networks';
-import { ChainListItem } from './ChainListItem';
+import { ChainDirectoryItem } from './ChainDirectoryItem';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { useTags } from 'contexts/Tags';
 import type { TagItem } from 'contexts/Tags/types';
@@ -17,8 +17,6 @@ export const ChainList = () => {
   const { getStoredChain } = useChainBrowser();
   const { getAppliedTags, getSearchTerm } = useChainFilter();
   const tabStoredChain = getStoredChain(tabId);
-
-  // NOTE: Currently naively filtering simple chain list.
 
   const results = NetworkDirectory;
 
@@ -64,7 +62,7 @@ export const ChainList = () => {
       </h4>
 
       {Object.entries(filtered).map(([key, { name }]) => (
-        <ChainListItem
+        <ChainDirectoryItem
           key={`chain_index_${key}`}
           chainId={key as DirectoryId}
           name={name}

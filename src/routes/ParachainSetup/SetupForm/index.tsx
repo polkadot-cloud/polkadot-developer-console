@@ -7,24 +7,24 @@ import { ConnectRelay } from './ConnectRelay';
 import { Progress } from './Progress';
 import { Footer } from './Footer';
 import { ReserveParaId } from './ReserveParaId';
-import { FormWrapper, HomePageWrapper } from '../Wrappers';
+import { FormWrapper, HomePageWrapper } from '../../Home/Wrappers';
 import { FlexWrapper } from 'routes/Common/Wrappers';
 
-export const ParachainSetup = () => {
+export const SetupForm = () => {
   const { tabId } = useActiveTab();
-  const { getActiveStep, getConfirmedRelayChain } = useParaSetup();
+  const { getActiveStep, getSelectedRelayChain } = useParaSetup();
 
   const activeStep = getActiveStep(tabId);
-  const confirmedRelayChain = getConfirmedRelayChain(tabId);
+  const selectedRelayChain = getSelectedRelayChain(tabId);
 
   // Determine whether next button should be disabled.
   const nextDisabled =
-    activeStep === 'connect_relay' && confirmedRelayChain === undefined;
+    activeStep === 'connect_relay' && selectedRelayChain === undefined;
 
   return (
     <FlexWrapper>
       <HomePageWrapper>
-        <h2>Set up a New Parachain</h2>
+        <h2>New Parachain Setup</h2>
 
         <Progress />
 

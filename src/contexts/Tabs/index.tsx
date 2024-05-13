@@ -152,8 +152,30 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Rename a tab.
   const renameTab = (id: number, name: string) => {
-    const newTabs = tabs.map((tab) => (tab.id === id ? { ...tab, name } : tab));
+    const newTabs = tabsRef.current.map((tab) =>
+      tab.id === id ? { ...tab, name } : tab
+    );
     setTabs(newTabs);
+  };
+
+  // Generate auto tab name.
+  const getAutoTabName = (id: number, startsWith: string) => {
+    // If tab already starts with the provided string, return it.
+    const currentName = getTab(id)?.name || '';
+    if (currentName.startsWith(startsWith)) {
+      return currentName;
+    }
+
+    const tabsStartingWith = tabs.filter((tab) =>
+      tab.name.startsWith(startsWith)
+    ).length;
+
+    const tabName =
+      tabsStartingWith === 0
+        ? startsWith
+        : `${startsWith} ${tabsStartingWith + 1}`;
+
+    return tabName;
   };
 
   // Set a tab's autoConnect setting.
@@ -241,7 +263,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const resetTabActiveTask = (tabId: number) => {
     const currentTask = getTabActiveTask(tabId);
     const homePageIndex = currentTask ? TASK_HOME_PAGE_INDEXES[currentTask] : 0;
-
     local.setActivePage(tabId, 'default', homePageIndex);
     setTabActiveTask(tabId, null);
   };
@@ -281,6 +302,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         setDragId,
         dragId,
         renameTab,
+        getAutoTabName,
         redirectCounter,
         incrementRedirectCounter,
         setTabAutoConnect,

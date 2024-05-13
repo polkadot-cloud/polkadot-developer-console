@@ -22,33 +22,17 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
 
-  // Store the currently selected relay chain, keyed by tab.
+  // Store selected relay chains, keyed by tab.
   const [selectedRelayChains, setSelectedRelayChains] =
     useState<SelectedRelayChains>({});
 
-  // Store  confirmed relay chains, keyed by tab.
-  const [confirmedRelayChains, setConfirmedRelayChains] =
-    useState<SelectedRelayChains>({});
-
   // Get the selected relay chain for a tab.
-  const getSelectedRelayChain = (tabId: number) =>
-    selectedRelayChains[tabId] || 'polkadot';
+  const getSelectedRelayChain = (tabId: number) => selectedRelayChains[tabId];
 
   // Set the selected relay chain for a tab.
   const setSelectedRelayChain = (tabId: number, chainId: ChainId) => {
     setSelectedRelayChains({
       ...selectedRelayChains,
-      [tabId]: chainId,
-    });
-  };
-
-  // Get the confirmed relay chain for a tab.
-  const getConfirmedRelayChain = (tabId: number) => confirmedRelayChains[tabId];
-
-  // Set the confirmed relay chain for a tab.
-  const setConfirmedRelayChain = (tabId: number, chainId: ChainId) => {
-    setConfirmedRelayChains({
-      ...confirmedRelayChains,
       [tabId]: chainId,
     });
   };
@@ -71,13 +55,9 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     delete updated[tabId];
     setActiveSteps(updated);
 
-    const updatedSelectedRelayChains = { ...selectedRelayChains };
-    delete updatedSelectedRelayChains[tabId];
-    setSelectedRelayChains(updatedSelectedRelayChains);
-
-    const updatedConfirmedRelayChains = { ...confirmedRelayChains };
-    delete updatedConfirmedRelayChains[tabId];
-    setSelectedRelayChains(updatedConfirmedRelayChains);
+    const updatedChains = { ...selectedRelayChains };
+    delete updatedChains[tabId];
+    setSelectedRelayChains(updatedChains);
   };
 
   return (
@@ -87,8 +67,6 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
         setActiveStep,
         getSelectedRelayChain,
         setSelectedRelayChain,
-        getConfirmedRelayChain,
-        setConfirmedRelayChain,
         destroyTabParaSetup,
       }}
     >

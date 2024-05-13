@@ -17,6 +17,11 @@ export const HomePageWrapper = styled.div`
     color: var(--text-color-secondary);
     font-size: 0.98rem;
     margin-bottom: 1.5rem;
+
+    &.subtitle {
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }
   }
 `;
 

@@ -6,10 +6,8 @@ import type { ChainId } from 'config/networks';
 export interface ParaSetupContextInterface {
   getActiveStep: (tabId: number) => SetupStep;
   setActiveStep: (tabId: number, step: SetupStep) => void;
-  getSelectedRelayChain: (tabId: number) => ChainId;
+  getSelectedRelayChain: (tabId: number) => ChainId | undefined;
   setSelectedRelayChain: (tabId: number, chainId: ChainId) => void;
-  getConfirmedRelayChain: (tabId: number) => ChainId | undefined;
-  setConfirmedRelayChain: (tabId: number, chainId: ChainId) => void;
   destroyTabParaSetup: (tabId: number) => void;
 }
 

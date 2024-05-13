@@ -28,7 +28,7 @@ export const Constants = () => {
   const { getChainSpec } = useChainSpaceEnv();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainBrowser')?.instanceId;
+  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const chainUiSection = 'constants';
   const chainUi = getChainUi(tabId, chainUiSection);
   const Metadata = getChainSpec(apiInstanceId)?.metadata;

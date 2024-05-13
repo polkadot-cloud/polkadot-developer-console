@@ -70,12 +70,12 @@ export const TabContextMenu = ({
         <li className={`${apiButtonInactive ? `` : ` inactive`}`}>
           <button
             onClick={() => {
-              if (canDisconenct && tab?.taskData?.chain) {
+              if (canDisconenct) {
                 destroyAllApiInstances(ownerId);
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);
                 // Update tab task.
-                setTabActiveTask(tabId, 'chainBrowser');
+                setTabActiveTask(tabId, 'chainExplorer');
               }
               closeMenu();
             }}
