@@ -16,7 +16,7 @@ export const Parachain = () => {
   const { setTabActiveTask } = useTabs();
   const { tabId, ownerId } = useActiveTab();
   const { handleConnectApi } = useChainSpaceEnv();
-  const { setConfirmedRelayChain } = useParaSetup();
+  const { setSelectedRelayChain } = useParaSetup();
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -28,8 +28,8 @@ export const Parachain = () => {
     // Reset local active page on connect.
     local.setActivePage(tabId, 'default', 0);
 
-    // Store the confirmed relay chain to state.
-    setConfirmedRelayChain(tabId, chainId);
+    // Store the selected relay chain to state.
+    setSelectedRelayChain(tabId, chainId);
 
     // Update tab task.
     setTabActiveTask(tabId, 'parachainSetup');

@@ -12,14 +12,14 @@ import { FlexWrapper } from 'routes/Common/Wrappers';
 
 export const SetupForm = () => {
   const { tabId } = useActiveTab();
-  const { getActiveStep, getConfirmedRelayChain } = useParaSetup();
+  const { getActiveStep, getSelectedRelayChain } = useParaSetup();
 
   const activeStep = getActiveStep(tabId);
-  const confirmedRelayChain = getConfirmedRelayChain(tabId);
+  const selectedRelayChain = getSelectedRelayChain(tabId);
 
   // Determine whether next button should be disabled.
   const nextDisabled =
-    activeStep === 'connect_relay' && confirmedRelayChain === undefined;
+    activeStep === 'connect_relay' && selectedRelayChain === undefined;
 
   return (
     <FlexWrapper>

@@ -22,17 +22,17 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
 
-  // Store confirmed relay chains, keyed by tab.
-  const [confirmedRelayChains, setConfirmedRelayChains] =
+  // Store selected relay chains, keyed by tab.
+  const [selectedRelayChains, setSelectedRelayChains] =
     useState<SelectedRelayChains>({});
 
-  // Get the confirmed relay chain for a tab.
-  const getConfirmedRelayChain = (tabId: number) => confirmedRelayChains[tabId];
+  // Get the selected relay chain for a tab.
+  const getSelectedRelayChain = (tabId: number) => selectedRelayChains[tabId];
 
-  // Set the confirmed relay chain for a tab.
-  const setConfirmedRelayChain = (tabId: number, chainId: ChainId) => {
-    setConfirmedRelayChains({
-      ...confirmedRelayChains,
+  // Set the selected relay chain for a tab.
+  const setSelectedRelayChain = (tabId: number, chainId: ChainId) => {
+    setSelectedRelayChains({
+      ...selectedRelayChains,
       [tabId]: chainId,
     });
   };
@@ -55,9 +55,9 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     delete updated[tabId];
     setActiveSteps(updated);
 
-    const updatedConfirmedRelayChains = { ...confirmedRelayChains };
-    delete updatedConfirmedRelayChains[tabId];
-    setConfirmedRelayChains(updatedConfirmedRelayChains);
+    const updatedChains = { ...selectedRelayChains };
+    delete updatedChains[tabId];
+    setSelectedRelayChains(updatedChains);
   };
 
   return (
@@ -65,8 +65,8 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
       value={{
         getActiveStep,
         setActiveStep,
-        getConfirmedRelayChain,
-        setConfirmedRelayChain,
+        getSelectedRelayChain,
+        setSelectedRelayChain,
         destroyTabParaSetup,
       }}
     >

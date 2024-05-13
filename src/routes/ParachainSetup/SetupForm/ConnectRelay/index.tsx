@@ -18,11 +18,11 @@ export const ConnectRelay = () => {
   const { setTabActiveTask } = useTabs();
   const { tabId, ownerId } = useActiveTab();
   const { getTabApiIndex } = useApiIndexer();
-  const { getConfirmedRelayChain } = useParaSetup();
+  const { getSelectedRelayChain } = useParaSetup();
   const { getApiStatus, getChainSpec, destroyAllApiInstances } =
     useChainSpaceEnv();
 
-  const relayChain = getConfirmedRelayChain(tabId);
+  const relayChain = getSelectedRelayChain(tabId);
 
   // Get API instance data.
   const instanceId = getTabApiIndex(
