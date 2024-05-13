@@ -18,7 +18,7 @@ import * as local from 'contexts/Tabs/Local';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useApiIndexer } from 'contexts/ApiIndexer';
-import type { IntegrityCheckedChainContextProps } from 'routes/Chain/Provider/types';
+import type { IntegrityCheckedChainContext } from 'routes/Chain/Provider/types';
 
 export const ChainExplorer = createContext<ChainExplorerContextInterface>(
   defaultChainExplorerContext
@@ -198,7 +198,7 @@ export const ChainExplorerProvider = ({
   // Check that the correct state exists for chain explorer task to be active.
   const chainExplorerIntegrityCheck = (
     tabId: number
-  ): IntegrityCheckedChainContextProps | false => {
+  ): IntegrityCheckedChainContext | false => {
     const ownerId = tabIdToOwnerId(tabId);
     const taskData = getTabTaskData(tabId);
     const chain = taskData?.chain;
