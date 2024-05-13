@@ -24,6 +24,8 @@ export const Account = ({
   const { getBalance, getLocks } = useAccounts();
 
   const { name, address } = account;
+  const unit = chain.unit;
+  const units = chain.units;
 
   const balance = getBalance(apiInstanceId, address);
   const { maxLock } = getLocks(apiInstanceId, address);
@@ -40,9 +42,6 @@ export const Account = ({
     0,
     balanceFree.minus(edReserved).minus(maxLock)
   );
-
-  const unit = chain.unit;
-  const units = chain.units;
 
   return (
     <section>

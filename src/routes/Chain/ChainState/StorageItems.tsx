@@ -9,32 +9,24 @@ import { ChainStateList } from './ChainStateList';
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 import { useActiveTab } from 'contexts/ActiveTab';
 import type { PalletData } from './types';
-import { defaultPalletData } from './defaults';
 import { EncodedDetails } from './EncodedDetails';
 import { InputForm } from './InputForm';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
-import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useChain } from '../Provider';
 
 export const StorageItems = () => {
-  const { tabId, ownerId } = useActiveTab();
-  const { getTabApiIndex } = useApiIndexer();
-  const { getChainSpec } = useChainSpaceEnv();
+  const { chainSpec } = useChain();
+  const { tabId } = useActiveTab();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const chainUiSection = 'storage';
   const inputNamespace: InputNamespace = 'storage';
-
   const chainUi = getChainUi(tabId, chainUiSection);
-  const Metadata = getChainSpec(apiInstanceId)?.metadata;
+  const Metadata = chainSpec.metadata;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const storageData = useMemo((): PalletData => {
-    if (!Metadata) {
-      return defaultPalletData;
-    }
     // Get pallet list from scraper.
     const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
     const pallets = scraper.getList(['storage']);
@@ -68,7 +60,7 @@ export const StorageItems = () => {
 
   // Get the whole active storage item record from metadata for input formatting.
   const activeListItem = useMemo(() => {
-    if (!Metadata || !activePallet || !activeItem) {
+    if (!activePallet || !activeItem) {
       return null;
     }
 

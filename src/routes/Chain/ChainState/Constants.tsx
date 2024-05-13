@@ -12,40 +12,31 @@ import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useActiveTab } from 'contexts/ActiveTab';
 import type { PalletData } from './types';
-import { defaultPalletData } from './defaults';
 import { camelize } from '@w3ux/utils';
 import { ChainStateController } from 'controllers/ChainState';
 import { useChainState } from 'contexts/ChainState';
 import { Results } from './Results';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
-import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useChain } from '../Provider';
 
 export const Constants = () => {
+  const { tabId } = useActiveTab();
   const { setConstant } = useChainState();
-  const { tabId, ownerId } = useActiveTab();
-  const { getTabApiIndex } = useApiIndexer();
-  const { getChainSpec } = useChainSpaceEnv();
+  const { chainSpec, apiInstanceId } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
   const chainUiSection = 'constants';
   const chainUi = getChainUi(tabId, chainUiSection);
-  const Metadata = getChainSpec(apiInstanceId)?.metadata;
+  const Metadata = chainSpec.metadata;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const constantsData = useMemo((): PalletData => {
-    if (!Metadata) {
-      return defaultPalletData;
-    }
-
     // Get pallet list from scraper.
     const scraper = new PalletScraper(Metadata);
     const pallets = scraper.getList(['constants']);
 
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
-
     const items = activePallet ? scraper.getConstants(activePallet) : [];
 
     const result: PalletData = {
@@ -64,10 +55,6 @@ export const Constants = () => {
 
   // Handle retrieval of constant from scraped items.
   const handleSubmit = () => {
-    if (!apiInstanceId) {
-      return;
-    }
-
     const chainState = ChainStateController.instances[apiInstanceId];
 
     if (activePallet && activeItem) {

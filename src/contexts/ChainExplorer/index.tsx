@@ -31,9 +31,6 @@ export const ChainExplorerProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const { autoTabNaming } = useSettings();
-  const { getTabApiIndex } = useApiIndexer();
-  const { handleConnectApi } = useChainSpaceEnv();
   const {
     tabs,
     tabsRef,
@@ -43,6 +40,9 @@ export const ChainExplorerProvider = ({
     setTabTaskData,
     getAutoTabName,
   } = useTabs();
+  const { autoTabNaming } = useSettings();
+  const { getTabApiIndex } = useApiIndexer();
+  const { handleConnectApi, getChainSpec } = useChainSpaceEnv();
 
   // Connect tab to an Api instance and update its chain data.
   const connectChainExplorer = (
@@ -214,8 +214,15 @@ export const ChainExplorerProvider = ({
       return false;
     }
 
+    // Ensure that there is a chainSpec for the chain.
+    const chainSpec = getChainSpec(apiInstanceId);
+    if (!chainSpec) {
+      return false;
+    }
+
     return {
       chain,
+      chainSpec,
       apiInstanceId,
     };
   };
