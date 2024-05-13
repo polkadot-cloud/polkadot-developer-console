@@ -1,13 +1,20 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
+import { getDirectoryIcon } from 'config/networks/Utils';
+import type { DirectoryId } from 'config/networks/types';
 import { Suspense, lazy, useMemo } from 'react';
 
 export const Icon = ({ icon }: { icon: string }) => {
   // Lazily load the icon.
   const IconSvg = useMemo(
     () =>
-      lazy(() => import(`../../../config/networks/icons/${icon}/Inline.tsx`)),
+      lazy(
+        () =>
+          import(
+            `../../../config/networks/icons/${getDirectoryIcon(icon as DirectoryId)}/Inline.tsx`
+          )
+      ),
     [icon]
   );
 

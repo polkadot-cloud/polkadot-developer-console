@@ -1,30 +1,14 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-// NOTE: This file is temporary until the @polkadot-cloud/network-directory package is ready to be
-// used.
+import type { DirectoryId, NetworkDirectoryItem } from './types';
 
-export type DirectoryId = 'polkadot' | 'kusama' | 'rococo' | 'westend';
+// Chain directory.
+//
+// NOTE: Data is based on Subwallet ChainInfo data, at:
+// `https://github.com/Koniverse/SubWallet-ChainList/blob/master/packages/chain-list/src/data/ChainInfo.json`.
 
-export type ChainId = DirectoryId | 'custom';
-
-export interface NetworkDirectoryItem {
-  system: {
-    chain: string;
-    ss58: number;
-    units: number;
-    unit: string;
-  };
-  name: string;
-  color: string;
-  providers: Record<string, string>;
-  isRelayChain: boolean;
-}
-
-export type NetworkDirectory = Record<DirectoryId, NetworkDirectoryItem>;
-
-// The currently supported networks.
-export const NetworkDirectory: NetworkDirectory = {
+export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
   polkadot: {
     system: {
       chain: 'Polkadot',
@@ -33,6 +17,7 @@ export const NetworkDirectory: NetworkDirectory = {
       unit: 'DOT',
     },
     name: 'Polkadot Relay Chain',
+    icon: 'polkadot',
     color: '#c10e7d',
     providers: {
       'Automata 1RPC': 'wss://1rpc.io/dot',
@@ -46,6 +31,55 @@ export const NetworkDirectory: NetworkDirectory = {
     },
     isRelayChain: true,
   },
+  statemint: {
+    system: {
+      chain: 'Statemint',
+      ss58: 0,
+      units: 10,
+      unit: 'DOT',
+    },
+    name: 'Polkadot Asset Hub',
+    icon: 'polkadot',
+    color: '#552bbf',
+    providers: {
+      'Dwellir Tunisia': 'wss://statemint-rpc-tn.dwellir.com',
+      'IBP-GeoDNS1': 'wss://sys.ibp.network/statemint',
+      'IBP-GeoDNS2': 'wss://sys.dotters.network/statemint',
+      StakeWorld: 'wss://dot-rpc.stakeworld.io/assethub',
+    },
+    relayChain: 'polkadot',
+  },
+  bridgeHubPolkadot: {
+    system: {
+      chain: 'Polkadot BridgeHub',
+      ss58: 0,
+      units: 10,
+      unit: 'DOT',
+    },
+    name: 'Polkadot Bridge Hub',
+    icon: 'polkadot',
+    color: '#552bbf',
+    providers: {
+      Parity: 'wss://polkadot-bridge-hub-rpc.polkadot.io',
+      Stakeworld: 'wss://dot-rpc.stakeworld.io/bridgehub',
+    },
+    relayChain: 'polkadot',
+  },
+  collectives: {
+    system: {
+      chain: 'Polkadot Collectives',
+      ss58: 0,
+      units: 10,
+      unit: 'DOT',
+    },
+    name: 'Polkadot Collectives',
+    icon: 'polkadot',
+    color: '#552bbf',
+    providers: {
+      Parity: 'wss://polkadot-collectives-rpc.polkadot.io',
+    },
+    relayChain: 'polkadot',
+  },
   kusama: {
     system: {
       chain: 'Kusama',
@@ -54,6 +88,7 @@ export const NetworkDirectory: NetworkDirectory = {
       unit: 'KSM',
     },
     name: 'Kusama Relay Chain',
+    icon: 'kusama',
     color: '#000',
     providers: {
       'Automata 1RPC': 'wss://1rpc.io/ksm',
@@ -75,6 +110,7 @@ export const NetworkDirectory: NetworkDirectory = {
       unit: 'ROC',
     },
     name: 'Rococo Relay Chain',
+    icon: 'rococo',
     color: '#552bbf',
     providers: {
       Parity: 'wss://rococo-rpc.polkadot.io',
@@ -89,6 +125,7 @@ export const NetworkDirectory: NetworkDirectory = {
       unit: 'WND',
     },
     name: 'Westend Relay Chain',
+    icon: 'westend',
     color: '#c63860',
     providers: {
       Dwellir: 'wss://westend-rpc.dwellir.com',

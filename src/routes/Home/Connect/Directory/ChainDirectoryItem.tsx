@@ -9,7 +9,7 @@ import { TagControl } from 'library/TagControl';
 import { useMenu } from 'contexts/Menu';
 import { ConfigTagMenu } from './TagsMenu/ConfigTagMenu';
 import type { TagId } from 'contexts/Tags/types';
-import { type DirectoryId } from 'config/networks';
+import { type DirectoryId } from 'config/networks/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { useActiveTab } from 'contexts/ActiveTab';
@@ -20,6 +20,7 @@ import {
   faPlus,
 } from '@fortawesome/pro-duotone-svg-icons';
 import { useChainExplorer } from 'contexts/ChainExplorer';
+import { getDirectoryIcon } from 'config/networks/Utils';
 
 export interface ChainDirectoryItemProps {
   chainId: DirectoryId;
@@ -42,7 +43,10 @@ export const ChainDirectoryItem = ({
   const Icon = useMemo(
     () =>
       lazy(
-        () => import(`../../../../config/networks/icons/${chainId}/Inline.tsx`)
+        () =>
+          import(
+            `../../../../config/networks/icons/${getDirectoryIcon(chainId)}/Inline.tsx`
+          )
       ),
     []
   );

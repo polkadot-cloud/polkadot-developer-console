@@ -5,7 +5,7 @@ import { ChainListWrapper, Separator } from '../Wrappers';
 import { ChainDirectoryItem } from './ChainDirectoryItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
-import type { DirectoryId } from 'config/networks';
+import type { DirectoryId } from 'config/networks/types';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainExplorer } from 'contexts/ChainExplorer';
 

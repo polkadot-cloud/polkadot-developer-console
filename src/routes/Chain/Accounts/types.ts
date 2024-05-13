@@ -3,7 +3,7 @@
 
 import type { ImportedAccount } from '@w3ux/react-connect-kit/types';
 import type BigNumber from 'bignumber.js';
-import type { ChainId } from 'config/networks';
+import type { ChainId } from 'config/networks/types';
 
 export interface AccountProps {
   account: ImportedAccount;

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type BigNumber from 'bignumber.js';
-import type { ChainId } from 'config/networks';
+import type { ChainId } from 'config/networks/types';
 import type { ApiInstanceId } from 'model/Api/types';
 import type { OwnerId } from 'types';
 

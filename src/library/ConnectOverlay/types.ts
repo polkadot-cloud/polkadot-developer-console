@@ -3,7 +3,7 @@
 
 import type { ExtensionArrayListItem } from '@w3ux/extension-assets/util';
 import type { AnyJson } from '@w3ux/utils/types';
-import type { DirectoryId, NetworkDirectoryItem } from 'config/networks';
+import type { DirectoryId, NetworkDirectoryItem } from 'config/networks/types';
 import type { Dispatch, SetStateAction } from 'react';
 
 export interface ConnectInnerProps {

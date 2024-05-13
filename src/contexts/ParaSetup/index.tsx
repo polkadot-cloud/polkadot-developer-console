@@ -10,7 +10,7 @@ import type {
   SetupStepsState,
 } from './types';
 import { defaultParaSetupContext } from './defaults';
-import type { ChainId } from 'config/networks';
+import type { ChainId } from 'config/networks/types';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';

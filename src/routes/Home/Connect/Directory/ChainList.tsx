@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { ChainListWrapper, Separator } from '../Wrappers';
-import type { DirectoryId } from 'config/networks';
+import type { DirectoryId } from 'config/networks/types';
 import { NetworkDirectory } from 'config/networks';
 import { ChainDirectoryItem } from './ChainDirectoryItem';
 import { useChainFilter } from 'contexts/ChainFilter';

@@ -4,13 +4,14 @@
 import { Body } from 'library/Body';
 import { useRedirect } from 'hooks/useRedirect';
 import type { PageWithMenuProps } from './types';
-import { NetworkDirectory, type DirectoryId } from 'config/networks';
+import type { DirectoryId } from 'config/networks/types';
 import { accentColors } from 'styles/accents/developer-console';
 import { useSettings } from 'contexts/Settings';
 import { PageWrapper } from 'library/PageContent/Wrappers';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useTabs } from 'contexts/Tabs';
 import { PageContent } from 'library/PageContent';
+import { NetworkDirectory } from 'config/networks';
 
 // Renders a page and menu, with state controlling the active section of the page.
 export const PageWithMenu = ({

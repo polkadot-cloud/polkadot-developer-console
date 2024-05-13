@@ -9,7 +9,7 @@ import {
   defaultCustomEndpointChainMeta,
 } from './defaults';
 import { useTabs } from 'contexts/Tabs';
-import type { ChainId } from 'config/networks';
+import type { ChainId } from 'config/networks/types';
 import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
 import type { ChainMeta, ConnectFrom, TabTask } from 'contexts/Tabs/types';

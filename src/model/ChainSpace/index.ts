@@ -3,7 +3,7 @@
 
 import type { ChainSpaceId, OwnerId } from 'types';
 import { ApiController } from 'controllers/Api';
-import type { ChainId } from 'config/networks';
+import type { ChainId } from 'config/networks/types';
 
 export class ChainSpace {
   // ------------------------------------------------------

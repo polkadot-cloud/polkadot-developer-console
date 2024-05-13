@@ -20,7 +20,7 @@ import type {
 } from './types';
 import { defaultChainSpaceEnvContext } from './defaults';
 import { useGlobalChainSpace } from 'contexts/GlobalChainSpace';
-import type { ChainId } from 'config/networks';
+import type { ChainId } from 'config/networks/types';
 import { ApiController } from 'controllers/Api';
 import { BlockNumber } from 'model/BlockNumber';
 import { useApiIndexer } from 'contexts/ApiIndexer';

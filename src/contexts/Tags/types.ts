@@ -1,11 +1,12 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { DirectoryId } from 'config/networks';
+import type { DirectoryId } from 'config/networks/types';
 
 export type ConcreteTagId =
   | 'tag_relay_chain'
   | 'tag_canary_network'
+  | 'tag_system_chain'
   | 'tag_test_network';
 
 export type CustomTagId = string;

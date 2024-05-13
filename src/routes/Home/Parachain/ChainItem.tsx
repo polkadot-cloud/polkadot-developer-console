@@ -3,7 +3,7 @@
 
 import { Suspense, lazy, useMemo } from 'react';
 import { useMenu } from 'contexts/Menu';
-import type { ChainId, DirectoryId } from 'config/networks';
+import type { ChainId, DirectoryId } from 'config/networks/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
@@ -12,6 +12,7 @@ import {
   faHashtag,
 } from '@fortawesome/pro-duotone-svg-icons';
 import { ChainItemWrapper } from '../Connect/Wrappers';
+import { getDirectoryIcon } from 'config/networks/Utils';
 
 export interface ChainItemProps {
   chainId: DirectoryId;
@@ -26,7 +27,10 @@ export const ChainItem = ({ chainId, name, onSelect }: ChainItemProps) => {
   const Icon = useMemo(
     () =>
       lazy(
-        () => import(`../../../config/networks/icons/${chainId}/Inline.tsx`)
+        () =>
+          import(
+            `../../../config/networks/icons/${getDirectoryIcon(chainId)}/Inline.tsx`
+          )
       ),
     []
   );

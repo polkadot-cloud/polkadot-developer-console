@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
-import type { ChainId } from 'config/networks';
+import type { ChainId } from 'config/networks/types';
 import type { MetadataVersion } from 'controllers/Metadata/types';
 import type { ChainSpaceId, OwnerId } from 'types';
 

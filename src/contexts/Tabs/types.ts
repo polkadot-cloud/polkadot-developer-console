@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { Route } from 'App';
-import type { ChainId } from 'config/networks';
+import type { ChainId } from 'config/networks/types';
 import type { Dispatch, SetStateAction } from 'react';
 
 // The tasks that developer console supports.
