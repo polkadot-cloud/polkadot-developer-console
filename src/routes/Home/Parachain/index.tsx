@@ -10,14 +10,13 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useTabs } from 'contexts/Tabs';
 import { ChainListWrapper, Separator } from '../Connect/Wrappers';
 import { ChainItem } from './ChainItem';
+import * as local from 'contexts/Tabs/Local';
 
 export const Parachain = () => {
   const { setTabActiveTask } = useTabs();
   const { tabId, ownerId } = useActiveTab();
   const { handleConnectApi } = useChainSpaceEnv();
-  const { getSelectedRelayChain, setConfirmedRelayChain } = useParaSetup();
-
-  const selectedRelayChain = getSelectedRelayChain(tabId);
+  const { setConfirmedRelayChain } = useParaSetup();
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -26,19 +25,17 @@ export const Parachain = () => {
 
   // Handle connect on relay chain selection.
   const handleConnect = async (chainId: ChainId, endpoint: string) => {
+    // Reset local active page on connect.
+    local.setActivePage(tabId, 'default', 0);
+
     // Store the confirmed relay chain to state.
-    setConfirmedRelayChain(tabId, selectedRelayChain);
+    setConfirmedRelayChain(tabId, chainId);
 
     // Update tab task.
     setTabActiveTask(tabId, 'parachainSetup');
 
     // Connect to api instance.
-    await handleConnectApi(
-      ownerId,
-      'parachainSetup:relay',
-      selectedRelayChain,
-      endpoint
-    );
+    await handleConnectApi(ownerId, 'parachainSetup:relay', chainId, endpoint);
   };
 
   const mainChains = relayChains.filter(([key]) =>

@@ -36,6 +36,9 @@ export const ChainBrowserProvider = ({ children }: { children: ReactNode }) => {
     chainId: ChainId,
     endpoint: string
   ) => {
+    // Reset local active page on connect.
+    local.setActivePage(tabId, 'default', 0);
+
     const isDirectory = isDirectoryId(chainId);
 
     // Inject chain meta from network directory or custom endpoint.

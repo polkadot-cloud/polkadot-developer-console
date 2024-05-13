@@ -18,11 +18,11 @@ export const ConnectRelay = () => {
   const { setTabActiveTask } = useTabs();
   const { tabId, ownerId } = useActiveTab();
   const { getTabApiIndex } = useApiIndexer();
-  const { getSelectedRelayChain } = useParaSetup();
+  const { getConfirmedRelayChain } = useParaSetup();
   const { getApiStatus, getChainSpec, destroyAllApiInstances } =
     useChainSpaceEnv();
 
-  const selectedRelayChain = getSelectedRelayChain(tabId);
+  const relayChain = getConfirmedRelayChain(tabId);
 
   // Get API instance data.
   const instanceId = getTabApiIndex(
@@ -41,12 +41,12 @@ export const ConnectRelay = () => {
   // Get chain icons dervied from relay chain keys.
   const icon = relayChains
     .map(([chainId]) => chainId)
-    .filter((chainId) => chainId === selectedRelayChain)[0];
+    .filter((chainId) => chainId === relayChain)[0];
 
   // Get the chain name of the currently select relay chain.
   const relayName =
-    relayChains.find(([chainId]) => chainId === selectedRelayChain)?.[1]
-      ?.name || 'Polkadot Relay Chain';
+    relayChains.find(([chainId]) => chainId === relayChain)?.[1]?.name ||
+    'Polkadot Relay Chain';
 
   // API can be assumed as valid when it is ready and the chain spec has been fetched.
   const apiValid = ['ready'].includes(apiStatus) && chainSpec !== undefined;
