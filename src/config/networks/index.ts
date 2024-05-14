@@ -40,6 +40,7 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
     },
     name: 'Polkadot Asset Hub',
     icon: 'polkadot',
+    initial: 'A',
     color: '#552bbf',
     providers: {
       'Dwellir Tunisia': 'wss://statemint-rpc-tn.dwellir.com',
@@ -58,6 +59,7 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
     },
     name: 'Polkadot Bridge Hub',
     icon: 'polkadot',
+    initial: 'B',
     color: '#552bbf',
     providers: {
       Parity: 'wss://polkadot-bridge-hub-rpc.polkadot.io',
@@ -74,6 +76,7 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
     },
     name: 'Polkadot Collectives',
     icon: 'polkadot',
+    initial: 'C',
     color: '#552bbf',
     providers: {
       Parity: 'wss://polkadot-collectives-rpc.polkadot.io',

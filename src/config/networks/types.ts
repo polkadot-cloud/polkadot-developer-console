@@ -21,6 +21,7 @@ export interface NetworkDirectoryItem {
   };
   name: string;
   icon: DirectoryId;
+  initial?: string;
   color: string;
   providers: Record<string, string>;
   isRelayChain?: boolean;

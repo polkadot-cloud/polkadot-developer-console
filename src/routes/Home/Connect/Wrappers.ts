@@ -128,13 +128,46 @@ export const ChainItemWrapper = styled.div`
           }
 
           > .icon {
-            width: 1.05rem;
-            height: 1.05rem;
-            margin-right: 0.45rem;
+            --directory-item-icon-size: 1.05rem;
 
-            > svg {
-              width: 100%;
-              height: 100%;
+            width: var(--directory-item-icon-size);
+            height: var(--directory-item-icon-size);
+            margin-right: 0.45rem;
+            position: relative;
+
+            &.hasSecondary {
+              width: 2.1rem;
+            }
+
+            > .primary {
+              position: absolute;
+              top: 0;
+              width: var(--directory-item-icon-size);
+              height: var(--directory-item-icon-size);
+              z-index: 0;
+
+              > svg {
+                width: 100%;
+                height: 100%;
+              }
+            }
+
+            > .secondary {
+              height: calc((var(--directory-item-icon-size)) * 1.15);
+              width: calc((var(--directory-item-icon-size)) * 1.15);
+              background-color: var(--button-tab-background);
+              border: 0.75px solid var(--border-secondary-color);
+              color: var(--text-color-primary);
+              font-family: Inter, sans-serif;
+              position: absolute;
+              top: -0.1rem;
+              left: 0.9rem;
+              border-radius: 2rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 0.75rem;
+              z-index: 1;
             }
           }
         }

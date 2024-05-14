@@ -20,7 +20,11 @@ import {
   faPlus,
 } from '@fortawesome/pro-duotone-svg-icons';
 import { useChainExplorer } from 'contexts/ChainExplorer';
-import { getDirectoryIcon } from 'config/networks/Utils';
+import {
+  getChainInitial,
+  getDirectoryIcon,
+  getRelayChain,
+} from 'config/networks/Utils';
 
 export interface ChainDirectoryItemProps {
   chainId: DirectoryId;
@@ -38,6 +42,9 @@ export const ChainDirectoryItem = ({
     useTags();
 
   const chainTags = getTagsForChain(chainId);
+
+  // Get any relay chain this chain is registered with.
+  const relayId = getRelayChain(chainId);
 
   // Lazily load the icon for the chain.
   const Icon = useMemo(
@@ -73,8 +80,13 @@ export const ChainDirectoryItem = ({
       <div className="header">
         <section>
           <Suspense fallback={<div />}>
-            <div className="icon">
-              <Icon />
+            <div className={`icon${relayId ? ' hasSecondary' : ''}`}>
+              <div className="primary">
+                <Icon />
+              </div>
+              {relayId ? (
+                <div className="secondary">{getChainInitial(chainId)}</div>
+              ) : null}
             </div>
           </Suspense>
           <h3>{name}</h3>
