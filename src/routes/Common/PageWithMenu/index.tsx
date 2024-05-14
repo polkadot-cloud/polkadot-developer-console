@@ -23,7 +23,7 @@ export const PageWithMenu = ({
   const { tab } = useActiveTab();
   const routeConfig = routeProvider();
   const { getTabActiveTask } = useTabs();
-  const { chainColorEnabled } = useSettings();
+  const { chainColorEnabled, tabsHidden } = useSettings();
 
   // Redirect when redirects are present in local storage.
   useRedirect({ route });
@@ -55,7 +55,7 @@ export const PageWithMenu = ({
           : undefined
       }
     >
-      <StickyMenu>
+      <StickyMenu className={tabsHidden ? 'tabsHidden' : ''}>
         <Menu {...routeConfig} />
       </StickyMenu>
       <Body>

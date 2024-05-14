@@ -11,6 +11,11 @@ export const FlexWrapper = styled.div`
 export const StickyMenu = styled.div`
   background-color: var(--background-default);
   position: sticky;
-  top: calc(5.02rem);
   z-index: 10;
+  top: calc(5.02rem);
+  transition: top 0.15s;
+
+  &.tabsHidden {
+    top: calc(2.52rem);
+  }
 `;
