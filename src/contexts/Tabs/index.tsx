@@ -146,8 +146,10 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       setSelectedTabIndex(activeTabIndex - 1);
     }
 
-    // Remove this tab's activePages from local storage.
-    local.removeTabActivePages(id);
+    // Remove this tab's records from local storage.
+    local.removeTabRecord('activePages', id);
+    local.removeTabRecord('appliedTags', id);
+    local.removeTabRecord('searchTerms', id);
   };
 
   // Rename a tab.

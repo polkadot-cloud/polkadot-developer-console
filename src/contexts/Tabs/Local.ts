@@ -190,3 +190,25 @@ export const setPageRedirect = (route: Route, tabId: number, value: number) => {
   };
   localStorage.setItem('pageRedirects', JSON.stringify(updated));
 };
+
+// ------------------------------------------------------
+// Remove.
+// ------------------------------------------------------
+
+// Remove a record, keyed by tab, for the provided local storage key.
+export const removeTabRecord = <T>(key: string, tabId: number) => {
+  const current = localStorageOrDefault(key, undefined, true) as
+    | Record<number, T>
+    | undefined;
+
+  if (current) {
+    const updated = { ...current };
+    delete updated[tabId];
+
+    if (Object.keys(updated).length === 0) {
+      localStorage.removeItem(key);
+    } else {
+      localStorage.setItem(key, JSON.stringify(updated));
+    }
+  }
+};
