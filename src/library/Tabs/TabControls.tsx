@@ -35,7 +35,7 @@ export const TabControls = ({ tabContainerRef }: ControlsProps) => {
           }}
           className="action"
         >
-          <FontAwesomeIcon icon={faPlus} className="icon" /> New
+          <FontAwesomeIcon icon={faPlus} />
         </TabWrapper>
       </div>
       <div>
