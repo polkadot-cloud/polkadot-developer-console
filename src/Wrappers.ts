@@ -3,14 +3,9 @@
 
 import styled from 'styled-components';
 
-export const FlexWrapper = styled.div`
-  flex: 1;
-  padding: 0 0.5rem;
-`;
-
-export const StickyMenu = styled.div`
+export const StickyOnTop = styled.div`
   background-color: var(--background-default);
-  position: sticky;
-  top: calc(5.02rem);
   z-index: 10;
+  position: sticky;
+  top: 0;
 `;

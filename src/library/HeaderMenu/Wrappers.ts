@@ -10,6 +10,7 @@ export const HeaderMenuWrapper = styled.div`
   background-color: var(--background-primary);
   border-bottom: 1px solid var(--border-primary-color);
   display: flex;
+  height: 2.4rem;
   width: 100%;
 
   > .menu {

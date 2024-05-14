@@ -4,9 +4,10 @@
 import styled from 'styled-components';
 
 export const HeaderWrapper = styled.div`
+  background-color: var(--background-default);
   display: flex;
   align-items: center;
-  padding: 0.6rem 0.85rem;
+  padding: 0.4rem 0.55rem;
   width: 100%;
 
   > div {

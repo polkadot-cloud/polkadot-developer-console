@@ -12,6 +12,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useTabs } from 'contexts/Tabs';
 import { PageContent } from 'library/PageContent';
 import { NetworkDirectory } from 'config/networks';
+import { StickyMenu } from '../Wrappers';
 
 // Renders a page and menu, with state controlling the active section of the page.
 export const PageWithMenu = ({
@@ -54,7 +55,9 @@ export const PageWithMenu = ({
           : undefined
       }
     >
-      <Menu {...routeConfig} />
+      <StickyMenu>
+        <Menu {...routeConfig} />
+      </StickyMenu>
       <Body>
         <PageWrapper>
           <PageContent {...routeConfig} />

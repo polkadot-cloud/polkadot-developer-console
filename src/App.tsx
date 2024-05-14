@@ -14,6 +14,7 @@ import { Header } from 'library/Header';
 import { Tabs } from 'library/Tabs';
 import { Offline } from 'library/Offline';
 import { ConnectOverlay } from 'library/ConnectOverlay';
+import { StickyOnTop } from 'Wrappers';
 
 // The currently supported pages.
 export type Route = 'default' | 'settings';
@@ -32,8 +33,10 @@ export const App = () => (
         <ConnectOverlay />
         <Notifications />
         <Tooltip />
-        <Header />
-        <Tabs />
+        <StickyOnTop>
+          <Header />
+          <Tabs />
+        </StickyOnTop>
         <Router />
         <Offline />
       </ErrorBoundary>
