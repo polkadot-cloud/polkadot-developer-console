@@ -28,7 +28,7 @@ export const TabsContext =
 export const useTabs = () => useContext(TabsContext);
 
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
-  const { autoConnect } = useSettings();
+  const { autoConnect, autoTabNaming } = useSettings();
 
   // Created tabs. NOTE: Requires ref as it is used in event listeners.
   const [tabs, setTabsState] = useState<Tabs>(local.getTabs() || defaultTabs);
@@ -261,12 +261,19 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Reset a tab task to null. The previously used task is provided to set the correct active home
-  // page index.
+  // page index. Also reset the tab's name if auto naming is enabled.
   const resetTabActiveTask = (tabId: number) => {
     const currentTask = getTabActiveTask(tabId);
     const homePageIndex = currentTask
       ? TASK_HOME_PAGE_INDEXES[currentTask][0]
       : 0;
+
+    // Reset tab name if auto naming is enabled.
+    if (autoTabNaming) {
+      renameTab(tabId, getAutoTabName(tabId, 'New Tab'));
+    }
+
+    // Reset active task and active page.
     local.setActivePage(tabId, 'default', homePageIndex);
     setTabActiveTask(tabId, null);
   };
