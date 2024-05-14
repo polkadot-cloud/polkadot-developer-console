@@ -7,7 +7,7 @@ export type DirectoryId =
   | 'rococo'
   | 'westend'
   | 'statemint'
-  | 'bridgeHubPolkadot'
+  | 'bridge-hub-polkadot'
   | 'collectives';
 
 export type ChainId = DirectoryId | 'custom';

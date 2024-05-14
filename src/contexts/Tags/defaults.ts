@@ -19,11 +19,11 @@ export const defaultTagsConfig: TagsConfig = {
   tag_relay_chain: ['polkadot', 'kusama', 'rococo', 'westend'],
   tag_canary_network: ['kusama'],
   tag_test_network: ['rococo', 'westend'],
-  tag_system_chain: ['statemint', 'bridgeHubPolkadot', 'collectives'],
+  tag_system_chain: ['statemint', 'bridge-hub-polkadot', 'collectives'],
   tag_polkadot_network: [
     'polkadot',
     'statemint',
-    'bridgeHubPolkadot',
+    'bridge-hub-polkadot',
     'collectives',
   ],
   tag_kusama_network: ['kusama'],

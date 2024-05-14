@@ -50,7 +50,7 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
     },
     relayChain: 'polkadot',
   },
-  bridgeHubPolkadot: {
+  'bridge-hub-polkadot': {
     system: {
       chain: 'Polkadot BridgeHub',
       ss58: 0,
