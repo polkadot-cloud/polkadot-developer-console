@@ -16,6 +16,6 @@ export const StickyMenu = styled.div`
   transition: top 0.15s;
 
   &.tabsHidden {
-    top: calc(2.52rem);
+    top: calc(2.48rem);
   }
 `;
