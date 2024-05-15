@@ -21,8 +21,10 @@ import { isCustomEvent } from 'Utils';
 import { ChainStateController } from 'controllers/ChainState';
 import { setStateWithRef } from '@w3ux/utils';
 import type {
+  ChainStateEventDetail,
   StorageSubscriptionType,
   StorageType,
+  SubscriptionEntry,
 } from 'model/ChainState/types';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useApiIndexer } from 'contexts/ApiIndexer';
@@ -63,13 +65,14 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   // Set a chain state subscription by key.
   const setChainStateItem = (
     type: StorageSubscriptionType,
+    timestamp: number,
     subscriptionKey: string,
     result: AnyJson
   ) => {
     setStateWithRef(
       {
         ...chainStateSubscriptionsRef.current,
-        [subscriptionKey]: { type, result },
+        [subscriptionKey]: { type, timestamp, result },
       },
       setChainStateSubscriptions,
       chainStateSubscriptionsRef
@@ -83,12 +86,13 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
         ownerId: detailOwnerId,
         instanceId,
         type,
-        subscriptionKey,
-        result,
-      } = e.detail;
+        timestamp,
+        key,
+        value,
+      }: ChainStateEventDetail = e.detail;
 
       if (ownerId === detailOwnerId && apiInstanceId === instanceId) {
-        setChainStateItem(type, subscriptionKey, result);
+        setChainStateItem(type, timestamp, key, value);
       }
     }
   };
@@ -134,7 +138,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Set a new constant for a tab and key.
-  const setConstant = (key: string, value: AnyJson) => {
+  const setConstant = (key: string, value: SubscriptionEntry) => {
     const updated = { ...chainStateConstants };
     updated[key] = value;
     setChainStateConstants(updated);

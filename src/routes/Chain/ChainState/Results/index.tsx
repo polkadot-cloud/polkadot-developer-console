@@ -11,21 +11,36 @@ import type {
   ChainStateSubscriptions,
 } from 'contexts/ChainState/types';
 
-export const Results = ({ display }: { display: StorageType }) => {
+export const Results = ({ display }: { display: StorageType | 'all' }) => {
   const { getChainStateByType, chainStateConstants } = useChainState();
 
   let chainStateItems: ChainStateSubscriptions | ChainStateConstants = {};
-  if (['raw', 'storage'].includes(display)) {
+
+  // Include raw and storage results if display allows.
+  if (['raw', 'storage', 'all'].includes(display)) {
     chainStateItems = getChainStateByType('raw');
   }
 
-  if (display === 'constant') {
-    chainStateItems = chainStateConstants;
+  // Include constant results if display allows.
+  if (['constant', 'all'].includes(display)) {
+    chainStateItems = { ...getChainStateByType('raw'), ...chainStateConstants };
   }
+
+  // Sort items based on timestamp.
+  const sortedChainStateItems: ChainStateSubscriptions | ChainStateConstants =
+    Object.fromEntries(
+      Object.entries(chainStateItems).sort(([, itemA], [, itemB]) =>
+        itemA.timestamp < itemB.timestamp
+          ? -1
+          : itemA.timestamp > itemB.timestamp
+            ? 1
+            : 0
+      )
+    );
 
   return (
     <ChainStateResultWrapper>
-      {Object.entries(chainStateItems || {})
+      {Object.entries(sortedChainStateItems)
         .reverse()
         .map(([key, value]) => {
           const [index, rawKey] = splitChainStateKey(key);

@@ -98,7 +98,7 @@ export const Constants = () => {
           </ButtonSubmit>
         </section>
       </InputFormWrapper>
-      <Results display="constant" />
+      <Results display="all" /* TODO: filter. display="constant"*/ />
     </>
   );
 };

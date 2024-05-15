@@ -31,13 +31,22 @@ export interface StorageSubscriptionInterface {
 
 export interface ConstantResult {
   key: string;
-  value: AnyJson;
+  value: SubscriptionEntry;
 }
 
 export interface ChainStateEventDetail {
   ownerId: OwnerId;
   instanceId: ApiInstanceId;
   type: StorageSubscriptionType;
+  timestamp: number;
   key: string;
   value: AnyJson;
 }
+
+export interface SubscriptionEntry {
+  type: StorageType;
+  timestamp: number;
+  result: AnyJson;
+}
+
+export type SubscriptionType = 'subscription' | 'constant';

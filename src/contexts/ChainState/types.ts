@@ -21,7 +21,8 @@ export interface ChainStateContextInterface {
 export type ChainStateSubscriptions = Record<string, ChainStateSubscription>;
 
 export interface ChainStateSubscription {
-  type: StorageSubscriptionType;
+  type: StorageType;
+  timestamp: number;
   result: AnyJson;
 }
 
