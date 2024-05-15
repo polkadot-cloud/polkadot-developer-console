@@ -9,7 +9,7 @@ export const Pinned = () => (
   <>
     <Subheading>
       <FontAwesomeIcon icon={faThumbTack} transform="shrink-3" />
-      Pinned Storage
+      Pinned Chain State
     </Subheading>
     <Results withSpacer={false} />
   </>
