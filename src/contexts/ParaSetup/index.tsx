@@ -102,6 +102,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     }
 
     return {
+      chain,
       chainSpec,
       apiInstanceId,
     };
