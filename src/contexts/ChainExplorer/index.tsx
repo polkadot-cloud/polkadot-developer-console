@@ -2,11 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useEffect } from 'react';
-import type {
-  ChainExplorerContextInterface,
-  ChainExplorerTaskData,
-} from './types';
+import { createContext, useContext } from 'react';
+import type { ChainExplorerContextInterface } from './types';
 import {
   defaultChainExplorerContext,
   defaultCustomEndpointChainMeta,
@@ -42,7 +39,6 @@ export const ChainExplorerProvider = ({
   const {
     tabs,
     tabsRef,
-    getTab,
     setTabs,
     getTabTaskData,
     setTabTaskData,
@@ -110,24 +106,6 @@ export const ChainExplorerProvider = ({
       chainData.id,
       chainData.endpoint
     );
-  };
-
-  // Instantiate an Api instance from tab chain data.
-  const instantiateApiFromTab = async (tabId: number) => {
-    const tab = getTab(tabId);
-
-    if (tab?.activeTask === 'chainExplorer') {
-      const taskData = getTabTaskData(tabId) as ChainExplorerTaskData;
-
-      if (taskData?.chain && taskData?.autoConnect) {
-        handleConnectApi(
-          tabIdToOwnerId(tabId),
-          'chainExplorer',
-          taskData.chain.id,
-          taskData.chain.endpoint
-        );
-      }
-    }
   };
 
   // Gets the previously connected to chain from network directory, if present.
@@ -219,16 +197,6 @@ export const ChainExplorerProvider = ({
     };
   };
 
-  // Initialisation of Apis.
-  useEffect(() => {
-    // Instantiate Api instances from tabs.
-    tabs.forEach((tab) => {
-      if (tab.taskData?.autoConnect) {
-        instantiateApiFromTab(tab.id);
-      }
-    });
-  }, []);
-
   return (
     <ChainExplorer.Provider
       value={{
@@ -238,7 +206,6 @@ export const ChainExplorerProvider = ({
         updateUnit,
         forgetTabChain,
         connectChainExplorer,
-        instantiateApiFromTab,
         chainExplorerIntegrityCheck,
       }}
     >

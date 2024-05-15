@@ -18,9 +18,7 @@ export const getTabs = (): Tabs | undefined => {
   if (result) {
     try {
       const formatted = result.map((tab) => {
-        const autoConnect =
-          (tab.activeTask === 'chainExplorer' && tab?.taskData?.autoConnect) ||
-          false;
+        const autoConnect = tab?.taskData?.autoConnect || false;
 
         return {
           ...tab,

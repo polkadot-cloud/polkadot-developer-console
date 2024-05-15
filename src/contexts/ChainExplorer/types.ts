@@ -17,7 +17,6 @@ export interface ChainExplorerContextInterface {
     chainId: ChainId,
     endpoint: string
   ) => void;
-  instantiateApiFromTab: (tabId: number) => void;
   forgetTabChain: (tabId: number) => void;
   chainExplorerIntegrityCheck: (
     tabId: number

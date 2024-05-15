@@ -11,6 +11,7 @@ export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
   getApiInstance: (ownerId, label) => undefined,
   destroyApiInstance: (ownerId, label) => {},
   destroyAllApiInstances: (ownerId) => {},
+  instantiateApiFromTab: (tabId) => {},
 };
 
 // NOTE: Only dummy values to keep the type checker happy. They should be over-written by the

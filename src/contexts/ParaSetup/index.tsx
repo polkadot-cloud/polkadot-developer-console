@@ -88,12 +88,9 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
       return false;
     }
 
-    // Ensure that the api indexer has an active index for the `parachainSetup:relay` instance for
+    // Ensure that the api indexer has an active index for the `parachainSetup` instance for
     // this tab.
-    const apiInstanceId = getTabApiIndex(
-      ownerId,
-      'parachainSetup:relay'
-    )?.instanceId;
+    const apiInstanceId = getTabApiIndex(ownerId, 'parachainSetup')?.instanceId;
     if (!apiInstanceId) {
       return false;
     }
@@ -160,7 +157,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     // Connect to api instance.
     await handleConnectApi(
       tabIdToOwnerId(tabId),
-      'parachainSetup:relay',
+      'parachainSetup',
       chainId,
       endpoint
     );
