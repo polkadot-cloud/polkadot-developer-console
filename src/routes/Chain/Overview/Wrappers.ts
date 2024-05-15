@@ -60,7 +60,7 @@ export const Subheading = styled.h4`
   flex: 1;
   display: flex;
   align-items: center;
-  margin-top: 1.35rem;
+  margin-top: 1.84rem;
   margin-bottom: 0.6rem;
   padding: 0 0.25rem;
 

@@ -46,10 +46,18 @@ export const Results = ({
     };
   }
 
+  // If no storageType is given, filter out items that are not pinned.
+  const filteredChainStateItems =
+    storageType === undefined
+      ? Object.fromEntries(
+          Object.entries(chainStateItems).filter(([, val]) => val.pinned)
+        )
+      : chainStateItems;
+
   // Sort items based on timestamp.
   const sortedChainStateItems: ChainStateSubscriptions | ChainStateConstants =
     Object.fromEntries(
-      Object.entries(chainStateItems).sort(([, itemA], [, itemB]) =>
+      Object.entries(filteredChainStateItems).sort(([, itemA], [, itemB]) =>
         itemA.timestamp < itemB.timestamp
           ? -1
           : itemA.timestamp > itemB.timestamp

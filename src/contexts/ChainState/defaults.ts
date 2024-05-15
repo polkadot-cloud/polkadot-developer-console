@@ -12,4 +12,5 @@ export const defaultChainStateContext: ChainStateContextInterface = {
   getTotalChainStateItems: () => 0,
   chainStateConstants: {},
   setItemPinned: (type, subscriptionKey, pinned) => {},
+  getTotalPinnedItems: () => 0,
 };

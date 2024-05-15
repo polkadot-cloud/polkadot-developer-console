@@ -145,6 +145,12 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     Object.keys(chainStateSubscriptions).length +
     Object.keys(chainStateConstants).length;
 
+  // Get total items that are pinned.
+  const getTotalPinnedItems = () =>
+    Object.values(chainStateSubscriptions).filter(({ pinned }) => pinned)
+      .length +
+    Object.values(chainStateConstants).filter(({ pinned }) => pinned).length;
+
   const documentRef = useRef(document);
   useEventListener(
     'callback-new-chain-state',
@@ -211,6 +217,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
         getTotalChainStateItems,
         setConstant,
         setItemPinned,
+        getTotalPinnedItems,
       }}
     >
       {children}
