@@ -8,7 +8,7 @@ import { faThumbTack } from '@fortawesome/pro-solid-svg-icons';
 export const Pinned = () => (
   <>
     <Subheading>
-      <FontAwesomeIcon icon={faThumbTack} transform="shrink-2" />
+      <FontAwesomeIcon icon={faThumbTack} transform="shrink-3" />
       Pinned Storage
     </Subheading>
     <Results withSpacer={false} />

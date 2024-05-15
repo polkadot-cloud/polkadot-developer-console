@@ -28,4 +28,10 @@ export interface ChainStateSubscription {
 }
 
 // Chain state constants for a tab, keyed by constant key.
-export type ChainStateConstants = Record<string, AnyJson>;
+export type ChainStateConstants = Record<string, ChainStateConstant>;
+
+export interface ChainStateConstant {
+  type: StorageType;
+  timestamp: number;
+  result: AnyJson;
+}

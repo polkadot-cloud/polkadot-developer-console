@@ -17,6 +17,7 @@ import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';
 import type { OwnerId } from 'types';
 import { getUnixTime } from 'date-fns';
+import type { ChainStateSubscriptions } from 'contexts/ChainState/types';
 
 export class ChainState {
   // ------------------------------------------------------
@@ -37,6 +38,22 @@ export class ChainState {
 
   // Unsubscribe objects, keyed by subscription key.
   #unsubs: Record<string, VoidFn> = {};
+
+  // Gets either subscription or constant entries from class state.
+  getEntries(type: SubscriptionType): ChainStateSubscriptions {
+    const entries =
+      type === 'subscription' ? this.subscriptions : this.constants;
+
+    // TODO: amend to add extra properties.
+    // const formatted = Object.fromEntries(
+    //   entries.map((entry) => ({
+    //     ...entry,
+    //     pinned: false,
+    //   }))
+    // ) as ChainStateSubscriptions;
+
+    return entries;
+  }
 
   // ------------------------------------------------------
   // Constructor.

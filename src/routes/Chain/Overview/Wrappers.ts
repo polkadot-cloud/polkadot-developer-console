@@ -66,6 +66,7 @@ export const Subheading = styled.h4`
 
   > svg {
     color: var(--text-color-tertiary);
-    margin-right: 0.3rem;
+    margin-right: 0.25rem;
+    opacity: 0.6;
   }
 `;

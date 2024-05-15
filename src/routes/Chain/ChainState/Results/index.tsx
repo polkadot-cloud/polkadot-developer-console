@@ -15,22 +15,31 @@ import { faFilterList } from '@fortawesome/pro-duotone-svg-icons';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
 
-export const Results = ({ storageType }: { storageType: StorageType }) => {
+export const Results = ({
+  storageType,
+  withSpacer = true,
+}: {
+  storageType?: StorageType;
+  withSpacer?: boolean;
+}) => {
   const { tabId } = useActiveTab();
   const { getStorageItemFilter, setStorageItemFilter } = useChainUi();
   const { getChainStateByType, chainStateConstants, getTotalChainStateItems } =
     useChainState();
 
-  const filtered = getStorageItemFilter(tabId, storageType);
+  const filtered = storageType
+    ? getStorageItemFilter(tabId, storageType)
+    : false;
+
   let chainStateItems: ChainStateSubscriptions | ChainStateConstants = {};
 
   // Include raw and storage results if display allows.
-  if (['raw', 'storage'].includes(storageType) || !filtered) {
+  if (['raw', 'storage', undefined].includes(storageType) || !filtered) {
     chainStateItems = getChainStateByType('raw');
   }
 
   // Include constant results if display allows.
-  if (['constant'].includes(storageType) || !filtered) {
+  if (['constant', undefined].includes(storageType) || !filtered) {
     chainStateItems = {
       ...chainStateItems,
       ...chainStateConstants,
@@ -64,16 +73,18 @@ export const Results = ({ storageType }: { storageType: StorageType }) => {
   return (
     <>
       {getTotalChainStateItems() > 0 && (
-        <FilterWrapper>
-          <button
-            className={filtered ? 'active' : ''}
-            onClick={() => {
-              setStorageItemFilter(tabId, storageType, !filtered);
-            }}
-          >
-            {filtered ? `${getStorageTypeLabel()} Only` : 'Filter'}
-            <FontAwesomeIcon icon={faFilterList} />
-          </button>
+        <FilterWrapper className={withSpacer ? 'withSpacer' : undefined}>
+          {!!storageType && (
+            <button
+              className={filtered ? 'active' : ''}
+              onClick={() => {
+                setStorageItemFilter(tabId, storageType, !filtered);
+              }}
+            >
+              {filtered ? `${getStorageTypeLabel()} Only` : 'Filter'}
+              <FontAwesomeIcon icon={faFilterList} />
+            </button>
+          )}
         </FilterWrapper>
       )}
       <ChainStateResultWrapper>

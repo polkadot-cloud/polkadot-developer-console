@@ -45,7 +45,9 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   const [chainStateSubscriptions, setChainStateSubscriptions] =
     useState<ChainStateSubscriptions>(
       apiInstanceId
-        ? ChainStateController.instances?.[apiInstanceId]?.subscriptions || {}
+        ? ChainStateController.instances?.[apiInstanceId]?.getEntries(
+            'subscription'
+          ) || {}
         : {}
     );
   const chainStateSubscriptionsRef = useRef(chainStateSubscriptions);
@@ -72,7 +74,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     setStateWithRef(
       {
         ...chainStateSubscriptionsRef.current,
-        [subscriptionKey]: { type, timestamp, result },
+        [subscriptionKey]: { type, timestamp, result, pinned: false },
       },
       setChainStateSubscriptions,
       chainStateSubscriptionsRef
@@ -162,12 +164,15 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     setStateWithRef(
-      ChainStateController.instances?.[apiInstanceId]?.subscriptions || {},
+      ChainStateController.instances?.[apiInstanceId]?.getEntries(
+        'subscription'
+      ) || {},
       setChainStateSubscriptions,
       chainStateSubscriptionsRef
     );
     setChainStateConstants(
-      ChainStateController.instances?.[apiInstanceId]?.constants || {}
+      ChainStateController.instances?.[apiInstanceId]?.getEntries('constant') ||
+        {}
     );
   }, [tabId]);
 

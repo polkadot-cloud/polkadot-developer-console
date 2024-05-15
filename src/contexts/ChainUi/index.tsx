@@ -29,8 +29,8 @@ import type { AnyJson } from '@w3ux/utils/types';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import type { MetadataVersion } from 'model/Metadata/types';
 import { setStateWithRef } from '@w3ux/utils';
-import type { OwnerId } from 'types';
 import type { StorageType } from 'model/ChainState/types';
+import type { OwnerId } from 'types';
 
 export const ChainUi =
   createContext<ChainUiContextInterface>(defaultChainContext);
