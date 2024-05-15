@@ -1,20 +1,20 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainId } from 'config/networks/types';
+import type { ChainId, DirectoryId } from 'config/networks/types';
 import type { ConnectFrom, TabChainData } from 'contexts/Tabs/types';
 import type { IntegrityCheckedParachainContext } from 'routes/ParachainSetup/Provider/types';
 
 export interface ParaSetupContextInterface {
   handleConnectTask: (
     tabId: number,
-    chainId: ChainId,
+    chainId: DirectoryId,
     endpoint: string
   ) => Promise<void>;
   getActiveStep: (tabId: number) => SetupStep;
   setActiveStep: (tabId: number, step: SetupStep) => void;
-  getSelectedRelayChain: (tabId: number) => ChainId | undefined;
-  setSelectedRelayChain: (tabId: number, chainId: ChainId) => void;
+  getSelectedRelayChain: (tabId: number) => DirectoryId | undefined;
+  setSelectedRelayChain: (tabId: number, chainId: DirectoryId) => void;
   destroyTabParaSetup: (tabId: number) => void;
   setupParachainIntegrityCheck: (
     tabId: number
@@ -36,4 +36,5 @@ export interface ParachainSetupTaskData {
   chain: TabChainData | undefined;
   connectFrom: ConnectFrom;
   autoConnect: boolean;
+  selectedRelayChain: DirectoryId;
 }

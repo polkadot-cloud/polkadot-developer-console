@@ -3,7 +3,7 @@
 
 import { Suspense, lazy, useMemo } from 'react';
 import { useMenu } from 'contexts/Menu';
-import type { ChainId, DirectoryId } from 'config/networks/types';
+import type { DirectoryId } from 'config/networks/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
@@ -17,7 +17,7 @@ import { getDirectoryIcon } from 'config/networks/Utils';
 export interface ChainItemProps {
   chainId: DirectoryId;
   name: string;
-  onSelect: (chainId: ChainId, endpoint: string) => Promise<void>;
+  onSelect: (chainId: DirectoryId, endpoint: string) => Promise<void>;
 }
 
 export const ChainItem = ({ chainId, name, onSelect }: ChainItemProps) => {

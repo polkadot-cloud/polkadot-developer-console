@@ -187,16 +187,6 @@ export const ChainExplorerProvider = ({
     setTabs(newTabs);
   };
 
-  // Initialisation of Apis.
-  useEffect(() => {
-    // Instantiate Api instances from tabs.
-    tabs.forEach((tab) => {
-      if (tab.taskData?.autoConnect) {
-        instantiateApiFromTab(tab.id);
-      }
-    });
-  }, []);
-
   // Check that the correct state exists for chain explorer task to be active.
   const chainExplorerIntegrityCheck = (
     tabId: number
@@ -228,6 +218,16 @@ export const ChainExplorerProvider = ({
       apiInstanceId,
     };
   };
+
+  // Initialisation of Apis.
+  useEffect(() => {
+    // Instantiate Api instances from tabs.
+    tabs.forEach((tab) => {
+      if (tab.taskData?.autoConnect) {
+        instantiateApiFromTab(tab.id);
+      }
+    });
+  }, []);
 
   return (
     <ChainExplorer.Provider

@@ -5,12 +5,12 @@ import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
 import type {
   ParaSetupContextInterface,
-  SelectedRelayChains,
+  ParachainSetupTaskData,
   SetupStep,
   SetupStepsState,
 } from './types';
 import { defaultParaSetupContext } from './defaults';
-import type { ChainId, DirectoryId } from 'config/networks/types';
+import type { DirectoryId } from 'config/networks/types';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
@@ -31,25 +31,29 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   const { autoTabNaming } = useSettings();
   const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec, handleConnectApi } = useChainSpaceEnv();
-  const { tabs, setTabs, setTabActiveTask, getAutoTabName, getTabTaskData } =
-    useTabs();
+  const {
+    tabs,
+    setTabs,
+    getAutoTabName,
+    getTabTaskData,
+    setTabTaskData,
+    setTabActiveTask,
+  } = useTabs();
 
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
 
-  // Store selected relay chains, keyed by tab.
-  const [selectedRelayChains, setSelectedRelayChains] =
-    useState<SelectedRelayChains>({});
-
   // Get the selected relay chain for a tab.
-  const getSelectedRelayChain = (tabId: number) => selectedRelayChains[tabId];
+  const getSelectedRelayChain = (tabId: number) => {
+    const taskData = getTabTaskData(tabId) as ParachainSetupTaskData;
+    return taskData.selectedRelayChain;
+  };
 
   // Set the selected relay chain for a tab.
-  const setSelectedRelayChain = (tabId: number, chainId: ChainId) => {
-    setSelectedRelayChains({
-      ...selectedRelayChains,
-      [tabId]: chainId,
-    });
+  const setSelectedRelayChain = (tabId: number, chainId: DirectoryId) => {
+    const updated = getTabTaskData(tabId) as ParachainSetupTaskData;
+    updated.selectedRelayChain = chainId;
+    setTabTaskData(tabId, updated);
   };
 
   // Get the active step for a tab id, or 1 otherwise.
@@ -69,10 +73,6 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     const updated = { ...activeSteps };
     delete updated[tabId];
     setActiveSteps(updated);
-
-    const updatedChains = { ...selectedRelayChains };
-    delete updatedChains[tabId];
-    setSelectedRelayChains(updatedChains);
   };
 
   // Check that the correct state exists for parachain setup task to be active.
@@ -113,7 +113,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   // Connects a tab to this task.
   const handleConnectTask = async (
     tabId: number,
-    chainId: ChainId,
+    chainId: DirectoryId,
     endpoint: string
   ) => {
     // Reset local active page on connect.
@@ -149,6 +149,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
               chain: chainData,
               connectFrom: 'directory' as ConnectFrom,
               autoConnect: true,
+              selectedRelayChain: chainId,
             },
           }
         : tab
