@@ -80,7 +80,8 @@ export const Raw = () => {
           </ButtonSubmit>
         </section>
       </InputFormWrapper>
-      <Results display="all" /* TODO: filter. display="raw"*/ />
+
+      <Results storageType="raw" />
     </>
   );
 };

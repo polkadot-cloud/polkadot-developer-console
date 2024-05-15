@@ -41,7 +41,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
 
-  // The results of current chain state subscriptions.
+  // The results of current chain state subscriptions, keyed by subscription key.
   const [chainStateSubscriptions, setChainStateSubscriptions] =
     useState<ChainStateSubscriptions>(
       apiInstanceId
@@ -50,7 +50,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     );
   const chainStateSubscriptionsRef = useRef(chainStateSubscriptions);
 
-  // The results of current chain state constants.
+  // The results of current chain state constants, keyed by subscription key.
   const [chainStateConstants, setChainStateConstants] =
     useState<ChainStateConstants>(
       apiInstanceId
@@ -144,6 +144,11 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     setChainStateConstants(updated);
   };
 
+  // Get total result items.
+  const getTotalChainStateItems = () =>
+    Object.keys(chainStateSubscriptions).length +
+    Object.keys(chainStateConstants).length;
+
   const documentRef = useRef(document);
   useEventListener(
     'callback-new-chain-state',
@@ -173,6 +178,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
         getChainStateItem,
         removeChainStateItem,
         chainStateConstants,
+        getTotalChainStateItems,
         setConstant,
       }}
     >

@@ -20,6 +20,7 @@ import type {
   InputNamespace,
   InputArgsState,
   InputArg,
+  StorageItemFilters,
 } from './types';
 import type { ApiPromise } from '@polkadot/api';
 import { xxhashAsHex } from '@polkadot/util-crypto';
@@ -29,6 +30,7 @@ import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import type { MetadataVersion } from 'model/Metadata/types';
 import { setStateWithRef } from '@w3ux/utils';
 import type { OwnerId } from 'types';
+import type { StorageType } from 'model/ChainState/types';
 
 export const ChainUi =
   createContext<ChainUiContextInterface>(defaultChainContext);
@@ -45,6 +47,10 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
 
   // Stores pallet versions of a chain, keyed by tab.
   const [palletVersions, setPalletVersions] = useState<PalletVersions>({});
+
+  // Active chain state result filters, keyed by tab.
+  const [activeChainStateFilters, setActiveChainStateFilters] =
+    useState<StorageItemFilters>({});
 
   // Stores the input arguments for either a storage item or call, keyed by tab. NOTE: Needs a ref
   // as multiple updates happen within the same render.
@@ -115,6 +121,21 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
         [namespace]: newChainUiInner,
       },
     });
+  };
+
+  // Get a storage item filter for a tab, or return false if it does not exist.
+  const getStorageItemFilter = (tabId: number, key: StorageType): boolean =>
+    activeChainStateFilters?.[tabId]?.[key] || false;
+
+  // Set a storage item filter for a tab.
+  const setStorageItemFilter = (
+    tabId: number,
+    key: StorageType,
+    value: boolean
+  ) => {
+    const updatedFilters = { ...activeChainStateFilters };
+    updatedFilters[tabId] = { ...updatedFilters[tabId], [key]: value };
+    setActiveChainStateFilters(updatedFilters);
   };
 
   // Handle fetching of pallet versions.
@@ -264,6 +285,8 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
         isChainUiValueEmpty,
         getActiveChainStateSection,
         setActiveChainStateSection,
+        getStorageItemFilter,
+        setStorageItemFilter,
         getInputArgs,
         getInputArgsAtKey,
         setInputArgAtKey,

@@ -14,6 +14,7 @@ export interface ChainStateContextInterface {
   getChainStateItem: (subscriptionKey: string) => AnyJson | null;
   removeChainStateItem: (type: StorageType, subscriptionKey: string) => void;
   chainStateConstants: ChainStateConstants;
+  getTotalChainStateItems: () => number;
   setConstant: (key: string, value: AnyJson) => void;
 }
 

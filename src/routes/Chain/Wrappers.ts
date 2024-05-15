@@ -193,7 +193,8 @@ export const ChainStateResultWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
+  padding: 0 0.25rem;
 
   > section {
     flex: 1;
@@ -259,7 +260,7 @@ export const ChainStateResultWrapper = styled.div`
     }
 
     > .dismiss {
-      padding-left: 0.8rem;
+      padding-left: 0.6rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -274,6 +275,42 @@ export const ChainStateResultWrapper = styled.div`
           opacity: 1;
         }
       }
+    }
+  }
+`;
+
+export const FilterWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+
+  > button {
+    color: var(--text-color-tertiary);
+    font-family: InterSemiBold, sans-serif;
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    padding: 0 0.3rem;
+
+    &:hover {
+      color: var(--text-color-secondary);
+    }
+
+    &.active {
+      color: var(--accent-color-secondary);
+      &:hover {
+        color: var(--accent-color-secondary);
+      }
+    }
+
+    > svg {
+      margin-left: 0.3rem;
+    }
+
+    &:last-child {
+      margin-right: 0;
     }
   }
 `;
