@@ -20,6 +20,7 @@ import type { BlockNumber } from 'model/BlockNumber';
 import { FlexWrapper } from 'routes/Common/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useChain } from '../Provider';
+import { Pinned } from './Pinned';
 
 export const Overview = () => {
   const { getApiStatus } = useChainSpaceEnv();
@@ -133,6 +134,8 @@ export const Overview = () => {
           </div>
         </section>
       </CardsWrapper>
+
+      <Pinned />
     </FlexWrapper>
   );
 };

@@ -193,7 +193,6 @@ export const ChainStateResultWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-top: 0.75rem;
   padding: 0 0.25rem;
 
   > section {
@@ -283,11 +282,23 @@ export const FilterWrapper = styled.div`
   flex: 1;
   display: flex;
   justify-content: flex-end;
-  margin-top: 0.75rem;
+
+  &.withSpacer {
+    margin: 0.75rem 0;
+  }
+
+  &.start {
+    justify-content: flex-start;
+  }
+
+  > button,
+  h4 {
+    color: var(--text-color-secondary);
+    font-family: InterSemiBold, sans-serif;
+  }
 
   > button {
     color: var(--text-color-tertiary);
-    font-family: InterSemiBold, sans-serif;
     font-size: 0.75rem;
     margin-right: 0.5rem;
     display: flex;
