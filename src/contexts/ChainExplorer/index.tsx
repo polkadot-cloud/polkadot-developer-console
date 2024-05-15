@@ -3,7 +3,10 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect } from 'react';
-import type { ChainExplorerContextInterface } from './types';
+import type {
+  ChainExplorerContextInterface,
+  ChainExplorerTaskData,
+} from './types';
 import {
   defaultChainExplorerContext,
   defaultCustomEndpointChainMeta,
@@ -112,19 +115,18 @@ export const ChainExplorerProvider = ({
   // Instantiate an Api instance from tab chain data.
   const instantiateApiFromTab = async (tabId: number) => {
     const tab = getTab(tabId);
-    const taskData = getTabTaskData(tabId);
 
-    if (
-      tab?.activeTask === 'chainExplorer' &&
-      taskData?.chain &&
-      taskData?.autoConnect
-    ) {
-      handleConnectApi(
-        tabIdToOwnerId(tabId),
-        'chainExplorer',
-        taskData.chain.id,
-        taskData.chain.endpoint
-      );
+    if (tab?.activeTask === 'chainExplorer') {
+      const taskData = getTabTaskData(tabId) as ChainExplorerTaskData;
+
+      if (taskData?.chain && taskData?.autoConnect) {
+        handleConnectApi(
+          tabIdToOwnerId(tabId),
+          'chainExplorer',
+          taskData.chain.id,
+          taskData.chain.endpoint
+        );
+      }
     }
   };
 
@@ -189,8 +191,12 @@ export const ChainExplorerProvider = ({
   useEffect(() => {
     // Instantiate Api instances from tabs.
     tabs.forEach((tab) => {
-      if (tab.taskData?.autoConnect) {
-        instantiateApiFromTab(tab.id);
+      if (tab.activeTask === 'chainExplorer') {
+        const taskData = getTabTaskData(tab.id) as ChainExplorerTaskData;
+
+        if (taskData?.autoConnect) {
+          instantiateApiFromTab(tab.id);
+        }
       }
     });
   }, []);

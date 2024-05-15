@@ -3,6 +3,8 @@
 
 import type { Route } from 'App';
 import type { ChainId } from 'config/networks/types';
+import type { ChainExplorerTaskData } from 'contexts/ChainExplorer/types';
+import type { ParachainSetupTaskData } from 'contexts/ParaSetup/types';
 import type { Dispatch, SetStateAction } from 'react';
 
 // The tasks that developer console supports.
@@ -59,13 +61,10 @@ export interface Tab {
   activePage: number;
 }
 
-export type TaskData = TaskDataChainExplorer | undefined;
-
-export interface TaskDataChainExplorer {
-  chain: TabChainData | undefined;
-  connectFrom: ConnectFrom;
-  autoConnect: boolean;
-}
+export type TaskData =
+  | ChainExplorerTaskData
+  | ParachainSetupTaskData
+  | undefined;
 
 export interface TabChainData {
   id: ChainId;
