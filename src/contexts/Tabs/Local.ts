@@ -19,11 +19,17 @@ export const getTabs = (): Tabs | undefined => {
     try {
       const formatted = result.map((tab) => {
         const autoConnect = tab?.taskData?.autoConnect || false;
+
         return {
           ...tab,
           // If this tab is configured to auto-connect, set the active task to chainExplorer
-          // immediately. TODO: abstract this into a per-task integrity check.
-          activeTask: !autoConnect ? null : 'chainExplorer',
+          // immediately. TODO: replace chainExplorer with tab.activeTask once selectedRelayChain is
+          // in taskData.
+          activeTask: !autoConnect
+            ? null
+            : tab.activeTask === 'chainExplorer'
+              ? tab.activeTask
+              : null,
           activePage: getActivePage(tab.id, 'default'),
         };
       });

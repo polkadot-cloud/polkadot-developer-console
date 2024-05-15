@@ -191,12 +191,8 @@ export const ChainExplorerProvider = ({
   useEffect(() => {
     // Instantiate Api instances from tabs.
     tabs.forEach((tab) => {
-      if (tab.activeTask === 'chainExplorer') {
-        const taskData = getTabTaskData(tab.id) as ChainExplorerTaskData;
-
-        if (taskData?.autoConnect) {
-          instantiateApiFromTab(tab.id);
-        }
+      if (tab.taskData?.autoConnect) {
+        instantiateApiFromTab(tab.id);
       }
     });
   }, []);
