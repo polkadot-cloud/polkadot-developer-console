@@ -39,20 +39,21 @@ export class ChainState {
   // Unsubscribe objects, keyed by subscription key.
   #unsubs: Record<string, VoidFn> = {};
 
-  // Gets either subscription or constant entries from class state.
+  // Gets either subscription or constant entries from class state, injecting additional properties
+  // for ui.
   getEntries(type: SubscriptionType): ChainStateSubscriptions {
-    const entries =
-      type === 'subscription' ? this.subscriptions : this.constants;
+    const entries = Object.entries(
+      type === 'subscription' ? this.subscriptions : this.constants
+    );
 
-    // TODO: amend to add extra properties.
-    // const formatted = Object.fromEntries(
-    //   entries.map((entry) => ({
-    //     ...entry,
-    //     pinned: false,
-    //   }))
-    // ) as ChainStateSubscriptions;
+    const formatted = Object.fromEntries(
+      entries.map((entry) => ({
+        ...entry,
+        pinned: false,
+      }))
+    ) as ChainStateSubscriptions;
 
-    return entries;
+    return formatted;
   }
 
   // ------------------------------------------------------

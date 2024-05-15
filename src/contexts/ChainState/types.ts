@@ -25,6 +25,7 @@ export interface ChainStateSubscription {
   type: StorageType;
   timestamp: number;
   result: AnyJson;
+  pinned: boolean;
 }
 
 // Chain state constants for a tab, keyed by constant key.
@@ -34,4 +35,5 @@ export interface ChainStateConstant {
   type: StorageType;
   timestamp: number;
   result: AnyJson;
+  pinned: boolean;
 }

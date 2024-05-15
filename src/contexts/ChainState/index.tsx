@@ -44,20 +44,14 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   // The results of current chain state subscriptions, keyed by subscription key.
   const [chainStateSubscriptions, setChainStateSubscriptions] =
     useState<ChainStateSubscriptions>(
-      apiInstanceId
-        ? ChainStateController.instances?.[apiInstanceId]?.getEntries(
-            'subscription'
-          ) || {}
-        : {}
+      ChainStateController.getSubscriptions(apiInstanceId)
     );
   const chainStateSubscriptionsRef = useRef(chainStateSubscriptions);
 
   // The results of current chain state constants, keyed by subscription key.
   const [chainStateConstants, setChainStateConstants] =
     useState<ChainStateConstants>(
-      apiInstanceId
-        ? ChainStateController.instances?.[apiInstanceId]?.constants || {}
-        : {}
+      ChainStateController.getConstants(apiInstanceId)
     );
 
   // Get a chain state subscription by key.
@@ -142,7 +136,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   // Set a new constant for a tab and key.
   const setConstant = (key: string, value: SubscriptionEntry) => {
     const updated = { ...chainStateConstants };
-    updated[key] = value;
+    updated[key] = { ...value, pinned: false };
     setChainStateConstants(updated);
   };
 
@@ -164,16 +158,11 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     setStateWithRef(
-      ChainStateController.instances?.[apiInstanceId]?.getEntries(
-        'subscription'
-      ) || {},
+      ChainStateController.getSubscriptions(apiInstanceId),
       setChainStateSubscriptions,
       chainStateSubscriptionsRef
     );
-    setChainStateConstants(
-      ChainStateController.instances?.[apiInstanceId]?.getEntries('constant') ||
-        {}
-    );
+    setChainStateConstants(ChainStateController.getConstants(apiInstanceId));
   }, [tabId]);
 
   return (
