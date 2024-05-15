@@ -10,7 +10,6 @@ export const defaultChainExplorerContext: ChainExplorerContextInterface = {
   updateSs58: (id, ss58) => {},
   updateUnits: (id, units) => {},
   updateUnit: (id, unit) => {},
-  instantiateApiFromTab: (tabId) => {},
   forgetTabChain: (tabId) => {},
   chainExplorerIntegrityCheck: (tabId) => false,
 };

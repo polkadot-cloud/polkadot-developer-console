@@ -4,7 +4,7 @@
 import type { OwnerId } from 'types';
 
 // The currently accepted api index labels.
-export type ApiIndexLabel = 'chainExplorer' | 'parachainSetup:relay';
+export type ApiIndexLabel = 'chainExplorer' | 'parachainSetup';
 
 export interface ApiIndexerContextInterface {
   apiIndexes: ApiIndexes;

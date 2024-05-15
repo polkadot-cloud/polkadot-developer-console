@@ -10,7 +10,7 @@ import type {
   ApiInstanceId,
   ApiStatus,
 } from 'model/Api/types';
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import type {
   ChainSpaceApiStatuses,
@@ -27,7 +27,7 @@ import { useApiIndexer } from 'contexts/ApiIndexer';
 import type { OwnerId } from 'types';
 import { useChainUi } from 'contexts/ChainUi';
 import { useTabs } from 'contexts/Tabs';
-import { ownerIdToTabId } from 'contexts/Tabs/Utils';
+import { ownerIdToTabId, tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import type { ApiIndexLabel } from 'contexts/ApiIndexer/types';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
@@ -43,9 +43,10 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     getTabApiIndexes,
     removeTabApiIndex,
   } = useApiIndexer();
-  const { resetTabActiveTask } = useTabs();
   const { fetchPalletVersions } = useChainUi();
   const { globalChainSpace } = useGlobalChainSpace();
+  const { tabs, resetTabActiveTask, getTabActiveTask, getTabTaskData } =
+    useTabs();
 
   // The chain spec of each api instance associated with this chain space. NOTE: Requires ref as it
   // is used in event listener.
@@ -258,6 +259,32 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     }
   };
 
+  // Instantiate an Api instances from tab task data.
+  const instantiateApiFromTab = async (tabId: number) => {
+    const activeTask = getTabActiveTask(tabId);
+    const taskData = getTabTaskData(tabId);
+
+    // All tasks require a `chain` and `autoConnect` property to instantiate.
+    if (activeTask && taskData?.chain && taskData?.autoConnect) {
+      handleConnectApi(
+        tabIdToOwnerId(tabId),
+        activeTask,
+        taskData.chain.id,
+        taskData.chain.endpoint
+      );
+    }
+  };
+
+  // Initialisation of Apis.
+  useEffect(() => {
+    // Instantiate Api instances from tabs.
+    tabs.forEach((tab) => {
+      if (tab.taskData?.autoConnect) {
+        instantiateApiFromTab(tab.id);
+      }
+    });
+  }, []);
+
   const documentRef = useRef<Document>(document);
 
   // Listen for api status updates.
@@ -276,6 +303,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
 
         // Connect and Disconnect
         handleConnectApi,
+        instantiateApiFromTab,
         destroyApiInstance,
         destroyAllApiInstances,
       }}

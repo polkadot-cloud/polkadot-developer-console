@@ -1,7 +1,7 @@
 // Copyright 2024 @rossbulat/console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ChainId, DirectoryId } from 'config/networks/types';
+import type { DirectoryId } from 'config/networks/types';
 import { NetworkDirectory } from 'config/networks';
 import { HomePageWrapper } from 'routes/Home/Wrappers';
 import { useParaSetup } from 'contexts/ParaSetup';
@@ -19,7 +19,7 @@ export const Parachain = () => {
   );
 
   // Handle connect on relay chain selection.
-  const handleConnect = async (chainId: ChainId, endpoint: string) => {
+  const handleConnect = async (chainId: DirectoryId, endpoint: string) => {
     handleConnectTask(tabId, chainId, endpoint);
   };
 

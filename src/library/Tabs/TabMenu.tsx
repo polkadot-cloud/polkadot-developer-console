@@ -7,7 +7,6 @@ import {
   faLinkSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useChainExplorer } from 'contexts/ChainExplorer';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useMenu } from 'contexts/Menu';
 import { useSettings } from 'contexts/Settings';
@@ -24,8 +23,8 @@ export const TabContextMenu = ({
 }) => {
   const { closeMenu } = useMenu();
   const { autoTabNaming } = useSettings();
-  const { instantiateApiFromTab } = useChainExplorer();
-  const { getApiStatus, destroyAllApiInstances } = useChainSpaceEnv();
+  const { getApiStatus, destroyAllApiInstances, instantiateApiFromTab } =
+    useChainSpaceEnv();
   const { getTab, setTabActiveTask, renameTab, getAutoTabName } = useTabs();
 
   const tab = getTab(tabId);

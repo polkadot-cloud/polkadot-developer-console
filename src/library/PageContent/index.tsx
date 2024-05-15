@@ -22,8 +22,14 @@ export const PageContent = ({
   // NOTE: page section 9 is a reserved id for `ManageTab`.
   if (activePage !== 9) {
     // Attempt to get the component and width from the sections object.
-    const ActiveComponent = sections?.[activePage]?.Component;
+    let ActiveComponent = sections?.[activePage]?.Component;
     width = sections?.[activePage]?.pageWidth || pageWidth;
+
+    // If no active component was assigned at the provided page index, try to get the first one.
+    if (!ActiveComponent) {
+      ActiveComponent = sections?.[0]?.Component;
+      width = sections?.[0]?.pageWidth || pageWidth;
+    }
 
     // If component exists, continue to process any integrity checks, or just render the component
     // otherwise.

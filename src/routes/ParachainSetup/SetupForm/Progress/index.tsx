@@ -15,7 +15,7 @@ export const Progress = () => {
   const { getApiInstance } = useChainSpaceEnv();
 
   const activeStep = getActiveStep(tabId);
-  const relayInstance = getApiInstance(ownerId, 'parachainSetup:relay');
+  const relayInstance = getApiInstance(ownerId, 'parachainSetup');
 
   // Get the relay chain icon, if available.
   const relayIcon = relayInstance ? relayInstance.chainId : undefined;
