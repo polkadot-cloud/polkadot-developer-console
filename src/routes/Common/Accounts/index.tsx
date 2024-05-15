@@ -36,12 +36,12 @@ export const Accounts = ({
       <AccountsWrapper>
         {accounts.map((account, i) => (
           <Account
+            key={`imported_account_${i}`}
             apiInstanceId={apiInstanceId}
             existentialDeposit={existentialDeposit}
             account={account}
             chain={chain}
             chainId={chain?.id}
-            key={`imported_account_${i}`}
           />
         ))}
       </AccountsWrapper>
