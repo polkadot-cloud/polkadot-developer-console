@@ -22,3 +22,13 @@ export const getChainInitial = (id: DirectoryId) => {
   const entry = NetworkDirectory[id];
   return entry?.initial || entry.system.chain.charAt(0).toUpperCase();
 };
+
+// Get system metadata of a chain.
+export const getChainMeta = (id: DirectoryId) => {
+  const system = NetworkDirectory[id].system;
+  return {
+    ss58: system.ss58,
+    units: system.units,
+    unit: system.unit,
+  };
+};
