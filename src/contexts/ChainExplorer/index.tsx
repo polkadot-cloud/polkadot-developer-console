@@ -11,7 +11,7 @@ import {
 import { useTabs } from 'contexts/Tabs';
 import type { ChainId } from 'config/networks/types';
 import { NetworkDirectory } from 'config/networks';
-import { isDirectoryId } from 'config/networks/Utils';
+import { getChainMeta, isDirectoryId } from 'config/networks/Utils';
 import type { ChainMeta, ConnectFrom, TabTask } from 'contexts/Tabs/types';
 import { useSettings } from 'contexts/Settings';
 import * as local from 'contexts/Tabs/Local';
@@ -58,12 +58,7 @@ export const ChainExplorerProvider = ({
     // Inject chain meta from network directory or custom endpoint.
     let chainMeta: ChainMeta;
     if (isDirectory) {
-      const system = NetworkDirectory[chainId].system;
-      chainMeta = {
-        ss58: system.ss58,
-        units: system.units,
-        unit: system.unit,
-      };
+      chainMeta = getChainMeta(chainId);
     } else {
       const localChain = local.getTabs()?.find(({ id }) => id === tabId)
         ?.taskData?.chain;
