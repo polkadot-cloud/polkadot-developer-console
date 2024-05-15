@@ -148,7 +148,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
             taskData: {
               chain: chainData,
               connectFrom: 'directory' as ConnectFrom,
-              autoConnect: tab.ui.autoConnect,
+              autoConnect: true,
             },
           }
         : tab
