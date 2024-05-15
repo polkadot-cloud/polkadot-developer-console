@@ -15,12 +15,14 @@ import { isDirectoryId } from 'config/networks/Utils';
 import { useChainExplorer } from 'contexts/ChainExplorer';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useSettings } from 'contexts/Settings';
 
 export const ManageTab = () => {
+  const { autoTabNaming } = useSettings();
   const { getTabApiIndexes } = useApiIndexer();
   const { tab, tabId, ownerId } = useActiveTab();
-  const { renameTab, getTabActiveTask } = useTabs();
   const { destroyAllApiInstances } = useChainSpaceEnv();
+  const { renameTab, getTabActiveTask, getAutoTabName } = useTabs();
   const { updateSs58, updateUnits, updateUnit } = useChainExplorer();
 
   const activeTask = getTabActiveTask(tabId);
@@ -31,6 +33,18 @@ export const ManageTab = () => {
   const isCustomChain =
     tab?.taskData?.chain !== undefined &&
     !isDirectoryId(tab.taskData.chain?.id || '');
+
+  // Handle disconnecting from API.
+  const handleDisconnectApi = () => {
+    if (window.confirm('Are you sure you want to disconnect this tab?')) {
+      destroyAllApiInstances(ownerId);
+
+      // Reset tab name if auto naming is enabled.
+      if (autoTabNaming) {
+        renameTab(tabId, getAutoTabName(tabId, 'New Tab'));
+      }
+    }
+  };
 
   return (
     <>
@@ -108,13 +122,7 @@ export const ManageTab = () => {
             <div className="buttons">
               <button
                 onClick={() => {
-                  if (
-                    window.confirm(
-                      'Are you sure you want to disconnect this tab?'
-                    )
-                  ) {
-                    destroyAllApiInstances(ownerId);
-                  }
+                  handleDisconnectApi();
                 }}
               >
                 Disconnect from API

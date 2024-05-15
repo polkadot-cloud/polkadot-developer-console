@@ -12,9 +12,13 @@ import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { useParachain } from 'routes/ParachainSetup/Provider';
+import { useTabs } from 'contexts/Tabs';
+import { useSettings } from 'contexts/Settings';
 
 export const ConnectRelay = () => {
+  const { autoTabNaming } = useSettings();
   const { tabId, ownerId } = useActiveTab();
+  const { renameTab, getAutoTabName } = useTabs();
   const { getSelectedRelayChain } = useParaSetup();
   const { chainSpec, apiInstanceId } = useParachain();
   const { getApiStatus, destroyAllApiInstances } = useChainSpaceEnv();
@@ -44,6 +48,11 @@ export const ConnectRelay = () => {
   // active task.
   const handleDisconnect = () => {
     destroyAllApiInstances(ownerId);
+
+    // Reset tab name if auto naming is enabled.
+    if (autoTabNaming) {
+      renameTab(tabId, getAutoTabName(tabId, 'New Tab'));
+    }
   };
 
   return (

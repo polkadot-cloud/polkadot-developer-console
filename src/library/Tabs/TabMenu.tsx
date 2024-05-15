@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useChainExplorer } from 'contexts/ChainExplorer';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useMenu } from 'contexts/Menu';
+import { useSettings } from 'contexts/Settings';
 import { useTabs } from 'contexts/Tabs';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
@@ -22,9 +23,10 @@ export const TabContextMenu = ({
   onSettings: () => void;
 }) => {
   const { closeMenu } = useMenu();
-  const { getTab, setTabActiveTask } = useTabs();
+  const { autoTabNaming } = useSettings();
   const { instantiateApiFromTab } = useChainExplorer();
   const { getApiStatus, destroyAllApiInstances } = useChainSpaceEnv();
+  const { getTab, setTabActiveTask, renameTab, getAutoTabName } = useTabs();
 
   const tab = getTab(tabId);
   const ownerId = tabIdToOwnerId(tabId);
@@ -72,6 +74,10 @@ export const TabContextMenu = ({
             onClick={() => {
               if (canDisconenct) {
                 destroyAllApiInstances(ownerId);
+                // Reset tab name if auto naming is enabled.
+                if (autoTabNaming) {
+                  renameTab(tabId, getAutoTabName(tabId, 'New Tab'));
+                }
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);
                 // Update tab task.

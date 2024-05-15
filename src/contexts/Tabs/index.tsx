@@ -28,7 +28,7 @@ export const TabsContext =
 export const useTabs = () => useContext(TabsContext);
 
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
-  const { autoConnect, autoTabNaming } = useSettings();
+  const { autoConnect } = useSettings();
 
   // Created tabs. NOTE: Requires ref as it is used in event listeners.
   const [tabs, setTabsState] = useState<Tabs>(local.getTabs() || defaultTabs);
@@ -267,11 +267,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const homePageIndex = currentTask
       ? TASK_HOME_PAGE_INDEXES[currentTask][0]
       : 0;
-
-    // Reset tab name if auto naming is enabled.
-    if (autoTabNaming) {
-      renameTab(tabId, getAutoTabName(tabId, 'New Tab'));
-    }
 
     // Reset active task and active page.
     local.setActivePage(tabId, 'default', homePageIndex);
