@@ -43,6 +43,7 @@ export interface ChainStateResultProps {
   chainStateKey: string;
   type: StorageType;
   result: AnyJson;
+  pinned: boolean;
 }
 
 export interface InputFormProps {

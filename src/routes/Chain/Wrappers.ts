@@ -270,6 +270,11 @@ export const ChainStateResultWrapper = styled.div`
         transition: opacity 0.15s;
         font-size: 0.9rem;
 
+        &.active {
+          color: var(--accent-color-secondary);
+          opacity: 1;
+        }
+
         &:hover {
           opacity: 1;
         }

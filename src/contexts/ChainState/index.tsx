@@ -152,6 +152,42 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     documentRef
   );
 
+  // Set pinned for a chain state item.
+  const setItemPinned = (
+    type: StorageType,
+    subscriptionKey: string,
+    pinned: boolean
+  ) => {
+    const entries =
+      type === 'constant'
+        ? { ...chainStateConstants }
+        : { ...chainStateSubscriptions };
+
+    const updated = Object.fromEntries(
+      Object.entries(entries).map(([key, value]) =>
+        subscriptionKey === key
+          ? [
+              key,
+              {
+                ...value,
+                pinned,
+              },
+            ]
+          : [key, value]
+      )
+    );
+
+    if (type === 'constant') {
+      setChainStateConstants(updated);
+    } else {
+      setStateWithRef(
+        updated,
+        setChainStateSubscriptions,
+        chainStateSubscriptionsRef
+      );
+    }
+  };
+
   // Get chain state on mount and selected tab change.
   useEffect(() => {
     if (!apiInstanceId) {
@@ -174,6 +210,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
         chainStateConstants,
         getTotalChainStateItems,
         setConstant,
+        setItemPinned,
       }}
     >
       {children}

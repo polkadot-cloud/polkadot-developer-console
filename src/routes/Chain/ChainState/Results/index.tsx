@@ -92,7 +92,7 @@ export const Results = ({
           .reverse()
           .map(([key, value]) => {
             const [index, rawKey] = splitChainStateKey(key);
-            const { type, result } = value;
+            const { type, result, pinned } = value;
 
             return (
               <ChainStateResult
@@ -100,6 +100,7 @@ export const Results = ({
                 chainStateKey={key}
                 type={type}
                 result={result}
+                pinned={pinned}
               />
             );
           })}

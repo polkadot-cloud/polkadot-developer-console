@@ -16,6 +16,11 @@ export interface ChainStateContextInterface {
   chainStateConstants: ChainStateConstants;
   getTotalChainStateItems: () => number;
   setConstant: (key: string, value: AnyJson) => void;
+  setItemPinned: (
+    type: StorageType,
+    subscriptionKey: string,
+    pinned: boolean
+  ) => void;
 }
 
 // Chain state subscriptions for a tab, keyed by subscription key.
