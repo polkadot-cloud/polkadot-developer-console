@@ -15,6 +15,9 @@ import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 import type { IntegrityCheckedParachainContext } from 'routes/ParachainSetup/Provider/types';
+import * as localTabs from 'contexts/Tabs/Local';
+import { useTabs } from 'contexts/Tabs';
+import { useSettings } from 'contexts/Settings';
 
 export const ParaSetupContext = createContext<ParaSetupContextInterface>(
   defaultParaSetupContext
@@ -23,8 +26,10 @@ export const ParaSetupContext = createContext<ParaSetupContextInterface>(
 export const useParaSetup = () => useContext(ParaSetupContext);
 
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
+  const { autoTabNaming } = useSettings();
   const { getTabApiIndex } = useApiIndexer();
-  const { getChainSpec } = useChainSpaceEnv();
+  const { getChainSpec, handleConnectApi } = useChainSpaceEnv();
+  const { setTabActiveTask, renameTab, getAutoTabName } = useTabs();
 
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
@@ -95,9 +100,39 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     };
   };
 
+  // Connects a tab to this task.
+  const handleConnectTask = async (
+    tabId: number,
+    chainId: ChainId,
+    endpoint: string
+  ) => {
+    // Reset local active page on connect.
+    localTabs.setActivePage(tabId, 'default', 0);
+
+    // Store the selected relay chain to state.
+    setSelectedRelayChain(tabId, chainId);
+
+    // Update tab task.
+    setTabActiveTask(tabId, 'parachainSetup');
+
+    // Rename tab if auto tab naming is enabled.
+    if (autoTabNaming) {
+      renameTab(tabId, getAutoTabName(tabId, 'Parachain Setup'));
+    }
+
+    // Connect to api instance.
+    await handleConnectApi(
+      tabIdToOwnerId(tabId),
+      'parachainSetup:relay',
+      chainId,
+      endpoint
+    );
+  };
+
   return (
     <ParaSetupContext.Provider
       value={{
+        handleConnectTask,
         getActiveStep,
         setActiveStep,
         getSelectedRelayChain,

@@ -4,21 +4,14 @@
 import type { ChainId, DirectoryId } from 'config/networks/types';
 import { NetworkDirectory } from 'config/networks';
 import { HomePageWrapper } from 'routes/Home/Wrappers';
-import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useTabs } from 'contexts/Tabs';
 import { ChainListWrapper, Separator } from '../Connect/Wrappers';
 import { ChainItem } from './ChainItem';
-import * as local from 'contexts/Tabs/Local';
-import { useSettings } from 'contexts/Settings';
 
 export const Parachain = () => {
-  const { autoTabNaming } = useSettings();
-  const { tabId, ownerId } = useActiveTab();
-  const { handleConnectApi } = useChainSpaceEnv();
-  const { setSelectedRelayChain } = useParaSetup();
-  const { setTabActiveTask, renameTab, getAutoTabName } = useTabs();
+  const { tabId } = useActiveTab();
+  const { handleConnectTask } = useParaSetup();
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -27,22 +20,7 @@ export const Parachain = () => {
 
   // Handle connect on relay chain selection.
   const handleConnect = async (chainId: ChainId, endpoint: string) => {
-    // Reset local active page on connect.
-    local.setActivePage(tabId, 'default', 0);
-
-    // Store the selected relay chain to state.
-    setSelectedRelayChain(tabId, chainId);
-
-    // Update tab task.
-    setTabActiveTask(tabId, 'parachainSetup');
-
-    // Rename tab if auto tab naming is enabled.
-    if (autoTabNaming) {
-      renameTab(tabId, getAutoTabName(tabId, 'Parachain Setup'));
-    }
-
-    // Connect to api instance.
-    await handleConnectApi(ownerId, 'parachainSetup:relay', chainId, endpoint);
+    handleConnectTask(tabId, chainId, endpoint);
   };
 
   const mainChains = relayChains.filter(([key]) =>

@@ -5,6 +5,11 @@ import type { ChainId } from 'config/networks/types';
 import type { IntegrityCheckedParachainContext } from 'routes/ParachainSetup/Provider/types';
 
 export interface ParaSetupContextInterface {
+  handleConnectTask: (
+    tabId: number,
+    chainId: ChainId,
+    endpoint: string
+  ) => Promise<void>;
   getActiveStep: (tabId: number) => SetupStep;
   setActiveStep: (tabId: number, step: SetupStep) => void;
   getSelectedRelayChain: (tabId: number) => ChainId | undefined;
