@@ -10,7 +10,7 @@ import type {
   SetupStepsState,
 } from './types';
 import { defaultParaSetupContext } from './defaults';
-import type { ChainId } from 'config/networks/types';
+import type { ChainId, DirectoryId } from 'config/networks/types';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
@@ -18,6 +18,8 @@ import type { IntegrityCheckedParachainContext } from 'routes/ParachainSetup/Pro
 import * as localTabs from 'contexts/Tabs/Local';
 import { useTabs } from 'contexts/Tabs';
 import { useSettings } from 'contexts/Settings';
+import { getChainMeta } from 'config/networks/Utils';
+import type { ConnectFrom, TabChainData, TabTask } from 'contexts/Tabs/types';
 
 export const ParaSetupContext = createContext<ParaSetupContextInterface>(
   defaultParaSetupContext
@@ -29,7 +31,8 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   const { autoTabNaming } = useSettings();
   const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec, handleConnectApi } = useChainSpaceEnv();
-  const { setTabActiveTask, renameTab, getAutoTabName } = useTabs();
+  const { tabs, setTabs, setTabActiveTask, getAutoTabName, getTabTaskData } =
+    useTabs();
 
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
@@ -77,6 +80,13 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     tabId: number
   ): IntegrityCheckedParachainContext | false => {
     const ownerId = tabIdToOwnerId(tabId);
+    const taskData = getTabTaskData(tabId);
+    const chain = taskData?.chain;
+
+    // Ensure that tab `taskData` contains a `chain` object.
+    if (!chain) {
+      return false;
+    }
 
     // Ensure that the api indexer has an active index for the `parachainSetup:relay` instance for
     // this tab.
@@ -115,10 +125,36 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     // Update tab task.
     setTabActiveTask(tabId, 'parachainSetup');
 
-    // Rename tab if auto tab naming is enabled.
-    if (autoTabNaming) {
-      renameTab(tabId, getAutoTabName(tabId, 'Parachain Setup'));
-    }
+    // Get chain metadata.
+    const chainMeta = getChainMeta(chainId as DirectoryId);
+
+    const chainData: TabChainData = {
+      ...chainMeta,
+      id: chainId,
+      endpoint,
+      api: { instanceIndex: 0 },
+    };
+
+    const newTabs = [...tabs].map((tab) =>
+      tab.id === tabId
+        ? {
+            ...tab,
+            // Auto rename the tab here if the setting is turned on.
+            name: autoTabNaming
+              ? getAutoTabName(tab.id, 'Parachain Setup')
+              : tab.name,
+            // Chain is now assigned the `chainExplorer` task.
+            activeTask: 'parachainSetup' as TabTask,
+            taskData: {
+              chain: chainData,
+              connectFrom: 'directory' as ConnectFrom,
+              autoConnect: tab.ui.autoConnect,
+            },
+          }
+        : tab
+    );
+
+    setTabs(newTabs);
 
     // Connect to api instance.
     await handleConnectApi(

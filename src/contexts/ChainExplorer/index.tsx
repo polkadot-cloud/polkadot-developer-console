@@ -12,7 +12,12 @@ import { useTabs } from 'contexts/Tabs';
 import type { ChainId } from 'config/networks/types';
 import { NetworkDirectory } from 'config/networks';
 import { getChainMeta, isDirectoryId } from 'config/networks/Utils';
-import type { ChainMeta, ConnectFrom, TabTask } from 'contexts/Tabs/types';
+import type {
+  ChainMeta,
+  ConnectFrom,
+  TabChainData,
+  TabTask,
+} from 'contexts/Tabs/types';
 import { useSettings } from 'contexts/Settings';
 import * as local from 'contexts/Tabs/Local';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
@@ -65,7 +70,7 @@ export const ChainExplorerProvider = ({
       chainMeta = localChain || defaultCustomEndpointChainMeta;
     }
 
-    const chainData = {
+    const chainData: TabChainData = {
       ...chainMeta,
       id: chainId,
       endpoint,
