@@ -11,16 +11,16 @@ import { AccountContextMenu } from './AccountMenu';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import BigNumber from 'bignumber.js';
-import { useChain } from '../Provider';
 
 export const Account = ({
+  apiInstanceId,
   account,
+  chain,
   chainId,
   existentialDeposit,
 }: AccountProps) => {
   const { tab } = useActiveTab();
   const { openMenu } = useMenu();
-  const { chain, apiInstanceId } = useChain();
   const { getBalance, getLocks } = useAccounts();
 
   const { name, address } = account;

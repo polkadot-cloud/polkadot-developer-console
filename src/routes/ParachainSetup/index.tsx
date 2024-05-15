@@ -4,13 +4,29 @@
 import { PageWithMenu } from 'routes/Common/PageWithMenu';
 import type { PageSections, RouteSectionProvider } from 'routes/Common/types';
 import { TabMenu } from 'library/TabMenu';
-import { faRectangleList } from '@fortawesome/pro-duotone-svg-icons';
+import {
+  faListTimeline,
+  faRectangleList,
+} from '@fortawesome/pro-duotone-svg-icons';
 import { SetupForm } from 'routes/ParachainSetup/SetupForm';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { ParachainContext } from './Provider';
 import { Preload } from './Preload';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useApiIndexer } from 'contexts/ApiIndexer';
+import { useActiveTab } from 'contexts/ActiveTab';
+import { Accounts } from './Accounts';
 
 export const useRouteSections = (): RouteSectionProvider => {
+  const { ownerId } = useActiveTab();
+  const { getTabApiIndex } = useApiIndexer();
+  const { getChainSpec } = useChainSpaceEnv();
+
+  const apiInstanceId = getTabApiIndex(ownerId, 'parachainSetup')?.instanceId;
+  const chainSpec = getChainSpec(apiInstanceId);
+
+  const balancesPaleltExists = chainSpec?.metadata?.palletExists('Balances');
+
   const { setupParachainIntegrityCheck } = useParaSetup();
 
   const sections: PageSections = {
@@ -21,6 +37,15 @@ export const useRouteSections = (): RouteSectionProvider => {
       pageWidth: 'wide',
     },
   };
+
+  if (balancesPaleltExists) {
+    sections[1] = {
+      label: 'Accounts',
+      icon: faListTimeline,
+      Component: Accounts,
+      pageWidth: 'wide',
+    };
+  }
 
   return {
     label: 'Parachain',
