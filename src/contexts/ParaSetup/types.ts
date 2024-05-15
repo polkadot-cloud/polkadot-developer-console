@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ChainId } from 'config/networks/types';
+import type { ConnectFrom, TabChainData } from 'contexts/Tabs/types';
 import type { IntegrityCheckedParachainContext } from 'routes/ParachainSetup/Provider/types';
 
 export interface ParaSetupContextInterface {
@@ -30,3 +31,9 @@ export type SetupStep =
 export type SetupStepsState = Record<number, SetupStep>;
 
 export type SelectedRelayChains = Record<number, ChainId>;
+
+export interface ParachainSetupTaskData {
+  chain: TabChainData | undefined;
+  connectFrom: ConnectFrom;
+  autoConnect: boolean;
+}

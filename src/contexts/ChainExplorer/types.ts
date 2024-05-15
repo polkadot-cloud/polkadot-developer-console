@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ChainId, NetworkDirectoryItem } from 'config/networks/types';
+import type { ConnectFrom, TabChainData } from 'contexts/Tabs/types';
 import type { IntegrityCheckedChainContext } from 'routes/Chain/Provider/types';
 
 export interface ChainExplorerContextInterface {
@@ -21,4 +22,10 @@ export interface ChainExplorerContextInterface {
   chainExplorerIntegrityCheck: (
     tabId: number
   ) => IntegrityCheckedChainContext | false;
+}
+
+export interface ChainExplorerTaskData {
+  chain: TabChainData | undefined;
+  connectFrom: ConnectFrom;
+  autoConnect: boolean;
 }
