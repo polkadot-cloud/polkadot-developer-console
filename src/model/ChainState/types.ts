@@ -22,6 +22,7 @@ export interface SubscriptionCallConfig {
 // Configuration for raw subscriptions.
 export type RawStorageSubscriptionConfig = SubscriptionCallConfig & {
   type: StorageSubscriptionType;
+  pinned?: boolean;
 };
 
 // Configuration for storage item subscriptions.
@@ -30,6 +31,7 @@ export interface StorageSubscriptionInterface {
   pallet: string;
   call: string;
   args: AnyJson[];
+  pinned?: boolean;
 }
 
 export interface ConstantResult {
@@ -44,6 +46,7 @@ export type ChainStateEventDetail = SubscriptionCallConfig & {
   timestamp: number;
   key: string;
   result: AnyJson;
+  pinned?: boolean;
 };
 
 export interface ChainStateEntry {

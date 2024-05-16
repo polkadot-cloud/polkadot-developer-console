@@ -84,7 +84,7 @@ export class ChainState {
     if (api) {
       try {
         // Get the type of subscription. `raw` (storage keys) or `storage` (items).
-        const { type } = config;
+        const { type, pinned } = config;
         const timestamp = getUnixTime(new Date());
 
         // Subscribe to raw storage keys.
@@ -121,6 +121,7 @@ export class ChainState {
                   ownerId: this.#ownerId,
                   instanceId: this.#instanceId,
                   key: subscriptionKey,
+                  pinned,
                   result,
                 };
 

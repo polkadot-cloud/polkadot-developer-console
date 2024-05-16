@@ -42,6 +42,7 @@ export const getChainStateConstants = (): ChainStateConstants | undefined => {
 // ------------------------------------------------------
 
 // Sets chain state subscriptions to local storage.
+// TODO: Key by tabId.
 export const setChainStateSubscriptions = (value: ChainStateSubscriptions) => {
   // Convert each entry to local format. Maintains configs but removes result and timestamp.
   const formatted = Object.fromEntries(

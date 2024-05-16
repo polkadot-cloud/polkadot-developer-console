@@ -34,6 +34,7 @@ export type ChainStateSubscriptionEventDetail = SubscriptionCallConfig & {
   timestamp: number;
   key: string;
   result: AnyJson;
+  pinned?: boolean;
 };
 
 export type ChainStateSubscription = SubscriptionCallConfig & {
