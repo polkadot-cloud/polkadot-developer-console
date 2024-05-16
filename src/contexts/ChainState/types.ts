@@ -27,6 +27,14 @@ export interface ChainStateContextInterface {
 // Chain state subscriptions for a tab, keyed by subscription key.
 export type ChainStateSubscriptions = Record<string, ChainStateSubscription>;
 
+// A chain state subscription provided through an event callback.
+export interface ChainStateSubscriptionEventDetail {
+  type: StorageSubscriptionType;
+  timestamp: number;
+  key: string;
+  value: AnyJson;
+}
+
 export interface ChainStateSubscription {
   type: StorageType;
   timestamp: number;

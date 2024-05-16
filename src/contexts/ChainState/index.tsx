@@ -13,9 +13,9 @@ import { defaultChainStateContext } from './defaults';
 import type {
   ChainStateConstants,
   ChainStateContextInterface,
+  ChainStateSubscriptionEventDetail,
   ChainStateSubscriptions,
 } from './types';
-import type { AnyJson } from '@w3ux/utils/types';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import { ChainStateController } from 'controllers/ChainState';
@@ -73,15 +73,12 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     chainStateSubscriptions?.[key] || null;
 
   // Set a chain state subscription by key.
-  const setChainStateItem = (
-    type: StorageSubscriptionType,
-    timestamp: number,
-    subscriptionKey: string,
-    result: AnyJson
-  ) => {
+  const setChainStateItem = (item: ChainStateSubscriptionEventDetail) => {
+    const { type, timestamp, key, value } = item;
+
     setChainStateSubscriptions({
       ...chainStateSubscriptionsRef.current,
-      [subscriptionKey]: { type, timestamp, result, pinned: false },
+      [key]: { type, timestamp, result: value, pinned: false },
     });
   };
 
@@ -146,17 +143,14 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
       const {
         ownerId: detailOwnerId,
         instanceId,
-        type,
+        ...rest
         // namespace,
         // method,
         // args,
-        timestamp,
-        key,
-        value,
       }: ChainStateEventDetail = e.detail;
 
       if (ownerId === detailOwnerId && apiInstanceId === instanceId) {
-        setChainStateItem(type, timestamp, key, value);
+        setChainStateItem(rest);
       }
     }
   };
