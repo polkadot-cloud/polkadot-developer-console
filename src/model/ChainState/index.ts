@@ -19,6 +19,7 @@ import { getIndexFromInstanceId } from 'model/Api/util';
 import type { OwnerId } from 'types';
 import { getUnixTime } from 'date-fns';
 import type { ChainStateSubscriptions } from 'contexts/ChainState/types';
+import * as localChainState from 'contexts/ChainState/Local';
 
 export class ChainState {
   // ------------------------------------------------------
@@ -64,6 +65,19 @@ export class ChainState {
   constructor(ownerId: OwnerId, instanceId: ApiInstanceId) {
     this.#ownerId = ownerId;
     this.#instanceId = instanceId;
+
+    // Get local subscriptions for this owner and subscribe to them.
+    const localSubscriptions = localChainState.getChainStateSubscriptions();
+    const entries = Object.entries(localSubscriptions?.[ownerId] || []);
+
+    for (const [key, config] of entries) {
+      if (config.type === 'raw') {
+        this.subscribe(
+          splitChainStateKey(key)[1],
+          config as RawStorageSubscriptionConfig
+        );
+      }
+    }
   }
 
   // ------------------------------------------------------

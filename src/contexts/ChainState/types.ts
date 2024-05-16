@@ -7,6 +7,7 @@ import type {
   StorageType,
   SubscriptionCallConfig,
 } from 'model/ChainState/types';
+import type { OwnerId } from 'types';
 
 export interface ChainStateContextInterface {
   getChainStateByType: (
@@ -54,8 +55,20 @@ export interface ChainStateConstant {
   pinned: boolean;
 }
 
-// The local storage entry for a chain state subscription.
-export type ChainStateSubscriptionLocal = SubscriptionCallConfig & {
+// The local storage entry for a chain state subscription records, keyed by ownerId.
+export type ChainStateSubscriptionsLocal = Record<
+  OwnerId,
+  ChainStateSubscriptionLocalEntries
+>;
+
+// Local storage entries for chain state subscriptions, keyed by subscription key.
+export type ChainStateSubscriptionLocalEntries = Record<
+  string,
+  ChainStateSubscriptionLocalEntry
+>;
+
+// A chain state subscription entry for local storage.
+export type ChainStateSubscriptionLocalEntry = SubscriptionCallConfig & {
   type: StorageType;
   pinned: boolean;
 };

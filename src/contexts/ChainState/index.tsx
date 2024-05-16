@@ -4,7 +4,6 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useRef,
   useState,
   type ReactNode,
@@ -30,8 +29,6 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import * as local from './Local';
 import { useApiIndexer } from 'contexts/ApiIndexer';
-import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { splitChainStateKey } from 'model/ChainState/util';
 
 export const ChainState = createContext<ChainStateContextInterface>(
   defaultChainStateContext
@@ -42,7 +39,6 @@ export const useChainState = () => useContext(ChainState);
 export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   const { tabId, ownerId } = useActiveTab();
   const { getTabApiIndex } = useApiIndexer();
-  const { getApiStatus } = useChainSpaceEnv();
   const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
 
   // The results of current chain state subscriptions, keyed by subscription key.
@@ -52,7 +48,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   // Sets chain state subscriptions to state, ref and local storage.
   const setChainStateSubscriptions = (value: ChainStateSubscriptions) => {
-    local.setChainStateSubscriptions(value);
+    local.setChainStateSubscriptions(ownerId, value);
     setStateWithRef(
       value,
       setChainStateSubscriptionsState,
@@ -207,37 +203,6 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     );
     setChainStateConstants(ChainStateController.getConstants(apiInstanceId));
   }, [tabId]);
-
-  // Get subscriptions for chain state and constants from local storage and subscribe if on initial
-  // render.
-  // TODO: Do this for all tabs. Requires local storage to be keyed by tabId.
-
-  const subscriptionsInitialised = useRef(false);
-  useEffect(() => {
-    const localSubscriptions = local.getChainStateSubscriptions();
-    if (
-      getApiStatus(apiInstanceId) === 'ready' &&
-      localSubscriptions &&
-      apiInstanceId &&
-      subscriptionsInitialised.current === false
-    ) {
-      subscriptionsInitialised.current = true;
-      const chainStateInstance =
-        ChainStateController.instances?.[apiInstanceId];
-
-      if (chainStateInstance) {
-        for (const [key, entry] of Object.entries(localSubscriptions)) {
-          const rawKey = splitChainStateKey(key)[1];
-          ChainStateController.instances?.[apiInstanceId].subscribe(
-            rawKey,
-            entry
-          );
-        }
-      }
-    }
-  }, [getApiStatus(apiInstanceId)]);
-
-  console.log(ChainStateController.instances);
 
   return (
     <ChainState.Provider

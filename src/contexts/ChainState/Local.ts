@@ -5,9 +5,11 @@ import { localStorageOrDefault } from '@w3ux/utils';
 import type {
   ChainStateConstants,
   ChainStateSubscription,
-  ChainStateSubscriptionLocal,
+  ChainStateSubscriptionsLocal,
   ChainStateSubscriptions,
+  ChainStateSubscriptionLocalEntry,
 } from './types';
+import type { OwnerId } from 'types';
 
 // ------------------------------------------------------
 // Getters.
@@ -15,14 +17,14 @@ import type {
 
 // Gets saved chain state subscriptions from local storage, or returns undefined otherwise.
 export const getChainStateSubscriptions = ():
-  | ChainStateSubscriptionLocal
+  | ChainStateSubscriptionsLocal
   | undefined => {
   const result = localStorageOrDefault('chainStateSubs', undefined, true) as
-    | ChainStateSubscriptionLocal
+    | ChainStateSubscriptionsLocal
     | undefined;
 
   if (result) {
-    return result as ChainStateSubscriptionLocal;
+    return result as ChainStateSubscriptionsLocal;
   }
 };
 
@@ -42,8 +44,10 @@ export const getChainStateConstants = (): ChainStateConstants | undefined => {
 // ------------------------------------------------------
 
 // Sets chain state subscriptions to local storage.
-// TODO: Key by tabId.
-export const setChainStateSubscriptions = (value: ChainStateSubscriptions) => {
+export const setChainStateSubscriptions = (
+  ownerId: OwnerId,
+  value: ChainStateSubscriptions
+) => {
   // Convert each entry to local format. Maintains configs but removes result and timestamp.
   const formatted = Object.fromEntries(
     Object.entries(value).map(([key, entry]) => [
@@ -52,7 +56,10 @@ export const setChainStateSubscriptions = (value: ChainStateSubscriptions) => {
     ])
   );
 
-  localStorage.setItem('chainStateSubs', JSON.stringify(formatted));
+  const current = getChainStateSubscriptions() || {};
+  current[ownerId] = formatted;
+
+  localStorage.setItem('chainStateSubs', JSON.stringify(current));
 };
 
 // Sets chain state constants to local storage.
@@ -66,7 +73,7 @@ export const setChainStateConstants = (value: ChainStateConstants) => {
 
 export const formatLocalSubscriptionEntry = (
   entry: ChainStateSubscription
-): ChainStateSubscriptionLocal => {
+): ChainStateSubscriptionLocalEntry => {
   const { namespace, method, args, type, pinned } = entry;
 
   return {
