@@ -75,18 +75,20 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   // Set a chain state subscription by key.
   const setChainStateItem = (item: ChainStateSubscriptionEventDetail) => {
     const { key, ...rest } = item;
+    const current = chainStateSubscriptionsRef.current[key];
 
     setChainStateSubscriptions({
       ...chainStateSubscriptionsRef.current,
-      [key]: { ...rest, pinned: false },
+      [key]: { ...rest, pinned: current?.pinned || false },
     });
   };
 
   // Set a new constant for a tab and key.
   const setConstant = (key: string, value: SubscriptionEntry) => {
     const updated = { ...chainStateConstants };
-    updated[key] = { ...value, pinned: false };
+    const current = updated[key];
 
+    updated[key] = { ...value, pinned: current?.pinned || false };
     setChainStateConstants(updated);
   };
 
