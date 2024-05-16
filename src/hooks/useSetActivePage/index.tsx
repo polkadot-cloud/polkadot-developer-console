@@ -8,6 +8,8 @@ import * as localTabs from 'contexts/Tabs/Local';
 import { removeLocalChainUi } from 'contexts/ChainUi/Local';
 import type { Route } from 'App';
 import { useEffect } from 'react';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
+import { removeLocalChainState } from 'contexts/ChainState/Local';
 
 export const useSetActivePage = () => {
   const { pathname } = useLocation();
@@ -30,6 +32,7 @@ export const useSetActivePage = () => {
   const onTaskRemoved = () => {
     // Remove stale local storage data.
     removeLocalChainUi(tabId);
+    removeLocalChainState(tabIdToOwnerId(tabId));
 
     // Set correct active page.
     const activePage = localTabs.getActivePage(tabId, 'default');

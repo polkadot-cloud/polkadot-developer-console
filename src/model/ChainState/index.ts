@@ -4,6 +4,7 @@
 import type { VoidFn } from '@polkadot/api/types';
 import { ApiController } from 'controllers/Api';
 import type {
+  ChainStateConstantEventDetail,
   ChainStateEventDetail,
   ConstantEntry,
   ConstantResult,
@@ -13,7 +14,7 @@ import type {
   SubscriptionType,
 } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
-import { splitSubscriptionKey } from './util';
+import { splitConstantKey, splitSubscriptionKey } from './util';
 import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';
 import type { OwnerId } from 'types';
@@ -75,6 +76,19 @@ export class ChainState {
           splitSubscriptionKey(key)[1],
           config as RawStorageSubscriptionConfig
         );
+      }
+    }
+
+    // Get local constants for this owner.
+    const localConstants = localChainState.getChainStateConstants();
+    const constants = Object.entries(localConstants?.[ownerId] || []);
+
+    for (const [key, config] of constants) {
+      const [, pallet, constant] = splitConstantKey(key);
+      const result = this.fetchConstant(pallet, constant, config.pinned);
+
+      if (result) {
+        this.dispatchConstant(result.key, result.value);
       }
     }
   }
@@ -164,7 +178,12 @@ export class ChainState {
   // Constants.
   // ------------------------------------------------------
 
-  fetchConstant = (pallet: string, constant: string): ConstantResult | null => {
+  // Fetches a constant from api metadata.
+  fetchConstant = (
+    pallet: string,
+    constant: string,
+    pinned = false
+  ): ConstantResult | null => {
     const api = ApiController.getInstanceApi(
       this.#ownerId,
       getIndexFromInstanceId(this.#instanceId)
@@ -180,13 +199,34 @@ export class ChainState {
         type: 'constant',
         timestamp,
         result,
-        pinned: false,
+        pinned,
       };
 
       this.constants[key] = value;
       return { key, value };
     }
     return null;
+  };
+
+  // Dispatch a constant to the UI.
+  dispatchConstant = (key: string, value: ConstantEntry): void => {
+    const timestamp = getUnixTime(new Date());
+
+    const detail: ChainStateConstantEventDetail = {
+      ownerId: this.#ownerId,
+      instanceId: this.#instanceId,
+      type: 'constant',
+      key,
+      timestamp,
+      result: value.result,
+      pinned: value.pinned,
+    };
+
+    document.dispatchEvent(
+      new CustomEvent('callback-new-chain-state-constant', {
+        detail,
+      })
+    );
   };
 
   // ------------------------------------------------------

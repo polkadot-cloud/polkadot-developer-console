@@ -67,7 +67,7 @@ export const setChainStateFilters = (value: ChainStateFilters) => {
 };
 
 // ------------------------------------------------------
-// Setters.
+// Remove.
 // ------------------------------------------------------
 
 // Removes chain ui from local storage for a tab.

@@ -20,6 +20,7 @@ import { isCustomEvent } from 'Utils';
 import { ChainStateController } from 'controllers/ChainState';
 import { setStateWithRef } from '@w3ux/utils';
 import type {
+  ChainStateConstantEventDetail,
   ChainStateEventDetail,
   ConstantEntry,
   StorageSubscriptionType,
@@ -59,11 +60,12 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   // The results of current chain state constants, keyed by subscription key.
   const [chainStateConstants, setChainStateConstantsState] =
     useState<ChainStateConstants>({});
+  const chainStateConstantsRef = useRef(chainStateConstants);
 
   // Sets constants to state and local storage.
   const setChainStateConstants = (value: ChainStateConstants) => {
     local.setChainStateConstants(ownerId, value);
-    setChainStateConstantsState(value);
+    setStateWithRef(value, setChainStateConstantsState, chainStateConstantsRef);
   };
 
   // Get a chain state subscription by key.
@@ -83,10 +85,12 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   // Set a new constant for a tab and key.
   const setConstant = (key: string, value: ConstantEntry) => {
-    const updated = { ...chainStateConstants };
+    const updated = { ...chainStateConstantsRef.current };
     const current = updated[key];
 
-    updated[key] = { ...value, pinned: current?.pinned || false };
+    const pinned = value?.pinned || current?.pinned || false;
+
+    updated[key] = { ...value, pinned };
     setChainStateConstants(updated);
   };
 
@@ -153,10 +157,33 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Store chain state constant as they are received. Used for initialising constants from local
+  // storage.
+  const handleNewConstant = (e: Event) => {
+    if (isCustomEvent(e)) {
+      const {
+        ownerId: detailOwnerId,
+        instanceId,
+        key,
+        ...rest
+      }: ChainStateConstantEventDetail = e.detail;
+
+      if (ownerId === detailOwnerId && apiInstanceId === instanceId) {
+        setConstant(key, rest);
+      }
+    }
+  };
+
   const documentRef = useRef(document);
   useEventListener(
     'callback-new-chain-state-subscription',
     handleNewChainState,
+    documentRef
+  );
+
+  useEventListener(
+    'callback-new-chain-state-constant',
+    handleNewConstant,
     documentRef
   );
 

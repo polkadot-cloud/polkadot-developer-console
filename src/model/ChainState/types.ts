@@ -49,6 +49,12 @@ export type ChainStateEventDetail = SubscriptionCallConfig & {
   pinned?: boolean;
 };
 
+export type ChainStateConstantEventDetail = ChainStateEntry & {
+  key: string;
+  ownerId: OwnerId;
+  instanceId: ApiInstanceId;
+};
+
 export interface ChainStateEntry {
   type: StorageType;
   timestamp: number;

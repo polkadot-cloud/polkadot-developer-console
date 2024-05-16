@@ -112,3 +112,13 @@ export const formatLocalConstantEntry = (
     pinned,
   };
 };
+
+// ------------------------------------------------------
+// Remove.
+// ------------------------------------------------------
+
+// Removes chain state from local storage for a tab.
+export const removeLocalChainState = (ownerId: OwnerId) => {
+  setChainStateSubscriptions(ownerId, {});
+  setChainStateConstants(ownerId, {});
+};
