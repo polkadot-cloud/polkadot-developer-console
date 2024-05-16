@@ -101,28 +101,27 @@ export class ChainState {
             ...args,
             ([data]: AnyJson) => {
               const result = data.unwrapOr(undefined);
+              const callConfig = {
+                type,
+                namespace,
+                method,
+                args,
+                timestamp,
+              };
 
               if (result !== undefined) {
                 // Persist result to class chain state.
                 this.subscriptions[subscriptionKey] = {
-                  type,
-                  namespace,
-                  method,
-                  args,
-                  timestamp,
+                  ...callConfig,
                   result,
                 };
 
                 const detail: ChainStateEventDetail = {
+                  ...callConfig,
                   ownerId: this.#ownerId,
                   instanceId: this.#instanceId,
-                  type,
-                  namespace,
-                  method,
-                  args,
-                  timestamp,
                   key: subscriptionKey,
-                  value: result,
+                  result,
                 };
 
                 // Send result to UI.

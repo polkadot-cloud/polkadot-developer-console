@@ -74,11 +74,11 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   // Set a chain state subscription by key.
   const setChainStateItem = (item: ChainStateSubscriptionEventDetail) => {
-    const { type, timestamp, key, value } = item;
+    const { key, ...rest } = item;
 
     setChainStateSubscriptions({
       ...chainStateSubscriptionsRef.current,
-      [key]: { type, timestamp, result: value, pinned: false },
+      [key]: { ...rest, pinned: false },
     });
   };
 
@@ -144,9 +144,6 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
         ownerId: detailOwnerId,
         instanceId,
         ...rest
-        // namespace,
-        // method,
-        // args,
       }: ChainStateEventDetail = e.detail;
 
       if (ownerId === detailOwnerId && apiInstanceId === instanceId) {
@@ -188,9 +185,9 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     );
 
     if (type === 'constant') {
-      setChainStateConstants(updated);
+      setChainStateConstants(updated as ChainStateConstants);
     } else {
-      setChainStateSubscriptions(updated);
+      setChainStateSubscriptions(updated as ChainStateSubscriptions);
     }
   };
 

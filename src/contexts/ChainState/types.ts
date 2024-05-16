@@ -30,13 +30,19 @@ export type ChainStateSubscriptions = Record<string, ChainStateSubscription>;
 // A chain state subscription provided through an event callback.
 export interface ChainStateSubscriptionEventDetail {
   type: StorageSubscriptionType;
+  namespace: string;
+  method: string;
+  args: AnyJson[];
   timestamp: number;
   key: string;
-  value: AnyJson;
+  result: AnyJson;
 }
 
 export interface ChainStateSubscription {
   type: StorageType;
+  namespace: string;
+  method: string;
+  args: AnyJson[];
   timestamp: number;
   result: AnyJson;
   pinned: boolean;

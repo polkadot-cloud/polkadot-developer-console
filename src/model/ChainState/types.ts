@@ -43,7 +43,7 @@ export type ChainStateEventDetail = SubscriptionCallConfig & {
   type: StorageSubscriptionType;
   timestamp: number;
   key: string;
-  value: AnyJson;
+  result: AnyJson;
 };
 
 export interface ChainStateEntry {
