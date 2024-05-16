@@ -214,7 +214,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     setInputArgs(updatedInputArgs);
   };
 
-  // Reset input args for a tab.
+  // Reset state for a tab.
   const destroyTabChainUi = (tabId: number) => {
     const updatedChainUi = { ...chainUi };
     delete updatedChainUi[tabId];
@@ -222,9 +222,13 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     const updatedChainStateSections = { ...chainStateSections };
     delete updatedChainStateSections[tabId];
 
+    const updatedChainStateFilters = { ...activeChainStateFilters };
+    delete updatedChainStateFilters[tabId];
+
     const updatedInputArgs = { ...inputArgsRef.current };
     delete updatedInputArgs[tabId];
 
+    setActiveChainStateFilters(updatedChainStateFilters);
     setChainUi(updatedChainUi);
     setChainStateSections(updatedChainStateSections);
     setInputArgs(updatedInputArgs);
