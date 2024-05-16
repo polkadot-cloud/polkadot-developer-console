@@ -4,15 +4,20 @@
 import type { VoidFn } from '@polkadot/api/types';
 import { ApiController } from 'controllers/Api';
 import type {
+  ChainStateEventDetail,
   ConstantResult,
   RawStorageSubscriptionConfig,
   SubscriptionConfig,
+  SubscriptionEntry,
+  SubscriptionType,
 } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
 import { splitChainStateKey } from './util';
 import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';
 import type { OwnerId } from 'types';
+import { getUnixTime } from 'date-fns';
+import type { ChainStateSubscriptions } from 'contexts/ChainState/types';
 
 export class ChainState {
   // ------------------------------------------------------
@@ -26,13 +31,30 @@ export class ChainState {
   #instanceId: ApiInstanceId;
 
   // Chain state subscription results, keyed by subscription key.
-  subscriptions: Record<string, AnyJson> = {};
+  subscriptions: Record<string, SubscriptionEntry> = {};
 
   // Chain state constant results, keyed by constant key.
-  constants: Record<string, AnyJson> = {};
+  constants: Record<string, SubscriptionEntry> = {};
 
   // Unsubscribe objects, keyed by subscription key.
   #unsubs: Record<string, VoidFn> = {};
+
+  // Gets either subscription or constant entries from class state, injecting additional properties
+  // for ui.
+  getEntries(type: SubscriptionType): ChainStateSubscriptions {
+    const entries = Object.entries(
+      type === 'subscription' ? this.subscriptions : this.constants
+    );
+
+    const formatted = Object.fromEntries(
+      entries.map((entry) => ({
+        ...entry,
+        pinned: false,
+      }))
+    ) as ChainStateSubscriptions;
+
+    return formatted;
+  }
 
   // ------------------------------------------------------
   // Constructor.
@@ -62,6 +84,7 @@ export class ChainState {
       try {
         // Get the type of subscription. `raw` (storage keys) or `storage` (items).
         const { type } = config;
+        const timestamp = getUnixTime(new Date());
 
         // Subscribe to raw storage keys.
         if (type === 'raw') {
@@ -80,18 +103,25 @@ export class ChainState {
 
               if (result !== undefined) {
                 // Persist result to class chain state.
-                this.subscriptions[subscriptionKey] = { type, result };
+                this.subscriptions[subscriptionKey] = {
+                  type,
+                  timestamp,
+                  result,
+                };
+
+                const detail: ChainStateEventDetail = {
+                  ownerId: this.#ownerId,
+                  instanceId: this.#instanceId,
+                  type,
+                  timestamp,
+                  key: subscriptionKey,
+                  value: result,
+                };
 
                 // Send result to UI.
                 document.dispatchEvent(
                   new CustomEvent('callback-new-chain-state', {
-                    detail: {
-                      ownerId: this.#ownerId,
-                      instanceId: this.#instanceId,
-                      type,
-                      subscriptionKey,
-                      result,
-                    },
+                    detail,
                   })
                 );
               } else {
@@ -123,8 +153,11 @@ export class ChainState {
     if (result) {
       const rawKey = `${pallet}_${constant}`;
       const key = this.prependIndexToKey('constant', rawKey);
-      const value = {
+      const timestamp = getUnixTime(new Date());
+
+      const value: SubscriptionEntry = {
         type: 'constant',
+        timestamp,
         result,
       };
 
@@ -140,7 +173,7 @@ export class ChainState {
 
   // Prepend an index and underscore to the start of a subscription key.
   prependIndexToKey = (
-    type: 'constant' | 'subscription',
+    type: SubscriptionType,
     subscriptionKey: string
   ): string => {
     const entries =

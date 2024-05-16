@@ -5,6 +5,7 @@ import type { ApiPromise } from '@polkadot/api';
 import type { AnyJson } from '@w3ux/utils/types';
 import type { OwnerId } from 'types';
 import type { MetadataVersion } from 'model/Metadata/types';
+import type { StorageType } from 'model/ChainState/types';
 
 export interface ChainUiContextInterface {
   chainUi: ChainUiState;
@@ -34,6 +35,12 @@ export interface ChainUiContextInterface {
   setActiveChainStateSection: (
     tabId: number,
     section: ChainStateSection
+  ) => void;
+  getStorageItemFilter: (tabId: number, key: StorageType) => boolean;
+  setStorageItemFilter: (
+    tabId: number,
+    key: StorageType,
+    value: boolean
   ) => void;
   getInputArgs: (tabId: number, section: InputNamespace) => InputArgs | null;
   getInputArgsAtKey: (
@@ -78,6 +85,14 @@ export interface ChainUiNamespaceInner {
   palletSearch: string;
   // Whether automatic selection on search is enabled for pallet.
   palletSelectOnSearch: boolean;
+}
+
+// Storage item filters.
+export type StorageItemFilters = Record<number, StorageItemFilter>;
+export interface StorageItemFilter {
+  storage?: boolean;
+  constant?: boolean;
+  raw?: boolean;
 }
 
 // Store versions of pallets. {ownerId: { palletName: version }}.

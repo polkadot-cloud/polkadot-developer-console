@@ -9,5 +9,8 @@ export const defaultChainStateContext: ChainStateContextInterface = {
   getChainStateItem: (key) => null,
   removeChainStateItem: (type, key) => {},
   setConstant: (key, value) => ({}),
+  getTotalChainStateItems: () => 0,
   chainStateConstants: {},
+  setItemPinned: (type, subscriptionKey, pinned) => {},
+  getTotalPinnedItems: () => 0,
 };

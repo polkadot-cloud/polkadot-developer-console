@@ -14,16 +14,32 @@ export interface ChainStateContextInterface {
   getChainStateItem: (subscriptionKey: string) => AnyJson | null;
   removeChainStateItem: (type: StorageType, subscriptionKey: string) => void;
   chainStateConstants: ChainStateConstants;
+  getTotalChainStateItems: () => number;
   setConstant: (key: string, value: AnyJson) => void;
+  setItemPinned: (
+    type: StorageType,
+    subscriptionKey: string,
+    pinned: boolean
+  ) => void;
+  getTotalPinnedItems: () => number;
 }
 
 // Chain state subscriptions for a tab, keyed by subscription key.
 export type ChainStateSubscriptions = Record<string, ChainStateSubscription>;
 
 export interface ChainStateSubscription {
-  type: StorageSubscriptionType;
+  type: StorageType;
+  timestamp: number;
   result: AnyJson;
+  pinned: boolean;
 }
 
 // Chain state constants for a tab, keyed by constant key.
-export type ChainStateConstants = Record<string, AnyJson>;
+export type ChainStateConstants = Record<string, ChainStateConstant>;
+
+export interface ChainStateConstant {
+  type: StorageType;
+  timestamp: number;
+  result: AnyJson;
+  pinned: boolean;
+}

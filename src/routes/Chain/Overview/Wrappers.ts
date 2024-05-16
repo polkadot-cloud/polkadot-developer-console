@@ -54,3 +54,19 @@ export const CardsWrapper = styled.div`
     }
   }
 `;
+
+export const Subheading = styled.h4`
+  font-family: InterSemiBold, sans-serif;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-top: 1.84rem;
+  margin-bottom: 0.6rem;
+  padding: 0 0.25rem;
+
+  > svg {
+    color: var(--text-color-tertiary);
+    margin-right: 0.25rem;
+    opacity: 0.6;
+  }
+`;

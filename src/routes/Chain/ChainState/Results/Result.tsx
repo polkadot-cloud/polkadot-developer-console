@@ -16,9 +16,10 @@ export const ChainStateResult = ({
   chainStateKey,
   type,
   result,
+  pinned,
 }: ChainStateResultProps) => {
-  const { removeChainStateItem } = useChainState();
   const [, rawKey] = splitChainStateKey(chainStateKey);
+  const { removeChainStateItem, setItemPinned } = useChainState();
 
   // Readable display of the result.
   const display = result?.toHuman();
@@ -56,8 +57,9 @@ export const ChainStateResult = ({
           <FontAwesomeIcon icon={faXmark} />
         </button>
         <button
+          className={pinned ? 'active' : undefined}
           onClick={() => {
-            /* TODO: implement */
+            setItemPinned(type, chainStateKey, !pinned);
           }}
         >
           <FontAwesomeIcon icon={faThumbtack} transform="shrink-2" />

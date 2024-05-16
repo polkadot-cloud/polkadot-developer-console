@@ -21,8 +21,10 @@ import { isCustomEvent } from 'Utils';
 import { ChainStateController } from 'controllers/ChainState';
 import { setStateWithRef } from '@w3ux/utils';
 import type {
+  ChainStateEventDetail,
   StorageSubscriptionType,
   StorageType,
+  SubscriptionEntry,
 } from 'model/ChainState/types';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useApiIndexer } from 'contexts/ApiIndexer';
@@ -39,21 +41,17 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
 
-  // The results of current chain state subscriptions.
+  // The results of current chain state subscriptions, keyed by subscription key.
   const [chainStateSubscriptions, setChainStateSubscriptions] =
     useState<ChainStateSubscriptions>(
-      apiInstanceId
-        ? ChainStateController.instances?.[apiInstanceId]?.subscriptions || {}
-        : {}
+      ChainStateController.getSubscriptions(apiInstanceId)
     );
   const chainStateSubscriptionsRef = useRef(chainStateSubscriptions);
 
-  // The results of current chain state constants.
+  // The results of current chain state constants, keyed by subscription key.
   const [chainStateConstants, setChainStateConstants] =
     useState<ChainStateConstants>(
-      apiInstanceId
-        ? ChainStateController.instances?.[apiInstanceId]?.constants || {}
-        : {}
+      ChainStateController.getConstants(apiInstanceId)
     );
 
   // Get a chain state subscription by key.
@@ -63,13 +61,14 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   // Set a chain state subscription by key.
   const setChainStateItem = (
     type: StorageSubscriptionType,
+    timestamp: number,
     subscriptionKey: string,
     result: AnyJson
   ) => {
     setStateWithRef(
       {
         ...chainStateSubscriptionsRef.current,
-        [subscriptionKey]: { type, result },
+        [subscriptionKey]: { type, timestamp, result, pinned: false },
       },
       setChainStateSubscriptions,
       chainStateSubscriptionsRef
@@ -83,12 +82,13 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
         ownerId: detailOwnerId,
         instanceId,
         type,
-        subscriptionKey,
-        result,
-      } = e.detail;
+        timestamp,
+        key,
+        value,
+      }: ChainStateEventDetail = e.detail;
 
       if (ownerId === detailOwnerId && apiInstanceId === instanceId) {
-        setChainStateItem(type, subscriptionKey, result);
+        setChainStateItem(type, timestamp, key, value);
       }
     }
   };
@@ -134,11 +134,22 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Set a new constant for a tab and key.
-  const setConstant = (key: string, value: AnyJson) => {
+  const setConstant = (key: string, value: SubscriptionEntry) => {
     const updated = { ...chainStateConstants };
-    updated[key] = value;
+    updated[key] = { ...value, pinned: false };
     setChainStateConstants(updated);
   };
+
+  // Get total result items.
+  const getTotalChainStateItems = () =>
+    Object.keys(chainStateSubscriptions).length +
+    Object.keys(chainStateConstants).length;
+
+  // Get total items that are pinned.
+  const getTotalPinnedItems = () =>
+    Object.values(chainStateSubscriptions).filter(({ pinned }) => pinned)
+      .length +
+    Object.values(chainStateConstants).filter(({ pinned }) => pinned).length;
 
   const documentRef = useRef(document);
   useEventListener(
@@ -147,19 +158,53 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     documentRef
   );
 
+  // Set pinned for a chain state item.
+  const setItemPinned = (
+    type: StorageType,
+    subscriptionKey: string,
+    pinned: boolean
+  ) => {
+    const entries =
+      type === 'constant'
+        ? { ...chainStateConstants }
+        : { ...chainStateSubscriptions };
+
+    const updated = Object.fromEntries(
+      Object.entries(entries).map(([key, value]) =>
+        subscriptionKey === key
+          ? [
+              key,
+              {
+                ...value,
+                pinned,
+              },
+            ]
+          : [key, value]
+      )
+    );
+
+    if (type === 'constant') {
+      setChainStateConstants(updated);
+    } else {
+      setStateWithRef(
+        updated,
+        setChainStateSubscriptions,
+        chainStateSubscriptionsRef
+      );
+    }
+  };
+
   // Get chain state on mount and selected tab change.
   useEffect(() => {
     if (!apiInstanceId) {
       return;
     }
     setStateWithRef(
-      ChainStateController.instances?.[apiInstanceId]?.subscriptions || {},
+      ChainStateController.getSubscriptions(apiInstanceId),
       setChainStateSubscriptions,
       chainStateSubscriptionsRef
     );
-    setChainStateConstants(
-      ChainStateController.instances?.[apiInstanceId]?.constants || {}
-    );
+    setChainStateConstants(ChainStateController.getConstants(apiInstanceId));
   }, [tabId]);
 
   return (
@@ -169,7 +214,10 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
         getChainStateItem,
         removeChainStateItem,
         chainStateConstants,
+        getTotalChainStateItems,
         setConstant,
+        setItemPinned,
+        getTotalPinnedItems,
       }}
     >
       {children}

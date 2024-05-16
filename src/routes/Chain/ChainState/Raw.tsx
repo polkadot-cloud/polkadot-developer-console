@@ -80,7 +80,8 @@ export const Raw = () => {
           </ButtonSubmit>
         </section>
       </InputFormWrapper>
-      <Results display="raw" />
+
+      <Results storageType="raw" />
     </>
   );
 };

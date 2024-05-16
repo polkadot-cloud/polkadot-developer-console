@@ -13,6 +13,24 @@ export class ChainStateController {
   static instances: Record<ApiInstanceId, ChainState> = {};
 
   // ------------------------------------------------------
+  // Getters.
+  // ------------------------------------------------------
+
+  // Get subscriptions from an instance.
+  static getSubscriptions(instanceId?: ApiInstanceId) {
+    return !instanceId
+      ? {}
+      : this.instances?.[instanceId]?.getEntries('subscription') || {};
+  }
+
+  // Get constants from an instance.
+  static getConstants(instanceId?: ApiInstanceId) {
+    return !instanceId
+      ? {}
+      : this.instances?.[instanceId]?.getEntries('constant') || {};
+  }
+
+  // ------------------------------------------------------
   // Chain state instance methods.
   // ------------------------------------------------------
 

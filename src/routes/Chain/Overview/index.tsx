@@ -20,10 +20,13 @@ import type { BlockNumber } from 'model/BlockNumber';
 import { FlexWrapper } from 'routes/Common/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useChain } from '../Provider';
+import { Pinned } from './Pinned';
+import { useChainState } from 'contexts/ChainState';
 
 export const Overview = () => {
-  const { getApiStatus } = useChainSpaceEnv();
   const { tabId, ownerId } = useActiveTab();
+  const { getApiStatus } = useChainSpaceEnv();
+  const { getTotalPinnedItems } = useChainState();
   const { chainSpec, apiInstanceId, chain } = useChain();
 
   const apiStatus = getApiStatus(apiInstanceId);
@@ -133,6 +136,8 @@ export const Overview = () => {
           </div>
         </section>
       </CardsWrapper>
+
+      {getTotalPinnedItems() > 0 && <Pinned />}
     </FlexWrapper>
   );
 };

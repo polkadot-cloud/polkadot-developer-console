@@ -98,7 +98,8 @@ export const Constants = () => {
           </ButtonSubmit>
         </section>
       </InputFormWrapper>
-      <Results display="constant" />
+
+      <Results storageType="constant" />
     </>
   );
 };

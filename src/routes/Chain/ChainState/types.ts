@@ -7,7 +7,7 @@ import type {
   ChainUiNamespace,
   InputNamespace,
 } from 'contexts/ChainUi/types';
-import type { StorageSubscriptionType } from 'model/ChainState/types';
+import type { StorageType } from 'model/ChainState/types';
 import type {
   PalletItemScraped,
   PalletListItem,
@@ -41,8 +41,9 @@ export interface EncodedDetailsProps {
 
 export interface ChainStateResultProps {
   chainStateKey: string;
-  type: StorageSubscriptionType;
+  type: StorageType;
   result: AnyJson;
+  pinned: boolean;
 }
 
 export interface InputFormProps {
