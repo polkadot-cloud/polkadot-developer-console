@@ -5,6 +5,7 @@ import type { AnyJson } from '@w3ux/utils/types';
 import type {
   StorageSubscriptionType,
   StorageType,
+  SubscriptionCallConfig,
 } from 'model/ChainState/types';
 
 export interface ChainStateContextInterface {
@@ -28,25 +29,19 @@ export interface ChainStateContextInterface {
 export type ChainStateSubscriptions = Record<string, ChainStateSubscription>;
 
 // A chain state subscription provided through an event callback.
-export interface ChainStateSubscriptionEventDetail {
+export type ChainStateSubscriptionEventDetail = SubscriptionCallConfig & {
   type: StorageSubscriptionType;
-  namespace: string;
-  method: string;
-  args: AnyJson[];
   timestamp: number;
   key: string;
   result: AnyJson;
-}
+};
 
-export interface ChainStateSubscription {
+export type ChainStateSubscription = SubscriptionCallConfig & {
   type: StorageType;
-  namespace: string;
-  method: string;
-  args: AnyJson[];
   timestamp: number;
   result: AnyJson;
   pinned: boolean;
-}
+};
 
 // Chain state constants for a tab, keyed by constant key.
 export type ChainStateConstants = Record<string, ChainStateConstant>;
