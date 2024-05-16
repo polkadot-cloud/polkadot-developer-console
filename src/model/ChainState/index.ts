@@ -51,7 +51,6 @@ export class ChainState {
     const formatted = Object.fromEntries(
       entries.map((entry) => ({
         ...entry,
-        pinned: false,
       }))
     ) as ChainStateSubscriptions;
 
@@ -121,6 +120,7 @@ export class ChainState {
                 method,
                 args,
                 timestamp,
+                pinned: config?.pinned || false,
               };
 
               if (result !== undefined) {
@@ -180,6 +180,7 @@ export class ChainState {
         type: 'constant',
         timestamp,
         result,
+        pinned: false,
       };
 
       this.constants[key] = value;

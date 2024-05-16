@@ -53,6 +53,7 @@ export interface ChainStateEntry {
   type: StorageType;
   timestamp: number;
   result: AnyJson;
+  pinned: boolean;
 }
 export type SubscriptionEntry = ChainStateEntry & SubscriptionCallConfig;
 
