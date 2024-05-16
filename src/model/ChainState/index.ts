@@ -5,6 +5,7 @@ import type { VoidFn } from '@polkadot/api/types';
 import { ApiController } from 'controllers/Api';
 import type {
   ChainStateEventDetail,
+  ConstantEntry,
   ConstantResult,
   RawStorageSubscriptionConfig,
   SubscriptionConfig,
@@ -34,7 +35,7 @@ export class ChainState {
   subscriptions: Record<string, SubscriptionEntry> = {};
 
   // Chain state constant results, keyed by constant key.
-  constants: Record<string, SubscriptionEntry> = {};
+  constants: Record<string, ConstantEntry> = {};
 
   // Unsubscribe objects, keyed by subscription key.
   #unsubs: Record<string, VoidFn> = {};
@@ -105,6 +106,9 @@ export class ChainState {
                 // Persist result to class chain state.
                 this.subscriptions[subscriptionKey] = {
                   type,
+                  namespace,
+                  method,
+                  args,
                   timestamp,
                   result,
                 };
@@ -113,6 +117,9 @@ export class ChainState {
                   ownerId: this.#ownerId,
                   instanceId: this.#instanceId,
                   type,
+                  namespace,
+                  method,
+                  args,
                   timestamp,
                   key: subscriptionKey,
                   value: result,
@@ -155,7 +162,7 @@ export class ChainState {
       const key = this.prependIndexToKey('constant', rawKey);
       const timestamp = getUnixTime(new Date());
 
-      const value: SubscriptionEntry = {
+      const value: ConstantEntry = {
         type: 'constant',
         timestamp,
         result,
