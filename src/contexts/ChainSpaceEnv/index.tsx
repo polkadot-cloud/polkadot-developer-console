@@ -17,6 +17,7 @@ import type {
   ChainSpaceChainSpecs,
   ChainSpaceEnvContextInterface,
   ChainSpaceEnvProps,
+  PalletVersions,
 } from './types';
 import { defaultChainSpaceEnvContext } from './defaults';
 import { useGlobalChainSpace } from 'contexts/GlobalChainSpace';
@@ -25,10 +26,15 @@ import { ApiController } from 'controllers/Api';
 import { BlockNumber } from 'model/BlockNumber';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 import type { OwnerId } from 'types';
-import { useChainUi } from 'contexts/ChainUi';
 import { useTabs } from 'contexts/Tabs';
 import { ownerIdToTabId, tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import type { ApiIndexLabel } from 'contexts/ApiIndexer/types';
+import type { MetadataVersion } from 'model/Metadata/types';
+import type { ApiPromise } from '@polkadot/api';
+import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
+import { xxhashAsHex } from '@polkadot/util-crypto';
+import { u16 } from 'scale-ts';
+import type { AnyJson } from '@w3ux/utils/types';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
   defaultChainSpaceEnvContext
@@ -43,7 +49,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     getTabApiIndexes,
     removeTabApiIndex,
   } = useApiIndexer();
-  const { fetchPalletVersions } = useChainUi();
   const { globalChainSpace } = useGlobalChainSpace();
   const { tabs, resetTabActiveTask, getTabActiveTask, getTabTaskData } =
     useTabs();
@@ -65,6 +70,9 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   );
   const apiStatusesRef = useRef(apiStatuses);
 
+  // Stores pallet versions of a chain, keyed by tab.
+  const [palletVersions, setPalletVersions] = useState<PalletVersions>({});
+
   // Setter for api status. Updates state and ref.
   const setApiStatuses = (newApiStatuses: ChainSpaceApiStatuses) => {
     setStateWithRef(newApiStatuses, setApiStatusesState, apiStatusesRef);
@@ -83,6 +91,13 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     const updatedChainSpecs = { ...chainSpecsRef.current };
     delete updatedChainSpecs[instanceId];
     setChainSpecs(updatedChainSpecs);
+  };
+
+  // Removes palletVersions for an instance by id.
+  const removePalletVersions = (ownerId: OwnerId) => {
+    const updatedPalletVersions = { ...palletVersions };
+    delete updatedPalletVersions[ownerId];
+    setPalletVersions(updatedPalletVersions);
   };
 
   // Get an api status for an instance by id.
@@ -214,6 +229,9 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
       // Remove chain spec.
       removeChainSpec(instanceId);
 
+      // Remove pallet versions.
+      removePalletVersions(ownerId);
+
       // Reset active task.
       resetTabActiveTask(ownerIdToTabId(ownerId));
     } else {
@@ -275,6 +293,53 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     }
   };
 
+  // Handle fetching of pallet versions.
+  const fetchPalletVersions = async (
+    ownerId: OwnerId,
+    metadata: MetadataVersion,
+    apiInstance: ApiPromise
+  ) => {
+    // Exit if pallet versions have already been fetched.
+    if (palletVersions[ownerId] !== undefined) {
+      return;
+    }
+    // Get pallet list from scraper.
+    const scraper = new PalletScraper(metadata);
+    const pallets = scraper.getList();
+
+    // Map through pallets and set up an array of calls to query the RPC with.
+    const calls = pallets.map(({ name }) => {
+      const storageKey =
+        xxhashAsHex(name, 128) +
+        xxhashAsHex(':__STORAGE_VERSION__:', 128).slice(2);
+      return apiInstance.rpc.state.getStorage(storageKey);
+    });
+
+    const result = await Promise.all(calls);
+
+    const newPalletVersions = Object.fromEntries(
+      result.map((element: AnyJson, index: number) => {
+        // Empty return types can be assumed to be version 0.
+        const versionAsHex = element.toHex();
+        return [
+          pallets[index].name,
+          versionAsHex == '0x' ? '0' : String(u16.dec(element.toString())),
+        ];
+      })
+    );
+
+    // Set pallet version state for the provided tab.
+    setPalletVersions((prev) => ({
+      ...prev,
+      [ownerId]: newPalletVersions,
+    }));
+  };
+
+  // Get pallet versions by tab Id.
+  const getPalletVersions = (
+    ownerId: OwnerId
+  ): Record<string, string> | undefined => palletVersions[ownerId];
+
   // Initialisation of Apis.
   useEffect(() => {
     // Instantiate Api instances from tabs.
@@ -300,6 +365,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         getApiStatus,
         getChainSpec,
         getApiInstance,
+        getPalletVersions,
 
         // Connect and Disconnect
         handleConnectApi,

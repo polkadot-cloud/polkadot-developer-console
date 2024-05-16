@@ -14,6 +14,7 @@ import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
 import { useSelectFirst } from 'hooks/useSelectFirst';
 import { SelectDropdown } from 'library/SelectDropdown';
 import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const PalletList = ({
   pallets,
@@ -22,7 +23,8 @@ export const PalletList = ({
   onSelect,
 }: PalletListProps) => {
   const { tabId, ownerId } = useActiveTab();
-  const { getPalletVersions, getChainUi, setChainUiNamespace } = useChainUi();
+  const { getPalletVersions } = useChainSpaceEnv();
+  const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const palletVersions = getPalletVersions(ownerId) || {};
   const chainUi = getChainUi(tabId, chainUiSection);

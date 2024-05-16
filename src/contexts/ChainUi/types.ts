@@ -1,10 +1,7 @@
 // Copyright 2024 @polkadot-developer-console/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { ApiPromise } from '@polkadot/api';
 import type { AnyJson } from '@w3ux/utils/types';
-import type { OwnerId } from 'types';
-import type { MetadataVersion } from 'model/Metadata/types';
 import type { StorageType } from 'model/ChainState/types';
 
 export interface ChainUiContextInterface {
@@ -25,17 +22,8 @@ export interface ChainUiContextInterface {
     key: keyof ChainUiNamespaceInner
   ) => boolean;
   destroyTabChainUi: (tabId: number) => void;
-  getPalletVersions: (ownerId: OwnerId) => Record<string, string> | undefined;
-  fetchPalletVersions: (
-    ownerId: OwnerId,
-    metadata: MetadataVersion,
-    apiInstance: ApiPromise
-  ) => void;
-  getActiveChainStateSection: (tabId: number) => string;
-  setActiveChainStateSection: (
-    tabId: number,
-    section: ChainStateSection
-  ) => void;
+  getChainStateSection: (tabId: number) => string;
+  setChainStateSection: (tabId: number, section: ChainStateSection) => void;
   getStorageItemFilter: (tabId: number, key: StorageType) => boolean;
   setStorageItemFilter: (
     tabId: number,
@@ -88,15 +76,12 @@ export interface ChainUiNamespaceInner {
 }
 
 // Storage item filters.
-export type StorageItemFilters = Record<number, StorageItemFilter>;
+export type ChainStateFilters = Record<number, StorageItemFilter>;
 export interface StorageItemFilter {
   storage?: boolean;
   constant?: boolean;
   raw?: boolean;
 }
-
-// Store versions of pallets. {ownerId: { palletName: version }}.
-export type PalletVersions = Record<OwnerId, Record<string, string>>;
 
 // The active chain sections, keyed by tab.
 export type ChainStateSections = Record<number, ChainStateSection>;
