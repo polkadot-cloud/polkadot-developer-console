@@ -30,8 +30,6 @@ export const Overview = () => {
   const { chainSpec, apiInstanceId, chain } = useChain();
 
   const apiStatus = getApiStatus(apiInstanceId);
-
-  // TODO: abstract this state into fetching component while integrity checks fail.
   const chainId = chain.id;
   const chainSpecReady = !!chainSpec;
   const isDirectory = isDirectoryId(chainId);
