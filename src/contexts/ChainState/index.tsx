@@ -62,7 +62,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   // Sets constants to state and local storage.
   const setChainStateConstants = (value: ChainStateConstants) => {
-    local.setChainStateConstants(value);
+    local.setChainStateConstants(ownerId, value);
     setChainStateConstantsState(value);
   };
 

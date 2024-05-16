@@ -72,3 +72,6 @@ export type ChainStateSubscriptionLocalEntry = SubscriptionCallConfig & {
   type: StorageType;
   pinned: boolean;
 };
+
+// The local storage entry for chain state constants, keyed by ownerId.
+export type ChainStateConstantsLocal = Record<OwnerId, ChainStateConstants>;

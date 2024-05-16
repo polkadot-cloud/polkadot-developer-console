@@ -8,6 +8,7 @@ import type {
   ChainStateSubscriptionsLocal,
   ChainStateSubscriptions,
   ChainStateSubscriptionLocalEntry,
+  ChainStateConstantsLocal,
 } from './types';
 import type { OwnerId } from 'types';
 
@@ -29,13 +30,15 @@ export const getChainStateSubscriptions = ():
 };
 
 // Gets saved chain state constants from local storage, or returns undefined otherwise.
-export const getChainStateConstants = (): ChainStateConstants | undefined => {
+export const getChainStateConstants = ():
+  | ChainStateConstantsLocal
+  | undefined => {
   const result = localStorageOrDefault('chainStateConsts', undefined, true) as
-    | ChainStateConstants
+    | ChainStateConstantsLocal
     | undefined;
 
   if (result) {
-    return result as ChainStateConstants;
+    return result as ChainStateConstantsLocal;
   }
 };
 
@@ -63,8 +66,13 @@ export const setChainStateSubscriptions = (
 };
 
 // Sets chain state constants to local storage.
-export const setChainStateConstants = (value: ChainStateConstants) => {
-  localStorage.setItem('chainStateConsts', JSON.stringify(value));
+export const setChainStateConstants = (
+  ownerId: OwnerId,
+  value: ChainStateConstants
+) => {
+  const current = getChainStateConstants() || {};
+  current[ownerId] = value;
+  localStorage.setItem('chainStateConsts', JSON.stringify(current));
 };
 
 // ------------------------------------------------------
