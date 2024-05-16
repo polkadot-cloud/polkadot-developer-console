@@ -13,7 +13,6 @@ import {
   defaultAppliedTags,
   defaultChainFilter,
   defaultCustomEndpoints,
-  defaultSearchTerms,
 } from './defaults';
 import { useTags } from 'contexts/Tags';
 import type { TagId, TagItem } from 'contexts/Tags/types';
@@ -33,7 +32,7 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
 
   // The current search terms.
   const [searchTerms, setSearchTermsState] = useState<SearchTerms>(
-    local.getSearchTerms() || defaultSearchTerms
+    local.getSearchTerms() || {}
   );
 
   // The current custom endpoints.

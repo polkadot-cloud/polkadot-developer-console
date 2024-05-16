@@ -6,7 +6,6 @@ import type {
   AppliedTags,
   ChainFilterInterface,
   CustomEndpoints,
-  SearchTerms,
 } from './types';
 
 export const defaultChainFilter: ChainFilterInterface = {
@@ -27,13 +26,6 @@ export const defaultAppliedTags: AppliedTags = {
   2: ['tag_canary_network'],
   3: ['tag_test_network'],
   4: ['tag_test_network'],
-};
-
-export const defaultSearchTerms: SearchTerms = {
-  1: '',
-  2: 'Kusama',
-  3: 'Rococo',
-  4: 'Westend',
 };
 
 export const defaultCustomEndpoints: CustomEndpoints = {};

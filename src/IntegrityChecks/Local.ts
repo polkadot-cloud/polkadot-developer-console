@@ -15,7 +15,6 @@ import { defaultTags, defaultTagsConfig } from 'contexts/Tags/defaults';
 import {
   defaultAppliedTags,
   defaultCustomEndpoints,
-  defaultSearchTerms,
 } from 'contexts/ChainFilter/defaults';
 import type { RemoveOrSetInput } from './types';
 
@@ -83,7 +82,7 @@ export const checkLocalChainFilter = () => {
   // Use default tabs if activeTabs is empty.
   const activeTabs = localTabs.getTabs() || defaultTabs;
   const tags = localTags.getTags() || defaultTags;
-  const searchTerms = localChainFilter.getSearchTerms() || defaultSearchTerms;
+  const searchTerms = localChainFilter.getSearchTerms() || {};
   const customEndpoints =
     localChainFilter.getCustomEndpoints() || defaultCustomEndpoints;
   const appliedTags = localChainFilter.getAppliedTags() || defaultAppliedTags;
