@@ -59,9 +59,9 @@ export const Constants = () => {
 
     if (activePallet && activeItem) {
       const pallet = camelize(activePallet);
-      const key = camelize(activeItem);
+      const constant = camelize(activeItem);
 
-      const result = chainState.fetchConstant(pallet, key);
+      const result = chainState.fetchConstant(pallet, constant);
       if (result !== null) {
         setConstant(result.key, result.value);
       }

@@ -4,9 +4,12 @@
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useTabs } from 'contexts/Tabs';
 import { useLocation } from 'react-router-dom';
-import * as local from 'contexts/Tabs/Local';
+import * as localTabs from 'contexts/Tabs/Local';
+import { removeLocalChainUi } from 'contexts/ChainUi/Local';
 import type { Route } from 'App';
 import { useEffect } from 'react';
+import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
+import { removeLocalChainState } from 'contexts/ChainState/Local';
 
 export const useSetActivePage = () => {
   const { pathname } = useLocation();
@@ -18,15 +21,21 @@ export const useSetActivePage = () => {
   // Upon an activeTask change, check if a local active page exists for that route, and
   // move to it if so.
   const onTaskUpdated = () => {
-    const activePage = local.getActivePage(tabId, 'default');
+    const activePage = localTabs.getActivePage(tabId, 'default');
     if (tab && activePage !== undefined && activePage !== tab.activePage) {
       setTabActivePage(tabId, 'default', activePage, true);
     }
   };
 
-  // Redirect to local default page on disconnect if activeTask is no longer assigned.
+  // Redirect to local default page on disconnect if activeTask is no longer assigned. This callback
+  // also removes stale local storage data associated with the task that has just been removed.
   const onTaskRemoved = () => {
-    const activePage = local.getActivePage(tabId, 'default');
+    // Remove stale local storage data.
+    removeLocalChainUi(tabId);
+    removeLocalChainState(tabIdToOwnerId(tabId));
+
+    // Set correct active page.
+    const activePage = localTabs.getActivePage(tabId, 'default');
     if (activePage !== undefined) {
       setTabActivePage(tabId, 'default', activePage, true);
     }
@@ -46,7 +55,7 @@ export const useSetActivePage = () => {
     // Remove the leading slash from pathname to obtain the route. Falls back to the 'default' route
     // if location is an empty string.
     const route = (pathname.slice(1) || 'default') as Route;
-    const activePage = local.getActivePage(tabId, route);
+    const activePage = localTabs.getActivePage(tabId, route);
 
     // Apply the route's local active page if it exists.
     if (activePage !== undefined) {

@@ -11,8 +11,8 @@ import { FlexWrapper } from 'routes/Common/Wrappers';
 
 export const ChainState = () => {
   const { tabId } = useActiveTab();
-  const { getActiveChainStateSection } = useChainUi();
-  const activeChainStateSection = getActiveChainStateSection(tabId);
+  const { getChainStateSection } = useChainUi();
+  const activeChainStateSection = getChainStateSection(tabId);
 
   let content: JSX.Element;
   switch (activeChainStateSection) {

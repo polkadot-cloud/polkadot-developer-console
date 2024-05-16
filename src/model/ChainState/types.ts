@@ -13,13 +13,17 @@ export type StorageType = StorageSubscriptionType | 'constant';
 
 export type StorageSubscriptionType = 'raw' | 'storage';
 
-// Configuration for raw subscriptions.
-export interface RawStorageSubscriptionConfig {
-  type: StorageSubscriptionType;
+export interface SubscriptionCallConfig {
   namespace: string;
   method: string;
   args: AnyJson[];
 }
+
+// Configuration for raw subscriptions.
+export type RawStorageSubscriptionConfig = SubscriptionCallConfig & {
+  type: StorageSubscriptionType;
+  pinned?: boolean;
+};
 
 // Configuration for storage item subscriptions.
 export interface StorageSubscriptionInterface {
@@ -27,26 +31,38 @@ export interface StorageSubscriptionInterface {
   pallet: string;
   call: string;
   args: AnyJson[];
+  pinned?: boolean;
 }
 
 export interface ConstantResult {
   key: string;
-  value: SubscriptionEntry;
+  value: ConstantEntry;
 }
 
-export interface ChainStateEventDetail {
+export type ChainStateEventDetail = SubscriptionCallConfig & {
   ownerId: OwnerId;
   instanceId: ApiInstanceId;
   type: StorageSubscriptionType;
   timestamp: number;
   key: string;
-  value: AnyJson;
-}
+  result: AnyJson;
+  pinned?: boolean;
+};
 
-export interface SubscriptionEntry {
+export type ChainStateConstantEventDetail = ChainStateEntry & {
+  key: string;
+  ownerId: OwnerId;
+  instanceId: ApiInstanceId;
+};
+
+export interface ChainStateEntry {
   type: StorageType;
   timestamp: number;
   result: AnyJson;
+  pinned: boolean;
 }
+export type SubscriptionEntry = ChainStateEntry & SubscriptionCallConfig;
+
+export type ConstantEntry = ChainStateEntry;
 
 export type SubscriptionType = 'subscription' | 'constant';

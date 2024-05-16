@@ -13,24 +13,17 @@ import type {
   ChainUiState,
   ChainUiContextInterface,
   ChainUiNamespace,
-  PalletVersions,
   ChainUiNamespaceInner,
   ChainStateSections,
   ChainStateSection,
   InputNamespace,
   InputArgsState,
   InputArg,
-  StorageItemFilters,
+  ChainStateFilters,
 } from './types';
-import type { ApiPromise } from '@polkadot/api';
-import { xxhashAsHex } from '@polkadot/util-crypto';
-import { u16 } from 'scale-ts';
-import type { AnyJson } from '@w3ux/utils/types';
-import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
-import type { MetadataVersion } from 'model/Metadata/types';
 import { setStateWithRef } from '@w3ux/utils';
 import type { StorageType } from 'model/ChainState/types';
-import type { OwnerId } from 'types';
+import * as local from './Local';
 
 export const ChainUi =
   createContext<ChainUiContextInterface>(defaultChainContext);
@@ -39,18 +32,35 @@ export const useChainUi = () => useContext(ChainUi);
 
 export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   // The UI state of the chain, keyed by tab.
-  const [chainUi, setChainUi] = useState<ChainUiState>(defaultChainUiState);
+  const [chainUi, setChainUiState] = useState<ChainUiState>(
+    local.getChainUi() || defaultChainUiState
+  );
+
+  // Setter for chain ui.
+  const setChainUi = (value: ChainUiState) => {
+    local.setChainUi(value);
+    setChainUiState(value);
+  };
 
   // The active chain state section, keyed by tab.
-  const [activeChainStateSections, setActiveChainStateSections] =
-    useState<ChainStateSections>({});
+  const [chainStateSections, setChainStateSectionsState] =
+    useState<ChainStateSections>(local.getChainStateSections() || {});
 
-  // Stores pallet versions of a chain, keyed by tab.
-  const [palletVersions, setPalletVersions] = useState<PalletVersions>({});
+  // Setter for active chain state sections.
+  const setChainStateSections = (value: ChainStateSections) => {
+    local.setChainStateSections(value);
+    setChainStateSectionsState(value);
+  };
 
   // Active chain state result filters, keyed by tab.
-  const [activeChainStateFilters, setActiveChainStateFilters] =
-    useState<StorageItemFilters>({});
+  const [activeChainStateFilters, setActiveChainStateFiltersState] =
+    useState<ChainStateFilters>(local.getChainStateFilters() || {});
+
+  // Setter for chain state filters.
+  const setActiveChainStateFilters = (value: ChainStateFilters) => {
+    local.setChainStateFilters(value);
+    setActiveChainStateFiltersState(value);
+  };
 
   // Stores the input arguments for either a storage item or call, keyed by tab. NOTE: Needs a ref
   // as multiple updates happen within the same render.
@@ -63,16 +73,13 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Gets an active chain state section by tabId. Falls back to 'storage'.
-  const getActiveChainStateSection = (tabId: number): string =>
-    activeChainStateSections[tabId] || 'storage';
+  const getChainStateSection = (tabId: number): string =>
+    chainStateSections[tabId] || 'storage';
 
   // Sets an active chain state section for a `tabId`.
-  const setActiveChainStateSection = (
-    tabId: number,
-    section: ChainStateSection
-  ) => {
-    setActiveChainStateSections({
-      ...activeChainStateSections,
+  const setChainStateSection = (tabId: number, section: ChainStateSection) => {
+    setChainStateSections({
+      ...chainStateSections,
       [tabId]: section,
     });
   };
@@ -137,53 +144,6 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     updatedFilters[tabId] = { ...updatedFilters[tabId], [key]: value };
     setActiveChainStateFilters(updatedFilters);
   };
-
-  // Handle fetching of pallet versions.
-  const fetchPalletVersions = async (
-    ownerId: OwnerId,
-    metadata: MetadataVersion,
-    apiInstance: ApiPromise
-  ) => {
-    // Exit if pallet versions have already been fetched.
-    if (palletVersions[ownerId] !== undefined) {
-      return;
-    }
-    // Get pallet list from scraper.
-    const scraper = new PalletScraper(metadata);
-    const pallets = scraper.getList();
-
-    // Map through pallets and set up an array of calls to query the RPC with.
-    const calls = pallets.map(({ name }) => {
-      const storageKey =
-        xxhashAsHex(name, 128) +
-        xxhashAsHex(':__STORAGE_VERSION__:', 128).slice(2);
-      return apiInstance.rpc.state.getStorage(storageKey);
-    });
-
-    const result = await Promise.all(calls);
-
-    const newPalletVersions = Object.fromEntries(
-      result.map((element: AnyJson, index: number) => {
-        // Empty return types can be assumed to be version 0.
-        const versionAsHex = element.toHex();
-        return [
-          pallets[index].name,
-          versionAsHex == '0x' ? '0' : String(u16.dec(element.toString())),
-        ];
-      })
-    );
-
-    // Set pallet version state for the provided tab.
-    setPalletVersions((prev) => ({
-      ...prev,
-      [ownerId]: newPalletVersions,
-    }));
-  };
-
-  // Get pallet versions by tab Id.
-  const getPalletVersions = (
-    ownerId: OwnerId
-  ): Record<string, string> | undefined => palletVersions[ownerId];
 
   // Check if a chainUI value is empty. For boolean types, return empty if false. This function should be used on strings, but for type safety booleans are also supported.
   const isChainUiValueEmpty = (
@@ -259,18 +219,14 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     const updatedChainUi = { ...chainUi };
     delete updatedChainUi[tabId];
 
-    const updatedChainStateSections = { ...activeChainStateSections };
+    const updatedChainStateSections = { ...chainStateSections };
     delete updatedChainStateSections[tabId];
-
-    const updatedPalletVersions = { ...palletVersions };
-    delete updatedPalletVersions[tabId];
 
     const updatedInputArgs = { ...inputArgsRef.current };
     delete updatedInputArgs[tabId];
 
     setChainUi(updatedChainUi);
-    setActiveChainStateSections(updatedChainStateSections);
-    setPalletVersions(updatedPalletVersions);
+    setChainStateSections(updatedChainStateSections);
     setInputArgs(updatedInputArgs);
   };
 
@@ -280,11 +236,9 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
         chainUi,
         getChainUi,
         setChainUiNamespace,
-        getPalletVersions,
-        fetchPalletVersions,
         isChainUiValueEmpty,
-        getActiveChainStateSection,
-        setActiveChainStateSection,
+        getChainStateSection,
+        setChainStateSection,
         getStorageItemFilter,
         setStorageItemFilter,
         getInputArgs,

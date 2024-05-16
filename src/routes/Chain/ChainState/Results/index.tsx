@@ -4,7 +4,7 @@
 import { ChainStateResultWrapper, FilterWrapper } from '../../Wrappers';
 import { useChainState } from 'contexts/ChainState';
 import { ChainStateResult } from './Result';
-import { splitChainStateKey } from 'model/ChainState/util';
+import { splitSubscriptionKey } from 'model/ChainState/util';
 import type { StorageType } from 'model/ChainState/types';
 import type {
   ChainStateConstants,
@@ -99,7 +99,7 @@ export const Results = ({
         {Object.entries(sortedChainStateItems)
           .reverse()
           .map(([key, value]) => {
-            const [index, rawKey] = splitChainStateKey(key);
+            const [index, rawKey] = splitSubscriptionKey(key);
             const { type, result, pinned } = value;
 
             return (

@@ -9,7 +9,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { capitalizeFirstLetter } from '@w3ux/utils';
 import type { ChainStateResultProps } from '../types';
-import { splitChainStateKey } from 'model/ChainState/util';
+import { splitSubscriptionKey } from 'model/ChainState/util';
 import { useChainState } from 'contexts/ChainState';
 
 export const ChainStateResult = ({
@@ -18,7 +18,7 @@ export const ChainStateResult = ({
   result,
   pinned,
 }: ChainStateResultProps) => {
-  const [, rawKey] = splitChainStateKey(chainStateKey);
+  const [, rawKey] = splitSubscriptionKey(chainStateKey);
   const { removeChainStateItem, setItemPinned } = useChainState();
 
   // Readable display of the result.

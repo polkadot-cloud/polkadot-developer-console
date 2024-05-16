@@ -7,27 +7,26 @@ import { HeaderToggleWrapper } from 'library/HeaderToggle/Wrapper';
 
 export const Header = () => {
   const { tabId } = useActiveTab();
-  const { getActiveChainStateSection, setActiveChainStateSection } =
-    useChainUi();
-  const activeToggle = getActiveChainStateSection(tabId);
+  const { getChainStateSection, setChainStateSection } = useChainUi();
+  const activeToggle = getChainStateSection(tabId);
 
   return (
     <HeaderToggleWrapper>
       <button
         className={activeToggle === 'storage' ? 'active' : undefined}
-        onClick={() => setActiveChainStateSection(tabId, 'storage')}
+        onClick={() => setChainStateSection(tabId, 'storage')}
       >
         Storage Items
       </button>
       <button
         className={activeToggle === 'constants' ? 'active' : undefined}
-        onClick={() => setActiveChainStateSection(tabId, 'constants')}
+        onClick={() => setChainStateSection(tabId, 'constants')}
       >
         Runtime Constants
       </button>
       <button
         className={activeToggle === 'raw' ? 'active' : undefined}
-        onClick={() => setActiveChainStateSection(tabId, 'raw')}
+        onClick={() => setChainStateSection(tabId, 'raw')}
       >
         Raw Storage
       </button>

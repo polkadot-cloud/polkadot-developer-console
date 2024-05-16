@@ -4,7 +4,9 @@
 import type { VoidFn } from '@polkadot/api/types';
 import { ApiController } from 'controllers/Api';
 import type {
+  ChainStateConstantEventDetail,
   ChainStateEventDetail,
+  ConstantEntry,
   ConstantResult,
   RawStorageSubscriptionConfig,
   SubscriptionConfig,
@@ -12,12 +14,13 @@ import type {
   SubscriptionType,
 } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
-import { splitChainStateKey } from './util';
+import { splitConstantKey, splitSubscriptionKey } from './util';
 import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';
 import type { OwnerId } from 'types';
 import { getUnixTime } from 'date-fns';
 import type { ChainStateSubscriptions } from 'contexts/ChainState/types';
+import * as localChainState from 'contexts/ChainState/Local';
 
 export class ChainState {
   // ------------------------------------------------------
@@ -34,7 +37,7 @@ export class ChainState {
   subscriptions: Record<string, SubscriptionEntry> = {};
 
   // Chain state constant results, keyed by constant key.
-  constants: Record<string, SubscriptionEntry> = {};
+  constants: Record<string, ConstantEntry> = {};
 
   // Unsubscribe objects, keyed by subscription key.
   #unsubs: Record<string, VoidFn> = {};
@@ -49,7 +52,6 @@ export class ChainState {
     const formatted = Object.fromEntries(
       entries.map((entry) => ({
         ...entry,
-        pinned: false,
       }))
     ) as ChainStateSubscriptions;
 
@@ -63,6 +65,32 @@ export class ChainState {
   constructor(ownerId: OwnerId, instanceId: ApiInstanceId) {
     this.#ownerId = ownerId;
     this.#instanceId = instanceId;
+
+    // Get local subscriptions for this owner and subscribe to them.
+    const localSubscriptions = localChainState.getChainStateSubscriptions();
+    const entries = Object.entries(localSubscriptions?.[ownerId] || []);
+
+    for (const [key, config] of entries) {
+      if (config.type === 'raw') {
+        this.subscribe(
+          splitSubscriptionKey(key)[1],
+          config as RawStorageSubscriptionConfig
+        );
+      }
+    }
+
+    // Get local constants for this owner.
+    const localConstants = localChainState.getChainStateConstants();
+    const constants = Object.entries(localConstants?.[ownerId] || []);
+
+    for (const [key, config] of constants) {
+      const [, pallet, constant] = splitConstantKey(key);
+      const result = this.fetchConstant(pallet, constant, config.pinned);
+
+      if (result) {
+        this.dispatchConstant(result.key, result.value);
+      }
+    }
   }
 
   // ------------------------------------------------------
@@ -83,7 +111,7 @@ export class ChainState {
     if (api) {
       try {
         // Get the type of subscription. `raw` (storage keys) or `storage` (items).
-        const { type } = config;
+        const { type, pinned } = config;
         const timestamp = getUnixTime(new Date());
 
         // Subscribe to raw storage keys.
@@ -100,27 +128,34 @@ export class ChainState {
             ...args,
             ([data]: AnyJson) => {
               const result = data.unwrapOr(undefined);
+              const callConfig = {
+                type,
+                namespace,
+                method,
+                args,
+                timestamp,
+                pinned: config?.pinned || false,
+              };
 
               if (result !== undefined) {
                 // Persist result to class chain state.
                 this.subscriptions[subscriptionKey] = {
-                  type,
-                  timestamp,
+                  ...callConfig,
                   result,
                 };
 
                 const detail: ChainStateEventDetail = {
+                  ...callConfig,
                   ownerId: this.#ownerId,
                   instanceId: this.#instanceId,
-                  type,
-                  timestamp,
                   key: subscriptionKey,
-                  value: result,
+                  pinned,
+                  result,
                 };
 
                 // Send result to UI.
                 document.dispatchEvent(
-                  new CustomEvent('callback-new-chain-state', {
+                  new CustomEvent('callback-new-chain-state-subscription', {
                     detail,
                   })
                 );
@@ -143,7 +178,12 @@ export class ChainState {
   // Constants.
   // ------------------------------------------------------
 
-  fetchConstant = (pallet: string, constant: string): ConstantResult | null => {
+  // Fetches a constant from api metadata.
+  fetchConstant = (
+    pallet: string,
+    constant: string,
+    pinned = false
+  ): ConstantResult | null => {
     const api = ApiController.getInstanceApi(
       this.#ownerId,
       getIndexFromInstanceId(this.#instanceId)
@@ -155,16 +195,38 @@ export class ChainState {
       const key = this.prependIndexToKey('constant', rawKey);
       const timestamp = getUnixTime(new Date());
 
-      const value: SubscriptionEntry = {
+      const value: ConstantEntry = {
         type: 'constant',
         timestamp,
         result,
+        pinned,
       };
 
       this.constants[key] = value;
       return { key, value };
     }
     return null;
+  };
+
+  // Dispatch a constant to the UI.
+  dispatchConstant = (key: string, value: ConstantEntry): void => {
+    const timestamp = getUnixTime(new Date());
+
+    const detail: ChainStateConstantEventDetail = {
+      ownerId: this.#ownerId,
+      instanceId: this.#instanceId,
+      type: 'constant',
+      key,
+      timestamp,
+      result: value.result,
+      pinned: value.pinned,
+    };
+
+    document.dispatchEvent(
+      new CustomEvent('callback-new-chain-state-constant', {
+        detail,
+      })
+    );
   };
 
   // ------------------------------------------------------
@@ -179,10 +241,10 @@ export class ChainState {
     const entries =
       type === 'subscription' ? this.subscriptions : this.constants;
 
-    // Iterate `this.subscriptions`, use `splitChainStateKey` to find the highest index, and
+    // Iterate `this.subscriptions`, use `splitSubscriptionKey` to find the highest index, and
     // increment by 1.
     const greatestIndex = Object.keys(entries).reduce((acc: number, key) => {
-      const [index] = splitChainStateKey(key);
+      const [index] = splitSubscriptionKey(key);
       return Number(index) > acc ? Number(index) : acc;
     }, 0);
     return `${greatestIndex + 1}_${subscriptionKey}`;

@@ -16,6 +16,7 @@ export interface ChainSpaceEnvContextInterface {
   ) => Promise<void>;
   getApiStatus: (instanceId?: ApiInstanceId) => ApiStatus;
   getChainSpec: (instanceId?: ApiInstanceId) => APIChainSpec | undefined;
+  getPalletVersions: (ownerId: OwnerId) => Record<string, string> | undefined;
   getApiInstance: (ownerId: OwnerId, label: ApiIndexLabel) => Api | undefined;
   destroyApiInstance: (ownerId: OwnerId, label: ApiIndexLabel) => void;
   destroyAllApiInstances: (ownerId: OwnerId) => void;
@@ -32,3 +33,6 @@ export type TabToApiIndexes = Record<number, number[]>;
 export type ChainSpaceChainSpecs = Record<ApiInstanceId, APIChainSpec>;
 
 export type ChainSpaceApiStatuses = Record<ApiInstanceId, ApiStatus>;
+
+// Store versions of pallets. {ownerId: { palletName: version }}.
+export type PalletVersions = Record<OwnerId, Record<string, string>>;
