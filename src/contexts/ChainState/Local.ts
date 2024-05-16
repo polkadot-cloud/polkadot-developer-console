@@ -9,6 +9,8 @@ import type {
   ChainStateSubscriptions,
   ChainStateSubscriptionLocalEntry,
   ChainStateConstantsLocal,
+  ChainStateConstant,
+  ChainStateConstantLocalEntry,
 } from './types';
 import type { OwnerId } from 'types';
 
@@ -70,8 +72,16 @@ export const setChainStateConstants = (
   ownerId: OwnerId,
   value: ChainStateConstants
 ) => {
+  // Convert each entry to local format. Maintains configs but removes result and timestamp.
+  const formatted = Object.fromEntries(
+    Object.entries(value).map(([key, entry]) => [
+      key,
+      formatLocalConstantEntry(entry),
+    ])
+  );
+
   const current = getChainStateConstants() || {};
-  current[ownerId] = value;
+  current[ownerId] = formatted;
   localStorage.setItem('chainStateConsts', JSON.stringify(current));
 };
 
@@ -89,6 +99,16 @@ export const formatLocalSubscriptionEntry = (
     namespace,
     method,
     args,
+    pinned,
+  };
+};
+
+export const formatLocalConstantEntry = (
+  entry: ChainStateConstant
+): ChainStateConstantLocalEntry => {
+  const { pinned } = entry;
+
+  return {
     pinned,
   };
 };

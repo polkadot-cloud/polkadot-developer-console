@@ -77,10 +77,6 @@ export class ChainState {
         );
       }
     }
-
-    // Get local constants for this owner and fetch them.
-    const localConstants = localChainState.getChainStateConstants();
-    console.log(localConstants);
   }
 
   // ------------------------------------------------------
