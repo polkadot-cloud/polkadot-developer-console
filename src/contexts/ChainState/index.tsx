@@ -155,7 +155,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   const documentRef = useRef(document);
   useEventListener(
-    'callback-new-chain-state',
+    'callback-new-chain-state-subscription',
     handleNewChainState,
     documentRef
   );

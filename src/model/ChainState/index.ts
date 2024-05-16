@@ -141,7 +141,7 @@ export class ChainState {
 
                 // Send result to UI.
                 document.dispatchEvent(
-                  new CustomEvent('callback-new-chain-state', {
+                  new CustomEvent('callback-new-chain-state-subscription', {
                     detail,
                   })
                 );

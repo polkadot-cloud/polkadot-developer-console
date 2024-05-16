@@ -27,7 +27,7 @@ declare global {
     'online-status': CustomEvent<OnlineStatusEvent>;
     'callback-block-number': CustomEvent<BlockNumberEventDetail>;
     'callback-account-balance': CustomEvent<AccountBalanceEventDetail>;
-    'callback-new-chain-state': CustomEvent<ChainStateEventDetail>;
+    'callback-new-chain-state-subscription': CustomEvent<ChainStateEventDetail>;
     notification: CustomEvent<NotificationItem>;
   }
 }
