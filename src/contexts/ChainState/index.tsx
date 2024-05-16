@@ -21,9 +21,9 @@ import { ChainStateController } from 'controllers/ChainState';
 import { setStateWithRef } from '@w3ux/utils';
 import type {
   ChainStateEventDetail,
+  ConstantEntry,
   StorageSubscriptionType,
   StorageType,
-  SubscriptionEntry,
 } from 'model/ChainState/types';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
@@ -82,7 +82,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Set a new constant for a tab and key.
-  const setConstant = (key: string, value: SubscriptionEntry) => {
+  const setConstant = (key: string, value: ConstantEntry) => {
     const updated = { ...chainStateConstants };
     const current = updated[key];
 
