@@ -24,6 +24,7 @@ export interface ChainStateContextInterface {
     pinned: boolean
   ) => void;
   getTotalPinnedItems: () => number;
+  destroyTabChainState: () => void;
 }
 
 // Chain state subscriptions for a tab, keyed by subscription key.

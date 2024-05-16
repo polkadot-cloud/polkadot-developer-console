@@ -61,9 +61,9 @@ export const Providers = () => {
     AccountsProvider,
 
     // Task: `chainExplorer` related providers.
-    ChainExplorerProvider,
     ChainFilterProvider,
     ChainStateProvider,
+    ChainExplorerProvider,
 
     // Task: `parachainSetup` related providers.
     ParaSetupProvider,

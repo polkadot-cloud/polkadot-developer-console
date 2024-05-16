@@ -40,7 +40,9 @@ export const useChainState = () => useContext(ChainState);
 export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   const { tabId, ownerId } = useActiveTab();
   const { getTabApiIndex } = useApiIndexer();
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
+
+  const tabApiIndex = getTabApiIndex(ownerId, 'chainExplorer');
+  const apiInstanceId = tabApiIndex?.instanceId;
 
   // The results of current chain state subscriptions, keyed by subscription key.
   const [chainStateSubscriptions, setChainStateSubscriptionsState] =
@@ -219,6 +221,19 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Reset state for a tab.
+  const destroyTabChainState = () => {
+    if (!apiInstanceId) {
+      return;
+    }
+    // Destroy API instance.
+    ChainStateController.destroy(apiInstanceId);
+
+    // Reset state.
+    setChainStateSubscriptions({});
+    setChainStateConstants({});
+  };
+
   // Get chain state on tab change.
   useEffectIgnoreInitial(() => {
     if (!apiInstanceId) {
@@ -242,6 +257,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
         setConstant,
         setItemPinned,
         getTotalPinnedItems,
+        destroyTabChainState,
       }}
     >
       {children}

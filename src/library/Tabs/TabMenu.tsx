@@ -7,8 +7,10 @@ import {
   faLinkSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useChainExplorer } from 'contexts/ChainExplorer';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useMenu } from 'contexts/Menu';
+import { useParaSetup } from 'contexts/ParaSetup';
 import { useSettings } from 'contexts/Settings';
 import { useTabs } from 'contexts/Tabs';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
@@ -25,6 +27,8 @@ export const TabContextMenu = ({
   const { autoTabNaming } = useSettings();
   const { getApiStatus, destroyAllApiInstances, instantiateApiFromTab } =
     useChainSpaceEnv();
+  const { destroyTabParaSetup } = useParaSetup();
+  const { removeChainExplorerTaskState } = useChainExplorer();
   const { getTab, setTabActiveTask, renameTab, getAutoTabName } = useTabs();
 
   const tab = getTab(tabId);
@@ -50,6 +54,20 @@ export const TabContextMenu = ({
 
   const apiButtonInactive = apiStatusActive || canReconnect;
 
+  // Handle disconnect from tab.
+  const handleDisconnectTab = () => {
+    destroyAllApiInstances(ownerId);
+
+    // Reset task related state.
+    removeChainExplorerTaskState(tabId);
+    destroyTabParaSetup(tabId);
+
+    // Reset tab name if auto naming is enabled.
+    if (autoTabNaming) {
+      renameTab(tabId, getAutoTabName(tabId, 'New Tab'));
+    }
+  };
+
   return (
     <SelectListWrapper>
       <ListWrapper>
@@ -72,11 +90,7 @@ export const TabContextMenu = ({
           <button
             onClick={() => {
               if (canDisconenct) {
-                destroyAllApiInstances(ownerId);
-                // Reset tab name if auto naming is enabled.
-                if (autoTabNaming) {
-                  renameTab(tabId, getAutoTabName(tabId, 'New Tab'));
-                }
+                handleDisconnectTab();
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);
                 // Update tab task.

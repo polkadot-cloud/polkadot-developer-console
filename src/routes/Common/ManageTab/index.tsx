@@ -16,14 +16,17 @@ import { useChainExplorer } from 'contexts/ChainExplorer';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 import { useSettings } from 'contexts/Settings';
+import { useParaSetup } from 'contexts/ParaSetup';
 
 export const ManageTab = () => {
   const { autoTabNaming } = useSettings();
   const { getTabApiIndexes } = useApiIndexer();
   const { tab, tabId, ownerId } = useActiveTab();
+  const { destroyTabParaSetup } = useParaSetup();
   const { destroyAllApiInstances } = useChainSpaceEnv();
   const { renameTab, getTabActiveTask, getAutoTabName } = useTabs();
-  const { updateSs58, updateUnits, updateUnit } = useChainExplorer();
+  const { updateSs58, updateUnits, updateUnit, removeChainExplorerTaskState } =
+    useChainExplorer();
 
   const activeTask = getTabActiveTask(tabId);
   const apiInstances = getTabApiIndexes(ownerId);
@@ -34,10 +37,14 @@ export const ManageTab = () => {
     tab?.taskData?.chain !== undefined &&
     !isDirectoryId(tab.taskData.chain?.id || '');
 
-  // Handle disconnecting from API.
-  const handleDisconnectApi = () => {
+  // Handle disconnecting from tab.
+  const handleDisconnectTab = () => {
     if (window.confirm('Are you sure you want to disconnect this tab?')) {
       destroyAllApiInstances(ownerId);
+
+      // Reset task related state.
+      removeChainExplorerTaskState(tabId);
+      destroyTabParaSetup(tabId);
 
       // Reset tab name if auto naming is enabled.
       if (autoTabNaming) {
@@ -122,7 +129,7 @@ export const ManageTab = () => {
             <div className="buttons">
               <button
                 onClick={() => {
-                  handleDisconnectApi();
+                  handleDisconnectTab();
                 }}
               >
                 Disconnect from API

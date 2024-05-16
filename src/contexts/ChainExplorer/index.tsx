@@ -24,6 +24,8 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 import type { IntegrityCheckedChainContext } from 'routes/Chain/Provider/types';
+import { useChainUi } from 'contexts/ChainUi';
+import { useChainState } from 'contexts/ChainState';
 
 export const ChainExplorer = createContext<ChainExplorerContextInterface>(
   defaultChainExplorerContext
@@ -45,7 +47,9 @@ export const ChainExplorerProvider = ({
     getAutoTabName,
   } = useTabs();
   const { autoTabNaming } = useSettings();
+  const { destroyTabChainUi } = useChainUi();
   const { getTabApiIndex } = useApiIndexer();
+  const { destroyTabChainState } = useChainState();
   const { handleConnectApi, getChainSpec } = useChainSpaceEnv();
 
   // Connect tab to an Api instance and update its chain data.
@@ -197,6 +201,12 @@ export const ChainExplorerProvider = ({
     };
   };
 
+  // Remove task related state on disconnect.
+  const removeChainExplorerTaskState = (tabId: number) => {
+    destroyTabChainUi(tabId);
+    destroyTabChainState();
+  };
+
   return (
     <ChainExplorer.Provider
       value={{
@@ -207,6 +217,7 @@ export const ChainExplorerProvider = ({
         forgetTabChain,
         connectChainExplorer,
         chainExplorerIntegrityCheck,
+        removeChainExplorerTaskState,
       }}
     >
       {children}
