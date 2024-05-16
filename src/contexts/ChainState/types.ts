@@ -52,3 +52,9 @@ export interface ChainStateConstant {
   result: AnyJson;
   pinned: boolean;
 }
+
+// The local storage entry for a chain state subscription.
+export type ChainStateSubscriptionLocal = SubscriptionCallConfig & {
+  type: StorageType;
+  pinned: boolean;
+};
