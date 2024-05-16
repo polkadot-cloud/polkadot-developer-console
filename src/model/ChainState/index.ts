@@ -13,7 +13,7 @@ import type {
   SubscriptionType,
 } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
-import { splitChainStateKey } from './util';
+import { splitSubscriptionKey } from './util';
 import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';
 import type { OwnerId } from 'types';
@@ -72,7 +72,7 @@ export class ChainState {
     for (const [key, config] of entries) {
       if (config.type === 'raw') {
         this.subscribe(
-          splitChainStateKey(key)[1],
+          splitSubscriptionKey(key)[1],
           config as RawStorageSubscriptionConfig
         );
       }
@@ -201,10 +201,10 @@ export class ChainState {
     const entries =
       type === 'subscription' ? this.subscriptions : this.constants;
 
-    // Iterate `this.subscriptions`, use `splitChainStateKey` to find the highest index, and
+    // Iterate `this.subscriptions`, use `splitSubscriptionKey` to find the highest index, and
     // increment by 1.
     const greatestIndex = Object.keys(entries).reduce((acc: number, key) => {
-      const [index] = splitChainStateKey(key);
+      const [index] = splitSubscriptionKey(key);
       return Number(index) > acc ? Number(index) : acc;
     }, 0);
     return `${greatestIndex + 1}_${subscriptionKey}`;

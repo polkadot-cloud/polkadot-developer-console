@@ -4,7 +4,6 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useRef,
   useState,
   type ReactNode,
@@ -204,20 +203,6 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     );
     setChainStateConstants(ChainStateController.getConstants(apiInstanceId));
   }, [tabId]);
-
-  // Fetch constants from local storage on initial render.
-  useEffect(() => {
-    const constants = local.getChainStateConstants();
-    for (const [key, config] of Object.entries(constants?.[ownerId] || {})) {
-      console.log(key, config);
-
-      // const result = chainState.fetchConstant(pallet, key);
-      // if (result !== null) {
-      //   setConstant(result.key, result.value);
-      // }
-    }
-    // setChainStateConstants(constants?.[ownerId] || {});
-  }, []);
 
   return (
     <ChainState.Provider
