@@ -4,12 +4,16 @@
 import {
   performTabsCheck,
   sanitizeAppliedTags,
+  sanitizeChainStateConsts,
+  sanitizeChainUi,
   sanitizeKeysForTabExistence,
   sanitizeTags,
 } from 'IntegrityChecks';
 import * as localTabs from 'contexts/Tabs/Local';
 import * as localTags from 'contexts/Tags/Local';
 import * as localChainFilter from 'contexts/ChainFilter/Local';
+import * as localChainUi from 'contexts/ChainUi/Local';
+import * as localChainState from 'contexts/ChainState/Local';
 import { defaultTabs } from 'contexts/Tabs/defaults';
 import { defaultTags, defaultTagsConfig } from 'contexts/Tags/defaults';
 import {
@@ -112,6 +116,35 @@ export const checkLocalChainFilter = () => {
 };
 
 // ------------------------------------------------------
+// Chain Ui.
+// ------------------------------------------------------
+
+// Check existing local storage and clear up if there are errors.
+export const checkLocalChainUi = () => {
+  // Use default tabs if activeTabs is empty.
+  const activeTabs = localTabs.getTabs() || defaultTabs;
+  const chainUi = localChainUi.getChainUi() || {};
+
+  removeOrSetLocalData('chainUi', sanitizeChainUi({ activeTabs, chainUi }));
+};
+
+// ------------------------------------------------------
+// Chain State.
+// ------------------------------------------------------
+
+// Check existing local storage and clear up if there are errors.
+export const checkLocalChainState = () => {
+  // Use default tabs if activeTabs is empty.
+  const activeTabs = localTabs.getTabs() || defaultTabs;
+  const chainStateConsts = localChainState.getChainStateConstants() || {};
+
+  removeOrSetLocalData(
+    'chainStateConsts',
+    sanitizeChainStateConsts({ activeTabs, chainStateConsts })
+  );
+};
+
+// ------------------------------------------------------
 // Utils.
 // ------------------------------------------------------
 
@@ -145,6 +178,8 @@ export const removeLocalStorageState = (includeTags = false) => {
   localStorage.removeItem('searchTerms');
   localStorage.removeItem('customEndpoints');
   localStorage.removeItem('appliedTags');
+  localStorage.removeItem('chainUi');
+  localStorage.removeItem('chainStateConsts');
   localStorage.removeItem('activePages');
   localStorage.removeItem('pageRedirects');
 

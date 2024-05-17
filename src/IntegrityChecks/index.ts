@@ -6,6 +6,12 @@ import { NetworkDirectory } from 'config/networks';
 import { defaultTagsConfig } from 'contexts/Tags/defaults';
 import type { TagsConfig, TagsList } from 'contexts/Tags/types';
 import type { AppliedTags } from 'contexts/ChainFilter/types';
+import type { ChainUiNamespace, ChainUiState } from 'contexts/ChainUi/types';
+import type {
+  ChainStateConstantsLocal,
+  ChainStateConstantsLocalEntries,
+} from 'contexts/ChainState/types';
+import { ownerIdToTabId } from 'contexts/Tabs/Utils';
 
 // ------------------------------------------------------
 // Tabs.
@@ -183,6 +189,116 @@ export const sanitizeAppliedTags = ({
         }, []);
 
         return acc.concat([[tabId, applied]]);
+      },
+      []
+    )
+  );
+
+  return {
+    updated,
+    result,
+  };
+};
+
+// ------------------------------------------------------
+// Chain Ui.
+// ------------------------------------------------------
+
+// Sanitize chain ui data and return the sanitized data.
+export const sanitizeChainUi = ({
+  activeTabs,
+  chainUi,
+}: {
+  activeTabs: Tabs;
+  chainUi: ChainUiState;
+}) => {
+  const updated = false;
+
+  const result = Object.fromEntries(
+    Object.entries(chainUi || {}).reduce(
+      (acc: [string, ChainUiNamespace][], [tabId, ui]) => {
+        // If provided tab does not exist, remove the entry.
+        if (!activeTabs?.find(({ id }) => id === Number(tabId))) {
+          return acc;
+        }
+
+        // Check the required properties exist in entry.
+        if (
+          !(
+            'calls' in ui &&
+            'constants' in ui &&
+            'raw' in ui &&
+            'storage' in ui
+          )
+        ) {
+          return acc;
+        }
+
+        // For each namespace, check if the required properties exist.
+        const namespaceKeys = ['calls', 'constants', 'raw', 'storage'];
+        for (const namespaceKey of namespaceKeys) {
+          const namespace = ui[namespaceKey as keyof ChainUiNamespace];
+          if (
+            !(
+              'pallet' in namespace &&
+              'palletSearch' in namespace &&
+              'palletSelectOnSearch' in namespace &&
+              'search' in namespace &&
+              'selectOnSearch' in namespace &&
+              'selected' in namespace
+            )
+          ) {
+            return acc;
+          }
+        }
+
+        return acc.concat([[tabId, ui]]);
+      },
+      []
+    )
+  );
+
+  return {
+    updated,
+    result,
+  };
+};
+
+// ------------------------------------------------------
+// Chain State.
+// ------------------------------------------------------
+
+// Sanitize chain state constants data and return the sanitized data.
+export const sanitizeChainStateConsts = ({
+  activeTabs,
+  chainStateConsts,
+}: {
+  activeTabs: Tabs;
+  chainStateConsts: ChainStateConstantsLocal;
+}) => {
+  const updated = false;
+
+  const result = Object.fromEntries(
+    Object.entries(chainStateConsts || {}).reduce(
+      (
+        acc: [string, ChainStateConstantsLocalEntries][],
+        [ownerId, entries]
+      ) => {
+        const tabId = ownerIdToTabId(ownerId);
+        // If provided tab does not exist, remove the entry.
+        if (!activeTabs?.find(({ id }) => id === tabId)) {
+          return acc;
+        }
+
+        // For each entry, check that the required properties exist.
+        const values = Object.values(entries);
+        for (const entry of values) {
+          if (!('pinned' in entry)) {
+            return acc;
+          }
+        }
+
+        return acc.concat([[ownerId, entries]]);
       },
       []
     )
