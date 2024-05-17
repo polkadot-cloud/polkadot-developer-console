@@ -89,6 +89,9 @@ export class ChainState {
 
       if (result) {
         this.dispatchConstant(result.key, result.value);
+      } else {
+        // Invalid result. Ensure this constant is removed from local storage.
+        localChainState.removeChainStateConstant(ownerId, key);
       }
     }
   }
@@ -169,7 +172,11 @@ export class ChainState {
           this.#unsubs[subscriptionKey] = unsub;
         }
       } catch (e) {
-        // TODO: Send error to UI and handle as notification.
+        // Ensure this subscription is removed from local storage.
+        localChainState.removeChainStateSubscription(
+          this.#ownerId,
+          subscriptionKey
+        );
       }
     }
   };

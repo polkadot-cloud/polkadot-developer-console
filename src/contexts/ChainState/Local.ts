@@ -117,6 +117,26 @@ export const formatLocalConstantEntry = (
 // Remove.
 // ------------------------------------------------------
 
+// Remove a chain state subscription from local storage.
+export const removeChainStateSubscription = (ownerId: OwnerId, key: string) => {
+  const current = getChainStateSubscriptions() || {};
+  if (current[ownerId] === undefined) {
+    return;
+  }
+  delete current[ownerId][key];
+  localStorage.setItem('chainStateSubs', JSON.stringify(current));
+};
+
+// Remove a chain state constant from local storage.
+export const removeChainStateConstant = (ownerId: OwnerId, key: string) => {
+  const current = getChainStateConstants() || {};
+  if (current[ownerId] === undefined) {
+    return;
+  }
+  delete current[ownerId][key];
+  localStorage.setItem('chainStateConsts', JSON.stringify(current));
+};
+
 // Removes chain state from local storage for a tab.
 export const removeLocalChainState = (ownerId: OwnerId) => {
   setChainStateSubscriptions(ownerId, {});
