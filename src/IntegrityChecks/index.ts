@@ -10,6 +10,8 @@ import type { ChainUiNamespace, ChainUiState } from 'contexts/ChainUi/types';
 import type {
   ChainStateConstantsLocal,
   ChainStateConstantsLocalEntries,
+  ChainStateSubscriptionLocalEntries,
+  ChainStateSubscriptionsLocal,
 } from 'contexts/ChainState/types';
 import { ownerIdToTabId } from 'contexts/Tabs/Utils';
 
@@ -298,6 +300,55 @@ export const sanitizeChainStateConsts = ({
           }
         }
 
+        return acc.concat([[ownerId, entries]]);
+      },
+      []
+    )
+  );
+
+  return {
+    updated,
+    result,
+  };
+};
+
+// Sanitize chain state subscriptions data and return the sanitized data.
+export const sanitizeChainStateSubs = ({
+  activeTabs,
+  chainStateSubs,
+}: {
+  activeTabs: Tabs;
+  chainStateSubs: ChainStateSubscriptionsLocal;
+}) => {
+  const updated = false;
+
+  const result = Object.fromEntries(
+    Object.entries(chainStateSubs || {}).reduce(
+      (
+        acc: [string, ChainStateSubscriptionLocalEntries][],
+        [ownerId, entries]
+      ) => {
+        const tabId = ownerIdToTabId(ownerId);
+        // If provided tab does not exist, remove the entry.
+        if (!activeTabs?.find(({ id }) => id === tabId)) {
+          return acc;
+        }
+
+        // For each entry, check that the required properties exist.
+        const values = Object.values(entries);
+        for (const entry of values) {
+          if (
+            !(
+              'args' in entry &&
+              'method' in entry &&
+              'namespace' in entry &&
+              'pinned' in entry &&
+              'type' in entry
+            )
+          ) {
+            return acc;
+          }
+        }
         return acc.concat([[ownerId, entries]]);
       },
       []

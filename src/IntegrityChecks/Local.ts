@@ -5,6 +5,7 @@ import {
   performTabsCheck,
   sanitizeAppliedTags,
   sanitizeChainStateConsts,
+  sanitizeChainStateSubs,
   sanitizeChainUi,
   sanitizeKeysForTabExistence,
   sanitizeTags,
@@ -137,10 +138,16 @@ export const checkLocalChainState = () => {
   // Use default tabs if activeTabs is empty.
   const activeTabs = localTabs.getTabs() || defaultTabs;
   const chainStateConsts = localChainState.getChainStateConstants() || {};
+  const chainStateSubs = localChainState.getChainStateSubscriptions() || {};
 
   removeOrSetLocalData(
     'chainStateConsts',
     sanitizeChainStateConsts({ activeTabs, chainStateConsts })
+  );
+
+  removeOrSetLocalData(
+    'chainStateSubs',
+    sanitizeChainStateSubs({ activeTabs, chainStateSubs })
   );
 };
 
@@ -180,6 +187,7 @@ export const removeLocalStorageState = (includeTags = false) => {
   localStorage.removeItem('appliedTags');
   localStorage.removeItem('chainUi');
   localStorage.removeItem('chainStateConsts');
+  localStorage.removeItem('chainStateSubs');
   localStorage.removeItem('activePages');
   localStorage.removeItem('pageRedirects');
 
