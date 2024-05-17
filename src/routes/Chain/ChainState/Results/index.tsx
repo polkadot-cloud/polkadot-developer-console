@@ -11,9 +11,13 @@ import type {
   ChainStateSubscriptions,
 } from 'contexts/ChainState/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilterList } from '@fortawesome/pro-duotone-svg-icons';
+import {
+  faDiagramSubtask,
+  faFilterList,
+} from '@fortawesome/pro-duotone-svg-icons';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { useTabs } from 'contexts/Tabs';
 
 export const Results = ({
   storageType,
@@ -23,6 +27,7 @@ export const Results = ({
   withSpacer?: boolean;
 }) => {
   const { tabId } = useActiveTab();
+  const { setTabActivePage } = useTabs();
   const { getStorageItemFilter, setStorageItemFilter } = useChainUi();
   const { getChainStateByType, chainStateConstants, getTotalChainStateItems } =
     useChainState();
@@ -78,40 +83,55 @@ export const Results = ({
     }
   };
 
+  // Entries of sorted chain state items.
+  const chainStateItemEntries = Object.entries(sortedChainStateItems);
+
   return (
     <>
-      {getTotalChainStateItems() > 0 && (
-        <FilterWrapper className={withSpacer ? 'withSpacer' : undefined}>
-          {!!storageType && (
-            <button
-              className={filtered ? 'active' : ''}
-              onClick={() => {
-                setStorageItemFilter(tabId, storageType, !filtered);
-              }}
-            >
-              {filtered ? `${getStorageTypeLabel()} Only` : 'Filter'}
-              <FontAwesomeIcon icon={faFilterList} />
-            </button>
-          )}
-        </FilterWrapper>
-      )}
-      <ChainStateResultWrapper>
-        {Object.entries(sortedChainStateItems)
-          .reverse()
-          .map(([key, value]) => {
-            const [index, rawKey] = splitSubscriptionKey(key);
-            const { type, result, pinned } = value;
+      <FilterWrapper className={withSpacer ? 'withSpacer' : undefined}>
+        {getTotalChainStateItems() > 0 && !!storageType && (
+          <button
+            className={filtered ? 'active' : ''}
+            onClick={() => {
+              setStorageItemFilter(tabId, storageType, !filtered);
+            }}
+          >
+            {filtered ? `${getStorageTypeLabel()} Only` : 'Filter'}
+            <FontAwesomeIcon icon={faFilterList} />
+          </button>
+        )}
+      </FilterWrapper>
 
-            return (
-              <ChainStateResult
-                key={`${index}-${rawKey}`}
-                chainStateKey={key}
-                type={type}
-                result={result}
-                pinned={pinned}
-              />
-            );
-          })}
+      <ChainStateResultWrapper>
+        {!chainStateItemEntries.length ? (
+          storageType === undefined ? (
+            <h4>
+              No pinned chain state. Visit{' '}
+              <button onClick={() => setTabActivePage(tabId, 'default', 1)}>
+                <FontAwesomeIcon icon={faDiagramSubtask} transform="shrink-2" />
+                Chain State
+              </button>{' '}
+              to query and pin chain state items.
+            </h4>
+          ) : null
+        ) : (
+          Object.entries(sortedChainStateItems)
+            .reverse()
+            .map(([key, value]) => {
+              const [index, rawKey] = splitSubscriptionKey(key);
+              const { type, result, pinned } = value;
+
+              return (
+                <ChainStateResult
+                  key={`${index}-${rawKey}`}
+                  chainStateKey={key}
+                  type={type}
+                  result={result}
+                  pinned={pinned}
+                />
+              );
+            })
+        )}
       </ChainStateResultWrapper>
     </>
   );

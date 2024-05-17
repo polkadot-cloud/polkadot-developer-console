@@ -195,6 +195,20 @@ export const ChainStateResultWrapper = styled.div`
   flex-direction: column;
   padding: 0 0.25rem;
 
+  > h4 {
+    color: var(--text-color-secondary);
+    margin-top: 0.15rem;
+
+    > button {
+      color: var(--accent-color-secondary);
+      padding: 0 0.1rem;
+
+      > svg {
+        margin-right: 0.1rem;
+      }
+    }
+  }
+
   > section {
     flex: 1;
     display: flex;
