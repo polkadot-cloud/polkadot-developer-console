@@ -24,6 +24,9 @@ import type {
 import { setStateWithRef } from '@w3ux/utils';
 import type { StorageType } from 'model/ChainState/types';
 import * as local from './Local';
+import { checkLocalChainUi } from 'IntegrityChecks/Local';
+
+checkLocalChainUi();
 
 export const ChainUi =
   createContext<ChainUiContextInterface>(defaultChainContext);

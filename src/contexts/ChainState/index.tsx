@@ -30,6 +30,9 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import * as local from './Local';
 import { useApiIndexer } from 'contexts/ApiIndexer';
+import { checkLocalChainState } from 'IntegrityChecks/Local';
+
+checkLocalChainState();
 
 export const ChainState = createContext<ChainStateContextInterface>(
   defaultChainStateContext

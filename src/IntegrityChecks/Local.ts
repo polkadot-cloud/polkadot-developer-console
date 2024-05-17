@@ -4,12 +4,19 @@
 import {
   performTabsCheck,
   sanitizeAppliedTags,
+  sanitizeChainStateConsts,
+  sanitizeChainStateFilters,
+  sanitizeChainStateSections,
+  sanitizeChainStateSubs,
+  sanitizeChainUi,
   sanitizeKeysForTabExistence,
   sanitizeTags,
 } from 'IntegrityChecks';
 import * as localTabs from 'contexts/Tabs/Local';
 import * as localTags from 'contexts/Tags/Local';
 import * as localChainFilter from 'contexts/ChainFilter/Local';
+import * as localChainUi from 'contexts/ChainUi/Local';
+import * as localChainState from 'contexts/ChainState/Local';
 import { defaultTabs } from 'contexts/Tabs/defaults';
 import { defaultTags, defaultTagsConfig } from 'contexts/Tags/defaults';
 import {
@@ -112,6 +119,53 @@ export const checkLocalChainFilter = () => {
 };
 
 // ------------------------------------------------------
+// Chain Ui.
+// ------------------------------------------------------
+
+// Check existing local storage and clear up if there are errors.
+export const checkLocalChainUi = () => {
+  // Use default tabs if activeTabs is empty.
+  const activeTabs = localTabs.getTabs() || defaultTabs;
+
+  const chainUi = localChainUi.getChainUi() || {};
+  const chainStateSections = localChainUi.getChainStateSections() || {};
+  const chainStateFilters = localChainUi.getChainStateFilters() || {};
+
+  removeOrSetLocalData('chainUi', sanitizeChainUi({ activeTabs, chainUi }));
+  removeOrSetLocalData(
+    'chainStateSections',
+    sanitizeChainStateSections({ activeTabs, chainStateSections })
+  );
+
+  removeOrSetLocalData(
+    'chainStateFilters',
+    sanitizeChainStateFilters({ activeTabs, chainStateFilters })
+  );
+};
+
+// ------------------------------------------------------
+// Chain State.
+// ------------------------------------------------------
+
+// Check existing local storage and clear up if there are errors.
+export const checkLocalChainState = () => {
+  // Use default tabs if activeTabs is empty.
+  const activeTabs = localTabs.getTabs() || defaultTabs;
+  const chainStateConsts = localChainState.getChainStateConstants() || {};
+  const chainStateSubs = localChainState.getChainStateSubscriptions() || {};
+
+  removeOrSetLocalData(
+    'chainStateConsts',
+    sanitizeChainStateConsts({ activeTabs, chainStateConsts })
+  );
+
+  removeOrSetLocalData(
+    'chainStateSubs',
+    sanitizeChainStateSubs({ activeTabs, chainStateSubs })
+  );
+};
+
+// ------------------------------------------------------
 // Utils.
 // ------------------------------------------------------
 
@@ -140,12 +194,17 @@ export const performLocalIntegrityChecks = () => {
 // `includeTags` is set to true.
 export const removeLocalStorageState = (includeTags = false) => {
   localStorage.removeItem('activeTabs');
+  localStorage.removeItem('activePages');
   localStorage.removeItem('selectedTabId');
   localStorage.removeItem('activeTabIndex');
   localStorage.removeItem('searchTerms');
   localStorage.removeItem('customEndpoints');
   localStorage.removeItem('appliedTags');
-  localStorage.removeItem('activePages');
+  localStorage.removeItem('chainUi');
+  localStorage.removeItem('chainStateSections');
+  localStorage.removeItem('chainStateFilters');
+  localStorage.removeItem('chainStateConsts');
+  localStorage.removeItem('chainStateSubs');
   localStorage.removeItem('pageRedirects');
 
   if (includeTags) {

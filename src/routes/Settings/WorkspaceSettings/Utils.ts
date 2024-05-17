@@ -5,6 +5,11 @@ import type { AnyJson } from '@w3ux/utils/types';
 import {
   performTabsCheck,
   sanitizeAppliedTags,
+  sanitizeChainStateConsts,
+  sanitizeChainStateFilters,
+  sanitizeChainStateSections,
+  sanitizeChainStateSubs,
+  sanitizeChainUi,
   sanitizeKeysForTabExistence,
   sanitizeTags,
 } from 'IntegrityChecks';
@@ -21,6 +26,11 @@ const SUPPORTED_WORKSPACE_LOCAL_STORAGE_KEYS = [
   'searchTerms',
   'customEndpoints',
   'appliedTags',
+  'chainUi',
+  'chainStateConsts',
+  'chainStateSubs',
+  'chainStateSections',
+  'chainStateFilters',
   'settings',
 ];
 
@@ -93,12 +103,14 @@ export const importWorkspace = (file: File) => {
         }
 
         // Check if imported tags are valid.
+        // ----------------------------------------------
         const tags = json.tags || defaultTags;
         const tagsConfig = json.tagsConfig || {};
         const { result: tagsConfigResult } = sanitizeTags({ tags, tagsConfig });
         json = deleteKeyOrOverwrite('tagsConfig', tagsConfigResult, json);
 
         // Check if imported search terms are valid.
+        // ----------------------------------------------
         const searchTerms = json.searchTerms || {};
         const { result: searchTermsResult } = sanitizeKeysForTabExistence(
           activeTabs || defaultTabs,
@@ -107,6 +119,7 @@ export const importWorkspace = (file: File) => {
         json = deleteKeyOrOverwrite('searchTerms', searchTermsResult, json);
 
         // Check if imported custom endpoints are valid.
+        // ----------------------------------------------
         const customEndpoints = json.customEndpoints || {};
         const { result: customEndpointsResult } = sanitizeKeysForTabExistence(
           activeTabs || defaultTabs,
@@ -119,6 +132,7 @@ export const importWorkspace = (file: File) => {
         );
 
         // Check if imported applied tags are valid.
+        // ----------------------------------------------
         const appliedTags = json.appliedTags || {};
         const { result: appliedTagsResult } = sanitizeAppliedTags({
           activeTabs: activeTabs || defaultTabs,
@@ -127,7 +141,70 @@ export const importWorkspace = (file: File) => {
         });
         json = deleteKeyOrOverwrite('appliedTags', appliedTagsResult, json);
 
-        // Persist each item from the import data to localStorage
+        // Check if chain ui is valid.
+        // ----------------------------------------------
+        const chainUi = json.chainUi || {};
+        const { result: chainUiResult } = sanitizeChainUi({
+          activeTabs: activeTabs || defaultTabs,
+          chainUi,
+        });
+        json = deleteKeyOrOverwrite('chainUi', chainUiResult, json);
+
+        // Check if chain state sections are valid.
+        const chainStateSections = json.chainStateSections || {};
+        const { result: chainStateSectionsResult } = sanitizeChainStateSections(
+          {
+            activeTabs: activeTabs || defaultTabs,
+            chainStateSections,
+          }
+        );
+        json = deleteKeyOrOverwrite(
+          'chainStateSections',
+          chainStateSectionsResult,
+          json
+        );
+
+        // Check if chain state filters are valid.
+        const chainStateFilters = json.chainStateFilters || {};
+        const { result: chainStateFiltersResult } = sanitizeChainStateFilters({
+          activeTabs: activeTabs || defaultTabs,
+          chainStateFilters,
+        });
+        json = deleteKeyOrOverwrite(
+          'chainStateFilters',
+          chainStateFiltersResult,
+          json
+        );
+
+        // Check if chain state constants are valid.
+        // ----------------------------------------------
+        const chainStateConsts = json.chainStateConsts || {};
+        const { result: chainStateConstsResult } = sanitizeChainStateConsts({
+          activeTabs: activeTabs || defaultTabs,
+          chainStateConsts,
+        });
+        json = deleteKeyOrOverwrite(
+          'chainStateConsts',
+          chainStateConstsResult,
+          json
+        );
+
+        // Check if chain state subscriptions are valid.
+        // ----------------------------------------------
+        const chainStateSubs = json.chainStateSubs || {};
+        const { result: chainStateSubsResult } = sanitizeChainStateSubs({
+          activeTabs: activeTabs || defaultTabs,
+          chainStateSubs,
+        });
+        json = deleteKeyOrOverwrite(
+          'chainStateSubs',
+          chainStateSubsResult,
+          json
+        );
+
+        // --------------------------------------------------------
+        // Persist each item from the import data to localStorage.
+        // --------------------------------------------------------
         Object.entries(json).forEach(([key, value]) => {
           try {
             localStorage.setItem(key, JSON.stringify(value));
