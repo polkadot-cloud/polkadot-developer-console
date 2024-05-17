@@ -18,9 +18,11 @@ import { NotificationsController } from 'controllers/Notifications';
 import { removeLocalStorageState } from 'IntegrityChecks/Local';
 import { useNavigate } from 'react-router-dom';
 import type { ChangeEvent } from 'react';
+import { useSettings } from 'contexts/Settings';
 
 export const WorkspaceSettings = () => {
   const navigate = useNavigate();
+  const { setTabsHidden } = useSettings();
 
   // Go back to index page and reload the console.
   const reloadConsole = () => {
@@ -41,6 +43,7 @@ export const WorkspaceSettings = () => {
     }
 
     importWorkspace(file);
+    setTabsHidden(false);
     reloadConsole();
   };
 
@@ -126,6 +129,7 @@ export const WorkspaceSettings = () => {
                 )
               ) {
                 removeLocalStorageState(true);
+                setTabsHidden(false);
                 reloadConsole();
               }
             }}
