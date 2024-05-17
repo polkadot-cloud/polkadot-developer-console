@@ -193,6 +193,7 @@ export class ChainState {
     if (result) {
       const rawKey = `${pallet}_${constant}`;
       const key = this.prependIndexToKey('constant', rawKey);
+
       const timestamp = getUnixTime(new Date());
 
       const value: ConstantEntry = {
