@@ -57,16 +57,24 @@ export const CardsWrapper = styled.div`
 
 export const Subheading = styled.h4`
   font-family: InterSemiBold, sans-serif;
+  color: var(--text-color-tertiary);
+  border-bottom: 1px solid transparent;
   flex: 1;
   display: flex;
   align-items: center;
-  margin-top: 1.84rem;
-  margin-bottom: 0.6rem;
-  padding: 0 0.25rem;
+  margin-top: 2rem;
+  margin-bottom: 0.28rem;
+  padding: 0 0.2rem 0.1rem 0.2rem;
+
+  &.underlined {
+    border-bottom: 1px solid var(--border-primary-color);
+    padding-bottom: 0.2rem;
+    margin-bottom: 0.25rem;
+  }
 
   > svg {
     color: var(--text-color-tertiary);
-    margin-right: 0.25rem;
+    margin-right: 0.3rem;
     opacity: 0.6;
   }
 `;
