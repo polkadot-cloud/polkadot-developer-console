@@ -6,6 +6,8 @@ import {
   performTabsCheck,
   sanitizeAppliedTags,
   sanitizeChainStateConsts,
+  sanitizeChainStateFilters,
+  sanitizeChainStateSections,
   sanitizeChainStateSubs,
   sanitizeChainUi,
   sanitizeKeysForTabExistence,
@@ -27,6 +29,8 @@ const SUPPORTED_WORKSPACE_LOCAL_STORAGE_KEYS = [
   'chainUi',
   'chainStateConsts',
   'chainStateSubs',
+  'chainStateSections',
+  'chainStateFilters',
   'settings',
 ];
 
@@ -144,8 +148,33 @@ export const importWorkspace = (file: File) => {
           activeTabs: activeTabs || defaultTabs,
           chainUi,
         });
-
         json = deleteKeyOrOverwrite('chainUi', chainUiResult, json);
+
+        // Check if chain state sections are valid.
+        const chainStateSections = json.chainStateSections || {};
+        const { result: chainStateSectionsResult } = sanitizeChainStateSections(
+          {
+            activeTabs: activeTabs || defaultTabs,
+            chainStateSections,
+          }
+        );
+        json = deleteKeyOrOverwrite(
+          'chainStateSections',
+          chainStateSectionsResult,
+          json
+        );
+
+        // Check if chain state filters are valid.
+        const chainStateFilters = json.chainStateFilters || {};
+        const { result: chainStateFiltersResult } = sanitizeChainStateFilters({
+          activeTabs: activeTabs || defaultTabs,
+          chainStateFilters,
+        });
+        json = deleteKeyOrOverwrite(
+          'chainStateFilters',
+          chainStateFiltersResult,
+          json
+        );
 
         // Check if chain state constants are valid.
         // ----------------------------------------------

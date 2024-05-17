@@ -5,6 +5,8 @@ import {
   performTabsCheck,
   sanitizeAppliedTags,
   sanitizeChainStateConsts,
+  sanitizeChainStateFilters,
+  sanitizeChainStateSections,
   sanitizeChainStateSubs,
   sanitizeChainUi,
   sanitizeKeysForTabExistence,
@@ -124,9 +126,21 @@ export const checkLocalChainFilter = () => {
 export const checkLocalChainUi = () => {
   // Use default tabs if activeTabs is empty.
   const activeTabs = localTabs.getTabs() || defaultTabs;
+
   const chainUi = localChainUi.getChainUi() || {};
+  const chainStateSections = localChainUi.getChainStateSections() || {};
+  const chainStateFilters = localChainUi.getChainStateFilters() || {};
 
   removeOrSetLocalData('chainUi', sanitizeChainUi({ activeTabs, chainUi }));
+  removeOrSetLocalData(
+    'chainStateSections',
+    sanitizeChainStateSections({ activeTabs, chainStateSections })
+  );
+
+  removeOrSetLocalData(
+    'chainStateFilters',
+    sanitizeChainStateFilters({ activeTabs, chainStateFilters })
+  );
 };
 
 // ------------------------------------------------------
@@ -180,15 +194,17 @@ export const performLocalIntegrityChecks = () => {
 // `includeTags` is set to true.
 export const removeLocalStorageState = (includeTags = false) => {
   localStorage.removeItem('activeTabs');
+  localStorage.removeItem('activePages');
   localStorage.removeItem('selectedTabId');
   localStorage.removeItem('activeTabIndex');
   localStorage.removeItem('searchTerms');
   localStorage.removeItem('customEndpoints');
   localStorage.removeItem('appliedTags');
   localStorage.removeItem('chainUi');
+  localStorage.removeItem('chainStateSections');
+  localStorage.removeItem('chainStateFilters');
   localStorage.removeItem('chainStateConsts');
   localStorage.removeItem('chainStateSubs');
-  localStorage.removeItem('activePages');
   localStorage.removeItem('pageRedirects');
 
   if (includeTags) {

@@ -6,7 +6,14 @@ import { NetworkDirectory } from 'config/networks';
 import { defaultTagsConfig } from 'contexts/Tags/defaults';
 import type { TagsConfig, TagsList } from 'contexts/Tags/types';
 import type { AppliedTags } from 'contexts/ChainFilter/types';
-import type { ChainUiNamespace, ChainUiState } from 'contexts/ChainUi/types';
+import type {
+  ChainStateFilters,
+  ChainStateSection,
+  ChainStateSections,
+  ChainUiNamespace,
+  ChainUiState,
+  StorageItemFilter,
+} from 'contexts/ChainUi/types';
 import type {
   ChainStateConstantsLocal,
   ChainStateConstantsLocalEntries,
@@ -255,6 +262,62 @@ export const sanitizeChainUi = ({
         }
 
         return acc.concat([[tabId, ui]]);
+      },
+      []
+    )
+  );
+
+  return {
+    updated,
+    result,
+  };
+};
+
+// Sanitize chain state sections data and return the sanitized data.
+export const sanitizeChainStateSections = ({
+  activeTabs,
+  chainStateSections,
+}: {
+  activeTabs: Tabs;
+  chainStateSections: ChainStateSections;
+}) => {
+  const updated = false;
+
+  const result = Object.fromEntries(
+    Object.entries(chainStateSections || {}).reduce(
+      (acc: [string, ChainStateSection][], [tabId, value]) => {
+        if (!activeTabs?.find(({ id }) => id === Number(tabId))) {
+          return acc;
+        }
+        return acc.concat([[tabId, value]]);
+      },
+      []
+    )
+  );
+
+  return {
+    updated,
+    result,
+  };
+};
+
+// Sanitize chain state filters data and return the sanitized data.
+export const sanitizeChainStateFilters = ({
+  activeTabs,
+  chainStateFilters,
+}: {
+  activeTabs: Tabs;
+  chainStateFilters: ChainStateFilters;
+}) => {
+  const updated = false;
+
+  const result = Object.fromEntries(
+    Object.entries(chainStateFilters || {}).reduce(
+      (acc: [string, StorageItemFilter][], [tabId, value]) => {
+        if (!activeTabs?.find(({ id }) => id === Number(tabId))) {
+          return acc;
+        }
+        return acc.concat([[tabId, value]]);
       },
       []
     )
