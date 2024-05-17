@@ -51,7 +51,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
 
   // Set the selected relay chain for a tab.
   const setSelectedRelayChain = (tabId: number, chainId: DirectoryId) => {
-    const updated = getTabTaskData(tabId) as ParachainSetupTaskData;
+    const updated = (getTabTaskData(tabId) as ParachainSetupTaskData) || {};
     updated.selectedRelayChain = chainId;
     setTabTaskData(tabId, updated);
   };
