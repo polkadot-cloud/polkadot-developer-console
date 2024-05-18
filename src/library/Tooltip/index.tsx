@@ -82,7 +82,7 @@ export const Tooltip = () => {
   const tooltipRightX = tooltipX + tooltipWidth;
 
   // Don't show tooltip if it's leaking out of the window.
-  const showTooltip = ready && !delayed && tooltipRightX <= tooltipMaxX;
+  const showTooltip = ready && !delayed && tooltipRightX <= tooltipMaxX + 1; // NOTE: + 1 is due to a rounding error in Firefox browser.
 
   // Check position and start tooltip delay timeout when it has been opened. Listen to mouse move
   // events and close the tooltip if the mouse moves outside its bounding box.

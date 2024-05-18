@@ -70,7 +70,7 @@ export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
           }}
           icon={tabsHidden ? faAngleDown : faAngleUp}
           disabled={pathname !== '/'}
-          iconTransform="shrink-3"
+          iconTransform="shrink-1"
         />
       </div>
     </HeaderMenuWrapper>
