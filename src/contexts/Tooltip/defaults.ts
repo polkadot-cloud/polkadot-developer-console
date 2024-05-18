@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
-import type { BoundingBox, TooltipContextInterface } from './types';
+import type { BoundingBox, OpenState, TooltipContextInterface } from './types';
 
 // Default bounding box of the tooltip. The bounding box is the area of the DOM that the tooltip is
 // active in. Any mouse movement outside of this area will close the tooltip.
@@ -28,9 +28,14 @@ export const TooltipCursorPadding = 20;
 // Time threshold for instant open after last close in seconds.
 export const TooltipInstantThreshold = 1.5;
 
-export const defaultTooltipContext: TooltipContextInterface = {
+// Closed by default with no custom config.
+export const defaultOpenState: OpenState = {
   open: false,
-  openRef: null,
+};
+
+export const defaultTooltipContext: TooltipContextInterface = {
+  openState: defaultOpenState,
+  openStateRef: null,
   ready: false,
   setReady: (ready) => {},
   delayed: true,

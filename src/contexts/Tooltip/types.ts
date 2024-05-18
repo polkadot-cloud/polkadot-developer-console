@@ -4,8 +4,8 @@
 import type { PointerEvent as ReactPointerEvent, RefObject } from 'react';
 
 export interface TooltipContextInterface {
-  open: boolean;
-  openRef: RefObject<boolean> | null;
+  openState: OpenState;
+  openStateRef: RefObject<OpenState> | null;
   ready: boolean;
   setReady: (ready: boolean) => void;
   delayed: boolean;
@@ -20,7 +20,11 @@ export interface TooltipContextInterface {
   lastCloseRef: RefObject<number> | null;
   boundingBox: BoundingBox;
   closeTooltip: () => void;
-  openTooltip: (newText: string, ref: RefObject<HTMLElement> | null) => void;
+  openTooltip: (
+    newText: string,
+    ref: RefObject<HTMLElement> | null,
+    config?: TooltipCustomConfig
+  ) => void;
   calculateTooltipPosition: (
     currentPos: [number, number],
     tooltipRef: RefObject<HTMLDivElement>
@@ -36,3 +40,12 @@ export interface BoundingBox {
 export type TooltipPointerEvent =
   | PointerEvent
   | ReactPointerEvent<HTMLDivElement>;
+
+export interface TooltipCustomConfig {
+  delay?: number;
+}
+
+export interface OpenState {
+  open: boolean;
+  config?: TooltipCustomConfig;
+}

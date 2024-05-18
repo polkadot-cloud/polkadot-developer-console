@@ -14,8 +14,8 @@ import { getUnixTime } from 'date-fns';
 
 export const Tooltip = () => {
   const {
-    open,
-    openRef,
+    openState,
+    openStateRef,
     ready,
     setReady,
     delayed,
@@ -44,7 +44,7 @@ export const Tooltip = () => {
 
   // Handler for closing the menu on mouse move.
   const mouseMoveCallback = (ev: TooltipPointerEvent) => {
-    if (!openRef?.current || false) {
+    if (!openStateRef?.current?.open || false) {
       return;
     }
 
@@ -87,7 +87,10 @@ export const Tooltip = () => {
   // Check position and start tooltip delay timeout when it has been opened. Listen to mouse move
   // events and close the tooltip if the mouse moves outside its bounding box.
   useEffect(() => {
-    if (open) {
+    if (openState.open) {
+      const customDelay = openState?.config?.delay;
+      const delay = customDelay === undefined ? TooltipDelay : customDelay;
+
       // If current time is within `TooltipInstantThreshold` of last close, open instantly.
       if (
         getUnixTime(new Date()) - (lastCloseRef?.current || 0) <
@@ -97,7 +100,7 @@ export const Tooltip = () => {
       } else {
         delayTimeout.current = setTimeout(() => {
           setDelayed(false);
-        }, TooltipDelay);
+        }, delay);
       }
       window.addEventListener('pointermove', mouseMoveCallback);
     } else {
@@ -107,7 +110,7 @@ export const Tooltip = () => {
       clearTimeout(delayTimeout.current);
       window.removeEventListener('pointermove', mouseMoveCallback);
     };
-  }, [open]);
+  }, [openState.open]);
 
   // Close the tooltip on window resize.
   useEffect(() => {
@@ -118,7 +121,7 @@ export const Tooltip = () => {
   }, []);
 
   return (
-    open && (
+    openState.open && (
       <Wrapper
         ref={tooltipRef}
         style={{

@@ -3,11 +3,17 @@
 
 import type { ReactNode, RefObject } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
-import type { BoundingBox, TooltipContextInterface } from './types';
+import type {
+  BoundingBox,
+  OpenState,
+  TooltipContextInterface,
+  TooltipCustomConfig,
+} from './types';
 import {
   TooltipCursorPadding,
   TooltipDocumentPadding,
   defaultBoundingBox,
+  defaultOpenState,
   defaultTooltipContext,
   defaultTooltipPosition,
 } from './defaults';
@@ -23,8 +29,8 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
   // Whether the tooltip is currently open. This initiates tooltip state but does not reflect
   // whether the tooltip is being displayed. NOTE: Needs a ref as it is referenced in event
   // listeners.
-  const [open, setOpen] = useState<boolean>(false);
-  const openRef = useRef(open);
+  const [openState, setOpenState] = useState<OpenState>(defaultOpenState);
+  const openStateRef = useRef(openState);
 
   // Whether the tooltip is ready to start delay timer and be displayed.
   const [ready, setReady] = useState<boolean>(false);
@@ -71,7 +77,8 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
   // is not currently open.
   const openTooltip = (
     newText: string,
-    boundBoxRef: RefObject<HTMLElement> | null
+    boundBoxRef: RefObject<HTMLElement> | null,
+    config?: TooltipCustomConfig
   ) => {
     // Set summoning element bounding box.
     setBoundingBox({
@@ -83,7 +90,8 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
 
     // Set text and mouse position of the tooltip, then open.
     setText(newText);
-    setStateWithRef(true, setOpen, openRef);
+    console.log('set open');
+    setStateWithRef({ open: true, config }, setOpenState, openStateRef);
   };
 
   // Hides the menu and closes.
@@ -91,7 +99,7 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
     setReady(false);
     setDelayed(true);
     setBoundingBox(defaultBoundingBox);
-    setStateWithRef(false, setOpen, openRef);
+    setStateWithRef({ open: false }, setOpenState, openStateRef);
     setStateWithRef(defaultTooltipPosition, setPositionState, positionRef);
   };
 
@@ -127,11 +135,13 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
     return [x, y];
   };
 
+  console.log(openState);
+
   return (
     <TooltipContext.Provider
       value={{
-        open,
-        openRef,
+        openState,
+        openStateRef,
         ready,
         setReady,
         delayed,
