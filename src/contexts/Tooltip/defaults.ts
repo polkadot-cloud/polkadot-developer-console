@@ -17,7 +17,7 @@ export const defaultBoundingBox: BoundingBox = {
 export const defaultTooltipPosition: [number, number] = [0, -999];
 
 // Delay before showing tooltip.
-export const TooltipDelay = 2000;
+export const TooltipDelay = 1000;
 
 // Document padding.
 export const TooltipDocumentPadding = 20;
