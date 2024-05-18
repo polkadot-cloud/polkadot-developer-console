@@ -17,6 +17,7 @@ export const Tooltip = () => {
     openState,
     openStateRef,
     ready,
+    readyRef,
     setReady,
     delayed,
     delayedRef,
@@ -45,6 +46,13 @@ export const Tooltip = () => {
   // Handler for closing the menu on mouse move.
   const mouseMoveCallback = (ev: TooltipPointerEvent) => {
     if (!openStateRef?.current?.open || false) {
+      return;
+    }
+
+    // if `disableMove` config is set, don't close the tooltip on mouse move.
+    const fixedPosition =
+      readyRef?.current && openStateRef?.current?.config?.disableMove;
+    if (fixedPosition) {
       return;
     }
 

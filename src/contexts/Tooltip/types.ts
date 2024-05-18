@@ -7,6 +7,7 @@ export interface TooltipContextInterface {
   openState: OpenState;
   openStateRef: RefObject<OpenState> | null;
   ready: boolean;
+  readyRef: RefObject<boolean> | null;
   setReady: (ready: boolean) => void;
   delayed: boolean;
   delayedRef: RefObject<boolean> | null;
@@ -44,6 +45,7 @@ export type TooltipPointerEvent =
 export interface TooltipCustomConfig {
   delay?: number;
   closeAfterMs?: number;
+  disableMove?: boolean;
 }
 
 export interface OpenState {

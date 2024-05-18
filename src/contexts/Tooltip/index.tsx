@@ -32,8 +32,10 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
   const [openState, setOpenState] = useState<OpenState>(defaultOpenState);
   const openStateRef = useRef(openState);
 
-  // Whether the tooltip is ready to start delay timer and be displayed.
-  const [ready, setReady] = useState<boolean>(false);
+  // Whether the tooltip is ready to start delay timer and be displayed. NOTE: Needs a ref as it is
+  // referenced in event listeners.
+  const [ready, setReadyState] = useState<boolean>(false);
+  const readyRef = useRef(ready);
 
   // Whether the tooltip's delay timeout has surpassed. NOTE: Needs a ref as it is referenced in
   // event listeners.
@@ -53,6 +55,11 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
   // listeners.
   const [lastClose, setLastCosedState] = useState<number>(0);
   const lastCloseRef = useRef(lastClose);
+
+  // Setter for ready state.
+  const setReady = (newReady: boolean) => {
+    setStateWithRef(newReady, setReadyState, readyRef);
+  };
 
   // Setter for tooltip delayed status.
   const setDelayed = (newDelayed: boolean) => {
@@ -140,6 +147,7 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
         openState,
         openStateRef,
         ready,
+        readyRef,
         setReady,
         delayed,
         delayedRef,

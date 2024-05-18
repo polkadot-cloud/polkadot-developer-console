@@ -37,6 +37,7 @@ export const defaultTooltipContext: TooltipContextInterface = {
   openState: defaultOpenState,
   openStateRef: null,
   ready: false,
+  readyRef: null,
   setReady: (ready) => {},
   delayed: true,
   delayedRef: null,
