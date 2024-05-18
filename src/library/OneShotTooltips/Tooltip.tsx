@@ -24,7 +24,7 @@ export const Tooltip = ({
     useOneShotTooltip();
   const { open, text, position } = tooltip;
 
-  const TOOLTIP_SHOW_DURATION_MS = 1500;
+  const TOOLTIP_SHOW_DURATION_MS = 1000;
 
   const TOOLTIP_FADE_DURATION_MS = 750;
 
