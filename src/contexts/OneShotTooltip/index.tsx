@@ -27,11 +27,8 @@ export const OneShotTooltipProvider = ({
   };
 
   // Open a tooltip.
-  const openTooltip = (
-    text: string,
-    elementRef: RefObject<HTMLElement | null>
-  ) => {
-    const elId = elementRef?.current?.id;
+  const openTooltip = (text: string, elRef: RefObject<HTMLElement | null>) => {
+    const elId = elRef?.current?.id;
 
     // If ref already exists with the supplied element id, close that first.
     const existingElement = Object.entries(tooltipsRef.current).find(
@@ -41,8 +38,13 @@ export const OneShotTooltipProvider = ({
       closeTooltip(Number(existingElement[0]));
     }
 
-    const x = elementRef?.current?.getBoundingClientRect().left || 0;
-    const y = elementRef?.current?.getBoundingClientRect().top || 0;
+    let x = 0;
+    let y = 0;
+    const rect = elRef?.current?.getBoundingClientRect();
+    if (rect) {
+      x = rect.left + window.scrollX;
+      y = rect.top + window.scrollY;
+    }
 
     // Increment the tooltip id.
     const id = getNextIndex();
@@ -58,7 +60,7 @@ export const OneShotTooltipProvider = ({
     });
   };
 
-  // Set a tooltip to be ready (able to show)
+  // Set a tooltip to be ready (able to show).
   const setTooltipReadyWithPosition = (
     id: number,
     position: [number, number]

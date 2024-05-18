@@ -5,10 +5,7 @@ import type { RefObject } from 'react';
 
 export interface OneShotTooltipContextInterface {
   tooltips: OneShotTooltips;
-  openTooltip: (
-    text: string,
-    elementRef: RefObject<HTMLElement | null>
-  ) => void;
+  openTooltip: (text: string, elRef: RefObject<HTMLElement | null>) => void;
   setTooltipReadyWithPosition: (id: number, position: [number, number]) => void;
   dismissTooltip: (id: number) => void;
   closeTooltip: (id: number) => void;

@@ -19,10 +19,9 @@ export const calculateTooltipPosition = (
   const tooltipRect = ref.current.getBoundingClientRect();
 
   const hiddenRight =
-    currentPos[0] + tooltipRect.width > bodyRect.right - TooltipDocumentPadding;
+    currentPos[0] + tooltipRect.width > bodyRect.width - TooltipDocumentPadding;
   const hiddenBottom =
-    currentPos[1] + tooltipRect.height > bodyRect.bottom + TooltipCursorPadding;
-
+    currentPos[1] + tooltipRect.height > bodyRect.height + TooltipCursorPadding;
   const x = hiddenRight
     ? window.innerWidth - tooltipRect.width - TooltipDocumentPadding
     : currentPos?.[0] || 0;

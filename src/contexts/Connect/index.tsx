@@ -83,8 +83,8 @@ export const ConnectProvider = ({ children }: { children: ReactNode }) => {
     // position.
     const bodyRect = document.body.getBoundingClientRect();
     const menuRect = overlayRef.current.getBoundingClientRect();
-    const hiddenRight = menuRect.right > bodyRect.right;
-    const hiddenBottom = menuRect.bottom > bodyRect.bottom;
+    const hiddenRight = menuRect.right > bodyRect.width;
+    const hiddenBottom = menuRect.bottom > bodyRect.height;
 
     const x = hiddenRight ? window.innerWidth - menuRect.width : position[0];
     const y = hiddenBottom ? window.innerHeight - menuRect.height : position[1];
