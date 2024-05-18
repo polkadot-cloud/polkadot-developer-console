@@ -118,8 +118,8 @@ export const AccountsWrapper = styled.div`
             font-size: 0.72rem;
             padding-right: 1.5rem;
 
-            > .copy {
-              margin-left: 0.2rem;
+            > button {
+              margin-left: 0.15rem;
               border-radius: 1rem;
               width: 1.2rem;
               height: 1.2rem;
@@ -130,7 +130,7 @@ export const AccountsWrapper = styled.div`
               }
 
               > svg {
-                color: var(--text-color-tertiary);
+                color: var(--text-color-secondary);
               }
             }
           }

@@ -52,5 +52,4 @@ export const defaultTooltipContext: TooltipContextInterface = {
   boundingBox: defaultBoundingBox,
   closeTooltip: () => {},
   openTooltip: (ev, newInner) => {},
-  calculateTooltipPosition: (currentPos, tooltipRef) => [0, 0],
 };

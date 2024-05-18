@@ -5,8 +5,7 @@ import { capitalizeFirstLetter, removeHexPrefix } from '@w3ux/utils';
 import { EncodedWrapper } from '../Wrappers';
 import type { EncodedDetailsProps } from './types';
 import { xxhashAsHex } from '@polkadot/util-crypto';
-import { faClone } from '@fortawesome/pro-duotone-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ButtonCopy } from 'library/Buttons/ButtonCopy';
 
 export const EncodedDetails = ({
   activePallet,
@@ -15,7 +14,6 @@ export const EncodedDetails = ({
   const activePalletHash = removeHexPrefix(
     xxhashAsHex(capitalizeFirstLetter(activePallet), 128)
   );
-
   const activeItemHash = removeHexPrefix(
     xxhashAsHex(capitalizeFirstLetter(activeItem), 128)
   );
@@ -31,13 +29,14 @@ export const EncodedDetails = ({
           <div>
             <h4>
               {activePalletHash}
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(activePalletHash);
-                }}
-              >
-                <FontAwesomeIcon icon={faClone} transform="shrink-2" />
-              </button>
+              <span>
+                <ButtonCopy
+                  copyText={activePalletHash}
+                  tooltipText="Copied!"
+                  id="copy_pallet_hash"
+                  transform="shrink-3"
+                />
+              </span>
             </h4>
           </div>
         </section>
@@ -49,13 +48,14 @@ export const EncodedDetails = ({
           <div>
             <h4>
               {activeItemHash}
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(activeItemHash);
-                }}
-              >
-                <FontAwesomeIcon icon={faClone} transform="shrink-2" />
-              </button>
+              <span>
+                <ButtonCopy
+                  copyText={activeItemHash}
+                  tooltipText="Copied!"
+                  id="copy_call_hash"
+                  transform="shrink-3"
+                />
+              </span>
             </h4>
           </div>
         </section>

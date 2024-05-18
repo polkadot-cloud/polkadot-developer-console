@@ -26,10 +26,6 @@ export interface TooltipContextInterface {
     ref: RefObject<HTMLElement> | null,
     config?: TooltipCustomConfig
   ) => void;
-  calculateTooltipPosition: (
-    currentPos: [number, number],
-    tooltipRef: RefObject<HTMLDivElement>
-  ) => [number, number];
 }
 
 export interface BoundingBox {

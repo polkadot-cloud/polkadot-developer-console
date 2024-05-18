@@ -168,18 +168,25 @@ export const EncodedWrapper = styled.div`
             align-items: center;
             flex-grow: 1;
 
-            > button {
-              color: var(--text-color-secondary);
+            > span {
+              flex-grow: 1;
               display: flex;
               justify-content: flex-end;
-              flex-grow: 1;
-              margin-left: 0.65rem;
-              transition: opacity 0.15s;
-              opacity: 0.6;
+              position: relative;
 
-              &:hover {
-                color: var(--text-color-primary);
-                opacity: 1;
+              > button {
+                color: var(--text-color-secondary);
+                display: flex;
+                justify-content: flex-end;
+                flex: 0;
+                margin-left: 0.65rem;
+                transition: opacity 0.15s;
+                opacity: 0.6;
+
+                &:hover {
+                  color: var(--text-color-primary);
+                  opacity: 1;
+                }
               }
             }
           }
