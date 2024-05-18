@@ -5,28 +5,18 @@ import { capitalizeFirstLetter, removeHexPrefix } from '@w3ux/utils';
 import { EncodedWrapper } from '../Wrappers';
 import type { EncodedDetailsProps } from './types';
 import { xxhashAsHex } from '@polkadot/util-crypto';
-import { faClone } from '@fortawesome/pro-duotone-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useOneShotTooltip } from 'contexts/OneShotTooltip';
-import { useRef } from 'react';
+import { ButtonCopy } from 'library/Buttons/ButtonCopy';
 
 export const EncodedDetails = ({
   activePallet,
   activeItem,
 }: EncodedDetailsProps) => {
-  const { openTooltip } = useOneShotTooltip();
-
   const activePalletHash = removeHexPrefix(
     xxhashAsHex(capitalizeFirstLetter(activePallet), 128)
   );
-
   const activeItemHash = removeHexPrefix(
     xxhashAsHex(capitalizeFirstLetter(activeItem), 128)
   );
-
-  // Copy button refs.
-  const palletCopyRef = useRef<HTMLButtonElement>(null);
-  const callCopyRef = useRef<HTMLButtonElement>(null);
 
   return (
     <EncodedWrapper>
@@ -40,16 +30,12 @@ export const EncodedDetails = ({
             <h4>
               {activePalletHash}
               <span>
-                <button
-                  ref={palletCopyRef}
+                <ButtonCopy
+                  copyText={activePalletHash}
+                  tooltipText="Copied!"
                   id="copy_pallet_hash"
-                  onClick={() => {
-                    navigator.clipboard.writeText(activePalletHash);
-                    openTooltip('Copied!', palletCopyRef);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faClone} transform="shrink-2" />
-                </button>
+                  transform="shrink-3"
+                />
               </span>
             </h4>
           </div>
@@ -63,16 +49,12 @@ export const EncodedDetails = ({
             <h4>
               {activeItemHash}
               <span>
-                <button
-                  ref={callCopyRef}
+                <ButtonCopy
+                  copyText={activeItemHash}
+                  tooltipText="Copied!"
                   id="copy_call_hash"
-                  onClick={() => {
-                    navigator.clipboard.writeText(activeItemHash);
-                    openTooltip('Copied!', callCopyRef);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faClone} transform="shrink-2" />
-                </button>
+                  transform="shrink-3"
+                />
               </span>
             </h4>
           </div>

@@ -165,7 +165,7 @@ export const Wrapper = styled.div`
 
             > button {
               color: var(--text-color-tertiary);
-              margin-left: 0.1rem;
+              margin-left: 0.25rem;
             }
           }
         }

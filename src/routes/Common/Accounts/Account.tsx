@@ -11,7 +11,7 @@ import { AccountContextMenu } from './AccountMenu';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import BigNumber from 'bignumber.js';
-import { faClone } from '@fortawesome/pro-duotone-svg-icons';
+import { ButtonCopy } from 'library/Buttons/ButtonCopy';
 
 export const Account = ({
   apiInstanceId,
@@ -72,12 +72,12 @@ export const Account = ({
           <div className="address">
             <h5>
               {ellipsisFn(address, 7)}
-              <button
-                className="copy"
-                onClick={() => navigator.clipboard.writeText(address)}
-              >
-                <FontAwesomeIcon icon={faClone} transform="shrink-4" />
-              </button>
+              <ButtonCopy
+                copyText={address}
+                tooltipText="Copied!"
+                id={`account_copy_${address}`}
+                transform="shrink-4"
+              />
             </h5>
           </div>
           <div className="free">

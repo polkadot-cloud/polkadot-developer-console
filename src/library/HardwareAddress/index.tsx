@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { ellipsisFn, unescape } from '@w3ux/utils';
 import { Wrapper } from './Wrapper';
 import type { HardwareAddressProps } from './types';
-import { faClone } from '@fortawesome/pro-duotone-svg-icons';
+import { ButtonCopy } from 'library/Buttons/ButtonCopy';
 
 export const HardwareAddress = ({
   network,
@@ -115,10 +115,13 @@ export const HardwareAddress = ({
             </section>
             <h5 className="full">
               <span>
-                {ellipsisFn(address, 10)}{' '}
-                <button onClick={() => navigator.clipboard.writeText(address)}>
-                  <FontAwesomeIcon icon={faClone} transform="shrink-4" />
-                </button>
+                {ellipsisFn(address, 10)}
+                <ButtonCopy
+                  copyText={address}
+                  tooltipText="Copied!"
+                  id={`hw_address_copy_${address}`}
+                  transform="shrink-5"
+                />
               </span>
             </h5>
           </div>

@@ -1,16 +1,13 @@
 // Copyright 2024 @polkadot-developer-console/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import {
-  faClone,
-  faThumbtack,
-  faXmark,
-} from '@fortawesome/pro-duotone-svg-icons';
+import { faThumbtack, faXmark } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { capitalizeFirstLetter } from '@w3ux/utils';
 import type { ChainStateResultProps } from '../types';
 import { splitConstantKey, splitSubscriptionKey } from 'model/ChainState/util';
 import { useChainState } from 'contexts/ChainState';
+import { ButtonCopy } from 'library/Buttons/ButtonCopy';
 
 export const ChainStateResult = ({
   chainStateKey,
@@ -46,9 +43,12 @@ export const ChainStateResult = ({
             <h4>{display}</h4>
           </div>
           <div>
-            <button onClick={() => navigator.clipboard.writeText(display)}>
-              <FontAwesomeIcon icon={faClone} transform="shrink-2" />
-            </button>
+            <ButtonCopy
+              copyText={display}
+              tooltipText="Copied!"
+              id={`result_${type}_${rawKey}`}
+              transform="shrink-3"
+            />
           </div>
         </div>
       </div>
