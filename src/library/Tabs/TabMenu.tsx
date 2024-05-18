@@ -38,13 +38,13 @@ export const TabContextMenu = ({
   const apiStatusActive = ['ready', 'connected', 'connecting'].includes(
     apiStatus
   );
-  const canDisconenct = ['ready', 'connected', 'connecting'].includes(
+  const canDisconnect = ['ready', 'connected', 'connecting'].includes(
     apiStatus
   );
   const canReconnect =
-    !!tab?.taskData?.chain?.id && !canDisconenct && !apiStatusActive;
+    !!tab?.taskData?.chain?.id && !canDisconnect && !apiStatusActive;
 
-  const apiStatusText = canDisconenct
+  const apiStatusText = canDisconnect
     ? 'Disconnect'
     : apiStatus === 'connecting'
       ? 'Connecting..'
@@ -89,7 +89,7 @@ export const TabContextMenu = ({
         <li className={`${apiButtonInactive ? `` : ` inactive`}`}>
           <button
             onClick={() => {
-              if (canDisconenct) {
+              if (canDisconnect) {
                 handleDisconnectTab();
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);
@@ -101,9 +101,9 @@ export const TabContextMenu = ({
           ></button>
           <div className="inner">
             <div
-              className={!canDisconenct && !canReconnect ? 'none' : undefined}
+              className={!canDisconnect && !canReconnect ? 'none' : undefined}
             >
-              {canDisconenct && (
+              {canDisconnect && (
                 <FontAwesomeIcon icon={faLinkSlash} transform="shrink-4" />
               )}
               {canReconnect && (
