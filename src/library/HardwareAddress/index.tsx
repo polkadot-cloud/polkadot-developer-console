@@ -1,13 +1,14 @@
 // Copyright 2024 @polkadot-developer-console/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { faCheck, faCopy, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
 import { ellipsisFn, unescape } from '@w3ux/utils';
 import { Wrapper } from './Wrapper';
 import type { HardwareAddressProps } from './types';
+import { faClone } from '@fortawesome/pro-duotone-svg-icons';
 
 export const HardwareAddress = ({
   network,
@@ -116,7 +117,7 @@ export const HardwareAddress = ({
               <span>
                 {ellipsisFn(address, 10)}{' '}
                 <button onClick={() => navigator.clipboard.writeText(address)}>
-                  <FontAwesomeIcon icon={faCopy} transform="shrink-5" />
+                  <FontAwesomeIcon icon={faClone} transform="shrink-4" />
                 </button>
               </span>
             </h5>

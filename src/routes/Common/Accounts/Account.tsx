@@ -5,12 +5,13 @@ import { ellipsisFn, planckToUnit, remToUnit } from '@w3ux/utils';
 import type { AccountProps } from './types';
 import { Polkicon } from '@w3ux/react-polkicon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { AccountContextMenu } from './AccountMenu';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import BigNumber from 'bignumber.js';
+import { faClone } from '@fortawesome/pro-duotone-svg-icons';
 
 export const Account = ({
   apiInstanceId,
@@ -75,7 +76,7 @@ export const Account = ({
                 className="copy"
                 onClick={() => navigator.clipboard.writeText(address)}
               >
-                <FontAwesomeIcon icon={faCopy} transform="shrink-4" />
+                <FontAwesomeIcon icon={faClone} transform="shrink-4" />
               </button>
             </h5>
           </div>
