@@ -7,6 +7,9 @@ import { useEffect, useRef } from 'react';
 import { Wrapper } from '../Tooltip/Wrappers';
 import { motion } from 'framer-motion';
 import { calculateTooltipPosition } from 'contexts/Tooltip/Utils';
+import { useActiveTab } from 'contexts/ActiveTab';
+import { useEffectIgnoreInitial } from '@w3ux/hooks';
+import { useLocation } from 'react-router-dom';
 
 export const Tooltip = ({
   id,
@@ -15,6 +18,8 @@ export const Tooltip = ({
   id: number;
   tooltip: OneShotTooltip;
 }) => {
+  const { pathname } = useLocation();
+  const { tabId, tab } = useActiveTab();
   const { setTooltipReadyWithPosition, dismissTooltip, closeTooltip } =
     useOneShotTooltip();
   const { open, text, position } = tooltip;
@@ -62,6 +67,13 @@ export const Tooltip = ({
       clearTimeout(closeTimeout.current);
     };
   }, [open]);
+
+  // If route, active page, or active tab changes, close the tooltip immediately.
+  useEffectIgnoreInitial(() => {
+    closeTooltip(id);
+    clearTimeout(fadeTimeout.current);
+    clearTimeout(closeTimeout.current);
+  }, [pathname, tabId, tab?.activePage]);
 
   return !open ? null : (
     <Wrapper
