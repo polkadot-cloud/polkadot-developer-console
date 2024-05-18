@@ -14,9 +14,10 @@ import { getUnixTime } from 'date-fns';
 
 export const Tooltip = () => {
   const {
-    open,
-    openRef,
+    openState,
+    openStateRef,
     ready,
+    readyRef,
     setReady,
     delayed,
     delayedRef,
@@ -44,7 +45,14 @@ export const Tooltip = () => {
 
   // Handler for closing the menu on mouse move.
   const mouseMoveCallback = (ev: TooltipPointerEvent) => {
-    if (!openRef?.current || false) {
+    if (!openStateRef?.current?.open || false) {
+      return;
+    }
+
+    // if `disableMove` config is set, don't close the tooltip on mouse move.
+    const fixedPosition =
+      readyRef?.current && openStateRef?.current?.config?.disableMove;
+    if (fixedPosition) {
       return;
     }
 
@@ -87,18 +95,30 @@ export const Tooltip = () => {
   // Check position and start tooltip delay timeout when it has been opened. Listen to mouse move
   // events and close the tooltip if the mouse moves outside its bounding box.
   useEffect(() => {
-    if (open) {
+    if (openState.open) {
+      const customDelay = openState?.config?.delay;
+      let delay = customDelay === undefined ? TooltipDelay : customDelay;
+
       // If current time is within `TooltipInstantThreshold` of last close, open instantly.
       if (
         getUnixTime(new Date()) - (lastCloseRef?.current || 0) <
         TooltipInstantThreshold
       ) {
+        delay = 0;
         setDelayed(false);
       } else {
         delayTimeout.current = setTimeout(() => {
           setDelayed(false);
-        }, TooltipDelay);
+        }, delay);
       }
+
+      // If an `closeAfterMs` config is provided, close the tooltip after delay + closeAfterMs.
+      if (openState?.config?.closeAfterMs) {
+        setTimeout(() => {
+          closeTooltip();
+        }, delay + openState.config.closeAfterMs);
+      }
+
       window.addEventListener('pointermove', mouseMoveCallback);
     } else {
       window.removeEventListener('pointermove', mouseMoveCallback);
@@ -107,7 +127,7 @@ export const Tooltip = () => {
       clearTimeout(delayTimeout.current);
       window.removeEventListener('pointermove', mouseMoveCallback);
     };
-  }, [open]);
+  }, [openState.open]);
 
   // Close the tooltip on window resize.
   useEffect(() => {
@@ -118,7 +138,7 @@ export const Tooltip = () => {
   }, []);
 
   return (
-    open && (
+    openState.open && (
       <Wrapper
         ref={tooltipRef}
         style={{
