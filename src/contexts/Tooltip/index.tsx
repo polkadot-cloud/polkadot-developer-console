@@ -90,7 +90,6 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
 
     // Set text and mouse position of the tooltip, then open.
     setText(newText);
-    console.log('set open');
     setStateWithRef({ open: true, config }, setOpenState, openStateRef);
   };
 
@@ -134,8 +133,6 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
 
     return [x, y];
   };
-
-  console.log(openState);
 
   return (
     <TooltipContext.Provider
