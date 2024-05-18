@@ -42,6 +42,7 @@ export const EncodedDetails = ({
               <span>
                 <button
                   ref={palletCopyRef}
+                  id="copy_pallet_hash"
                   onClick={() => {
                     navigator.clipboard.writeText(activePalletHash);
                     openTooltip('Copied!', palletCopyRef);
@@ -64,6 +65,7 @@ export const EncodedDetails = ({
               <span>
                 <button
                   ref={callCopyRef}
+                  id="copy_call_hash"
                   onClick={() => {
                     navigator.clipboard.writeText(activeItemHash);
                     openTooltip('Copied!', callCopyRef);

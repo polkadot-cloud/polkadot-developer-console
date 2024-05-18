@@ -29,8 +29,18 @@ export const OneShotTooltipProvider = ({
   // Open a tooltip.
   const openTooltip = (
     text: string,
-    elementRef: RefObject<HTMLElement> | null
+    elementRef: RefObject<HTMLElement | null>
   ) => {
+    const elId = elementRef?.current?.id;
+
+    // If ref already exists with the supplied element id, close that first.
+    const existingElement = Object.entries(tooltipsRef.current).find(
+      ([, tooltip]) => tooltip.elId === elId
+    );
+    if (existingElement) {
+      closeTooltip(Number(existingElement[0]));
+    }
+
     const x = elementRef?.current?.getBoundingClientRect().left || 0;
     const y = elementRef?.current?.getBoundingClientRect().top || 0;
 
@@ -39,6 +49,7 @@ export const OneShotTooltipProvider = ({
     setTooltips({
       ...tooltipsRef.current,
       [id]: {
+        elId,
         open: true,
         text,
         ready: false,
