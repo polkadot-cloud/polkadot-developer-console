@@ -68,6 +68,19 @@ export const Tooltip = ({
     };
   }, [open]);
 
+  // Handler for closing the tooltip on window resize.
+  const resizeCallback = () => {
+    closeTooltip(id);
+  };
+
+  // Close the tooltip on window resize.
+  useEffect(() => {
+    window.addEventListener('resize', resizeCallback);
+    return () => {
+      window.removeEventListener('resize', resizeCallback);
+    };
+  }, []);
+
   // If route, active page, or active tab changes, close the tooltip immediately.
   useEffectIgnoreInitial(() => {
     closeTooltip(id);
