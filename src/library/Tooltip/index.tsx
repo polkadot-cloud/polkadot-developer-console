@@ -89,19 +89,28 @@ export const Tooltip = () => {
   useEffect(() => {
     if (openState.open) {
       const customDelay = openState?.config?.delay;
-      const delay = customDelay === undefined ? TooltipDelay : customDelay;
+      let delay = customDelay === undefined ? TooltipDelay : customDelay;
 
       // If current time is within `TooltipInstantThreshold` of last close, open instantly.
       if (
         getUnixTime(new Date()) - (lastCloseRef?.current || 0) <
         TooltipInstantThreshold
       ) {
+        delay = 0;
         setDelayed(false);
       } else {
         delayTimeout.current = setTimeout(() => {
           setDelayed(false);
         }, delay);
       }
+
+      // If an `closeAfterMs` config is provided, close the tooltip after delay + closeAfterMs.
+      if (openState?.config?.closeAfterMs) {
+        setTimeout(() => {
+          closeTooltip();
+        }, delay + openState.config.closeAfterMs);
+      }
+
       window.addEventListener('pointermove', mouseMoveCallback);
     } else {
       window.removeEventListener('pointermove', mouseMoveCallback);

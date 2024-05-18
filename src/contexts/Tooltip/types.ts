@@ -43,6 +43,7 @@ export type TooltipPointerEvent =
 
 export interface TooltipCustomConfig {
   delay?: number;
+  closeAfterMs?: number;
 }
 
 export interface OpenState {
