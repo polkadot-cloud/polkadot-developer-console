@@ -11,6 +11,7 @@ import {
 } from 'contexts/Tooltip/defaults';
 import { motion } from 'framer-motion';
 import { getUnixTime } from 'date-fns';
+import { calculateTooltipPosition } from 'contexts/Tooltip/Utils';
 
 export const Tooltip = () => {
   const {
@@ -29,7 +30,6 @@ export const Tooltip = () => {
     closeTooltip,
     positionRef,
     setPosition,
-    calculateTooltipPosition,
   } = useTooltip();
 
   // Tooltip ref for position access.
@@ -37,6 +37,9 @@ export const Tooltip = () => {
 
   // Timeout for delaying showing the tooltip.
   const delayTimeout = useRef<ReturnType<typeof setTimeout>>();
+
+  // Timeout for closing the tooltip after a delay.
+  const closeTimeout = useRef<ReturnType<typeof setTimeout>>();
 
   // Handler for closing the menu on window resize.
   const resizeCallback = () => {
@@ -71,7 +74,9 @@ export const Tooltip = () => {
 
       closeTooltip();
       clearTimeout(delayTimeout.current);
+      clearTimeout(closeTimeout.current);
       delayTimeout.current = undefined;
+      closeTimeout.current = undefined;
     } else {
       const [newX, newY] = calculateTooltipPosition(
         [mouseX, mouseY],
@@ -114,7 +119,7 @@ export const Tooltip = () => {
 
       // If an `closeAfterMs` config is provided, close the tooltip after delay + closeAfterMs.
       if (openState?.config?.closeAfterMs) {
-        setTimeout(() => {
+        closeTimeout.current = setTimeout(() => {
           closeTooltip();
         }, delay + openState.config.closeAfterMs);
       }
@@ -125,6 +130,7 @@ export const Tooltip = () => {
     }
     return () => {
       clearTimeout(delayTimeout.current);
+      clearTimeout(closeTimeout.current);
       window.removeEventListener('pointermove', mouseMoveCallback);
     };
   }, [openState.open]);

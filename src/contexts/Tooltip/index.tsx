@@ -10,8 +10,6 @@ import type {
   TooltipCustomConfig,
 } from './types';
 import {
-  TooltipCursorPadding,
-  TooltipDocumentPadding,
   defaultBoundingBox,
   defaultOpenState,
   defaultTooltipContext,
@@ -109,38 +107,6 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
     setStateWithRef(defaultTooltipPosition, setPositionState, positionRef);
   };
 
-  // Calculates tooltip x and y, preventing it to be hidden.
-  const calculateTooltipPosition = (
-    currentPos: [number, number],
-    ref: RefObject<HTMLDivElement>
-  ): [number, number] => {
-    if (!ref?.current) {
-      return [0, 0];
-    }
-
-    // Adjust position if it is leaking out of the window, otherwise keep it at the current
-    // position.
-    const bodyRect = document.body.getBoundingClientRect();
-    const tooltipRect = ref.current.getBoundingClientRect();
-
-    const hiddenRight =
-      currentPos[0] + tooltipRect.width >
-      bodyRect.right - TooltipDocumentPadding;
-    const hiddenBottom =
-      currentPos[1] + tooltipRect.height >
-      bodyRect.bottom + TooltipCursorPadding;
-
-    const x = hiddenRight
-      ? window.innerWidth - tooltipRect.width - TooltipDocumentPadding
-      : currentPos?.[0] || 0;
-
-    const y = hiddenBottom
-      ? window.innerHeight - tooltipRect.height
-      : currentPos?.[1] + TooltipCursorPadding || 0;
-
-    return [x, y];
-  };
-
   return (
     <TooltipContext.Provider
       value={{
@@ -162,7 +128,6 @@ export const TooltipProvider = ({ children }: { children: ReactNode }) => {
         boundingBox,
         closeTooltip,
         openTooltip,
-        calculateTooltipPosition,
       }}
     >
       {children}

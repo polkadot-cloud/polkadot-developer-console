@@ -28,6 +28,7 @@ import { ImportedAccountsProvider } from 'contexts/ImportedAccounts';
 import { ChainSpaceEnvProvider } from 'contexts/ChainSpaceEnv';
 import { ChainExplorerProvider } from 'contexts/ChainExplorer';
 import { ApiIndexerProvider } from 'contexts/ApiIndexer';
+import { OneShotTooltipProvider } from 'contexts/OneShotTooltip';
 
 export const Providers = () => {
   // !! --------------------------------
@@ -44,6 +45,7 @@ export const Providers = () => {
     // UI providers.
     MenuProvider,
     TooltipProvider,
+    OneShotTooltipProvider,
     ConnectProvider,
     ChainUiProvider,
 
