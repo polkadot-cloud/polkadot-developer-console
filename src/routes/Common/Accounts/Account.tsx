@@ -12,6 +12,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import BigNumber from 'bignumber.js';
 import { ButtonCopy } from 'library/Buttons/ButtonCopy';
+import { AccountWrapper } from './Wrappers';
 
 export const Account = ({
   apiInstanceId,
@@ -45,10 +46,10 @@ export const Account = ({
   );
 
   return (
-    <section>
+    <AccountWrapper>
       <div className="inner">
         <div className="icon">
-          <Polkicon address={address} size={remToUnit('1.7rem')} />
+          <Polkicon address={address} size={remToUnit('1.9rem')} />
         </div>
         <div className="content">
           {/* NOTE: Currently hiding menu on custom endpoint connections as there is no guarantee Subscan will have the connected chain supported. Once menu contains more links, this check can happen inside the menu. */}
@@ -89,6 +90,6 @@ export const Account = ({
           </div>
         </div>
       </div>
-    </section>
+    </AccountWrapper>
   );
 };
