@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js';
 import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
 import * as defaults from './defaults';
-import type { TxMetaContextInterface } from './types';
+import type { TxMetaContextInterface, TxPayload } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
 import type { ApiInstanceId } from 'model/Api/types';
 
@@ -67,21 +67,50 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
   const txFeeValid = (instanceId: ApiInstanceId) =>
     !getTxFee(instanceId).isZero();
 
-  // Refactor needed from here. -------------------------------------------------------------
-
   // Store the payloads of transactions if extrinsics require manual signing (e.g. Ledger). payloads
   // are calculated asynchronously and extrinsic associated with them may be cancelled. For this
   // reason we give every payload a uid, and check whether this uid matches the active extrinsic
   // before submitting it.
-  const [txPayload, setTxPayloadState] = useState<{
-    payload: AnyJson;
-    uid: number;
-  } | null>(null);
-  const txPayloadRef = useRef(txPayload);
-  const getPayloadUid = () => txPayloadRef.current?.uid || 1;
-  const getTxPayload = () => txPayloadRef.current?.payload || null;
+  //
+  // NOTE: tx payloads are accessed in callbacks, so refs are also used here.
+  const [txPayloads, setTxPayloadsState] = useState<
+    Record<ApiInstanceId, TxPayload>
+  >({});
+  const txPayloadsRef = useRef(txPayloads);
 
-  // Store an optional signed transaction if extrinsics require manual signing (e.g. Ledger).
+  // Get a payload for a given api instance.
+  const getTxPayload = (instanceId: ApiInstanceId) =>
+    txPayloadsRef.current[instanceId]?.payload;
+
+  // Increment a payload uid given an api instance.
+  const incrementTxPayloadUid = (instanceId: ApiInstanceId) =>
+    (txPayloadsRef.current[instanceId]?.uid || 0) + 1;
+
+  // Set a transaction payload and uid for a given api instance. Overwrites any existing payload.
+  const setTxPayload = (instanceId: ApiInstanceId, payload: AnyJson) => {
+    setStateWithRef(
+      {
+        ...txPayloadsRef.current,
+        [instanceId]: {
+          payload,
+          uid: incrementTxPayloadUid(instanceId),
+        },
+      },
+      setTxPayloadsState,
+      txPayloadsRef
+    );
+  };
+
+  // Removes a transaction payload for a given api instance.
+  const removeTxPayload = (instanceId: ApiInstanceId) => {
+    const updated = { ...txPayloadsRef.current };
+    delete updated[instanceId];
+    setTxPayloadsState(updated);
+  };
+
+  // Refactor needed from here. -------------------------------------------------------------
+
+  // Store a transaction signature if extrinsics require manual signing (e.g. Ledger, Vault).
   const [txSignature, setTxSignatureState] = useState<AnyJson>(null);
   const txSignatureRef = useRef(txSignature);
   const getTxSignature = () => txSignatureRef.current;
@@ -95,23 +124,6 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
   // callbacks.
   const [pendingNonces, setPendingNonces] = useState<string[]>([]);
   const pendingNoncesRef = useRef(pendingNonces);
-
-  // Set the transaction payload and uid. Overwrites any existing payload.
-  const setTxPayload = (p: AnyJson, uid: number) => {
-    setStateWithRef(
-      {
-        payload: p,
-        uid,
-      },
-      setTxPayloadState,
-      txPayloadRef
-    );
-  };
-
-  // Removes the transaction payload and uid from state.
-  const resetTxPayload = () => {
-    setStateWithRef(null, setTxPayloadState, txPayloadRef);
-  };
 
   // Adds a pending nonce to the list of pending nonces.
   const addPendingNonce = (nonce: string) => {
@@ -131,9 +143,6 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  // Utility to increment payload uid to maintain unique ids for payloads.
-  const incrementPayloadUid = () => (txPayloadRef.current?.uid || 0) + 1;
-
   return (
     <TxMetaContext.Provider
       value={{
@@ -149,11 +158,12 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
         removeTxFee,
         txFeeValid,
 
-        getPayloadUid,
+        // Manage payloads.
         getTxPayload,
         setTxPayload,
-        incrementPayloadUid,
-        resetTxPayload,
+        removeTxPayload,
+        incrementTxPayloadUid,
+
         getTxSignature,
         setTxSignature,
         pendingNonces,

@@ -16,12 +16,12 @@ export const defaultTxMeta: TxMetaContextInterface = {
   removeTxFee: (instanceId) => {},
   txFeeValid: (instanceId) => false,
 
+  getTxPayload: (instanceId) => undefined,
+  setTxPayload: (instanceId, payload) => {},
+  removeTxPayload: (instanceId) => {},
+  incrementTxPayloadUid: (instanceId) => 1,
+
   // TODO: Refactor remaining interface to account for multiple api instances.
-  getPayloadUid: () => 0,
-  getTxPayload: () => {},
-  setTxPayload: (payload, uid) => {},
-  incrementPayloadUid: () => 0,
-  resetTxPayload: () => {},
   getTxSignature: () => null,
   setTxSignature: (signature) => {},
   pendingNonces: [],

@@ -16,15 +16,20 @@ export interface TxMetaContextInterface {
   removeTxFee: (instanceId: ApiInstanceId) => void;
   txFeeValid: (instanceId: ApiInstanceId) => boolean;
 
+  getTxPayload: (instanceId: ApiInstanceId) => TxPayload | undefined;
+  setTxPayload: (instanceId: ApiInstanceId, payload: AnyJson) => void;
+  removeTxPayload: (instanceId: ApiInstanceId) => void;
+  incrementTxPayloadUid: (instanceId: ApiInstanceId) => number;
+
   // TODO: Refactor remaining interface to account for multiple api instances.
-  getPayloadUid: () => number;
-  getTxPayload: () => AnyJson;
-  setTxPayload: (payload: AnyJson, uid: number) => void;
-  incrementPayloadUid: () => number;
-  resetTxPayload: () => void;
   getTxSignature: () => AnyJson;
   setTxSignature: (signature: AnyJson) => void;
   pendingNonces: string[];
   addPendingNonce: (nonce: string) => void;
   removePendingNonce: (nonce: string) => void;
+}
+
+export interface TxPayload {
+  payload: AnyJson;
+  uid: number;
 }
