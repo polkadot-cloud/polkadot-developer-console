@@ -87,13 +87,17 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
     (txPayloadsRef.current[instanceId]?.uid || 0) + 1;
 
   // Set a transaction payload and uid for a given api instance. Overwrites any existing payload.
-  const setTxPayload = (instanceId: ApiInstanceId, payload: AnyJson) => {
+  const setTxPayload = (
+    instanceId: ApiInstanceId,
+    payload: AnyJson,
+    uid: number
+  ) => {
     setStateWithRef(
       {
         ...txPayloadsRef.current,
         [instanceId]: {
           payload,
-          uid: incrementTxPayloadUid(instanceId),
+          uid,
         },
       },
       setTxPayloadsState,
