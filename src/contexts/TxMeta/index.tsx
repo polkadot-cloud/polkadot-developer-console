@@ -8,6 +8,7 @@ import { createContext, useContext, useRef, useState } from 'react';
 import * as defaults from './defaults';
 import type { TxMetaContextInterface } from './types';
 import type { AnyJson } from '@w3ux/utils/types';
+import type { ApiInstanceId } from 'model/Api/types';
 
 export const TxMetaContext = createContext<TxMetaContextInterface>(
   defaults.defaultTxMeta
@@ -16,11 +17,34 @@ export const TxMetaContext = createContext<TxMetaContextInterface>(
 export const useTxMeta = () => useContext(TxMetaContext);
 
 export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
+  // Store the senders of transactions, keyed by api instance id.
+  //
+  // NOTE: Only one transaction is currently supported for each api instance - could be expanded to
+  // support multiple in the future.
+  const [senders, setSenders] = useState<Record<ApiInstanceId, string>>({});
+
+  // Gets a sender for a given api instance, or undefined if none exist.
+  const getSender = (instanceId: ApiInstanceId) => senders[instanceId];
+
+  // Add a sender for an api instance to the list of senders.
+  const setSender = (address: string, instanceId: ApiInstanceId) => {
+    setSenders({
+      ...senders,
+      [instanceId]: address,
+    });
+  };
+
+  // Remove sender for a given api instance.
+  const removeSender = (instanceId: ApiInstanceId) => {
+    const updated = { ...senders };
+    delete updated[instanceId];
+    setSenders(updated);
+  };
+
+  // Refactor needed from here. -------------------------------------------------------------
+
   // Store the transaction fees for the transaction.
   const [txFees, setTxFees] = useState<BigNumber>(new BigNumber(0));
-
-  // Store the sender of the transaction.
-  const [sender, setSender] = useState<string | null>(null);
 
   // Store the payloads of transactions if extrinsics require manual signing (e.g. Ledger). payloads
   // are calculated asynchronously and extrinsic associated with them may be cancelled. For this
@@ -98,8 +122,12 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
   return (
     <TxMetaContext.Provider
       value={{
-        sender,
+        // Manage tx senders.
+        senders,
+        getSender,
         setSender,
+        removeSender,
+
         txFees,
         txFeesValid,
         setTxFees,

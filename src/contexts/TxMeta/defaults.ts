@@ -6,9 +6,12 @@ import BigNumber from 'bignumber.js';
 import type { TxMetaContextInterface } from './types';
 
 export const defaultTxMeta: TxMetaContextInterface = {
-  // TODO: Refactor interface to account for multiple api instances.
-  sender: null,
-  setSender: (sender) => {},
+  senders: {},
+  getSender: (instanceId) => undefined,
+  setSender: (sender, instanceId) => {},
+  removeSender: (instanceId) => {},
+
+  // TODO: Refactor remaining interface to account for multiple api instances.
   txFees: new BigNumber(0),
   txFeesValid: false,
   setTxFees: (fees) => {},

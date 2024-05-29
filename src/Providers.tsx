@@ -29,6 +29,7 @@ import { ChainSpaceEnvProvider } from 'contexts/ChainSpaceEnv';
 import { ChainExplorerProvider } from 'contexts/ChainExplorer';
 import { ApiIndexerProvider } from 'contexts/ApiIndexer';
 import { OneShotTooltipProvider } from 'contexts/OneShotTooltip';
+import { TxMetaProvider } from 'contexts/TxMeta';
 
 export const Providers = () => {
   // !! --------------------------------
@@ -61,6 +62,9 @@ export const Providers = () => {
 
     // Account formatting and balances provider.
     AccountsProvider,
+
+    // Transaction providers.
+    TxMetaProvider,
 
     // Task: `chainExplorer` related providers.
     ChainFilterProvider,

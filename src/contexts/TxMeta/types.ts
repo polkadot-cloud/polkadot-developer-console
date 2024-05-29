@@ -1,14 +1,17 @@
 // Copyright 2024 @polkadot-developer-console/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { MaybeAddress } from '@w3ux/react-connect-kit/types';
 import type { AnyJson } from '@w3ux/utils/types';
 import type BigNumber from 'bignumber.js';
+import type { ApiInstanceId } from 'model/Api/types';
 
 export interface TxMetaContextInterface {
-  // TODO: Refactor interface to account for multiple api instances.
-  sender: MaybeAddress;
-  setSender: (sender: MaybeAddress) => void;
+  senders: Record<ApiInstanceId, string>;
+  getSender: (instanceId: ApiInstanceId) => string | undefined;
+  setSender: (address: string, instanceId: ApiInstanceId) => void;
+  removeSender: (instanceId: ApiInstanceId) => void;
+
+  // TODO: Refactor remaining interface to account for multiple api instances.
   txFees: BigNumber;
   txFeesValid: boolean;
   setTxFees: (fees: BigNumber) => void;
