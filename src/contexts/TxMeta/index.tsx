@@ -105,20 +105,39 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
   const removeTxPayload = (instanceId: ApiInstanceId) => {
     const updated = { ...txPayloadsRef.current };
     delete updated[instanceId];
-    setTxPayloadsState(updated);
+    setStateWithRef(updated, setTxPayloadsState, txPayloadsRef);
+  };
+
+  // Store a transaction signature if extrinsics require manual signing (e.g. Ledger, Vault).
+  const [txSignatures, setTxSignaturesState] = useState<
+    Record<ApiInstanceId, AnyJson>
+  >({});
+  const txSignaturesRef = useRef(txSignatures);
+
+  // Gets a transaction signature for a given api instance.
+  const getTxSignature = (instanceId: ApiInstanceId) =>
+    txSignaturesRef.current[instanceId];
+
+  // Set a transaction signature given an api instance id. Overwrites any existing signature.
+  const setTxSignature = (instanceId: ApiInstanceId, signature: AnyJson) => {
+    setStateWithRef(
+      {
+        ...txSignaturesRef.current,
+        [instanceId]: signature,
+      },
+      setTxSignaturesState,
+      txSignaturesRef
+    );
+  };
+
+  // Removes a transaction signature for a given api instance.
+  const removeTxSignature = (instanceId: ApiInstanceId) => {
+    const updated = { ...txSignaturesRef.current };
+    delete updated[instanceId];
+    setStateWithRef(updated, setTxSignaturesState, txSignaturesRef);
   };
 
   // Refactor needed from here. -------------------------------------------------------------
-
-  // Store a transaction signature if extrinsics require manual signing (e.g. Ledger, Vault).
-  const [txSignature, setTxSignatureState] = useState<AnyJson>(null);
-  const txSignatureRef = useRef(txSignature);
-  const getTxSignature = () => txSignatureRef.current;
-
-  // Set the transaction signature. Overwrites any existing signature.
-  const setTxSignature = (s: AnyJson) => {
-    setStateWithRef(s, setTxSignatureState, txSignatureRef);
-  };
 
   // Store the pending nonces of transactions. NOTE: Ref is required as `pendingNonces` is read in
   // callbacks.
@@ -164,8 +183,11 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
         removeTxPayload,
         incrementTxPayloadUid,
 
+        // Manage transaction signatures.
         getTxSignature,
         setTxSignature,
+        removeTxSignature,
+
         pendingNonces,
         addPendingNonce,
         removePendingNonce,

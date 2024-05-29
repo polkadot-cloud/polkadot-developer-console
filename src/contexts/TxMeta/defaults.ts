@@ -21,9 +21,11 @@ export const defaultTxMeta: TxMetaContextInterface = {
   removeTxPayload: (instanceId) => {},
   incrementTxPayloadUid: (instanceId) => 1,
 
+  getTxSignature: (instanceId) => undefined,
+  setTxSignature: (instanceId, signature) => {},
+  removeTxSignature: (instanceId) => {},
+
   // TODO: Refactor remaining interface to account for multiple api instances.
-  getTxSignature: () => null,
-  setTxSignature: (signature) => {},
   pendingNonces: [],
   addPendingNonce: (nonce) => {},
   removePendingNonce: (nonce) => {},
