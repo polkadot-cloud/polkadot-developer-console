@@ -7,4 +7,5 @@ import type { ImportedAccountsContextInterface } from './types';
 export const defaultImportedAccountsContext: ImportedAccountsContextInterface =
   {
     getAccounts: (chainId, ss58Prefix) => [],
+    accountHasSigner: (address, chainId, ss58Prefix) => false,
   };

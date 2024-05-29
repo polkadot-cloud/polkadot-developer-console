@@ -28,10 +28,27 @@ export const ImportedAccountsProvider = ({
   const getAccounts = (chainId: string, ss58Prefix: number) =>
     getExtensionAccounts(ss58Prefix).concat(getVaultAccounts(chainId));
 
+  // Checks whether an account can sign transactions, given a chain id and ss58 prefix.
+  const accountHasSigner = (
+    address: string,
+    chainId: string,
+    ss58Prefix: number
+  ) => {
+    const allAccounts = getAccounts(chainId, ss58Prefix);
+
+    return (
+      allAccounts.find(
+        (account) =>
+          account.address === address && account.source !== 'external' // NOTE: external accounts not yet supported.
+      ) !== undefined
+    );
+  };
+
   return (
     <ImportedAccountsContext.Provider
       value={{
         getAccounts,
+        accountHasSigner,
       }}
     >
       {children}

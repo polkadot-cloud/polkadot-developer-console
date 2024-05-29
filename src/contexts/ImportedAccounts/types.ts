@@ -5,4 +5,9 @@ import type { ImportedAccount } from '@w3ux/react-connect-kit/types';
 
 export interface ImportedAccountsContextInterface {
   getAccounts: (chainId: string, ss58Preifx: number) => ImportedAccount[];
+  accountHasSigner: (
+    address: string,
+    chainId: string,
+    ss58Prefix: number
+  ) => boolean;
 }
