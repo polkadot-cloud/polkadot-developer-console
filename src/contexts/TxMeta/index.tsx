@@ -137,29 +137,45 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
     setStateWithRef(updated, setTxSignaturesState, txSignaturesRef);
   };
 
-  // Refactor needed from here. -------------------------------------------------------------
-
-  // Store the pending nonces of transactions. NOTE: Ref is required as `pendingNonces` is read in
-  // callbacks.
-  const [pendingNonces, setPendingNonces] = useState<string[]>([]);
+  // Store the pending nonces of transactions. Multiple nonces can be pending in the event one
+  // transaction is submitted after another and the previous one is not yet finalised. NOTE: Ref is
+  // required as `pendingNonces` is read in callbacks.
+  const [pendingNonces, setPendingNonces] = useState<
+    Record<ApiInstanceId, string[]>
+  >({});
   const pendingNoncesRef = useRef(pendingNonces);
 
-  // Adds a pending nonce to the list of pending nonces.
-  const addPendingNonce = (nonce: string) => {
+  // Gets pending nonces for a given api instance id.
+  const getPendingNonces = (instanceId: ApiInstanceId) =>
+    pendingNoncesRef.current[instanceId] || [];
+
+  // Adds a pending nonce to the list of pending nonces for an api instance id.
+  const addPendingNonce = (instanceId: ApiInstanceId, nonce: string) => {
     setStateWithRef(
-      [...pendingNoncesRef.current].concat(nonce),
+      {
+        ...pendingNoncesRef.current,
+        [instanceId]:
+          pendingNoncesRef.current[instanceId] === undefined
+            ? [nonce]
+            : pendingNoncesRef.current[instanceId].concat(nonce),
+      },
       setPendingNonces,
       pendingNoncesRef
     );
   };
 
   // Removes a pending nonce from the list of pending nonces.
-  const removePendingNonce = (nonce: string) => {
-    setStateWithRef(
-      pendingNoncesRef.current.filter((n) => n !== nonce),
-      setPendingNonces,
-      pendingNoncesRef
-    );
+  const removePendingNonce = (instanceId: ApiInstanceId, nonce: string) => {
+    const updated = { ...pendingNoncesRef.current };
+    if (!updated[instanceId]) {
+      return;
+    }
+    updated[instanceId] = updated[instanceId].filter((n) => n !== nonce);
+
+    if (updated[instanceId].length === 0) {
+      delete updated[instanceId];
+    }
+    setStateWithRef(updated, setPendingNonces, pendingNoncesRef);
   };
 
   return (
@@ -188,7 +204,8 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
         setTxSignature,
         removeTxSignature,
 
-        pendingNonces,
+        // Manage pending nonces.
+        getPendingNonces,
         addPendingNonce,
         removePendingNonce,
       }}

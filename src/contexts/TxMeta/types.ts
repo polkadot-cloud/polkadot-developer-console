@@ -25,10 +25,9 @@ export interface TxMetaContextInterface {
   setTxSignature: (instanceId: ApiInstanceId, signature: AnyJson) => void;
   removeTxSignature: (instanceId: ApiInstanceId) => void;
 
-  // TODO: Refactor remaining interface to account for multiple api instances.
-  pendingNonces: string[];
-  addPendingNonce: (nonce: string) => void;
-  removePendingNonce: (nonce: string) => void;
+  getPendingNonces: (instanceId: ApiInstanceId) => string[];
+  addPendingNonce: (instanceId: ApiInstanceId, nonce: string) => void;
+  removePendingNonce: (instanceId: ApiInstanceId, nonce: string) => void;
 }
 
 export interface TxPayload {

@@ -25,8 +25,7 @@ export const defaultTxMeta: TxMetaContextInterface = {
   setTxSignature: (instanceId, signature) => {},
   removeTxSignature: (instanceId) => {},
 
-  // TODO: Refactor remaining interface to account for multiple api instances.
-  pendingNonces: [],
-  addPendingNonce: (nonce) => {},
-  removePendingNonce: (nonce) => {},
+  getPendingNonces: (instanceId) => [],
+  addPendingNonce: (instanceId, nonce) => {},
+  removePendingNonce: (instanceId, nonce) => {},
 };
