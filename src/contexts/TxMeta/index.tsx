@@ -26,7 +26,7 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
   // Gets a sender for a given api instance, or undefined if none exist.
   const getSender = (instanceId: ApiInstanceId) => senders[instanceId];
 
-  // Add a sender for an api instance to the list of senders.
+  // Set a sender for an api instance.
   const setSender = (address: string, instanceId: ApiInstanceId) => {
     setSenders({
       ...senders,
@@ -34,7 +34,7 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  // Remove sender for a given api instance.
+  // Remove a sender for a given api instance.
   const removeSender = (instanceId: ApiInstanceId) => {
     const updated = { ...senders };
     delete updated[instanceId];
