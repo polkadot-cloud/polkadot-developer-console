@@ -141,7 +141,7 @@ export const useActiveBalances = (
     const updated = { ...activeBalancesRef.current };
     updated[instanceId] = instanceBalances;
 
-    if (getApiStatus(instanceId) === 'ready') {
+    if (['ready'].includes(getApiStatus(instanceId))) {
       setActiveBalances(updated);
       const subscription = SubscriptionsController?.get(
         instanceId,

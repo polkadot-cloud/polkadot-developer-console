@@ -244,6 +244,7 @@ export class Api {
       // If this chain has already been initialized, sync chain data. May have been lost due to a
       // disconnect and automatic reconnect.
       if (this.#initialized) {
+        this.dispatchEvent(this.ensureEventStatus('ready'));
         this.handleFetchChainData();
       }
     });
