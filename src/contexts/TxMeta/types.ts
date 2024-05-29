@@ -11,11 +11,12 @@ export interface TxMetaContextInterface {
   setSender: (address: string, instanceId: ApiInstanceId) => void;
   removeSender: (instanceId: ApiInstanceId) => void;
 
+  getTxFee: (instanceId: ApiInstanceId) => BigNumber;
+  setTxFee: (instanceId: ApiInstanceId, fees: BigNumber) => void;
+  removeTxFee: (instanceId: ApiInstanceId) => void;
+  txFeeValid: (instanceId: ApiInstanceId) => boolean;
+
   // TODO: Refactor remaining interface to account for multiple api instances.
-  txFees: BigNumber;
-  txFeesValid: boolean;
-  setTxFees: (fees: BigNumber) => void;
-  resetTxFees: () => void;
   getPayloadUid: () => number;
   getTxPayload: () => AnyJson;
   setTxPayload: (payload: AnyJson, uid: number) => void;

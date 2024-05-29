@@ -41,10 +41,33 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
     setSenders(updated);
   };
 
-  // Refactor needed from here. -------------------------------------------------------------
+  // Store the fees of transactions, keyed by api instance id.
+  const [txFees, setTxFees] = useState<Record<ApiInstanceId, BigNumber>>({});
 
-  // Store the transaction fees for the transaction.
-  const [txFees, setTxFees] = useState<BigNumber>(new BigNumber(0));
+  // Get the transaction fee for a given api instance.
+  const getTxFee = (instanceId: ApiInstanceId) =>
+    txFees[instanceId] || new BigNumber(0);
+
+  // Set the transaction fee for a given api instance.
+  const setTxFee = (instanceId: ApiInstanceId, fee: BigNumber) => {
+    setTxFees({
+      ...txFees,
+      [instanceId]: fee,
+    });
+  };
+
+  // Remove the transaction fee for a given api instance.
+  const removeTxFee = (instanceId: ApiInstanceId) => {
+    const updated = { ...txFees };
+    delete updated[instanceId];
+    setTxFees(updated);
+  };
+
+  // Checks whether transaction fee is valid for a given api instance.
+  const txFeeValid = (instanceId: ApiInstanceId) =>
+    !getTxFee(instanceId).isZero();
+
+  // Refactor needed from here. -------------------------------------------------------------
 
   // Store the payloads of transactions if extrinsics require manual signing (e.g. Ledger). payloads
   // are calculated asynchronously and extrinsic associated with them may be cancelled. For this
@@ -108,16 +131,8 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  // Utility to reset transaction fees to zero.
-  const resetTxFees = () => {
-    setTxFees(new BigNumber(0));
-  };
-
   // Utility to increment payload uid to maintain unique ids for payloads.
   const incrementPayloadUid = () => (txPayloadRef.current?.uid || 0) + 1;
-
-  // Check if the transaction fees are valid.
-  const txFeesValid = txFees.isZero() ? false : true;
 
   return (
     <TxMetaContext.Provider
@@ -128,10 +143,12 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
         setSender,
         removeSender,
 
-        txFees,
-        txFeesValid,
-        setTxFees,
-        resetTxFees,
+        // Manage tx fees.
+        getTxFee,
+        setTxFee,
+        removeTxFee,
+        txFeeValid,
+
         getPayloadUid,
         getTxPayload,
         setTxPayload,
