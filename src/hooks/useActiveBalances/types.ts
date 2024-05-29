@@ -32,6 +32,12 @@ export interface ActiveBalancesInterface {
     address: MaybeAddress,
     existentialDeposit: BigNumber
   ) => BigNumber;
+  getNotEnoughFunds: (
+    instanceId: ApiInstanceId | undefined,
+    address: string,
+    txFees: BigNumber,
+    existentialDeposit: BigNumber
+  ) => boolean;
 }
 
 export type ActiveBalances = Record<ApiInstanceId, AccountBalancesState>;

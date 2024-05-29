@@ -22,4 +22,5 @@ export const defaultActiveBalances: ActiveBalancesInterface = {
   getLocks: (instanceId, address) => defaultLocks,
   getBalance: (instanceId, address) => defaultBalance,
   getEdReserved: (instanceId, address, existentialDeposit) => new BigNumber(0),
+  getNotEnoughFunds: (instanceId, address, txFees, existentialDeposit) => false,
 };

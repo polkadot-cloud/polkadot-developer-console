@@ -108,6 +108,20 @@ export const useActiveBalances = (
     return new BigNumber(0);
   };
 
+  // Gets whether an account has enough funds to pay for tx fees.
+  const getNotEnoughFunds = (
+    instanceId: ApiInstanceId | undefined,
+    address: string,
+    txFees: BigNumber,
+    existentialDeposit: BigNumber
+  ) => {
+    const { free, frozen } = getBalance(instanceId, address);
+    const edReserved = getEdReserved(instanceId, address, existentialDeposit);
+    const balanceforTxFees = free.minus(edReserved).minus(frozen);
+
+    return balanceforTxFees.minus(txFees).isLessThan(0);
+  };
+
   // Callback for new account balance events.
   const newAccountBalanceCallback = (e: Event) => {
     if (isCustomEvent(e)) {
@@ -194,5 +208,6 @@ export const useActiveBalances = (
     getLocks,
     getBalance,
     getEdReserved,
+    getNotEnoughFunds,
   };
 };
