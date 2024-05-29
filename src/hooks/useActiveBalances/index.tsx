@@ -69,6 +69,20 @@ export const useActiveBalances = (
     return defaultBalance;
   };
 
+  // Gets an account's nonce.
+  const getNonce = (
+    instanceId: ApiInstanceId | undefined,
+    address: MaybeAddress
+  ) => {
+    if (address && instanceId !== undefined) {
+      const maybeNonce = activeBalances[instanceId]?.[address]?.nonce;
+      if (maybeNonce) {
+        return maybeNonce;
+      }
+    }
+    return 0;
+  };
+
   // Gets the largest lock balance, dictating the total amount of unavailable funds from locks.
   const getMaxLock = (locks: BalanceLock[]): BigNumber =>
     locks.reduce(
@@ -205,8 +219,9 @@ export const useActiveBalances = (
 
   return {
     activeBalances,
-    getLocks,
     getBalance,
+    getNonce,
+    getLocks,
     getEdReserved,
     getNotEnoughFunds,
   };

@@ -27,6 +27,10 @@ export interface ActiveBalancesInterface {
     instanceId: ApiInstanceId | undefined,
     address: MaybeAddress
   ) => Balance;
+  getNonce: (
+    instanceId: ApiInstanceId | undefined,
+    address: MaybeAddress
+  ) => number;
   getEdReserved: (
     instanceId: ApiInstanceId | undefined,
     address: MaybeAddress,
