@@ -96,7 +96,7 @@ export const AccountWrapper = styled.section`
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
-          padding-right: 2.25rem;
+          padding-right: 4rem;
         }
 
         > .name > h3 {
