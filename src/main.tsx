@@ -13,6 +13,9 @@ import 'styles/theme.css';
 // Core styles.
 import 'styles/index.css';
 
+// Library styles.
+import 'library/Overlay/index.scss';
+
 // Animations
 import 'styles/animations.css';
 

@@ -30,6 +30,7 @@ import { ChainExplorerProvider } from 'contexts/ChainExplorer';
 import { ApiIndexerProvider } from 'contexts/ApiIndexer';
 import { OneShotTooltipProvider } from 'contexts/OneShotTooltip';
 import { TxMetaProvider } from 'contexts/TxMeta';
+import { OverlayProvider } from 'library/Overlay/Provider';
 
 export const Providers = () => {
   // !! --------------------------------
@@ -49,6 +50,7 @@ export const Providers = () => {
     OneShotTooltipProvider,
     ConnectProvider,
     ChainUiProvider,
+    OverlayProvider,
 
     // Account import related providers.
     ExtensionsProvider,

@@ -11,6 +11,10 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 100vh;
 
+  &.modal {
+    padding: 0.75rem 0 0 0;
+  }
+
   > h1 {
     margin-bottom: 0.75rem;
   }

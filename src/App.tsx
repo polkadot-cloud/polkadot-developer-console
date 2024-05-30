@@ -16,6 +16,7 @@ import { Offline } from 'library/Offline';
 import { ConnectOverlay } from 'library/ConnectOverlay';
 import { StickyOnTop } from 'Wrappers';
 import { OneShotTooltips } from 'library/OneShotTooltips';
+import { Overlays } from 'overlay';
 
 // The currently supported pages.
 export type Route = 'default' | 'settings';
@@ -35,6 +36,7 @@ export const App = () => (
         <Notifications />
         <Tooltip />
         <OneShotTooltips />
+        <Overlays />
         <StickyOnTop>
           <Header />
           <Tabs />
