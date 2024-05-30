@@ -70,18 +70,6 @@ export const AccountWrapper = styled.section`
           top: -0.3rem;
           right: 0.5rem;
           z-index: 2;
-
-          > button {
-            color: var(--text-color-tertiary);
-            background: var(--button-secondary-background);
-            width: 1.4rem;
-            height: 1.4rem;
-            border-radius: 2rem;
-
-            &:hover {
-              color: var(--text-color-primary);
-            }
-          }
         }
 
         > .name {

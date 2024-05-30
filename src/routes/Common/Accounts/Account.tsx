@@ -4,7 +4,6 @@
 import { ellipsisFn, planckToUnit, remToUnit } from '@w3ux/utils';
 import type { AccountProps } from './types';
 import { Polkicon } from '@w3ux/react-polkicon';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { AccountContextMenu } from './AccountMenu';
@@ -13,6 +12,7 @@ import { useAccounts } from 'contexts/Accounts';
 import BigNumber from 'bignumber.js';
 import { ButtonIcon } from 'library/Buttons/ButtonIcon';
 import { AccountWrapper } from './Wrappers';
+import { ButtonIconCircle } from 'library/Buttons/ButtonIconCircle';
 
 export const Account = ({
   apiInstanceId,
@@ -56,16 +56,17 @@ export const Account = ({
           {/* NOTE: Currently hiding menu on custom endpoint connections as there is no guarantee Subscan will have the connected chain supported. Once menu contains more links, this check can happen inside the menu. */}
           {chainId && tab?.taskData?.connectFrom !== 'customEndpoint' && (
             <div className="menu">
-              <button
+              <ButtonIconCircle
+                id={`account_transfer_${address}`}
+                icon={faBars}
+                transform="shrink-5"
                 onClick={(ev) => {
                   openMenu(
                     ev,
                     <AccountContextMenu account={account} chainId={chainId} />
                   );
                 }}
-              >
-                <FontAwesomeIcon icon={faBars} transform="shrink-6" />
-              </button>
+              />
             </div>
           )}
           <div className="name">
