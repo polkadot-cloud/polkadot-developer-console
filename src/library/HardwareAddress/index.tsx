@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { ellipsisFn, unescape } from '@w3ux/utils';
 import { Wrapper } from './Wrapper';
 import type { HardwareAddressProps } from './types';
-import { ButtonCopy } from 'library/Buttons/ButtonCopy';
+import { ButtonIcon } from 'library/Buttons/ButtonIcon';
 
 export const HardwareAddress = ({
   network,
@@ -116,11 +116,13 @@ export const HardwareAddress = ({
             <h5 className="full">
               <span>
                 {ellipsisFn(address, 10)}
-                <ButtonCopy
-                  copyText={address}
+                <ButtonIcon
                   tooltipText="Copied!"
                   id={`hw_address_copy_${address}`}
                   transform="shrink-5"
+                  onClick={() => {
+                    navigator.clipboard.writeText(address);
+                  }}
                 />
               </span>
             </h5>

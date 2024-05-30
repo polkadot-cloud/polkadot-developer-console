@@ -11,7 +11,7 @@ import { AccountContextMenu } from './AccountMenu';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import BigNumber from 'bignumber.js';
-import { ButtonCopy } from 'library/Buttons/ButtonCopy';
+import { ButtonIcon } from 'library/Buttons/ButtonIcon';
 import { AccountWrapper } from './Wrappers';
 
 export const Account = ({
@@ -23,6 +23,7 @@ export const Account = ({
 }: AccountProps) => {
   const { tab } = useActiveTab();
   const { openMenu } = useMenu();
+  // const { openModal } = useOverlay().modal;
   const { getBalance, getLocks } = useAccounts();
 
   const { name, address } = account;
@@ -73,11 +74,13 @@ export const Account = ({
           <div className="address">
             <h5>
               {ellipsisFn(address, 7)}
-              <ButtonCopy
-                copyText={address}
+              <ButtonIcon
                 tooltipText="Copied!"
                 id={`account_copy_${address}`}
                 transform="shrink-4"
+                onClick={() => {
+                  navigator.clipboard.writeText(address);
+                }}
               />
             </h5>
           </div>
