@@ -17,6 +17,7 @@ export interface ChainSpaceEnvContextInterface {
   getApiStatus: (instanceId?: ApiInstanceId) => ApiStatus;
   getChainSpec: (instanceId?: ApiInstanceId) => APIChainSpec | undefined;
   getPalletVersions: (ownerId: OwnerId) => Record<string, string> | undefined;
+  getApiInstanceById: (instanceId: ApiInstanceId) => Api | undefined;
   getApiInstance: (ownerId: OwnerId, label: ApiIndexLabel) => Api | undefined;
   destroyApiInstance: (ownerId: OwnerId, label: ApiIndexLabel) => void;
   destroyAllApiInstances: (ownerId: OwnerId) => void;
