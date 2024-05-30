@@ -33,7 +33,7 @@
 
   ::-webkit-scrollbar-thumb {
     background-color: transparent; /* color of the scroll thumb */
-    border-radius: 2rem; /* roundness of the scroll thumb */
+    border-radius: .6rem; /* roundness of the scroll thumb */
     border: 0.1rem solid transparent; /* creates padding around scroll thumb */
   }
 }
@@ -69,13 +69,13 @@
   align-items: center;
   padding: 0 3rem;
   position: fixed;
-  z-index: 10;
+  z-index: 100;
 
   /* click anywhere behind modal content to close */
   .close {
     @include modal-position;
 
-    z-index: 8;
+    z-index: 98;
     cursor: default;
   }
 }
@@ -93,7 +93,7 @@
   height: 100%;
   position: relative;
   overflow: hidden auto;
-  z-index: 9;
+  z-index: 99;
   max-width: 800px;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -116,12 +116,8 @@
   }
 
   h2 {
+    font-family: InterSemiBold, sans-serif;
     margin: 1rem 0;
-
-    &.unbounded {
-      font-family: Unbounded, sans-serif;
-      font-weight: 700;
-    }
 
     &.title {
       font-size: 1.35rem;
@@ -186,7 +182,7 @@
 .modal-container {
   @include modal-position;
 
-  z-index: 9;
+  z-index: 99;
 
   > div {
     height: 100%;
@@ -200,7 +196,7 @@
       position: fixed;
       width: 100%;
       height: 100%;
-      z-index: 8;
+      z-index: 98;
       cursor: default;
     }
   }
@@ -238,12 +234,12 @@
   }
 
   h1 {
-    font-family: Unbounded, sans-serif;
+    font-family: InterSemiBold, sans-serif;
     margin-bottom: 1.75rem;
   }
 
   h3 {
-    font-family: InterBold, sans-serif;
+    font-family: InterSemiBold, sans-serif;
     margin: 2rem 0.5rem 1rem;
   }
 }
@@ -264,7 +260,7 @@
       h1 {
         color: var(--text-color-primary);
         font-size: 1.4rem;
-        font-family: Unbounded, sans-serif;
+        font-family: InterSemiBold, sans-serif;
         font-weight: 700;
         padding: 0 0.5rem;
         display: flex;
@@ -367,7 +363,7 @@
   > .section {
     @include modal-scrollbar;
 
-    border-radius: 1rem;
+    border-radius: .6rem;
     display: flex;
     flex-direction: column;
     flex-basis: 33.33%;
@@ -386,7 +382,7 @@
   > .section {
     @include modal-scrollbar;
 
-    border-radius: 1rem;
+    border-radius: .6rem;
     display: flex;
     flex-direction: column;
     flex-basis: 50%;
@@ -414,9 +410,9 @@
   @include modal-position;
 
   background: var(--modal-background-color);
-  transition: backdrop-filter 0.5s;
-  backdrop-filter: blur(4px);
-  z-index: 9;
+  transition: backdrop-filter 0.25s;
+  backdrop-filter: blur(2px);
+  z-index: 99;
 }
 
 .modal-padding {
@@ -436,9 +432,9 @@
 .modal-scroll {
   @include modal-scrollbar;
 
-  border-radius: 1.5rem;
+  border-radius: .6rem;
   position: relative;
-  z-index: 9;
+  z-index: 99;
   max-height: 100%;
   width: 100%;
   max-width: 600px;
@@ -466,7 +462,7 @@
 
   ::-webkit-scrollbar-thumb {
     background-color: transparent; /* color of the scroll thumb */
-    border-radius: 2rem; /* roundness of the scroll thumb */
+    border-radius: .6rem; /* roundness of the scroll thumb */
     border: 0.1rem solid transparent; /* creates padding around scroll thumb */
   }
 }

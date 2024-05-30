@@ -4,7 +4,7 @@
 import { Title } from 'library/Modal/Title';
 import { ModalPadding } from 'library/Overlay/structure/ModalPadding';
 
-export const Bio = () => (
+export const Transfer = () => (
   // const { address } = useOverlay().modal.config.options;
 
   <>

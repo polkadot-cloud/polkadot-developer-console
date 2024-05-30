@@ -4,8 +4,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useOverlay } from 'library/Overlay/Provider';
 import { TitleWrapper } from './Wrappers';
-import { faCross } from '@fortawesome/free-solid-svg-icons';
 import type { TitleProps } from './types';
+import { faTimes } from '@fortawesome/pro-duotone-svg-icons';
 
 export const Title = ({ title, icon, fixed, Svg, style }: TitleProps) => {
   const { setModalStatus } = useOverlay().modal;
@@ -24,7 +24,7 @@ export const Title = ({ title, icon, fixed, Svg, style }: TitleProps) => {
       </div>
       <div>
         <button type="button" onClick={() => setModalStatus('closing')}>
-          <FontAwesomeIcon icon={faCross} />
+          <FontAwesomeIcon icon={faTimes} transform="grow-2" />
         </button>
       </div>
     </TitleWrapper>

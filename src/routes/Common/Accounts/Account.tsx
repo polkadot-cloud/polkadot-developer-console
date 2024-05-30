@@ -13,6 +13,7 @@ import { ButtonIcon } from 'library/Buttons/ButtonIcon';
 import { AccountWrapper } from './Wrappers';
 import { ButtonIconCircle } from 'library/Buttons/ButtonIconCircle';
 import { faBars, faPaperPlane } from '@fortawesome/pro-solid-svg-icons';
+import { useOverlay } from 'library/Overlay/Provider';
 
 export const Account = ({
   apiInstanceId,
@@ -23,7 +24,7 @@ export const Account = ({
 }: AccountProps) => {
   const { tab } = useActiveTab();
   const { openMenu } = useMenu();
-  // const { openModal } = useOverlay().modal;
+  const { openModal } = useOverlay().modal;
   const { getBalance, getLocks } = useAccounts();
 
   const { name, address } = account;
@@ -61,15 +62,12 @@ export const Account = ({
                 icon={faPaperPlane}
                 transform="shrink-4"
                 tooltipText="Transfer Funds"
-                onClick={(ev) => {
-                  openMenu(
-                    ev,
-                    <AccountContextMenu account={account} chainId={chainId} />
-                  );
+                onClick={() => {
+                  openModal({ key: 'Transfer' });
                 }}
               />
               <ButtonIconCircle
-                id={`account_transfer_${address}`}
+                id={`account_menu_${address}`}
                 icon={faBars}
                 transform="shrink-5"
                 tooltipText="More Options"

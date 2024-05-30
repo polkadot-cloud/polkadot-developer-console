@@ -5,12 +5,12 @@ import styled from 'styled-components';
 
 export const TitleWrapper = styled.div<{ $fixed: boolean }>`
   padding: ${(props) =>
-    props.$fixed ? '0.6rem 1rem 0rem 1rem' : '2rem 1rem 0 1rem'};
+    props.$fixed ? '0.6rem 0.5rem 0rem 0.5rem' : '0.9rem 0.5rem 0 0.5rem'};
   display: flex;
   flex-flow: row wrap;
   align-items: center;
   width: 100%;
-  min-height: 3rem;
+  min-height: 2.5rem;
 
   > div {
     display: flex;
@@ -32,8 +32,8 @@ export const TitleWrapper = styled.div<{ $fixed: boolean }>`
       > h2 {
         display: flex;
         align-items: center;
-        font-family: 'Unbounded', 'sans-serif', sans-serif;
-        font-size: 1.3rem;
+        font-family: InterBold, sans-serif;
+        font-size: 1.1rem;
         margin: 0;
 
         > button {
@@ -48,9 +48,9 @@ export const TitleWrapper = styled.div<{ $fixed: boolean }>`
     &:last-child {
       button {
         position: absolute;
-        top: 1.5rem;
-        right: 1.5rem;
-        opacity: 0.25;
+        top: 1.2rem;
+        right: 1rem;
+        opacity: 0.6;
         &:hover {
           opacity: 1;
         }
@@ -108,17 +108,9 @@ export const StatWrapper = styled.div`
 `;
 
 export const CloseWrapper = styled.div`
+  color: var(--text-color-primary);
   position: absolute;
   right: 1.5rem;
   top: 1.5rem;
   z-index: 2;
-
-  > button {
-    opacity: 0.4;
-    transition: opacity var(--transition-duration) ease-in-out;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
 `;

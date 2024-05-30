@@ -6,6 +6,8 @@ SPDX-License-Identifier: GPL-3.0-only */
   --background-primary: #f3f2f2;
   --background-invert: #888;
   --background-tooltip: #222;
+  --background-floating-card: rgb(255 255 255 / 90%);
+  --background-modal: #f4f2f2;
 
   --border-primary-color: #e4e4e4;
   --border-secondary-color: #d3d1d1;
@@ -32,6 +34,8 @@ SPDX-License-Identifier: GPL-3.0-only */
   --text-color-secondary: #666;
   --text-color-tertiary: #888;
   --text-color-invert: #fafafa;
+
+  --modal-background-color: rgb(224 222 222 / 70%);
 
   --gradient-background: linear-gradient(
     180deg,
@@ -121,6 +125,8 @@ SPDX-License-Identifier: GPL-3.0-only */
   );
 
   /* NOTE: these colors are still light and need to be updated for dark theme. */
+  --background-floating-card: rgb(43 38 43 / 95%);
+  --background-modal: rgb(43 38 43);
 
   --tab-active-background: rgb(56 51 56);
 
@@ -141,6 +147,8 @@ SPDX-License-Identifier: GPL-3.0-only */
     rgba(228, 226, 226, 1) 50%,
     rgba(228, 226, 226, 1) 100%
   );
+
+  --modal-background-color: rgb(22 18 22 / 70%);
 
   --shadow-input: 0 2px 4px 1px rgba(0, 0, 0, 0.03);
 

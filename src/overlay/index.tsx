@@ -3,6 +3,7 @@
 
 import { OverlayErrorBoundary } from 'library/ErrorBoundaries/OverlayErrorBoundary';
 import { Overlay } from 'library/Overlay';
+import { Transfer } from 'modals/Transfer';
 
 export const Overlays = () => (
   <Overlay
@@ -10,7 +11,9 @@ export const Overlays = () => (
     externalOverlayStatus={
       'closed'
     } /* NOTE: No external overlays are currently in use. */
-    modals={{}}
+    modals={{
+      Transfer,
+    }}
     canvas={{}}
   />
 );
