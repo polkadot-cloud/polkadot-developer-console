@@ -418,14 +418,18 @@
 .modal-padding {
   display: flex;
   flex-flow: column wrap;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
 
   &.vertical-only {
-    padding: 1rem 0 0.25rem;
+    padding: 0.5rem 0 0.25rem;
   }
 
   &.horizontal-only {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
+  }
+
+  &.footer-padding {
+    padding-bottom: 0.75rem;
   }
 }
 

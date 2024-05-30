@@ -9,6 +9,10 @@ export const Transfer = () => (
 
   <>
     <Title title="Transfer" />
-    <ModalPadding>Content</ModalPadding>
+    <ModalPadding className="footer-padding">
+      <div>
+        <h3>Testing Transfer Extrinsic.</h3>
+      </div>
+    </ModalPadding>
   </>
 );

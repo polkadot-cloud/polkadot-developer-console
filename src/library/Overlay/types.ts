@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnimationProps } from 'framer-motion';
-import type { ComponentBase } from 'types';
+import type { ComponentBase, ComponentBaseWithClassName } from 'types';
 
 export type ModalAnimationProps = ComponentBase & AnimationProps;
 
@@ -38,7 +38,7 @@ export type ModalOverlayProps = ModalAnimationProps & {
   blur?: string;
 };
 
-export type ModalPaddingProps = ComponentBase & {
+export type ModalPaddingProps = ComponentBaseWithClassName & {
   // whether there is only vertical padding.
   verticalOnly?: boolean;
   // whether there is only horizontal padding.

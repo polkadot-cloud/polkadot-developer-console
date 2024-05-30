@@ -12,12 +12,18 @@ import { appendOrEmpty } from '@w3ux/utils';
  */
 export const ModalPadding = forwardRef(
   (
-    { children, style, verticalOnly, horizontalOnly }: ModalPaddingProps,
+    {
+      children,
+      style,
+      className,
+      verticalOnly,
+      horizontalOnly,
+    }: ModalPaddingProps,
     ref?: ForwardedRef<HTMLDivElement>
   ) => (
     <div
       ref={ref}
-      className={`modal-padding${appendOrEmpty(
+      className={`modal-padding${className ? ` ${className}` : ``}${appendOrEmpty(
         verticalOnly,
         'vertical-only'
       )}${appendOrEmpty(horizontalOnly, 'horizontal-only')}`}
