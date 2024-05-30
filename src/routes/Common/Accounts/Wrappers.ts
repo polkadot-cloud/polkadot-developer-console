@@ -72,7 +72,7 @@ export const AccountWrapper = styled.section`
           z-index: 2;
 
           > button {
-            margin-left: 0.4rem;
+            margin-left: 0.45rem;
           }
         }
 
