@@ -10,6 +10,7 @@ import { EstimatedTxFee } from 'library/Tx/EstimatedTxFee';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleUp } from '@fortawesome/pro-duotone-svg-icons';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
+import { ButtonText } from 'library/Buttons/ButtonText';
 
 export const Default = ({
   instanceId,
@@ -43,13 +44,18 @@ export const Default = ({
         <div>
           {buttons}
           {displayFor !== 'card' && (
-            <button onClick={() => onSubmit()} disabled={disabled}>
+            <ButtonText onClick={() => onSubmit()} disabled={disabled}>
               {submitText || ''}
-              <FontAwesomeIcon icon={faArrowAltCircleUp} transform="grow-2" />
-            </button>
+              <FontAwesomeIcon
+                icon={faArrowAltCircleUp}
+                transform="grow-2"
+                className="iconRight"
+              />
+            </ButtonText>
           )}
         </div>
       </div>
+      {/* NOTE: Styling here needs to be revised */}
       {displayFor === 'card' && (
         <ButtonSubmitLarge
           disabled={disabled}
