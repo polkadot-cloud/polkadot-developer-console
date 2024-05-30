@@ -14,6 +14,15 @@ export const ButtonText = styled.button`
     color: var(--accent-color-secondary);
   }
 
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+
+    &:hover {
+      color: var(--text-color-tertiary);
+    }
+  }
+
   > .iconLeft {
     margin-right: 0.4rem;
   }
