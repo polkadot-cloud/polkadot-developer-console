@@ -27,7 +27,7 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
   const getSender = (instanceId: ApiInstanceId) => senders[instanceId];
 
   // Set a sender for an api instance.
-  const setSender = (address: string, instanceId: ApiInstanceId) => {
+  const setSender = (instanceId: ApiInstanceId, address: string) => {
     setSenders({
       ...senders,
       [instanceId]: address,

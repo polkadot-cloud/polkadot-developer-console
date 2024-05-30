@@ -8,7 +8,7 @@ import type { ApiInstanceId } from 'model/Api/types';
 export interface TxMetaContextInterface {
   senders: Record<ApiInstanceId, string>;
   getSender: (instanceId: ApiInstanceId) => string | undefined;
-  setSender: (address: string, instanceId: ApiInstanceId) => void;
+  setSender: (instanceId: ApiInstanceId, address: string) => void;
   removeSender: (instanceId: ApiInstanceId) => void;
 
   getTxFee: (instanceId: ApiInstanceId) => BigNumber;

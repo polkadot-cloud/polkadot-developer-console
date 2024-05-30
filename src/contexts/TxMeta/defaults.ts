@@ -8,7 +8,7 @@ import type { TxMetaContextInterface } from './types';
 export const defaultTxMeta: TxMetaContextInterface = {
   senders: {},
   getSender: (instanceId) => undefined,
-  setSender: (sender, instanceId) => {},
+  setSender: (instanceId, sender) => {},
   removeSender: (instanceId) => {},
 
   getTxFee: (instanceId) => new BigNumber(0),

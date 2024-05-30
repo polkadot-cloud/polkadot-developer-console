@@ -12,6 +12,7 @@ export const Wrapper = styled.div`
   height: 100vh;
 
   &.modal {
+    height: auto;
     padding: 0.75rem 0 0 0;
   }
 
