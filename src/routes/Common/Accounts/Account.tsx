@@ -14,6 +14,7 @@ import { AccountWrapper } from './Wrappers';
 import { ButtonIconCircle } from 'library/Buttons/ButtonIconCircle';
 import { faBars, faPaperPlane } from '@fortawesome/pro-solid-svg-icons';
 import { useOverlay } from 'library/Overlay/Provider';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const Account = ({
   apiInstanceId,
@@ -26,10 +27,15 @@ export const Account = ({
   const { openMenu } = useMenu();
   const { openModal } = useOverlay().modal;
   const { getBalance, getLocks } = useAccounts();
+  const { getApiInstanceById } = useChainSpaceEnv();
 
   const { name, address } = account;
   const unit = chain.unit;
   const units = chain.units;
+  const ss58Prefix = chain.ss58;
+
+  // Get the api instance for the the instance id.
+  const apiInstance = getApiInstanceById(apiInstanceId)?.api;
 
   const balance = getBalance(apiInstanceId, address);
   const { maxLock } = getLocks(apiInstanceId, address);
@@ -63,7 +69,20 @@ export const Account = ({
                 transform="shrink-4"
                 tooltipText="Transfer Funds"
                 onClick={() => {
-                  openModal({ key: 'Transfer' });
+                  if (apiInstance) {
+                    openModal({
+                      key: 'Transfer',
+                      options: {
+                        address,
+                        instanceId: apiInstanceId,
+                        unit,
+                        units,
+                        api: apiInstance,
+                        ss58Prefix,
+                        existentialDeposit,
+                      },
+                    });
+                  }
                 }}
               />
               <ButtonIconCircle
