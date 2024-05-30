@@ -3,7 +3,7 @@
 
 import styled from 'styled-components';
 
-export const ButtonSubmit = styled.button`
+export const ButtonText = styled.button`
   color: var(--text-color-tertiary);
   font-family: InterSemiBold, sans-serif;
   display: flex;

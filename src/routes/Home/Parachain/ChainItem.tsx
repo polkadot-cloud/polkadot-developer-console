@@ -5,7 +5,7 @@ import { Suspense, lazy, useMemo } from 'react';
 import { useMenu } from 'contexts/Menu';
 import type { DirectoryId } from 'config/networks/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { ButtonText } from 'library/Buttons/ButtonText';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
 import {
   faArrowRightFromLine,
@@ -56,7 +56,7 @@ export const ChainItem = ({ chainId, name, onSelect }: ChainItemProps) => {
           <h3>{name}</h3>
         </section>
         <section>
-          <ButtonSubmit
+          <ButtonText
             onClick={(ev) => {
               openMenu(
                 ev,
@@ -73,7 +73,7 @@ export const ChainItem = ({ chainId, name, onSelect }: ChainItemProps) => {
               transform="grow-0"
               className="iconRight"
             />
-          </ButtonSubmit>
+          </ButtonText>
         </section>
       </div>
 

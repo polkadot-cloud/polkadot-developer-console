@@ -3,7 +3,7 @@
 
 import { NetworkDirectory } from 'config/networks';
 import { Select } from 'library/Inputs/Select';
-import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { ButtonText } from 'library/Buttons/ButtonText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeftToBracket } from '@fortawesome/pro-duotone-svg-icons';
 import { FormWrapper } from 'routes/Home/Wrappers';
@@ -84,7 +84,7 @@ export const ConnectRelay = () => {
           </h4>
         )}
 
-        <ButtonSubmit
+        <ButtonText
           className="lg"
           onClick={() => {
             if (apiStatus !== 'ready') {
@@ -104,7 +104,7 @@ export const ConnectRelay = () => {
             <FontAwesomeIcon icon={faArrowLeftToBracket} className="iconLeft" />
             {apiValid ? 'Disconnect & Cancel Setup' : 'Cancel Connect'}
           </>
-        </ButtonSubmit>
+        </ButtonText>
       </section>
     </FormWrapper>
   );

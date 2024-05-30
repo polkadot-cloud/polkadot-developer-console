@@ -11,7 +11,7 @@ import { ConfigTagMenu } from './TagsMenu/ConfigTagMenu';
 import type { TagId } from 'contexts/Tags/types';
 import { type DirectoryId } from 'config/networks/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { ButtonText } from 'library/Buttons/ButtonText';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
 import {
@@ -92,7 +92,7 @@ export const ChainDirectoryItem = ({
           <h3>{name}</h3>
         </section>
         <section>
-          <ButtonSubmit
+          <ButtonText
             onClick={(ev) => {
               openMenu(
                 ev,
@@ -109,7 +109,7 @@ export const ChainDirectoryItem = ({
               transform="grow-0"
               className="iconRight"
             />
-          </ButtonSubmit>
+          </ButtonText>
         </section>
       </div>
 

@@ -7,7 +7,7 @@ import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { ChainStateList } from './ChainStateList';
-import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { ButtonText } from 'library/Buttons/ButtonText';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useActiveTab } from 'contexts/ActiveTab';
@@ -88,14 +88,14 @@ export const Constants = () => {
       </SelectFormWrapper>
       <InputFormWrapper>
         <section className="footer">
-          <ButtonSubmit onClick={() => handleSubmit()}>
+          <ButtonText onClick={() => handleSubmit()}>
             Submit
             <FontAwesomeIcon
               icon={faCircleRight}
               transform="shrink-1"
               className="iconRight"
             />
-          </ButtonSubmit>
+          </ButtonText>
         </section>
       </InputFormWrapper>
 

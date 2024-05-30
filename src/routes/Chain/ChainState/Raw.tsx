@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useChainUi } from 'contexts/ChainUi';
-import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { ButtonText } from 'library/Buttons/ButtonText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useActiveTab } from 'contexts/ActiveTab';
@@ -67,7 +67,7 @@ export const Raw = () => {
       </SelectFormWrapper>
       <InputFormWrapper>
         <section className="footer">
-          <ButtonSubmit
+          <ButtonText
             onClick={() => handleSubmit()}
             disabled={!chainUi.selected}
           >
@@ -77,7 +77,7 @@ export const Raw = () => {
               transform="shrink-1"
               className="iconRight"
             />
-          </ButtonSubmit>
+          </ButtonText>
         </section>
       </InputFormWrapper>
 
