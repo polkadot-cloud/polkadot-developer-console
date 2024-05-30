@@ -48,8 +48,8 @@ export const TitleWrapper = styled.div<{ $fixed: boolean }>`
     &:last-child {
       button {
         position: absolute;
-        top: 1.2rem;
-        right: 1rem;
+        top: 1.1rem;
+        right: 1.1rem;
         opacity: 0.6;
         &:hover {
           opacity: 1;
