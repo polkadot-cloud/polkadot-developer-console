@@ -78,17 +78,17 @@ export const Transfer = () => {
         <div>
           <h3>Testing Transfer Extrinsic.</h3>
         </div>
-        <SubmitTx
-          {...submitExtrinsic}
-          valid={valid}
-          instanceId={instanceId}
-          chainId={chainId}
-          ss58Prefix={ss58Prefix}
-          units={units}
-          unit={unit}
-          existentialDeposit={existentialDeposit}
-        />
       </ModalPadding>
+      <SubmitTx
+        {...submitExtrinsic}
+        valid={valid}
+        instanceId={instanceId}
+        chainId={chainId}
+        ss58Prefix={ss58Prefix}
+        units={units}
+        unit={unit}
+        existentialDeposit={existentialDeposit}
+      />
     </>
   );
 };

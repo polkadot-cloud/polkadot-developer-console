@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   width: 100%;
 
   &.margin {
-    margin-top: 1rem;
+    margin-top: 0.25rem;
   }
 
   > .inner {
@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: 1rem 0.75rem 0.75rem 0.75rem;
 
     &.canvas {
       background: var(--background-canvas-card);
@@ -45,8 +45,8 @@ export const Wrapper = styled.div`
 
             > div,
             > p {
-              width: 100%;
               margin-bottom: 0.4rem;
+              width: 100%;
             }
 
             > div:last-child {
@@ -67,13 +67,13 @@ export const Wrapper = styled.div`
               color: var(--text-color-secondary);
               display: flex;
               align-items: center;
-              font-size: 1rem;
+              font-size: 0%.8;
               margin: 0.1rem 0;
-              padding-left: 0.5rem;
+              padding-left: 0.25rem;
 
               &.prompt {
                 color: var(--accent-color-primary);
-                font-size: 1.05rem;
+                font-size: 0.85rem;
                 align-items: flex-start;
 
                 .icon {
@@ -110,18 +110,19 @@ export const Wrapper = styled.div`
 export const SignerWrapper = styled.p`
   display: flex;
   align-items: center;
-  font-size: 0.9rem;
-  padding-bottom: 0.5rem;
+  font-size: 0.75rem;
+  padding-bottom: 0.25rem;
   margin: 0;
 
   .badge {
+    color: var(--text-color-secondary);
     border: 1px solid var(--border-secondary-color);
     border-radius: 0.45rem;
-    padding: 0.2rem 0.5rem;
-    margin-right: 0.75rem;
+    padding: 0rem 0.4rem;
+    margin-right: 0.5rem;
 
     > svg {
-      margin-right: 0.5rem;
+      margin-right: 0.35rem;
     }
   }
 
