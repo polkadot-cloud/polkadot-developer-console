@@ -4,7 +4,6 @@
 import { ellipsisFn, planckToUnit, remToUnit } from '@w3ux/utils';
 import type { AccountProps } from './types';
 import { Polkicon } from '@w3ux/react-polkicon';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { AccountContextMenu } from './AccountMenu';
 import { useActiveTab } from 'contexts/ActiveTab';
@@ -13,6 +12,7 @@ import BigNumber from 'bignumber.js';
 import { ButtonIcon } from 'library/Buttons/ButtonIcon';
 import { AccountWrapper } from './Wrappers';
 import { ButtonIconCircle } from 'library/Buttons/ButtonIconCircle';
+import { faBars, faPaperPlane } from '@fortawesome/pro-solid-svg-icons';
 
 export const Account = ({
   apiInstanceId,
@@ -58,8 +58,21 @@ export const Account = ({
             <div className="menu">
               <ButtonIconCircle
                 id={`account_transfer_${address}`}
+                icon={faPaperPlane}
+                transform="shrink-4"
+                tooltipText="Transfer Funds"
+                onClick={(ev) => {
+                  openMenu(
+                    ev,
+                    <AccountContextMenu account={account} chainId={chainId} />
+                  );
+                }}
+              />
+              <ButtonIconCircle
+                id={`account_transfer_${address}`}
                 icon={faBars}
                 transform="shrink-5"
+                tooltipText="More Options"
                 onClick={(ev) => {
                   openMenu(
                     ev,

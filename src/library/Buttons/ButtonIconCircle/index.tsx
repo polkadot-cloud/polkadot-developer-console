@@ -4,10 +4,10 @@
 import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faClone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useOneShotTooltip } from 'contexts/OneShotTooltip';
 import type { MouseEvent as ReactMouseEvent, RefObject } from 'react';
 import { useRef } from 'react';
 import { Wrapper } from './Wrapper';
+import { useTooltip } from 'contexts/Tooltip';
 
 export const ButtonIconCircle = ({
   tooltipText,
@@ -25,7 +25,7 @@ export const ButtonIconCircle = ({
     ref: RefObject<HTMLButtonElement>
   ) => void;
 }) => {
-  const { openTooltip } = useOneShotTooltip();
+  const { openTooltip, closeTooltip } = useTooltip();
   const ref = useRef<HTMLButtonElement>(null);
 
   return (
@@ -34,7 +34,9 @@ export const ButtonIconCircle = ({
       id={id}
       onClick={(ev) => {
         onClick(ev, ref);
-
+        closeTooltip();
+      }}
+      onPointerOver={() => {
         if (tooltipText) {
           openTooltip(tooltipText, ref);
         }

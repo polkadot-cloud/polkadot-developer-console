@@ -70,6 +70,10 @@ export const AccountWrapper = styled.section`
           top: -0.3rem;
           right: 0.5rem;
           z-index: 2;
+
+          > button {
+            margin-left: 0.5rem;
+          }
         }
 
         > .name {
