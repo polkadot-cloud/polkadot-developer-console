@@ -72,7 +72,7 @@ export const AccountWrapper = styled.section`
           z-index: 2;
 
           > button {
-            margin-left: 0.5rem;
+            margin-left: 0.4rem;
           }
         }
 
@@ -96,7 +96,7 @@ export const AccountWrapper = styled.section`
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
-          padding-right: 4rem;
+          padding-right: 3.9rem;
         }
 
         > .name > h3 {
