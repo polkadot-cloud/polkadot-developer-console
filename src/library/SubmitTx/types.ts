@@ -10,6 +10,11 @@ import type { ReactNode } from 'react';
 import type { DisplayFor } from 'types';
 
 export type SubmitTxProps = SubmitProps & {
+  instanceId: ApiInstanceId;
+  chainId: ChainId;
+  ss58Prefix: number;
+  units: number;
+  unit: string;
   buttons?: ReactNode[];
   submitAddress?: MaybeAddress;
   noMargin?: boolean;
@@ -17,11 +22,6 @@ export type SubmitTxProps = SubmitProps & {
 };
 
 export interface SubmitProps {
-  instanceId: ApiInstanceId;
-  chainId: ChainId;
-  ss58Prefix: number;
-  units: number;
-  unit: string;
   uid?: number;
   onSubmit: () => void;
   submitting: boolean;

@@ -11,13 +11,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleUp } from '@fortawesome/pro-duotone-svg-icons';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { ButtonText } from 'library/Buttons/ButtonText';
+import { useExtrinsicData } from './ExtrinsicDataProvider';
 
 export const Default = ({
-  instanceId,
-  chainId,
-  ss58Prefix,
-  units,
-  unit,
   onSubmit,
   submitting,
   valid,
@@ -28,6 +24,7 @@ export const Default = ({
 }: SubmitProps & { buttons?: ReactNode[] }) => {
   const { txFeeValid } = useTxMeta();
   const { accountHasSigner } = useImportedAccounts();
+  const { instanceId, chainId, ss58Prefix, units, unit } = useExtrinsicData();
 
   const disabled =
     submitting ||

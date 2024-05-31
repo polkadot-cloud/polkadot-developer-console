@@ -12,13 +12,9 @@ import { ButtonText } from 'library/Buttons/ButtonText';
 import { faSquarePen } from '@fortawesome/free-solid-svg-icons';
 import { usePrompt } from 'contexts/Prompt';
 import { SignPrompt } from './SignPrompt';
+import { useExtrinsicData } from 'library/SubmitTx/ExtrinsicDataProvider';
 
 export const Vault = ({
-  instanceId,
-  chainId,
-  ss58Prefix,
-  units,
-  unit,
   onSubmit,
   submitting,
   valid,
@@ -30,6 +26,7 @@ export const Vault = ({
   const { accountHasSigner } = useImportedAccounts();
   const { txFeeValid, getTxSignature } = useTxMeta();
   const { openPromptWith, status: promptStatus } = usePrompt();
+  const { instanceId, chainId, ss58Prefix, units, unit } = useExtrinsicData();
 
   // The state under which submission is disabled.
   const disabled =

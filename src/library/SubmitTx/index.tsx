@@ -10,6 +10,7 @@ import { ManualSign } from './ManualSign';
 import { useAccounts } from 'contexts/Accounts';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useOverlay } from 'library/Overlay/Provider';
+import { ExtrinsicDataProvider } from './ExtrinsicDataProvider';
 
 export const SubmitTx = ({
   instanceId,
@@ -63,48 +64,50 @@ export const SubmitTx = ({
     []
   );
 
+  // Format props to pass into extrinsic data context. This context will make the data available to
+  // child signer components.
+  const extrinsicDataProps = {
+    instanceId,
+    chainId,
+    ss58Prefix,
+    units,
+    unit,
+  };
+
   return (
-    <Tx
-      displayFor={displayFor}
-      margin={!noMargin}
-      label={signingOpts.label}
-      name={signingOpts.who?.name || ''}
-      notEnoughFunds={notEnoughFunds}
-      dangerMessage={`Not Enough ${unit}`}
-      SignerComponent={
-        requiresManualSign(sender, chainId, ss58Prefix) ? (
-          <ManualSign
-            instanceId={instanceId}
-            chainId={chainId}
-            ss58Prefix={ss58Prefix}
-            units={units}
-            unit={unit}
-            uid={uid}
-            onSubmit={onSubmit}
-            submitting={submitting}
-            valid={valid}
-            submitText={submitText}
-            buttons={buttons}
-            submitAddress={submitAddress}
-            displayFor={displayFor}
-          />
-        ) : (
-          <Default
-            instanceId={instanceId}
-            chainId={chainId}
-            ss58Prefix={ss58Prefix}
-            units={units}
-            unit={unit}
-            onSubmit={onSubmit}
-            submitting={submitting}
-            valid={valid}
-            submitText={submitText}
-            buttons={buttons}
-            submitAddress={submitAddress}
-            displayFor={displayFor}
-          />
-        )
-      }
-    />
+    <ExtrinsicDataProvider {...extrinsicDataProps}>
+      <Tx
+        displayFor={displayFor}
+        margin={!noMargin}
+        label={signingOpts.label}
+        name={signingOpts.who?.name || ''}
+        notEnoughFunds={notEnoughFunds}
+        dangerMessage={`Not Enough ${unit}`}
+        SignerComponent={
+          requiresManualSign(sender, chainId, ss58Prefix) ? (
+            <ManualSign
+              uid={uid}
+              onSubmit={onSubmit}
+              submitting={submitting}
+              valid={valid}
+              submitText={submitText}
+              buttons={buttons}
+              submitAddress={submitAddress}
+              displayFor={displayFor}
+            />
+          ) : (
+            <Default
+              onSubmit={onSubmit}
+              submitting={submitting}
+              valid={valid}
+              submitText={submitText}
+              buttons={buttons}
+              submitAddress={submitAddress}
+              displayFor={displayFor}
+            />
+          )
+        }
+      />
+    </ExtrinsicDataProvider>
   );
 };

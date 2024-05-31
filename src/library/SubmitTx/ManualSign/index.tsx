@@ -7,12 +7,14 @@ import { useTxMeta } from 'contexts/TxMeta';
 import type { SubmitProps } from '../types';
 import { Vault } from './Vault';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
+import { useExtrinsicData } from '../ExtrinsicDataProvider';
 
 export const ManualSign = (props: SubmitProps & { buttons?: ReactNode[] }) => {
-  const { onSubmit, instanceId, chainId, ss58Prefix } = props;
+  const { onSubmit } = props;
 
   const { getAccount } = useImportedAccounts();
   const { getTxSignature, getSender } = useTxMeta();
+  const { instanceId, chainId, ss58Prefix } = useExtrinsicData();
 
   const sender = getSender(instanceId);
   const accountMeta = getAccount(sender || '', chainId, ss58Prefix);
