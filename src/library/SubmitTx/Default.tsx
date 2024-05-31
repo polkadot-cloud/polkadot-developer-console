@@ -55,7 +55,7 @@ export const Default = ({
           )}
         </div>
       </div>
-      {/* NOTE: Styling here needs to be revised */}
+      {/* NOTE: Styling here needs to be revised. */}
       {displayFor === 'card' && (
         <ButtonSubmitLarge
           disabled={disabled}
