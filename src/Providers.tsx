@@ -31,6 +31,7 @@ import { ApiIndexerProvider } from 'contexts/ApiIndexer';
 import { OneShotTooltipProvider } from 'contexts/OneShotTooltip';
 import { TxMetaProvider } from 'contexts/TxMeta';
 import { OverlayProvider } from 'library/Overlay/Provider';
+import { PromptProvider } from 'contexts/Prompt';
 
 export const Providers = () => {
   // !! --------------------------------
@@ -51,6 +52,7 @@ export const Providers = () => {
     ConnectProvider,
     ChainUiProvider,
     OverlayProvider,
+    PromptProvider,
 
     // Account import related providers.
     ExtensionsProvider,
