@@ -20,10 +20,11 @@ import type { AccountId32Props } from './types';
 
 export const AccountId32 = ({
   accounts,
+  defaultValue,
+  heightRef,
   onMount,
   onRender,
   onChange,
-  heightRef,
 }: AccountId32Props) => {
   // The input arg type of this component.
   const INPUT_TYPE = 'AccountId32';
@@ -35,7 +36,7 @@ export const AccountId32 = ({
 
   // The current selected address.
   const [selectedAddress, setSelectedAddress] = useState<string>(
-    String(accounts?.[0]?.address || '')
+    String(defaultValue || accounts?.[0]?.address || '')
   );
 
   // The current value of the input. Attempts to find an account name, or uses the selected address,

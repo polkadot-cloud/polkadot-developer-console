@@ -105,8 +105,8 @@ export const Transfer = () => {
       >
         <div>
           <h4 style={{ marginBottom: '0.22rem' }}>From</h4>
-          {/* TODO: Allow default account value, allow disabled. */}
           <AccountId32
+            defaultValue={fromAddress}
             accounts={accounts}
             onChange={(val) => setFromAddress(val)}
             heightRef={heightRef}
