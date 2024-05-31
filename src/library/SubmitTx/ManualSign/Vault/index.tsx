@@ -43,7 +43,7 @@ export const Vault = ({
   let buttonOnClick: () => void;
   let buttonDisabled: boolean;
 
-  if (getTxSignature(instanceId) !== null || submitting) {
+  if (getTxSignature(instanceId) !== undefined || submitting) {
     buttonText = submitText || '';
     buttonOnClick = onSubmit;
     buttonDisabled = disabled;
@@ -67,11 +67,11 @@ export const Vault = ({
         {buttons}
         {displayFor !== 'card' ? (
           <ButtonText onClick={() => buttonOnClick()} disabled={buttonDisabled}>
-            {submitText || ''}
+            {buttonText}
             <FontAwesomeIcon icon={faSquarePen} className="iconRight" />
           </ButtonText>
         ) : (
-          <ButtonText onClick={() => buttonOnClick()} disabled={disabled}>
+          <ButtonText onClick={() => buttonOnClick()} disabled={buttonDisabled}>
             {buttonText}
             <FontAwesomeIcon icon={faSquarePen} className="iconRight" />
           </ButtonText>
