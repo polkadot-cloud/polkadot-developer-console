@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
-import { Textbox } from './Textbox';
 import type { AnyJson } from '@w3ux/utils/types';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
@@ -17,6 +16,7 @@ import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import { useChain } from '../Provider';
+import { Textbox } from 'library/Inputs/Textbox';
 
 export const useInput = () => {
   const { tabId } = useActiveTab();
@@ -353,7 +353,17 @@ export const useInput = () => {
           return (
             <Section indent={indent}>
               <Textbox
-                {...inputArgConfig}
+                onMount={(value) => {
+                  setInputArgAtKey(tabId, namespace, inputKey, value);
+                }}
+                onRender={(inputType) => {
+                  if (inputKeysRef.current) {
+                    inputKeysRef.current[inputKey] = inputType;
+                  }
+                }}
+                onChange={(val) => {
+                  setInputArgAtKey(tabId, namespace, inputKey, val);
+                }}
                 label={label || 'Value'}
                 defaultValue={FormatInputFields.defaultValue(form)}
                 numeric={form === 'number'}

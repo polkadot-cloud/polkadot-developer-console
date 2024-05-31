@@ -2,44 +2,44 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useEffect, useState } from 'react';
-import type { TextboxProps } from './types';
-import { useActiveTab } from 'contexts/ActiveTab';
-import { useChainUi } from 'contexts/ChainUi';
 import { TextInputWrapper } from 'library/Inputs/Wrappers';
+import type { TextboxProps } from './types';
 
 export const Textbox = ({
-  inputKey,
-  namespace,
-  inputKeysRef,
   label,
   defaultValue,
   numeric,
+  onMount,
+  onRender,
+  onChange,
 }: TextboxProps) => {
-  const { tabId } = useActiveTab();
-  const { setInputArgAtKey } = useChainUi();
-
   // The input arg type of this component.
   const INPUT_TYPE = 'Textbox';
 
-  const [value, setValue] = useState<string | number>(defaultValue || '');
-
-  // Accumulate input key.
-  if (inputKeysRef.current) {
-    inputKeysRef.current[inputKey] = INPUT_TYPE;
+  // Run `onRender` function.
+  if (onRender !== undefined) {
+    onRender(INPUT_TYPE);
   }
+
+  // The current value of the input.
+  const [value, setValue] = useState<string>(defaultValue || '');
 
   // Handle textbox value change.
   const handleTextboxChange = (val: string) => {
     if (numeric && isNaN(Number(val))) {
       return;
     }
-    setInputArgAtKey(tabId, namespace, inputKey, val);
+    if (onChange !== undefined) {
+      onChange(val);
+    }
     setValue(val);
   };
 
-  // Update input arg value to the default value on initial render.
+  // Call on mount logic in initial render if provided.
   useEffect(() => {
-    setInputArgAtKey(tabId, namespace, inputKey, value);
+    if (onMount !== undefined) {
+      onMount(value);
+    }
   }, []);
 
   const displayLabel = typeof label === 'object' ? label.short : label;

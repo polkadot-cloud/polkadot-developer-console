@@ -87,7 +87,7 @@ export const AccountId32 = ({
         )
       : accounts;
 
-  // Update input arg value to the default value on initial render.
+  // Call on mount logic in initial render if provided.
   useEffect(() => {
     if (onMount !== undefined) {
       onMount(selectedAddress);
