@@ -1,9 +1,9 @@
 // Copyright 2024 @polkadot-developer-console/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { localStorageOrDefault } from '@w3ux/utils';
-import { LedgerApps } from './defaults';
 import type { LedgerAddress } from '@w3ux/react-connect-kit/types';
+import { LedgerApps } from './defaults';
+import { localStorageOrDefault } from '@w3ux/utils';
 
 // Ledger error keyed by type of error.
 const LedgerErrorsByType = {

@@ -261,12 +261,17 @@ export const ImportButtonWrapper = styled.div`
 `;
 
 export const SubHeadingWrapper = styled.div`
+  border-bottom: 1px solid var(--border-primary-color);
+  padding-bottom: 0.6rem;
   flex: 1;
   display: flex;
   align-items: flex-end;
-  border-bottom: 1px solid var(--border-primary-color);
-  padding-bottom: 0.6rem;
   margin: 0.8rem 0 0.3rem 0;
+
+  &.noBorder {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
 
   > h5 {
     font-size: 0.75rem;

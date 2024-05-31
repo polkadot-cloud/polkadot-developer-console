@@ -7,11 +7,11 @@ import type {
   LedgerAddress,
 } from '@w3ux/react-connect-kit/types';
 import { Polkicon } from '@w3ux/react-polkicon';
-import { ellipsisFn, remToUnit } from '@w3ux/utils';
+import { ellipsisFn, remToUnit, setStateWithRef } from '@w3ux/utils';
 import { NetworkDirectory } from 'config/networks';
 import type { DirectoryId } from 'config/networks/types';
 import { HardwareAddress } from 'library/HardwareAddress';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChainSearchInput } from './ChainSearchInput';
 import type { ManageHardwareProps } from './types';
@@ -27,28 +27,38 @@ import {
   getLocalLedgerAddresses,
 } from 'contexts/LedgerHardware/Utils';
 import { faSquareMinus } from '@fortawesome/pro-solid-svg-icons';
+import type { AnyJson } from '@w3ux/utils/types';
 
 export const ManageLedger = ({
   getMotionProps,
   selectedConnectItem,
 }: ManageHardwareProps) => {
   const {
+    addLedgerAccount,
     removeLedgerAccount,
     renameLedgerAccount,
     ledgerAccountExists,
     getLedgerAccounts,
   } = useLedgerAccounts();
   const {
-    transportResponse,
-    resetStatusCode,
+    getFeedback,
     setStatusCode,
     handleUnmount,
-    handleGetAddress,
     getIsExecuting,
+    resetStatusCode,
+    handleGetAddress,
+    transportResponse,
+    handleResetLedgerTask,
   } = useLedgerHardware();
 
   // The directory id of the address list.
   const [directoryId, setDirectoryId] = useState<DirectoryId>('polkadot');
+
+  // Store addresses retreived from Ledger device. Defaults to local addresses.
+  const [addresses, setAddresses] = useState<LedgerAccount[]>(
+    getLedgerAccounts(directoryId)
+  );
+  const addressesRef = useRef(addresses);
 
   // Whether the search input is active. When active, addresses are hidden and search results are
   // shown instead.
@@ -58,9 +68,6 @@ export const ManageLedger = ({
 
   // Get the currently actve chain name.
   const activeChain = NetworkDirectory[directoryId as DirectoryId];
-
-  // Get the currently imported ledger accounts.
-  const ledgerAccounts = getLedgerAccounts(directoryId);
 
   // Get the supported chains for ledger import.
   const supportedChains = LedgerApps.map((a) => a.network);
@@ -89,16 +96,45 @@ export const ManageLedger = ({
   // Handle removing a ledger address.
   const handleRemove = (address: string) => {
     if (confirm('Are you sure you want to remove this account?')) {
+      // Remove local ledger accounts.
+      let newLedgerAddresses = getLocalLedgerAddresses();
+
+      newLedgerAddresses = newLedgerAddresses.filter((a) => {
+        if (a.address !== address) {
+          return true;
+        }
+        if (a.network !== directoryId) {
+          return true;
+        }
+        return false;
+      });
+      if (!newLedgerAddresses.length) {
+        localStorage.removeItem('ledger_addresses');
+      } else {
+        localStorage.setItem(
+          'ledger_addresses',
+          JSON.stringify(newLedgerAddresses)
+        );
+      }
+
+      // Remove ledger account from state.
       removeLedgerAccount(directoryId, address);
+
+      // Add ledger account to local state.
+      setStateWithRef(
+        [...addressesRef.current.filter((a) => a.address !== address)],
+        setAddresses,
+        addressesRef
+      );
     }
   };
 
   // Gets the next non-imported ledger address index.
   const getNextAddressIndex = () => {
-    if (!ledgerAccounts.length) {
+    if (!addressesRef.current.length) {
       return 0;
     }
-    return ledgerAccounts[ledgerAccounts.length - 1].index + 1;
+    return addressesRef.current[addressesRef.current.length - 1].index + 1;
   };
 
   // Ledger address getter.
@@ -124,9 +160,17 @@ export const ManageLedger = ({
         network: directoryId,
       }));
 
-      // update the full list of local ledger addresses with new entry.
+      // Add ledger account to local state.
+      setStateWithRef(
+        [...addressesRef.current, ...newAddress],
+        setAddresses,
+        addressesRef
+      );
+
+      // Update the full list of local ledger addresses with new entry. NOTE: This can be deprecated
+      // once w3ux package is updated to directly import without using local `ledger_addresses`.
       const newAddresses = getLocalLedgerAddresses()
-        .filter((a) => {
+        .filter((a: AnyJson) => {
           if (a.address !== newAddress[0].address) {
             return true;
           }
@@ -137,6 +181,15 @@ export const ManageLedger = ({
         })
         .concat(newAddress);
       localStorage.setItem('ledger_addresses', JSON.stringify(newAddresses));
+
+      // Add new Ledger account to imported accounts.
+      addLedgerAccount(
+        directoryId,
+        newAddress[0].address,
+        options.accountIndex
+      );
+
+      // Reset device status code.
       resetStatusCode();
     }
   };
@@ -144,10 +197,15 @@ export const ManageLedger = ({
   // Resets ledger accounts.
   const resetLedgerAccounts = () => {
     // Remove imported Ledger accounts.
-    ledgerAccounts.forEach((account) => {
+    addressesRef.current.forEach((account) => {
       removeLedgerAccount(directoryId, account.address);
     });
+
+    setStateWithRef([], setAddresses, addressesRef);
   };
+
+  // Get last saved ledger feedback.
+  const feedback = getFeedback();
 
   // Listen for new Ledger status reports.
   useEffectIgnoreInitial(() => {
@@ -174,23 +232,19 @@ export const ManageLedger = ({
     <>
       <motion.div {...getMotionProps('address_config', true)}>
         <ChainSearchInput
-          onSearchFocused={onSearchFocused}
-          onSearchBlurred={onSearchBlurred}
+          activeChain={activeChain}
           directoryId={directoryId}
           setDirectoryId={setDirectoryId}
-          activeChain={activeChain}
+          onSearchFocused={onSearchFocused}
+          onSearchBlurred={onSearchBlurred}
           supportedChains={supportedChains}
         />
       </motion.div>
 
       <motion.div {...getMotionProps('address_config', !searchActive)}>
-        <SubHeadingWrapper>
-          <h5>
-            {ledgerAccounts.length || 'No'}
-            {ledgerAccounts.length === 1 ? 'Account' : 'Accounts'}
-          </h5>
+        <SubHeadingWrapper className="noBorder">
           <ImportButtonWrapper>
-            {ledgerAccounts.length > 0 && (
+            {addressesRef.current.length > 0 && (
               <button
                 onClick={() => {
                   if (
@@ -211,9 +265,12 @@ export const ManageLedger = ({
             )}
             <button
               onClick={async () => {
-                await onGetAddress();
+                if (!isExecuting) {
+                  await onGetAddress();
+                } else {
+                  handleResetLedgerTask();
+                }
               }}
-              disabled={isExecuting}
             >
               <FontAwesomeIcon
                 icon={faUsbDrive}
@@ -224,16 +281,22 @@ export const ManageLedger = ({
             </button>
           </ImportButtonWrapper>
         </SubHeadingWrapper>
+        <SubHeadingWrapper>
+          <h5>
+            {feedback?.message ||
+              `${addressesRef.current.length || 'No'} ${addressesRef.current.length === 1 ? 'Account' : 'Accounts'}`}
+          </h5>
+        </SubHeadingWrapper>
       </motion.div>
 
       <motion.div {...getMotionProps('address', showAddresses)}>
-        {ledgerAccounts.map(({ address }: LedgerAccount, i) => (
+        {addressesRef.current.map(({ name, address }: LedgerAccount, i) => (
           <HardwareAddress
             key={`ledger_imported_${i}`}
             network="polkadot"
             address={address}
             index={0}
-            initial={'Ross Bulat'}
+            initial={name}
             Identicon={
               <Polkicon address={address} size={remToUnit('2.1rem')} />
             }

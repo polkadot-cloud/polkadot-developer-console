@@ -55,7 +55,7 @@ export const ManageVault = ({
   };
 
   // Whether to show address entries. Requires both searching and importing to be inactive.
-  const showAddresses = !searchActive && !importActive;
+  const showAddresses = !searchActive;
 
   // Handle renaming a vault address.
   const handleRename = (address: string, newName: string) => {
