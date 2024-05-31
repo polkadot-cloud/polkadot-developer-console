@@ -103,11 +103,6 @@ export const useSubmitExtrinsic = ({
       return;
     }
 
-    // TODO: Check if this is the same as `nonce` above.
-    // const nonce = (
-    //   await api.rpc.system.accountNextIndex(fromRef.current)
-    // ).toHuman();
-
     const { source } = account;
 
     // if `activeAccount` is imported from an extension, ensure it is enabled.
