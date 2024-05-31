@@ -99,7 +99,7 @@ export const ConnectOverlay = () => {
         onAnimationComplete={() => checkOverlayPosition()}
         className="large"
         style={{
-          position: 'absolute',
+          position: 'fixed',
           left: `${x}px`,
           top: `${y}px`,
           opacity: show ? 1 : 0,
