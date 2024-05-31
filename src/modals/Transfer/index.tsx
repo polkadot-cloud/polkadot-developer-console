@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { unitToPlanck } from '@w3ux/utils';
+import BigNumber from 'bignumber.js';
 import { useAccounts } from 'contexts/Accounts';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useTxMeta } from 'contexts/TxMeta';
@@ -54,7 +55,8 @@ export const Transfer = () => {
     txFee,
     existentialDeposit
   );
-  const valid = notEnoughFunds === false;
+  const valid =
+    notEnoughFunds === false && new BigNumber(amount).isGreaterThan(0);
 
   // Format the transaction to submit, or return `null` if invalid.
   const getTx = () => {

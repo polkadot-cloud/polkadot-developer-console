@@ -75,6 +75,7 @@ export const Account = ({
                       options: {
                         address,
                         instanceId: apiInstanceId,
+                        chainId,
                         unit,
                         units,
                         api: apiInstance,

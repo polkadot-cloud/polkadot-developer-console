@@ -38,7 +38,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
     const chainSpec = getChainSpec(instanceId);
 
     if (chainSpec) {
-      const accounts = chainSpec.chain ? getAccounts(chainSpec) : [];
+      const accounts = chainSpec ? getAccounts(chainSpec) : [];
 
       activeBalanceInstances[instanceId] = {
         accounts: accounts.map(({ address }) => address),
