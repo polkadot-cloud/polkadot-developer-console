@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { localStorageOrDefault } from '@w3ux/utils';
-import type { LedgerAddress } from './types';
 import { LedgerApps } from './defaults';
+import type { LedgerAddress } from '@w3ux/react-connect-kit/types';
 
 // Ledger error keyed by type of error.
 const LedgerErrorsByType = {

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
+import type { DirectoryId } from 'config/networks/types';
 
 export interface LedgerHardwareContextInterface {
   integrityChecked: boolean;
@@ -65,16 +66,8 @@ export type LedgerTask = 'get_address' | 'sign_tx';
 
 export type PairingStatus = 'paired' | 'unpaired' | 'unknown';
 
-export interface LedgerAddress {
-  address: string;
-  index: number;
-  name: string;
-  network: string;
-  pubKey: string;
-}
-
 export interface LedgerApp {
-  network: string;
+  network: DirectoryId;
   appName: string;
 }
 

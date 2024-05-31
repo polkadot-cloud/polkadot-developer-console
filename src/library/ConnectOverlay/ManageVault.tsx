@@ -57,15 +57,6 @@ export const ManageVault = ({
   // Whether to show address entries. Requires both searching and importing to be inactive.
   const showAddresses = !searchActive && !importActive;
 
-  // Resets UI when the selected connect item changes from `polakdot_vault`, Cancelling import and
-  // search if active.
-  useEffectIgnoreInitial(() => {
-    if (selectedConnectItem !== 'polkadot_vault') {
-      setSearchActive(false);
-      setImportActive(false);
-    }
-  }, [selectedConnectItem]);
-
   // Handle renaming a vault address.
   const handleRename = (address: string, newName: string) => {
     renameVaultAccount(directoryId, address, newName);
@@ -77,6 +68,15 @@ export const ManageVault = ({
       removeVaultAccount(directoryId, address);
     }
   };
+
+  // Resets UI when the selected connect item changes from `polakdot_vault`, Cancelling import and
+  // search if active.
+  useEffectIgnoreInitial(() => {
+    if (selectedConnectItem !== 'polkadot_vault') {
+      setSearchActive(false);
+      setImportActive(false);
+    }
+  }, [selectedConnectItem]);
 
   return (
     <>

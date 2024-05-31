@@ -22,6 +22,7 @@ export interface ChainSearchInputProps {
   directoryId: DirectoryId;
   setDirectoryId: Dispatch<SetStateAction<DirectoryId>>;
   activeChain: NetworkDirectoryItem | undefined;
+  supportedChains?: DirectoryId[];
 }
 
 export interface ManageHardwareProps {
