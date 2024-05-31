@@ -11,7 +11,7 @@ import { Title } from 'library/Modal/Title';
 import { useOverlay } from 'library/Overlay/Provider';
 import { ModalPadding } from 'library/Overlay/structure/ModalPadding';
 import { SubmitTx } from 'library/SubmitTx';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export const Transfer = () => {
   const { getTxFee } = useTxMeta();
@@ -29,6 +29,12 @@ export const Transfer = () => {
   const { setModalStatus, setModalResize } = useOverlay().modal;
   const { getAccounts: getImportedAccounts } = useImportedAccounts();
 
+  // Store the `from` address to transfer funds from.
+  const [fromAddress, setFromAddress] = useState<string>(address);
+
+  // Store the `to` address to transfer funds to.
+  const [toAddress, setToAddress] = useState<string | null>(null);
+
   // A ref for the modal content container that is used for determining select dropdown height.
   const heightRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +45,7 @@ export const Transfer = () => {
   const txFee = getTxFee(instanceId);
   const notEnoughFunds = getNotEnoughFunds(
     instanceId,
-    address,
+    fromAddress,
     txFee,
     existentialDeposit
   );
@@ -56,7 +62,7 @@ export const Transfer = () => {
     try {
       tx = api.tx.balances.transferKeepAlive(
         {
-          id: '5E7FRDqD4krjpxim4sBxW7vRqdQyEnaDws41GRfDvLkK2XRx', // NOTE: to address is hardcoded for testing.
+          id: toAddress,
         },
         unitToPlanck('1', units).toString()
       );
@@ -73,7 +79,7 @@ export const Transfer = () => {
     chainId,
     ss58Prefix,
     tx: getTx(),
-    from: address,
+    from: fromAddress,
     shouldSubmit: true,
     callbackSubmit: () => {
       setModalStatus('closing');
@@ -98,10 +104,7 @@ export const Transfer = () => {
           {/* TODO: Allow default account value, allow disabled. */}
           <AccountId32
             accounts={accounts}
-            onChange={(val) => {
-              /* TODO: Update to address */
-              console.log(val);
-            }}
+            onChange={(val) => setFromAddress(val)}
             heightRef={heightRef}
           />
           <h4 style={{ marginBottom: '0.22rem', marginTop: '1.25rem' }}>
@@ -109,10 +112,7 @@ export const Transfer = () => {
           </h4>
           <AccountId32
             accounts={accounts}
-            onChange={(val) => {
-              /* TODO: Update to address */
-              console.log(val);
-            }}
+            onChange={(val) => setToAddress(val)}
             heightRef={heightRef}
           />
         </div>
