@@ -44,7 +44,7 @@ export const SignPrompt = ({
         <span className={stage === 2 ? 'active' : undefined}>Sign</span>
       </div>
       {stage === 1 && (
-        <div className="viewer withBorder">
+        <div className="viewer">
           <QrDisplayPayload
             address={submitAddress || ''}
             cmd={2}

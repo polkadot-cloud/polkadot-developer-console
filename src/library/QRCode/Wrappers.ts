@@ -77,11 +77,8 @@ export const QRViewerWrapper = styled.div`
     &.scan {
       width: 325px;
     }
-
-    &.withBorder {
-      border: 3.75px solid var(--accent-color-pending);
-    }
   }
+
   .foot {
     border-top: 1px solid var(--border-primary-color);
     display: flex;
