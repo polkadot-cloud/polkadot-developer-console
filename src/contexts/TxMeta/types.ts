@@ -16,7 +16,7 @@ export interface TxMetaContextInterface {
   removeTxFee: (instanceId: ApiInstanceId) => void;
   txFeeValid: (instanceId: ApiInstanceId) => boolean;
 
-  getTxPayload: (instanceId: ApiInstanceId) => TxPayload | undefined;
+  getTxPayload: (instanceId: ApiInstanceId) => AnyJson | undefined;
   setTxPayload: (
     instanceId: ApiInstanceId,
     payload: AnyJson,
