@@ -22,8 +22,8 @@ export const useRouteSections = (): RouteSectionProvider => {
   const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec } = useChainSpaceEnv();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'parachainSetup')?.instanceId;
-  const chainSpec = getChainSpec(apiInstanceId);
+  const instanceId = getTabApiIndex(ownerId, 'parachainSetup')?.instanceId;
+  const chainSpec = getChainSpec(instanceId);
 
   const balancesPaleltExists = chainSpec?.metadata?.palletExists('Balances');
 

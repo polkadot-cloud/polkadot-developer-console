@@ -25,9 +25,9 @@ import { Pinned } from './Pinned';
 export const Overview = () => {
   const { tabId, ownerId } = useActiveTab();
   const { getApiStatus } = useChainSpaceEnv();
-  const { chainSpec, apiInstanceId, chain } = useChain();
+  const { chainSpec, instanceId, chain } = useChain();
 
-  const apiStatus = getApiStatus(apiInstanceId);
+  const apiStatus = getApiStatus(instanceId);
   const chainId = chain.id;
   const chainSpecReady = !!chainSpec;
   const isDirectory = isDirectoryId(chainId);
@@ -49,16 +49,16 @@ export const Overview = () => {
 
   // The latest received block number.
   const [blockNumber, setBlockNumber] = useState<string>(
-    (SubscriptionsController.get(apiInstanceId, 'blockNumber') as BlockNumber)
+    (SubscriptionsController.get(instanceId, 'blockNumber') as BlockNumber)
       ?.blockNumber || '0'
   );
 
   // Handle new block number callback.
   const newBlockCallback = (e: Event) => {
     if (isCustomEvent(e)) {
-      const { ownerId: eventOwnerId, instanceId } = e.detail;
+      const { ownerId: detailOwnerId, instanceId: detailInstanceId } = e.detail;
 
-      if (eventOwnerId === ownerId && instanceId === apiInstanceId) {
+      if (detailOwnerId === ownerId && detailInstanceId === instanceId) {
         setBlockNumber(e.detail.blockNumber);
       }
     }
@@ -71,7 +71,7 @@ export const Overview = () => {
   // Update block number on tab change.
   useEffect(() => {
     setBlockNumber(
-      (SubscriptionsController.get(apiInstanceId, 'blockNumber') as BlockNumber)
+      (SubscriptionsController.get(instanceId, 'blockNumber') as BlockNumber)
         ?.blockNumber || '0'
     );
   }, [tabId]);

@@ -22,7 +22,7 @@ import { useChain } from '../Provider';
 export const Constants = () => {
   const { tabId } = useActiveTab();
   const { setConstant } = useChainState();
-  const { chainSpec, apiInstanceId } = useChain();
+  const { chainSpec, instanceId } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUiSection = 'constants';
@@ -55,7 +55,7 @@ export const Constants = () => {
 
   // Handle retrieval of constant from scraped items.
   const handleSubmit = () => {
-    const chainState = ChainStateController.instances[apiInstanceId];
+    const chainState = ChainStateController.instances[instanceId];
 
     if (activePallet && activeItem) {
       const pallet = camelize(activePallet);

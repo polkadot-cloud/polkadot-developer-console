@@ -8,7 +8,7 @@ import type { ReactNode } from 'react';
 export interface IntegrityCheckedParachainContext {
   chain: TabChainData;
   chainSpec: APIChainSpec;
-  apiInstanceId: ApiInstanceId;
+  instanceId: ApiInstanceId;
 }
 
 export type ParachainContextProps = IntegrityCheckedParachainContext & {

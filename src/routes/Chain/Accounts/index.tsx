@@ -5,11 +5,11 @@ import { useChain } from '../Provider';
 import { Accounts as AccountsCommon } from 'routes/Common/Accounts';
 
 export const Accounts = () => {
-  const { chain, chainSpec, apiInstanceId } = useChain();
+  const { chain, chainSpec, instanceId } = useChain();
 
   return (
     <AccountsCommon
-      apiInstanceId={apiInstanceId}
+      instanceId={instanceId}
       chain={chain}
       chainSpec={chainSpec}
     />

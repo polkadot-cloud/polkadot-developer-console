@@ -27,8 +27,8 @@ export const useRouteSections = (): RouteSectionProvider => {
   const { getChainSpec } = useChainSpaceEnv();
   const { chainExplorerIntegrityCheck } = useChainExplorer();
 
-  const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
-  const chainSpec = getChainSpec(apiInstanceId);
+  const instanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
+  const chainSpec = getChainSpec(instanceId);
 
   const balancesPaleltExists = chainSpec?.metadata?.palletExists('Balances');
 

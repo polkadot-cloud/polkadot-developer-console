@@ -17,7 +17,7 @@ import { useOverlay } from 'library/Overlay/Provider';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const Account = ({
-  apiInstanceId,
+  instanceId,
   account,
   chain,
   chainId,
@@ -35,10 +35,10 @@ export const Account = ({
   const ss58Prefix = chain.ss58;
 
   // Get the api instance for the the instance id.
-  const apiInstance = getApiInstanceById(apiInstanceId)?.api;
+  const apiInstance = getApiInstanceById(instanceId)?.api;
 
-  const balance = getBalance(apiInstanceId, address);
-  const { maxLock } = getLocks(apiInstanceId, address);
+  const balance = getBalance(instanceId, address);
+  const { maxLock } = getLocks(instanceId, address);
 
   // Calculate a forced amount of free balance that needs to be reserved to keep the account alive.
   // Deducts `locks` from free balance reserve needed.
@@ -74,7 +74,7 @@ export const Account = ({
                       key: 'Transfer',
                       options: {
                         address,
-                        instanceId: apiInstanceId,
+                        instanceId,
                         chainId,
                         unit,
                         units,

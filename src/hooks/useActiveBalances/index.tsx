@@ -22,12 +22,12 @@ export const useActiveBalances = (
   instances: ActiveBalancesProps
 ): ActiveBalancesInterface => {
   // Get api instance ids from instances, if any.
-  const apiInstanceIds = Object.keys(instances) || [];
+  const instanceIds = Object.keys(instances) || [];
 
   // The initial state of active account balances is a map between api instance id and balance data,
   // which is initially empty.
   const initialBalances: ActiveBalances = {};
-  apiInstanceIds.forEach((instanceId) => {
+  instanceIds.forEach((instanceId) => {
     initialBalances[instanceId] = {};
   });
 
@@ -140,7 +140,7 @@ export const useActiveBalances = (
   const newAccountBalanceCallback = (e: Event) => {
     if (isCustomEvent(e)) {
       const { instanceId, address, balance } = e.detail;
-      if (!apiInstanceIds.includes(instanceId)) {
+      if (!instanceIds.includes(instanceId)) {
         return;
       }
 
@@ -199,12 +199,12 @@ export const useActiveBalances = (
   // Sync active balances on either account changes, api status changes or api instance changes.
   // `api` instance is required in subscription classes so api must be `ready` before syncing.
   useEffect(() => {
-    for (const instanceId of apiInstanceIds) {
+    for (const instanceId of instanceIds) {
       handleSyncAccounts(instanceId);
     }
   }, [
     JSON.stringify(apiStatuses),
-    JSON.stringify(apiInstanceIds),
+    JSON.stringify(instanceIds),
     JSON.stringify(uniqueAccounts),
   ]);
 

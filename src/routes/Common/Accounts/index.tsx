@@ -11,11 +11,7 @@ import { useAccounts } from 'contexts/Accounts';
 import { StatsWrapper } from 'routes/Chain/Wrappers';
 import type { AccountsProps } from './types';
 
-export const Accounts = ({
-  apiInstanceId,
-  chain,
-  chainSpec,
-}: AccountsProps) => {
+export const Accounts = ({ instanceId, chain, chainSpec }: AccountsProps) => {
   const { getAccounts } = useAccounts();
   const accounts = getAccounts(chainSpec);
   const existentialDeposit = chainSpec.consts.existentialDeposit;
@@ -37,7 +33,7 @@ export const Accounts = ({
         {accounts.map((account, i) => (
           <Account
             key={`imported_account_${i}`}
-            apiInstanceId={apiInstanceId}
+            instanceId={instanceId}
             existentialDeposit={existentialDeposit}
             account={account}
             chain={chain}

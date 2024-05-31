@@ -8,13 +8,13 @@ import type { TabChainData } from 'contexts/Tabs/types';
 import type { APIChainSpec, ApiInstanceId } from 'model/Api/types';
 
 export interface AccountsProps {
-  apiInstanceId: ApiInstanceId;
+  instanceId: ApiInstanceId;
   chain: TabChainData;
   chainSpec: APIChainSpec;
 }
 
 export interface AccountProps {
-  apiInstanceId: ApiInstanceId;
+  instanceId: ApiInstanceId;
   account: ImportedAccount;
   chain: TabChainData;
   chainId: ChainId;
