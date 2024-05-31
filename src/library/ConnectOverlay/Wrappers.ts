@@ -249,6 +249,11 @@ export const ImportButtonWrapper = styled.div`
     font-size: 0.75rem;
     padding: 0 0.6rem;
 
+    &:disabled {
+      cursor: default;
+      opacity: 0.5;
+    }
+
     > svg {
       margin-right: 0.2rem;
     }

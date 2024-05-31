@@ -26,6 +26,7 @@ import {
   getLedgerApp,
   getLocalLedgerAddresses,
 } from 'contexts/LedgerHardware/Utils';
+import { faSquareMinus } from '@fortawesome/pro-solid-svg-icons';
 
 export const ManageLedger = ({
   getMotionProps,
@@ -136,9 +137,16 @@ export const ManageLedger = ({
         })
         .concat(newAddress);
       localStorage.setItem('ledger_addresses', JSON.stringify(newAddresses));
-
       resetStatusCode();
     }
+  };
+
+  // Resets ledger accounts.
+  const resetLedgerAccounts = () => {
+    // Remove imported Ledger accounts.
+    ledgerAccounts.forEach((account) => {
+      removeLedgerAccount(directoryId, account.address);
+    });
   };
 
   // Listen for new Ledger status reports.
@@ -182,6 +190,25 @@ export const ManageLedger = ({
             {ledgerAccounts.length === 1 ? 'Account' : 'Accounts'}
           </h5>
           <ImportButtonWrapper>
+            {ledgerAccounts.length > 0 && (
+              <button
+                onClick={() => {
+                  if (
+                    confirm(
+                      'Are you sure you want to remove all ledger accounts?'
+                    )
+                  ) {
+                    resetLedgerAccounts();
+                  }
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faSquareMinus}
+                  style={{ marginRight: '0.4rem' }}
+                />
+                Reset
+              </button>
+            )}
             <button
               onClick={async () => {
                 await onGetAddress();
