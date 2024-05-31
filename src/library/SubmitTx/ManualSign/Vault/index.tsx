@@ -50,7 +50,6 @@ export const Vault = ({
   } else {
     buttonText = promptStatus === 0 ? 'Sign' : 'Signing';
     buttonOnClick = async () => {
-      console.log('open prompt to sign tx');
       // TODO: handle open prompt.
       // openPromptWith(<SignPrompt submitAddress={submitAddress} />, 'small');
     };
