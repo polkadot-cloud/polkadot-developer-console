@@ -7,6 +7,7 @@ import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useTxMeta } from 'contexts/TxMeta';
 import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import { AccountId32 } from 'library/Inputs/AccountId32';
+import { Textbox } from 'library/Inputs/Textbox';
 import { Title } from 'library/Modal/Title';
 import { useOverlay } from 'library/Overlay/Provider';
 import { ModalPadding } from 'library/Overlay/structure/ModalPadding';
@@ -114,6 +115,16 @@ export const Transfer = () => {
             accounts={accounts}
             onChange={(val) => setToAddress(val)}
             heightRef={heightRef}
+          />
+          <h4 style={{ marginBottom: '0.22rem', marginTop: '1.25rem' }}>
+            Amount
+          </h4>
+
+          <Textbox
+            defaultValue="0"
+            onChange={(val) => {
+              console.log(val);
+            }}
           />
         </div>
       </ModalPadding>
