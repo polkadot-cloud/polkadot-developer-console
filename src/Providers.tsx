@@ -29,6 +29,9 @@ import { ChainSpaceEnvProvider } from 'contexts/ChainSpaceEnv';
 import { ChainExplorerProvider } from 'contexts/ChainExplorer';
 import { ApiIndexerProvider } from 'contexts/ApiIndexer';
 import { OneShotTooltipProvider } from 'contexts/OneShotTooltip';
+import { TxMetaProvider } from 'contexts/TxMeta';
+import { OverlayProvider } from 'library/Overlay/Provider';
+import { PromptProvider } from 'contexts/Prompt';
 
 export const Providers = () => {
   // !! --------------------------------
@@ -48,12 +51,17 @@ export const Providers = () => {
     OneShotTooltipProvider,
     ConnectProvider,
     ChainUiProvider,
+    OverlayProvider,
+    PromptProvider,
 
     // Account import related providers.
     ExtensionsProvider,
     [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
     VaultAccountsProvider,
     ImportedAccountsProvider,
+
+    // Transaction providers.
+    TxMetaProvider,
 
     // Chain space environment and api indexer.
     ApiIndexerProvider,

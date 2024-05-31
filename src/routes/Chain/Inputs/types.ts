@@ -41,12 +41,6 @@ export type CheckboxProps = InputArgConfig & {
   defaultValue: boolean;
 };
 
-export type TextboxProps = InputArgConfig & {
-  label: { short?: string; long?: string } | string | number;
-  defaultValue: string | number;
-  numeric?: boolean;
-};
-
 export type SequenceProps = InputArgConfig & {
   type: string;
   arrayInput: AnyJson;

@@ -27,11 +27,21 @@ export interface ActiveBalancesInterface {
     instanceId: ApiInstanceId | undefined,
     address: MaybeAddress
   ) => Balance;
+  getNonce: (
+    instanceId: ApiInstanceId | undefined,
+    address: MaybeAddress
+  ) => number;
   getEdReserved: (
     instanceId: ApiInstanceId | undefined,
     address: MaybeAddress,
     existentialDeposit: BigNumber
   ) => BigNumber;
+  getNotEnoughFunds: (
+    instanceId: ApiInstanceId | undefined,
+    address: string,
+    txFees: BigNumber,
+    existentialDeposit: BigNumber
+  ) => boolean;
 }
 
 export type ActiveBalances = Record<ApiInstanceId, AccountBalancesState>;

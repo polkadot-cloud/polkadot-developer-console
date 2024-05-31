@@ -3,7 +3,7 @@
 
 import { NetworkDirectory } from 'config/networks';
 import { Select } from 'library/Inputs/Select';
-import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { ButtonText } from 'library/Buttons/ButtonText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeftToBracket } from '@fortawesome/pro-duotone-svg-icons';
 import { FormWrapper } from 'routes/Home/Wrappers';
@@ -20,11 +20,11 @@ export const ConnectRelay = () => {
   const { tabId, ownerId } = useActiveTab();
   const { renameTab, getAutoTabName } = useTabs();
   const { getSelectedRelayChain } = useParaSetup();
-  const { chainSpec, apiInstanceId } = useParachain();
+  const { chainSpec, instanceId } = useParachain();
   const { getApiStatus, destroyAllApiInstances } = useChainSpaceEnv();
 
   const relayChain = getSelectedRelayChain(tabId);
-  const apiStatus = getApiStatus(apiInstanceId);
+  const apiStatus = getApiStatus(instanceId);
 
   // Get relay chains from the network directory.
   const relayChains = Object.entries(NetworkDirectory).filter(
@@ -84,7 +84,7 @@ export const ConnectRelay = () => {
           </h4>
         )}
 
-        <ButtonSubmit
+        <ButtonText
           className="lg"
           onClick={() => {
             if (apiStatus !== 'ready') {
@@ -104,7 +104,7 @@ export const ConnectRelay = () => {
             <FontAwesomeIcon icon={faArrowLeftToBracket} className="iconLeft" />
             {apiValid ? 'Disconnect & Cancel Setup' : 'Cancel Connect'}
           </>
-        </ButtonSubmit>
+        </ButtonText>
       </section>
     </FormWrapper>
   );

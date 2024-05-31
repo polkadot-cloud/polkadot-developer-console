@@ -6,6 +6,11 @@ SPDX-License-Identifier: GPL-3.0-only */
   --background-primary: #f3f2f2;
   --background-invert: #888;
   --background-tooltip: #222;
+  --background-floating-card: rgb(255 255 255 / 90%);
+  --background-modal: #f4f2f2;
+  --background-modal-footer: #eee;
+  --background-canvas-card: rgb(245 245 245 / 90%);
+  --background-canvas-card-secondary: rgb(255 255 255 / 35%);
 
   --border-primary-color: #e4e4e4;
   --border-secondary-color: #d3d1d1;
@@ -33,6 +38,8 @@ SPDX-License-Identifier: GPL-3.0-only */
   --text-color-tertiary: #888;
   --text-color-invert: #fafafa;
 
+  --modal-background-color: rgb(224 222 222 / 70%);
+
   --gradient-background: linear-gradient(
     180deg,
     #efeeee 0%,
@@ -48,8 +55,8 @@ SPDX-License-Identifier: GPL-3.0-only */
   );
   --gradient-tab-fade-hover: linear-gradient(
     90deg,
-    rgba(228, 226, 226, 0) 0%,
-    rgba(228, 226, 226, 1) 50%,
+    rgba(222, 221, 221, 0) 0%,
+    rgba(222, 221, 221, 1) 50%,
     rgba(228, 226, 226, 1) 100%
   );
 
@@ -121,6 +128,11 @@ SPDX-License-Identifier: GPL-3.0-only */
   );
 
   /* NOTE: these colors are still light and need to be updated for dark theme. */
+  --background-floating-card: rgb(43 38 43 / 95%);
+  --background-modal: rgb(43 38 43);
+  --background-modal-footer: rgb(37 32 37);
+  --background-canvas-card: rgb(44 40 44 / 90%);
+  --background-canvas-card-secondary: rgb(44 40 44 / 35%);
 
   --tab-active-background: rgb(56 51 56);
 
@@ -141,6 +153,8 @@ SPDX-License-Identifier: GPL-3.0-only */
     rgba(228, 226, 226, 1) 50%,
     rgba(228, 226, 226, 1) 100%
   );
+
+  --modal-background-color: rgb(22 18 22 / 70%);
 
   --shadow-input: 0 2px 4px 1px rgba(0, 0, 0, 0.03);
 

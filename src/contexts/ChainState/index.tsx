@@ -45,7 +45,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   const { getTabApiIndex } = useApiIndexer();
 
   const tabApiIndex = getTabApiIndex(ownerId, 'chainExplorer');
-  const apiInstanceId = tabApiIndex?.instanceId;
+  const instanceId = tabApiIndex?.instanceId;
 
   // The results of current chain state subscriptions, keyed by subscription key.
   const [chainStateSubscriptions, setChainStateSubscriptionsState] =
@@ -112,14 +112,14 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   // Remove a subscription from chain state.
   const removeChainStateItem = (type: StorageType, key: string) => {
-    if (!apiInstanceId) {
+    if (!instanceId) {
       return;
     }
 
     // Handle removal of chain state subscription.
     if (['storage', 'raw'].includes(type)) {
       // Remove key and unsubscribe from controller.
-      ChainStateController.instances?.[apiInstanceId]?.unsubscribeOne(key);
+      ChainStateController.instances?.[instanceId]?.unsubscribeOne(key);
       // Remove key from context chain state.
       const updatedChainState = { ...chainStateSubscriptions };
       delete updatedChainState[key];
@@ -132,7 +132,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
       const updated = { ...chainStateConstants };
       delete updated[key];
       setChainStateConstants(updated);
-      ChainStateController.instances?.[apiInstanceId].removeConstant(key);
+      ChainStateController.instances?.[instanceId].removeConstant(key);
     }
   };
 
@@ -152,11 +152,11 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     if (isCustomEvent(e)) {
       const {
         ownerId: detailOwnerId,
-        instanceId,
+        instanceId: detailInstanceId,
         ...rest
       }: ChainStateEventDetail = e.detail;
 
-      if (ownerId === detailOwnerId && apiInstanceId === instanceId) {
+      if (ownerId === detailOwnerId && instanceId === detailInstanceId) {
         setChainStateItem(rest);
       }
     }
@@ -168,12 +168,12 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     if (isCustomEvent(e)) {
       const {
         ownerId: detailOwnerId,
-        instanceId,
+        instanceId: detailInstanceId,
         key,
         ...rest
       }: ChainStateConstantEventDetail = e.detail;
 
-      if (ownerId === detailOwnerId && apiInstanceId === instanceId) {
+      if (ownerId === detailOwnerId && instanceId === detailInstanceId) {
         setConstant(key, rest);
       }
     }
@@ -226,11 +226,11 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   // Reset state for a tab.
   const destroyTabChainState = () => {
-    if (!apiInstanceId) {
+    if (!instanceId) {
       return;
     }
     // Destroy API instance.
-    ChainStateController.destroy(apiInstanceId);
+    ChainStateController.destroy(instanceId);
 
     // Reset state.
     setChainStateSubscriptions({});
@@ -239,14 +239,14 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   // Get chain state on tab change.
   useEffectIgnoreInitial(() => {
-    if (!apiInstanceId) {
+    if (!instanceId) {
       return;
     }
 
     setChainStateSubscriptions(
-      ChainStateController.getSubscriptions(apiInstanceId)
+      ChainStateController.getSubscriptions(instanceId)
     );
-    setChainStateConstants(ChainStateController.getConstants(apiInstanceId));
+    setChainStateConstants(ChainStateController.getConstants(instanceId));
   }, [tabId]);
 
   return (

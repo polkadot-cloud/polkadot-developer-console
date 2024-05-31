@@ -21,5 +21,5 @@ export const dummyChain: TabChainData = {
 export const defaultChainContextInterface: IntegrityCheckedChainContext = {
   chain: dummyChain,
   chainSpec: dummyChainSpec,
-  apiInstanceId: 'tab_0_0',
+  instanceId: 'tab_0_0',
 };

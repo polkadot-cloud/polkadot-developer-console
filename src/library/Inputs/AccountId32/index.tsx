@@ -20,6 +20,8 @@ import type { AccountId32Props } from './types';
 
 export const AccountId32 = ({
   accounts,
+  defaultValue,
+  heightRef,
   onMount,
   onRender,
   onChange,
@@ -34,7 +36,7 @@ export const AccountId32 = ({
 
   // The current selected address.
   const [selectedAddress, setSelectedAddress] = useState<string>(
-    String(accounts?.[0]?.address || '')
+    String(defaultValue || accounts?.[0]?.address || '')
   );
 
   // The current value of the input. Attempts to find an account name, or uses the selected address,
@@ -86,7 +88,7 @@ export const AccountId32 = ({
         )
       : accounts;
 
-  // Update input arg value to the default value on initial render.
+  // Call on mount logic in initial render if provided.
   useEffect(() => {
     if (onMount !== undefined) {
       onMount(selectedAddress);
@@ -141,6 +143,7 @@ export const AccountId32 = ({
         open={dropdownOpen}
         onOutsideClick={() => setDropdownOpen(false)}
         outsideAlerterIgnore={['ignore-outside-alerter-search-input']}
+        heightRef={heightRef}
       >
         {filteredAccounts.map(({ name, address }, i) => (
           <SelectItemWrapper

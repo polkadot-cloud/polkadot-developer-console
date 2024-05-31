@@ -7,5 +7,5 @@ import { dummyChain } from 'routes/Chain/Provider/defaults';
 export const defaultParachainContextInterface = {
   chain: dummyChain,
   chainSpec: dummyChainSpec,
-  apiInstanceId: 'tab_0_0',
+  instanceId: 'tab_0_0',
 };

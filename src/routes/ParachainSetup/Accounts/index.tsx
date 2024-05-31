@@ -5,11 +5,11 @@ import { Accounts as AccountsCommon } from 'routes/Common/Accounts';
 import { useParachain } from '../Provider';
 
 export const Accounts = () => {
-  const { chain, chainSpec, apiInstanceId } = useParachain();
+  const { chain, chainSpec, instanceId } = useParachain();
 
   return (
     <AccountsCommon
-      apiInstanceId={apiInstanceId}
+      instanceId={instanceId}
       chain={chain}
       chainSpec={chainSpec}
     />

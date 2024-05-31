@@ -90,13 +90,13 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
 
     // Ensure that the api indexer has an active index for the `parachainSetup` instance for
     // this tab.
-    const apiInstanceId = getTabApiIndex(ownerId, 'parachainSetup')?.instanceId;
-    if (!apiInstanceId) {
+    const instanceId = getTabApiIndex(ownerId, 'parachainSetup')?.instanceId;
+    if (!instanceId) {
       return false;
     }
 
     // Ensure that there is a chainSpec for the chain.
-    const chainSpec = getChainSpec(apiInstanceId);
+    const chainSpec = getChainSpec(instanceId);
     if (!chainSpec) {
       return false;
     }
@@ -104,7 +104,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     return {
       chain,
       chainSpec,
-      apiInstanceId,
+      instanceId,
     };
   };
 

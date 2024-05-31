@@ -183,13 +183,13 @@ export const ChainExplorerProvider = ({
     }
 
     // Ensure that the api indexer has an active index for the `chainExplorer` task for this tab.
-    const apiInstanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
-    if (!apiInstanceId) {
+    const instanceId = getTabApiIndex(ownerId, 'chainExplorer')?.instanceId;
+    if (!instanceId) {
       return false;
     }
 
     // Ensure that there is a chainSpec for the chain.
-    const chainSpec = getChainSpec(apiInstanceId);
+    const chainSpec = getChainSpec(instanceId);
     if (!chainSpec) {
       return false;
     }
@@ -197,7 +197,7 @@ export const ChainExplorerProvider = ({
     return {
       chain,
       chainSpec,
-      apiInstanceId,
+      instanceId,
     };
   };
 

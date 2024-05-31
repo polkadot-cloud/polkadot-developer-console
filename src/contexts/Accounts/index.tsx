@@ -27,8 +27,8 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
 
   // Get accounts given a chain spec.
   const getAccounts = (chainSpec?: APIChainSpec) =>
-    chainSpec && chainSpec.chain
-      ? getImportedAccounts(chainSpec.chain, chainSpec.ss58Prefix)
+    chainSpec
+      ? getImportedAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
       : [];
 
   // Accumulate active balance configuration from api indexes for the current tab.
@@ -38,7 +38,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
     const chainSpec = getChainSpec(instanceId);
 
     if (chainSpec) {
-      const accounts = chainSpec.chain ? getAccounts(chainSpec) : [];
+      const accounts = chainSpec ? getAccounts(chainSpec) : [];
 
       activeBalanceInstances[instanceId] = {
         accounts: accounts.map(({ address }) => address),

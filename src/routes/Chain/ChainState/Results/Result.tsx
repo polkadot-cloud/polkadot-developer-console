@@ -7,7 +7,7 @@ import { capitalizeFirstLetter } from '@w3ux/utils';
 import type { ChainStateResultProps } from '../types';
 import { splitConstantKey, splitSubscriptionKey } from 'model/ChainState/util';
 import { useChainState } from 'contexts/ChainState';
-import { ButtonCopy } from 'library/Buttons/ButtonCopy';
+import { ButtonIcon } from 'library/Buttons/ButtonIcon';
 
 export const ChainStateResult = ({
   chainStateKey,
@@ -43,11 +43,13 @@ export const ChainStateResult = ({
             <h4>{display}</h4>
           </div>
           <div>
-            <ButtonCopy
-              copyText={display}
+            <ButtonIcon
               tooltipText="Copied!"
               id={`result_${type}_${rawKey}`}
               transform="shrink-3"
+              onClick={() => {
+                navigator.clipboard.writeText(display);
+              }}
             />
           </div>
         </div>

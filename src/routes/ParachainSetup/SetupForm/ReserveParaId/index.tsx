@@ -10,10 +10,9 @@ export const ReserveParaId = () => {
   const { chainSpec } = useParachain();
   const { getAccounts } = useImportedAccounts();
 
-  const accounts =
-    chainSpec && chainSpec.chain
-      ? getAccounts(chainSpec.chain, chainSpec.ss58Prefix)
-      : [];
+  const accounts = chainSpec
+    ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
+    : [];
 
   return (
     <FormWrapper>

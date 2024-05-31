@@ -5,7 +5,7 @@ import { capitalizeFirstLetter, removeHexPrefix } from '@w3ux/utils';
 import { EncodedWrapper } from '../Wrappers';
 import type { EncodedDetailsProps } from './types';
 import { xxhashAsHex } from '@polkadot/util-crypto';
-import { ButtonCopy } from 'library/Buttons/ButtonCopy';
+import { ButtonIcon } from 'library/Buttons/ButtonIcon';
 
 export const EncodedDetails = ({
   activePallet,
@@ -30,11 +30,13 @@ export const EncodedDetails = ({
             <h4>
               {activePalletHash}
               <span>
-                <ButtonCopy
-                  copyText={activePalletHash}
+                <ButtonIcon
                   tooltipText="Copied!"
                   id="copy_pallet_hash"
                   transform="shrink-3"
+                  onClick={() => {
+                    navigator.clipboard.writeText(activePalletHash);
+                  }}
                 />
               </span>
             </h4>
@@ -49,11 +51,13 @@ export const EncodedDetails = ({
             <h4>
               {activeItemHash}
               <span>
-                <ButtonCopy
-                  copyText={activeItemHash}
+                <ButtonIcon
                   tooltipText="Copied!"
                   id="copy_call_hash"
                   transform="shrink-3"
+                  onClick={() => {
+                    navigator.clipboard.writeText(activeItemHash);
+                  }}
                 />
               </span>
             </h4>

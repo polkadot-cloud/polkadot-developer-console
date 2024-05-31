@@ -7,7 +7,7 @@ import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { ChainStateList } from './ChainStateList';
-import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { ButtonText } from 'library/Buttons/ButtonText';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useActiveTab } from 'contexts/ActiveTab';
@@ -22,7 +22,7 @@ import { useChain } from '../Provider';
 export const Constants = () => {
   const { tabId } = useActiveTab();
   const { setConstant } = useChainState();
-  const { chainSpec, apiInstanceId } = useChain();
+  const { chainSpec, instanceId } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUiSection = 'constants';
@@ -55,7 +55,7 @@ export const Constants = () => {
 
   // Handle retrieval of constant from scraped items.
   const handleSubmit = () => {
-    const chainState = ChainStateController.instances[apiInstanceId];
+    const chainState = ChainStateController.instances[instanceId];
 
     if (activePallet && activeItem) {
       const pallet = camelize(activePallet);
@@ -88,14 +88,14 @@ export const Constants = () => {
       </SelectFormWrapper>
       <InputFormWrapper>
         <section className="footer">
-          <ButtonSubmit onClick={() => handleSubmit()}>
+          <ButtonText onClick={() => handleSubmit()}>
             Submit
             <FontAwesomeIcon
               icon={faCircleRight}
               transform="shrink-1"
               className="iconRight"
             />
-          </ButtonSubmit>
+          </ButtonText>
         </section>
       </InputFormWrapper>
 

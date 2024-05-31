@@ -5,7 +5,7 @@ import { Fragment } from 'react/jsx-runtime';
 import { InputFormWrapper } from '../../Wrappers';
 import type { InputFormProps } from '../types';
 import type { AnyJson } from '@w3ux/utils/types';
-import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { ButtonText } from 'library/Buttons/ButtonText';
 import { faCircleRight } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useInput } from '../../Inputs';
@@ -55,7 +55,7 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
           })
         )}
       <section className="footer">
-        <ButtonSubmit
+        <ButtonText
           onClick={() => {
             /* TODO: Submit storage query or extrinsic. */
             console.log(inputKeysRef.current);
@@ -68,7 +68,7 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
             transform="shrink-1"
             className="iconRight"
           />
-        </ButtonSubmit>
+        </ButtonText>
       </section>
     </InputFormWrapper>
   );

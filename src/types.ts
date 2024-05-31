@@ -50,3 +50,6 @@ export interface ComponentBase {
 export type ComponentBaseWithClassName = ComponentBase & {
   className?: string;
 };
+
+// Which medium components are being displayed on.
+export type DisplayFor = 'default' | 'modal' | 'canvas' | 'card';

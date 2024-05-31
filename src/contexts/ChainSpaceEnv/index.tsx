@@ -35,6 +35,8 @@ import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { xxhashAsHex } from '@polkadot/util-crypto';
 import { u16 } from 'scale-ts';
 import type { AnyJson } from '@w3ux/utils/types';
+import { getApiInstanceOwnerAndIndex } from './Utils';
+import { useTxMeta } from 'contexts/TxMeta';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
   defaultChainSpaceEnvContext
@@ -49,6 +51,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     getTabApiIndexes,
     removeTabApiIndex,
   } = useApiIndexer();
+  const { destroyInstanceTxMeta } = useTxMeta();
   const { globalChainSpace } = useGlobalChainSpace();
   const { tabs, resetTabActiveTask, getTabActiveTask, getTabTaskData } =
     useTabs();
@@ -245,7 +248,13 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     const indexes = getTabApiIndexes(ownerId);
     if (indexes.length) {
       for (const apiIndex of indexes) {
-        handleDisconnect(ownerId, `${ownerId}_${apiIndex.index}`, true);
+        const instanceId = `${ownerId}_${apiIndex.index}`;
+
+        // Destroy transaction metadata associated with this instance.
+        destroyInstanceTxMeta(instanceId);
+
+        // Disconnect from API.
+        handleDisconnect(ownerId, instanceId, true);
       }
     }
   };
@@ -257,9 +266,16 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     return Number(result[2]);
   };
 
-  // Gets an api instance tab and label.
+  // Gets an api instace by instance id.
+  const getApiInstanceById = (instanceId: ApiInstanceId) => {
+    const { ownerId, index } = getApiInstanceOwnerAndIndex(instanceId);
+    return ApiController.instances[ownerId]?.[index];
+  };
+
+  // Gets an api instance by tab and label.
   const getApiInstance = (ownerId: OwnerId, label: ApiIndexLabel) => {
     const apiIndex = getTabApiIndex(ownerId, label);
+
     if (apiIndex !== undefined) {
       return ApiController.instances[ownerId]?.[apiIndex.index];
     }
@@ -364,6 +380,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         // Getters
         getApiStatus,
         getChainSpec,
+        getApiInstanceById,
         getApiInstance,
         getPalletVersions,
 

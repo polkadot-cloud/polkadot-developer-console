@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useChainFilter } from 'contexts/ChainFilter';
 import { ChainInputWrapper } from '../Wrappers';
-import { ButtonSubmit } from 'library/Buttons/ButtonSubmit';
+import { ButtonText } from 'library/Buttons/ButtonText';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainExplorer } from 'contexts/ChainExplorer';
 
@@ -40,7 +40,7 @@ export const CustomEndpointInput = () => {
       />
 
       <div className="footer">
-        <ButtonSubmit
+        <ButtonText
           onClick={() => {
             connectChainExplorer(tabId, 'custom', customEndpoint);
           }}
@@ -51,7 +51,7 @@ export const CustomEndpointInput = () => {
             transform="shrink-1"
             className="iconRight"
           />
-        </ButtonSubmit>
+        </ButtonText>
       </div>
     </ChainInputWrapper>
   );

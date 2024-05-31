@@ -4,18 +4,20 @@
 import { ellipsisFn, planckToUnit, remToUnit } from '@w3ux/utils';
 import type { AccountProps } from './types';
 import { Polkicon } from '@w3ux/react-polkicon';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from 'contexts/Menu';
 import { AccountContextMenu } from './AccountMenu';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import BigNumber from 'bignumber.js';
-import { ButtonCopy } from 'library/Buttons/ButtonCopy';
+import { ButtonIcon } from 'library/Buttons/ButtonIcon';
 import { AccountWrapper } from './Wrappers';
+import { ButtonIconCircle } from 'library/Buttons/ButtonIconCircle';
+import { faBars, faPaperPlane } from '@fortawesome/pro-solid-svg-icons';
+import { useOverlay } from 'library/Overlay/Provider';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const Account = ({
-  apiInstanceId,
+  instanceId,
   account,
   chain,
   chainId,
@@ -23,14 +25,20 @@ export const Account = ({
 }: AccountProps) => {
   const { tab } = useActiveTab();
   const { openMenu } = useMenu();
+  const { openModal } = useOverlay().modal;
   const { getBalance, getLocks } = useAccounts();
+  const { getApiInstanceById } = useChainSpaceEnv();
 
   const { name, address } = account;
   const unit = chain.unit;
   const units = chain.units;
+  const ss58Prefix = chain.ss58;
 
-  const balance = getBalance(apiInstanceId, address);
-  const { maxLock } = getLocks(apiInstanceId, address);
+  // Get the api instance for the the instance id.
+  const apiInstance = getApiInstanceById(instanceId)?.api;
+
+  const balance = getBalance(instanceId, address);
+  const { maxLock } = getLocks(instanceId, address);
 
   // Calculate a forced amount of free balance that needs to be reserved to keep the account alive.
   // Deducts `locks` from free balance reserve needed.
@@ -55,16 +63,41 @@ export const Account = ({
           {/* NOTE: Currently hiding menu on custom endpoint connections as there is no guarantee Subscan will have the connected chain supported. Once menu contains more links, this check can happen inside the menu. */}
           {chainId && tab?.taskData?.connectFrom !== 'customEndpoint' && (
             <div className="menu">
-              <button
+              <ButtonIconCircle
+                id={`account_transfer_${address}`}
+                icon={faPaperPlane}
+                transform="shrink-4"
+                tooltipText="Transfer Funds"
+                onClick={() => {
+                  if (apiInstance) {
+                    openModal({
+                      key: 'Transfer',
+                      options: {
+                        address,
+                        instanceId,
+                        chainId,
+                        unit,
+                        units,
+                        api: apiInstance,
+                        ss58Prefix,
+                        existentialDeposit,
+                      },
+                    });
+                  }
+                }}
+              />
+              <ButtonIconCircle
+                id={`account_menu_${address}`}
+                icon={faBars}
+                transform="shrink-5"
+                tooltipText="More Options"
                 onClick={(ev) => {
                   openMenu(
                     ev,
                     <AccountContextMenu account={account} chainId={chainId} />
                   );
                 }}
-              >
-                <FontAwesomeIcon icon={faBars} transform="shrink-6" />
-              </button>
+              />
             </div>
           )}
           <div className="name">
@@ -73,11 +106,13 @@ export const Account = ({
           <div className="address">
             <h5>
               {ellipsisFn(address, 7)}
-              <ButtonCopy
-                copyText={address}
+              <ButtonIcon
                 tooltipText="Copied!"
                 id={`account_copy_${address}`}
                 transform="shrink-4"
+                onClick={() => {
+                  navigator.clipboard.writeText(address);
+                }}
               />
             </h5>
           </div>

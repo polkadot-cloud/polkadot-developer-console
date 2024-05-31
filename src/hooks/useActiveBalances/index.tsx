@@ -22,12 +22,12 @@ export const useActiveBalances = (
   instances: ActiveBalancesProps
 ): ActiveBalancesInterface => {
   // Get api instance ids from instances, if any.
-  const apiInstanceIds = Object.keys(instances) || [];
+  const instanceIds = Object.keys(instances) || [];
 
   // The initial state of active account balances is a map between api instance id and balance data,
   // which is initially empty.
   const initialBalances: ActiveBalances = {};
-  apiInstanceIds.forEach((instanceId) => {
+  instanceIds.forEach((instanceId) => {
     initialBalances[instanceId] = {};
   });
 
@@ -69,6 +69,20 @@ export const useActiveBalances = (
     return defaultBalance;
   };
 
+  // Gets an account's nonce.
+  const getNonce = (
+    instanceId: ApiInstanceId | undefined,
+    address: MaybeAddress
+  ) => {
+    if (address && instanceId !== undefined) {
+      const maybeNonce = activeBalances[instanceId]?.[address]?.nonce;
+      if (maybeNonce) {
+        return maybeNonce;
+      }
+    }
+    return 0;
+  };
+
   // Gets the largest lock balance, dictating the total amount of unavailable funds from locks.
   const getMaxLock = (locks: BalanceLock[]): BigNumber =>
     locks.reduce(
@@ -108,11 +122,25 @@ export const useActiveBalances = (
     return new BigNumber(0);
   };
 
+  // Gets whether an account has enough funds to pay for tx fees.
+  const getNotEnoughFunds = (
+    instanceId: ApiInstanceId | undefined,
+    address: string,
+    txFees: BigNumber,
+    existentialDeposit: BigNumber
+  ) => {
+    const { free, frozen } = getBalance(instanceId, address);
+    const edReserved = getEdReserved(instanceId, address, existentialDeposit);
+    const balanceforTxFees = free.minus(edReserved).minus(frozen);
+
+    return balanceforTxFees.minus(txFees).isLessThan(0);
+  };
+
   // Callback for new account balance events.
   const newAccountBalanceCallback = (e: Event) => {
     if (isCustomEvent(e)) {
       const { instanceId, address, balance } = e.detail;
-      if (!apiInstanceIds.includes(instanceId)) {
+      if (!instanceIds.includes(instanceId)) {
         return;
       }
 
@@ -171,12 +199,12 @@ export const useActiveBalances = (
   // Sync active balances on either account changes, api status changes or api instance changes.
   // `api` instance is required in subscription classes so api must be `ready` before syncing.
   useEffect(() => {
-    for (const instanceId of apiInstanceIds) {
+    for (const instanceId of instanceIds) {
       handleSyncAccounts(instanceId);
     }
   }, [
     JSON.stringify(apiStatuses),
-    JSON.stringify(apiInstanceIds),
+    JSON.stringify(instanceIds),
     JSON.stringify(uniqueAccounts),
   ]);
 
@@ -191,8 +219,10 @@ export const useActiveBalances = (
 
   return {
     activeBalances,
-    getLocks,
     getBalance,
+    getNonce,
+    getLocks,
     getEdReserved,
+    getNotEnoughFunds,
   };
 };

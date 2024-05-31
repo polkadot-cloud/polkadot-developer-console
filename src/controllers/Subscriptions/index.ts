@@ -11,7 +11,7 @@ export class SubscriptionsController {
   // Class members.
   // ------------------------------------------------------
 
-  // Subscription objects, keyed by an apiInstanceId.
+  // Subscription objects, keyed by an instanceId.
   static #subs: Partial<Record<ApiInstanceId, ChainSubscriptions>> = {};
 
   // ------------------------------------------------------

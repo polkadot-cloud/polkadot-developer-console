@@ -72,15 +72,7 @@ export const AccountWrapper = styled.section`
           z-index: 2;
 
           > button {
-            color: var(--text-color-tertiary);
-            background: var(--button-secondary-background);
-            width: 1.4rem;
-            height: 1.4rem;
-            border-radius: 2rem;
-
-            &:hover {
-              color: var(--text-color-primary);
-            }
+            margin-left: 0.45rem;
           }
         }
 
@@ -104,7 +96,7 @@ export const AccountWrapper = styled.section`
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
-          padding-right: 2.25rem;
+          padding-right: 3.9rem;
         }
 
         > .name > h3 {
