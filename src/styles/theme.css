@@ -8,7 +8,7 @@ SPDX-License-Identifier: GPL-3.0-only */
   --background-tooltip: #222;
   --background-floating-card: rgb(255 255 255 / 90%);
   --background-modal: #f4f2f2;
-  --background-modal-footer: #ececec;
+  --background-modal-footer: #eee;
   --background-canvas-card: rgb(245 245 245 / 90%);
   --background-canvas-card-secondary: rgb(255 255 255 / 35%);
 
