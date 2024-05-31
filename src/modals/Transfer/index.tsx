@@ -7,6 +7,7 @@ import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useTxMeta } from 'contexts/TxMeta';
 import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import { AccountId32 } from 'library/Inputs/AccountId32';
+import { Label } from 'library/Inputs/Label';
 import { Textbox } from 'library/Inputs/Textbox';
 import { Title } from 'library/Modal/Title';
 import { useOverlay } from 'library/Overlay/Provider';
@@ -104,7 +105,7 @@ export const Transfer = () => {
         style={{ minHeight: MIN_HEIGHT }}
       >
         <div>
-          <h4 style={{ marginBottom: '0.22rem' }}>From</h4>
+          <Label value="From" />
           <AccountId32
             defaultValue={fromAddress}
             accounts={accounts}
@@ -112,18 +113,14 @@ export const Transfer = () => {
             heightRef={heightRef}
           />
 
-          <h4 style={{ marginBottom: '0.22rem', marginTop: '1.25rem' }}>
-            Recipient
-          </h4>
+          <Label value="Recipient" marginTop />
           <AccountId32
             accounts={accounts}
             onChange={(val) => setToAddress(val)}
             heightRef={heightRef}
           />
 
-          <h4 style={{ marginBottom: '0.22rem', marginTop: '1.25rem' }}>
-            Amount
-          </h4>
+          <Label value="Amount" marginTop />
           <Textbox
             defaultValue={amount}
             onChange={(val) => setAmount(val)}
