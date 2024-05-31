@@ -17,7 +17,6 @@ import { useExtrinsicData } from 'library/SubmitTx/ExtrinsicDataProvider';
 export const Vault = ({
   onSubmit,
   submitting,
-  valid,
   submitText,
   buttons,
   submitAddress,
@@ -26,7 +25,8 @@ export const Vault = ({
   const { accountHasSigner } = useImportedAccounts();
   const { txFeeValid, getTxSignature } = useTxMeta();
   const { openPromptWith, status: promptStatus } = usePrompt();
-  const { instanceId, chainId, ss58Prefix, units, unit } = useExtrinsicData();
+  const { instanceId, chainId, ss58Prefix, units, unit, valid } =
+    useExtrinsicData();
 
   // The state under which submission is disabled.
   const disabled =

@@ -27,8 +27,9 @@ export const Account = ({
   const { openMenu } = useMenu();
   const { openModal } = useOverlay().modal;
   const { getBalance, getLocks } = useAccounts();
-  const { getApiInstanceById } = useChainSpaceEnv();
+  const { getApiInstanceById, getChainSpec } = useChainSpaceEnv();
 
+  const chainSpec = getChainSpec(instanceId);
   const { name, address } = account;
   const unit = chain.unit;
   const units = chain.units;
@@ -81,6 +82,8 @@ export const Account = ({
                         api: apiInstance,
                         ss58Prefix,
                         existentialDeposit,
+                        transactionVersion:
+                          chainSpec?.version.transactionVersion,
                       },
                     });
                   }

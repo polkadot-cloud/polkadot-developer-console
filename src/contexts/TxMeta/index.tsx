@@ -82,6 +82,10 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
   const getTxPayload = (instanceId: ApiInstanceId) =>
     txPayloadsRef.current[instanceId]?.payload;
 
+  // Get a uid for a given tx payload.
+  const getTxPayloadUid = (instanceId: ApiInstanceId) =>
+    txPayloadsRef.current[instanceId]?.uid;
+
   // Increment a payload uid given an api instance.
   const incrementTxPayloadUid = (instanceId: ApiInstanceId) =>
     (txPayloadsRef.current[instanceId]?.uid || 0) + 1;
@@ -207,6 +211,7 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
 
         // Manage payloads.
         getTxPayload,
+        getTxPayloadUid,
         setTxPayload,
         removeTxPayload,
         incrementTxPayloadUid,

@@ -16,7 +16,6 @@ import { useExtrinsicData } from './ExtrinsicDataProvider';
 export const Default = ({
   onSubmit,
   submitting,
-  valid,
   submitText,
   buttons,
   submitAddress,
@@ -24,7 +23,8 @@ export const Default = ({
 }: SubmitProps & { buttons?: ReactNode[] }) => {
   const { txFeeValid } = useTxMeta();
   const { accountHasSigner } = useImportedAccounts();
-  const { instanceId, chainId, ss58Prefix, units, unit } = useExtrinsicData();
+  const { instanceId, chainId, ss58Prefix, units, unit, valid } =
+    useExtrinsicData();
 
   const disabled =
     submitting ||

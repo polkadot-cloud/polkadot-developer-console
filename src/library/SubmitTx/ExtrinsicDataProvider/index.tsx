@@ -17,15 +17,19 @@ export const ExtrinsicDataProvider = ({
   ss58Prefix,
   units,
   unit,
+  valid,
+  transactionVersion,
   children,
 }: AnyJson) => (
   <ExtrinsicDataContext.Provider
     value={{
       instanceId,
+      transactionVersion,
       chainId,
       ss58Prefix,
       units,
       unit,
+      valid,
     }}
   >
     {children}

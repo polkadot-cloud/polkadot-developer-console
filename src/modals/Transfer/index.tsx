@@ -27,6 +27,7 @@ export const Transfer = () => {
     chainId,
     ss58Prefix,
     existentialDeposit,
+    transactionVersion,
   } = useOverlay().modal.config.options;
   const { getNotEnoughFunds } = useAccounts();
   const { setModalStatus, setModalResize } = useOverlay().modal;
@@ -144,6 +145,7 @@ export const Transfer = () => {
         units={units}
         unit={unit}
         existentialDeposit={existentialDeposit}
+        transactionVersion={transactionVersion}
       />
     </div>
   );

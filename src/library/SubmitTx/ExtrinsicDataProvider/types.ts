@@ -8,5 +8,7 @@ export interface ExtrinsicDataContextInterface {
   chainId: string;
   ss58Prefix: number;
   units: number;
+  transactionVersion: string;
   unit: string;
+  valid: boolean;
 }
