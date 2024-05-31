@@ -10,6 +10,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { faSquarePen } from '@fortawesome/free-solid-svg-icons';
+import { usePrompt } from 'contexts/Prompt';
+import { SignPrompt } from './SignPrompt';
 
 export const Vault = ({
   instanceId,
@@ -27,9 +29,7 @@ export const Vault = ({
 }: SubmitProps & { buttons?: ReactNode[] }) => {
   const { accountHasSigner } = useImportedAccounts();
   const { txFeeValid, getTxSignature } = useTxMeta();
-  // const { openPromptWith, status: promptStatus } = usePrompt();
-  // TODO: Implement prompt or alternative to it.
-  const promptStatus = 0;
+  const { openPromptWith, status: promptStatus } = usePrompt();
 
   // The state under which submission is disabled.
   const disabled =
@@ -50,8 +50,10 @@ export const Vault = ({
   } else {
     buttonText = promptStatus === 0 ? 'Sign' : 'Signing';
     buttonOnClick = async () => {
-      // TODO: handle open prompt.
-      // openPromptWith(<SignPrompt submitAddress={submitAddress} />, 'small');
+      openPromptWith(
+        <SignPrompt instanceId={instanceId} submitAddress={submitAddress} />,
+        'small'
+      );
     };
     buttonDisabled = disabled || promptStatus !== 0;
   }
@@ -60,7 +62,7 @@ export const Vault = ({
     <div className={`inner${appendOrEmpty(displayFor === 'card', 'col')}`}>
       <div>
         <EstimatedTxFee instanceId={instanceId} units={units} unit={unit} />
-        {valid ? <p>Ready to Submit Transaction</p> : <p>...</p>}
+        {valid ? <p>Ready to Submit Transaction.</p> : <p>Form Incomplete.</p>}
       </div>
       <div>
         {buttons}

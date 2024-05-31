@@ -38,22 +38,24 @@ export const QRViewerWrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 2rem 1rem;
+  padding: 1.25rem 0.5rem 0 0.5rem;
 
   .title {
     color: var(--accent-color-primary);
-    font-family: 'Unbounded';
-    margin-bottom: 1rem;
+    font-family: InterBold, sans-serif;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   .progress {
-    margin-bottom: 1rem;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     background: var(--background-menu);
-    padding: 0.45rem 1.5rem 0.75rem 1.5rem;
+    padding: 0.4rem 1.5rem 0rem 1rem;
 
     span {
       opacity: 0.4;
+      font-size: 0.85rem;
+
       &.active {
         opacity: 1;
       }
@@ -64,31 +66,47 @@ export const QRViewerWrapper = styled.div`
   }
 
   .viewer {
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     overflow: hidden;
+    height: 300px;
+
+    &.scan {
+      width: 325px;
+    }
 
     &.withBorder {
-      padding: 0.95rem;
       border: 3.75px solid var(--accent-color-pending);
     }
   }
   .foot {
+    border-top: 1px solid var(--border-primary-color);
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 1.75rem;
-    padding: 0 1rem;
+    margin-top: 0.5rem;
+    padding: 0.9rem 0.5rem;
     width: 100%;
 
     > div {
       display: flex;
       justify-content: center;
-      margin-top: 1rem;
       width: 100%;
+
+      > button {
+        font-size: 0.9rem;
+        margin: 0 0.7rem;
+        &:last-child {
+          font-size: 0.8rem;
+        }
+
+        > svg {
+          margin: 0 0.1rem;
+        }
+      }
     }
   }
 `;

@@ -14,16 +14,17 @@ import {
   faChevronsRight,
 } from '@fortawesome/pro-solid-svg-icons';
 import { QRViewerWrapper } from 'library/QRCode/Wrappers';
+import { usePrompt } from 'contexts/Prompt';
+import { ButtonText } from 'library/Buttons/ButtonText';
 
 export const SignPrompt = ({
   submitAddress,
   instanceId,
 }: SignerPromptProps) => {
+  const { closePrompt } = usePrompt();
   const { getTxPayload, setTxSignature } = useTxMeta();
   const payload = getTxPayload(instanceId);
   const payloadU8a = payload?.payload?.toU8a();
-  // TODO: implement prompt or an alternative.
-  // const { closePrompt } = usePrompt();
 
   // Whether user is on sign or submit stage.
   const [stage, setStage] = useState<number>(1);
@@ -54,11 +55,11 @@ export const SignPrompt = ({
         </div>
       )}
       {stage === 2 && (
-        <div className="viewer">
+        <div className="viewer scan">
           <QrScanSignature
-            size={279}
+            size={300}
             onScan={({ signature }: AnyJson) => {
-              // closePrompt();
+              closePrompt();
               setTxSignature(instanceId, signature);
             }}
           />
@@ -67,28 +68,22 @@ export const SignPrompt = ({
       <div className="foot">
         <div>
           {stage === 2 && (
-            <button onClick={() => setStage(1)}>
+            <ButtonText onClick={() => setStage(1)}>
               <FontAwesomeIcon icon={faChevronsLeft} transform="shrink-3" />
-              Back to Scan{' '}
-            </button>
+              Back to Scan
+            </ButtonText>
           )}
           {stage === 1 && (
-            <button
+            <ButtonText
               onClick={() => {
                 setStage(2);
               }}
             >
-              I Have Scanned{' '}
-              <FontAwesomeIcon icon={faChevronsRight} transform="shrink-3" />
-            </button>
+              I Have Scanned
+              <FontAwesomeIcon icon={faChevronsRight} transform="shrink-5" />
+            </ButtonText>
           )}
-          <button
-            onClick={() => {
-              /*closePrompt()*/
-            }}
-          >
-            cancel
-          </button>
+          <button onClick={() => closePrompt()}>Cancel</button>
         </div>
       </div>
     </QRViewerWrapper>
