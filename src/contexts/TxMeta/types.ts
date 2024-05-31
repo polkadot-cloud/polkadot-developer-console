@@ -32,6 +32,8 @@ export interface TxMetaContextInterface {
   getPendingNonces: (instanceId: ApiInstanceId) => string[];
   addPendingNonce: (instanceId: ApiInstanceId, nonce: string) => void;
   removePendingNonce: (instanceId: ApiInstanceId, nonce: string) => void;
+
+  destroyInstanceTxMeta: (instanceId: ApiInstanceId) => void;
 }
 
 export interface TxPayload {

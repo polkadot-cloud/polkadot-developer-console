@@ -182,6 +182,14 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
     setStateWithRef(updated, setPendingNonces, pendingNoncesRef);
   };
 
+  // Destroy tx meta for an api instance.
+  const destroyInstanceTxMeta = (instanceId: ApiInstanceId) => {
+    removeSender(instanceId);
+    removeTxFee(instanceId);
+    removeTxPayload(instanceId);
+    removeTxSignature(instanceId);
+  };
+
   return (
     <TxMetaContext.Provider
       value={{
@@ -212,6 +220,9 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
         getPendingNonces,
         addPendingNonce,
         removePendingNonce,
+
+        // Destroy tx meta for an api instance.
+        destroyInstanceTxMeta,
       }}
     >
       {children}

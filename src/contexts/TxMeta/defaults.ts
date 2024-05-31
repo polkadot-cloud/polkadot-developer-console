@@ -28,4 +28,6 @@ export const defaultTxMeta: TxMetaContextInterface = {
   getPendingNonces: (instanceId) => [],
   addPendingNonce: (instanceId, nonce) => {},
   removePendingNonce: (instanceId, nonce) => {},
+
+  destroyInstanceTxMeta: (instanceId) => {},
 };

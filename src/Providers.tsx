@@ -60,15 +60,15 @@ export const Providers = () => {
     VaultAccountsProvider,
     ImportedAccountsProvider,
 
+    // Transaction providers.
+    TxMetaProvider,
+
     // Chain space environment and api indexer.
     ApiIndexerProvider,
     ChainSpaceEnvProvider,
 
     // Account formatting and balances provider.
     AccountsProvider,
-
-    // Transaction providers.
-    TxMetaProvider,
 
     // Task: `chainExplorer` related providers.
     ChainFilterProvider,
