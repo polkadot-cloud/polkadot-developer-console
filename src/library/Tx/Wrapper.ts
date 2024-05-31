@@ -68,13 +68,13 @@ export const Wrapper = styled.div`
               color: var(--text-color-secondary);
               display: flex;
               align-items: center;
-              font-size: 0%.8;
-              margin: 0.1rem 0;
+              font-size: 0.75rem;
+              margin: 0;
               padding-left: 0.25rem;
 
               &.prompt {
                 color: var(--accent-color-primary);
-                font-size: 0.85rem;
+                font-size: 0.75rem;
                 align-items: flex-start;
 
                 .icon {

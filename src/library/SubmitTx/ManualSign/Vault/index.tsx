@@ -7,8 +7,9 @@ import { EstimatedTxFee } from 'library/Tx/EstimatedTxFee';
 import type { SubmitProps } from '../../types';
 import { appendOrEmpty } from '@w3ux/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquarePen } from '@fortawesome/pro-duotone-svg-icons';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
+import { ButtonText } from 'library/Buttons/ButtonText';
+import { faSquarePen } from '@fortawesome/free-solid-svg-icons';
 
 export const Vault = ({
   instanceId,
@@ -60,20 +61,20 @@ export const Vault = ({
     <div className={`inner${appendOrEmpty(displayFor === 'card', 'col')}`}>
       <div>
         <EstimatedTxFee instanceId={instanceId} units={units} unit={unit} />
-        {valid ? <p>Submit Transaction</p> : <p>...</p>}
+        {valid ? <p>Ready to Submit Transaction</p> : <p>...</p>}
       </div>
       <div>
         {buttons}
         {displayFor !== 'card' ? (
-          <button disabled={buttonDisabled} onClick={() => buttonOnClick()}>
-            <FontAwesomeIcon icon={faSquarePen} />
-            {buttonText}
-          </button>
+          <ButtonText onClick={() => buttonOnClick()} disabled={buttonDisabled}>
+            {submitText || ''}
+            <FontAwesomeIcon icon={faSquarePen} className="iconRight" />
+          </ButtonText>
         ) : (
-          <button disabled={disabled} onClick={buttonOnClick}>
-            <FontAwesomeIcon icon={faSquarePen} />
+          <ButtonText onClick={() => buttonOnClick()} disabled={disabled}>
             {buttonText}
-          </button>
+            <FontAwesomeIcon icon={faSquarePen} className="iconRight" />
+          </ButtonText>
         )}
       </div>
     </div>
