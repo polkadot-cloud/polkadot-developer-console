@@ -23,6 +23,7 @@ export const AccountId32 = ({
   onMount,
   onRender,
   onChange,
+  heightRef,
 }: AccountId32Props) => {
   // The input arg type of this component.
   const INPUT_TYPE = 'AccountId32';
@@ -141,6 +142,7 @@ export const AccountId32 = ({
         open={dropdownOpen}
         onOutsideClick={() => setDropdownOpen(false)}
         outsideAlerterIgnore={['ignore-outside-alerter-search-input']}
+        heightRef={heightRef}
       >
         {filteredAccounts.map(({ name, address }, i) => (
           <SelectItemWrapper

@@ -9,6 +9,7 @@ import { SelectDropdownWrapper } from 'library/Inputs/Wrappers';
 export const SelectDropdown = ({
   open,
   children,
+  heightRef,
   className,
   onOutsideClick,
   outsideAlerterIgnore,
@@ -24,11 +25,23 @@ export const SelectDropdown = ({
 
   // Sync dropdown height to fit inside window.
   const syncWindowHeight = () => {
-    const windowHeight = window.innerHeight;
     const refY = ref.current?.getBoundingClientRect().top || 0;
 
+    // If a height ref has been provided, calculate max height based on its container.
+    let initialMaxHeight;
+
+    if (heightRef?.current) {
+      const heightRefBottom =
+        heightRef.current?.getBoundingClientRect().bottom || 0;
+
+      initialMaxHeight = Math.max(heightRefBottom - refY, 0);
+    }
+
     // Calculate max height for refY.
-    let maxHeight = Math.max(windowHeight - refY - DropdownPadding, 0);
+    let maxHeight = Math.max(
+      (initialMaxHeight || window.innerHeight - refY) - DropdownPadding,
+      0
+    );
 
     // Hard cap on max height.
     maxHeight = Math.min(maxHeight, HardMaxHeight);

@@ -3,7 +3,9 @@
 
 import type { ImportedAccount } from '@w3ux/react-connect-kit/types';
 import type { InputCallbackProps } from '../types';
+import type { RefObject } from 'react';
 
 export type AccountId32Props = InputCallbackProps & {
   accounts: ImportedAccount[];
+  heightRef?: RefObject<HTMLDivElement>;
 };
