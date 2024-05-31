@@ -100,7 +100,6 @@ export const Wrapper = styled.div`
         }
 
         &.msg {
-          border-top: 1px solid var(--border-primary-color);
           padding: 0.5rem 0;
           margin-top: 0.25rem;
         }
