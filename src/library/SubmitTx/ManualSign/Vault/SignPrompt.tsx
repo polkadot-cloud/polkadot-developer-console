@@ -24,7 +24,7 @@ export const SignPrompt = ({
   const { closePrompt } = usePrompt();
   const { getTxPayload, setTxSignature } = useTxMeta();
   const payload = getTxPayload(instanceId);
-  const payloadU8a = payload?.payload?.toU8a();
+  const payloadU8a = payload?.toU8a();
 
   // Whether user is on sign or submit stage.
   const [stage, setStage] = useState<number>(1);
@@ -48,7 +48,7 @@ export const SignPrompt = ({
           <QrDisplayPayload
             address={submitAddress || ''}
             cmd={2}
-            genesisHash={payload?.payload?.genesisHash}
+            genesisHash={payload?.genesisHash}
             payload={payloadU8a}
             style={{ width: '100%', maxWidth: 250 }}
           />

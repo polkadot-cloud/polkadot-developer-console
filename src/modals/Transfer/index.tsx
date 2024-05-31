@@ -32,20 +32,22 @@ export const Transfer = () => {
   const { setModalStatus, setModalResize } = useOverlay().modal;
   const { getAccounts: getImportedAccounts } = useImportedAccounts();
 
+  // Get all imported accounts to populate account dropdowns and default values.
+  const accounts = getImportedAccounts(chainId, ss58Prefix);
+
   // Store the `from` address to transfer funds from.
   const [fromAddress, setFromAddress] = useState<string>(address);
 
   // Store the `to` address to transfer funds to.
-  const [toAddress, setToAddress] = useState<string | null>(null);
+  const [toAddress, setToAddress] = useState<string | null>(
+    accounts?.[0]?.address || null
+  );
 
   // Store the amount to transfer.
   const [amount, setAmount] = useState<string>('0');
 
   // A ref for the modal content container that is used for determining select dropdown height.
   const heightRef = useRef<HTMLDivElement>(null);
-
-  // Get all imported accounts to populate account dropdowns.
-  const accounts = getImportedAccounts(chainId, ss58Prefix);
 
   // Determine transaction fee and validity of submitting.
   const txFee = getTxFee(instanceId);
@@ -56,7 +58,10 @@ export const Transfer = () => {
     existentialDeposit
   );
   const valid =
-    notEnoughFunds === false && new BigNumber(amount).isGreaterThan(0);
+    notEnoughFunds === false &&
+    new BigNumber(amount).isGreaterThan(0) &&
+    !!fromAddress &&
+    !!toAddress;
 
   // Format the transaction to submit, or return `null` if invalid.
   const getTx = () => {
