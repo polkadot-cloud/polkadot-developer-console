@@ -261,7 +261,6 @@ export const useSubmitExtrinsic = ({
   };
 
   // Refresh state upon `tx` updates.
-  // TODO: Test on tab switching.
   useEffect(() => {
     // Update txRef to latest tx.
     txRef.current = tx;
