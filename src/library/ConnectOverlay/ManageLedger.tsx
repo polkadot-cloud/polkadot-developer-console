@@ -2,13 +2,16 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useLedgerAccounts } from '@w3ux/react-connect-kit';
-import type { LedgerAccount } from '@w3ux/react-connect-kit/types';
+import type {
+  LedgerAccount,
+  LedgerAddress,
+} from '@w3ux/react-connect-kit/types';
 import { Polkicon } from '@w3ux/react-polkicon';
-import { remToUnit } from '@w3ux/utils';
+import { ellipsisFn, remToUnit } from '@w3ux/utils';
 import { NetworkDirectory } from 'config/networks';
 import type { DirectoryId } from 'config/networks/types';
 import { HardwareAddress } from 'library/HardwareAddress';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChainSearchInput } from './ChainSearchInput';
 import type { ManageHardwareProps } from './types';
@@ -17,6 +20,12 @@ import { ImportButtonWrapper, SubHeadingWrapper } from './Wrappers';
 import { faUsbDrive } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LedgerApps } from 'contexts/LedgerHardware/defaults';
+import { useLedgerHardware } from 'contexts/LedgerHardware';
+import type { LedgerResponse } from 'contexts/LedgerHardware/types';
+import {
+  getLedgerApp,
+  getLocalLedgerAddresses,
+} from 'contexts/LedgerHardware/Utils';
 
 export const ManageLedger = ({
   getMotionProps,
@@ -28,6 +37,14 @@ export const ManageLedger = ({
     ledgerAccountExists,
     getLedgerAccounts,
   } = useLedgerAccounts();
+  const {
+    transportResponse,
+    resetStatusCode,
+    setStatusCode,
+    handleUnmount,
+    handleGetAddress,
+    getIsExecuting,
+  } = useLedgerHardware();
 
   // The directory id of the address list.
   const [directoryId, setDirectoryId] = useState<DirectoryId>('polkadot');
@@ -36,8 +53,7 @@ export const ManageLedger = ({
   // shown instead.
   const [searchActive, setSearchActive] = useState<boolean>(false);
 
-  // Whether the import account button is active.
-  const [importActive, setImportActive] = useState<boolean>(false);
+  const { appName } = getLedgerApp(directoryId);
 
   // Get the currently actve chain name.
   const activeChain = NetworkDirectory[directoryId as DirectoryId];
@@ -47,6 +63,9 @@ export const ManageLedger = ({
 
   // Get the supported chains for ledger import.
   const supportedChains = LedgerApps.map((a) => a.network);
+
+  // Get whether the ledger device is currently executing a task.
+  const isExecuting = getIsExecuting();
 
   // Search input focus handler.
   const onSearchFocused = () => {
@@ -59,7 +78,7 @@ export const ManageLedger = ({
   };
 
   // Whether to show address entries. Requires both searching and importing to be inactive.
-  const showAddresses = !searchActive && !importActive;
+  const showAddresses = !searchActive;
 
   // Handle renaming a ledger address.
   const handleRename = (address: string, newName: string) => {
@@ -73,18 +92,79 @@ export const ManageLedger = ({
     }
   };
 
+  // Gets the next non-imported ledger address index.
+  const getNextAddressIndex = () => {
+    if (!ledgerAccounts.length) {
+      return 0;
+    }
+    return ledgerAccounts[ledgerAccounts.length - 1].index + 1;
+  };
+
+  // Ledger address getter.
+  const onGetAddress = async () => {
+    await handleGetAddress(appName, getNextAddressIndex());
+  };
+
+  // Handle new Ledger status report.
+  const handleLedgerStatusResponse = (response: LedgerResponse) => {
+    if (!response) {
+      return;
+    }
+
+    const { ack, statusCode, body, options } = response;
+    setStatusCode(ack, statusCode);
+
+    if (statusCode === 'ReceivedAddress') {
+      const newAddress = body.map(({ pubKey, address }: LedgerAddress) => ({
+        index: options.accountIndex,
+        pubKey,
+        address,
+        name: ellipsisFn(address),
+        network: directoryId,
+      }));
+
+      // update the full list of local ledger addresses with new entry.
+      const newAddresses = getLocalLedgerAddresses()
+        .filter((a) => {
+          if (a.address !== newAddress[0].address) {
+            return true;
+          }
+          if (a.network !== directoryId) {
+            return true;
+          }
+          return false;
+        })
+        .concat(newAddress);
+      localStorage.setItem('ledger_addresses', JSON.stringify(newAddresses));
+
+      resetStatusCode();
+    }
+  };
+
+  // Listen for new Ledger status reports.
+  useEffectIgnoreInitial(() => {
+    handleLedgerStatusResponse(transportResponse);
+  }, [transportResponse]);
+
   // Resets UI when the selected connect item changes from `ledger`, Cancelling import and
   // search if active.
   useEffectIgnoreInitial(() => {
     if (selectedConnectItem !== 'ledger') {
       setSearchActive(false);
-      setImportActive(false);
     }
   }, [selectedConnectItem]);
 
+  // Tidy up context state when this component is no longer mounted.
+  useEffect(
+    () => () => {
+      handleUnmount();
+    },
+    []
+  );
+
   return (
     <>
-      <motion.div {...getMotionProps('address_config', !importActive)}>
+      <motion.div {...getMotionProps('address_config', true)}>
         <ChainSearchInput
           onSearchFocused={onSearchFocused}
           onSearchBlurred={onSearchBlurred}
@@ -98,21 +178,22 @@ export const ManageLedger = ({
       <motion.div {...getMotionProps('address_config', !searchActive)}>
         <SubHeadingWrapper>
           <h5>
-            {!importActive
-              ? `${
-                  ledgerAccounts.length || 'No'
-                } ${ledgerAccounts.length === 1 ? 'Account' : 'Accounts'}`
-              : 'New Account'}
+            {ledgerAccounts.length || 'No'}
+            {ledgerAccounts.length === 1 ? 'Account' : 'Accounts'}
           </h5>
           <ImportButtonWrapper>
-            <button onClick={() => setImportActive(!importActive)}>
-              {!importActive && (
-                <FontAwesomeIcon
-                  icon={faUsbDrive}
-                  style={{ marginRight: '0.4rem' }}
-                />
-              )}
-              {importActive ? 'Cancel Import' : 'Import Next Account'}
+            <button
+              onClick={async () => {
+                await onGetAddress();
+              }}
+              disabled={isExecuting}
+            >
+              <FontAwesomeIcon
+                icon={faUsbDrive}
+                style={{ marginRight: '0.4rem' }}
+              />
+
+              {isExecuting ? 'Cancel Import' : 'Import Next Account'}
             </button>
           </ImportButtonWrapper>
         </SubHeadingWrapper>
