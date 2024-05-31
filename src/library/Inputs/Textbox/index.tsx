@@ -22,7 +22,9 @@ export const Textbox = ({
   }
 
   // The current value of the input.
-  const [value, setValue] = useState<string>(defaultValue || '');
+  const [value, setValue] = useState<string>(
+    defaultValue === undefined ? '' : defaultValue
+  );
 
   // Handle textbox value change.
   const handleTextboxChange = (val: string) => {
@@ -46,7 +48,7 @@ export const Textbox = ({
 
   return (
     <>
-      <h4>{displayLabel}</h4>
+      {!!label && <h4>{displayLabel}</h4>}
       <TextInputWrapper className="input">
         <input
           type="text"
