@@ -36,6 +36,9 @@ export const Transfer = () => {
   // Store the `to` address to transfer funds to.
   const [toAddress, setToAddress] = useState<string | null>(null);
 
+  // Store the amount to transfer.
+  const [amount, setAmount] = useState<string>('0');
+
   // A ref for the modal content container that is used for determining select dropdown height.
   const heightRef = useRef<HTMLDivElement>(null);
 
@@ -65,7 +68,7 @@ export const Transfer = () => {
         {
           id: toAddress,
         },
-        unitToPlanck('1', units).toString()
+        unitToPlanck(amount, units).toString()
       );
       return tx;
     } catch (e) {
@@ -108,6 +111,7 @@ export const Transfer = () => {
             onChange={(val) => setFromAddress(val)}
             heightRef={heightRef}
           />
+
           <h4 style={{ marginBottom: '0.22rem', marginTop: '1.25rem' }}>
             Recipient
           </h4>
@@ -116,15 +120,14 @@ export const Transfer = () => {
             onChange={(val) => setToAddress(val)}
             heightRef={heightRef}
           />
+
           <h4 style={{ marginBottom: '0.22rem', marginTop: '1.25rem' }}>
             Amount
           </h4>
-
           <Textbox
-            defaultValue="0"
-            onChange={(val) => {
-              console.log(val);
-            }}
+            defaultValue={amount}
+            onChange={(val) => setAmount(val)}
+            numeric
           />
         </div>
       </ModalPadding>
