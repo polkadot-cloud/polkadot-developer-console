@@ -10,14 +10,13 @@ import { faCircleRight } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useInput } from '../../Inputs';
 import { InputFormProvider, useInputForm } from './provider';
-import { useChainUi } from 'contexts/ChainUi';
-import { useActiveTab } from 'contexts/ActiveTab';
 import type { InputFormInnerProps } from './types';
+import { getDeepestKeys } from './Utils';
 
 export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
   const { readInput } = useInput();
-  const { tabId } = useActiveTab();
-  const { getInputArgs } = useChainUi();
+  // const { tabId } = useActiveTab();
+  // const { getInputArgs } = useChainUi();
   const { namespace, inputKeysRef } = useInputForm();
 
   // Reset input keys accumulator on every render.
@@ -57,9 +56,37 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
       <section className="footer">
         <ButtonText
           onClick={() => {
-            /* TODO: Submit storage query or extrinsic. */
-            console.log(inputKeysRef.current);
-            console.log(getInputArgs(tabId, namespace));
+            /* TODO: Submit `storage` or `call` query.  */
+            if (namespace === 'storage') {
+              // Submit storage query.
+
+              // Get input keys.
+              // const inputKeys = inputKeysRef.current;
+              const inputKeys = {
+                '1_1': 'Select',
+                '1_0': 'Composite',
+                '1': 'Select',
+                '1_1_0': 'Composite',
+                '1_0_0': 'Textbox',
+                '1_0_1': 'Select',
+                '1_1_0_1': 'Select',
+                '1_1_0_0': 'Textbox',
+              };
+
+              // No need to order keys.
+              // const sortedInputKeys = Object.fromEntries(
+              //   Object.entries(inputKeys).sort(
+              //     ([a], [b]) => parseInt(a) - parseInt(b)
+              //   )
+              // );
+
+              // Gets the deepest keys of inputKeys object. There could be more than 1 key with the longest length.
+              const deepestKeys = getDeepestKeys(inputKeys);
+
+              console.log(deepestKeys);
+            }
+
+            // console.log(getInputArgs(tabId, namespace));
           }}
         >
           Submit
