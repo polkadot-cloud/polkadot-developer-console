@@ -55,11 +55,14 @@ export const getParentKeyValues = (
       // Get the current value of this parent key if it exists.
       const currentValue = acc[parentKey] || [];
 
+      // The user inputted value for this key.
+      const argValue = argValues[key];
+
+      // Format current value based on its form input.
+      const formattedValue = formatArg(type, key, argValue, argValues);
+
       // Accumulate current value to the parent key.
-      acc[parentKey] = currentValue.concat({
-        type,
-        val: argValues[key],
-      });
+      acc[parentKey] = currentValue.concat(formattedValue);
 
       return acc;
     },
@@ -102,3 +105,48 @@ export const updateInputsAndRemoveChildren = (
 
   return inputKeys;
 };
+
+// Format an arg value.
+export const formatArg = (
+  type: string,
+  key: string,
+  value: string,
+  argValues: AnyJson
+) => {
+  console.log(type);
+
+  switch (type) {
+    case 'AccountId32':
+      return formatAccountId32(value);
+    case 'Hash':
+      return formatHash(value);
+    case 'Bytes':
+      return formatBytes(value);
+    case 'Textbox':
+      return formatText(value);
+    case 'Checkbox':
+      return formatCheckbox(value === 'true');
+
+    // TODO: select (enums), composite, variant, tuple. Fall back to metadata for now.
+    default:
+      return {
+        type,
+        val: argValues[key],
+      };
+  }
+};
+
+// Format an account ID: Just return the string value.
+export const formatAccountId32 = (value: string): string => value;
+
+// Format a hash: Just return the string value.
+export const formatHash = (value: string): string => value;
+
+// Format bytes: Just return the string value.
+export const formatBytes = (value: string): string => value;
+
+// Format text: Just return the string value.
+export const formatText = (value: string): string => value;
+
+// Format checkbox: Just return the boolean value.
+export const formatCheckbox = (value: boolean): boolean => value;
