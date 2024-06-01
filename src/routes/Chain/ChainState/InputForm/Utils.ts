@@ -78,7 +78,9 @@ export const getParentKeyValues = (
       const inputType =
         parentInput === 'Select' ? [parentInput, argValues[key]] : parentInput;
 
-      acc[key] = [inputType, value];
+      // Format current value based on its form input.
+      const formattedValue = formatArg(parentInput, key, value, argValues);
+      acc[key] = [inputType, formattedValue];
       return acc;
     },
     {}
@@ -110,11 +112,9 @@ export const updateInputsAndRemoveChildren = (
 export const formatArg = (
   type: string,
   key: string,
-  value: string,
+  value: AnyJson,
   argValues: AnyJson
 ) => {
-  console.log(type);
-
   switch (type) {
     case 'AccountId32':
       return formatAccountId32(value);
@@ -125,13 +125,16 @@ export const formatArg = (
     case 'Textbox':
       return formatText(value);
     case 'Checkbox':
-      return formatCheckbox(value === 'true');
+      return formatCheckbox(value);
+    case 'Composite':
+      return formatComposite(value);
 
-    // TODO: select (enums), composite, variant, tuple. Fall back to metadata for now.
+    // TODO: select (enums), variant, sequences. Fall back to metadata for now.
     default:
       return {
         type,
         val: argValues[key],
+        child: value,
       };
   }
 };
@@ -150,3 +153,6 @@ export const formatText = (value: string): string => value;
 
 // Format checkbox: Just return the boolean value.
 export const formatCheckbox = (value: boolean): boolean => value;
+
+// Format composite: Just return the array value.
+export const formatComposite = (values: AnyJson[]): AnyJson[] => values;

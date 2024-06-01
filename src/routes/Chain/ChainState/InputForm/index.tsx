@@ -101,6 +101,7 @@ export const InputFormInner = ({
         : Object.values(inputKeys)?.[0];
 
     // TODO: Submit `storage` and `call` subscriptions based on namespace.
+    console.log('---');
     console.log(resultInput);
   };
 
