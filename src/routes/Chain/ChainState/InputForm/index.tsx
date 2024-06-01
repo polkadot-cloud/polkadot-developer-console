@@ -11,12 +11,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useInput } from '../../Inputs';
 import { InputFormProvider, useInputForm } from './provider';
 import type { InputFormInnerProps } from './types';
-import { getDeepestKeys } from './Utils';
+import { getDeepestKeys, getParentKeyValues } from './Utils';
+import { useChainUi } from 'contexts/ChainUi';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
   const { readInput } = useInput();
-  // const { tabId } = useActiveTab();
-  // const { getInputArgs } = useChainUi();
+  const { tabId } = useActiveTab();
+  const { getInputArgs } = useChainUi();
   const { namespace, inputKeysRef } = useInputForm();
 
   // Reset input keys accumulator on every render.
@@ -56,37 +58,59 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
       <section className="footer">
         <ButtonText
           onClick={() => {
-            /* TODO: Submit `storage` or `call` query.  */
+            // Submit storage query.
             if (namespace === 'storage') {
-              // Submit storage query.
+              // Get input keys for manipulation.
+              const inputKeys = { ...inputKeysRef.current } as Record<
+                string,
+                AnyJson
+              >;
+              const argValues = getInputArgs(tabId, namespace);
+              // TODO: inject actual values into input structure.
+              console.log(argValues);
 
-              // Get input keys.
-              // const inputKeys = inputKeysRef.current;
-              const inputKeys = {
-                '1_1': 'Select',
-                '1_0': 'Composite',
-                '1': 'Select',
-                '1_1_0': 'Composite',
-                '1_0_0': 'Textbox',
-                '1_0_1': 'Select',
-                '1_1_0_1': 'Select',
-                '1_1_0_0': 'Textbox',
-              };
+              // Gets the deepest keys of inputKeys object. There could be more than 1 key with the
+              // longest length.
+              let { deepestKeys, maxLength } = getDeepestKeys(inputKeys);
 
-              // No need to order keys.
-              // const sortedInputKeys = Object.fromEntries(
-              //   Object.entries(inputKeys).sort(
-              //     ([a], [b]) => parseInt(a) - parseInt(b)
-              //   )
-              // );
+              // Recursively construct input values.
+              do {
+                // Take the values of those deepest keys.
+                const deepestKeysWithValue = Object.fromEntries(
+                  deepestKeys.map((key) => [key, inputKeys[key]])
+                );
 
-              // Gets the deepest keys of inputKeys object. There could be more than 1 key with the longest length.
-              const deepestKeys = getDeepestKeys(inputKeys);
+                // Exit early if deepest key is only 1.
+                if (maxLength === 1) {
+                  break;
+                }
 
-              console.log(deepestKeys);
+                // Get parent keys of deepest keys.
+                const parentValues = getParentKeyValues(
+                  inputKeys,
+                  deepestKeysWithValue
+                );
+
+                // For each key of `parentValues` add the value to `inputKeys`.
+                Object.entries(parentValues).forEach(([key, value]) => {
+                  inputKeys[key] = value;
+                });
+
+                // Delete each `deepestKeys` key from `inputKeys`.
+                deepestKeys.forEach((key) => {
+                  delete inputKeys[key];
+                });
+
+                // Update `deepestKeys` for next iteration.
+                const newDeepestKeys = getDeepestKeys(inputKeys);
+                deepestKeys = newDeepestKeys.deepestKeys;
+                maxLength = newDeepestKeys.maxLength;
+              } while (deepestKeys.length > 1);
+
+              console.log(inputKeys);
             }
 
-            // console.log(getInputArgs(tabId, namespace));
+            // TODO: Submit `call` query.
           }}
         >
           Submit
