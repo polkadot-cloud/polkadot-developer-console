@@ -66,7 +66,6 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
                 AnyJson
               >;
               const argValues = getInputArgs(tabId, namespace);
-              console.log(argValues);
 
               // Gets the deepest keys of inputKeys object. There could be more than 1 key with the
               // longest length.

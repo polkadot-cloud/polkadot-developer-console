@@ -68,9 +68,14 @@ export const getParentKeyValues = (
 
   // Combine parent key type with their values.
   parentKeys = Object.entries(parentKeys).reduce(
-    (acc: Record<string, AnyJson[]>, [key, value]) => {
+    (acc: Record<string, AnyJson>, [key, value]) => {
       const parentInput = inputKeys[key];
-      acc[key] = [parentInput, value];
+
+      // If `Select` for possible typed enums, include the value in an array.
+      const inputType =
+        parentInput === 'Select' ? [parentInput, argValues[key]] : parentInput;
+
+      acc[key] = [inputType, value];
       return acc;
     },
     {}
