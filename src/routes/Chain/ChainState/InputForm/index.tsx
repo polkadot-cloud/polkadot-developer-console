@@ -11,7 +11,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useInput } from '../../Inputs';
 import { InputFormProvider, useInputForm } from './provider';
 import type { InputFormInnerProps } from './types';
-import { getDeepestKeys, getParentKeyValues } from './Utils';
+import {
+  getDeepestKeys,
+  getParentKeyValues,
+  updateInputsAndRemoveChildren,
+} from './Utils';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
 
@@ -61,7 +65,7 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
             // Submit storage query.
             if (namespace === 'storage') {
               // Get input keys for manipulation.
-              const inputKeys = { ...inputKeysRef.current } as Record<
+              let inputKeys = { ...inputKeysRef.current } as Record<
                 string,
                 AnyJson
               >;
@@ -94,15 +98,13 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
                   deepestKeysWithValue
                 );
 
-                // For each key of `parentValues` add the value to `inputKeys`.
-                Object.entries(parentValues).forEach(([key, value]) => {
-                  inputKeys[key] = value;
-                });
-
-                // Delete each `deepestKeys` key from `inputKeys`.
-                deepestKeys.forEach((key) => {
-                  delete inputKeys[key];
-                });
+                // For each key of `parentValues` commit the value to `inputKeys` under the same
+                // key.
+                inputKeys = updateInputsAndRemoveChildren(
+                  inputKeys,
+                  parentValues,
+                  deepestKeys
+                );
 
                 // Update `deepestKeys` for next iteration.
                 const newDeepestKeys = getDeepestKeys(inputKeys);

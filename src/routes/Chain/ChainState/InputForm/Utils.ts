@@ -83,3 +83,22 @@ export const getParentKeyValues = (
 
   return parentKeys;
 };
+
+// Update input keys with values and delete corresponding child keys.
+export const updateInputsAndRemoveChildren = (
+  inputKeys: Record<string, AnyJson>,
+  parentValues: Record<string, AnyJson>,
+  deepestKeys: string[]
+) => {
+  // For each key of `parentValues` commit the value to `inputKeys` under the same
+  // key.
+  Object.entries(parentValues).forEach(([key, value]) => {
+    inputKeys[key] = value;
+  });
+  // Delete each `deepestKeys` key from `inputKeys`.
+  deepestKeys.forEach((key) => {
+    delete inputKeys[key];
+  });
+
+  return inputKeys;
+};
