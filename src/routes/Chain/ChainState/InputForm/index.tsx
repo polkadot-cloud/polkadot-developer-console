@@ -66,7 +66,6 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
                 AnyJson
               >;
               const argValues = getInputArgs(tabId, namespace);
-              // TODO: inject actual values into input structure.
               console.log(argValues);
 
               // Gets the deepest keys of inputKeys object. There could be more than 1 key with the
@@ -82,12 +81,17 @@ export const InputFormInner = ({ inputForm }: InputFormInnerProps) => {
 
                 // Exit early if deepest key is only 1.
                 if (maxLength === 1) {
+                  inputKeys[1] = {
+                    type: inputKeys[1],
+                    val: argValues?.[1],
+                  };
                   break;
                 }
 
                 // Get parent keys of deepest keys.
                 const parentValues = getParentKeyValues(
                   inputKeys,
+                  argValues || {},
                   deepestKeysWithValue
                 );
 

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/utils/types';
+import type { InputArgs } from 'contexts/ChainUi/types';
 
 // Gets a collection of the longest keys in an inputKey field, fetching the deepest nested values in
 // an input form.
@@ -37,6 +38,7 @@ export const getDeepestKeys = (inputKeys: Record<string, string>) => {
 // Gets the value for each parent key for the provided input keys.
 export const getParentKeyValues = (
   inputKeys: Record<string, string>,
+  argValues: InputArgs,
   deepestKeys: Record<string, AnyJson>
 ) => {
   // Ensure deepest keys are ordered by key for correct passing of arguments order.
@@ -46,7 +48,7 @@ export const getParentKeyValues = (
 
   // Insert values for each respective each parent key.
   let parentKeys = Object.entries(sortedDeepestKeys).reduce(
-    (acc: Record<string, AnyJson[]>, [key, value]) => {
+    (acc: Record<string, AnyJson[]>, [key, type]) => {
       // Split key by underscore and remove the last element to get the parent key.
       const parentKey = key.split('_').slice(0, -1).join('_');
 
@@ -54,7 +56,10 @@ export const getParentKeyValues = (
       const currentValue = acc[parentKey] || [];
 
       // Accumulate current value to the parent key.
-      acc[parentKey] = currentValue.concat(value);
+      acc[parentKey] = currentValue.concat({
+        type,
+        val: argValues[key],
+      });
 
       return acc;
     },
