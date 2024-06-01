@@ -100,7 +100,6 @@ export const useSubmitExtrinsic = ({
       (requiresManualSign(fromRef.current, chainId, ss58Prefix) &&
         !getTxSignature(instanceId))
     ) {
-      console.log('returning early', getTxSignature(instanceId));
       return;
     }
 
