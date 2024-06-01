@@ -205,11 +205,7 @@ export const useInput = () => {
     const { namespace, inputKey, inputKeysRef } = inputArgConfig;
 
     // Get the current variant value, if any.
-    const currentInputArg = getInputArgsAtKey(
-      tabId,
-      namespace,
-      inputKey
-    )?.value;
+    const currentInputArg = getInputArgsAtKey(tabId, namespace, inputKey);
 
     // Fall back to the first variant if no value is set.
     const selectedVariant = ![undefined, ''].includes(currentInputArg)
@@ -326,7 +322,12 @@ export const useInput = () => {
                   }
                 }}
                 onChange={(val) => {
-                  setInputArgAtKey(tabId, namespace, inputKey, val);
+                  setInputArgAtKey(
+                    tabId,
+                    inputArgConfig.namespace,
+                    inputArgConfig.inputKey,
+                    val
+                  );
                 }}
               />
             </Section>
