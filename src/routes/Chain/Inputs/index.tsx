@@ -312,13 +312,11 @@ export const useInput = () => {
               <Select
                 label={label}
                 values={values || []}
-                value={
-                  getInputArgsAtKey(
-                    tabId,
-                    inputArgConfig.namespace,
-                    inputArgConfig.inputKey
-                  )?.value
-                }
+                value={getInputArgsAtKey(
+                  tabId,
+                  inputArgConfig.namespace,
+                  inputArgConfig.inputKey
+                )}
                 onMount={(currentValue) => {
                   setInputArgAtKey(tabId, namespace, inputKey, currentValue);
                 }}
