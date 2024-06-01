@@ -93,11 +93,11 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
     const hiddenBottom = menuRect.bottom > bodyRect.bottom - DocumentPadding;
 
     const x = hiddenRight
-      ? window.innerWidth - menuRect.width - DocumentPadding
+      ? bodyRect.width - menuRect.width - DocumentPadding
       : position[0];
 
     const y = hiddenBottom
-      ? window.innerHeight - menuRect.height - DocumentPadding
+      ? bodyRect.height - menuRect.height - DocumentPadding
       : position[1];
 
     setPosition([x, y]);
