@@ -28,6 +28,7 @@ export const SubmitTx = ({
   noMargin = false,
   submitting = false,
   displayFor = 'default',
+  transactionVersion,
 }: SubmitTxProps) => {
   const { getNotEnoughFunds } = useAccounts();
   const { setModalResize } = useOverlay().modal;
@@ -67,11 +68,13 @@ export const SubmitTx = ({
   // Format props to pass into extrinsic data context. This context will make the data available to
   // child signer components.
   const extrinsicDataProps = {
+    valid,
     instanceId,
     chainId,
     ss58Prefix,
     units,
     unit,
+    transactionVersion,
   };
 
   return (
@@ -89,7 +92,6 @@ export const SubmitTx = ({
               uid={uid}
               onSubmit={onSubmit}
               submitting={submitting}
-              valid={valid}
               submitText={submitText}
               buttons={buttons}
               submitAddress={submitAddress}
@@ -99,7 +101,6 @@ export const SubmitTx = ({
             <Default
               onSubmit={onSubmit}
               submitting={submitting}
-              valid={valid}
               submitText={submitText}
               buttons={buttons}
               submitAddress={submitAddress}

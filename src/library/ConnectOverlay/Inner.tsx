@@ -193,7 +193,10 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
       </motion.span>
 
       <motion.span {...getManageProps('ledger')}>
-        <ManageLedger />
+        <ManageLedger
+          getMotionProps={getMotionProps}
+          selectedConnectItem={selectedConnectItem}
+        />
       </motion.span>
     </>
   );

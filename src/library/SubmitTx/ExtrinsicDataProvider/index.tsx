@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-developer-console/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/utils/types';
+import type { ReactNode } from 'react';
 import { createContext, useContext } from 'react';
 import { defaultExtrinsicDataContext } from './defaults';
 import type { ExtrinsicDataContextInterface } from './types';
@@ -17,15 +17,19 @@ export const ExtrinsicDataProvider = ({
   ss58Prefix,
   units,
   unit,
+  valid,
+  transactionVersion,
   children,
-}: AnyJson) => (
+}: ExtrinsicDataContextInterface & { children: ReactNode }) => (
   <ExtrinsicDataContext.Provider
     value={{
       instanceId,
+      transactionVersion,
       chainId,
       ss58Prefix,
       units,
       unit,
+      valid,
     }}
   >
     {children}

@@ -21,6 +21,7 @@ export const ChainSearchInput = ({
   directoryId,
   setDirectoryId,
   activeChain,
+  supportedChains,
 }: ChainSearchInputProps) => {
   // Whether the input is in focused state.
   const [focused, setFocused] = useState<boolean>(false);
@@ -65,8 +66,17 @@ export const ChainSearchInput = ({
     }
   };
 
-  // Determine search results from network directory.
-  const results = NetworkDirectory;
+  // Determine search results from network directory. Start by filtering the directory by supported
+  // chains.
+  const results = supportedChains
+    ? Object.fromEntries(
+        Object.entries(NetworkDirectory).filter(([name]) =>
+          supportedChains.includes(name.toLowerCase() as DirectoryId)
+        )
+      )
+    : NetworkDirectory;
+
+  // Filter results by search value.
   const filtered = !focused
     ? {}
     : searchValue === ''

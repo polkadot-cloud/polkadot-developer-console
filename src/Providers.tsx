@@ -19,6 +19,7 @@ import { AccountsProvider } from 'contexts/Accounts';
 import {
   ExtensionAccountsProvider,
   ExtensionsProvider,
+  LedgerAccountsProvider,
   VaultAccountsProvider,
 } from '@w3ux/react-connect-kit';
 import { ChainStateProvider } from 'contexts/ChainState';
@@ -32,6 +33,7 @@ import { OneShotTooltipProvider } from 'contexts/OneShotTooltip';
 import { TxMetaProvider } from 'contexts/TxMeta';
 import { OverlayProvider } from 'library/Overlay/Provider';
 import { PromptProvider } from 'contexts/Prompt';
+import { LedgerHardwareProvider } from 'contexts/LedgerHardware';
 
 export const Providers = () => {
   // !! --------------------------------
@@ -58,6 +60,8 @@ export const Providers = () => {
     ExtensionsProvider,
     [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
     VaultAccountsProvider,
+    LedgerHardwareProvider,
+    LedgerAccountsProvider,
     ImportedAccountsProvider,
 
     // Transaction providers.

@@ -17,7 +17,6 @@ import { useExtrinsicData } from 'library/SubmitTx/ExtrinsicDataProvider';
 export const Vault = ({
   onSubmit,
   submitting,
-  valid,
   submitText,
   buttons,
   submitAddress,
@@ -26,7 +25,7 @@ export const Vault = ({
   const { accountHasSigner } = useImportedAccounts();
   const { txFeeValid, getTxSignature } = useTxMeta();
   const { openPromptWith, status: promptStatus } = usePrompt();
-  const { instanceId, chainId, ss58Prefix, units, unit } = useExtrinsicData();
+  const { instanceId, chainId, ss58Prefix, valid } = useExtrinsicData();
 
   // The state under which submission is disabled.
   const disabled =
@@ -58,7 +57,7 @@ export const Vault = ({
   return (
     <div className={`inner${appendOrEmpty(displayFor === 'card', 'col')}`}>
       <div>
-        <EstimatedTxFee instanceId={instanceId} units={units} unit={unit} />
+        <EstimatedTxFee />
         {valid ? <p>Ready to Submit Transaction.</p> : <p>Form Incomplete.</p>}
       </div>
       <div>

@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 0.75rem 0.75rem 0.6rem 0.75rem;
+    padding: 1rem 0.75rem 0.6rem 0.75rem;
 
     &.canvas {
       background: var(--background-canvas-card);
@@ -58,6 +58,7 @@ export const Wrapper = styled.div`
 
         > div {
           display: flex;
+          justify-content: center;
 
           &:first-child {
             flex-direction: column;
@@ -73,13 +74,13 @@ export const Wrapper = styled.div`
               padding-left: 0.25rem;
 
               &.prompt {
-                color: var(--accent-color-primary);
+                color: var(--accent-color-secondary);
                 font-size: 0.75rem;
-                align-items: flex-start;
+                align-items: center;
 
                 .icon {
-                  margin-top: 0.16rem;
-                  margin-right: 0.5rem;
+                  margin-right: 0.3rem;
+                  margin-bottom: 0.1rem;
                 }
               }
             }
@@ -99,7 +100,6 @@ export const Wrapper = styled.div`
         }
 
         &.msg {
-          border-top: 1px solid var(--border-primary-color);
           padding: 0.5rem 0;
           margin-top: 0.25rem;
         }

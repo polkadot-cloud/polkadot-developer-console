@@ -8,6 +8,7 @@ import type { SubmitProps } from '../types';
 import { Vault } from './Vault';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useExtrinsicData } from '../ExtrinsicDataProvider';
+import { Ledger } from './Ledger';
 
 export const ManualSign = (props: SubmitProps & { buttons?: ReactNode[] }) => {
   const { onSubmit } = props;
@@ -29,9 +30,12 @@ export const ManualSign = (props: SubmitProps & { buttons?: ReactNode[] }) => {
 
   // Determine which signing method to use. NOTE: Falls back to `vault` on all other sources to
   // ensure submit button is displayed.
+
   switch (source) {
     case 'vault':
       return <Vault {...props} />;
+    case 'ledger':
+      return <Ledger {...props} />;
     default:
       return <Vault {...props} />;
   }

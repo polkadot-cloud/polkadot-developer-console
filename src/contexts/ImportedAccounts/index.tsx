@@ -7,6 +7,7 @@ import { defaultImportedAccountsContext } from './defaults';
 import type { ImportedAccountsContextInterface } from './types';
 import {
   useExtensionAccounts,
+  useLedgerAccounts,
   useVaultAccounts,
 } from '@w3ux/react-connect-kit';
 
@@ -23,11 +24,14 @@ export const ImportedAccountsProvider = ({
   children: ReactNode;
 }) => {
   const { getVaultAccounts } = useVaultAccounts();
+  const { getLedgerAccounts } = useLedgerAccounts();
   const { getExtensionAccounts } = useExtensionAccounts();
 
   // Gets all accounts for a chain id and ss58 prefix.
   const getAccounts = (chainId: string, ss58Prefix: number) =>
-    getExtensionAccounts(ss58Prefix).concat(getVaultAccounts(chainId));
+    getExtensionAccounts(ss58Prefix)
+      .concat(getVaultAccounts(chainId))
+      .concat(getLedgerAccounts(chainId));
 
   // Gets one account for a chain id and ss58 prefix, or undefined if not found.
   const getAccount = (address: string, chainId: string, ss58Prefix: number) =>

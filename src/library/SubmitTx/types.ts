@@ -18,14 +18,15 @@ export type SubmitTxProps = SubmitProps & {
   buttons?: ReactNode[];
   submitAddress?: MaybeAddress;
   noMargin?: boolean;
+  valid?: boolean;
   existentialDeposit: BigNumber;
+  transactionVersion: string;
 };
 
 export interface SubmitProps {
   uid?: number;
   onSubmit: () => void;
   submitting: boolean;
-  valid: boolean;
   submitText?: string;
   submitAddress: MaybeAddress;
   displayFor?: DisplayFor;
@@ -42,6 +43,7 @@ export interface LedgerSubmitProps {
   displayFor?: DisplayFor;
   disabled: boolean;
   submitText?: string;
+  submitAddress: MaybeAddress;
 }
 
 export interface ButtonSubmitLargeProps {
