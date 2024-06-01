@@ -45,6 +45,7 @@ export const Submit = ({
     const uid = getTxPayloadUid(instanceId);
     const accountIndex = getAddressIndex();
     const payload = await getTxPayload(instanceId);
+
     await handleSignTx(appName, uid, accountIndex, payload);
   };
 
@@ -55,7 +56,8 @@ export const Submit = ({
 
   // Is the transaction ready to be submitted?
   const txReady =
-    (getTxSignature(instanceId) !== null && integrityChecked) || submitting;
+    (getTxSignature(instanceId) !== undefined && integrityChecked) ||
+    submitting;
 
   // Button `onClick` handler depends whether integrityChecked and whether tx has been submitted.
   const handleOnClick = !integrityChecked

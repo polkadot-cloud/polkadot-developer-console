@@ -4,11 +4,25 @@
 
 import type { LedgerApp, LedgerHardwareContextInterface } from './types';
 
+// The supported networks and the corresponding Ledger app name.
+export const LedgerApps: LedgerApp[] = [
+  {
+    network: 'polkadot',
+    appName: 'Polkadot',
+  },
+  {
+    network: 'kusama',
+    appName: 'Kusama',
+  },
+];
+
+// Default empty feedback message.
 export const defaultFeedback = {
   message: null,
   helpKey: null,
 };
 
+// Default ledger hardware context interface.
 export const defaultLedgerHardwareContext: LedgerHardwareContextInterface = {
   transportResponse: null,
   integrityChecked: false,
@@ -32,14 +46,3 @@ export const defaultLedgerHardwareContext: LedgerHardwareContextInterface = {
   handleResetLedgerTask: () => {},
   runtimesInconsistent: false,
 };
-
-export const LedgerApps: LedgerApp[] = [
-  {
-    network: 'polkadot',
-    appName: 'Polkadot',
-  },
-  {
-    network: 'kusama',
-    appName: 'Kusama',
-  },
-];

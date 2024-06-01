@@ -13,6 +13,7 @@ import { useBuildPayload } from 'hooks/useBuildPayload';
 import { useAccounts } from 'contexts/Accounts';
 import type { AnyJson } from '@w3ux/utils/types';
 import type { ExtensionAccount } from '@w3ux/react-connect-kit/types';
+import { useLedgerHardware } from 'contexts/LedgerHardware';
 
 export const useSubmitExtrinsic = ({
   instanceId,
@@ -40,8 +41,7 @@ export const useSubmitExtrinsic = ({
   const { extensionsStatus } = useExtensions();
   const { addPendingNonce, removePendingNonce } = useTxMeta();
   const { getAccount, requiresManualSign } = useImportedAccounts();
-  // NOTE: Ledger not yet integrated.
-  // const { handleResetLedgerTask } = useLedgerHardware();
+  const { handleResetLedgerTask } = useLedgerHardware();
 
   const txFees = getTxFee(instanceId);
   const nonce = getNonce(instanceId, from);
@@ -100,6 +100,7 @@ export const useSubmitExtrinsic = ({
       (requiresManualSign(fromRef.current, chainId, ss58Prefix) &&
         !getTxSignature(instanceId))
     ) {
+      console.log('returning early', getTxSignature(instanceId));
       return;
     }
 
@@ -170,13 +171,13 @@ export const useSubmitExtrinsic = ({
 
     const resetManualTx = () => {
       resetTx();
-      // handleResetLedgerTask();
+      handleResetLedgerTask();
     };
 
     const onError = (type?: string) => {
       resetTx();
       if (type === 'ledger') {
-        // handleResetLedgerTask();
+        handleResetLedgerTask();
       }
       removePendingNonce(instanceId, String(nonce));
       NotificationsController.emit({

@@ -5,14 +5,12 @@ import { planckToUnit } from '@w3ux/utils';
 import { useTxMeta } from 'contexts/TxMeta';
 import { Wrapper } from './Wrapper';
 import type { EstimatedTxFeeProps } from './types';
+import { useExtrinsicData } from 'library/SubmitTx/ExtrinsicDataProvider';
 
-export const EstimatedTxFee = ({
-  instanceId,
-  format,
-  unit,
-  units,
-}: EstimatedTxFeeProps) => {
+export const EstimatedTxFee = ({ format }: EstimatedTxFeeProps) => {
   const { getTxFee } = useTxMeta();
+  const { instanceId, units, unit } = useExtrinsicData();
+
   const txFee = getTxFee(instanceId);
 
   const txFeesUnit = planckToUnit(txFee, units).toFormat();

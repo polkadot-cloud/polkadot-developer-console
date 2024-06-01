@@ -42,8 +42,7 @@ export const Ledger = ({
   const { setModalResize } = useOverlay().modal;
   const { setTxSignature, txFeeValid } = useTxMeta();
   const { accountHasSigner } = useImportedAccounts();
-  const { instanceId, chainId, ss58Prefix, units, unit, valid } =
-    useExtrinsicData();
+  const { instanceId, chainId, ss58Prefix, valid } = useExtrinsicData();
 
   const txFeesValid = txFeeValid(instanceId);
   const { appName } = getLedgerApp(chainId);
@@ -115,7 +114,7 @@ export const Ledger = ({
   return (
     <>
       <div>
-        <EstimatedTxFee instanceId={instanceId} unit={unit} units={units} />
+        <EstimatedTxFee />
       </div>
 
       {runtimesInconsistent && (

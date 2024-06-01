@@ -23,8 +23,7 @@ export const Default = ({
 }: SubmitProps & { buttons?: ReactNode[] }) => {
   const { txFeeValid } = useTxMeta();
   const { accountHasSigner } = useImportedAccounts();
-  const { instanceId, chainId, ss58Prefix, units, unit, valid } =
-    useExtrinsicData();
+  const { instanceId, chainId, ss58Prefix, valid } = useExtrinsicData();
 
   const disabled =
     submitting ||
@@ -36,7 +35,7 @@ export const Default = ({
     <>
       <div className={`inner${appendOrEmpty(displayFor === 'card', 'col')}`}>
         <div>
-          <EstimatedTxFee instanceId={instanceId} units={units} unit={unit} />
+          <EstimatedTxFee />
         </div>
         <div>
           {buttons}
