@@ -128,6 +128,8 @@ export const formatArg = (
       return formatCheckbox(value);
     case 'Composite':
       return formatComposite(value);
+    case 'Tuple':
+      return formatTuple(value);
 
     // TODO: select (enums), variant, sequences. Fall back to metadata for now.
     default:
@@ -156,3 +158,6 @@ export const formatCheckbox = (value: boolean): boolean => value;
 
 // Format composite: Just return the array value.
 export const formatComposite = (values: AnyJson[]): AnyJson[] => values;
+
+// Format tuple: Just return the array value.
+export const formatTuple = (values: AnyJson[]): AnyJson[] => values;
