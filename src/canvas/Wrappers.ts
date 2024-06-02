@@ -16,7 +16,22 @@ export const CanvasFullScreenWrapper = styled.div`
   }
 
   > h1 {
+    font-family: InterBold, sans-serif;
+    font-size: 1.2rem;
     margin-top: 1.5rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.75rem;
   }
+
+  h3 {
+    margin: 0;
+  }
+`;
+
+export const CanvasCardWrapper = styled.div`
+  padding: 0.75rem;
+  border-radius: 0.65rem;
+  background-color: var(--background-canvas-card);
+  box-shadow: var(--shadow-card);
+  margin: 1rem 0;
+  width: 100%;
 `;

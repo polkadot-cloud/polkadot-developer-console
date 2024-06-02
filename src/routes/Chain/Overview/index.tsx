@@ -136,7 +136,7 @@ export const Overview = () => {
                   openCanvas({
                     key: 'RuntimeSnapshot',
                     options: {},
-                    size: 'xl',
+                    size: 'lg',
                   })
                 }
               >

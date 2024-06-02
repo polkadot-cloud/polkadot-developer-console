@@ -57,7 +57,7 @@ export const Background = ({
           opacity: 0,
         },
         visible: {
-          opacity: 0.8,
+          opacity: 0.9,
         },
       }}
     />
