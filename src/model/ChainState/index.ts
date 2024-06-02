@@ -118,7 +118,8 @@ export class ChainState {
 
         // Subscribe to raw storage keys.
         if (['raw', 'storage'].includes(type)) {
-          const { namespace, method, args } = config;
+          const { namespace, method } = config;
+          let { args } = config;
 
           // Determine the correct api namespace of the subscription.
           const apiNamespace = type === 'raw' ? 'rpc' : 'query';
@@ -128,9 +129,14 @@ export class ChainState {
           // this is acceptable for now.
           //
 
+          // Convert args into an array if it is only one value.
+          if (args && !Array.isArray(args)) {
+            args = [args];
+          }
+
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const unsub = await (api as any)[apiNamespace][namespace][method](
-            args === null ? undefined : args,
+            ...Object.values(args || [undefined]),
             (res: AnyJson) => {
               // Workaround to not break existing raw storage subscriptions.
               const result =
@@ -177,6 +183,8 @@ export class ChainState {
           this.#unsubs[subscriptionKey] = unsub;
         }
       } catch (e) {
+        console.log(e);
+
         // Ensure this subscription is removed from local storage.
         localChainState.removeChainStateSubscription(
           this.#ownerId,
