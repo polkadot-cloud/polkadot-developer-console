@@ -100,7 +100,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Get chain state by type.
-  const getChainStateByType = (type: StorageSubscriptionType) => {
+  const getChainStateByType = (type: StorageSubscriptionType | undefined) => {
     // Note that undefined results are also being removed, which could be present as a result of a
     // temporary invalid subscription.
     const filteredEntries = Object.entries(chainStateSubscriptions).filter(

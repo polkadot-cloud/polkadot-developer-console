@@ -70,7 +70,7 @@ export class ChainState {
     const entries = Object.entries(localSubscriptions?.[ownerId] || []);
 
     for (const [key, config] of entries) {
-      if (config.type === 'raw') {
+      if (['raw', 'storage'].includes(config.type)) {
         this.subscribe(
           splitSubscriptionKey(key)[1],
           config as SubscriptionConfig

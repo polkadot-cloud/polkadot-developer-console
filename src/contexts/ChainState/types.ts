@@ -11,7 +11,7 @@ import type { OwnerId } from 'types';
 
 export interface ChainStateContextInterface {
   getChainStateByType: (
-    type: StorageSubscriptionType
+    type: StorageSubscriptionType | undefined
   ) => ChainStateSubscriptions;
   getChainStateItem: (subscriptionKey: string) => AnyJson | null;
   removeChainStateItem: (type: StorageType, subscriptionKey: string) => void;

@@ -44,7 +44,7 @@ export const Results = ({
   // Include raw and storage results if display allows.
   if (['raw', 'storage', undefined].includes(storageType) || !filtered) {
     chainStateItems = getChainStateByType(
-      storageType as StorageSubscriptionType
+      filtered === true ? (storageType as StorageSubscriptionType) : undefined
     );
   }
 
