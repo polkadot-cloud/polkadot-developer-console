@@ -35,6 +35,9 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
   // Padding from the window edge.
   const DocumentPadding = 20;
 
+  // Padding from the mouse.
+  const MousePadding = 10;
+
   // Sets the menu position and opens it. Only succeeds if the menu has been instantiated and is not
   // currently open.
   const openMenu = (
@@ -94,11 +97,11 @@ export const MenuProvider = ({ children }: { children: ReactNode }) => {
 
     const x = hiddenRight
       ? bodyRect.width - menuRect.width - DocumentPadding
-      : position[0];
+      : position[0] + MousePadding;
 
     const y = hiddenBottom
       ? bodyRect.height - menuRect.height - DocumentPadding
-      : position[1];
+      : position[1] + MousePadding;
 
     setPosition([x, y]);
     setShow(true);
