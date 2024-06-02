@@ -35,7 +35,7 @@ export const HeaderWrapper = styled.div`
 
       > span {
         color: var(--text-color-primary);
-        font-family: Inter, sans-serif;
+        font-family: InterSemiBold, sans-serif;
         margin-left: 0.35rem;
         margin-right: 0.5rem;
         font-size: 0.7rem;
