@@ -32,7 +32,7 @@ export const CanvasCardWrapper = styled.div`
   width: 100%;
 
   h2 {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 0.5rem;
   }
 

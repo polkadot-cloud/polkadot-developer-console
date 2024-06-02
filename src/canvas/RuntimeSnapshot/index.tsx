@@ -29,7 +29,9 @@ export const RuntimeSnapshot = () => {
       <h1>Runtime Snapshot</h1>
 
       <CanvasCardWrapper>
-        <h2>Pallets</h2>
+        <h2>
+          {pallets.length} Pallet{pallets.length === 1 ? '' : 's'}
+        </h2>
 
         {pallets.map((pallet) => (
           <PalletItem pallet={pallet} key={`pallet_${pallet.index}`} />
