@@ -135,7 +135,10 @@ export const Overview = () => {
                 onClick={() =>
                   openCanvas({
                     key: 'RuntimeSnapshot',
-                    options: {},
+                    options: {
+                      chainSpec,
+                      chain,
+                    },
                     size: 'lg',
                   })
                 }

@@ -44,7 +44,7 @@ export const CanvasCardWrapper = styled.div`
 export const CanvasSubheading = styled.h3`
   border-bottom: 1px solid var(--border-tertiary-color);
   color: var(--text-primary-color);
-  padding-bottom: 0.6rem;
+  padding-bottom: 0.5rem;
   display: flex;
   align-items: center;
   margin-top: 1rem !important;
