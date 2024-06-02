@@ -106,10 +106,16 @@ export const ChainStateList = ({
     }
   }, [dropdownOpen]);
 
-  // Reset input args when active item changes.
+  // Manage `activeItem` changes.
   useEffect(() => {
+    // Reset input args when active item changes.
     if (inputNamespace) {
       resetInputArgSection(tabId, inputNamespace);
+    }
+
+    // On initial render, set the selected item to the first list item, if any.
+    if (activeItem) {
+      setChainUiNamespace(tabId, chainUiSection, 'selected', activeItem);
     }
   }, [activeItem]);
 
