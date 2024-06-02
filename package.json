@@ -1,5 +1,5 @@
 {
-  "name": "polkadot-developer-console",
+  "name": "developer-console",
   "private": true,
   "version": "0.1.0-beta",
   "type": "module",
