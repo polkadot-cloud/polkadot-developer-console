@@ -183,8 +183,6 @@ export class ChainState {
           this.#unsubs[subscriptionKey] = unsub;
         }
       } catch (e) {
-        console.log(e);
-
         // Ensure this subscription is removed from local storage.
         localChainState.removeChainStateSubscription(
           this.#ownerId,
