@@ -14,11 +14,10 @@ export const Wrapper = styled.div`
 
   > .inner {
     border-top: 1px solid var(--border-primary-color);
-    background: var(--background-modal-footer);
-    width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 1rem 0.75rem 0.6rem 0.75rem;
+    padding: 0.75rem 0.75rem 0.55rem 0.75rem;
+    width: 100%;
 
     &.canvas {
       background: var(--background-canvas-card);

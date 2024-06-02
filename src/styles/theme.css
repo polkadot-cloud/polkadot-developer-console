@@ -8,7 +8,6 @@ SPDX-License-Identifier: GPL-3.0-only */
   --background-tooltip: #222;
   --background-floating-card: rgb(255 255 255 / 90%);
   --background-modal: #f4f2f2;
-  --background-modal-footer: #eee;
   --background-canvas-card: rgb(245 245 245 / 90%);
   --background-canvas-card-secondary: rgb(255 255 255 / 35%);
 
@@ -130,7 +129,6 @@ SPDX-License-Identifier: GPL-3.0-only */
   /* NOTE: these colors are still light and need to be updated for dark theme. */
   --background-floating-card: rgb(43 38 43 / 95%);
   --background-modal: rgb(43 38 43);
-  --background-modal-footer: rgb(37 32 37);
   --background-canvas-card: rgb(44 40 44 / 90%);
   --background-canvas-card-secondary: rgb(44 40 44 / 35%);
 
