@@ -44,12 +44,24 @@ export const CanvasCardWrapper = styled.div`
 export const CanvasSubheading = styled.h3`
   border-bottom: 1px solid var(--border-tertiary-color);
   color: var(--text-primary-color);
-  padding-bottom: 0.5rem;
+  padding: 0.65rem 0.25rem;
   display: flex;
   align-items: center;
-  margin-top: 1rem !important;
 
-  > svg {
-    margin-right: 0.45rem;
+  > button {
+    color: var(--text-color-primary);
+    font-family: InterSemiBold, sans-serif;
+    font-size: 0.85rem;
+
+    &:hover {
+      color: var(--text-color-secondary);
+    }
+  }
+
+  > span {
+    display: flex;
+    justify-content: center;
+    margin-right: 0.15rem;
+    width: 1rem;
   }
 `;
