@@ -22,15 +22,16 @@ export const ChainStateResult = ({
 
   const { removeChainStateItem, setItemPinned } = useChainState();
 
-  // Readable display of the result.
+  // Convert the result into JSON.
   const resultJson = result?.toJSON();
-  const display = resultJson ? formatJSON(resultJson) : 'None';
 
-  // Should not happen, but just in case result is undefined or `toHuman()` fails on a result, don't
-  // display it.
-  if (display === undefined) {
-    return null;
-  }
+  // Determine whether the result is empty.
+  const isEmpty =
+    [undefined, null, ''].includes(resultJson) ||
+    (Array.isArray(resultJson) && resultJson.length === 0);
+
+  // Format the JSON for display if it is not empty.
+  const display = !isEmpty ? formatJSON(resultJson) : 'None';
 
   return (
     <section>
