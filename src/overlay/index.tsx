@@ -4,6 +4,7 @@
 import { OverlayErrorBoundary } from 'library/ErrorBoundaries/OverlayErrorBoundary';
 import { Overlay } from 'library/Overlay';
 import { Transfer } from 'modals/Transfer';
+import { RuntimeSnapshot } from 'canvas/RuntimeSnapshot';
 
 export const Overlays = () => (
   <Overlay
@@ -14,6 +15,8 @@ export const Overlays = () => (
     modals={{
       Transfer,
     }}
-    canvas={{}}
+    canvas={{
+      RuntimeSnapshot,
+    }}
   />
 );

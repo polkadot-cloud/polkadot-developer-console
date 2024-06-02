@@ -21,9 +21,11 @@ import { FlexWrapper } from 'routes/Common/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useChain } from '../Provider';
 import { Pinned } from './Pinned';
+import { useOverlay } from 'library/Overlay/Provider';
 
 export const Overview = () => {
   const { tabId, ownerId } = useActiveTab();
+  const { openCanvas } = useOverlay().canvas;
   const { getApiStatus } = useChainSpaceEnv();
   const { chainSpec, instanceId, chain } = useChain();
 
@@ -128,7 +130,19 @@ export const Overview = () => {
               <FontAwesomeIcon icon={faList} transform="shrink-3" /> Runtime
               Snapshot
             </h4>
-            <h3>...</h3>
+            <h3>
+              <button
+                onClick={() =>
+                  openCanvas({
+                    key: 'RuntimeSnapshot',
+                    options: {},
+                    size: 'xl',
+                  })
+                }
+              >
+                Open
+              </button>
+            </h3>
           </div>
         </section>
       </CardsWrapper>
