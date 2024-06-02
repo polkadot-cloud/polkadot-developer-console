@@ -261,10 +261,11 @@ export const ChainStateResultWrapper = styled.div`
           &:first-child {
             flex: 1;
             > h4 {
-              flex: 1;
-              margin: 0;
-              color: var(--text-color-secondary);
               font-family: InterSemiBold, sans-serif;
+              color: var(--text-color-secondary);
+              flex: 1;
+              white-space: pre-wrap;
+              margin: 0;
             }
           }
 

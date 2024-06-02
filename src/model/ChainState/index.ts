@@ -8,7 +8,6 @@ import type {
   ChainStateEventDetail,
   ConstantEntry,
   ConstantResult,
-  RawStorageSubscriptionConfig,
   SubscriptionConfig,
   SubscriptionEntry,
   SubscriptionType,
@@ -71,10 +70,10 @@ export class ChainState {
     const entries = Object.entries(localSubscriptions?.[ownerId] || []);
 
     for (const [key, config] of entries) {
-      if (config.type === 'raw') {
+      if (['raw', 'storage'].includes(config.type)) {
         this.subscribe(
           splitSubscriptionKey(key)[1],
-          config as RawStorageSubscriptionConfig
+          config as SubscriptionConfig
         );
       }
     }
@@ -118,19 +117,31 @@ export class ChainState {
         const timestamp = getUnixTime(new Date());
 
         // Subscribe to raw storage keys.
-        if (type === 'raw') {
-          const { namespace, method, args } =
-            config as RawStorageSubscriptionConfig;
+        if (['raw', 'storage'].includes(type)) {
+          const { namespace, method } = config;
+          let { args } = config;
+
+          // Determine the correct api namespace of the subscription.
+          const apiNamespace = type === 'raw' ? 'rpc' : 'query';
 
           // This call is optimistically attempting to subscribe to whatever config is being passed
           // into this method. A try catch covers the scenario where invalid config is passed, so
           // this is acceptable for now.
           //
+
+          // Convert args into an array if it is only one value.
+          if (args && !Array.isArray(args)) {
+            args = [args];
+          }
+
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const unsub = await (api as any).rpc[namespace][method](
-            ...args,
-            ([data]: AnyJson) => {
-              const result = data.unwrapOr(undefined);
+          const unsub = await (api as any)[apiNamespace][namespace][method](
+            ...Object.values(args || [undefined]),
+            (res: AnyJson) => {
+              // Workaround to not break existing raw storage subscriptions.
+              const result =
+                type === 'raw' ? res.data.unwrapOr(undefined) : res;
+
               const callConfig = {
                 type,
                 namespace,

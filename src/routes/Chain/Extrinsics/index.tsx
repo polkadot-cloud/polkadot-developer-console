@@ -96,6 +96,9 @@ export const Extrinsics = () => {
         inputForm={inputForm}
         namespace={inputNamespace}
         activeItem={activeItem}
+        onSubmit={() => {
+          /* TODO: Implement */
+        }}
       />
     </FlexWrapper>
   );

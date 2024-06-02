@@ -50,4 +50,5 @@ export interface InputFormProps {
   namespace: InputNamespace;
   inputForm: AnyJson;
   activeItem: string | null;
+  onSubmit: (inputs: AnyJson) => void;
 }
