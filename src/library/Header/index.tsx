@@ -5,6 +5,10 @@ import { HeaderWrapper } from './Wrappers';
 import HeaderSVG from 'svg/Header.svg?react';
 import { version } from '../../../package.json';
 import { useGlitch } from 'react-powerglitch';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { DocsUrl, GithubRepoUrl } from 'consts';
+import { faBooks } from '@fortawesome/pro-solid-svg-icons';
 
 export const Header = () => {
   const glitch = useGlitch({
@@ -40,7 +44,15 @@ export const Header = () => {
         <h1>Polkadot Developer Console</h1>
         <span>{version}</span>
       </div>
-      <div></div>
+      <div>
+        <button onClick={() => window.open(DocsUrl)}>
+          <FontAwesomeIcon icon={faBooks} transform="grow-3" />
+        </button>
+
+        <button onClick={() => window.open(GithubRepoUrl)}>
+          <FontAwesomeIcon icon={faGithub} transform="grow-5" />
+        </button>
+      </div>
     </HeaderWrapper>
   );
 };
