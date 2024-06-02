@@ -11,7 +11,7 @@ import type {
   MetadataPalletStorageItem,
   ScraperOptions,
 } from './types';
-import { MetadataScraper } from './Base';
+import { MetadataScraper } from '.';
 import type { MetadataVersion } from 'model/Metadata/types';
 import type { AnyJson } from '@w3ux/utils/types';
 
