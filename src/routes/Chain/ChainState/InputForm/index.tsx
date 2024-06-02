@@ -23,6 +23,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 export const InputFormInner = ({
   inputForm,
   activeItem,
+  onSubmit,
 }: InputFormInnerProps) => {
   const { readInput } = useInput();
   const { tabId } = useActiveTab();
@@ -100,9 +101,10 @@ export const InputFormInner = ({
         ? Object.values(inputKeys)?.[0][1]
         : Object.values(inputKeys)?.[0];
 
-    // TODO: Submit `storage` and `call` subscriptions based on namespace.
+    // Submit `storage` and `call` subscriptions based on namespace.
     console.log('---');
     console.log(resultInput);
+    onSubmit(resultInput);
   };
 
   return (
@@ -144,8 +146,13 @@ export const InputForm = ({
   namespace,
   inputForm,
   activeItem,
+  onSubmit,
 }: InputFormProps) => (
   <InputFormProvider namespace={namespace}>
-    <InputFormInner inputForm={inputForm} activeItem={activeItem} />
+    <InputFormInner
+      inputForm={inputForm}
+      activeItem={activeItem}
+      onSubmit={onSubmit}
+    />
   </InputFormProvider>
 );

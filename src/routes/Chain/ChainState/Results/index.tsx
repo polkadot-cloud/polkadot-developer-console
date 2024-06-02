@@ -5,7 +5,10 @@ import { ChainStateResultWrapper, FilterWrapper } from '../../Wrappers';
 import { useChainState } from 'contexts/ChainState';
 import { ChainStateResult } from './Result';
 import { splitSubscriptionKey } from 'model/ChainState/util';
-import type { StorageType } from 'model/ChainState/types';
+import type {
+  StorageSubscriptionType,
+  StorageType,
+} from 'model/ChainState/types';
 import type {
   ChainStateConstants,
   ChainStateSubscriptions,
@@ -40,7 +43,9 @@ export const Results = ({
 
   // Include raw and storage results if display allows.
   if (['raw', 'storage', undefined].includes(storageType) || !filtered) {
-    chainStateItems = getChainStateByType('raw');
+    chainStateItems = getChainStateByType(
+      storageType as StorageSubscriptionType
+    );
   }
 
   // Include constant results if display allows.

@@ -8,6 +8,7 @@ import type { ChainStateResultProps } from '../types';
 import { splitConstantKey, splitSubscriptionKey } from 'model/ChainState/util';
 import { useChainState } from 'contexts/ChainState';
 import { ButtonIcon } from 'library/Buttons/ButtonIcon';
+import { formatJSON } from './Utils';
 
 export const ChainStateResult = ({
   chainStateKey,
@@ -22,7 +23,8 @@ export const ChainStateResult = ({
   const { removeChainStateItem, setItemPinned } = useChainState();
 
   // Readable display of the result.
-  const display = result?.toHuman();
+  const resultJson = result?.toJSON();
+  const display = resultJson ? formatJSON(resultJson) : 'None';
 
   // Should not happen, but just in case result is undefined or `toHuman()` fails on a result, don't
   // display it.

@@ -5,10 +5,6 @@ import type { AnyJson } from '@w3ux/utils/types';
 import type { ApiInstanceId } from 'model/Api/types';
 import type { OwnerId } from 'types';
 
-export type SubscriptionConfig =
-  | RawStorageSubscriptionConfig
-  | StorageSubscriptionInterface;
-
 export type StorageType = StorageSubscriptionType | 'constant';
 
 export type StorageSubscriptionType = 'raw' | 'storage';
@@ -19,20 +15,11 @@ export interface SubscriptionCallConfig {
   args: AnyJson[];
 }
 
-// Configuration for raw subscriptions.
-export type RawStorageSubscriptionConfig = SubscriptionCallConfig & {
+// Configuration for storage subscriptions.
+export type SubscriptionConfig = SubscriptionCallConfig & {
   type: StorageSubscriptionType;
   pinned?: boolean;
 };
-
-// Configuration for storage item subscriptions.
-export interface StorageSubscriptionInterface {
-  type: StorageSubscriptionType;
-  pallet: string;
-  call: string;
-  args: AnyJson[];
-  pinned?: boolean;
-}
 
 export interface ConstantResult {
   key: string;

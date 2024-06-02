@@ -104,9 +104,19 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     // Note that undefined results are also being removed, which could be present as a result of a
     // temporary invalid subscription.
     const filteredEntries = Object.entries(chainStateSubscriptions).filter(
-      ([, subscription]) =>
-        subscription.type === type && subscription.result !== undefined
+      ([, subscription]) => {
+        if (subscription.result === undefined) {
+          return false;
+        }
+
+        if (type === undefined) {
+          return true;
+        }
+
+        return subscription.type === type;
+      }
     );
+
     return Object.fromEntries(filteredEntries);
   };
 
