@@ -32,7 +32,7 @@ export class PalletScraper extends MetadataScraper {
   }
 
   // Gets a sorted list of pallets from metadata.
-  getList(filters?: string[]): PalletListItem[] {
+  getPalletList(filters?: string[]): PalletListItem[] {
     let filtered = this.pallets;
 
     // Filter the pallets with no calls.

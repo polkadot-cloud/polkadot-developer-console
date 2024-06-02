@@ -321,7 +321,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     }
     // Get pallet list from scraper.
     const scraper = new PalletScraper(metadata);
-    const pallets = scraper.getList();
+    const pallets = scraper.getPalletList();
 
     // Map through pallets and set up an array of calls to query the RPC with.
     const calls = pallets.map(({ name }) => {
