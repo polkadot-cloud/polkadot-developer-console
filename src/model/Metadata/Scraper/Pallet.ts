@@ -27,7 +27,7 @@ export class PalletScraper extends MetadataScraper {
     }
   ) {
     super(metadata, config);
-    const { pallets } = this.metadata.getMetadataJson();
+    const { pallets } = this.metadata.get();
     this.pallets = pallets || [];
   }
 

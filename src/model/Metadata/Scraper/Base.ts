@@ -36,7 +36,7 @@ export class MetadataScraper {
   constructor(metadata: MetadataVersion, config: ScraperConfig) {
     this.metadata = metadata;
     this.#maxDepth = config.maxDepth;
-    this.lookup = this.metadata.getMetadataJson().lookup;
+    this.lookup = this.metadata.get().lookup;
   }
 
   // ------------------------------------------------------

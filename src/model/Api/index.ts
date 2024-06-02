@@ -155,11 +155,10 @@ export class Api {
 
       // Also retreive the JSON formatted metadata here for the UI to construct from.
       const metadataPJs = this.api.runtimeMetadata;
-      const metadataJson = metadataPJs.toJSON();
+      const metadataJson = metadataPJs.asV14.toJSON();
 
       // Set chainspec and metadata, or dispatch an error and disconnect otherwise.
       if (specVersion && metadataJson) {
-        const metadataVersion = Object.keys(metadataJson?.metadata || {})[0];
         const magicNumber = metadataJson.magicNumber;
 
         this.chainSpec = {
@@ -167,10 +166,7 @@ export class Api {
           version: specVersion,
           ss58Prefix,
           magicNumber: magicNumber as number,
-          metadata: MetadataController.instantiate(
-            metadataVersion,
-            metadataPJs
-          ),
+          metadata: MetadataController.instantiate(metadataJson),
           consts: {},
         };
       } else {

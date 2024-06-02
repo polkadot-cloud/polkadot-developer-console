@@ -20,6 +20,7 @@ export const RuntimeSnapshot = () => {
 
   const { chainSpec, chain } = options;
   console.log('chainSpec', chainSpec, chain);
+
   return (
     <CanvasFullScreenWrapper>
       <div className="head">

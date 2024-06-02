@@ -13,7 +13,7 @@ export abstract class MetadataVersion {
   constructor(metadata: Metadata) {}
 
   // Returns the JSON representation of metadata.
-  abstract getMetadataJson(): AnyJson;
+  abstract get(): AnyJson;
 
   // Returns whether a pallet exists in the metadata.
   abstract palletExists: (palletName: string) => boolean;
