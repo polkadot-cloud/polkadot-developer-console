@@ -17,15 +17,23 @@ import { useChain } from '../Provider';
 import { SubmitTx } from 'library/SubmitTx';
 import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import type { MaybeAddress } from '@w3ux/react-connect-kit/types';
-import { InputFormProvider } from '../InputForm/provider';
+import { InputFormProvider, useInputForm } from '../InputForm/provider';
+import { camelize } from '@w3ux/utils';
+import { useImportedAccounts } from 'contexts/ImportedAccounts';
 
 export const ExtrinsicsInner = () => {
   const { tabId } = useActiveTab();
+  const { handleSubmit } = useInputForm();
+  const { getAccounts } = useImportedAccounts();
   const { chainSpec, instanceId, chain, api } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
+  const accounts = chainSpec
+    ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
+    : [];
+
   // Store the sender address.
-  const [fromAddress] = useState<MaybeAddress>(null);
+  const [fromAddress] = useState<MaybeAddress>(accounts?.[0]?.address || null);
 
   const chainUiSection = 'calls';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -85,19 +93,30 @@ export const ExtrinsicsInner = () => {
       ? new FormatInputFields(activeListItem).format()
       : null;
 
-  // TODO: check if actually valid.
-  const valid = fromAddress !== null;
+  // Transaction is submittable once from address has been defined.
+  const submittable = fromAddress !== null;
 
   // Format the transaction to submit, or return `null` if invalid.
   const getTx = () => {
     let tx = null;
 
-    if (!api || !valid) {
+    if (!api || !submittable || !activePallet || !activeItem) {
       return tx;
     }
+
+    // Get transaction args from input form.
+    let resultInput = handleSubmit();
+
+    // Wrap resulting args into an array if it is not already.
+    if (!Array.isArray(resultInput)) {
+      resultInput = [resultInput];
+    }
+
     try {
-      // TODO: replace with actual tx.
-      tx = api.tx.staking.chill();
+      // Construct transaction.
+      tx = api.tx[camelize(activePallet)][camelize(activeItem)](
+        ...Object.values(resultInput || [undefined])
+      );
       return tx;
     } catch (e) {
       return null;
@@ -141,7 +160,7 @@ export const ExtrinsicsInner = () => {
       />
       <SubmitTx
         {...submitExtrinsic}
-        valid={valid}
+        valid={submittable}
         instanceId={instanceId}
         chainId={chainId}
         ss58Prefix={ss58Prefix}

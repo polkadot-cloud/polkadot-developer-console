@@ -54,7 +54,7 @@ export const InputForm = ({
           })
         )}
       <section className="footer">
-        <ButtonText onClick={() => handleSubmit({ onSubmit })}>
+        <ButtonText onClick={() => handleSubmit(onSubmit)}>
           Submit
           <FontAwesomeIcon
             icon={faCircleRight}
