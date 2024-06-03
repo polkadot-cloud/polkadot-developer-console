@@ -18,6 +18,8 @@ export const RuntimeSnapshot = () => {
 
   // Get pallet list from scraper.
   const scraper = new PalletScraper(metadata);
+
+  // Get the pallet list from metadata.
   const pallets = scraper.getPalletList();
 
   return (
@@ -34,7 +36,11 @@ export const RuntimeSnapshot = () => {
         </h2>
 
         {pallets.map((pallet) => (
-          <PalletItem pallet={pallet} key={`pallet_${pallet.index}`} />
+          <PalletItem
+            scraper={scraper}
+            pallet={pallet}
+            key={`pallet_${pallet.index}`}
+          />
         ))}
       </CanvasCardWrapper>
     </CanvasFullScreenWrapper>

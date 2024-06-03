@@ -65,3 +65,11 @@ export const CanvasSubheading = styled.h3`
     width: 1rem;
   }
 `;
+
+export const RuntimeItemWrapper = styled.div`
+  margin-top: 0.5rem;
+  > h4 {
+    color: var(--text-color-primary);
+    font-family: InterSemiBold, sans-serif;
+  }
+`;
