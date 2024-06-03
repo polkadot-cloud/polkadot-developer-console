@@ -16,7 +16,7 @@ export const getMotionProps = (expanded: boolean) => ({
     },
   },
   transition: {
-    duration: 1,
+    duration: 0.5,
     ease: [0.1, 1, 0.1, 1],
   },
   style: {
