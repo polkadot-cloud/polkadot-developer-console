@@ -150,6 +150,35 @@ export class PalletScraper extends MetadataScraper {
   }
 
   // ------------------------------------------------------
+  // Get errors.
+  // ------------------------------------------------------
+  getErrors(palletName: string) {
+    const pallet = this.getPallet(palletName);
+    if (!pallet) {
+      return [];
+    }
+
+    const errorType = pallet.errors.type;
+    const scraped = this.start(errorType, null, { maxDepth: 2 })?.variant || [];
+    return scraped;
+  }
+
+  // ------------------------------------------------------
+  // Get events.
+  // ------------------------------------------------------
+  getEvents(palletName: string) {
+    const pallet = this.getPallet(palletName);
+    if (!pallet) {
+      return [];
+    }
+
+    const eventsType = pallet.events.type;
+    const scraped =
+      this.start(eventsType, null, { maxDepth: 2 })?.variant || [];
+    return scraped;
+  }
+
+  // ------------------------------------------------------
   // Get calls.
   // ------------------------------------------------------
 

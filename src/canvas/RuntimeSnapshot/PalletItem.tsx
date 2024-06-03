@@ -26,14 +26,27 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
   // Store whether pallet constants are expaneded.
   const [constantsExpanded, setConstantsExpanded] = useState(false);
 
+  // Store whether pallet errors are expaneded.
+  const [errorsExpanded, setErrorsExpanded] = useState(false);
+
+  // Store whether pallet events are expaneded.
+  const [eventsExpanded, setEventsExpanded] = useState(false);
+
   // Store the storage items for the pallet. Lazily populated when user expands.
   const [storageItems, setStorageItems] = useState<PalletItemScraped[]>();
   const fetchingStorageRef = useRef<Sync>('unsynced');
 
   // Store the constants for the pallet. Lazily populated when user expands.
-  // items.
   const [constants, setConstants] = useState<PalletItemScraped[]>();
   const fetchingConstantsRef = useRef<Sync>('unsynced');
+
+  // Store the errors for the pallet. Lazily populated when user expands.
+  const [errors, setErrors] = useState<PalletItemScraped[]>();
+  const fetchingErrorsRef = useRef<Sync>('unsynced');
+
+  // Store the events for the pallet. Lazily populated when user expands.
+  const [events, setEvents] = useState<PalletItemScraped[]>();
+  const fetchingEventsRef = useRef<Sync>('unsynced');
 
   // Get storage items for the active pallet..
   const getStorageItems = async () => {
@@ -41,11 +54,9 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
       return;
     }
     fetchingStorageRef.current = 'syncing';
-    const palletStorage = name
-      ? scraper.getStorage(name, { labelsOnly: true })
-      : [];
+    const result = name ? scraper.getStorage(name, { labelsOnly: true }) : [];
     fetchingStorageRef.current = 'synced';
-    setStorageItems(palletStorage);
+    setStorageItems(result);
   };
 
   // Get pallet constants for the active pallet.
@@ -54,9 +65,31 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
       return;
     }
     fetchingConstantsRef.current = 'syncing';
-    const palletConstants = name ? scraper.getConstants(name) : [];
+    const result = name ? scraper.getConstants(name) : [];
     fetchingConstantsRef.current = 'synced';
-    setConstants(palletConstants);
+    setConstants(result);
+  };
+
+  // Get error items for the active pallet..
+  const getErrors = async () => {
+    if (fetchingErrorsRef.current !== 'unsynced') {
+      return;
+    }
+    fetchingErrorsRef.current = 'syncing';
+    const result = name ? scraper.getErrors(name) : [];
+    fetchingErrorsRef.current = 'synced';
+    setErrors(result);
+  };
+
+  // Get event items for the active pallet..
+  const getEvents = async () => {
+    if (fetchingEventsRef.current !== 'unsynced') {
+      return;
+    }
+    fetchingEventsRef.current = 'syncing';
+    const result = name ? scraper.getEvents(name) : [];
+    fetchingEventsRef.current = 'synced';
+    setEvents(result);
   };
 
   return (
@@ -85,7 +118,7 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
           {!storageItems ? (
             <EmptyItem text="Fetching..." />
           ) : storageItems.length === 0 ? (
-            <EmptyItem text="This pallet has no storage items." />
+            <EmptyItem text="This pallet has no storage items defined." />
           ) : (
             storageItems.map(({ name: storageName, docs: storageDocs }) => (
               <Fragment key={`storage_item_${storageName}`}>
@@ -97,7 +130,6 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
             ))
           )}
         </motion.div>
-
         {/* Constants. */}
         <Subheading
           text="Constants"
@@ -109,7 +141,7 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
           {!constants ? (
             <EmptyItem text="Fetching..." />
           ) : constants.length === 0 ? (
-            <EmptyItem text="This pallet has no runtime constants." />
+            <EmptyItem text="This pallet has no runtime constants defined." />
           ) : (
             constants.map(({ name: constantName, docs: constantDocs }) => (
               <Fragment key={`constant_${constantName}`}>
@@ -121,22 +153,52 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
             ))
           )}
         </motion.div>
-
         {/* Errors. */}
-        <CanvasSubheading>
-          <span>
-            <FontAwesomeIcon icon={faChevronRight} transform="shrink-6" />
-          </span>
-          Errors
-        </CanvasSubheading>
-
+        <Subheading
+          text="Errors"
+          expanded={errorsExpanded}
+          setExpanded={setErrorsExpanded}
+          getter={getErrors}
+        />
+        <motion.div {...getMotionProps(errorsExpanded)}>
+          {!errors ? (
+            <EmptyItem text="Fetching..." />
+          ) : errors.length === 0 ? (
+            <EmptyItem text="This pallet has no errors defined." />
+          ) : (
+            errors.map(({ name: errorName, docs: errorDocs }) => (
+              <Fragment key={`error_${errorName}`}>
+                <RuntimeItemWrapper>
+                  <h4>{errorName}</h4>
+                  {errorDocs?.[0] && <h5>{errorDocs[0]}</h5>}
+                </RuntimeItemWrapper>
+              </Fragment>
+            ))
+          )}
+        </motion.div>
         {/* Events. */}
-        <CanvasSubheading>
-          <span>
-            <FontAwesomeIcon icon={faChevronRight} transform="shrink-6" />
-          </span>
-          Events
-        </CanvasSubheading>
+        <Subheading
+          text="Events"
+          expanded={eventsExpanded}
+          setExpanded={setEventsExpanded}
+          getter={getEvents}
+        />
+        <motion.div {...getMotionProps(eventsExpanded)}>
+          {!events ? (
+            <EmptyItem text="Fetching..." />
+          ) : events.length === 0 ? (
+            <EmptyItem text="This pallet has no events defined." />
+          ) : (
+            events.map(({ name: eventName, docs: eventDocs }) => (
+              <Fragment key={`event_${eventName}`}>
+                <RuntimeItemWrapper>
+                  <h4>{eventName}</h4>
+                  {eventDocs?.[0] && <h5>{eventDocs[0]}</h5>}
+                </RuntimeItemWrapper>
+              </Fragment>
+            ))
+          )}
+        </motion.div>
       </motion.div>
     </>
   );
