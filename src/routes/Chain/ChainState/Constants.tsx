@@ -33,7 +33,7 @@ export const Constants = () => {
   const constantsData = useMemo((): PalletData => {
     // Get pallet list from scraper.
     const scraper = new PalletScraper(Metadata);
-    const pallets = scraper.getList(['constants']);
+    const pallets = scraper.getPalletList(['constants']);
 
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;

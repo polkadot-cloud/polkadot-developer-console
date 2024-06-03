@@ -31,7 +31,7 @@ export const Extrinsics = () => {
     const scraper = new PalletScraper(Metadata, {
       maxDepth: 7,
     });
-    const pallets = scraper.getList(['calls']);
+    const pallets = scraper.getPalletList(['calls']);
 
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;

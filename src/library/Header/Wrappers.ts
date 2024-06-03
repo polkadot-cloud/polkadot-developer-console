@@ -7,7 +7,7 @@ export const HeaderWrapper = styled.div`
   background-color: var(--background-default);
   display: flex;
   align-items: center;
-  padding: 0.4rem 0.55rem;
+  padding: 0.4rem 1.25rem 0.4rem 0.55rem;
   width: 100%;
 
   > div {
@@ -35,7 +35,7 @@ export const HeaderWrapper = styled.div`
 
       > span {
         color: var(--text-color-primary);
-        font-family: Inter, sans-serif;
+        font-family: InterSemiBold, sans-serif;
         margin-left: 0.35rem;
         margin-right: 0.5rem;
         font-size: 0.7rem;
@@ -45,6 +45,16 @@ export const HeaderWrapper = styled.div`
 
     &:last-child {
       justify-content: flex-end;
+
+      > button {
+        opacity: 0.25;
+        transition: opacity 0.2s;
+        margin-left: 1.25rem;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
     }
   }
 `;

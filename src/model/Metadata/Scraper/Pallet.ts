@@ -11,7 +11,7 @@ import type {
   MetadataPalletStorageItem,
   ScraperOptions,
 } from './types';
-import { MetadataScraper } from './Base';
+import { MetadataScraper } from '.';
 import type { MetadataVersion } from 'model/Metadata/types';
 import type { AnyJson } from '@w3ux/utils/types';
 
@@ -27,12 +27,16 @@ export class PalletScraper extends MetadataScraper {
     }
   ) {
     super(metadata, config);
-    const { pallets } = this.metadata.getMetadataJson();
+    const { pallets } = this.metadata.get();
     this.pallets = pallets || [];
   }
 
+  // ------------------------------------------------------
+  // Pallet list.
+  // ------------------------------------------------------
+
   // Gets a sorted list of pallets from metadata.
-  getList(filters?: string[]): PalletListItem[] {
+  getPalletList(filters?: string[]): PalletListItem[] {
     let filtered = this.pallets;
 
     // Filter the pallets with no calls.
@@ -62,6 +66,10 @@ export class PalletScraper extends MetadataScraper {
     );
     return filteredList;
   }
+
+  // ------------------------------------------------------
+  // Get storage items.
+  // ------------------------------------------------------
 
   // Get a pallet's storage items from metadata.
   getStorage(
@@ -141,6 +149,71 @@ export class PalletScraper extends MetadataScraper {
     };
   }
 
+  // ------------------------------------------------------
+  // Get errors.
+  // ------------------------------------------------------
+  getErrors(palletName: string) {
+    const pallet = this.getPallet(palletName);
+    if (!pallet) {
+      return [];
+    }
+
+    const errorType = pallet.errors.type;
+    const scraped = this.start(errorType, null, { maxDepth: 2 })?.variant || [];
+    return scraped;
+  }
+
+  // ------------------------------------------------------
+  // Get events.
+  // ------------------------------------------------------
+  getEvents(palletName: string) {
+    const pallet = this.getPallet(palletName);
+    if (!pallet) {
+      return [];
+    }
+
+    const eventsType = pallet.events.type;
+    const scraped =
+      this.start(eventsType, null, { maxDepth: 2 })?.variant || [];
+    return scraped;
+  }
+
+  // ------------------------------------------------------
+  // Get calls.
+  // ------------------------------------------------------
+
+  // Get a pallet's calls list from metadata.
+  getCalls(palletName: string): PalletItemScraped[] {
+    const pallet = this.getPallet(palletName);
+    if (!pallet) {
+      return [];
+    }
+
+    // NOTE: Checking if calls are defined for this pallet as there may be none defined.
+    const callType = pallet.calls?.type;
+    if (!callType) {
+      return [];
+    }
+
+    // Get call variant type without scraping, All call signatures need is to read the `fields`
+    // property.
+    const callList = this.getPalletCalls(palletName);
+
+    // Format the call list for rendering as select dropdown.
+    const formattedCallList = callList.map((item: AnyJson) => {
+      const { name, docs, fields } = item;
+      return {
+        name,
+        docs,
+        fieldNames: fields
+          .map((field: { name: string }) => field.name)
+          .join(', '),
+      };
+    });
+
+    return formattedCallList;
+  }
+
   getPalletCalls(palletName: string) {
     const pallet = this.pallets?.find(
       ({ name }: { name: string }) => name === palletName
@@ -200,6 +273,10 @@ export class PalletScraper extends MetadataScraper {
     return result;
   }
 
+  // ------------------------------------------------------
+  // Get constants.
+  // ------------------------------------------------------
+
   // Get a pallet's constants from metadata.
   getConstants(palletName: string) {
     const pallet = this.getPallet(palletName);
@@ -231,38 +308,6 @@ export class PalletScraper extends MetadataScraper {
     }
 
     return result;
-  }
-
-  // Get a pallet's calls list from metadata.
-  getCalls(palletName: string): PalletItemScraped[] {
-    const pallet = this.getPallet(palletName);
-    if (!pallet) {
-      return [];
-    }
-
-    // NOTE: Checking if calls are defined for this pallet as there may be none defined.
-    const callType = pallet.calls?.type;
-    if (!callType) {
-      return [];
-    }
-
-    // Get call variant type without scraping, All call signatures need is to read the `fields`
-    // property.
-    const callList = this.getPalletCalls(palletName);
-
-    // Format the call list for rendering as select dropdown.
-    const formattedCallList = callList.map((item: AnyJson) => {
-      const { name, docs, fields } = item;
-      return {
-        name,
-        docs,
-        fieldNames: fields
-          .map((field: { name: string }) => field.name)
-          .join(', '),
-      };
-    });
-
-    return formattedCallList;
   }
 
   // ------------------------------------------------------

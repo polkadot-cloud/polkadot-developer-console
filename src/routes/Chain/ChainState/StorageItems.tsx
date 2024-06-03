@@ -33,7 +33,7 @@ export const StorageItems = () => {
   const storageData = useMemo((): PalletData => {
     // Get pallet list from scraper.
     const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
-    const pallets = scraper.getList(['storage']);
+    const pallets = scraper.getPalletList(['storage']);
 
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;

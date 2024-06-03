@@ -12,13 +12,13 @@ export class MetadataV14 implements MetadataVersion {
     this.metadata = metadata;
   }
 
-  getMetadataJson() {
-    const json = this.metadata.toJSON().metadata as { v14: unknown };
-    return json.v14;
+  get() {
+    const json = this.metadata as unknown;
+    return json;
   }
 
   palletExists(palletName: string) {
-    const json: AnyJson = this.getMetadataJson();
+    const json: AnyJson = this.get();
     return (
       json?.pallets?.find(
         ({ name }: { name: string }) => name === palletName
