@@ -16,17 +16,19 @@ import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
 import { useSelectFirst } from 'hooks/useSelectFirst';
 import { SelectDropdown } from 'library/SelectDropdown';
 import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
+import { useInputForm } from '../InputForm/provider';
 
 export const ChainStateList = ({
   items,
-  inputNamespace,
   chainUiSection,
   activeItem,
   subject,
 }: ChainStateListProps) => {
   const { tabId } = useActiveTab();
+  const { namespace } = useInputForm();
   const { getChainUi, setChainUiNamespace, resetInputArgSection } =
     useChainUi();
+
   const chainUi = getChainUi(tabId, chainUiSection);
 
   // Whether dropdown is open.
@@ -109,8 +111,8 @@ export const ChainStateList = ({
   // Manage `activeItem` changes.
   useEffect(() => {
     // Reset input args when active item changes.
-    if (inputNamespace) {
-      resetInputArgSection(tabId, inputNamespace);
+    if (namespace) {
+      resetInputArgSection(tabId, namespace);
     }
 
     // On initial render, set the selected item to the first list item, if any.

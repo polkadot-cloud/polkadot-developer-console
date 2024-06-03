@@ -10,22 +10,21 @@ import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 import { useActiveTab } from 'contexts/ActiveTab';
 import type { PalletData } from './types';
 import { EncodedDetails } from './EncodedDetails';
-import { InputForm } from './InputForm';
-import type { InputNamespace } from 'contexts/ChainUi/types';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
 import { useChain } from '../Provider';
 import { ChainStateController } from 'controllers/ChainState';
 import type { AnyJson } from '@w3ux/utils/types';
 import { camelize } from '@w3ux/utils';
 import { Results } from './Results';
+import { InputFormProvider } from '../InputForm/provider';
+import { InputForm } from '../InputForm';
 
-export const StorageItems = () => {
+export const StorageItemsInner = () => {
   const { tabId } = useActiveTab();
   const { chainSpec, instanceId } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUiSection = 'storage';
-  const inputNamespace: InputNamespace = 'storage';
   const chainUi = getChainUi(tabId, chainUiSection);
   const Metadata = chainSpec.metadata;
 
@@ -108,14 +107,12 @@ export const StorageItems = () => {
         <ChainStateList
           subject="Storage Item"
           items={items}
-          inputNamespace={inputNamespace}
           activeItem={activeItem}
           chainUiSection={chainUiSection}
         />
       </SelectFormWrapper>
       <InputForm
         inputForm={inputForm}
-        namespace={inputNamespace}
         activeItem={activeItem}
         onSubmit={onSubmit}
       />
@@ -127,3 +124,9 @@ export const StorageItems = () => {
     </>
   );
 };
+
+export const StorageItems = () => (
+  <InputFormProvider namespace="storage">
+    <StorageItemsInner />
+  </InputFormProvider>
+);

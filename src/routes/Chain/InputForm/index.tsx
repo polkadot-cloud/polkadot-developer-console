@@ -2,14 +2,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Fragment } from 'react/jsx-runtime';
-import { InputFormWrapper } from '../../Wrappers';
-import type { InputFormProps } from '../types';
+import { InputFormWrapper } from '../Wrappers';
 import type { AnyJson } from '@w3ux/utils/types';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { faCircleRight } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useInput } from '../../Inputs';
-import { InputFormProvider, useInputForm } from './provider';
+import { useInput } from '../Inputs';
+import { useInputForm } from './provider';
 import type { InputFormInnerProps } from './types';
 import {
   formatArg,
@@ -20,7 +19,7 @@ import {
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
 
-export const InputFormInner = ({
+export const InputForm = ({
   inputForm,
   activeItem,
   onSubmit,
@@ -43,6 +42,7 @@ export const InputFormInner = ({
     inputForm = [inputForm];
   }
 
+  // TODO: Move out of component, pass as optional prop if submission is done in this component.
   // Handle submit query.
   const handleSubmit = () => {
     // Get input keys for manipulation.
@@ -104,6 +104,7 @@ export const InputFormInner = ({
     // Submit `storage` and `call` subscriptions based on namespace.
     console.log('---');
     console.log(resultInput);
+
     onSubmit(resultInput);
   };
 
@@ -141,18 +142,3 @@ export const InputFormInner = ({
     </InputFormWrapper>
   );
 };
-
-export const InputForm = ({
-  namespace,
-  inputForm,
-  activeItem,
-  onSubmit,
-}: InputFormProps) => (
-  <InputFormProvider namespace={namespace}>
-    <InputFormInner
-      inputForm={inputForm}
-      activeItem={activeItem}
-      onSubmit={onSubmit}
-    />
-  </InputFormProvider>
-);

@@ -10,16 +10,16 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useMemo, useState } from 'react';
 import type { PalletData } from '../ChainState/types';
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
-import { InputForm } from '../ChainState/InputForm';
-import type { InputNamespace } from 'contexts/ChainUi/types';
+import { InputForm } from '../InputForm';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
 import { FlexWrapper } from 'routes/Common/Wrappers';
 import { useChain } from '../Provider';
 import { SubmitTx } from 'library/SubmitTx';
 import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import type { MaybeAddress } from '@w3ux/react-connect-kit/types';
+import { InputFormProvider } from '../InputForm/provider';
 
-export const Extrinsics = () => {
+export const ExtrinsicsInner = () => {
   const { tabId } = useActiveTab();
   const { chainSpec, instanceId, chain, api } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
@@ -28,7 +28,6 @@ export const Extrinsics = () => {
   const [fromAddress] = useState<MaybeAddress>(null);
 
   const chainUiSection = 'calls';
-  const inputNamespace: InputNamespace = 'call';
   const chainUi = getChainUi(tabId, chainUiSection);
   const Metadata = chainSpec.metadata;
   const {
@@ -131,15 +130,10 @@ export const Extrinsics = () => {
             setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
           }}
         />
-        <CallList
-          items={items}
-          inputNamespace={inputNamespace}
-          activeItem={activeItem}
-        />
+        <CallList items={items} activeItem={activeItem} />
       </SelectFormWrapper>
       <InputForm
         inputForm={inputForm}
-        namespace={inputNamespace}
         activeItem={activeItem}
         onSubmit={() => {
           /* TODO: Implement */
@@ -162,3 +156,9 @@ export const Extrinsics = () => {
     </FlexWrapper>
   );
 };
+
+export const Extrinsics = () => (
+  <InputFormProvider namespace="call">
+    <ExtrinsicsInner />
+  </InputFormProvider>
+);
