@@ -112,7 +112,7 @@ export const ExtrinsicsInner = () => {
     let resultInput = handleSubmit();
 
     // Wrap resulting args into an array if it is not already.
-    if (!Array.isArray(resultInput)) {
+    if (!Array.isArray(resultInput) && resultInput !== undefined) {
       resultInput = [resultInput];
     }
 
