@@ -19,5 +19,5 @@ export interface InputFormProviderProps {
 export interface InputFormInnerProps {
   inputForm: AnyJson;
   activeItem: string | null;
-  onSubmit: (inputs: AnyJson) => void;
+  onSubmit?: (inputs: AnyJson) => void;
 }

@@ -11,7 +11,7 @@ import { useMemo, useState } from 'react';
 import type { PalletData } from '../ChainState/types';
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 import { InputForm } from '../InputForm';
-import { SelectFormWrapper } from 'library/Inputs/Wrappers';
+import { SelectFormWrapper, SenderWrapper } from 'library/Inputs/Wrappers';
 import { FlexWrapper } from 'routes/Common/Wrappers';
 import { useChain } from '../Provider';
 import { SubmitTx } from 'library/SubmitTx';
@@ -20,6 +20,8 @@ import type { MaybeAddress } from '@w3ux/react-connect-kit/types';
 import { InputFormProvider, useInputForm } from '../InputForm/provider';
 import { camelize } from '@w3ux/utils';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
+import { AccountId32 } from 'library/Inputs/AccountId32';
+import { Label } from 'library/Inputs/Label';
 
 export const ExtrinsicsInner = () => {
   const { tabId } = useActiveTab();
@@ -33,7 +35,9 @@ export const ExtrinsicsInner = () => {
     : [];
 
   // Store the sender address.
-  const [fromAddress] = useState<MaybeAddress>(accounts?.[0]?.address || null);
+  const [fromAddress, setFromAddress] = useState<MaybeAddress>(
+    accounts?.[0]?.address || null
+  );
 
   const chainUiSection = 'calls';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -151,13 +155,17 @@ export const ExtrinsicsInner = () => {
         />
         <CallList items={items} activeItem={activeItem} />
       </SelectFormWrapper>
-      <InputForm
-        inputForm={inputForm}
-        activeItem={activeItem}
-        onSubmit={() => {
-          /* TODO: Implement */
-        }}
-      />
+      <InputForm inputForm={inputForm} activeItem={activeItem} />
+
+      <SenderWrapper>
+        <Label value="Sender" marginTop />
+        <AccountId32
+          defaultValue={fromAddress || undefined}
+          accounts={accounts}
+          onChange={(val) => setFromAddress(val)}
+        />
+      </SenderWrapper>
+
       <SubmitTx
         {...submitExtrinsic}
         valid={submittable}
@@ -168,9 +176,6 @@ export const ExtrinsicsInner = () => {
         unit={unit}
         existentialDeposit={existentialDeposit}
         transactionVersion={String(transactionVersion)}
-        style={{
-          noBorder: true,
-        }}
       />
     </FlexWrapper>
   );

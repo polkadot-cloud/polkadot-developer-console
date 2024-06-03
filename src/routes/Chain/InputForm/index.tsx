@@ -53,16 +53,18 @@ export const InputForm = ({
             );
           })
         )}
-      <section className="footer">
-        <ButtonText onClick={() => handleSubmit(onSubmit)}>
-          Submit
-          <FontAwesomeIcon
-            icon={faCircleRight}
-            transform="shrink-1"
-            className="iconRight"
-          />
-        </ButtonText>
-      </section>
+      {onSubmit !== undefined && (
+        <section className="footer">
+          <ButtonText onClick={() => handleSubmit(onSubmit)}>
+            Submit
+            <FontAwesomeIcon
+              icon={faCircleRight}
+              transform="shrink-1"
+              className="iconRight"
+            />
+          </ButtonText>
+        </section>
+      )}
     </InputFormWrapper>
   );
 };
