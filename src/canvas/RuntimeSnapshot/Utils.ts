@@ -1,8 +1,8 @@
 // Copyright 2024 @polkadot-developer-console/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-export // Motion props for handling section expansion.
-const getMotionProps = (expanded: boolean) => ({
+// Motion props for handling section expansion.
+export const getMotionProps = (expanded: boolean) => ({
   initial: 'hidden',
   animate: expanded ? 'show' : 'hidden',
   variants: {
