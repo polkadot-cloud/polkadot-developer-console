@@ -32,6 +32,9 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
   // Store whether pallet events are expaneded.
   const [eventsExpanded, setEventsExpanded] = useState(false);
 
+  // Store whether pallet calls are expaneded.
+  const [callsExpanded, setCallsExpanded] = useState(false);
+
   // Store the storage items for the pallet. Lazily populated when user expands.
   const [storageItems, setStorageItems] = useState<PalletItemScraped[]>();
   const fetchingStorageRef = useRef<Sync>('unsynced');
@@ -47,6 +50,10 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
   // Store the events for the pallet. Lazily populated when user expands.
   const [events, setEvents] = useState<PalletItemScraped[]>();
   const fetchingEventsRef = useRef<Sync>('unsynced');
+
+  // Store the calls for the pallet. Lazily populated when user expands.
+  const [calls, setCalls] = useState<PalletItemScraped[]>();
+  const fetchingCallsRef = useRef<Sync>('unsynced');
 
   // Get storage items for the active pallet..
   const getStorageItems = async () => {
@@ -92,6 +99,17 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
     setEvents(result);
   };
 
+  // Get call items for the active pallet.
+  const getCalls = async () => {
+    if (fetchingCallsRef.current !== 'unsynced') {
+      return;
+    }
+    fetchingCallsRef.current = 'syncing';
+    const result = name ? scraper.getCalls(name) : [];
+    fetchingCallsRef.current = 'synced';
+    setCalls(result);
+  };
+
   return (
     <>
       <CanvasSubheading>
@@ -121,7 +139,7 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
             <EmptyItem text="This pallet has no storage items defined." />
           ) : (
             storageItems.map(({ name: storageName, docs: storageDocs }) => (
-              <Fragment key={`storage_item_${storageName}`}>
+              <Fragment key={`${pallet}_storage_item_${storageName}`}>
                 <RuntimeItemWrapper>
                   <h4>{storageName}</h4>
                   {storageDocs?.[0] && <h5>{storageDocs[0]}</h5>}
@@ -144,7 +162,7 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
             <EmptyItem text="This pallet has no runtime constants defined." />
           ) : (
             constants.map(({ name: constantName, docs: constantDocs }) => (
-              <Fragment key={`constant_${constantName}`}>
+              <Fragment key={`${pallet}_constant_${constantName}`}>
                 <RuntimeItemWrapper>
                   <h4>{constantName}</h4>
                   {constantDocs?.[0] && <h5>{constantDocs[0]}</h5>}
@@ -167,7 +185,7 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
             <EmptyItem text="This pallet has no errors defined." />
           ) : (
             errors.map(({ name: errorName, docs: errorDocs }) => (
-              <Fragment key={`error_${errorName}`}>
+              <Fragment key={`${pallet}_error_${errorName}`}>
                 <RuntimeItemWrapper>
                   <h4>{errorName}</h4>
                   {errorDocs?.[0] && <h5>{errorDocs[0]}</h5>}
@@ -190,10 +208,33 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
             <EmptyItem text="This pallet has no events defined." />
           ) : (
             events.map(({ name: eventName, docs: eventDocs }) => (
-              <Fragment key={`event_${eventName}`}>
+              <Fragment key={`${pallet}_event_${eventName}`}>
                 <RuntimeItemWrapper>
                   <h4>{eventName}</h4>
                   {eventDocs?.[0] && <h5>{eventDocs[0]}</h5>}
+                </RuntimeItemWrapper>
+              </Fragment>
+            ))
+          )}
+        </motion.div>
+        {/* Calls. */}
+        <Subheading
+          text="Calls"
+          expanded={callsExpanded}
+          setExpanded={setCallsExpanded}
+          getter={getCalls}
+        />
+        <motion.div {...getMotionProps(callsExpanded)}>
+          {!calls ? (
+            <EmptyItem text="Fetching..." />
+          ) : calls.length === 0 ? (
+            <EmptyItem text="This pallet has no calls defined." />
+          ) : (
+            calls.map(({ name: callName, docs: callDocs }) => (
+              <Fragment key={`${pallet}_call_${callName}`}>
+                <RuntimeItemWrapper>
+                  <h4>{callName}</h4>
+                  {callDocs?.[0] && <h5>{callDocs[0]}</h5>}
                 </RuntimeItemWrapper>
               </Fragment>
             ))
