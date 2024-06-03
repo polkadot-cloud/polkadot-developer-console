@@ -29,6 +29,7 @@ export const SubmitTx = ({
   submitting = false,
   displayFor = 'default',
   transactionVersion,
+  style,
 }: SubmitTxProps) => {
   const { getNotEnoughFunds } = useAccounts();
   const { setModalResize } = useOverlay().modal;
@@ -108,6 +109,7 @@ export const SubmitTx = ({
             />
           )
         }
+        style={style}
       />
     </ExtrinsicDataProvider>
   );

@@ -51,7 +51,7 @@ export interface APIChainSpecVersion {
   authoringVersion: number;
   implName: string;
   implVersion: number;
-  specName: string;
+  specName: ChainId;
   specVersion: number;
   stateVersion: number;
   transactionVersion: number;

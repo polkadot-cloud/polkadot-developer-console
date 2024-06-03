@@ -50,7 +50,8 @@ export const ChainExplorerProvider = ({
   const { destroyTabChainUi } = useChainUi();
   const { getTabApiIndex } = useApiIndexer();
   const { destroyTabChainState } = useChainState();
-  const { handleConnectApi, getChainSpec } = useChainSpaceEnv();
+  const { handleConnectApi, getChainSpec, getApiInstanceById } =
+    useChainSpaceEnv();
 
   // Connect tab to an Api instance and update its chain data.
   const connectChainExplorer = (
@@ -194,10 +195,17 @@ export const ChainExplorerProvider = ({
       return false;
     }
 
+    // Ensure that there is an active `ApiPromise` for the instance id.
+    const api = getApiInstanceById(instanceId)?.api;
+    if (!api) {
+      return false;
+    }
+
     return {
       chain,
       chainSpec,
       instanceId,
+      api,
     };
   };
 

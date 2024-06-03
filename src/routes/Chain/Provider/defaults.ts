@@ -4,6 +4,7 @@
 import type { TabChainData } from 'contexts/Tabs/types';
 import type { IntegrityCheckedChainContext } from './types';
 import { dummyChainSpec } from 'contexts/ChainSpaceEnv/defaults';
+import { ApiPromise } from '@polkadot/api';
 
 // NOTE: Only dummy values to keep the type checker happy. They are over-written by the
 // initial context values upon initialisation.
@@ -22,4 +23,5 @@ export const defaultChainContextInterface: IntegrityCheckedChainContext = {
   chain: dummyChain,
   chainSpec: dummyChainSpec,
   instanceId: 'tab_0_0',
+  api: new ApiPromise(),
 };

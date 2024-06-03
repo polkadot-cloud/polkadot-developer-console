@@ -18,8 +18,11 @@ export const Tx = ({
   dangerMessage,
   SignerComponent,
   displayFor = 'default',
+  style,
 }: TxProps) => (
-  <Wrapper className={margin ? 'margin' : undefined}>
+  <Wrapper
+    className={`${style?.noBorder ? `noBorder` : ``} ${margin ? 'margin' : undefined}`}
+  >
     <div
       className={`inner${appendOrEmpty(['canvas', 'card'].includes(displayFor), displayFor)}`}
     >

@@ -30,7 +30,8 @@ export const useParaSetup = () => useContext(ParaSetupContext);
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   const { autoTabNaming } = useSettings();
   const { getTabApiIndex } = useApiIndexer();
-  const { getChainSpec, handleConnectApi } = useChainSpaceEnv();
+  const { getChainSpec, handleConnectApi, getApiInstanceById } =
+    useChainSpaceEnv();
   const {
     tabs,
     setTabs,
@@ -101,10 +102,17 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
       return false;
     }
 
+    // Ensure that there is an active `ApiPromise` for the instance id.
+    const api = getApiInstanceById(instanceId)?.api;
+    if (!api) {
+      return false;
+    }
+
     return {
       chain,
       chainSpec,
       instanceId,
+      api,
     };
   };
 

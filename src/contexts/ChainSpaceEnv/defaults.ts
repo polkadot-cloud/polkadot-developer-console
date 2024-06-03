@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
+import type { APIChainSpec } from 'model/Api/types';
 import type { ChainSpaceEnvContextInterface } from './types';
 
 export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
@@ -18,14 +19,14 @@ export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
 
 // NOTE: Only dummy values to keep the type checker happy. They should be over-written by the
 // initial context values upon initialisation.
-export const dummyChainSpec = {
+export const dummyChainSpec: APIChainSpec = {
   chain: '',
   version: {
     apis: {},
     authoringVersion: 0,
     implName: '',
     implVersion: 0,
-    specName: '',
+    specName: 'polkadot',
     specVersion: 0,
     stateVersion: 0,
     transactionVersion: 0,
