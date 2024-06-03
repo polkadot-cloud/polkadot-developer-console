@@ -86,11 +86,14 @@ export const Extrinsics = () => {
       ? new FormatInputFields(activeListItem).format()
       : null;
 
+  // TODO: check if actually valid.
+  const valid = fromAddress !== null;
+
   // Format the transaction to submit, or return `null` if invalid.
   const getTx = () => {
     let tx = null;
 
-    if (!api) {
+    if (!api || !valid) {
       return tx;
     }
     try {
@@ -101,9 +104,6 @@ export const Extrinsics = () => {
       return null;
     }
   };
-
-  // // TODO: check if actually valid.
-  const valid = true;
 
   // Prepare the extrinsic.
   const submitExtrinsic = useSubmitExtrinsic({
