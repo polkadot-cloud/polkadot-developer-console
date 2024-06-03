@@ -236,6 +236,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
 
   // Reset state for a tab.
   const destroyTabChainState = () => {
+    console.log('destory tab chain state for', instanceId);
     if (!instanceId) {
       return;
     }
