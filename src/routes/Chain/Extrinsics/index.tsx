@@ -7,7 +7,7 @@ import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { Header } from './Header';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { PalletData } from '../ChainState/types';
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 import { InputForm } from '../ChainState/InputForm';
@@ -15,16 +15,28 @@ import type { InputNamespace } from 'contexts/ChainUi/types';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
 import { FlexWrapper } from 'routes/Common/Wrappers';
 import { useChain } from '../Provider';
+import { SubmitTx } from 'library/SubmitTx';
+import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
+import type { MaybeAddress } from '@w3ux/react-connect-kit/types';
 
 export const Extrinsics = () => {
   const { tabId } = useActiveTab();
-  const { chainSpec } = useChain();
+  const { chainSpec, instanceId, chain, api } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
+
+  // Store the sender address.
+  const [fromAddress] = useState<MaybeAddress>(null);
 
   const chainUiSection = 'calls';
   const inputNamespace: InputNamespace = 'call';
   const chainUi = getChainUi(tabId, chainUiSection);
   const Metadata = chainSpec.metadata;
+  const {
+    ss58Prefix,
+    consts: { existentialDeposit },
+  } = chainSpec;
+  const { unit, units, id: chainId } = chain;
+  const { transactionVersion } = chainSpec.version;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const callData = useMemo((): PalletData => {
@@ -74,6 +86,39 @@ export const Extrinsics = () => {
       ? new FormatInputFields(activeListItem).format()
       : null;
 
+  // Format the transaction to submit, or return `null` if invalid.
+  const getTx = () => {
+    let tx = null;
+
+    if (!api) {
+      return tx;
+    }
+    try {
+      // TODO: replace with actual tx.
+      tx = api.tx.staking.chill();
+      return tx;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  // // TODO: check if actually valid.
+  const valid = true;
+
+  // Prepare the extrinsic.
+  const submitExtrinsic = useSubmitExtrinsic({
+    instanceId,
+    api,
+    chainId,
+    ss58Prefix,
+    tx: getTx(),
+    from: fromAddress,
+    shouldSubmit: true,
+    callbackSubmit: () => {
+      /* Do nothing. */
+    },
+  });
+
   return (
     <FlexWrapper>
       <Header />
@@ -98,6 +143,20 @@ export const Extrinsics = () => {
         activeItem={activeItem}
         onSubmit={() => {
           /* TODO: Implement */
+        }}
+      />
+      <SubmitTx
+        {...submitExtrinsic}
+        valid={valid}
+        instanceId={instanceId}
+        chainId={chainId}
+        ss58Prefix={ss58Prefix}
+        units={units}
+        unit={unit}
+        existentialDeposit={existentialDeposit}
+        transactionVersion={String(transactionVersion)}
+        style={{
+          noBorder: true,
         }}
       />
     </FlexWrapper>
