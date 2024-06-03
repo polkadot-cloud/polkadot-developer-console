@@ -105,6 +105,10 @@ export const Wrapper = styled.div`
       }
     }
   }
+
+  &.noBorder > .inner {
+    border-top: none;
+  }
 `;
 
 export const SignerWrapper = styled.p`

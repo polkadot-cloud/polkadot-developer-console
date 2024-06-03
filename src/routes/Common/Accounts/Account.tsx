@@ -15,6 +15,7 @@ import { ButtonIconCircle } from 'library/Buttons/ButtonIconCircle';
 import { faBars, faPaperPlane } from '@fortawesome/pro-solid-svg-icons';
 import { useOverlay } from 'library/Overlay/Provider';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useChain } from 'routes/Chain/Provider';
 
 export const Account = ({
   instanceId,
@@ -25,18 +26,16 @@ export const Account = ({
 }: AccountProps) => {
   const { tab } = useActiveTab();
   const { openMenu } = useMenu();
+  const { api: apiInstance } = useChain();
   const { openModal } = useOverlay().modal;
+  const { getChainSpec } = useChainSpaceEnv();
   const { getBalance, getLocks } = useAccounts();
-  const { getApiInstanceById, getChainSpec } = useChainSpaceEnv();
 
   const chainSpec = getChainSpec(instanceId);
   const { name, address } = account;
   const unit = chain.unit;
   const units = chain.units;
   const ss58Prefix = chain.ss58;
-
-  // Get the api instance for the the instance id.
-  const apiInstance = getApiInstanceById(instanceId)?.api;
 
   const balance = getBalance(instanceId, address);
   const { maxLock } = getLocks(instanceId, address);
@@ -70,23 +69,20 @@ export const Account = ({
                 transform="shrink-4"
                 tooltipText="Transfer Funds"
                 onClick={() => {
-                  if (apiInstance) {
-                    openModal({
-                      key: 'Transfer',
-                      options: {
-                        address,
-                        instanceId,
-                        chainId,
-                        unit,
-                        units,
-                        api: apiInstance,
-                        ss58Prefix,
-                        existentialDeposit,
-                        transactionVersion:
-                          chainSpec?.version.transactionVersion,
-                      },
-                    });
-                  }
+                  openModal({
+                    key: 'Transfer',
+                    options: {
+                      address,
+                      instanceId,
+                      chainId,
+                      unit,
+                      units,
+                      api: apiInstance,
+                      ss58Prefix,
+                      existentialDeposit,
+                      transactionVersion: chainSpec?.version.transactionVersion,
+                    },
+                  });
                 }}
               />
               <ButtonIconCircle

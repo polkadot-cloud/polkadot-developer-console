@@ -61,7 +61,7 @@ export class FormatInputFields {
       case 'compact':
         result.compact = {
           label: arg.compact.label,
-          form: this.getTypeInput(arg.compact.type),
+          form: this.getTypeInput(arg.compact),
         };
         break;
 
@@ -74,9 +74,20 @@ export class FormatInputFields {
           label: arg.label,
           // Treat unsigned integers as text inputs. NOTE: Could improve by allowing minus and
           // decimal in `number` input.
-          form: ['char', 'str', 'i8', 'i16', 'i32', 'i64', 'i128'].includes(
-            arg.label
-          )
+          form: [
+            'char',
+            'str',
+            'i8',
+            'i16',
+            'i32',
+            'i64',
+            'i128',
+            'u8',
+            'u16',
+            'u32',
+            'u64',
+            'u128',
+          ].includes(arg.label)
             ? 'text'
             : arg.label === 'bool'
               ? 'checkbox'

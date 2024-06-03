@@ -21,7 +21,12 @@ export type SubmitTxProps = SubmitProps & {
   valid?: boolean;
   existentialDeposit: BigNumber;
   transactionVersion: string;
+  style?: SubmitTxStyleProps;
 };
+
+export interface SubmitTxStyleProps {
+  noBorder?: boolean;
+}
 
 export interface SubmitProps {
   uid?: number;

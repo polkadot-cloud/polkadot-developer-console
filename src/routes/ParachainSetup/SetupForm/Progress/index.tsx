@@ -4,24 +4,22 @@
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { ProgressWrapper, RelayIconWrapper } from '../Wrappers';
-import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { Icon } from '../Icon';
 import { Section } from './Section';
 import { Connector } from './Connector';
+import { useParachain } from 'routes/ParachainSetup/Provider';
 
 export const Progress = () => {
   const { getActiveStep } = useParaSetup();
-  const { tabId, ownerId } = useActiveTab();
-  const { getApiInstance } = useChainSpaceEnv();
+  const { tabId } = useActiveTab();
+  const {
+    chain: { id: chainId },
+  } = useParachain();
 
   const activeStep = getActiveStep(tabId);
-  const relayInstance = getApiInstance(ownerId, 'parachainSetup');
-
-  // Get the relay chain icon, if available.
-  const relayIcon = relayInstance ? relayInstance.chainId : undefined;
 
   // Whether to show the status icons.
-  const collapsedStatus = relayIcon !== undefined;
+  const collapsedStatus = true;
 
   // Temporary flag for incomplete status items until proper state is introduced.
   const showStatus = false;
@@ -32,13 +30,13 @@ export const Progress = () => {
         stepId="connect_relay"
         label="Select Relay Chain"
         collapsedStatus={collapsedStatus}
-        showStatus={relayIcon !== undefined}
+        showStatus={chainId !== undefined}
       >
-        {relayIcon && (
+        {chainId && (
           <RelayIconWrapper
             className={`${activeStep === 'connect_relay' ? `active` : ``}`}
           >
-            <Icon icon={relayIcon} />
+            <Icon icon={chainId} />
           </RelayIconWrapper>
         )}
       </Section>

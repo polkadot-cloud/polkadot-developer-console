@@ -12,13 +12,11 @@ import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { CallListItem, CallListProps } from './types';
 import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
+import { useInputForm } from '../InputForm/provider';
 
-export const CallList = ({
-  items,
-  activeItem,
-  inputNamespace,
-}: CallListProps) => {
+export const CallList = ({ items, activeItem }: CallListProps) => {
   const { tabId } = useActiveTab();
+  const { namespace } = useInputForm();
   const { getChainUi, setChainUiNamespace, resetInputArgSection } =
     useChainUi();
 
@@ -64,8 +62,8 @@ export const CallList = ({
 
   // Reset input args when active item changes.
   useEffect(() => {
-    if (inputNamespace) {
-      resetInputArgSection(tabId, inputNamespace);
+    if (namespace) {
+      resetInputArgSection(tabId, namespace);
     }
   }, [activeItem]);
 

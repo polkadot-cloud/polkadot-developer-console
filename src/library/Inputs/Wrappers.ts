@@ -265,3 +265,8 @@ export const TextInputWrapper = styled.div`
     }
   }
 `;
+
+export const SenderWrapper = styled.div`
+  flex: 1;
+  margin-bottom: 1rem;
+`;

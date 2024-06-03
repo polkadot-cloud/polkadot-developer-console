@@ -8,6 +8,7 @@ import type { MutableRefObject, ReactNode } from 'react';
 export interface InputFormContextInterface {
   namespace: InputNamespace;
   inputKeysRef: MutableRefObject<Record<string, string>>;
+  handleSubmit: (onSubmit?: (inputArgs: AnyJson) => void) => AnyJson;
 }
 
 export interface InputFormProviderProps {
@@ -18,5 +19,5 @@ export interface InputFormProviderProps {
 export interface InputFormInnerProps {
   inputForm: AnyJson;
   activeItem: string | null;
-  onSubmit: (inputs: AnyJson) => void;
+  onSubmit?: (inputs: AnyJson) => void;
 }
