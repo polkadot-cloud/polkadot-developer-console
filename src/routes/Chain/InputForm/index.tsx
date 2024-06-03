@@ -10,14 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useInput } from '../Inputs';
 import { useInputForm } from './provider';
 import type { InputFormInnerProps } from './types';
-import {
-  formatArg,
-  getDeepestKeys,
-  getParentKeyValues,
-  updateInputsAndRemoveChildren,
-} from './Utils';
-import { useChainUi } from 'contexts/ChainUi';
-import { useActiveTab } from 'contexts/ActiveTab';
 
 export const InputForm = ({
   inputForm,
@@ -25,9 +17,7 @@ export const InputForm = ({
   onSubmit,
 }: InputFormInnerProps) => {
   const { readInput } = useInput();
-  const { tabId } = useActiveTab();
-  const { getInputArgs } = useChainUi();
-  const { namespace, inputKeysRef } = useInputForm();
+  const { namespace, inputKeysRef, handleSubmit } = useInputForm();
 
   // Reset input keys accumulator on every render.
   if (inputKeysRef.current) {
@@ -41,72 +31,6 @@ export const InputForm = ({
   if (!Array.isArray(inputForm) && !!inputForm) {
     inputForm = [inputForm];
   }
-
-  // TODO: Move out of component, pass as optional prop if submission is done in this component.
-  // Handle submit query.
-  const handleSubmit = () => {
-    // Get input keys for manipulation.
-    let inputKeys = { ...inputKeysRef.current } as Record<string, AnyJson>;
-    const argValues = getInputArgs(tabId, namespace);
-
-    // Gets the deepest keys of inputKeys object. There could be more than 1 key with the
-    // longest length.
-    let { deepestKeys, maxLength } = getDeepestKeys(inputKeys);
-
-    // Recursively construct input values.
-    do {
-      // Take the values of those deepest keys.
-      const deepestKeysWithValue = Object.fromEntries(
-        deepestKeys.map((key) => [key, inputKeys[key]])
-      );
-
-      // Exit early if deepest key is only 1.
-      if (maxLength === 1) {
-        inputKeys[1] = formatArg(inputKeys[1], '1', argValues?.[1], argValues);
-        break;
-      }
-
-      // Get parent keys of deepest keys.
-      const parentValues = getParentKeyValues(
-        inputKeys,
-        argValues || {},
-        deepestKeysWithValue
-      );
-
-      // For each key of `parentValues` commit the value to `inputKeys` under the same
-      // key.
-      inputKeys = updateInputsAndRemoveChildren(
-        inputKeys,
-        parentValues,
-        deepestKeys
-      );
-
-      // Update `deepestKeys` for next iteration.
-      const newDeepestKeys = getDeepestKeys(inputKeys);
-      deepestKeys = newDeepestKeys.deepestKeys;
-      maxLength = newDeepestKeys.maxLength;
-    } while (deepestKeys.length > 1);
-
-    // Determine whether inputs are empty.
-    const isEmpty = Object.values(inputKeys).length === 0;
-
-    // Determine whether there is a single argument or a tuple of arguments.
-    const isTuple = Array.isArray(inputKeys[1]);
-
-    // Take the resulting arguments for query submission. If there are no inputs, no
-    // arguments are needed for the query.
-    const resultInput = isEmpty
-      ? null
-      : isTuple
-        ? Object.values(inputKeys)?.[0][1]
-        : Object.values(inputKeys)?.[0];
-
-    // Submit `storage` and `call` subscriptions based on namespace.
-    console.log('---');
-    console.log(resultInput);
-
-    onSubmit(resultInput);
-  };
 
   return (
     <InputFormWrapper>
@@ -130,7 +54,7 @@ export const InputForm = ({
           })
         )}
       <section className="footer">
-        <ButtonText onClick={() => handleSubmit()}>
+        <ButtonText onClick={() => handleSubmit({ onSubmit })}>
           Submit
           <FontAwesomeIcon
             icon={faCircleRight}
