@@ -3,7 +3,7 @@
 
 export const DappName = 'Polkadot Developer Console';
 
-export const DocsUrl = 'https://polkadot-developer-console.github.io/docs/';
+export const DocsUrl = 'https://docs.polkadot.cloud/';
 
 export const GithubRepoUrl =
-  'https://github.com/polkadot-developer-console/polkadot-developer-console';
+  'https://github.com/polkadot-cloud/developer-console';
