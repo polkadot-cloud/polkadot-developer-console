@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:pages": "tsc && vite build --base '/'",
+    "deploy:pages": "yarn build:pages && gh-pages -d build",
     "clear": "rm -rf node_modules build tsconfig.tsbuildinfo yarn.lock",
     "lint": "eslint . --fix && npx prettier --write .",
     "test:storage": "tsup src/test/storageQueries.ts && node dist/storageQueries.cjs",
