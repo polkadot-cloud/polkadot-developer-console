@@ -48,7 +48,7 @@ export const useRouteSections = (): RouteSectionProvider => {
   }
 
   return {
-    label: 'Parachain Setup',
+    label: 'Parachain',
     sections,
     pageWidth: 'wide',
     integrityCheck: {
