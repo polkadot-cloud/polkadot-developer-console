@@ -7,5 +7,5 @@ import { defaultActiveBalances } from 'hooks/useActiveBalances/defaults';
 
 export const defaultAccountsContext: AccountsContextInterface = {
   ...defaultActiveBalances,
-  getAccounts: (spec) => [],
+  getAccounts: (chainSpec) => [],
 };
