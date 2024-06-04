@@ -13,7 +13,7 @@ export const Preload = () => (
 
     <StatsWrapper className="vSpace">
       <div className="active shimmer">
-        <ConnectedSVG className="icon" /> Loading ...
+        <ConnectedSVG className="icon" /> Loading...
       </div>
     </StatsWrapper>
   </>
