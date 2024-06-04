@@ -25,7 +25,7 @@ export interface ApiIndexerContextInterface {
 // A mapping of tab owner ids to their api indexes.
 export type ApiIndexes = Record<OwnerId, ApiIndex[]>;
 
-// An api index, which includes an index and a label.
+// An api index, which includes the index and a label.
 export interface ApiIndex {
   index: number;
   label: ApiIndexLabel;
