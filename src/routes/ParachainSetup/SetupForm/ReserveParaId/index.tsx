@@ -14,6 +14,7 @@ import { useParaSetup } from 'contexts/ParaSetup';
 import { NextFreeParaId } from 'model/NextFreeParaId';
 import { useActiveTab } from 'contexts/ActiveTab';
 import BigNumber from 'bignumber.js';
+import { faCircle } from '@fortawesome/sharp-regular-svg-icons';
 
 export const ReserveParaId = () => {
   const { ownerId } = useActiveTab();
@@ -68,7 +69,10 @@ export const ReserveParaId = () => {
                   <h4>{selectedOption === 'new' ? ' Selected' : 'Select'}</h4>
                 </span>
                 <span>
-                  <FontAwesomeIcon icon={faCheckCircle} transform="grow-2" />
+                  <FontAwesomeIcon
+                    icon={selectedOption === 'new' ? faCheckCircle : faCircle}
+                    transform="grow-2"
+                  />
                 </span>
               </button>
             </div>
@@ -89,7 +93,12 @@ export const ReserveParaId = () => {
                   </h4>
                 </span>
                 <span>
-                  <FontAwesomeIcon icon={faCheckCircle} transform="grow-2" />
+                  <FontAwesomeIcon
+                    icon={
+                      selectedOption === 'existing' ? faCheckCircle : faCircle
+                    }
+                    transform="grow-2"
+                  />
                 </span>
               </button>
             </div>
