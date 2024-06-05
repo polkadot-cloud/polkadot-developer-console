@@ -15,6 +15,8 @@ export const defaultParaSetupContext: ParaSetupContextInterface = {
   getNextParaId: (chainId) => undefined,
   setNextParaId: (chainId, paraId) => {},
   removeNextParaId: (chainId) => {},
+  nextParaIdChainExists: (chainId) => false,
+  addNextParaIdchain: (chainId) => {},
 };
 
 export const setupSteps: SetupStep[] = [

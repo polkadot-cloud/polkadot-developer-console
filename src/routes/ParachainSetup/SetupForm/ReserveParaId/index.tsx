@@ -17,9 +17,10 @@ import BigNumber from 'bignumber.js';
 
 export const ReserveParaId = () => {
   const { ownerId } = useActiveTab();
-  const { getNextParaId } = useParaSetup();
   const { getAccounts } = useImportedAccounts();
   const { chainSpec, chain, instanceId } = useParachain();
+  const { getNextParaId, nextParaIdChainExists, addNextParaIdchain } =
+    useParaSetup();
 
   const chainId = chain.id;
   const nextParaId = getNextParaId(chainId);
@@ -35,8 +36,10 @@ export const ReserveParaId = () => {
 
   // Get the next free Para ID from the registrar.
   useEffect(() => {
-    // TODO: Use a ref to check if this para id is not currently being initialised.
-    if (!nextParaId) {
+    // Check if this next para id subscription is not already initialised.
+    if (!nextParaIdChainExists(chainId)) {
+      addNextParaIdchain(chainId);
+
       SubscriptionsController.set(
         instanceId,
         'nextFreeParaId',

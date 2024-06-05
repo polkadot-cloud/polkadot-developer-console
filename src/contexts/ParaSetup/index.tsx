@@ -33,6 +33,7 @@ export const useParaSetup = () => useContext(ParaSetupContext);
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   const {
     tabs,
+    tabsRef,
     setTabs,
     getAutoTabName,
     getTabTaskData,
@@ -55,6 +56,28 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     Partial<Record<ChainId, string>>
   >({});
   const nextParaIdRef = useRef(nextParaId);
+
+  // Keep track of the chains that have initialised next para id subscriptions.
+  const initialisedNextParaIdChains = useRef<ChainId[]>([]);
+
+  // Check if next para id has been initialised for a chain.
+  const nextParaIdChainExists = (chainId: ChainId) =>
+    initialisedNextParaIdChains.current.includes(chainId);
+
+  // Add chain to initialised next para ids.
+  const addNextParaIdchain = (chainId: ChainId) => {
+    if (!initialisedNextParaIdChains.current.includes(chainId)) {
+      initialisedNextParaIdChains.current.push(chainId);
+    }
+  };
+
+  // Remove chain from initialised next para ids.
+  const removeNextParaIdChain = (chainId: ChainId) => {
+    const index = initialisedNextParaIdChains.current.indexOf(chainId);
+    if (index >= 0) {
+      initialisedNextParaIdChains.current.splice(index, 1);
+    }
+  };
 
   // Get a para id for a chain.
   const getNextParaId = (chainId: ChainId) => nextParaId[chainId];
@@ -114,6 +137,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     const chainId = tab?.taskData?.chain?.id;
     if (chainId) {
       removeNextParaId(chainId);
+      removeNextParaIdChain(chainId);
     }
   };
 
@@ -216,8 +240,12 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   // Handle new next para id callback.
   const newNextParaIdCallback = (e: Event) => {
     if (isCustomEvent(e)) {
-      const { chainId, nextFreeParaId } = e.detail;
-      setNextParaId(chainId, nextFreeParaId);
+      const { chainId, nextFreeParaId, ownerId } = e.detail;
+
+      // Update state if tab is still open.
+      if (tabsRef.find((item) => tabIdToOwnerId(item.id) === ownerId)) {
+        setNextParaId(chainId, nextFreeParaId);
+      }
     }
   };
 
@@ -238,6 +266,8 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
         getNextParaId,
         setNextParaId,
         removeNextParaId,
+        nextParaIdChainExists,
+        addNextParaIdchain,
 
         destroyTabParaSetup,
         setupParachainIntegrityCheck,
