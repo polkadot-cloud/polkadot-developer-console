@@ -5,10 +5,19 @@ import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { FormWrapper } from 'routes/Home/Wrappers';
 import { useParachain } from 'routes/ParachainSetup/Provider';
+import { ParaIdOptionsWrapper } from '../Wrappers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
+import { useState } from 'react';
 
 export const ReserveParaId = () => {
   const { chainSpec } = useParachain();
   const { getAccounts } = useImportedAccounts();
+
+  // Store the selected option for the Para ID.
+  const [selectedOption, setSelectedOption] = useState<'new' | 'existing'>(
+    'new'
+  );
 
   const accounts = chainSpec
     ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
@@ -20,6 +29,46 @@ export const ReserveParaId = () => {
 
       <section>
         <AccountId32 accounts={accounts} />
+
+        <ParaIdOptionsWrapper>
+          <section>
+            <div
+              className={`inner ${selectedOption === 'new' ? ' selected' : ''}`}
+            >
+              <h3>Reserve New ID</h3>
+              <h1>4,337</h1>
+              <button className="foot" onClick={() => setSelectedOption('new')}>
+                <span>
+                  <h4>{selectedOption === 'new' ? ' Selected' : 'Select'}</h4>
+                </span>
+                <span>
+                  <FontAwesomeIcon icon={faCheckCircle} transform="grow-2" />
+                </span>
+              </button>
+            </div>
+          </section>
+          <section>
+            <div
+              className={`inner ${selectedOption === 'existing' ? ' selected' : ''}`}
+            >
+              <h3>Find Existing ID</h3>
+              <h1>4,337</h1>
+              <button
+                className="foot"
+                onClick={() => setSelectedOption('existing')}
+              >
+                <span>
+                  <h4>
+                    {selectedOption === 'existing' ? ' Selected' : 'Select'}
+                  </h4>
+                </span>
+                <span>
+                  <FontAwesomeIcon icon={faCheckCircle} transform="grow-2" />
+                </span>
+              </button>
+            </div>
+          </section>
+        </ParaIdOptionsWrapper>
       </section>
     </FormWrapper>
   );
