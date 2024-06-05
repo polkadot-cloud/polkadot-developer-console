@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import type {
   ParaSetupContextInterface,
   ParachainSetupTaskData,
@@ -28,10 +28,6 @@ export const ParaSetupContext = createContext<ParaSetupContextInterface>(
 export const useParaSetup = () => useContext(ParaSetupContext);
 
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
-  const { autoTabNaming } = useSettings();
-  const { getTabApiIndex } = useApiIndexer();
-  const { getChainSpec, handleConnectApi, getApiInstanceById } =
-    useChainSpaceEnv();
   const {
     tabs,
     setTabs,
@@ -40,9 +36,18 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     setTabTaskData,
     setTabActiveTask,
   } = useTabs();
+  const { autoTabNaming } = useSettings();
+  const { getTabApiIndex } = useApiIndexer();
+  const { getChainSpec, handleConnectApi, getApiInstanceById } =
+    useChainSpaceEnv();
 
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
+
+  // Store the next free para id. Once a subscription has been initialised, all tabs can use this
+  // value.
+  const [nextParaId, setNextParaId] = useState<string | null>(null);
+  const nextParaIdInitialisedRef = useRef<boolean>(false);
 
   // Get the selected relay chain for a tab.
   const getSelectedRelayChain = (tabId: number) => {
@@ -176,10 +181,17 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     <ParaSetupContext.Provider
       value={{
         handleConnectTask,
+
         getActiveStep,
         setActiveStep,
+
         getSelectedRelayChain,
         setSelectedRelayChain,
+
+        nextParaId,
+        setNextParaId,
+        nextParaIdInitialisedRef,
+
         destroyTabParaSetup,
         setupParachainIntegrityCheck,
       }}

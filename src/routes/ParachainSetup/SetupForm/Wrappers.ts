@@ -267,7 +267,7 @@ export const ParaIdOptionsWrapper = styled.div`
       flex-direction: column;
       height: 100%;
       overflow: hidden;
-      transition: border-color 0.15s;
+      transition: border-color 0.2s;
 
       &:hover {
         border-color: var(--text-color-tertiary);

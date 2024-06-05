@@ -8,7 +8,7 @@ import { useParachain } from 'routes/ParachainSetup/Provider';
 import { ParaIdOptionsWrapper } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const ReserveParaId = () => {
   const { chainSpec } = useParachain();
@@ -23,13 +23,17 @@ export const ReserveParaId = () => {
     ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
     : [];
 
+  // Get the next free Para ID from the registrar.
+  useEffect(() => {
+    // TODO: On first render, trigger subscription of registrar.nextId from context and store.
+  }, []);
+
   return (
     <FormWrapper>
       <h3>Reserve a Para ID or select an existing one from your accounts.</h3>
 
       <section>
         <AccountId32 accounts={accounts} />
-
         <ParaIdOptionsWrapper>
           <section>
             <div

@@ -19,6 +19,9 @@ export interface ParaSetupContextInterface {
   setupParachainIntegrityCheck: (
     tabId: number
   ) => IntegrityCheckedParachainContext | false;
+  nextParaId: string | null;
+  setNextParaId: (paraId: string | null) => void;
+  nextParaIdInitialisedRef: React.MutableRefObject<boolean>;
 }
 
 export type SetupStep =
