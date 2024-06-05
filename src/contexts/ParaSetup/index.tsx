@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import type {
   ParaSetupContextInterface,
   ParachainSetupTaskData,
@@ -10,7 +10,7 @@ import type {
   SetupStepsState,
 } from './types';
 import { defaultParaSetupContext } from './defaults';
-import type { DirectoryId } from 'config/networks/types';
+import type { ChainId, DirectoryId } from 'config/networks/types';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
@@ -44,10 +44,31 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
 
-  // Store the next free para id. Once a subscription has been initialised, all tabs can use this
-  // value.
-  const [nextParaId, setNextParaId] = useState<string | null>(null);
-  const nextParaIdInitialisedRef = useRef<boolean>(false);
+  // Store the next free para id, keyed by chain. Once a subscription has been initialised, all tabs
+  // can use an existing value for the chain in question.
+  const [nextParaId, setNextParaIdState] = useState<
+    Partial<Record<ChainId, string>>
+  >({});
+
+  // Get a para id for a chain.
+  const getNextParaId = (chainId: ChainId) => nextParaId[chainId];
+
+  // Set a para id for a chain.
+  const setNextParaId = (chainId: ChainId, paraId: string) => {
+    if (!chainId) {
+      return;
+    }
+    const updated = { ...nextParaId };
+    updated[chainId] = paraId;
+    setNextParaIdState(updated);
+  };
+
+  // Remove a para id for a chain.
+  const removeNextParaId = (chainId: ChainId) => {
+    const updated = { ...nextParaId };
+    delete updated[chainId];
+    setNextParaIdState(updated);
+  };
 
   // Get the selected relay chain for a tab.
   const getSelectedRelayChain = (tabId: number) => {
@@ -188,9 +209,9 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
         getSelectedRelayChain,
         setSelectedRelayChain,
 
-        nextParaId,
+        getNextParaId,
         setNextParaId,
-        nextParaIdInitialisedRef,
+        removeNextParaId,
 
         destroyTabParaSetup,
         setupParachainIntegrityCheck,
