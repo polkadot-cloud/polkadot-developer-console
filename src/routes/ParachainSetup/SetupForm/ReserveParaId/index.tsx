@@ -9,10 +9,20 @@ import { ParaIdOptionsWrapper } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
+import { SubscriptionsController } from 'controllers/Subscriptions';
+import { useParaSetup } from 'contexts/ParaSetup';
+import { NextFreeParaId } from 'model/NextFreeParaId';
+import { useActiveTab } from 'contexts/ActiveTab';
+import BigNumber from 'bignumber.js';
 
 export const ReserveParaId = () => {
-  const { chainSpec } = useParachain();
+  const { ownerId } = useActiveTab();
+  const { getNextParaId } = useParaSetup();
   const { getAccounts } = useImportedAccounts();
+  const { chainSpec, chain, instanceId } = useParachain();
+
+  const chainId = chain.id;
+  const nextParaId = getNextParaId(chainId);
 
   // Store the selected option for the Para ID.
   const [selectedOption, setSelectedOption] = useState<'new' | 'existing'>(
@@ -25,7 +35,14 @@ export const ReserveParaId = () => {
 
   // Get the next free Para ID from the registrar.
   useEffect(() => {
-    // TODO: On first render, trigger subscription of registrar.nextId from context and store.
+    // TODO: Use a ref to check if this para id is not currently being initialised.
+    if (!nextParaId) {
+      SubscriptionsController.set(
+        instanceId,
+        'nextFreeParaId',
+        new NextFreeParaId(ownerId, instanceId, chainId)
+      );
+    }
   }, []);
 
   return (
@@ -40,7 +57,9 @@ export const ReserveParaId = () => {
               className={`inner ${selectedOption === 'new' ? ' selected' : ''}`}
             >
               <h3>Reserve New ID</h3>
-              <h1>4,337</h1>
+              <h1>
+                {nextParaId ? new BigNumber(nextParaId).toFormat() : '...'}
+              </h1>
               <button className="foot" onClick={() => setSelectedOption('new')}>
                 <span>
                   <h4>{selectedOption === 'new' ? ' Selected' : 'Select'}</h4>

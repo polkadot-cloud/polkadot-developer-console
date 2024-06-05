@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import type {
   ParaSetupContextInterface,
   ParachainSetupTaskData,
@@ -20,6 +20,9 @@ import { useTabs } from 'contexts/Tabs';
 import { useSettings } from 'contexts/Settings';
 import { getChainMeta } from 'config/networks/Utils';
 import type { ConnectFrom, TabChainData, TabTask } from 'contexts/Tabs/types';
+import { useEventListener } from 'usehooks-ts';
+import { isCustomEvent } from 'Utils';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const ParaSetupContext = createContext<ParaSetupContextInterface>(
   defaultParaSetupContext
@@ -36,6 +39,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     setTabTaskData,
     setTabActiveTask,
   } = useTabs();
+  const { tab } = useActiveTab();
   const { autoTabNaming } = useSettings();
   const { getTabApiIndex } = useApiIndexer();
   const { getChainSpec, handleConnectApi, getApiInstanceById } =
@@ -45,10 +49,12 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
 
   // Store the next free para id, keyed by chain. Once a subscription has been initialised, all tabs
-  // can use an existing value for the chain in question.
+  // can use an existing value for the chain in question. NOTE: Requires a ref as state updates are
+  // used in event callbacks.
   const [nextParaId, setNextParaIdState] = useState<
     Partial<Record<ChainId, string>>
   >({});
+  const nextParaIdRef = useRef(nextParaId);
 
   // Get a para id for a chain.
   const getNextParaId = (chainId: ChainId) => nextParaId[chainId];
@@ -58,15 +64,19 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     if (!chainId) {
       return;
     }
-    const updated = { ...nextParaId };
+    const updated = { ...nextParaIdRef.current };
     updated[chainId] = paraId;
+
+    nextParaIdRef.current = updated;
     setNextParaIdState(updated);
   };
 
   // Remove a para id for a chain.
   const removeNextParaId = (chainId: ChainId) => {
-    const updated = { ...nextParaId };
+    const updated = { ...nextParaIdRef.current };
     delete updated[chainId];
+
+    nextParaIdRef.current = updated;
     setNextParaIdState(updated);
   };
 
@@ -100,6 +110,11 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     const updated = { ...activeSteps };
     delete updated[tabId];
     setActiveSteps(updated);
+
+    const chainId = tab?.taskData?.chain?.id;
+    if (chainId) {
+      removeNextParaId(chainId);
+    }
   };
 
   // Check that the correct state exists for parachain setup task to be active.
@@ -167,14 +182,14 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
       api: { instanceIndex: 0 },
     };
 
-    const newTabs = [...tabs].map((tab) =>
-      tab.id === tabId
+    const newTabs = [...tabs].map((item) =>
+      item.id === tabId
         ? {
-            ...tab,
+            ...item,
             // Auto rename the tab here if the setting is turned on.
             name: autoTabNaming
-              ? getAutoTabName(tab.id, 'Parachain Setup')
-              : tab.name,
+              ? getAutoTabName(item.id, 'Parachain Setup')
+              : item.name,
             // Chain is now assigned the `chainExplorer` task.
             activeTask: 'parachainSetup' as TabTask,
             taskData: {
@@ -184,7 +199,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
               selectedRelayChain: chainId,
             },
           }
-        : tab
+        : item
     );
 
     setTabs(newTabs);
@@ -197,6 +212,17 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
       endpoint
     );
   };
+
+  // Handle new next para id callback.
+  const newNextParaIdCallback = (e: Event) => {
+    if (isCustomEvent(e)) {
+      const { chainId, nextFreeParaId } = e.detail;
+      setNextParaId(chainId, nextFreeParaId);
+    }
+  };
+
+  const ref = useRef<Document>(document);
+  useEventListener('callback-next-free-para-id', newNextParaIdCallback, ref);
 
   return (
     <ParaSetupContext.Provider

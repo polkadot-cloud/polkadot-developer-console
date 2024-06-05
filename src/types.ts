@@ -15,6 +15,7 @@ import type {
   ChainStateConstantEventDetail,
   ChainStateEventDetail,
 } from 'model/ChainState/types';
+import type { NextFreeParaIdEventDetail } from 'model/NextFreeParaId/types';
 import type { CSSProperties, ReactNode } from 'react';
 
 declare global {
@@ -29,6 +30,7 @@ declare global {
     'new-chain-spec': CustomEvent<APIChainSpecEventDetail>;
     'online-status': CustomEvent<OnlineStatusEvent>;
     'callback-block-number': CustomEvent<BlockNumberEventDetail>;
+    'callback-next-free-para-id': CustomEvent<NextFreeParaIdEventDetail>;
     'callback-account-balance': CustomEvent<AccountBalanceEventDetail>;
     'callback-new-chain-state-subscription': CustomEvent<ChainStateEventDetail>;
     'callback-new-chain-state-constant': CustomEvent<ChainStateConstantEventDetail>;
