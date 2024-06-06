@@ -3,7 +3,7 @@
 
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useParaSetup } from 'contexts/ParaSetup';
-import { ProgressWrapper, RelayIconWrapper } from '../Wrappers';
+import { ProgressWrapper, ProgressBadgeWrapper } from '../Wrappers';
 import { Icon } from '../Icon';
 import { Section } from './Section';
 import { Connector } from './Connector';
@@ -33,11 +33,11 @@ export const Progress = () => {
         showStatus={chainId !== undefined}
       >
         {chainId && (
-          <RelayIconWrapper
+          <ProgressBadgeWrapper
             className={`${activeStep === 'connect_relay' ? `active` : ``}`}
           >
             <Icon icon={chainId} />
-          </RelayIconWrapper>
+          </ProgressBadgeWrapper>
         )}
       </Section>
       <Connector />
@@ -47,7 +47,11 @@ export const Progress = () => {
         collapsedStatus={collapsedStatus}
         showStatus={showStatus}
       >
-        ...
+        <ProgressBadgeWrapper
+          className={`${activeStep === 'reserve_para_id' ? `active` : ``}`}
+        >
+          <Icon icon={chainId} />
+        </ProgressBadgeWrapper>
       </Section>
       <Connector />
       <Section

@@ -18,6 +18,8 @@ import { faCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { Textbox } from 'library/Inputs/Textbox';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import type { AnyJson } from '@w3ux/utils/types';
+import { SubmitTx } from 'library/SubmitTx';
+import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 
 export const ReserveParaId = () => {
   const { ownerId } = useActiveTab();
@@ -27,26 +29,34 @@ export const ReserveParaId = () => {
     useParaSetup();
 
   const chainId = chain.id;
+  const { ss58, units, unit } = chain;
   const nextParaId = getNextParaId(chainId);
+  const { transactionVersion } = chainSpec.version;
+  const { existentialDeposit } = chainSpec.consts;
   const accounts = chainSpec
     ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
     : [];
 
   // Store the selected account for the Para ID.
-  const initialAccount = accounts?.[0]?.address;
+  // TODO: Move this to `ParaSetup` context, key by tab.
+  const initialAccount = accounts?.[0]?.address || '';
   const [selectedAccount, setSelectedAccount] =
     useState<string>(initialAccount);
 
   // Store the selected option for the Para ID.
+  // TODO: Move this to `ParaSetup` context, key by tab.
   const [selectedOption, setSelectedOption] = useState<'new' | 'existing'>(
     'new'
   );
 
   // Store an existing para id.
+  // TODO: Move this to `ParaSetup` context, key by tab.
   const [existingParaId, setExistingParaId] = useState<string>();
 
   // Store whether the existing para id is valid for the selected account.
-  const [, setExistingParaIdValid] = useState<boolean>(false);
+  // TODO: Move this to `ParaSetup` context, key by tab.
+  const [existingParaIdValid, setExistingParaIdValid] =
+    useState<boolean>(false);
 
   // Query the chain to see if an existing para id exists with the given address.
   const queryExistingParaId = async () => {
@@ -61,6 +71,41 @@ export const ReserveParaId = () => {
       setExistingParaIdValid(true);
     }
   };
+
+  // Format transaction for reserving next para id to submit, or return `null` if invalid.
+  const getTx = () => {
+    let tx = null;
+
+    if (!api || selectedOption !== 'new' || !selectedAccount || !nextParaId) {
+      return tx;
+    }
+
+    try {
+      // Construct transaction.
+      tx = api.tx.registrar.reserve();
+      return tx;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  // Prepare extrinsic for reserving the next para id.
+  const submitExtrinsic = useSubmitExtrinsic({
+    instanceId,
+    api,
+    chainId,
+    ss58Prefix: ss58,
+    tx: getTx(),
+    from: selectedAccount,
+    shouldSubmit: true,
+    callbackSubmit: () => {
+      /* TODO: Store reserved id in parachain context state.. */
+    },
+  });
+
+  // Determine whether tx submission ui can be displayed.
+  const reserveNextIdValid =
+    selectedOption === 'new' && !!selectedAccount && !!nextParaId;
 
   // Get the next free Para ID from the registrar.
   useEffect(() => {
@@ -83,10 +128,22 @@ export const ReserveParaId = () => {
     }
   }, [existingParaId, selectedAccount]);
 
+  // When the selected option and para id is valid, update context state for this tab.
+  useEffectIgnoreInitial(() => {
+    if (selectedOption === 'existing' && existingParaIdValid) {
+      console.log('form is valid for existing para id');
+      // TODO: Set para id for this tab.
+    }
+
+    if (selectedOption === 'new' && !!nextParaId) {
+      // TODO: set para id for this tab.
+      console.log('form is valid for new para id');
+    }
+  }, [selectedOption, existingParaIdValid, nextParaId]);
+
   return (
     <FormWrapper>
       <h3>Reserve a Para ID or select an existing one from your accounts.</h3>
-
       <section>
         <AccountId32
           accounts={accounts}
@@ -121,6 +178,7 @@ export const ReserveParaId = () => {
             >
               <h3>Find Existing Para ID</h3>
               <Textbox
+                /* TODO: add onFocus and setSelectedOption('existing') */
                 defaultValue={existingParaId || ''}
                 onChange={(val) => setExistingParaId(val)}
                 placeholder="Para ID"
@@ -147,6 +205,19 @@ export const ReserveParaId = () => {
             </div>
           </section>
         </ParaIdOptionsWrapper>
+        {reserveNextIdValid && (
+          <SubmitTx
+            {...submitExtrinsic}
+            valid={reserveNextIdValid}
+            instanceId={instanceId}
+            chainId={chainId}
+            ss58Prefix={ss58}
+            units={units}
+            unit={unit}
+            existentialDeposit={existentialDeposit}
+            transactionVersion={String(transactionVersion)}
+          />
+        )}
       </section>
     </FormWrapper>
   );

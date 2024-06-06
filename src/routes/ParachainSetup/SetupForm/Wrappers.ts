@@ -110,7 +110,7 @@ export const ProgressWrapper = styled.div`
   }
 `;
 
-export const RelayIconWrapper = styled.div`
+export const ProgressBadgeWrapper = styled.div`
   margin-left: 0.6rem;
   width: 1.25rem;
   height: 1.25rem;
@@ -228,7 +228,7 @@ export const FooterButtonWrapper = styled.div`
 // Wrapper for para id reservation option selection.
 export const ParaIdOptionsWrapper = styled.div`
   flex: 1;
-  margin-top: 1.25rem;
+  margin: 1.25rem 0;
   display: flex;
   flex-wrap: wrap;
 
