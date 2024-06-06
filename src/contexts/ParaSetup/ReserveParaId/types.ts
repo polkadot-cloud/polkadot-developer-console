@@ -23,17 +23,42 @@ export interface ReserveParaIdContextInterface {
   removeExistingParaIdInput: (tabId: number) => void;
   setExistingParaIdInput: (tabId: number, paraId: string) => void;
 
-  getReservedParaId: (tabId: number) => ReservedParaId | undefined;
-  setReservedParaId: (tabId: number, reservedParaId: ReservedParaId) => void;
-  removeReservedParaId: (tabId: number) => void;
+  getExistingReservedParaId: (
+    tabId: number
+  ) => ReservedParaId | null | undefined;
+  setExistingReservedParaId: (
+    tabId: number,
+    reservedParaId: ReservedParaId | null
+  ) => void;
+  removeExistingReservedParaId: (tabId: number) => void;
 
-  validateParaId: (tabId: number) => boolean;
+  getReservedNextParaId: (
+    tabId: number,
+    manager: string
+  ) => ReservedNextParaId | undefined;
+  setReservedNextParaId: (
+    tabId: number,
+    manager: string,
+    paraId: string
+  ) => void;
+  removeReservedNextParaId: (tabId: number) => void;
+
+  validateParaId: (tabId: number, manager: string) => boolean;
 }
 
 export type ReserveOption = 'new' | 'existing';
 
 export interface ReservedParaId {
+  id: string;
   deposit: string;
   locked: boolean;
+  manager: string;
+}
+
+// Reserved next para ids for a tab, keyed by account.
+export type ReservedNextParaIds = Record<string, ReservedNextParaId>;
+
+export interface ReservedNextParaId {
+  paraId: string;
   manager: string;
 }

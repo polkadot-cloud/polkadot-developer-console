@@ -7,6 +7,7 @@ import { defaultReserveParaIdContext } from './defaults';
 import type {
   ReserveOption,
   ReserveParaIdContextInterface,
+  ReservedNextParaIds,
   ReservedParaId,
 } from './types';
 import type { ChainId } from 'config/networks/types';
@@ -145,34 +146,76 @@ export const ReserveParaIdProvider = ({
   };
 
   // Store the fetched reserved para id entries, keyed by tab.
-  const [reservedParaIds, setReservedParaIds] = useState<
-    Record<number, ReservedParaId>
+  const [reservedParaIds, setExistingReservedParaIds] = useState<
+    Record<number, ReservedParaId | null>
   >({});
 
   // Get a reserved para id entry for a tab.
-  const getReservedParaId = (tabId: number) => reservedParaIds[tabId];
+  const getExistingReservedParaId = (tabId: number) => reservedParaIds[tabId];
 
   // Set a reserved para id entry for a tab.
-  const setReservedParaId = (tabId: number, entry: ReservedParaId) => {
-    setReservedParaIds((prev) => ({
+  const setExistingReservedParaId = (
+    tabId: number,
+    entry: ReservedParaId | null
+  ) => {
+    setExistingReservedParaIds((prev) => ({
       ...prev,
       [tabId]: entry,
     }));
   };
 
   // Remove a reserved para id entry for a tab.
-  const removeReservedParaId = (tabId: number) => {
+  const removeExistingReservedParaId = (tabId: number) => {
     const updated = { ...reservedParaIds };
     delete updated[tabId];
-    setReservedParaIds(updated);
+    setExistingReservedParaIds(updated);
+  };
+
+  // Store a reserved next para id, keyed by tab.
+  const [reservedNextParaIds, setReservedNextParaIds] = useState<
+    Record<number, ReservedNextParaIds>
+  >({});
+
+  // Get a reserved para id for a tab.
+  const getReservedNextParaId = (tabId: number, manager: string) => {
+    const current = reservedNextParaIds[tabId];
+    return current?.[manager];
+  };
+
+  // Set a reserved para id for a tab.
+  const setReservedNextParaId = (
+    tabId: number,
+    manager: string,
+    paraId: string
+  ) => {
+    const updated = { ...reservedNextParaIds };
+    const current = reservedNextParaIds[tabId];
+
+    if (!current) {
+      // New redord if tab record does not exist.
+      updated[tabId] = { [manager]: { paraId, manager } };
+    } else {
+      // Update manager entry if tab record exists.
+      updated[tabId] = { ...current, [manager]: { paraId, manager } };
+    }
+
+    setReservedNextParaIds(updated);
+  };
+
+  // Remove a reserved para id for a tab.
+  const removeReservedNextParaId = (tabId: number) => {
+    const updated = { ...reservedNextParaIds };
+    delete updated[tabId];
+    setReservedNextParaIds(updated);
   };
 
   // Method that checks if a stored para id for a tab is valid (i.e. the next free id has been
   // reserved, or a valid existing one exists.
-  const validateParaId = (tabId: number) => {
+  const validateParaId = (tabId: number, manager: string) => {
     const selectedOption = getSelectedOption(tabId);
     const selectedAccount = getSelectedAccount(tabId);
-    const reservedParaId = getReservedParaId(tabId);
+    const reservedParaId = getExistingReservedParaId(tabId);
+    const reservedNextParaId = getReservedNextParaId(tabId, manager);
 
     // Valid existing para id if chain record manager matches selected account.
     const existingParaIdValid = selectedAccount === reservedParaId?.manager;
@@ -180,10 +223,10 @@ export const ReserveParaIdProvider = ({
       return true;
     }
 
-    // TODO: Finish this logic to check if the next para id is valid. New state item to store the
+    // Check if a reserved next para id is valid.
     // reserved id for an account.
-    if (selectedOption === 'new' && !!nextParaId) {
-      // TODO: return true (once condition is correct).
+    if (selectedOption === 'new' && !!reservedNextParaId) {
+      return true;
     }
 
     return false;
@@ -216,9 +259,14 @@ export const ReserveParaIdProvider = ({
         removeExistingParaIdInput,
 
         // Manage reserved para id entries.
-        getReservedParaId,
-        setReservedParaId,
-        removeReservedParaId,
+        getExistingReservedParaId,
+        setExistingReservedParaId,
+        removeExistingReservedParaId,
+
+        // Manage reserved para ids via next free id.
+        getReservedNextParaId,
+        setReservedNextParaId,
+        removeReservedNextParaId,
 
         validateParaId,
       }}

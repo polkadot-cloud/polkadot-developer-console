@@ -32,7 +32,10 @@ export const ReserveParaId = () => {
     setSelectedOption,
     getExistingParaIdInput,
     setExistingParaIdInput,
-    setReservedParaId,
+    getExistingReservedParaId,
+    setExistingReservedParaId,
+    getReservedNextParaId,
+    setReservedNextParaId,
   } = useReserveParaId();
   const { ownerId, tabId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
@@ -57,6 +60,9 @@ export const ReserveParaId = () => {
   // Get the existing para id input.
   const existingParaId = getExistingParaIdInput(tabId);
 
+  // Get a reserved next para id for the account, if any.
+  const reservedNextParaId = getReservedNextParaId(tabId, selectedAccount);
+
   // Query the chain to see if an existing para id exists with the given address.
   const queryExistingParaId = async () => {
     if (!existingParaId || !selectedAccount) {
@@ -64,11 +70,13 @@ export const ReserveParaId = () => {
     }
     // Get para id from chain.
     const result = await api.query.registrar.paras(existingParaId);
-    const json = result?.toHuman();
+    const json = result?.toHuman() as unknown as ReservedParaId | null;
 
-    if (json !== null) {
-      setReservedParaId(tabId, json as unknown as ReservedParaId);
+    // Add the reserved para id to a successful result.
+    if (json) {
+      json.id = existingParaId;
     }
+    setExistingReservedParaId(tabId, json);
   };
 
   // Format transaction for reserving next para id to submit, or return `null` if invalid.
@@ -98,13 +106,30 @@ export const ReserveParaId = () => {
     from: selectedAccount,
     shouldSubmit: true,
     callbackSubmit: () => {
-      /* TODO: Store reserved id in parachain context state.. */
+      if (nextParaId) {
+        // Store reserved id in parachain context state. NOTE: this could be improved by using the
+        // actual arguments that were sent to the tx.
+        setReservedNextParaId(tabId, selectedAccount, nextParaId);
+      }
     },
   });
 
   // Determine whether tx submission ui can be displayed.
   const reserveNextIdValid =
     selectedOption === 'new' && !!selectedAccount && !!nextParaId;
+
+  // Determine if existing para id form is valid.
+  const reservedExistingParaId = getExistingReservedParaId(tabId);
+
+  // Determine existing para id feedback.
+  const existingFeedback: string =
+    reservedExistingParaId === null
+      ? `Para ID ${existingParaId} does not exist.`
+      : reservedExistingParaId !== undefined
+        ? reservedExistingParaId.manager === selectedAccount
+          ? `Found Para ID ${reservedExistingParaId.id}. Ready to configure node.`
+          : `Para ID found, but has a different owner.`
+        : 'Ready to fetch Para ID.';
 
   // Get the next free Para ID from the registrar.
   useEffect(() => {
@@ -122,9 +147,7 @@ export const ReserveParaId = () => {
 
   // Query the chain for an existing para id when the existing para id changes.
   useEffectIgnoreInitial(() => {
-    if (selectedOption === 'existing') {
-      queryExistingParaId();
-    }
+    queryExistingParaId();
   }, [existingParaId, selectedAccount]);
 
   return (
@@ -195,9 +218,14 @@ export const ReserveParaId = () => {
           </section>
         </ParaIdOptionsWrapper>
 
-        <SetupNote>Successful Para ID status here...</SetupNote>
+        <SetupNote>
+          {selectedOption === 'existing'
+            ? existingFeedback
+            : `new option feedback`}
+        </SetupNote>
 
-        {reserveNextIdValid && (
+        {/* Show tx submission if a next para id has not been reserved for the selected account. */}
+        {!reservedNextParaId && reserveNextIdValid && (
           <SubmitTx
             {...submitExtrinsic}
             valid={reserveNextIdValid}
