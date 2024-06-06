@@ -16,6 +16,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import BigNumber from 'bignumber.js';
 import { faCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { Textbox } from 'library/Inputs/Textbox';
+import { useEffectIgnoreInitial } from '@w3ux/hooks';
 
 export const ReserveParaId = () => {
   const { ownerId } = useActiveTab();
@@ -26,6 +27,14 @@ export const ReserveParaId = () => {
 
   const chainId = chain.id;
   const nextParaId = getNextParaId(chainId);
+  const accounts = chainSpec
+    ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
+    : [];
+
+  // Store the selected account for the Para ID.
+  const initialAccount = accounts?.[0]?.address;
+  const [selectedAccount, setSelectedAccount] =
+    useState<string>(initialAccount);
 
   // Store the selected option for the Para ID.
   const [selectedOption, setSelectedOption] = useState<'new' | 'existing'>(
@@ -35,9 +44,13 @@ export const ReserveParaId = () => {
   // Store an existing para id.
   const [existingParaId, setExistingParaId] = useState<string>();
 
-  const accounts = chainSpec
-    ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
-    : [];
+  // Query the chain to see if an existing para id exists with the given address.
+  const queryExistingParaId = async () => {
+    if (!existingParaId || !selectedAccount) {
+      return;
+    }
+    // TODO: implement query using api.
+  };
 
   // Get the next free Para ID from the registrar.
   useEffect(() => {
@@ -53,12 +66,21 @@ export const ReserveParaId = () => {
     }
   }, []);
 
+  // Query the chain for an existing para id when the existing para id changes.
+  useEffectIgnoreInitial(() => {
+    queryExistingParaId();
+  }, [existingParaId]);
+
   return (
     <FormWrapper>
       <h3>Reserve a Para ID or select an existing one from your accounts.</h3>
 
       <section>
-        <AccountId32 accounts={accounts} />
+        <AccountId32
+          accounts={accounts}
+          defaultValue={selectedAccount}
+          onChange={(val) => setSelectedAccount(val)}
+        />
         <ParaIdOptionsWrapper>
           <section>
             <div

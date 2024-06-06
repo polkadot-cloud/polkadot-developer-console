@@ -228,7 +228,7 @@ export const FooterButtonWrapper = styled.div`
 // Wrapper for para id reservation option selection.
 export const ParaIdOptionsWrapper = styled.div`
   flex: 1;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
   display: flex;
   flex-wrap: wrap;
 
