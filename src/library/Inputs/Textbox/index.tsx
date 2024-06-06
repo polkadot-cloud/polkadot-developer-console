@@ -12,6 +12,7 @@ export const Textbox = ({
   onMount,
   onRender,
   onChange,
+  placeholder,
 }: TextboxProps) => {
   // The input arg type of this component.
   const INPUT_TYPE = 'Textbox';
@@ -54,6 +55,7 @@ export const Textbox = ({
           type="text"
           value={value || ''}
           onChange={(ev) => handleTextboxChange(ev.currentTarget.value)}
+          placeholder={placeholder}
         />
       </TextInputWrapper>
     </>

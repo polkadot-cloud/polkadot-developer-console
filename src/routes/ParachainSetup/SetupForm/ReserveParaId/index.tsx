@@ -15,6 +15,7 @@ import { NextFreeParaId } from 'model/NextFreeParaId';
 import { useActiveTab } from 'contexts/ActiveTab';
 import BigNumber from 'bignumber.js';
 import { faCircle } from '@fortawesome/sharp-regular-svg-icons';
+import { Textbox } from 'library/Inputs/Textbox';
 
 export const ReserveParaId = () => {
   const { ownerId } = useActiveTab();
@@ -30,6 +31,9 @@ export const ReserveParaId = () => {
   const [selectedOption, setSelectedOption] = useState<'new' | 'existing'>(
     'new'
   );
+
+  // Store an existing para id.
+  const [existingParaId, setExistingParaId] = useState<string>();
 
   const accounts = chainSpec
     ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
@@ -60,9 +64,9 @@ export const ReserveParaId = () => {
             <div
               className={`inner ${selectedOption === 'new' ? ' selected' : ''}`}
             >
-              <h3>Reserve New ID</h3>
+              <h3>Reserve New Para ID</h3>
               <h1>
-                {nextParaId ? new BigNumber(nextParaId).toFormat() : '...'}
+                {nextParaId ? new BigNumber(nextParaId).toString() : '...'}
               </h1>
               <button className="foot" onClick={() => setSelectedOption('new')}>
                 <span>
@@ -81,8 +85,13 @@ export const ReserveParaId = () => {
             <div
               className={`inner ${selectedOption === 'existing' ? ' selected' : ''}`}
             >
-              <h3>Find Existing ID</h3>
-              <h1>4,337</h1>
+              <h3>Find Existing Para ID</h3>
+              <Textbox
+                defaultValue={existingParaId || ''}
+                onChange={(val) => setExistingParaId(val)}
+                placeholder="Para ID"
+                numeric
+              />
               <button
                 className="foot"
                 onClick={() => setSelectedOption('existing')}

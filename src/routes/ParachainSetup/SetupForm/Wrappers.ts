@@ -234,7 +234,7 @@ export const ParaIdOptionsWrapper = styled.div`
 
   > section {
     flex-basis: 50%;
-    height: 7rem;
+    height: 8rem;
 
     &:nth-child(odd) {
       padding-right: 0.5rem;
@@ -275,6 +275,18 @@ export const ParaIdOptionsWrapper = styled.div`
 
       > h1 {
         color: var(--text-color-primary);
+        margin-top: 0.5rem;
+      }
+
+      > .input {
+        background-color: var(--background-default);
+        margin: 0;
+
+        > input {
+          color: var(--text-color-primary);
+          padding: 0 0.5rem;
+          font-size: 1.6rem;
+        }
       }
 
       > h3 {

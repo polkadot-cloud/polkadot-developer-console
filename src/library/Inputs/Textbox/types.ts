@@ -7,4 +7,5 @@ export type TextboxProps = InputCallbackProps & {
   label?: { short?: string; long?: string } | string | number;
   defaultValue: string;
   numeric?: boolean;
+  placeholder?: string;
 };
