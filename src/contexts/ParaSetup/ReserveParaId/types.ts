@@ -21,3 +21,9 @@ export interface ReserveParaIdContextInterface {
 }
 
 export type ReserveOption = 'new' | 'existing';
+
+export interface ReservedParaId {
+  deposit: string;
+  locked: boolean;
+  manager: string;
+}

@@ -16,10 +16,10 @@ import BigNumber from 'bignumber.js';
 import { faCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { Textbox } from 'library/Inputs/Textbox';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
-import type { AnyJson } from '@w3ux/utils/types';
 import { SubmitTx } from 'library/SubmitTx';
 import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import { useReserveParaId } from 'contexts/ParaSetup/ReserveParaId';
+import type { ReservedParaId } from 'contexts/ParaSetup/ReserveParaId/types';
 
 export const ReserveParaId = () => {
   const {
@@ -55,10 +55,9 @@ export const ReserveParaId = () => {
   // TODO: Move this to `ParaSetup` context, key by tab.
   const [existingParaId, setExistingParaId] = useState<string>();
 
-  // Store whether the existing para id is valid for the selected account.
+  // Store the reserved para id entry for existing para id.
   // TODO: Move this to `ParaSetup` context, key by tab.
-  const [existingParaIdValid, setExistingParaIdValid] =
-    useState<boolean>(false);
+  const [reservedParaId, setReservedParaId] = useState<ReservedParaId>();
 
   // Query the chain to see if an existing para id exists with the given address.
   const queryExistingParaId = async () => {
@@ -67,10 +66,10 @@ export const ReserveParaId = () => {
     }
     // Get para id from chain.
     const result = await api.query.registrar.paras(existingParaId);
-    const manager = (result.toHuman() as AnyJson)?.manager;
+    const json = result?.toHuman();
 
-    if (manager === selectedAccount) {
-      setExistingParaIdValid(true);
+    if (json !== null) {
+      setReservedParaId(json as unknown as ReservedParaId);
     }
   };
 
@@ -132,6 +131,8 @@ export const ReserveParaId = () => {
 
   // When the selected option and para id is valid, update context state for this tab.
   useEffectIgnoreInitial(() => {
+    const existingParaIdValid = selectedAccount === reservedParaId?.manager;
+
     if (selectedOption === 'existing' && existingParaIdValid) {
       // TODO: Set para id for this tab.
     }
@@ -140,7 +141,7 @@ export const ReserveParaId = () => {
     if (selectedOption === 'new' && !!nextParaId) {
       // TODO: set para id for this tab.
     }
-  }, [selectedOption, existingParaIdValid, nextParaId]);
+  }, [selectedOption, selectedAccount, reservedParaId, nextParaId]);
 
   return (
     <FormWrapper>
