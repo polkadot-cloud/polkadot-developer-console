@@ -167,6 +167,28 @@ export const ReserveParaIdProvider = ({
     setReservedParaIds(updated);
   };
 
+  // Method that checks if a stored para id for a tab is valid (i.e. the next free id has been
+  // reserved, or a valid existing one exists.
+  const validateParaId = (tabId: number) => {
+    const selectedOption = getSelectedOption(tabId);
+    const selectedAccount = getSelectedAccount(tabId);
+    const reservedParaId = getReservedParaId(tabId);
+
+    // Valid existing para id if chain record manager matches selected account.
+    const existingParaIdValid = selectedAccount === reservedParaId?.manager;
+    if (selectedOption === 'existing' && existingParaIdValid) {
+      return true;
+    }
+
+    // TODO: Finish this logic to check if the next para id is valid. New state item to store the
+    // reserved id for an account.
+    if (selectedOption === 'new' && !!nextParaId) {
+      // TODO: return true (once condition is correct).
+    }
+
+    return false;
+  };
+
   return (
     <ReserveParaIdContext.Provider
       value={{
@@ -197,6 +219,8 @@ export const ReserveParaIdProvider = ({
         getReservedParaId,
         setReservedParaId,
         removeReservedParaId,
+
+        validateParaId,
       }}
     >
       {children}

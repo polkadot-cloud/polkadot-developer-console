@@ -5,7 +5,7 @@ import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { FormWrapper } from 'routes/Home/Wrappers';
 import { useParachain } from 'routes/ParachainSetup/Provider';
-import { ParaIdOptionsWrapper } from '../Wrappers';
+import { ParaIdOptionsWrapper, SetupNote } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
 import { useEffect } from 'react';
@@ -32,7 +32,6 @@ export const ReserveParaId = () => {
     setSelectedOption,
     getExistingParaIdInput,
     setExistingParaIdInput,
-    getReservedParaId,
     setReservedParaId,
   } = useReserveParaId();
   const { ownerId, tabId } = useActiveTab();
@@ -57,9 +56,6 @@ export const ReserveParaId = () => {
 
   // Get the existing para id input.
   const existingParaId = getExistingParaIdInput(tabId);
-
-  // Store the reserved para id entry for existing para id.
-  const reservedParaId = getReservedParaId(tabId);
 
   // Query the chain to see if an existing para id exists with the given address.
   const queryExistingParaId = async () => {
@@ -131,20 +127,6 @@ export const ReserveParaId = () => {
     }
   }, [existingParaId, selectedAccount]);
 
-  // When the selected option and para id is valid, update context state for this tab.
-  useEffectIgnoreInitial(() => {
-    const existingParaIdValid = selectedAccount === reservedParaId?.manager;
-
-    if (selectedOption === 'existing' && existingParaIdValid) {
-      // TODO: Set para id for this tab.
-    }
-
-    // TODO: replace `nextParaId` with the actual reserved para id here.
-    if (selectedOption === 'new' && !!nextParaId) {
-      // TODO: set para id for this tab.
-    }
-  }, [selectedOption, selectedAccount, reservedParaId, nextParaId]);
-
   return (
     <FormWrapper>
       <h3>Reserve a Para ID or select an existing one from your accounts.</h3>
@@ -212,6 +194,9 @@ export const ReserveParaId = () => {
             </div>
           </section>
         </ParaIdOptionsWrapper>
+
+        <SetupNote>Successful Para ID status here...</SetupNote>
+
         {reserveNextIdValid && (
           <SubmitTx
             {...submitExtrinsic}

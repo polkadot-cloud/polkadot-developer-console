@@ -344,3 +344,15 @@ export const ParaIdOptionsWrapper = styled.div`
     }
   }
 `;
+
+// Note displayed at the bottom of a setup step, often used to show succesful completion.
+export const SetupNote = styled.h4`
+  color: var(--text-color-tertiary);
+  font-family: InterSemiBold, sans-serif;
+  transition: color 0.15s;
+  margin: 1.5rem 0 0.5rem 0;
+
+  > svg {
+    margin-right: 0.25rem;
+  }
+`;
