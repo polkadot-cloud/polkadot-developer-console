@@ -131,6 +131,11 @@ export const ReserveParaId = () => {
           : `Para ID found, but has a different owner.`
         : 'Ready to fetch Para ID.';
 
+  // Determine new para id feedback.
+  const newFeedback: string = reservedNextParaId
+    ? 'Para ID reserved. Ready to configure node.'
+    : 'Ready to Reserve Para ID.';
+
   // Get the next free Para ID from the registrar.
   useEffect(() => {
     // Check if this next para id subscription is not already initialised.
@@ -219,9 +224,7 @@ export const ReserveParaId = () => {
         </ParaIdOptionsWrapper>
 
         <SetupNote>
-          {selectedOption === 'existing'
-            ? existingFeedback
-            : `new option feedback`}
+          {selectedOption === 'existing' ? existingFeedback : newFeedback}
         </SetupNote>
 
         {/* Show tx submission if a next para id has not been reserved for the selected account. */}
