@@ -17,11 +17,12 @@ import BigNumber from 'bignumber.js';
 import { faCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { Textbox } from 'library/Inputs/Textbox';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
+import type { AnyJson } from '@w3ux/utils/types';
 
 export const ReserveParaId = () => {
   const { ownerId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
-  const { chainSpec, chain, instanceId } = useParachain();
+  const { chainSpec, chain, instanceId, api } = useParachain();
   const { getNextParaId, nextParaIdChainExists, addNextParaIdchain } =
     useParaSetup();
 
@@ -44,12 +45,21 @@ export const ReserveParaId = () => {
   // Store an existing para id.
   const [existingParaId, setExistingParaId] = useState<string>();
 
+  // Store whether the existing para id is valid for the selected account.
+  const [, setExistingParaIdValid] = useState<boolean>(false);
+
   // Query the chain to see if an existing para id exists with the given address.
   const queryExistingParaId = async () => {
     if (!existingParaId || !selectedAccount) {
       return;
     }
-    // TODO: implement query using api.
+    // Get para id from chain.
+    const result = await api.query.registrar.paras(existingParaId);
+    const manager = (result.toHuman() as AnyJson)?.manager;
+
+    if (manager === selectedAccount) {
+      setExistingParaIdValid(true);
+    }
   };
 
   // Get the next free Para ID from the registrar.
@@ -68,8 +78,10 @@ export const ReserveParaId = () => {
 
   // Query the chain for an existing para id when the existing para id changes.
   useEffectIgnoreInitial(() => {
-    queryExistingParaId();
-  }, [existingParaId]);
+    if (selectedOption === 'existing') {
+      queryExistingParaId();
+    }
+  }, [existingParaId, selectedAccount]);
 
   return (
     <FormWrapper>
