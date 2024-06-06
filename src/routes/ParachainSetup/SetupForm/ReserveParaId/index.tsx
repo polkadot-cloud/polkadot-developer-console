@@ -30,6 +30,8 @@ export const ReserveParaId = () => {
     setSelectedAccount,
     getSelectedOption,
     setSelectedOption,
+    getExistingParaIdInput,
+    setExistingParaIdInput,
   } = useReserveParaId();
   const { ownerId, tabId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
@@ -51,9 +53,8 @@ export const ReserveParaId = () => {
   // Get the selected option for the Para ID.
   const selectedOption = getSelectedOption(tabId);
 
-  // Store an existing para id.
-  // TODO: Move this to `ParaSetup` context, key by tab.
-  const [existingParaId, setExistingParaId] = useState<string>();
+  // Get the existing para id input.
+  const existingParaId = getExistingParaIdInput(tabId);
 
   // Store the reserved para id entry for existing para id.
   // TODO: Move this to `ParaSetup` context, key by tab.
@@ -185,7 +186,7 @@ export const ReserveParaId = () => {
               <Textbox
                 /* TODO: add onFocus and setSelectedOption('existing') */
                 defaultValue={existingParaId || ''}
-                onChange={(val) => setExistingParaId(val)}
+                onChange={(val) => setExistingParaIdInput(tabId, val)}
                 placeholder="Para ID"
                 numeric
               />

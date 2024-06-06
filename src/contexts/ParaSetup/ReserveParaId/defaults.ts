@@ -19,4 +19,8 @@ export const defaultReserveParaIdContext: ReserveParaIdContextInterface = {
   getSelectedOption: (tabId) => 'new',
   setSelectedOption: (tabId, option) => {},
   removeSelectedOption: (tabId: number) => {},
+
+  getExistingParaIdInput: (tabId) => '',
+  setExistingParaIdInput: (tabId, paraId) => {},
+  removeExistingParaIdInput: (tabId) => {},
 };

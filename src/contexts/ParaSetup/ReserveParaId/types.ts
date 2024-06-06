@@ -18,6 +18,10 @@ export interface ReserveParaIdContextInterface {
   getSelectedOption: (tabId: number) => ReserveOption;
   setSelectedOption: (tabId: number, option: ReserveOption) => void;
   removeSelectedOption: (tabId: number) => void;
+
+  getExistingParaIdInput: (tabId: number) => string;
+  removeExistingParaIdInput: (tabId: number) => void;
+  setExistingParaIdInput: (tabId: number, paraId: string) => void;
 }
 
 export type ReserveOption = 'new' | 'existing';

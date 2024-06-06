@@ -117,6 +117,29 @@ export const ReserveParaIdProvider = ({
     setSelectedOptions(updated);
   };
 
+  // Store existing para id inputs, keyed by tab.
+  const [existingParaIdInputs, setExistingParaIdInputs] =
+    useState<Record<number, string>>();
+
+  // Get an existing para id input for a tab.
+  const getExistingParaIdInput = (tabId: number) =>
+    existingParaIdInputs?.[tabId] || '';
+
+  // Set an existing para id input for a tab.
+  const setExistingParaIdInput = (tabId: number, value: string) => {
+    setExistingParaIdInputs((prev) => ({
+      ...prev,
+      [tabId]: value,
+    }));
+  };
+
+  // Remove an existing para id input for a tab.
+  const removeExistingParaIdInput = (tabId: number) => {
+    const updated = { ...existingParaIdInputs };
+    delete updated[tabId];
+    setExistingParaIdInputs(updated);
+  };
+
   return (
     <ReserveParaIdContext.Provider
       value={{
@@ -137,6 +160,11 @@ export const ReserveParaIdProvider = ({
         getSelectedOption,
         setSelectedOption,
         removeSelectedOption,
+
+        // Manage existing para id inputs.
+        getExistingParaIdInput,
+        setExistingParaIdInput,
+        removeExistingParaIdInput,
       }}
     >
       {children}
