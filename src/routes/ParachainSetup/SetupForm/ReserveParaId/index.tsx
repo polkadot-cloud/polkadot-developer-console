@@ -8,7 +8,7 @@ import { useParachain } from 'routes/ParachainSetup/Provider';
 import { ParaIdOptionsWrapper } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { NextFreeParaId } from 'model/NextFreeParaId';
 import { useActiveTab } from 'contexts/ActiveTab';
@@ -32,6 +32,8 @@ export const ReserveParaId = () => {
     setSelectedOption,
     getExistingParaIdInput,
     setExistingParaIdInput,
+    getReservedParaId,
+    setReservedParaId,
   } = useReserveParaId();
   const { ownerId, tabId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
@@ -57,8 +59,7 @@ export const ReserveParaId = () => {
   const existingParaId = getExistingParaIdInput(tabId);
 
   // Store the reserved para id entry for existing para id.
-  // TODO: Move this to `ParaSetup` context, key by tab.
-  const [reservedParaId, setReservedParaId] = useState<ReservedParaId>();
+  const reservedParaId = getReservedParaId(tabId);
 
   // Query the chain to see if an existing para id exists with the given address.
   const queryExistingParaId = async () => {
@@ -70,7 +71,7 @@ export const ReserveParaId = () => {
     const json = result?.toHuman();
 
     if (json !== null) {
-      setReservedParaId(json as unknown as ReservedParaId);
+      setReservedParaId(tabId, json as unknown as ReservedParaId);
     }
   };
 

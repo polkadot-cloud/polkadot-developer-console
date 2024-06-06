@@ -4,7 +4,11 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
 import { defaultReserveParaIdContext } from './defaults';
-import type { ReserveOption, ReserveParaIdContextInterface } from './types';
+import type {
+  ReserveOption,
+  ReserveParaIdContextInterface,
+  ReservedParaId,
+} from './types';
 import type { ChainId } from 'config/networks/types';
 
 export const ReserveParaIdContext =
@@ -140,6 +144,29 @@ export const ReserveParaIdProvider = ({
     setExistingParaIdInputs(updated);
   };
 
+  // Store the fetched reserved para id entries, keyed by tab.
+  const [reservedParaIds, setReservedParaIds] = useState<
+    Record<number, ReservedParaId>
+  >({});
+
+  // Get a reserved para id entry for a tab.
+  const getReservedParaId = (tabId: number) => reservedParaIds[tabId];
+
+  // Set a reserved para id entry for a tab.
+  const setReservedParaId = (tabId: number, entry: ReservedParaId) => {
+    setReservedParaIds((prev) => ({
+      ...prev,
+      [tabId]: entry,
+    }));
+  };
+
+  // Remove a reserved para id entry for a tab.
+  const removeReservedParaId = (tabId: number) => {
+    const updated = { ...reservedParaIds };
+    delete updated[tabId];
+    setReservedParaIds(updated);
+  };
+
   return (
     <ReserveParaIdContext.Provider
       value={{
@@ -165,6 +192,11 @@ export const ReserveParaIdProvider = ({
         getExistingParaIdInput,
         setExistingParaIdInput,
         removeExistingParaIdInput,
+
+        // Manage reserved para id entries.
+        getReservedParaId,
+        setReservedParaId,
+        removeReservedParaId,
       }}
     >
       {children}

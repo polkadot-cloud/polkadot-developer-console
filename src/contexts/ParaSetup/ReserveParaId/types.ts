@@ -22,6 +22,10 @@ export interface ReserveParaIdContextInterface {
   getExistingParaIdInput: (tabId: number) => string;
   removeExistingParaIdInput: (tabId: number) => void;
   setExistingParaIdInput: (tabId: number, paraId: string) => void;
+
+  getReservedParaId: (tabId: number) => ReservedParaId | undefined;
+  setReservedParaId: (tabId: number, reservedParaId: ReservedParaId) => void;
+  removeReservedParaId: (tabId: number) => void;
 }
 
 export type ReserveOption = 'new' | 'existing';
