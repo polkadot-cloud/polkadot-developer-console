@@ -131,13 +131,12 @@ export const ReserveParaId = () => {
   // When the selected option and para id is valid, update context state for this tab.
   useEffectIgnoreInitial(() => {
     if (selectedOption === 'existing' && existingParaIdValid) {
-      console.log('form is valid for existing para id');
       // TODO: Set para id for this tab.
     }
 
+    // TODO: replace `nextParaId` with the actual reserved para id here.
     if (selectedOption === 'new' && !!nextParaId) {
       // TODO: set para id for this tab.
-      console.log('form is valid for new para id');
     }
   }, [selectedOption, existingParaIdValid, nextParaId]);
 
