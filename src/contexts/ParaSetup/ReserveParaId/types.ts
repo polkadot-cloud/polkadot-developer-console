@@ -10,4 +10,14 @@ export interface ReserveParaIdContextInterface {
   nextParaIdChainExists: (chainId: ChainId) => boolean;
   addNextParaIdChain: (chainId: ChainId) => void;
   removeNextParaIdChain: (chainId: ChainId) => void;
+
+  getSelectedAccount: (tabId: number) => string | undefined;
+  setSelectedAccount: (tabId: number, account: string) => void;
+  removeSelectedAccount: (tabId: number) => void;
+
+  getSelectedOption: (tabId: number) => ReserveOption;
+  setSelectedOption: (tabId: number, option: ReserveOption) => void;
+  removeSelectedOption: (tabId: number) => void;
 }
+
+export type ReserveOption = 'new' | 'existing';

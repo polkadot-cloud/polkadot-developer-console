@@ -22,11 +22,18 @@ import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import { useReserveParaId } from 'contexts/ParaSetup/ReserveParaId';
 
 export const ReserveParaId = () => {
-  const { ownerId } = useActiveTab();
+  const {
+    getNextParaId,
+    nextParaIdChainExists,
+    addNextParaIdChain,
+    getSelectedAccount,
+    setSelectedAccount,
+    getSelectedOption,
+    setSelectedOption,
+  } = useReserveParaId();
+  const { ownerId, tabId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
   const { chainSpec, chain, instanceId, api } = useParachain();
-  const { getNextParaId, nextParaIdChainExists, addNextParaIdChain } =
-    useReserveParaId();
 
   const chainId = chain.id;
   const { ss58, units, unit } = chain;
@@ -37,17 +44,12 @@ export const ReserveParaId = () => {
     ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
     : [];
 
-  // Store the selected account for the Para ID.
-  // TODO: Move this to `ParaSetup` context, key by tab.
-  const initialAccount = accounts?.[0]?.address || '';
-  const [selectedAccount, setSelectedAccount] =
-    useState<string>(initialAccount);
+  // Get the selected account for the Para ID.
+  const selectedAccount =
+    getSelectedAccount(tabId) || accounts?.[0]?.address || '';
 
-  // Store the selected option for the Para ID.
-  // TODO: Move this to `ParaSetup` context, key by tab.
-  const [selectedOption, setSelectedOption] = useState<'new' | 'existing'>(
-    'new'
-  );
+  // Get the selected option for the Para ID.
+  const selectedOption = getSelectedOption(tabId);
 
   // Store an existing para id.
   // TODO: Move this to `ParaSetup` context, key by tab.
@@ -147,7 +149,7 @@ export const ReserveParaId = () => {
         <AccountId32
           accounts={accounts}
           defaultValue={selectedAccount}
-          onChange={(val) => setSelectedAccount(val)}
+          onChange={(val) => setSelectedAccount(tabId, val)}
         />
         <ParaIdOptionsWrapper>
           <section>
@@ -158,7 +160,10 @@ export const ReserveParaId = () => {
               <h1>
                 {nextParaId ? new BigNumber(nextParaId).toString() : '...'}
               </h1>
-              <button className="foot" onClick={() => setSelectedOption('new')}>
+              <button
+                className="foot"
+                onClick={() => setSelectedOption(tabId, 'new')}
+              >
                 <span>
                   <h4>{selectedOption === 'new' ? ' Selected' : 'Select'}</h4>
                 </span>
@@ -185,7 +190,7 @@ export const ReserveParaId = () => {
               />
               <button
                 className="foot"
-                onClick={() => setSelectedOption('existing')}
+                onClick={() => setSelectedOption(tabId, 'existing')}
               >
                 <span>
                   <h4>

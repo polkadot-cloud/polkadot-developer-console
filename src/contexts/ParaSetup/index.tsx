@@ -44,8 +44,13 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   const { tab } = useActiveTab();
   const { autoTabNaming } = useSettings();
   const { getTabApiIndex } = useApiIndexer();
-  const { removeNextParaId, removeNextParaIdChain, setNextParaId } =
-    useReserveParaId();
+  const {
+    setNextParaId,
+    removeNextParaId,
+    removeSelectedOption,
+    removeSelectedAccount,
+    removeNextParaIdChain,
+  } = useReserveParaId();
   const { getChainSpec, handleConnectApi, getApiInstanceById } =
     useChainSpaceEnv();
 
@@ -87,6 +92,8 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     if (chainId) {
       removeNextParaId(chainId);
       removeNextParaIdChain(chainId);
+      removeSelectedAccount(tabId);
+      removeSelectedOption(tabId);
     }
   };
 

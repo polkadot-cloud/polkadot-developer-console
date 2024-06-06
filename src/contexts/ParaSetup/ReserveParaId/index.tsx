@@ -4,7 +4,7 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
 import { defaultReserveParaIdContext } from './defaults';
-import type { ReserveParaIdContextInterface } from './types';
+import type { ReserveOption, ReserveParaIdContextInterface } from './types';
 import type { ChainId } from 'config/networks/types';
 
 export const ReserveParaIdContext =
@@ -71,15 +71,72 @@ export const ReserveParaIdProvider = ({
     setNextParaIdState(updated);
   };
 
+  // Store the selected accounts for reserving a para id, keyed by tab.
+  const [selectedAccounts, setSelectedAccounts] = useState<
+    Record<string, string>
+  >({});
+
+  // Get a selected account for a tab.
+  const getSelectedAccount = (tabId: number) => selectedAccounts[tabId];
+
+  // Set an account for a tab.
+  const setSelectedAccount = (tabId: number, address: string) => {
+    setSelectedAccounts((prev) => ({
+      ...prev,
+      [tabId]: address,
+    }));
+  };
+
+  // Remove an account for a tab.
+  const removeSelectedAccount = (tabId: number) => {
+    const updated = { ...selectedAccounts };
+    delete updated[tabId];
+    setSelectedAccounts(updated);
+  };
+
+  // Store the selected option for reserving a para id, keyed by tab.
+  const [selectedOptions, setSelectedOptions] = useState<
+    Record<number, ReserveOption>
+  >({});
+
+  // Get a reserve option for a tab.
+  const getSelectedOption = (tabId: number) => selectedOptions[tabId] || 'new';
+
+  // Set a reserve option for a tab.
+  const setSelectedOption = (tabId: number, option: ReserveOption) => {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [tabId]: option,
+    }));
+  };
+
+  // Remove a reserve option for a tab.
+  const removeSelectedOption = (tabId: number) => {
+    const updated = { ...selectedOptions };
+    delete updated[tabId];
+    setSelectedOptions(updated);
+  };
+
   return (
     <ReserveParaIdContext.Provider
       value={{
+        // Manage next para id fetching.
         getNextParaId,
         setNextParaId,
         removeNextParaId,
         nextParaIdChainExists,
         addNextParaIdChain,
         removeNextParaIdChain,
+
+        // Manage managers of para ids.
+        getSelectedAccount,
+        setSelectedAccount,
+        removeSelectedAccount,
+
+        // Manage para id reserve options.
+        getSelectedOption,
+        setSelectedOption,
+        removeSelectedOption,
       }}
     >
       {children}

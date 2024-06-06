@@ -11,4 +11,12 @@ export const defaultReserveParaIdContext: ReserveParaIdContextInterface = {
   nextParaIdChainExists: (chainId) => false,
   addNextParaIdChain: (chainId) => {},
   removeNextParaIdChain: (chainId) => {},
+
+  getSelectedAccount: (tabId) => undefined,
+  setSelectedAccount: (tabId, account) => {},
+  removeSelectedAccount: (tabId) => {},
+
+  getSelectedOption: (tabId) => 'new',
+  setSelectedOption: (tabId, option) => {},
+  removeSelectedOption: (tabId: number) => {},
 };
