@@ -19,11 +19,6 @@ export interface ParaSetupContextInterface {
   setupParachainIntegrityCheck: (
     tabId: number
   ) => IntegrityCheckedParachainContext | false;
-  getNextParaId: (chainId: ChainId) => string | undefined;
-  setNextParaId: (chainId: ChainId, paraId: string) => void;
-  removeNextParaId: (chainId: ChainId) => void;
-  nextParaIdChainExists: (chainId: ChainId) => boolean;
-  addNextParaIdchain: (chainId: ChainId) => void;
 }
 
 export type SetupStep =

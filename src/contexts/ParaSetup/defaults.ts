@@ -12,11 +12,6 @@ export const defaultParaSetupContext: ParaSetupContextInterface = {
   setSelectedRelayChain: (tabId, chainId) => {},
   destroyTabParaSetup: (tabId) => {},
   setupParachainIntegrityCheck: (tabId) => false,
-  getNextParaId: (chainId) => undefined,
-  setNextParaId: (chainId, paraId) => {},
-  removeNextParaId: (chainId) => {},
-  nextParaIdChainExists: (chainId) => false,
-  addNextParaIdchain: (chainId) => {},
 };
 
 export const setupSteps: SetupStep[] = [

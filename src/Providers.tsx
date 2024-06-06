@@ -34,6 +34,7 @@ import { TxMetaProvider } from 'contexts/TxMeta';
 import { OverlayProvider } from 'library/Overlay/Provider';
 import { PromptProvider } from 'contexts/Prompt';
 import { LedgerHardwareProvider } from 'contexts/LedgerHardware';
+import { ReserveParaIdProvider } from 'contexts/ParaSetup/ReserveParaId';
 
 export const Providers = () => {
   // !! --------------------------------
@@ -80,6 +81,7 @@ export const Providers = () => {
     ChainExplorerProvider,
 
     // Task: `parachainSetup` related providers.
+    ReserveParaIdProvider,
     ParaSetupProvider,
   ];
 

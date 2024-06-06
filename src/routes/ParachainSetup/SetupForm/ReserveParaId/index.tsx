@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
 import { SubscriptionsController } from 'controllers/Subscriptions';
-import { useParaSetup } from 'contexts/ParaSetup';
 import { NextFreeParaId } from 'model/NextFreeParaId';
 import { useActiveTab } from 'contexts/ActiveTab';
 import BigNumber from 'bignumber.js';
@@ -20,13 +19,14 @@ import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import type { AnyJson } from '@w3ux/utils/types';
 import { SubmitTx } from 'library/SubmitTx';
 import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
+import { useReserveParaId } from 'contexts/ParaSetup/ReserveParaId';
 
 export const ReserveParaId = () => {
   const { ownerId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
   const { chainSpec, chain, instanceId, api } = useParachain();
-  const { getNextParaId, nextParaIdChainExists, addNextParaIdchain } =
-    useParaSetup();
+  const { getNextParaId, nextParaIdChainExists, addNextParaIdChain } =
+    useReserveParaId();
 
   const chainId = chain.id;
   const { ss58, units, unit } = chain;
@@ -111,7 +111,7 @@ export const ReserveParaId = () => {
   useEffect(() => {
     // Check if this next para id subscription is not already initialised.
     if (!nextParaIdChainExists(chainId)) {
-      addNextParaIdchain(chainId);
+      addNextParaIdChain(chainId);
 
       SubscriptionsController.set(
         instanceId,
@@ -154,7 +154,7 @@ export const ReserveParaId = () => {
             <div
               className={`inner ${selectedOption === 'new' ? ' selected' : ''}`}
             >
-              <h3>Reserve New Para ID</h3>
+              <h3>Reserve Next Para ID</h3>
               <h1>
                 {nextParaId ? new BigNumber(nextParaId).toString() : '...'}
               </h1>

@@ -10,7 +10,7 @@ import type {
   SetupStepsState,
 } from './types';
 import { defaultParaSetupContext } from './defaults';
-import type { ChainId, DirectoryId } from 'config/networks/types';
+import type { DirectoryId } from 'config/networks/types';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
@@ -23,6 +23,7 @@ import type { ConnectFrom, TabChainData, TabTask } from 'contexts/Tabs/types';
 import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import { useActiveTab } from 'contexts/ActiveTab';
+import { useReserveParaId } from './ReserveParaId';
 
 export const ParaSetupContext = createContext<ParaSetupContextInterface>(
   defaultParaSetupContext
@@ -43,65 +44,13 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   const { tab } = useActiveTab();
   const { autoTabNaming } = useSettings();
   const { getTabApiIndex } = useApiIndexer();
+  const { removeNextParaId, removeNextParaIdChain, setNextParaId } =
+    useReserveParaId();
   const { getChainSpec, handleConnectApi, getApiInstanceById } =
     useChainSpaceEnv();
 
   // Store the active setup step for a tab.
   const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
-
-  // Store the next free para id, keyed by chain. Once a subscription has been initialised, all tabs
-  // can use an existing value for the chain in question. NOTE: Requires a ref as state updates are
-  // used in event callbacks.
-  const [nextParaId, setNextParaIdState] = useState<
-    Partial<Record<ChainId, string>>
-  >({});
-  const nextParaIdRef = useRef(nextParaId);
-
-  // Keep track of the chains that have initialised next para id subscriptions.
-  const initialisedNextParaIdChains = useRef<ChainId[]>([]);
-
-  // Check if next para id has been initialised for a chain.
-  const nextParaIdChainExists = (chainId: ChainId) =>
-    initialisedNextParaIdChains.current.includes(chainId);
-
-  // Add chain to initialised next para ids.
-  const addNextParaIdchain = (chainId: ChainId) => {
-    if (!initialisedNextParaIdChains.current.includes(chainId)) {
-      initialisedNextParaIdChains.current.push(chainId);
-    }
-  };
-
-  // Remove chain from initialised next para ids.
-  const removeNextParaIdChain = (chainId: ChainId) => {
-    const index = initialisedNextParaIdChains.current.indexOf(chainId);
-    if (index >= 0) {
-      initialisedNextParaIdChains.current.splice(index, 1);
-    }
-  };
-
-  // Get a para id for a chain.
-  const getNextParaId = (chainId: ChainId) => nextParaId[chainId];
-
-  // Set a para id for a chain.
-  const setNextParaId = (chainId: ChainId, paraId: string) => {
-    if (!chainId) {
-      return;
-    }
-    const updated = { ...nextParaIdRef.current };
-    updated[chainId] = paraId;
-
-    nextParaIdRef.current = updated;
-    setNextParaIdState(updated);
-  };
-
-  // Remove a para id for a chain.
-  const removeNextParaId = (chainId: ChainId) => {
-    const updated = { ...nextParaIdRef.current };
-    delete updated[chainId];
-
-    nextParaIdRef.current = updated;
-    setNextParaIdState(updated);
-  };
 
   // Get the selected relay chain for a tab.
   const getSelectedRelayChain = (tabId: number) => {
@@ -262,12 +211,6 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
 
         getSelectedRelayChain,
         setSelectedRelayChain,
-
-        getNextParaId,
-        setNextParaId,
-        removeNextParaId,
-        nextParaIdChainExists,
-        addNextParaIdchain,
 
         destroyTabParaSetup,
         setupParachainIntegrityCheck,
