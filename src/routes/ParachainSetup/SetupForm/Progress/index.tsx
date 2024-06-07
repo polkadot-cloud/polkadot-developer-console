@@ -3,20 +3,27 @@
 
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useParaSetup } from 'contexts/ParaSetup';
-import { ProgressWrapper, RelayIconWrapper } from '../Wrappers';
+import { ProgressWrapper, ProgressBadgeWrapper } from '../Wrappers';
 import { Icon } from '../Icon';
 import { Section } from './Section';
 import { Connector } from './Connector';
 import { useParachain } from 'routes/ParachainSetup/Provider';
+import { useReserveParaId } from 'contexts/ParaSetup/ReserveParaId';
+import BigNumber from 'bignumber.js';
 
 export const Progress = () => {
-  const { getActiveStep } = useParaSetup();
-  const { tabId } = useActiveTab();
   const {
     chain: { id: chainId },
   } = useParachain();
+  const { tabId } = useActiveTab();
+  const { getActiveStep } = useParaSetup();
+  const { validateParaId, getSelectedAccount } = useReserveParaId();
 
+  // The currently active setup step.
   const activeStep = getActiveStep(tabId);
+
+  // A reserved para id for the current tab, if any.
+  const reservedParaId = validateParaId(tabId, getSelectedAccount(tabId) || '');
 
   // Whether to show the status icons.
   const collapsedStatus = true;
@@ -33,11 +40,11 @@ export const Progress = () => {
         showStatus={chainId !== undefined}
       >
         {chainId && (
-          <RelayIconWrapper
+          <ProgressBadgeWrapper
             className={`${activeStep === 'connect_relay' ? `active` : ``}`}
           >
             <Icon icon={chainId} />
-          </RelayIconWrapper>
+          </ProgressBadgeWrapper>
         )}
       </Section>
       <Connector />
@@ -45,10 +52,15 @@ export const Progress = () => {
         stepId="reserve_para_id"
         label="Reserve Para ID"
         collapsedStatus={collapsedStatus}
-        showStatus={showStatus}
+        showStatus={reservedParaId !== undefined}
       >
-        ...
+        {reservedParaId !== undefined && (
+          <div>
+            <h4>{new BigNumber(reservedParaId.paraId).toFormat()}</h4>
+          </div>
+        )}
       </Section>
+
       <Connector />
       <Section
         stepId="configure_node"

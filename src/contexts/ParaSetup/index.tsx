@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ReactNode } from 'react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import type {
   ParaSetupContextInterface,
   ParachainSetupTaskData,
@@ -20,6 +20,11 @@ import { useTabs } from 'contexts/Tabs';
 import { useSettings } from 'contexts/Settings';
 import { getChainMeta } from 'config/networks/Utils';
 import type { ConnectFrom, TabChainData, TabTask } from 'contexts/Tabs/types';
+import { useEventListener } from 'usehooks-ts';
+import { isCustomEvent } from 'Utils';
+import { useActiveTab } from 'contexts/ActiveTab';
+import { useReserveParaId } from './ReserveParaId';
+import * as local from './Local';
 
 export const ParaSetupContext = createContext<ParaSetupContextInterface>(
   defaultParaSetupContext
@@ -28,21 +33,41 @@ export const ParaSetupContext = createContext<ParaSetupContextInterface>(
 export const useParaSetup = () => useContext(ParaSetupContext);
 
 export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
-  const { autoTabNaming } = useSettings();
-  const { getTabApiIndex } = useApiIndexer();
-  const { getChainSpec, handleConnectApi, getApiInstanceById } =
-    useChainSpaceEnv();
   const {
     tabs,
+    tabsRef,
     setTabs,
     getAutoTabName,
     getTabTaskData,
     setTabTaskData,
     setTabActiveTask,
   } = useTabs();
+  const { tab } = useActiveTab();
+  const { autoTabNaming } = useSettings();
+  const { getTabApiIndex } = useApiIndexer();
+  const {
+    setNextParaId,
+    removeNextParaId,
+    removeSelectedOption,
+    removeSelectedAccount,
+    removeNextParaIdChain,
+    removeExistingParaIdInput,
+    removeExistingReservedParaId,
+    removeReservedNextParaId,
+  } = useReserveParaId();
+  const { getChainSpec, handleConnectApi, getApiInstanceById } =
+    useChainSpaceEnv();
 
   // Store the active setup step for a tab.
-  const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
+  const [activeSteps, setActiveStepsState] = useState<SetupStepsState>(
+    local.getActiveSteps() || {}
+  );
+
+  // Set active steps, and update local storage.
+  const setActiveSteps = (value: SetupStepsState) => {
+    local.setActiveSteps(value);
+    setActiveStepsState(value);
+  };
 
   // Get the selected relay chain for a tab.
   const getSelectedRelayChain = (tabId: number) => {
@@ -63,10 +88,10 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
 
   // Set an active step for a tab id.
   const setActiveStep = (tabId: number, step: SetupStep) => {
-    setActiveSteps((prev) => ({
-      ...prev,
+    setActiveSteps({
+      ...activeSteps,
       [tabId]: step,
-    }));
+    });
   };
 
   // Destroy parachain setup state associated with a tab. Currently only being used on tab close.
@@ -74,6 +99,17 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     const updated = { ...activeSteps };
     delete updated[tabId];
     setActiveSteps(updated);
+
+    const chainId = tab?.taskData?.chain?.id;
+    if (chainId) {
+      removeNextParaId(chainId);
+      removeNextParaIdChain(chainId);
+      removeSelectedAccount(tabId);
+      removeSelectedOption(tabId);
+      removeExistingParaIdInput(tabId);
+      removeExistingReservedParaId(tabId);
+      removeReservedNextParaId(tabId);
+    }
   };
 
   // Check that the correct state exists for parachain setup task to be active.
@@ -141,14 +177,14 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
       api: { instanceIndex: 0 },
     };
 
-    const newTabs = [...tabs].map((tab) =>
-      tab.id === tabId
+    const newTabs = [...tabs].map((item) =>
+      item.id === tabId
         ? {
-            ...tab,
+            ...item,
             // Auto rename the tab here if the setting is turned on.
             name: autoTabNaming
-              ? getAutoTabName(tab.id, 'Parachain Setup')
-              : tab.name,
+              ? getAutoTabName(item.id, 'Parachain Setup')
+              : item.name,
             // Chain is now assigned the `chainExplorer` task.
             activeTask: 'parachainSetup' as TabTask,
             taskData: {
@@ -158,7 +194,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
               selectedRelayChain: chainId,
             },
           }
-        : tab
+        : item
     );
 
     setTabs(newTabs);
@@ -172,14 +208,32 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
+  // Handle new next para id callback.
+  const newNextParaIdCallback = (e: Event) => {
+    if (isCustomEvent(e)) {
+      const { chainId, nextFreeParaId, ownerId } = e.detail;
+
+      // Update state if tab is still open.
+      if (tabsRef.find((item) => tabIdToOwnerId(item.id) === ownerId)) {
+        setNextParaId(chainId, nextFreeParaId);
+      }
+    }
+  };
+
+  const ref = useRef<Document>(document);
+  useEventListener('callback-next-free-para-id', newNextParaIdCallback, ref);
+
   return (
     <ParaSetupContext.Provider
       value={{
         handleConnectTask,
+
         getActiveStep,
         setActiveStep,
+
         getSelectedRelayChain,
         setSelectedRelayChain,
+
         destroyTabParaSetup,
         setupParachainIntegrityCheck,
       }}
