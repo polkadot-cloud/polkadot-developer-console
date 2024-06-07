@@ -202,7 +202,7 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     setFromAddresses({ ...fromAddresses, [id]: address });
   };
 
-  // REmove a from address for a tab.
+  // Remove a from address for a tab.
   const removeFromAddress = (id: number) => {
     const updated = { ...fromAddresses };
     delete updated[id];
