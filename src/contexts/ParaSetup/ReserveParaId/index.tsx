@@ -225,7 +225,6 @@ export const ReserveParaIdProvider = ({
     const existingParaIdValid =
       selectedAccount && selectedAccount === reservedParaId?.manager;
     if (selectedOption === 'existing' && existingParaIdValid) {
-      console.log(reservedParaId, selectedAccount);
       return { paraId: reservedParaId.paraId, manager };
     }
 
