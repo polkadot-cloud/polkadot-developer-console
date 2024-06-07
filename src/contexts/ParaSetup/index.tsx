@@ -24,6 +24,7 @@ import { useEventListener } from 'usehooks-ts';
 import { isCustomEvent } from 'Utils';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useReserveParaId } from './ReserveParaId';
+import * as local from './Local';
 
 export const ParaSetupContext = createContext<ParaSetupContextInterface>(
   defaultParaSetupContext
@@ -58,7 +59,15 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     useChainSpaceEnv();
 
   // Store the active setup step for a tab.
-  const [activeSteps, setActiveSteps] = useState<SetupStepsState>({});
+  const [activeSteps, setActiveStepsState] = useState<SetupStepsState>(
+    local.getActiveSteps() || {}
+  );
+
+  // Set active steps, and update local storage.
+  const setActiveSteps = (value: SetupStepsState) => {
+    local.setActiveSteps(value);
+    setActiveStepsState(value);
+  };
 
   // Get the selected relay chain for a tab.
   const getSelectedRelayChain = (tabId: number) => {
@@ -79,10 +88,10 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
 
   // Set an active step for a tab id.
   const setActiveStep = (tabId: number, step: SetupStep) => {
-    setActiveSteps((prev) => ({
-      ...prev,
+    setActiveSteps({
+      ...activeSteps,
       [tabId]: step,
-    }));
+    });
   };
 
   // Destroy parachain setup state associated with a tab. Currently only being used on tab close.
