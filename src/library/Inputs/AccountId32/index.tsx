@@ -40,15 +40,23 @@ export const AccountId32 = ({
     onRender(INPUT_TYPE);
   }
 
-  // The current selected address.
-  const selectedAddress = defaultAddress || accounts?.[0]?.address || '';
+  // Get input value from input meta.
+  const inputMetaValue = getInputMetaValue(tabId, uid);
+
+  // The current selected address. If input meta value is not present, use the the first imported
+  // account, if any.
+  const selectedAddress =
+    inputMetaValue === undefined
+      ? defaultAddress || accounts?.[0]?.address || ''
+      : defaultAddress || '';
 
   // The current value of the input. Attempts to find an account name, or uses the selected address,
   // if present.
   const value =
-    getInputMetaValue(tabId, uid) ||
-    accounts?.find(({ address }) => address === selectedAddress)?.name ||
-    selectedAddress;
+    inputMetaValue !== undefined
+      ? inputMetaValue
+      : accounts?.find(({ address }) => address === selectedAddress)?.name ||
+        selectedAddress;
 
   // Handle input value change.
   const handleInputChange = (val: string) => {
