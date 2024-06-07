@@ -69,15 +69,22 @@ export const ReserveParaId = () => {
     if (!existingParaId || !selectedAccount) {
       return;
     }
+
+    let valid = false;
+
     // Get para id from chain.
     const result = await api.query.registrar.paras(existingParaId);
     const json = result?.toHuman() as unknown as ReservedParaId | null;
 
-    // Add the reserved para id to a successful result.
+    // If a record exists, continue to check if this paraId has not been onboarded.
     if (json) {
-      json.paraId = existingParaId;
+      const result2 = await api.query.paras.paraLifecycles(existingParaId);
+      if (result2.toHuman() === null) {
+        valid = true;
+        json.paraId = existingParaId;
+      }
     }
-    setExistingReservedParaId(tabId, json);
+    setExistingReservedParaId(tabId, valid ? json : null);
   };
 
   // Format transaction for reserving next para id to submit, or return `null` if invalid.
@@ -125,7 +132,7 @@ export const ReserveParaId = () => {
   // Determine existing para id feedback.
   const existingFeedback: string =
     reservedExistingParaId === null
-      ? `Para ID ${existingParaId} does not exist.`
+      ? `Para ID ${existingParaId} is not valid.`
       : reservedExistingParaId !== undefined
         ? reservedExistingParaId.manager === selectedAccount
           ? `Found Para ID ${reservedExistingParaId.paraId}. Ready to configure node.`
