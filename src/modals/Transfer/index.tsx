@@ -4,6 +4,7 @@
 import { unitToPlanck } from '@w3ux/utils';
 import BigNumber from 'bignumber.js';
 import { useAccounts } from 'contexts/Accounts';
+import { useActiveTab } from 'contexts/ActiveTab';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useTxMeta } from 'contexts/TxMeta';
 import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
@@ -18,6 +19,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export const Transfer = () => {
   const { getTxFee } = useTxMeta();
+  const { metaKey } = useActiveTab();
   const {
     address,
     instanceId,
@@ -115,6 +117,7 @@ export const Transfer = () => {
         <div>
           <Label value="From" />
           <AccountId32
+            uid={`${metaKey}_transferFromAddress`}
             defaultAddress={fromAddress}
             accounts={accounts}
             onChange={(val) => setFromAddress(val)}
@@ -123,6 +126,7 @@ export const Transfer = () => {
 
           <Label value="Recipient" marginTop />
           <AccountId32
+            uid={`${metaKey}_transferRecipientAddress`}
             defaultAddress={toAddress}
             accounts={accounts}
             onChange={(val) => setToAddress(val)}

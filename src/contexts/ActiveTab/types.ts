@@ -8,4 +8,5 @@ export interface ActiveTabContextInterface {
   tabId: number;
   ownerId: OwnerId;
   tab: Tab | undefined;
+  metaKey: string;
 }

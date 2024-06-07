@@ -6,6 +6,7 @@ import type { InputCallbackProps } from '../types';
 import type { RefObject } from 'react';
 
 export type AccountId32Props = InputCallbackProps & {
+  uid: string;
   accounts: ImportedAccount[];
   defaultAddress: string | undefined;
   heightRef?: RefObject<HTMLDivElement>;

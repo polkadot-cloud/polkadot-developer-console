@@ -113,6 +113,7 @@ export const StorageItemsInner = () => {
       </SelectFormWrapper>
       <InputForm
         inputForm={inputForm}
+        activePallet={activePallet}
         activeItem={activeItem}
         onSubmit={onSubmit}
       />

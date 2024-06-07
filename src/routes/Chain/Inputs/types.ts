@@ -21,6 +21,8 @@ export interface RenderInputArgs {
 }
 
 export type InputArgConfig = InputCallbackProps & {
+  activePallet: string | null;
+  activeItem: string | null;
   inputKey: string;
   namespace: InputNamespace;
   inputKeysRef: RefObject<Record<string, string>>;

@@ -24,8 +24,8 @@ import { Label } from 'library/Inputs/Label';
 import { useChainState } from 'contexts/ChainState';
 
 export const ExtrinsicsInner = () => {
-  const { tabId } = useActiveTab();
   const { handleSubmit } = useInputForm();
+  const { tabId, metaKey } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
   const { chainSpec, instanceId, chain, api } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
@@ -154,11 +154,16 @@ export const ExtrinsicsInner = () => {
         />
         <CallList items={items} activeItem={activeItem} />
       </SelectFormWrapper>
-      <InputForm inputForm={inputForm} activeItem={activeItem} />
+      <InputForm
+        inputForm={inputForm}
+        activePallet={activePallet}
+        activeItem={activeItem}
+      />
 
       <SenderWrapper>
         <Label value="Sender" marginTop />
         <AccountId32
+          uid={`${metaKey}_sendAddress`}
           defaultAddress={fromAddress || undefined}
           accounts={accounts}
           onChange={(val) => setFromAddress(tabId, val)}

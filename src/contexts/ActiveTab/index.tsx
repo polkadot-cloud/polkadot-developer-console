@@ -19,12 +19,19 @@ export const ActiveTabProvider = ({ children }: { children: ReactNode }) => {
   const tab = getTab(selectedTabId);
   const ownerId = tabIdToOwnerId(selectedTabId);
 
+  // The tab meta key can be used to create unique identifiers for form elements. It is unique to
+  // the tab, the active task and the active page.
+  let metaKey = '';
+  if (tab) {
+    metaKey = `${selectedTabId}_${tab.activeTask}_${tab.activePage}`;
+  }
   return (
     <ActiveTabContext.Provider
       value={{
         tabId: selectedTabId,
         ownerId,
         tab,
+        metaKey,
       }}
     >
       {children}

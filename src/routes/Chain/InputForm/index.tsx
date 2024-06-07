@@ -13,6 +13,7 @@ import type { InputFormInnerProps } from './types';
 
 export const InputForm = ({
   inputForm,
+  activePallet,
   activeItem,
   onSubmit,
 }: InputFormInnerProps) => {
@@ -39,10 +40,14 @@ export const InputForm = ({
           Object.entries(inputItem).map(([type, input]) => {
             inputArgIndex++;
             return (
-              <Fragment key={`input_arg_${activeItem}_${inputArgIndex}`}>
+              <Fragment
+                key={`input_arg_${activePallet}_${activeItem}_${inputArgIndex}`}
+              >
                 {readInput(
                   type,
                   {
+                    activePallet,
+                    activeItem,
                     inputKey: `${inputArgIndex}`,
                     namespace,
                     inputKeysRef,
