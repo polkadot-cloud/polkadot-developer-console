@@ -74,7 +74,7 @@ export const ReserveParaId = () => {
 
     // Add the reserved para id to a successful result.
     if (json) {
-      json.id = existingParaId;
+      json.paraId = existingParaId;
     }
     setExistingReservedParaId(tabId, json);
   };
@@ -127,7 +127,7 @@ export const ReserveParaId = () => {
       ? `Para ID ${existingParaId} does not exist.`
       : reservedExistingParaId !== undefined
         ? reservedExistingParaId.manager === selectedAccount
-          ? `Found Para ID ${reservedExistingParaId.id}. Ready to configure node.`
+          ? `Found Para ID ${reservedExistingParaId.paraId}. Ready to configure node.`
           : `Para ID found, but has a different owner.`
         : 'Ready to fetch Para ID.';
 

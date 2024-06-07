@@ -52,7 +52,7 @@ export interface ReserveParaIdContextInterface {
 export type ReserveOption = 'new' | 'existing';
 
 export interface ReservedParaId {
-  id: string;
+  paraId: string;
   deposit: string;
   locked: boolean;
   manager: string;
