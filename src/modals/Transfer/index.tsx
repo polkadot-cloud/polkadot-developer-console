@@ -115,7 +115,7 @@ export const Transfer = () => {
         <div>
           <Label value="From" />
           <AccountId32
-            defaultValue={fromAddress}
+            defaultAddress={fromAddress}
             accounts={accounts}
             onChange={(val) => setFromAddress(val)}
             heightRef={heightRef}
@@ -123,7 +123,7 @@ export const Transfer = () => {
 
           <Label value="Recipient" marginTop />
           <AccountId32
-            defaultValue={toAddress}
+            defaultAddress={toAddress}
             accounts={accounts}
             onChange={(val) => setToAddress(val)}
             heightRef={heightRef}

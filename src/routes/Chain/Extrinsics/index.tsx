@@ -159,7 +159,7 @@ export const ExtrinsicsInner = () => {
       <SenderWrapper>
         <Label value="Sender" marginTop />
         <AccountId32
-          defaultValue={fromAddress || undefined}
+          defaultAddress={fromAddress || undefined}
           accounts={accounts}
           onChange={(val) => setFromAddress(tabId, val)}
         />

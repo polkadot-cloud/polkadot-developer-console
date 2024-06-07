@@ -20,7 +20,7 @@ import type { AccountId32Props } from './types';
 
 export const AccountId32 = ({
   accounts,
-  defaultValue,
+  defaultAddress,
   heightRef,
   onMount,
   onRender,
@@ -35,9 +35,7 @@ export const AccountId32 = ({
   }
 
   // The current selected address.
-  const [selectedAddress, setSelectedAddress] = useState<string>(
-    String(defaultValue || accounts?.[0]?.address || '')
-  );
+  const selectedAddress = defaultAddress || accounts?.[0]?.address || '';
 
   // The current value of the input. Attempts to find an account name, or uses the selected address,
   // if present.
@@ -49,7 +47,6 @@ export const AccountId32 = ({
   // Handle input value change.
   const handleInputChange = (val: string) => {
     setValue(val);
-    setSelectedAddress(val);
     setSearchValue(val);
 
     if (onChange !== undefined) {
@@ -152,7 +149,6 @@ export const AccountId32 = ({
             onClick={() => {
               setDropdownOpen(false);
               setValue(name);
-              setSelectedAddress(address);
 
               if (onChange !== undefined) {
                 onChange(address);

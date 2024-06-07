@@ -7,6 +7,6 @@ import type { RefObject } from 'react';
 
 export type AccountId32Props = InputCallbackProps & {
   accounts: ImportedAccount[];
-  defaultValue: string | undefined;
+  defaultAddress: string | undefined;
   heightRef?: RefObject<HTMLDivElement>;
 };

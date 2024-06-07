@@ -276,7 +276,7 @@ export const useInput = () => {
         case 'AccountId32':
           return (
             <AccountId32
-              defaultValue={getInputArgsAtKey(tabId, namespace, inputKey)}
+              defaultAddress={getInputArgsAtKey(tabId, namespace, inputKey)}
               accounts={accounts}
               onMount={(selectedAddress) => {
                 setInputArgAtKey(tabId, namespace, inputKey, selectedAddress);
