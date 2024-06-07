@@ -13,10 +13,10 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import type { ChainStateListProps } from './types';
 import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
-import { useSelectFirst } from 'hooks/useSelectFirst';
 import { SelectDropdown } from 'library/SelectDropdown';
 import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
 import { useInputForm } from '../InputForm/provider';
+import { useSelectFirst } from 'hooks/useSelectFirst';
 
 export const ChainStateList = ({
   items,

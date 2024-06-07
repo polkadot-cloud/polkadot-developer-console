@@ -88,7 +88,7 @@ export const AccountId32 = ({
         )
       : accounts;
 
-  // Call on mount logic in initial render if provided.
+  // Set correct input value on tab change.
   useEffect(() => {
     setInputMetaValue(
       tabId,
@@ -96,6 +96,13 @@ export const AccountId32 = ({
       accounts?.find(({ address }) => address === selectedAddress)?.name ||
         selectedAddress
     );
+    if (onMount !== undefined) {
+      onMount(selectedAddress);
+    }
+  }, [tabId]);
+
+  // Call on mount logic in initial render if provided.
+  useEffect(() => {
     if (onMount !== undefined) {
       onMount(selectedAddress);
     }
