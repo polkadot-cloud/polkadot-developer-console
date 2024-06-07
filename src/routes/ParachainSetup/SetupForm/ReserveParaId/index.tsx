@@ -36,6 +36,7 @@ export const ReserveParaId = () => {
     setExistingReservedParaId,
     getReservedNextParaId,
     setReservedNextParaId,
+    validateParaId,
   } = useReserveParaId();
   const { ownerId, tabId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
@@ -224,6 +225,9 @@ export const ReserveParaId = () => {
         </ParaIdOptionsWrapper>
 
         <SetupNote>
+          {validateParaId(tabId, selectedAccount) ? (
+            <FontAwesomeIcon icon={faCheckCircle} transform="grow-1" />
+          ) : null}
           {selectedOption === 'existing' ? existingFeedback : newFeedback}
         </SetupNote>
 

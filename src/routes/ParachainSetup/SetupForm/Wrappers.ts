@@ -353,6 +353,6 @@ export const SetupNote = styled.h4`
   margin: 1.5rem 0 0.5rem 0;
 
   > svg {
-    margin-right: 0.25rem;
+    margin-right: 0.35rem;
   }
 `;
