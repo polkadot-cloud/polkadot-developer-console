@@ -13,7 +13,7 @@ import { EncodedDetails } from './EncodedDetails';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
 import { useChain } from '../Provider';
 import { ChainStateController } from 'controllers/ChainState';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import { camelize } from '@w3ux/utils';
 import { Results } from './Results';
 import { InputFormProvider } from '../InputForm/provider';
@@ -113,6 +113,7 @@ export const StorageItemsInner = () => {
       </SelectFormWrapper>
       <InputForm
         inputForm={inputForm}
+        activePallet={activePallet}
         activeItem={activeItem}
         onSubmit={onSubmit}
       />

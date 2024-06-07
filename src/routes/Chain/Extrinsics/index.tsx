@@ -7,7 +7,7 @@ import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { Header } from './Header';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import type { PalletData } from '../ChainState/types';
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 import { InputForm } from '../InputForm';
@@ -16,28 +16,27 @@ import { FlexWrapper } from 'routes/Common/Wrappers';
 import { useChain } from '../Provider';
 import { SubmitTx } from 'library/SubmitTx';
 import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
-import type { MaybeAddress } from '@w3ux/react-connect-kit/types';
 import { InputFormProvider, useInputForm } from '../InputForm/provider';
 import { camelize } from '@w3ux/utils';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { AccountId32 } from 'library/Inputs/AccountId32';
 import { Label } from 'library/Inputs/Label';
+import { useChainState } from 'contexts/ChainState';
 
 export const ExtrinsicsInner = () => {
-  const { tabId } = useActiveTab();
   const { handleSubmit } = useInputForm();
+  const { tabId, metaKey } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
   const { chainSpec, instanceId, chain, api } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
+  const { getFromAddress, setFromAddress } = useChainState();
 
   const accounts = chainSpec
     ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
     : [];
 
-  // Store the sender address.
-  const [fromAddress, setFromAddress] = useState<MaybeAddress>(
-    accounts?.[0]?.address || null
-  );
+  // Get the sender address.
+  const fromAddress = getFromAddress(tabId) || '';
 
   const chainUiSection = 'calls';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -155,14 +154,19 @@ export const ExtrinsicsInner = () => {
         />
         <CallList items={items} activeItem={activeItem} />
       </SelectFormWrapper>
-      <InputForm inputForm={inputForm} activeItem={activeItem} />
+      <InputForm
+        inputForm={inputForm}
+        activePallet={activePallet}
+        activeItem={activeItem}
+      />
 
       <SenderWrapper>
         <Label value="Sender" marginTop />
         <AccountId32
-          defaultValue={fromAddress || undefined}
+          uid={`${metaKey}_sendAddress`}
+          defaultAddress={fromAddress || undefined}
           accounts={accounts}
-          onChange={(val) => setFromAddress(val)}
+          onChange={(val) => setFromAddress(tabId, val)}
         />
       </SenderWrapper>
 

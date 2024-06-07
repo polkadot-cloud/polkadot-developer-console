@@ -3,7 +3,7 @@
 
 import type { ApiPromise } from '@polkadot/api';
 import type { MaybeAddress } from '@w3ux/react-connect-kit/types';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import type { ChainId } from 'config/networks/types';
 import type { ApiInstanceId } from 'model/Api/types';
 

@@ -15,7 +15,7 @@ import {
 } from './Utils';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 
 export const InputForm = createContext<InputFormContextInterface>(
   defaultInputFormContext

@@ -38,8 +38,8 @@ export const ReserveParaId = () => {
     setReservedNextParaId,
     validateParaId,
   } = useReserveParaId();
-  const { ownerId, tabId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
+  const { ownerId, tabId, metaKey } = useActiveTab();
   const { chainSpec, chain, instanceId, api } = useParachain();
 
   const chainId = chain.id;
@@ -168,8 +168,9 @@ export const ReserveParaId = () => {
       <h3>Reserve a Para ID or select an existing one from your accounts.</h3>
       <section>
         <AccountId32
+          uid={`${metaKey}_managerAddress`}
+          defaultAddress={selectedAccount}
           accounts={accounts}
-          defaultValue={selectedAccount}
           onChange={(val) => setSelectedAccount(tabId, val)}
         />
         <ParaIdOptionsWrapper>

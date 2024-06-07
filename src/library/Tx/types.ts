@@ -3,7 +3,7 @@
 
 import type { SubmitTxStyleProps } from 'library/SubmitTx/types';
 import type { ReactElement } from 'react';
-import type { DisplayFor } from 'types';
+import type { DisplayFor } from '@w3ux/types';
 
 export interface SignerProps {
   label: string;

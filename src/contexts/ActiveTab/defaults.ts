@@ -8,4 +8,5 @@ export const defaultActiveTabContext: ActiveTabContextInterface = {
   tabId: 0,
   ownerId: tabIdToOwnerId(0),
   tab: undefined,
+  metaKey: '',
 };

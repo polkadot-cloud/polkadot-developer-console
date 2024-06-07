@@ -3,7 +3,7 @@
 
 import { MetadataV14 } from 'model/Metadata/MetadataV14';
 import type { MetadataVersion } from './types';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 
 export class MetadataController {
   // Instantiate a metadata version.

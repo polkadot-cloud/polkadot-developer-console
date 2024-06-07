@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ExtensionInjected } from '@w3ux/react-connect-kit/types';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import type { NotificationItem } from 'controllers/Notifications/types';
 import type { OnlineStatusEvent } from 'controllers/OnlineStatus/types';
 import type { AccountBalanceEventDetail } from 'model/AccountBalances/types';
@@ -16,7 +16,6 @@ import type {
   ChainStateEventDetail,
 } from 'model/ChainState/types';
 import type { NextFreeParaIdEventDetail } from 'model/NextFreeParaId/types';
-import type { CSSProperties, ReactNode } from 'react';
 
 declare global {
   interface Window {
@@ -43,15 +42,3 @@ export type OwnerId = string;
 
 // Over-arching type for a chainspace id. Used for chain space keys.
 export type ChainSpaceId = string;
-
-export interface ComponentBase {
-  children?: ReactNode;
-  style?: CSSProperties;
-}
-
-export type ComponentBaseWithClassName = ComponentBase & {
-  className?: string;
-};
-
-// Which medium components are being displayed on.
-export type DisplayFor = 'default' | 'modal' | 'canvas' | 'card';
