@@ -17,15 +17,21 @@ import {
 import { formatInputString } from 'Utils';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { AccountId32Props } from './types';
+import { useInputMeta } from 'contexts/InputMeta';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const AccountId32 = ({
+  uid,
   accounts,
-  defaultValue,
+  defaultAddress,
   heightRef,
   onMount,
   onRender,
   onChange,
 }: AccountId32Props) => {
+  const { tabId } = useActiveTab();
+  const { getInputMetaValue, setInputMetaValue } = useInputMeta();
+
   // The input arg type of this component.
   const INPUT_TYPE = 'AccountId32';
 
@@ -34,22 +40,27 @@ export const AccountId32 = ({
     onRender(INPUT_TYPE);
   }
 
-  // The current selected address.
-  const [selectedAddress, setSelectedAddress] = useState<string>(
-    String(defaultValue || accounts?.[0]?.address || '')
-  );
+  // Get input value from input meta.
+  const inputMetaValue = getInputMetaValue(tabId, uid);
+
+  // The current selected address. If input meta value is not present, use the the first imported
+  // account, if any.
+  const selectedAddress =
+    inputMetaValue === undefined
+      ? defaultAddress || accounts?.[0]?.address || ''
+      : defaultAddress || '';
 
   // The current value of the input. Attempts to find an account name, or uses the selected address,
   // if present.
-  const [value, setValue] = useState<string>(
-    accounts?.find(({ address }) => address === selectedAddress)?.name ||
-      selectedAddress
-  );
+  const value =
+    inputMetaValue !== undefined
+      ? inputMetaValue
+      : accounts?.find(({ address }) => address === selectedAddress)?.name ||
+        selectedAddress;
 
   // Handle input value change.
   const handleInputChange = (val: string) => {
-    setValue(val);
-    setSelectedAddress(val);
+    setInputMetaValue(tabId, uid, val);
     setSearchValue(val);
 
     if (onChange !== undefined) {
@@ -62,7 +73,7 @@ export const AccountId32 = ({
   const handleInputBlur = () => {
     const isImportedAddress = accounts.find(({ address }) => address === value);
     if (isImportedAddress) {
-      setValue(isImportedAddress.name);
+      setInputMetaValue(tabId, uid, isImportedAddress.name);
     }
   };
 
@@ -87,6 +98,19 @@ export const AccountId32 = ({
             address.toLowerCase().includes(searchValue.toLowerCase())
         )
       : accounts;
+
+  // Set correct input value on tab change.
+  useEffect(() => {
+    setInputMetaValue(
+      tabId,
+      uid,
+      accounts?.find(({ address }) => address === selectedAddress)?.name ||
+        selectedAddress
+    );
+    if (onMount !== undefined) {
+      onMount(selectedAddress);
+    }
+  }, [tabId]);
 
   // Call on mount logic in initial render if provided.
   useEffect(() => {
@@ -151,8 +175,7 @@ export const AccountId32 = ({
             className={`option${value === name ? ` selected` : ``}`}
             onClick={() => {
               setDropdownOpen(false);
-              setValue(name);
-              setSelectedAddress(address);
+              setInputMetaValue(tabId, uid, name);
 
               if (onChange !== undefined) {
                 onChange(address);

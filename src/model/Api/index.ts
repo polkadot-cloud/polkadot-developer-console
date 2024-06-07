@@ -15,7 +15,7 @@ import type {
 } from './types';
 import { MetadataController } from 'controllers/Metadata';
 import { SubscriptionsController } from 'controllers/Subscriptions';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import BigNumber from 'bignumber.js';
 import type { ChainSpaceId, OwnerId } from 'types';
 

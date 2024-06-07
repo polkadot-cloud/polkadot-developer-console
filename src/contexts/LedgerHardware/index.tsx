@@ -14,7 +14,7 @@ import type {
   LedgerStatusCode,
 } from './types';
 import { Ledger } from './static/ledger';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 
 export const LedgerHardwareContext =
   createContext<LedgerHardwareContextInterface>(defaultLedgerHardwareContext);

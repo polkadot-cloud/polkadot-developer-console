@@ -27,7 +27,7 @@ import {
   getLocalLedgerAddresses,
 } from 'contexts/LedgerHardware/Utils';
 import { faSquareMinus } from '@fortawesome/pro-solid-svg-icons';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 
 export const ManageLedger = ({
   getMotionProps,

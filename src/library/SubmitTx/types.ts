@@ -7,7 +7,7 @@ import type BigNumber from 'bignumber.js';
 import type { ChainId } from 'config/networks/types';
 import type { ApiInstanceId } from 'model/Api/types';
 import type { ReactNode } from 'react';
-import type { DisplayFor } from 'types';
+import type { DisplayFor } from '@w3ux/types';
 
 export type SubmitTxProps = SubmitProps & {
   instanceId: ApiInstanceId;

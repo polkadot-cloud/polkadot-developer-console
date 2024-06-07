@@ -7,7 +7,7 @@ import { useTxMeta } from 'contexts/TxMeta';
 import { QrDisplayPayload } from 'library/QRCode/DisplayPayload';
 import { QrScanSignature } from 'library/QRCode/ScanSignature';
 import type { SignerPromptProps } from 'library/SubmitTx/types';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import { faChevronRight } from '@fortawesome/pro-duotone-svg-icons';
 import {
   faChevronsLeft,

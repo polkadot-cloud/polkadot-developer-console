@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
 import { Select } from 'library/Inputs/Select';
@@ -19,9 +19,9 @@ import { useChain } from '../Provider';
 import { Textbox } from 'library/Inputs/Textbox';
 
 export const useInput = () => {
-  const { tabId } = useActiveTab();
   const { chainSpec } = useChain();
   const { getAccounts } = useAccounts();
+  const { tabId, metaKey } = useActiveTab();
   const { setInputArgAtKey, getInputArgsAtKey } = useChainUi();
 
   const accounts = getAccounts(chainSpec);
@@ -111,10 +111,8 @@ export const useInput = () => {
   };
 
   // Renders a tuple input component.
-  const renderTuple = (
-    input: AnyJson,
-    { namespace, inputKey, inputKeysRef }: InputArgConfig
-  ) => {
+  const renderTuple = (input: AnyJson, inputArgConfig: InputArgConfig) => {
+    const { inputKey, inputKeysRef } = inputArgConfig;
     // Accumulate input key.
     if (inputKeysRef.current) {
       inputKeysRef.current[inputKey] = 'Tuple';
@@ -128,7 +126,7 @@ export const useInput = () => {
         <Fragment key={`input_arg_${childInputKey}`}>
           {readInput(
             tupleType,
-            { namespace, inputKey: childInputKey, inputKeysRef },
+            { ...inputArgConfig, inputKey: childInputKey },
             tupleInput,
             true
           )}
@@ -140,7 +138,7 @@ export const useInput = () => {
   // Renders a composite input component.
   const renderComposite = (input: AnyJson, inputArgConfig: InputArgConfig) => {
     let inner: ReactNode = null;
-    const { namespace, inputKey, inputKeysRef } = inputArgConfig;
+    const { inputKey, inputKeysRef } = inputArgConfig;
 
     if (input.form !== null) {
       inner = renderInput(input, inputArgConfig, false);
@@ -184,7 +182,7 @@ export const useInput = () => {
             <Fragment key={`input_arg_${childInputKey}`}>
               {readInput(
                 subType,
-                { namespace, inputKey: childInputKey, inputKeysRef },
+                { ...inputArgConfig, inputKey: childInputKey },
                 subInputWithLabel,
                 true
               )}
@@ -202,7 +200,7 @@ export const useInput = () => {
     inputArgConfig: InputArgConfig,
     indent: boolean
   ) => {
-    const { namespace, inputKey, inputKeysRef } = inputArgConfig;
+    const { namespace, inputKey } = inputArgConfig;
 
     // Get the current variant value, if any.
     const currentInputArg = getInputArgsAtKey(tabId, namespace, inputKey);
@@ -231,7 +229,7 @@ export const useInput = () => {
               <Fragment key={`input_arg_${childInputKey}`}>
                 {readInput(
                   subType,
-                  { namespace, inputKey: childInputKey, inputKeysRef },
+                  { ...inputArgConfig, inputKey: childInputKey },
                   subInput[subType],
                   true
                 )}
@@ -265,7 +263,8 @@ export const useInput = () => {
     indent: boolean,
     values?: string[]
   ) => {
-    const { inputKeysRef, inputKey, namespace } = inputArgConfig;
+    const { inputKeysRef, inputKey, namespace, activePallet, activeItem } =
+      inputArgConfig;
 
     const label = inputItem?.label || '';
     const form = inputItem?.form || null;
@@ -276,6 +275,8 @@ export const useInput = () => {
         case 'AccountId32':
           return (
             <AccountId32
+              uid={`${metaKey}_${namespace}_${activePallet}_${activeItem}_${inputKey}`}
+              defaultAddress={getInputArgsAtKey(tabId, namespace, inputKey)}
               accounts={accounts}
               onMount={(selectedAddress) => {
                 setInputArgAtKey(tabId, namespace, inputKey, selectedAddress);

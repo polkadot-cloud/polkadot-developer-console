@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { PalletItemScraped } from 'model/Metadata/Scraper/types';
 import { Fragment, useRef, useState } from 'react';
 import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
-import type { Sync } from '@w3ux/react-connect-kit/types';
+import type { Sync } from '@w3ux/types';
 import { EmptyItem } from './EmptyItem';
 import { getMotionProps } from './Utils';
 import type { PalletItemProps } from './types';

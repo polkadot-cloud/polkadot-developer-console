@@ -3,7 +3,7 @@
 
 import type { Metadata } from '@polkadot/types';
 import type { MetadataVersion } from './types';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 
 export class MetadataV14 implements MetadataVersion {
   metadata: Metadata;
