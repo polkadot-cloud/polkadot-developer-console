@@ -189,6 +189,26 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Store the from addresses for extrinsic submission, keyed by tab.
+  const [fromAddresses, setFromAddresses] = useState<
+    Record<number, string | undefined>
+  >({});
+
+  // Get a from address for a tab.
+  const getFromAddress = (id: number) => fromAddresses[id];
+
+  // Set a from address for a tab.
+  const setFromAddress = (id: number, address: string) => {
+    setFromAddresses({ ...fromAddresses, [id]: address });
+  };
+
+  // REmove a from address for a tab.
+  const removeFromAddress = (id: number) => {
+    const updated = { ...fromAddresses };
+    delete updated[id];
+    setFromAddresses(updated);
+  };
+
   const documentRef = useRef(document);
   useEventListener(
     'callback-new-chain-state-subscription',
@@ -243,8 +263,11 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     ChainStateController.destroy(instanceId);
 
     // Reset state.
+    // TODO: Only destroy for the provided instance id.
     setChainStateSubscriptions({});
     setChainStateConstants({});
+
+    removeFromAddress(tabId);
   };
 
   // Get chain state on tab change.
@@ -271,6 +294,8 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
         setItemPinned,
         getTotalPinnedItems,
         destroyTabChainState,
+        getFromAddress,
+        setFromAddress,
       }}
     >
       {children}
