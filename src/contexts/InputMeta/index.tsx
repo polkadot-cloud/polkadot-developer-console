@@ -33,11 +33,19 @@ export const InputMetaProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
+  // Remove input meta for a tab.
+  const removeInputMeta = (tabId: number) => {
+    const updated = { ...inputMeta };
+    delete updated[tabId];
+    setInputMeta(updated);
+  };
+
   return (
     <InputMetaContext.Provider
       value={{
         getInputMetaValue,
         setInputMetaValue,
+        removeInputMeta,
       }}
     >
       {children}

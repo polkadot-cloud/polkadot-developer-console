@@ -4,4 +4,5 @@
 export interface InputMetaContextInterface {
   getInputMetaValue: (tabId: number, inputId: string) => string | undefined;
   setInputMetaValue: (tabId: number, inputId: string, value: string) => void;
+  removeInputMeta: (tabId: number) => void;
 }

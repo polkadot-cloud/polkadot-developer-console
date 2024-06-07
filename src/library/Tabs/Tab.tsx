@@ -24,6 +24,7 @@ import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useChainExplorer } from 'contexts/ChainExplorer';
+import { useInputMeta } from 'contexts/InputMeta';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
@@ -42,6 +43,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const { tabId } = useActiveTab();
   const { openMenu, closeMenu } = useMenu();
   const { destroyTabChainUi } = useChainUi();
+  const { removeInputMeta } = useInputMeta();
   const { destroyTabParaSetup } = useParaSetup();
   const { removeChainExplorerTaskState } = useChainExplorer();
   const { destroyAllApiInstances, getApiStatus } = useChainSpaceEnv();
@@ -166,8 +168,9 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
             setDestroying(true);
             setTabHoverIndex(0);
             setTimeout(() => {
-              // Destroy chainUi state associated with this tab.
+              // Destroy ui state associated with this tab.
               destroyTabChainUi(id);
+              removeInputMeta(id);
 
               // Destroy all apis and api state associated with this tab.
               destroyAllApiInstances(tabIdToOwnerId(id));
