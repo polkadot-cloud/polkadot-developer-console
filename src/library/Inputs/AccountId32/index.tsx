@@ -45,7 +45,10 @@ export const AccountId32 = ({
 
   // The current value of the input. Attempts to find an account name, or uses the selected address,
   // if present.
-  const value = getInputMetaValue(tabId, uid);
+  const value =
+    getInputMetaValue(tabId, uid) ||
+    accounts?.find(({ address }) => address === selectedAddress)?.name ||
+    selectedAddress;
 
   // Handle input value change.
   const handleInputChange = (val: string) => {
