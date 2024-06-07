@@ -40,8 +40,8 @@ export const Transfer = () => {
   const [fromAddress, setFromAddress] = useState<string>(address);
 
   // Store the `to` address to transfer funds to.
-  const [toAddress, setToAddress] = useState<string | null>(
-    accounts?.[0]?.address || null
+  const [toAddress, setToAddress] = useState<string | undefined>(
+    accounts?.[0]?.address || undefined
   );
 
   // Store the amount to transfer.
@@ -123,6 +123,7 @@ export const Transfer = () => {
 
           <Label value="Recipient" marginTop />
           <AccountId32
+            defaultValue={toAddress}
             accounts={accounts}
             onChange={(val) => setToAddress(val)}
             heightRef={heightRef}

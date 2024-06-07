@@ -168,8 +168,8 @@ export const ReserveParaId = () => {
       <h3>Reserve a Para ID or select an existing one from your accounts.</h3>
       <section>
         <AccountId32
-          accounts={accounts}
           defaultValue={selectedAccount}
+          accounts={accounts}
           onChange={(val) => setSelectedAccount(tabId, val)}
         />
         <ParaIdOptionsWrapper>
