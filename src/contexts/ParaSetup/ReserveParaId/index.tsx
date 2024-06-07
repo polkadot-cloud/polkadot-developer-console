@@ -222,8 +222,10 @@ export const ReserveParaIdProvider = ({
     const reservedNextParaId = getReservedNextParaId(tabId, manager);
 
     // Valid existing para id if chain record manager matches selected account.
-    const existingParaIdValid = selectedAccount === reservedParaId?.manager;
+    const existingParaIdValid =
+      selectedAccount && selectedAccount === reservedParaId?.manager;
     if (selectedOption === 'existing' && existingParaIdValid) {
+      console.log(reservedParaId, selectedAccount);
       return { paraId: reservedParaId.paraId, manager };
     }
 
