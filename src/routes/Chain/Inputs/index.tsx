@@ -364,7 +364,7 @@ export const useInput = () => {
                   setInputArgAtKey(tabId, namespace, inputKey, val);
                 }}
                 label={label || 'Value'}
-                defaultValue={FormatInputFields.defaultValue(form)}
+                value={FormatInputFields.defaultValue(form)}
                 numeric={form === 'number'}
               />
             </Section>

@@ -24,7 +24,7 @@ export const SetupForm = () => {
   return (
     <FlexWrapper>
       <HomePageWrapper>
-        <h2>New Parachain Setup</h2>
+        <h2>Parachain Setup</h2>
 
         <Progress />
 

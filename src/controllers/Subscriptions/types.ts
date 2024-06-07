@@ -3,9 +3,10 @@
 
 import type { AccountBalances } from 'model/AccountBalances';
 import type { BlockNumber } from 'model/BlockNumber';
+import type { NextFreeParaId } from 'model/NextFreeParaId';
 
 // Define all possible subscription classes.
-export type Subscription = AccountBalances | BlockNumber;
+export type Subscription = AccountBalances | BlockNumber | NextFreeParaId;
 
 // the record of subscriptions, keyed by tabId.
 export type ChainSubscriptions = Record<string, Subscription>;

@@ -108,7 +108,7 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
   rococo: {
     system: {
       chain: 'Rococo',
-      ss58: 0,
+      ss58: 42,
       units: 12,
       unit: 'ROC',
     },
