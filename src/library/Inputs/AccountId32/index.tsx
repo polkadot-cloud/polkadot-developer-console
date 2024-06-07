@@ -17,8 +17,11 @@ import {
 import { formatInputString } from 'Utils';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { AccountId32Props } from './types';
+import { useInputMeta } from 'contexts/InputMeta';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const AccountId32 = ({
+  uid,
   accounts,
   defaultAddress,
   heightRef,
@@ -26,6 +29,9 @@ export const AccountId32 = ({
   onRender,
   onChange,
 }: AccountId32Props) => {
+  const { tabId } = useActiveTab();
+  const { getInputMetaValue, setInputMetaValue } = useInputMeta();
+
   // The input arg type of this component.
   const INPUT_TYPE = 'AccountId32';
 
@@ -39,14 +45,11 @@ export const AccountId32 = ({
 
   // The current value of the input. Attempts to find an account name, or uses the selected address,
   // if present.
-  const [value, setValue] = useState<string>(
-    accounts?.find(({ address }) => address === selectedAddress)?.name ||
-      selectedAddress
-  );
+  const value = getInputMetaValue(tabId, uid);
 
   // Handle input value change.
   const handleInputChange = (val: string) => {
-    setValue(val);
+    setInputMetaValue(tabId, uid, val);
     setSearchValue(val);
 
     if (onChange !== undefined) {
@@ -59,7 +62,7 @@ export const AccountId32 = ({
   const handleInputBlur = () => {
     const isImportedAddress = accounts.find(({ address }) => address === value);
     if (isImportedAddress) {
-      setValue(isImportedAddress.name);
+      setInputMetaValue(tabId, uid, isImportedAddress.name);
     }
   };
 
@@ -87,6 +90,12 @@ export const AccountId32 = ({
 
   // Call on mount logic in initial render if provided.
   useEffect(() => {
+    setInputMetaValue(
+      tabId,
+      uid,
+      accounts?.find(({ address }) => address === selectedAddress)?.name ||
+        selectedAddress
+    );
     if (onMount !== undefined) {
       onMount(selectedAddress);
     }
@@ -148,7 +157,7 @@ export const AccountId32 = ({
             className={`option${value === name ? ` selected` : ``}`}
             onClick={() => {
               setDropdownOpen(false);
-              setValue(name);
+              setInputMetaValue(tabId, uid, name);
 
               if (onChange !== undefined) {
                 onChange(address);
