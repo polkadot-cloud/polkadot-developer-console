@@ -35,7 +35,7 @@ export interface ReserveParaIdContextInterface {
   getReservedNextParaId: (
     tabId: number,
     manager: string
-  ) => ReservedNextParaId | undefined;
+  ) => ParaIdWithManager | undefined;
   setReservedNextParaId: (
     tabId: number,
     manager: string,
@@ -43,7 +43,10 @@ export interface ReserveParaIdContextInterface {
   ) => void;
   removeReservedNextParaId: (tabId: number) => void;
 
-  validateParaId: (tabId: number, manager: string) => boolean;
+  validateParaId: (
+    tabId: number,
+    manager: string
+  ) => ParaIdWithManager | undefined;
 }
 
 export type ReserveOption = 'new' | 'existing';
@@ -56,9 +59,9 @@ export interface ReservedParaId {
 }
 
 // Reserved next para ids for a tab, keyed by account.
-export type ReservedNextParaIds = Record<string, ReservedNextParaId>;
+export type ReservedNextParaIds = Record<string, ParaIdWithManager>;
 
-export interface ReservedNextParaId {
+export interface ParaIdWithManager {
   paraId: string;
   manager: string;
 }

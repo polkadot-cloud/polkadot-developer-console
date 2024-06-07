@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
 import { defaultReserveParaIdContext } from './defaults';
 import type {
+  ParaIdWithManager,
   ReserveOption,
   ReserveParaIdContextInterface,
   ReservedNextParaIds,
@@ -211,7 +212,10 @@ export const ReserveParaIdProvider = ({
 
   // Method that checks if a stored para id for a tab is valid (i.e. the next free id has been
   // reserved, or a valid existing one exists.
-  const validateParaId = (tabId: number, manager: string) => {
+  const validateParaId = (
+    tabId: number,
+    manager: string
+  ): ParaIdWithManager | undefined => {
     const selectedOption = getSelectedOption(tabId);
     const selectedAccount = getSelectedAccount(tabId);
     const reservedParaId = getExistingReservedParaId(tabId);
@@ -220,16 +224,16 @@ export const ReserveParaIdProvider = ({
     // Valid existing para id if chain record manager matches selected account.
     const existingParaIdValid = selectedAccount === reservedParaId?.manager;
     if (selectedOption === 'existing' && existingParaIdValid) {
-      return true;
+      return { paraId: reservedParaId.id, manager };
     }
 
     // Check if a reserved next para id is valid.
     // reserved id for an account.
     if (selectedOption === 'new' && !!reservedNextParaId) {
-      return true;
+      return { paraId: reservedNextParaId.paraId, manager };
     }
 
-    return false;
+    return undefined;
   };
 
   return (
