@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import type { InputArgs } from 'contexts/ChainUi/types';
 
 // Gets a collection of the longest keys in an inputKey field, fetching the deepest nested values in

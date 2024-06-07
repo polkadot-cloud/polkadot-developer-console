@@ -34,7 +34,7 @@ import type { ApiPromise } from '@polkadot/api';
 import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
 import { xxhashAsHex } from '@polkadot/util-crypto';
 import { u16 } from 'scale-ts';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import { getApiInstanceOwnerAndIndex } from './Utils';
 import { useTxMeta } from 'contexts/TxMeta';
 

@@ -13,7 +13,7 @@ import type {
 } from './types';
 import { MetadataScraper } from '.';
 import type { MetadataVersion } from 'model/Metadata/types';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 
 export class PalletScraper extends MetadataScraper {
   // The pallet metadata in JSON format.

@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars */
 
 import type { Metadata } from '@polkadot/types';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 
 export abstract class MetadataVersion {
   // JSON representation of metadata.

@@ -3,7 +3,7 @@
 
 import { Fragment } from 'react/jsx-runtime';
 import { InputFormWrapper } from '../Wrappers';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { faCircleRight } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

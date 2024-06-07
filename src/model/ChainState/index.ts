@@ -12,7 +12,7 @@ import type {
   SubscriptionEntry,
   SubscriptionType,
 } from './types';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import { splitConstantKey, splitSubscriptionKey } from './util';
 import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';

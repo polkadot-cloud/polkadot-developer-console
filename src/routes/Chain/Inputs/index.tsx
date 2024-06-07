@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { FormatInputFields } from 'model/Metadata/Format/InputFields';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
 import { Select } from 'library/Inputs/Select';

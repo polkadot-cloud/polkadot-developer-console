@@ -5,7 +5,7 @@ import { QrScanSignature } from 'library/QRCode/ScanSignature';
 import { ImportQRWrapper } from './Wrappers';
 import type { QrReaderProps } from './types';
 import { useEffect, useState } from 'react';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import { isValidAddress, formatAccountSs58 } from '@w3ux/utils';
 import { useVaultAccounts } from '@w3ux/react-connect-kit';
 

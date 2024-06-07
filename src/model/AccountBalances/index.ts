@@ -3,7 +3,7 @@
 
 import type { VoidFn } from '@polkadot/api/types';
 import { stringToBigNumber } from '@w3ux/utils';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import type { ChainId } from 'config/networks/types';
 import { ApiController } from 'controllers/Api';
 import type { Balances } from './types';

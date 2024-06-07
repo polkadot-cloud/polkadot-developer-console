@@ -3,7 +3,7 @@
 
 import { App } from 'App';
 import { DappName } from 'consts';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import { TabsProvider } from 'contexts/Tabs';
 import type { Provider } from 'hooks/withProviders';
 import { withProviders } from 'hooks/withProviders';

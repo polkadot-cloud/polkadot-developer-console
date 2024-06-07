@@ -11,7 +11,7 @@ import { NotificationsController } from 'controllers/Notifications/index';
 import { useExtensions } from '@w3ux/react-connect-kit';
 import { useBuildPayload } from 'hooks/useBuildPayload';
 import { useAccounts } from 'contexts/Accounts';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import type { ExtensionAccount } from '@w3ux/react-connect-kit/types';
 import { useLedgerHardware } from 'contexts/LedgerHardware';
 
