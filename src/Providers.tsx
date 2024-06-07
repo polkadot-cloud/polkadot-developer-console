@@ -35,6 +35,7 @@ import { OverlayProvider } from 'library/Overlay/Provider';
 import { PromptProvider } from 'contexts/Prompt';
 import { LedgerHardwareProvider } from 'contexts/LedgerHardware';
 import { ReserveParaIdProvider } from 'contexts/ParaSetup/ReserveParaId';
+import { InputMetaProvider } from 'contexts/InputMeta';
 
 export const Providers = () => {
   // !! --------------------------------
@@ -56,6 +57,7 @@ export const Providers = () => {
     ChainUiProvider,
     OverlayProvider,
     PromptProvider,
+    InputMetaProvider,
 
     // Account import related providers.
     ExtensionsProvider,
