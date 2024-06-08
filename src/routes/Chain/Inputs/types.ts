@@ -29,7 +29,7 @@ export type InputArgConfig = InputCallbackProps & {
 };
 
 export type HashProps = InputArgConfig & {
-  defaultValue: string | number;
+  value: string | number;
 };
 
 export type SelectProps = InputCallbackProps & {
@@ -40,7 +40,7 @@ export type SelectProps = InputCallbackProps & {
 
 export type CheckboxProps = InputArgConfig & {
   label: string | number;
-  defaultValue: boolean;
+  checked: boolean;
 };
 
 export type SequenceProps = InputArgConfig & {

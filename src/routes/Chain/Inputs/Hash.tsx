@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import type { HashProps } from './types';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
@@ -11,15 +11,13 @@ export const Hash = ({
   inputKey,
   namespace,
   inputKeysRef,
-  defaultValue,
+  value,
 }: HashProps) => {
   const { tabId } = useActiveTab();
   const { setInputArgAtKey } = useChainUi();
 
   // The input arg type of this component.
   const INPUT_TYPE = 'Hash';
-
-  const [value, setValue] = useState<string | number>(defaultValue || '');
 
   // Accumulate input key.
   if (inputKeysRef.current) {
@@ -28,7 +26,6 @@ export const Hash = ({
 
   // Handle textbox value change.
   const handleTextboxChange = (val: string) => {
-    setValue(val);
     setInputArgAtKey(tabId, namespace, inputKey, val);
   };
 
