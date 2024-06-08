@@ -298,7 +298,10 @@ export const useInput = () => {
           return (
             <Hash
               {...inputArgConfig}
-              defaultValue={FormatInputFields.defaultValue(form)}
+              value={
+                getInputArgsAtKey(tabId, namespace, inputKey) ||
+                FormatInputFields.defaultValue(form)
+              }
             />
           );
 
@@ -341,7 +344,7 @@ export const useInput = () => {
               <Checkbox
                 {...inputArgConfig}
                 label={label}
-                defaultValue={false}
+                checked={getInputArgsAtKey(tabId, namespace, inputKey) || false}
               />
             </Section>
           );
