@@ -14,23 +14,20 @@ export const defaultReserveParaIdContext: ReserveParaIdContextInterface = {
 
   getSelectedAccount: (tabId) => undefined,
   setSelectedAccount: (tabId, account) => {},
-  removeSelectedAccount: (tabId) => {},
 
   getSelectedOption: (tabId) => 'new',
   setSelectedOption: (tabId, option) => {},
-  removeSelectedOption: (tabId: number) => {},
 
   getExistingParaIdInput: (tabId) => '',
   setExistingParaIdInput: (tabId, paraId) => {},
-  removeExistingParaIdInput: (tabId) => {},
 
   getExistingReservedParaId: (tabId) => undefined,
   setExistingReservedParaId: (tabId, reservedParaId) => {},
-  removeExistingReservedParaId: (tabId) => {},
 
   getReservedNextParaId: (tabId, manager) => undefined,
   setReservedNextParaId: (tabId, manager, paraId) => {},
-  removeReservedNextParaId: (tabId) => {},
 
   validateParaId: (tabId, manager) => undefined,
+
+  removeTabParaIdData: (tabId) => {},
 };
