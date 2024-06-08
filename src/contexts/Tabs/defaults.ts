@@ -68,22 +68,9 @@ export const defaultTabs: Tabs = [
   },
   {
     id: 2,
-    name: 'Kusama Relay Chain',
-    activeTask: 'chainExplorer',
-    taskData: {
-      connectFrom: 'directory',
-      autoConnect: true,
-      chain: {
-        id: 'kusama',
-        endpoint: 'wss://rpc.ibp.network/kusama',
-        ss58: 2,
-        units: 12,
-        unit: 'KSM',
-        api: {
-          instanceIndex: 0,
-        },
-      },
-    },
+    name: 'Rococo Relay Chain',
+    activeTask: null,
+    taskData: undefined,
     ui: {
       activeConnectFrom: 'directory',
       autoConnect: true,
@@ -92,30 +79,6 @@ export const defaultTabs: Tabs = [
   },
   {
     id: 3,
-    name: 'Rococo Relay Chain',
-    activeTask: 'chainExplorer',
-    taskData: {
-      connectFrom: 'directory',
-      autoConnect: true,
-      chain: {
-        id: 'rococo',
-        endpoint: 'wss://rococo-rpc.polkadot.io',
-        ss58: 0,
-        units: 12,
-        unit: 'ROC',
-        api: {
-          instanceIndex: 0,
-        },
-      },
-    },
-    ui: {
-      activeConnectFrom: 'directory',
-      autoConnect: true,
-    },
-    activePage: 0,
-  },
-  {
-    id: 4,
     name: 'New Tab',
     activeTask: null,
     taskData: undefined,

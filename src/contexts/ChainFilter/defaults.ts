@@ -23,9 +23,7 @@ export const defaultChainFilter: ChainFilterInterface = {
 
 export const defaultAppliedTags: AppliedTags = {
   1: ['tag_relay_chain'],
-  2: ['tag_canary_network'],
-  3: ['tag_test_network'],
-  4: ['tag_test_network'],
+  2: ['tag_test_network', 'tag_rococo_network'],
 };
 
 export const defaultCustomEndpoints: CustomEndpoints = {};
