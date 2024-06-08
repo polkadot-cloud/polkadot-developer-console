@@ -8,8 +8,8 @@ import type {
   ParaIdWithManager,
   ReserveOption,
   ReserveParaIdContextInterface,
-  ReservedNextParaIds,
   ReservedParaId,
+  ReservedParaIdData,
 } from './types';
 import type { ChainId } from 'config/networks/types';
 
@@ -77,110 +77,79 @@ export const ReserveParaIdProvider = ({
     setNextParaIdState(updated);
   };
 
-  // Store the selected accounts for reserving a para id, keyed by tab.
-  const [selectedAccounts, setSelectedAccounts] = useState<
-    Record<string, string>
-  >({});
+  // Store reserve para id form data, keyed by tab.
+  const [reserveParaIdData, setReserveParaIdData] =
+    useState<ReservedParaIdData>({});
 
   // Get a selected account for a tab.
-  const getSelectedAccount = (tabId: number) => selectedAccounts[tabId];
+  const getSelectedAccount = (tabId: number) =>
+    reserveParaIdData[tabId]?.selectedAccount;
 
   // Set an account for a tab.
   const setSelectedAccount = (tabId: number, address: string) => {
-    setSelectedAccounts((prev) => ({
+    setReserveParaIdData((prev) => ({
       ...prev,
-      [tabId]: address,
+      [tabId]: {
+        ...prev[tabId],
+        selectedAccount: address,
+      },
     }));
   };
 
-  // Remove an account for a tab.
-  const removeSelectedAccount = (tabId: number) => {
-    const updated = { ...selectedAccounts };
-    delete updated[tabId];
-    setSelectedAccounts(updated);
-  };
-
-  // Store the selected option for reserving a para id, keyed by tab.
-  const [selectedOptions, setSelectedOptions] = useState<
-    Record<number, ReserveOption>
-  >({});
-
   // Get a reserve option for a tab.
-  const getSelectedOption = (tabId: number) => selectedOptions[tabId] || 'new';
+  const getSelectedOption = (tabId: number) =>
+    reserveParaIdData[tabId]?.selectedOption || 'new';
 
   // Set a reserve option for a tab.
   const setSelectedOption = (tabId: number, option: ReserveOption) => {
-    setSelectedOptions((prev) => ({
+    setReserveParaIdData((prev) => ({
       ...prev,
-      [tabId]: option,
+      [tabId]: {
+        ...prev[tabId],
+        selectedOption: option,
+      },
     }));
   };
-
-  // Remove a reserve option for a tab.
-  const removeSelectedOption = (tabId: number) => {
-    const updated = { ...selectedOptions };
-    delete updated[tabId];
-    setSelectedOptions(updated);
-  };
-
-  // Store existing para id inputs, keyed by tab.
-  const [existingParaIdInputs, setExistingParaIdInputs] =
-    useState<Record<number, string>>();
 
   // Get an existing para id input for a tab.
   const getExistingParaIdInput = (tabId: number) =>
-    existingParaIdInputs?.[tabId] || '';
+    reserveParaIdData[tabId]?.existingParaIdInput || '';
 
   // Set an existing para id input for a tab.
   const setExistingParaIdInput = (tabId: number, value: string) => {
-    setExistingParaIdInputs((prev) => ({
+    setReserveParaIdData((prev) => ({
       ...prev,
-      [tabId]: value,
+      [tabId]: {
+        ...prev[tabId],
+        existingParaIdInput: value,
+      },
     }));
   };
 
-  // Remove an existing para id input for a tab.
-  const removeExistingParaIdInput = (tabId: number) => {
-    const updated = { ...existingParaIdInputs };
-    delete updated[tabId];
-    setExistingParaIdInputs(updated);
-  };
-
-  // Store the fetched reserved para id entries, keyed by tab.
-  const [reservedParaIds, setExistingReservedParaIds] = useState<
-    Record<number, ReservedParaId | null>
-  >({});
-
   // Get a reserved para id entry for a tab.
-  const getExistingReservedParaId = (tabId: number) => reservedParaIds[tabId];
+  const getExistingReservedParaId = (tabId: number) =>
+    reserveParaIdData[tabId]?.existingReservedParaId;
 
   // Set a reserved para id entry for a tab.
   const setExistingReservedParaId = (
     tabId: number,
     entry: ReservedParaId | null
   ) => {
-    setExistingReservedParaIds((prev) => ({
+    setReserveParaIdData((prev) => ({
       ...prev,
-      [tabId]: entry,
+      [tabId]: {
+        ...prev[tabId],
+        existingReservedParaId: entry,
+      },
     }));
   };
 
-  // Remove a reserved para id entry for a tab.
-  const removeExistingReservedParaId = (tabId: number) => {
-    const updated = { ...reservedParaIds };
-    delete updated[tabId];
-    setExistingReservedParaIds(updated);
-  };
-
-  // Store a reserved next para id, keyed by tab.
-  const [reservedNextParaIds, setReservedNextParaIds] = useState<
-    Record<number, ReservedNextParaIds>
-  >({});
-
   // Get a reserved para id for a tab.
   const getReservedNextParaId = (tabId: number, manager: string) => {
-    const current = reservedNextParaIds[tabId];
-    return current?.[manager];
+    const current = reserveParaIdData[tabId]?.reservedNextParaIds;
+    if (current) {
+      return current?.[manager];
+    }
   };
 
   // Set a reserved para id for a tab.
@@ -189,25 +158,38 @@ export const ReserveParaIdProvider = ({
     manager: string,
     paraId: string
   ) => {
-    const updated = { ...reservedNextParaIds };
-    const current = reservedNextParaIds[tabId];
+    const updated = { ...reserveParaIdData };
+    const current = updated[tabId]?.reservedNextParaIds || {};
+    const newRecord = { [manager]: { paraId, manager } };
 
-    if (!current) {
-      // New redord if tab record does not exist.
-      updated[tabId] = { [manager]: { paraId, manager } };
-    } else {
-      // Update manager entry if tab record exists.
-      updated[tabId] = { ...current, [manager]: { paraId, manager } };
+    if (!updated[tabId]) {
+      updated[tabId] = {};
     }
 
-    setReservedNextParaIds(updated);
+    if (!current) {
+      // New record if tab data does not exist.
+      updated[tabId].reservedNextParaIds = { ...newRecord };
+    } else {
+      // Update manager entry if tab record exists.
+      updated[tabId] = {
+        ...updated[tabId],
+        reservedNextParaIds: {
+          ...current,
+          ...newRecord,
+        },
+      };
+    }
+
+    setReserveParaIdData(updated);
   };
 
-  // Remove a reserved para id for a tab.
-  const removeReservedNextParaId = (tabId: number) => {
-    const updated = { ...reservedNextParaIds };
-    delete updated[tabId];
-    setReservedNextParaIds(updated);
+  // Remove para id data for a tab.
+  const removeTabParaIdData = (tabId: number) => {
+    setReserveParaIdData((prev) => {
+      const updated = { ...prev };
+      delete updated[tabId];
+      return updated;
+    });
   };
 
   // Method that checks if a stored para id for a tab is valid (i.e. the next free id has been
@@ -251,29 +233,26 @@ export const ReserveParaIdProvider = ({
         // Manage managers of para ids.
         getSelectedAccount,
         setSelectedAccount,
-        removeSelectedAccount,
 
         // Manage para id reserve options.
         getSelectedOption,
         setSelectedOption,
-        removeSelectedOption,
 
         // Manage existing para id inputs.
         getExistingParaIdInput,
         setExistingParaIdInput,
-        removeExistingParaIdInput,
 
         // Manage reserved para id entries.
         getExistingReservedParaId,
         setExistingReservedParaId,
-        removeExistingReservedParaId,
 
         // Manage reserved para ids via next free id.
         getReservedNextParaId,
         setReservedNextParaId,
-        removeReservedNextParaId,
 
         validateParaId,
+
+        removeTabParaIdData,
       }}
     >
       {children}

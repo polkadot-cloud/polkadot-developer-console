@@ -48,12 +48,8 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   const {
     setNextParaId,
     removeNextParaId,
-    removeSelectedOption,
-    removeSelectedAccount,
+    removeTabParaIdData,
     removeNextParaIdChain,
-    removeExistingParaIdInput,
-    removeExistingReservedParaId,
-    removeReservedNextParaId,
   } = useReserveParaId();
   const { getChainSpec, handleConnectApi, getApiInstanceById } =
     useChainSpaceEnv();
@@ -104,11 +100,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     if (chainId) {
       removeNextParaId(chainId);
       removeNextParaIdChain(chainId);
-      removeSelectedAccount(tabId);
-      removeSelectedOption(tabId);
-      removeExistingParaIdInput(tabId);
-      removeExistingReservedParaId(tabId);
-      removeReservedNextParaId(tabId);
+      removeTabParaIdData(tabId);
     }
   };
 
