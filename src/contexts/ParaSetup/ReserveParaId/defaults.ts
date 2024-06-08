@@ -33,4 +33,6 @@ export const defaultReserveParaIdContext: ReserveParaIdContextInterface = {
   removeReservedNextParaId: (tabId) => {},
 
   validateParaId: (tabId, manager) => undefined,
+
+  removeTabParaIdData: (tabId) => {},
 };

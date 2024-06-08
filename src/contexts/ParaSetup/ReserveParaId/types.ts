@@ -47,6 +47,18 @@ export interface ReserveParaIdContextInterface {
     tabId: number,
     manager: string
   ) => ParaIdWithManager | undefined;
+
+  removeTabParaIdData: (tabId: number) => void;
+}
+
+export type ReservedParaIdData = Record<number, ReserveParaIdState>;
+
+export interface ReserveParaIdState {
+  selectedAccount?: string;
+  selectedOption?: ReserveOption;
+  existingParaIdInput?: string;
+  existingReservedParaId?: ReservedParaId | null;
+  reservedNextParaIds?: ReservedNextParaIds;
 }
 
 export type ReserveOption = 'new' | 'existing';
