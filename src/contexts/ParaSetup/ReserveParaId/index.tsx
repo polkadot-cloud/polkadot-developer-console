@@ -96,17 +96,6 @@ export const ReserveParaIdProvider = ({
     }));
   };
 
-  // Remove an account for a tab.
-  const removeSelectedAccount = (tabId: number) => {
-    setReserveParaIdData((prev) => {
-      const updated = { ...prev };
-      if (updated[tabId]) {
-        delete updated[tabId].selectedAccount;
-      }
-      return updated;
-    });
-  };
-
   // Get a reserve option for a tab.
   const getSelectedOption = (tabId: number) =>
     reserveParaIdData[tabId]?.selectedOption || 'new';
@@ -122,17 +111,6 @@ export const ReserveParaIdProvider = ({
     }));
   };
 
-  // Remove a reserve option for a tab.
-  const removeSelectedOption = (tabId: number) => {
-    setReserveParaIdData((prev) => {
-      const updated = { ...prev };
-      if (updated[tabId]) {
-        delete updated[tabId].selectedOption;
-      }
-      return updated;
-    });
-  };
-
   // Get an existing para id input for a tab.
   const getExistingParaIdInput = (tabId: number) =>
     reserveParaIdData[tabId]?.existingParaIdInput || '';
@@ -146,17 +124,6 @@ export const ReserveParaIdProvider = ({
         existingParaIdInput: value,
       },
     }));
-  };
-
-  // Remove an existing para id input for a tab.
-  const removeExistingParaIdInput = (tabId: number) => {
-    setReserveParaIdData((prev) => {
-      const updated = { ...prev };
-      if (updated[tabId]) {
-        delete updated[tabId].existingParaIdInput;
-      }
-      return updated;
-    });
   };
 
   // Get a reserved para id entry for a tab.
@@ -175,17 +142,6 @@ export const ReserveParaIdProvider = ({
         existingReservedParaId: entry,
       },
     }));
-  };
-
-  // Remove a reserved para id entry for a tab.
-  const removeExistingReservedParaId = (tabId: number) => {
-    setReserveParaIdData((prev) => {
-      const updated = { ...prev };
-      if (updated[tabId]) {
-        delete updated[tabId].existingReservedParaId;
-      }
-      return updated;
-    });
   };
 
   // Get a reserved para id for a tab.
@@ -225,17 +181,6 @@ export const ReserveParaIdProvider = ({
     }
 
     setReserveParaIdData(updated);
-  };
-
-  // Remove a reserved para id for a tab.
-  const removeReservedNextParaId = (tabId: number) => {
-    setReserveParaIdData((prev) => {
-      const updated = { ...prev };
-      if (updated[tabId]) {
-        delete updated[tabId].reservedNextParaIds;
-      }
-      return updated;
-    });
   };
 
   // Remove para id data for a tab.
@@ -288,27 +233,22 @@ export const ReserveParaIdProvider = ({
         // Manage managers of para ids.
         getSelectedAccount,
         setSelectedAccount,
-        removeSelectedAccount,
 
         // Manage para id reserve options.
         getSelectedOption,
         setSelectedOption,
-        removeSelectedOption,
 
         // Manage existing para id inputs.
         getExistingParaIdInput,
         setExistingParaIdInput,
-        removeExistingParaIdInput,
 
         // Manage reserved para id entries.
         getExistingReservedParaId,
         setExistingReservedParaId,
-        removeExistingReservedParaId,
 
         // Manage reserved para ids via next free id.
         getReservedNextParaId,
         setReservedNextParaId,
-        removeReservedNextParaId,
 
         validateParaId,
 

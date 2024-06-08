@@ -13,14 +13,11 @@ export interface ReserveParaIdContextInterface {
 
   getSelectedAccount: (tabId: number) => string | undefined;
   setSelectedAccount: (tabId: number, account: string) => void;
-  removeSelectedAccount: (tabId: number) => void;
 
   getSelectedOption: (tabId: number) => ReserveOption;
   setSelectedOption: (tabId: number, option: ReserveOption) => void;
-  removeSelectedOption: (tabId: number) => void;
 
   getExistingParaIdInput: (tabId: number) => string;
-  removeExistingParaIdInput: (tabId: number) => void;
   setExistingParaIdInput: (tabId: number, paraId: string) => void;
 
   getExistingReservedParaId: (
@@ -30,7 +27,6 @@ export interface ReserveParaIdContextInterface {
     tabId: number,
     reservedParaId: ReservedParaId | null
   ) => void;
-  removeExistingReservedParaId: (tabId: number) => void;
 
   getReservedNextParaId: (
     tabId: number,
@@ -41,7 +37,6 @@ export interface ReserveParaIdContextInterface {
     manager: string,
     paraId: string
   ) => void;
-  removeReservedNextParaId: (tabId: number) => void;
 
   validateParaId: (
     tabId: number,
