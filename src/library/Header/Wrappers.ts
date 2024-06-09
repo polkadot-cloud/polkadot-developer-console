@@ -9,6 +9,7 @@ export const HeaderWrapper = styled.div`
   align-items: center;
   padding: 0.4rem 1.25rem 0.4rem 0.55rem;
   width: 100%;
+  height: 2.4rem;
 
   > div {
     display: flex;
