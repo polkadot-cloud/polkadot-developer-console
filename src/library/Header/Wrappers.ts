@@ -47,7 +47,7 @@ export const HeaderWrapper = styled.div`
       justify-content: flex-end;
 
       > button {
-        opacity: 0.25;
+        opacity: 0.4;
         transition: opacity 0.2s;
         margin-left: 1.25rem;
 

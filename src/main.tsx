@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-// Network themes from Polkadot Cloud.
+// Network colors.
 import 'styles/accents/developer-console.css';
 
 // Default template fonts.
