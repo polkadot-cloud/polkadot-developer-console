@@ -8,7 +8,7 @@ import { base58Decode, base58Encode } from '@polkadot/util-crypto';
 // Test decoding and encoding of an account. Extracts the SS58 Prefix and public key, before
 // encoding back to the correct address.
 
-describe('Encoding ', () => {
+describe('Encoding works as expected', () => {
   it('encoding and decoding should work correctly.', () => {
     const encoded = '1hYiMW8KSfUYChzCQSPGXvMSyKVqmyvMXqohjKr3oU5PCXF';
 

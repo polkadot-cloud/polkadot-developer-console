@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import assert from 'assert';
+import * as metadataJson from '../data/metadataV14.json';
 
 /* Metadata look tests.
 
@@ -11,13 +12,27 @@ The goal of this test suit is to document how lookups are structured to the deve
 
 // TODO: Reformat scraper to add `Lookup.ts` file, that deals with lookup queries only.
 
-// Basic lookup structure.
-describe('Basic variant structure is intact ', () => {
-  // TODO: implement.
+describe('Basic lookup structure is intact.', () => {
+  const lookup = metadataJson.lookup;
+  const lookupTypes = lookup.types;
 
-  // lookup -> types -> [id, type].
+  it('Lookup exists at metadata top level.', () => {
+    const keys = Object.keys(metadataJson);
+    assert.ok(keys.includes('lookup'));
+  });
 
-  // ensure length of lookup is what is expected.
+  it('Lookup only contains `types` field.', () => {
+    assert.ok('types' in lookup && Object.keys(lookup).length === 1);
+  });
 
-  assert.equal(1, 1);
+  it('Lookup types only contain `id` and `type` fields.', () => {
+    const result = lookupTypes.every(
+      (item) => 'id' in item && 'type' in item && Object.keys(item).length === 2
+    );
+    assert.ok(result);
+  });
+
+  it('Provided lookup contains 868 types.', () => {
+    assert.ok(lookupTypes.length === 868);
+  });
 });
