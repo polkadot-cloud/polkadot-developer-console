@@ -12,7 +12,7 @@ The goal of this test suit is to document how lookups are structured to the deve
 
 // TODO: Reformat scraper to add `Lookup.ts` file, that deals with lookup queries only.
 
-describe('Basic lookup structure is intact.', () => {
+describe('Metadata lookup structure is intact.', () => {
   const lookup = metadataJson.lookup;
   const lookupTypes = lookup.types;
 
