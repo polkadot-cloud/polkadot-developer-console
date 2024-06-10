@@ -32,6 +32,11 @@ describe('Basic lookup structure is intact.', () => {
     assert.ok(result);
   });
 
+  it('Lookup type `id`s are numbers', () => {
+    const result = lookupTypes.every((item) => typeof item.id === 'number');
+    assert.ok(result);
+  });
+
   it('Provided lookup contains 868 types.', () => {
     assert.ok(lookupTypes.length === 868);
   });
