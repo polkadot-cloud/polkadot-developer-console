@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { CanvasSubheading, RuntimeItemWrapper } from 'canvas/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { PalletItemScraped } from 'model/Metadata/Scraper/types';
+import type { PalletItemScraped } from 'model/Scraper/types';
 import { Fragment, useRef, useState } from 'react';
 import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
 import type { Sync } from '@w3ux/types';

@@ -4,7 +4,7 @@
 import { CanvasCardWrapper, CanvasFullScreenWrapper } from 'canvas/Wrappers';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { useOverlay } from 'library/Overlay/Provider';
-import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
+import { PalletScraper } from 'model/Scraper/Pallet';
 import { PalletItem } from './PalletItem';
 
 export const RuntimeSnapshot = () => {

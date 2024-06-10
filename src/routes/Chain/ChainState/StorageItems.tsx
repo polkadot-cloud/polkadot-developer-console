@@ -3,10 +3,10 @@
 
 import { useMemo } from 'react';
 import { PalletList } from '../PalletList';
-import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
+import { PalletScraper } from 'model/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { ChainStateList } from './ChainStateList';
-import { FormatInputFields } from 'model/Metadata/Format/InputFields';
+import { FormatInputFields } from 'model/Scraper/Format/InputFields';
 import { useActiveTab } from 'contexts/ActiveTab';
 import type { PalletData } from './types';
 import { EncodedDetails } from './EncodedDetails';

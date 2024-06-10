@@ -1,8 +1,8 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { PalletScraper } from 'model/Metadata/Scraper/Pallet';
-import type { PalletListItem } from 'model/Metadata/Scraper/types';
+import type { PalletScraper } from 'model/Scraper/Pallet';
+import type { PalletListItem } from 'model/Scraper/types';
 
 export interface PalletItemProps {
   scraper: PalletScraper;

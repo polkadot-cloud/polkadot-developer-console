@@ -4,7 +4,7 @@
 import { InputFormWrapper } from '../Wrappers';
 import { useMemo } from 'react';
 import { PalletList } from '../PalletList';
-import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
+import { PalletScraper } from 'model/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { ChainStateList } from './ChainStateList';
 import { ButtonText } from 'library/Buttons/ButtonText';

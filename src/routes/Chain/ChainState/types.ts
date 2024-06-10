@@ -8,10 +8,7 @@ import type {
   InputNamespace,
 } from 'contexts/ChainUi/types';
 import type { StorageType } from 'model/ChainState/types';
-import type {
-  PalletItemScraped,
-  PalletListItem,
-} from 'model/Metadata/Scraper/types';
+import type { PalletItemScraped, PalletListItem } from 'model/Scraper/types';
 
 export interface PalletData {
   pallets: PalletListItem[];

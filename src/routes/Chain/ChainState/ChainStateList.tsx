@@ -3,8 +3,8 @@
 
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
-import { FormatCallSignature } from 'model/Metadata/Format/CallSignature';
-import type { PalletItemScrapedWithSig } from 'model/Metadata/Scraper/types';
+import { FormatCallSignature } from 'model/Scraper/Format/CallSignature';
+import type { PalletItemScrapedWithSig } from 'model/Scraper/types';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
