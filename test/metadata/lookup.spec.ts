@@ -4,13 +4,11 @@
 import assert from 'assert';
 import * as metadataJson from '../data/metadataV14.json';
 
-/* Metadata look tests.
+/* Metadata lookup tests.
 
 This test file verifies the structure and integrity of the metadata lookup object.
 
 The goal of this test suit is to document how lookups are structured to the developer. */
-
-// TODO: Reformat scraper to add `Lookup.ts` file, that deals with lookup queries only.
 
 describe('Metadata lookup structure is intact.', () => {
   const lookup = metadataJson.lookup;
