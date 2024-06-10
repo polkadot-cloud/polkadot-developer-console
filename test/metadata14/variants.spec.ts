@@ -16,8 +16,8 @@ composites, or enums.
 The goal of this test suit is to document how variants are structured to the developer. 
 
 NOTES:
-- Variants with no `fields` are simple enums, and can be defined as strings in JS.
-- Variants with `fields` are typed enums, and can be defined as objects in JS.
+- Variants with no `fields` are simple enum variants, and can be defined as strings in JS.
+- Variants with `fields` are typed enum variants, and can be defined as objects in JS.
 */
 
 // Basic variant structure.
