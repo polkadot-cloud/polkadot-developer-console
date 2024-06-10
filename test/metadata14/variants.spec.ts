@@ -13,7 +13,12 @@ All variants are scraped and run through tests. Beyond the basic variant structu
 variants hold are also tested to document the correct structure, e.g. a variants of tuples,
 composites, or enums.
 
-The goal of this test suit is to document how variants are structured to the developer. */
+The goal of this test suit is to document how variants are structured to the developer. 
+
+NOTES:
+- Variants with no `fields` are simple enums, and can be defined as strings in JS.
+- Variants with `fields` are typed enums, and can be defined as objects in JS.
+*/
 
 // Basic variant structure.
 describe('Basic variant structure is intact', () => {
@@ -36,31 +41,58 @@ describe('Basic variant structure is intact', () => {
   });
 
   it('All variants contain the same array of properties', () => {
-    const result = variantDefs.every((item: AnyJson) => {
-      if (!Array.isArray(item)) {
-        return false;
-      }
-      for (const variantItem of item) {
-        if (
-          !(
-            'name' in variantItem &&
-            'fields' in variantItem &&
-            'index' in variantItem &&
-            'docs' in variantItem
-          )
-        ) {
+    assert.ok(
+      variantDefs.every((item: AnyJson) => {
+        if (!Array.isArray(item)) {
           return false;
         }
-      }
-      return true;
-    });
-
-    assert.ok(result);
+        for (const variantItem of item) {
+          if (
+            !(
+              'name' in variantItem &&
+              'fields' in variantItem &&
+              'index' in variantItem &&
+              'docs' in variantItem &&
+              Object.keys(variantItem).length === 4
+            )
+          ) {
+            return false;
+          }
+        }
+        return true;
+      })
+    );
   });
 
-  // variants with no fields are simple enums.
-  // variants with fields are typed enums.
-  // fields -> [docs, name, type, typeName].
+  it('Variant `fields` all contain the same properties', () => {
+    assert.ok(
+      variantDefs.every((item: AnyJson) => {
+        if (!Array.isArray(item)) {
+          return false;
+        }
 
-  assert.equal(1, 1);
+        for (const variantItem of item) {
+          // Ignore variants with no fields.
+          if (!variantItem.fields.length) {
+            continue;
+          }
+          const { fields } = variantItem;
+          for (const field of fields) {
+            if (
+              !(
+                'docs' in field &&
+                'name' in field &&
+                'type' in field &&
+                'typeName' in field &&
+                Object.keys(field).length === 4
+              )
+            ) {
+              return false;
+            }
+          }
+        }
+        return true;
+      })
+    );
+  });
 });
