@@ -11,6 +11,8 @@ import type {
   TrailParam,
   TrailParentId,
 } from './types';
+import type { MetadataLookup } from './Lookup/types';
+import { Lookup } from './Lookup';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -19,7 +21,7 @@ export class MetadataScraper {
   metadata: MetadataVersion;
 
   // The metadata lookup.
-  lookup: AnyJson = {};
+  lookup: Lookup;
 
   // Maximum recursion depth for scraping types.
   #maxDepth: number | '*';
@@ -36,7 +38,9 @@ export class MetadataScraper {
   constructor(metadata: MetadataVersion, config: ScraperConfig) {
     this.metadata = metadata;
     this.#maxDepth = config.maxDepth;
-    this.lookup = this.metadata.get().lookup;
+
+    // Assign a new lookup instnace.
+    this.lookup = new Lookup(this.metadata.get().lookup as MetadataLookup);
   }
 
   // ------------------------------------------------------
@@ -63,9 +67,7 @@ export class MetadataScraper {
   getType(typeId: number, trailParam: TrailParam) {
     const { trailId, labelsOnly, maxDepth } = trailParam;
 
-    const lookup = this.lookup.types.find(
-      ({ id }: { id: number }) => id === typeId
-    );
+    const lookup = this.lookup.getType(typeId);
 
     const cyclic = this.trailCyclic(trailId, typeId);
     if (cyclic) {
