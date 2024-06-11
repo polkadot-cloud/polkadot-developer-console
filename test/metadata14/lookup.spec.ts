@@ -8,10 +8,7 @@ import * as metadataJson from './data/metadataV14.json';
 
 This test file verifies the structure and integrity of the metadata lookup object.
 
-The goal of this test suit is to document how lookups are structured to the developer. 
-
-TODO: add a test to check if all type of types exist (variant, composite, primitive, bitSequence,
-etc. This will probably require tests for the individual types to be in place first. */
+The goal of this test suit is to document how lookups are structured to the developer.*/
 
 describe('Metadata lookup structure is intact', () => {
   const lookup = metadataJson.lookup;
