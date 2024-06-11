@@ -5,7 +5,14 @@ export interface VariantType {
 }
 export interface VariantItem {
   name: string | null;
-  fields: AnyJson[];
+  fields: VariantField[];
   index: number;
   docs: string[];
+}
+
+export interface VariantField {
+  docs: string[];
+  name: string;
+  type: AnyJson;
+  typeName: string;
 }
