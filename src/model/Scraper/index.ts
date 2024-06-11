@@ -125,13 +125,14 @@ export class MetadataScraper {
           short: path[path.length - 1],
         };
 
-        // Stop scraping at this point if only interested in labels.
-        if (!labelsOnly) {
-          result.bitsequence = {
-            bitOrderType: this.start((value as AnyJson).bitOrderType, trailId),
-            bitStoreType: this.start((value as AnyJson).bitStoreType, trailId),
-          };
+        if (labelsOnly) {
+          break;
         }
+
+        result.bitsequence = {
+          bitOrderType: this.start((value as AnyJson).bitOrderType, trailId),
+          bitStoreType: this.start((value as AnyJson).bitStoreType, trailId),
+        };
         break;
 
       case 'compact':
@@ -167,12 +168,15 @@ export class MetadataScraper {
           short: path[path.length - 1],
         };
 
-        // Stop scraping at this point if only interested in labels.
-        if (!labelsOnly) {
-          const variants = (value as VariantType).variants;
-          const variant = new Variant(variants, lookup);
-          result.variant = variant.scrape(this, trailId);
+        if (labelsOnly) {
+          break;
         }
+
+        result.variant = new Variant(
+          (value as VariantType).variants,
+          lookup
+        ).scrape(this, trailId);
+
         break;
 
       default:
