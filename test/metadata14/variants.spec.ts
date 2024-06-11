@@ -9,15 +9,14 @@ import type { AnyJson } from '@w3ux/types';
 
 This test file verifies the structure and integrity of variants in metadata.
 
-All variants are scraped and run through tests. Beyond the basic variant structure, the types
-variants hold are also tested to document the correct structure, e.g. a variants of tuples,
-composites, or enums.
+All variants are scraped and run through tests.The goal of this test suit is to document how variants are structured to the developer. 
 
-The goal of this test suit is to document how variants are structured to the developer. 
+TODO: Beyond the basic variant structure, the types variants hold are also tested to document the
+correct structure, e.g. a variants of tuples, composites, or enums.
 
 NOTES:
-- Variants with no `fields` are simple enum variants, and can be defined as strings in JS.
-- Variants with `fields` are typed enum variants, and can be defined as objects in JS.
+- Variant values with no `fields` are simple enum variants, and can be defined as strings in JS.
+- Variant values with `fields` are typed enum variants, and can be defined as objects in JS.
 */
 
 // Basic variant structure.

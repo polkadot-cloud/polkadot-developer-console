@@ -8,7 +8,12 @@ import * as metadataJson from './data/metadataV14.json';
 
 This test file verifies the structure and integrity of the metadata lookup object.
 
-The goal of this test suit is to document how lookups are structured to the developer.*/
+The goal of this test suit is to document how lookups are structured to the developer.
+
+NOTES:
+- The `path` property is a string array that represents the path to the type in the metadata. The
+  last element in the array is the type name, such as a composite (struct) or variant (enum) name.
+*/
 
 describe('Metadata lookup structure is intact', () => {
   const lookup = metadataJson.lookup;
