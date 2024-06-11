@@ -23,11 +23,9 @@ export class Variant {
   scrape(scraper: MetadataScraper, trailId: TrailId) {
     this.items = [...this.items].map((item) => ({
       ...item,
-      fields: item.fields.map(({ docs, name, type, typeName }) => ({
-        docs,
-        name,
-        typeName,
-        type: scraper.start(type, trailId),
+      fields: item.fields.map((field) => ({
+        ...field,
+        type: scraper.start(field.type, trailId),
       })),
     }));
 
