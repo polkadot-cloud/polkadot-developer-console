@@ -13,6 +13,8 @@ import type {
 } from './types';
 import type { MetadataLookup } from './Lookup/types';
 import { Lookup } from './Lookup';
+import { Variant } from './Variant';
+import type { VariantType } from './Variant/types';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -167,7 +169,9 @@ export class MetadataScraper {
 
         // Stop scraping at this point if only interested in labels.
         if (!labelsOnly) {
-          result.variant = this.scrapeVariant(value, trailParam) || 'U128';
+          const variants = (value as VariantType).variants;
+          const variant = new Variant(variants, lookup);
+          result.variant = variant.scrape(this, trailId);
         }
         break;
 
@@ -177,23 +181,6 @@ export class MetadataScraper {
         break;
     }
     return result;
-  }
-
-  // Scrapes a variant type.
-  scrapeVariant(input: AnyJson, { trailId }: TrailParam) {
-    const variants = input.variants.map(
-      ({ docs: variantDocs, fields, name: variantName }: AnyJson) => ({
-        name: variantName,
-        docs: variantDocs,
-        fields: fields.map(({ docs, name, type, typeName }: AnyJson) => ({
-          docs,
-          name,
-          typeName,
-          type: this.start(type, trailId),
-        })),
-      })
-    );
-    return variants;
   }
 
   // Scrapes a composite type.
