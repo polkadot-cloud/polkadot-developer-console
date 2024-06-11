@@ -22,7 +22,6 @@ export const useSelectFirst = ({
         newFilteredPallets.find((item: unknown) => item === activeItem) ===
           undefined
       ) {
-        console.log('check failing');
         onSelect(newFilteredPallets[0]);
       }
     }

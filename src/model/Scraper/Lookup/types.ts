@@ -7,9 +7,16 @@ export interface MetadataLookup {
   types: LookupTypes;
 }
 
-export type LookupTypes = LookupType[];
+export type LookupTypes = LookupItem[];
+
+export interface LookupItem {
+  id: number;
+  type: LookupType;
+}
 
 export interface LookupType {
-  id: number;
-  type: AnyJson;
+  path: string[];
+  params: AnyJson[];
+  def: AnyJson;
+  docs: string[];
 }

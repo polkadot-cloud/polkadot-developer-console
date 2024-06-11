@@ -40,7 +40,7 @@ describe('Basic variant structure is intact', () => {
     );
   });
 
-  it('All variants contain the same array of properties', () => {
+  it('All `variants` contain the same array of properties', () => {
     assert.ok(
       variantDefs.every((item: AnyJson) => {
         if (!Array.isArray(item)) {
