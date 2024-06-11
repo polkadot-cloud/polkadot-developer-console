@@ -6,7 +6,7 @@ import type { VariantItem } from './types';
 import type { MetadataScraper } from '..';
 import type { TrailId } from '../types';
 
-// Class to hold a variant, with type accessors.
+// Class to hold a variant type.
 export class Variant {
   // The raw lookup data of this variant.
   lookup: LookupItem;
@@ -17,23 +17,6 @@ export class Variant {
   constructor(variants: VariantItem[], lookup: LookupItem) {
     this.items = variants;
     this.lookup = lookup;
-  }
-
-  // Get variant item by index.
-  getItem(index: number) {
-    return this.items.find((item) => item.index === index);
-  }
-
-  // Gets a variant item name by index.
-  getName(index: number) {
-    const item = this.getItem(index);
-    return item ? item.name : null;
-  }
-
-  // Get variant item fields by index.
-  getFields(index: number) {
-    const item = this.getItem(index);
-    return item ? item.fields : [];
   }
 
   // Scrape variant fields. Overwrites fields with scraped fields.
