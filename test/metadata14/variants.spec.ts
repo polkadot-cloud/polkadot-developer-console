@@ -84,6 +84,7 @@ describe('Basic variant structure is intact', () => {
                 'name' in field &&
                 'type' in field &&
                 'typeName' in field &&
+                typeof field.type === 'number' &&
                 Object.keys(field).length === 4
               )
             ) {
