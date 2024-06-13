@@ -19,6 +19,8 @@ import { Composite } from './Composite';
 import type { CompositeType } from './Composite/types';
 import { Sequence } from './Sequence';
 import type { SequenceType } from './Sequence/types';
+import type { IArrayType } from './Array/types';
+import { ArrayType } from './Array';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -117,10 +119,10 @@ export class MetadataScraper {
 
     switch (type) {
       case 'array':
-        result.array = {
-          len: (value as AnyJson).len,
-          type: this.getType((value as AnyJson).type, trailParam),
-        };
+        result.array = new ArrayType(value as IArrayType, lookup).scrape(
+          this,
+          trailParam
+        );
         break;
 
       case 'bitSequence':
