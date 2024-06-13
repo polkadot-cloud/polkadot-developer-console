@@ -5,7 +5,7 @@ import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { TrailParam } from '../types';
 import type { CompositeField, CompositeType, MetadataType } from './types';
-import { Format } from '../Format';
+import { typeToString } from '../Format/Utils';
 
 // Class to hold a composite type.
 export class Composite implements MetadataType {
@@ -26,7 +26,7 @@ export class Composite implements MetadataType {
   label() {
     const { path, params } = this.lookup.type;
     return {
-      long: Format.typeToString(path, params),
+      long: typeToString(path, params),
       short: path[path.length - 1],
     };
   }
