@@ -9,6 +9,8 @@ import { Format } from '../Format';
 
 // Class to hold a variant type.
 export class Variant implements MetadataType {
+  type = 'variant';
+
   // The raw lookup data of this type.
   lookup: LookupItem;
 

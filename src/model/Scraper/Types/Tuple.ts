@@ -8,6 +8,8 @@ import type { TrailParam } from '../types';
 
 // Class to hold a tuple type.
 export class Tuple implements MetadataType {
+  type = 'tuple';
+
   // The raw lookup data of this type.
   lookup: LookupItem;
 

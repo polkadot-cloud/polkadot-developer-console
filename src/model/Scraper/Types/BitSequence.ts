@@ -9,6 +9,8 @@ import { Format } from '../Format';
 
 // Class to hold a bit sequence type.
 export class BitSequence implements MetadataType {
+  type = 'bitSequence';
+
   // The raw lookup data of this type.
   lookup: LookupItem;
 

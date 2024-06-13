@@ -8,6 +8,8 @@ import type { TrailParam } from '../types';
 
 // Class to hold an array type.
 export class ArrayType implements MetadataType {
+  type = 'array';
+
   // The raw lookup data of this type.
   lookup: LookupItem;
 
