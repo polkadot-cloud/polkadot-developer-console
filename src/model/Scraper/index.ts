@@ -11,6 +11,25 @@ import type {
   TrailParam,
   TrailParentId,
 } from './types';
+import type { MetadataLookup } from './Lookup/types';
+import { Lookup } from './Lookup';
+import { Variant } from './Types/Variant';
+import type {
+  VariantType,
+  CompositeType,
+  SequenceType,
+  IArrayType,
+  BitSequenceType,
+  CompactType,
+  TupleType,
+} from './Types/types';
+import { Composite } from './Types/Composite';
+import { Sequence } from './Types/Sequence';
+import { ArrayType } from './Types/Array';
+import { BitSequence } from './Types/BitSequence';
+import { Compact } from './Types/Compact';
+import { Primitive } from './Types/Primitive';
+import { Tuple } from './Types/Tuple';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -19,7 +38,7 @@ export class MetadataScraper {
   metadata: MetadataVersion;
 
   // The metadata lookup.
-  lookup: AnyJson = {};
+  lookup: Lookup;
 
   // Maximum recursion depth for scraping types.
   #maxDepth: number | '*';
@@ -36,7 +55,9 @@ export class MetadataScraper {
   constructor(metadata: MetadataVersion, config: ScraperConfig) {
     this.metadata = metadata;
     this.#maxDepth = config.maxDepth;
-    this.lookup = this.metadata.get().lookup;
+
+    // Assign a new lookup instnace.
+    this.lookup = new Lookup(this.metadata.get().lookup as MetadataLookup);
   }
 
   // ------------------------------------------------------
@@ -63,9 +84,7 @@ export class MetadataScraper {
   getType(typeId: number, trailParam: TrailParam) {
     const { trailId, labelsOnly, maxDepth } = trailParam;
 
-    const lookup = this.lookup.types.find(
-      ({ id }: { id: number }) => id === typeId
-    );
+    const lookup = this.lookup.getType(typeId);
 
     const cyclic = this.trailCyclic(trailId, typeId);
     if (cyclic) {
@@ -109,10 +128,10 @@ export class MetadataScraper {
 
     switch (type) {
       case 'array':
-        result.array = {
-          len: (value as AnyJson).len,
-          type: this.getType((value as AnyJson).type, trailParam),
-        };
+        result.array = new ArrayType(value as IArrayType, lookup).scrape(
+          this,
+          trailParam
+        );
         break;
 
       case 'bitSequence':
@@ -121,17 +140,21 @@ export class MetadataScraper {
           short: path[path.length - 1],
         };
 
-        // Stop scraping at this point if only interested in labels.
-        if (!labelsOnly) {
-          result.bitsequence = {
-            bitOrderType: this.start((value as AnyJson).bitOrderType, trailId),
-            bitStoreType: this.start((value as AnyJson).bitStoreType, trailId),
-          };
+        if (labelsOnly) {
+          break;
         }
+
+        result.bitsequence = new BitSequence(
+          value as BitSequenceType,
+          lookup
+        ).scrape(this, trailParam);
         break;
 
       case 'compact':
-        result.compact = this.getType((value as AnyJson).type, trailParam);
+        result.compact = new Compact(value as CompactType, lookup).scrape(
+          this,
+          trailParam
+        );
         break;
 
       case 'composite':
@@ -139,21 +162,28 @@ export class MetadataScraper {
           long: Format.typeToString(path, params),
           short: path[path.length - 1],
         };
-        result.composite = this.scrapeComposite(value, trailParam);
+        result.composite = new Composite(value as CompositeType, lookup).scrape(
+          this,
+          trailParam
+        );
         break;
 
       case 'primitive':
         result.label = (value as string).toLowerCase();
-        result.primitive = value;
+        result.primitive = new Primitive(value as string, lookup).scrape();
         break;
 
       case 'sequence':
-        result.sequence = this.getType((value as AnyJson).type, trailParam);
+        result.sequence = new Sequence(value as SequenceType, lookup).scrape(
+          this,
+          trailParam
+        );
         break;
 
       case 'tuple':
-        result.tuple = (value as number[]).map((id: number) =>
-          this.start(id, trailId)
+        result.tuple = new Tuple(value as TupleType, lookup).scrape(
+          this,
+          trailParam
         );
         break;
 
@@ -163,10 +193,15 @@ export class MetadataScraper {
           short: path[path.length - 1],
         };
 
-        // Stop scraping at this point if only interested in labels.
-        if (!labelsOnly) {
-          result.variant = this.scrapeVariant(value, trailParam) || 'U128';
+        if (labelsOnly) {
+          break;
         }
+
+        result.variant = new Variant(
+          (value as VariantType).variants,
+          lookup
+        ).scrape(this, trailParam);
+
         break;
 
       default:
@@ -175,36 +210,6 @@ export class MetadataScraper {
         break;
     }
     return result;
-  }
-
-  // Scrapes a variant type.
-  scrapeVariant(input: AnyJson, { trailId }: TrailParam) {
-    const variants = input.variants.map(
-      ({ docs: variantDocs, fields, name: variantName }: AnyJson) => ({
-        name: variantName,
-        docs: variantDocs,
-        fields: fields.map(({ docs, name, type, typeName }: AnyJson) => ({
-          docs,
-          name,
-          typeName,
-          type: this.start(type, trailId),
-        })),
-      })
-    );
-    return variants;
-  }
-
-  // Scrapes a composite type.
-  scrapeComposite(input: AnyJson, { trailId }: TrailParam) {
-    const composite = input.fields.map(
-      ({ docs, name, type, typeName }: AnyJson) => ({
-        docs,
-        name,
-        typeName,
-        type: this.start(type, trailId),
-      })
-    );
-    return composite;
   }
 
   // ------------------------------------------------------

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/types';
-import type { PalletItemScraped } from '../Scraper/types';
+import type { PalletItemScraped } from '../types';
 
 export class FormatInputFields {
   // The raw input config to format.

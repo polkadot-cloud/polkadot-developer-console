@@ -31,7 +31,7 @@ import { ownerIdToTabId, tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import type { ApiIndexLabel } from 'contexts/ApiIndexer/types';
 import type { MetadataVersion } from 'model/Metadata/types';
 import type { ApiPromise } from '@polkadot/api';
-import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
+import { PalletScraper } from 'model/Scraper/Pallet';
 import { xxhashAsHex } from '@polkadot/util-crypto';
 import { u16 } from 'scale-ts';
 import type { AnyJson } from '@w3ux/types';

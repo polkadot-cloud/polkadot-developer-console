@@ -3,13 +3,13 @@
 
 import { PalletList } from '../PalletList';
 import { CallList } from './CallList';
-import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
+import { PalletScraper } from 'model/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { Header } from './Header';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useMemo } from 'react';
 import type { PalletData } from '../ChainState/types';
-import { FormatInputFields } from 'model/Metadata/Format/InputFields';
+import { FormatInputFields } from 'model/Scraper/Format/InputFields';
 import { InputForm } from '../InputForm';
 import { SelectFormWrapper, SenderWrapper } from 'library/Inputs/Wrappers';
 import { FlexWrapper } from 'routes/Common/Wrappers';

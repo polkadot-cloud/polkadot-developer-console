@@ -222,10 +222,7 @@ export class PalletScraper extends MetadataScraper {
     if (!callType) {
       return [];
     }
-    const lookup = this.lookup.types.find(
-      ({ id }: { id: number }) => id === callType
-    );
-
+    const lookup = this.lookup.getType(callType);
     return lookup?.type?.def?.variant?.variants || [];
   }
 
