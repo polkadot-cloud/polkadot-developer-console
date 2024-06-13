@@ -50,12 +50,12 @@ export const HeaderWrapper = styled.div`
       > button {
         opacity: 0.4;
         transition: opacity 0.2s;
-        margin-left: 1rem;
+        margin-left: 0.9rem;
 
         > .svg {
           margin-top: 0.15rem;
-          width: 1rem;
-          height: 1rem;
+          width: 0.9rem;
+          height: 0.9rem;
         }
 
         &:hover {
