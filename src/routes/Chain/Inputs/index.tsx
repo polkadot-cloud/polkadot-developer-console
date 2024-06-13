@@ -90,7 +90,7 @@ export const useInput = () => {
     maxLength?: number
   ): ReactNode => {
     const [type, arrayInput]: [string, AnyJson] = Object.entries(
-      input.form
+      input?.form || {}
     )?.[0] || [undefined, {}];
     // If this type does not exist, return early.
     if (type === undefined) {
@@ -218,8 +218,12 @@ export const useInput = () => {
         {renderInput(input, inputArgConfig, indent, Object.keys(input.forms))}
         {selectedForm &&
           selectedForm.map((subInput: AnyJson, index: number) => {
+            console.log(subInput);
             // Exit early if subInput does not exist or if this is a simple variant.
-            if (subInput === undefined || subInput.length === 0) {
+            if (
+              [null, undefined].includes(subInput) ||
+              subInput?.length === 0
+            ) {
               return null;
             }
             const subType = Object.keys(subInput)[0];
