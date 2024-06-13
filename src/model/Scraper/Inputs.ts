@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/types';
-import type { PalletItemScraped } from '../types';
-import { getShortLabel } from './Utils';
+import type { PalletItemScraped } from './types';
+import { getShortLabel } from './Format/Utils';
 
-export class FormatInputFields {
+export class Inputs {
   // The raw input config to format.
   #rawConfig: PalletItemScraped;
 
@@ -19,18 +19,18 @@ export class FormatInputFields {
 
   // Formats `rawConfig` data into an input structure.
   format = () => {
-    const { argTypes } = this.#rawConfig;
+    let { argTypes } = this.#rawConfig;
 
     // if there are no arg types, (no args to format) return an empty object.
     if (!argTypes) {
       return {};
     }
 
-    const result = Array.isArray(argTypes)
-      ? argTypes.map((argType) => this.getTypeInput(argType))
-      : this.getTypeInput(argTypes);
+    if (!Array.isArray(argTypes)) {
+      argTypes = [argTypes];
+    }
 
-    return result;
+    return argTypes.map((argType: AnyJson) => this.getTypeInput(argType));
   };
 
   // ------------------------------------------------------
