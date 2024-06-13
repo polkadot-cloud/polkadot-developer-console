@@ -21,10 +21,7 @@ export class FormatCallSignature {
 
   // Formats `rawConfig` data into a string.
   format = () => {
-    const {
-      modifier,
-      type: { argTypes, returnType },
-    } = this.#rawConfig;
+    const { modifier, argTypes, returnType } = this.#rawConfig;
 
     // Format arguments and return types.
     const [argFormatted, returnFormatted] = [argTypes, returnType].map(

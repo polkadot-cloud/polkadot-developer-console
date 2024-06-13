@@ -18,9 +18,7 @@ export class FormatInputFields {
 
   // Formats `rawConfig` data into an input structure.
   format = () => {
-    const {
-      type: { argTypes },
-    } = this.#rawConfig;
+    const { argTypes } = this.#rawConfig;
 
     // if there are no arg types, (no args to format) return an empty object.
     if (!argTypes) {

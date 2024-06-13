@@ -145,7 +145,7 @@ export class PalletScraper extends MetadataScraper {
       docs,
       modifier,
       fallback,
-      type: scrapedType,
+      ...scrapedType,
     };
   }
 
@@ -264,7 +264,7 @@ export class PalletScraper extends MetadataScraper {
       name: item.name,
       docs: item.docs,
       modifier: '',
-      type: scrapedType,
+      ...scrapedType,
     };
 
     return result;
@@ -298,8 +298,8 @@ export class PalletScraper extends MetadataScraper {
           name,
           docs,
           modifier: '', // NOTE: This could be `null`.
-          type: scrapedType,
           value,
+          ...scrapedType,
         };
       });
     }
