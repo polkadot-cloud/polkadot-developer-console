@@ -39,9 +39,11 @@ export class FormatInputFields {
 
   // A recursive function that formats a call inputs.
   getTypeInput = (arg: AnyJson) => {
+    const type = arg?.class?.type;
+
     const result: AnyJson = {};
 
-    switch (arg?.type) {
+    switch (type) {
       case 'array':
         result.array = {
           len: arg.array.len,

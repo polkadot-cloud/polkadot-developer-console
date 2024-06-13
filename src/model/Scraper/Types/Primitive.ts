@@ -6,6 +6,8 @@ import type { MetadataType } from './types';
 
 // Class to hold a primitive type.
 export class Primitive implements MetadataType {
+  type = 'primitive';
+
   // The raw lookup data of this type.
   lookup: LookupItem;
 

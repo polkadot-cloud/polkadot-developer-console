@@ -79,9 +79,11 @@ export class FormatCallSignature {
   // A recursive function that formats a call signature by formatting its arguments and return
   // types.
   getTypeString = (arg: AnyJson) => {
+    const type = arg?.class?.type;
+
     let str = '';
 
-    switch (arg?.type) {
+    switch (type) {
       case 'array':
         str = this.getTypeString(arg.array.type);
         break;

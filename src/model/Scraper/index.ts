@@ -109,9 +109,8 @@ export class MetadataScraper {
     const { def }: AnyJson = lookup.type;
     const [type, value] = Object.entries(def).flat();
 
-    const result: AnyJson = {
-      type,
-    };
+    // Scrape the type.
+    const result: AnyJson = {};
 
     switch (type) {
       case 'array':

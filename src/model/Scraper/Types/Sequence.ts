@@ -8,15 +8,17 @@ import type { TrailParam } from '../types';
 
 // Class to hold a sequence type.
 export class Sequence implements MetadataType {
+  type = 'sequence';
+
   // The raw lookup data of this type.
   lookup: LookupItem;
 
   // The type of this sequence.
-  type: number;
+  innerType: number;
 
   constructor(sequence: SequenceType, lookup: LookupItem) {
     this.lookup = lookup;
-    this.type = sequence.type;
+    this.innerType = sequence.type;
   }
 
   label() {
@@ -25,6 +27,6 @@ export class Sequence implements MetadataType {
 
   // Scrape sequence type. Overwrites `type` with scraped type.
   scrape(scraper: MetadataScraper, trailParam: TrailParam) {
-    return scraper.getType(this.type, trailParam);
+    return scraper.getType(this.innerType, trailParam);
   }
 }

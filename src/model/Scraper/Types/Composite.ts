@@ -9,6 +9,8 @@ import { Format } from '../Format';
 
 // Class to hold a composite type.
 export class Composite implements MetadataType {
+  type = 'composite';
+
   // The raw lookup data of this type.
   lookup: LookupItem;
 
