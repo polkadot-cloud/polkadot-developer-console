@@ -23,6 +23,8 @@ import type { IArrayType } from './Array/types';
 import { ArrayType } from './Array';
 import { BitSequence } from './BitSequence';
 import type { BitSequenceType } from './BitSequence/types';
+import { Compact } from './Compact';
+import type { CompactType } from './Compact/types';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -144,7 +146,10 @@ export class MetadataScraper {
         break;
 
       case 'compact':
-        result.compact = this.getType((value as AnyJson).type, trailParam);
+        result.compact = new Compact(value as CompactType, lookup).scrape(
+          this,
+          trailParam
+        );
         break;
 
       case 'composite':
@@ -158,6 +163,7 @@ export class MetadataScraper {
         );
         break;
 
+      // TODO: class.
       case 'primitive':
         result.label = (value as string).toLowerCase();
         result.primitive = value;
@@ -170,6 +176,7 @@ export class MetadataScraper {
         );
         break;
 
+      // TODO: class.
       case 'tuple':
         result.tuple = (value as number[]).map((id: number) =>
           this.start(id, trailId)
