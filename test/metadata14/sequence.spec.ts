@@ -14,12 +14,12 @@ All sequences are scraped and run through tests.
 The goal of this test suit is to document how sequence types are structured to the developer. 
 */
 
-// Basic composite structure.
+// Basic sequence structure.
 describe('Basic sequence structure is intact', () => {
   const lookup = metadataJson.lookup;
   const lookupTypes = lookup.types;
 
-  // Get all composite types from lookup.
+  // Get all sequence types from lookup.
   const lookupSequence: AnyJson = lookupTypes
     .filter(({ type: { def } }) => 'sequence' in def)
     .map((item) => item.type.def.sequence);
