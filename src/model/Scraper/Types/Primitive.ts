@@ -24,6 +24,18 @@ export class Primitive implements MetadataType {
     return this.primitive.toLowerCase();
   }
 
+  // Get the input type of this primitive.
+  input() {
+    const primitiveLower = this.primitive.toLowerCase();
+    return ['char', 'str', 'i8', 'i16', 'i32', 'i64', 'i128'].includes(
+      primitiveLower
+    )
+      ? 'text'
+      : primitiveLower === 'bool'
+        ? 'checkbox'
+        : 'number';
+  }
+
   // Scrape primitive type. Simply returns the type.
   scrape() {
     return this.primitive;
