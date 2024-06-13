@@ -42,8 +42,9 @@ export interface PalletItemScraped {
   docs: string[];
   modifier: string;
   fallback?: string;
-  type: AnyJson;
   value?: string;
+  argTypes: AnyJson;
+  returnType: AnyJson;
 }
 
 export interface PalletItemScrapedWithSig extends PalletItemScraped {

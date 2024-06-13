@@ -17,6 +17,11 @@ export class Primitive implements MetadataType {
     this.primitive = primitive;
   }
 
+  // Get the label of this primitive.
+  label() {
+    return this.primitive.toLowerCase();
+  }
+
   // Scrape primitive type. Simply returns the type.
   scrape() {
     return this.primitive;

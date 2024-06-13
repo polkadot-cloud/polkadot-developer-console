@@ -4,25 +4,18 @@
 // Gets a short label from a label input.
 export const getShortLabel = (
   input: string | { long: string; short: string }
-) => {
-  let output;
-  if (typeof input === 'string') {
-    output = input;
-  } else {
-    output = input.short;
-  }
-  return output;
-};
+) => (typeof input === 'string' ? input : input.short);
 
 // Gets a long label from a label input.
 export const getLongLabel = (
   input: string | { long: string; short: string }
-) => {
-  let output;
-  if (typeof input === 'string') {
-    output = input;
-  } else {
-    output = input.long;
-  }
-  return output;
-};
+) => (typeof input === 'string' ? input : input.long);
+
+// Verify if a variant is an Option.
+export const verifyOption = (
+  shortLabel: string,
+  variant: { name?: string }[]
+) =>
+  shortLabel === 'Option' &&
+  variant?.[0]?.name === 'None' &&
+  variant?.[1]?.name === 'Some';

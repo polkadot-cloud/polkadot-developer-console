@@ -5,6 +5,7 @@ import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { TrailParam } from '../types';
 import type { BitSequenceType, MetadataType } from './types';
+import { Format } from '../Format';
 
 // Class to hold a bit sequence type.
 export class BitSequence implements MetadataType {
@@ -17,6 +18,15 @@ export class BitSequence implements MetadataType {
   constructor(bitSequence: BitSequenceType, lookup: LookupItem) {
     this.lookup = lookup;
     this.bitSequence = bitSequence;
+  }
+
+  // Get the labels of this bit sequence.
+  label() {
+    const { path, params } = this.lookup.type;
+    return {
+      long: Format.typeToString(path, params),
+      short: path[path.length - 1],
+    };
   }
 
   // Scrape bitSequence type. Overwrites `bitStoreType` and `bitOrderType` with scraped types.

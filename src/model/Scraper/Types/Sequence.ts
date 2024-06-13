@@ -19,6 +19,10 @@ export class Sequence implements MetadataType {
     this.type = sequence.type;
   }
 
+  label() {
+    return '';
+  }
+
   // Scrape sequence type. Overwrites `type` with scraped type.
   scrape(scraper: MetadataScraper, trailParam: TrailParam) {
     return scraper.getType(this.type, trailParam);
