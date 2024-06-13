@@ -21,7 +21,7 @@ export class Variant implements MetadataType {
   }
 
   // Get the labels of this variant.
-  labels() {
+  label() {
     const { path, params } = this.lookup.type;
     return {
       long: Format.typeToString(path, params),

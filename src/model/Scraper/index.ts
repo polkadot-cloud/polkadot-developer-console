@@ -131,8 +131,6 @@ export class MetadataScraper {
 
       case 'bitSequence':
         result.class = new BitSequence(value as BitSequenceType, lookup);
-        result.label = result.class.labels();
-
         if (!labelsOnly) {
           result.bitsequence = result.class.scrape(this, trailParam);
         }
@@ -145,13 +143,11 @@ export class MetadataScraper {
 
       case 'composite':
         result.class = new Composite(value as CompositeType, lookup);
-        result.label = result.class.labels();
         result.composite = result.class.scrape(this, trailParam);
         break;
 
       case 'primitive':
         result.class = new Primitive(value as string, lookup);
-        result.label = result.class.label();
         result.primitive = result.class.scrape();
         break;
 
@@ -167,8 +163,6 @@ export class MetadataScraper {
 
       case 'variant':
         result.class = new Variant((value as VariantType).variants, lookup);
-        result.label = result.class.labels();
-
         if (!labelsOnly) {
           result.variant = result.class.scrape(this, trailParam);
         }

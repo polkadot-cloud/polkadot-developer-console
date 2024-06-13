@@ -19,6 +19,10 @@ export class Tuple implements MetadataType {
     this.tuple = tuple;
   }
 
+  label() {
+    return '';
+  }
+
   // Scrape tuple types. Overwrites the type with scraped type at each index.
   scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
     return this.tuple.map((id: number) => scraper.start(id, trailId));

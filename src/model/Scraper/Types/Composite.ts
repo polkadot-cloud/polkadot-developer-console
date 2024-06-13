@@ -21,7 +21,7 @@ export class Composite implements MetadataType {
   }
 
   // Get the labels of this composite type.
-  labels() {
+  label() {
     const { path, params } = this.lookup.type;
     return {
       long: Format.typeToString(path, params),
