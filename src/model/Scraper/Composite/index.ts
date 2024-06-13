@@ -21,11 +21,9 @@ export class Composite {
 
   // Scrape composite fields. Overwrites `fields` with scraped fields.
   scrape(scraper: MetadataScraper, trailId: TrailId) {
-    this.fields = [...this.fields].map((field) => ({
+    return [...this.fields].map((field) => ({
       ...field,
       type: scraper.start(field.type, trailId),
     }));
-
-    return this.fields;
   }
 }

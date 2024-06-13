@@ -26,6 +26,8 @@ import type { BitSequenceType } from './BitSequence/types';
 import { Compact } from './Compact';
 import type { CompactType } from './Compact/types';
 import { Primitive } from './Primitive';
+import { Tuple } from './Tuple';
+import type { TupleType } from './Tuple/types';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -176,10 +178,10 @@ export class MetadataScraper {
         );
         break;
 
-      // TODO: class.
       case 'tuple':
-        result.tuple = (value as number[]).map((id: number) =>
-          this.start(id, trailId)
+        result.tuple = new Tuple(value as TupleType, lookup).scrape(
+          this,
+          trailId
         );
         break;
 
@@ -206,19 +208,6 @@ export class MetadataScraper {
         break;
     }
     return result;
-  }
-
-  // Scrapes a composite type.
-  scrapeComposite(input: AnyJson, { trailId }: TrailParam) {
-    const composite = input.fields.map(
-      ({ docs, name, type, typeName }: AnyJson) => ({
-        docs,
-        name,
-        typeName,
-        type: this.start(type, trailId),
-      })
-    );
-    return composite;
   }
 
   // ------------------------------------------------------

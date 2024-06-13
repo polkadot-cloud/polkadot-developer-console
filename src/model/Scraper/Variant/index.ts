@@ -21,14 +21,12 @@ export class Variant {
 
   // Scrape variant fields. Overwrites `fields` with scraped fields.
   scrape(scraper: MetadataScraper, trailId: TrailId) {
-    this.items = [...this.items].map((item) => ({
+    return [...this.items].map((item) => ({
       ...item,
       fields: item.fields.map((field) => ({
         ...field,
         type: scraper.start(field.type, trailId),
       })),
     }));
-
-    return this.items;
   }
 }
