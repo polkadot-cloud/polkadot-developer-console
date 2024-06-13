@@ -25,6 +25,7 @@ import { BitSequence } from './BitSequence';
 import type { BitSequenceType } from './BitSequence/types';
 import { Compact } from './Compact';
 import type { CompactType } from './Compact/types';
+import { Primitive } from './Primitive';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -163,10 +164,9 @@ export class MetadataScraper {
         );
         break;
 
-      // TODO: class.
       case 'primitive':
         result.label = (value as string).toLowerCase();
-        result.primitive = value;
+        result.primitive = new Primitive(value as string, lookup).scrape();
         break;
 
       case 'sequence':
