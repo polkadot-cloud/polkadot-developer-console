@@ -115,7 +115,11 @@ export class FormatCallSignature {
       case 'variant':
         str = this.getVariantType(arg);
         break;
+
+      default:
+        str = '';
     }
+
     return str;
   };
 

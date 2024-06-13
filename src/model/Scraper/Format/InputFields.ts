@@ -43,6 +43,11 @@ export class FormatInputFields {
 
     const result: AnyJson = {};
 
+    // If the type is not defined, return an empty object.
+    if (!arg?.[type]) {
+      return null;
+    }
+
     switch (type) {
       case 'array':
         result.array = {
