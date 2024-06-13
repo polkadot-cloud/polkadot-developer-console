@@ -19,14 +19,17 @@ The goal of this test suit is to document how composite types are structured to 
 describe('Basic composite structure is intact', () => {
   const lookup = metadataJson.lookup;
   const lookupTypes = lookup.types;
+
+  // Get all composite types from lookup.
   const lookupComposite: AnyJson = lookupTypes
     .filter(({ type: { def } }) => 'composite' in def)
     .map((item) => item.type.def.composite);
 
-  // TODO: document composite field structure.
-  // const lookupCompositeFields: AnyJson = lookupComposite.map(
-  //   ({ fields }: { fields: AnyJson[] }) => fields
-  // );
+  // Get composite fields from composite types. Every composite type has a single `fields`
+  // property.
+  const compositeFields: AnyJson = lookupComposite.map(
+    ({ fields }: { fields: AnyJson[] }) => fields
+  );
 
   it('Metadata lookup contains 280 composite types', () => {
     assert.ok(lookupComposite.length === 280);
@@ -35,6 +38,31 @@ describe('Basic composite structure is intact', () => {
   it('Composite types only contain one `fields` property', () => {
     lookupComposite.every(
       (item: AnyJson) => 'fields' in item && Object.keys(item).length === 1
+    );
+  });
+
+  it('All `fields` contain the same array of properties', () => {
+    assert.ok(
+      compositeFields.every((item: AnyJson) => {
+        if (!Array.isArray(item)) {
+          return false;
+        }
+        for (const compositeItem of item) {
+          if (
+            !(
+              'name' in compositeItem &&
+              'type' in compositeItem &&
+              'typeName' in compositeItem &&
+              'docs' in compositeItem &&
+              typeof compositeItem.type === 'number' &&
+              Object.keys(compositeItem).length === 4
+            )
+          ) {
+            return false;
+          }
+        }
+        return true;
+      })
     );
   });
 });

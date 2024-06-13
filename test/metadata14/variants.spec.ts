@@ -23,10 +23,14 @@ NOTES:
 describe('Basic variant structure is intact', () => {
   const lookup = metadataJson.lookup;
   const lookupTypes = lookup.types;
+
+  // Get variant types from lookup.
   const lookupVariants: AnyJson = lookupTypes
     .filter(({ type: { def } }) => 'variant' in def)
     .map((item) => item.type.def.variant);
 
+  // Get variant definitions from variant types. Every variant type has a single `variants`
+  // property.
   const variantDefs = lookupVariants.map((item: AnyJson) => item.variants);
 
   it('Metadata lookup contains 318 variants', () => {
@@ -79,10 +83,10 @@ describe('Basic variant structure is intact', () => {
           for (const field of fields) {
             if (
               !(
-                'docs' in field &&
                 'name' in field &&
                 'type' in field &&
                 'typeName' in field &&
+                'docs' in field &&
                 typeof field.type === 'number' &&
                 Object.keys(field).length === 4
               )
