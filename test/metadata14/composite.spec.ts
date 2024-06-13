@@ -12,7 +12,6 @@ This test file verifies the structure and integrity of composite types in metada
 All composites are scraped and run through tests.
 
 The goal of this test suit is to document how composite types are structured to the developer. 
-
 */
 
 // Basic composite structure.
