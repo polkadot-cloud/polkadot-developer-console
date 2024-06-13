@@ -21,6 +21,8 @@ import { Sequence } from './Sequence';
 import type { SequenceType } from './Sequence/types';
 import type { IArrayType } from './Array/types';
 import { ArrayType } from './Array';
+import { BitSequence } from './BitSequence';
+import type { BitSequenceType } from './BitSequence/types';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -135,10 +137,10 @@ export class MetadataScraper {
           break;
         }
 
-        result.bitsequence = {
-          bitOrderType: this.start((value as AnyJson).bitOrderType, trailId),
-          bitStoreType: this.start((value as AnyJson).bitStoreType, trailId),
-        };
+        result.bitsequence = new BitSequence(
+          value as BitSequenceType,
+          lookup
+        ).scrape(this, trailId);
         break;
 
       case 'compact':
