@@ -19,7 +19,7 @@ export class Variant {
     this.lookup = lookup;
   }
 
-  // Scrape variant fields. Overwrites fields with scraped fields.
+  // Scrape variant fields. Overwrites `fields` with scraped fields.
   scrape(scraper: MetadataScraper, trailId: TrailId) {
     this.items = [...this.items].map((item) => ({
       ...item,

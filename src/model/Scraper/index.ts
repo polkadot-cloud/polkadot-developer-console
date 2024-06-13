@@ -17,6 +17,8 @@ import { Variant } from './Variant';
 import type { VariantType } from './Variant/types';
 import { Composite } from './Composite';
 import type { CompositeType } from './Composite/types';
+import { Sequence } from './Sequence';
+import type { SequenceType } from './Sequence/types';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -158,7 +160,10 @@ export class MetadataScraper {
         break;
 
       case 'sequence':
-        result.sequence = this.getType((value as AnyJson).type, trailParam);
+        result.sequence = new Sequence(value as SequenceType, lookup).scrape(
+          this,
+          trailParam
+        );
         break;
 
       case 'tuple':
