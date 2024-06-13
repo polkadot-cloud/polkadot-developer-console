@@ -6,12 +6,12 @@ import type { MetadataScraper } from '..';
 import type { TrailParam } from '../types';
 import type { BitSequenceType, MetadataType } from './types';
 
-// Class to hold a sequence type.
+// Class to hold a bit sequence type.
 export class BitSequence implements MetadataType {
   // The raw lookup data of this type.
   lookup: LookupItem;
 
-  // The type of this sequence.
+  // The type of this bit sequence.
   bitSequence: BitSequenceType;
 
   constructor(bitSequence: BitSequenceType, lookup: LookupItem) {

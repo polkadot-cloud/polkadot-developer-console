@@ -32,7 +32,8 @@ describe('Basic tuple structure is intact', () => {
     lookupTuple.every(
       (item: AnyJson) =>
         Array.isArray(item) &&
-        item.every((i: number) => typeof i === 'number' && item.length > 0)
+        item.every((i: number) => typeof i === 'number') &&
+        item.length > 0
     );
   });
 });
