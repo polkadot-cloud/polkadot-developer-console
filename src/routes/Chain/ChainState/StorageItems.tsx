@@ -6,7 +6,7 @@ import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { ChainStateList } from './ChainStateList';
-import { FormatInputFields } from 'model/Scraper/Format/InputFields';
+import { Inputs } from 'model/Scraper/Inputs';
 import { useActiveTab } from 'contexts/ActiveTab';
 import type { PalletData } from './types';
 import { EncodedDetails } from './EncodedDetails';
@@ -74,7 +74,7 @@ export const StorageItemsInner = () => {
   // Get input markup for the active storage item.
   const inputForm =
     activePallet !== null && activeItem !== null && !!activeListItem
-      ? new FormatInputFields(activeListItem).format()
+      ? new Inputs(activeListItem).format()
       : null;
 
   // Handle storage item query submission.

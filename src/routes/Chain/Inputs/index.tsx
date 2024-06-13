@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { FormatInputFields } from 'model/Scraper/Format/InputFields';
+import { Inputs } from 'model/Scraper/Inputs';
 import type { AnyJson } from '@w3ux/types';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
@@ -304,7 +304,7 @@ export const useInput = () => {
               {...inputArgConfig}
               value={
                 getInputArgsAtKey(tabId, namespace, inputKey) ||
-                FormatInputFields.defaultValue(form)
+                Inputs.defaultValue(form)
               }
             />
           );
@@ -373,7 +373,7 @@ export const useInput = () => {
                 label={label || 'Value'}
                 value={
                   getInputArgsAtKey(tabId, namespace, inputKey) ||
-                  FormatInputFields.defaultValue(form)
+                  Inputs.defaultValue(form)
                 }
                 numeric={form === 'number'}
               />

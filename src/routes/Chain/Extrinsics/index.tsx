@@ -9,7 +9,7 @@ import { Header } from './Header';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useMemo } from 'react';
 import type { PalletData } from '../ChainState/types';
-import { FormatInputFields } from 'model/Scraper/Format/InputFields';
+import { Inputs } from 'model/Scraper/Inputs';
 import { InputForm } from '../InputForm';
 import { SelectFormWrapper, SenderWrapper } from 'library/Inputs/Wrappers';
 import { FlexWrapper } from 'routes/Common/Wrappers';
@@ -93,7 +93,7 @@ export const ExtrinsicsInner = () => {
   // Get input markup for the active call item.
   const inputForm =
     activePallet !== null && activeItem !== null && !!activeListItem
-      ? new FormatInputFields(activeListItem).format()
+      ? new Inputs(activeListItem).format()
       : null;
 
   // Transaction is submittable once from address has been defined.
