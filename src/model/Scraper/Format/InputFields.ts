@@ -3,6 +3,7 @@
 
 import type { AnyJson } from '@w3ux/types';
 import type { PalletItemScraped } from '../types';
+import { getShortLabel } from './Utils';
 
 export class FormatInputFields {
   // The raw input config to format.
@@ -18,9 +19,7 @@ export class FormatInputFields {
 
   // Formats `rawConfig` data into an input structure.
   format = () => {
-    const {
-      type: { argTypes },
-    } = this.#rawConfig;
+    const { argTypes } = this.#rawConfig;
 
     // if there are no arg types, (no args to format) return an empty object.
     if (!argTypes) {
@@ -52,7 +51,7 @@ export class FormatInputFields {
 
       case 'bitSequence':
         result.bitSequence = {
-          label: arg.label.short,
+          label: getShortLabel(arg.class.label()),
           // NOTE: Currently falling back to encoded hash until a custom input is created.
           form: 'Hash',
         };
@@ -60,7 +59,7 @@ export class FormatInputFields {
 
       case 'compact':
         result.compact = {
-          label: arg.compact.label,
+          label: getShortLabel(arg.compact.class.label()),
           form: this.getTypeInput(arg.compact),
         };
         break;
@@ -71,7 +70,7 @@ export class FormatInputFields {
 
       case 'primitive':
         result.primitive = {
-          label: arg.label,
+          label: arg.class.label(),
           // Treat unsigned integers as text inputs. NOTE: Could improve by allowing minus and
           // decimal in `number` input.
           form: [
@@ -87,9 +86,9 @@ export class FormatInputFields {
             'u32',
             'u64',
             'u128',
-          ].includes(arg.label)
+          ].includes(arg.class.label())
             ? 'text'
-            : arg.label === 'bool'
+            : arg.class.label() === 'bool'
               ? 'checkbox'
               : // Unsigned integers remain.
                 'number',
@@ -98,7 +97,7 @@ export class FormatInputFields {
 
       case 'sequence':
         result.sequence = {
-          label: arg.sequence.label,
+          label: getShortLabel(arg.sequence.class.label()),
           form: this.getTypeInput(arg.sequence.type),
         };
         break;
@@ -119,8 +118,10 @@ export class FormatInputFields {
 
   // Formats a variant form input.
   getVariantInput(arg: AnyJson) {
+    const shortLabel = getShortLabel(arg.class.label());
+
     return {
-      label: arg.label.short,
+      label: shortLabel,
       form: 'select',
       forms: arg.variant.reduce((acc: AnyJson, { name, fields }: AnyJson) => {
         acc[name] = fields.map((field: AnyJson) =>
@@ -133,7 +134,7 @@ export class FormatInputFields {
 
   // Formats a composite form input.
   getCompositeInput(arg: AnyJson) {
-    let shortLabel = arg.label.short;
+    let shortLabel = getShortLabel(arg.class.label());
 
     // If this composite is a sequence of u8s, then change the label to `Bytes`.
     if (this.checkCompositeIsBytes(shortLabel, arg)) {

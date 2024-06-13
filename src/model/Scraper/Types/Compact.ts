@@ -19,6 +19,10 @@ export class Compact implements MetadataType {
     this.type = compact.type;
   }
 
+  label() {
+    return '';
+  }
+
   // Scrape compact type. Overwrites `type` with scraped type.
   scrape(scraper: MetadataScraper, trailParam: TrailParam) {
     return scraper.getType(this.type, trailParam);
