@@ -352,7 +352,6 @@ export const useInput = () => {
         // Primitive textbox input.
         case 'text':
         case 'number':
-        default:
           return (
             <Section indent={indent}>
               <Textbox
@@ -376,6 +375,10 @@ export const useInput = () => {
               />
             </Section>
           );
+
+        // No input provided due to invalid type or max depth reached.
+        default:
+          return null;
       }
     })();
   };

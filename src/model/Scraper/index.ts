@@ -98,22 +98,12 @@ export class MetadataScraper {
 
     // Exit if lookup not found.
     if (!lookup) {
-      console.debug('Metadata Scraper: Type lookup not found for id: ', typeId);
-      return {
-        unknown: true,
-      };
+      return null;
     }
 
     // Exit if the depth of the trail surpasses the maximum depth.
-    const depth = this.trailDepth(trailId);
-    if (maxDepth !== '*' && depth >= maxDepth) {
-      console.debug(
-        'Metadata Scraper: Maximum depth reached at type id: ',
-        typeId
-      );
-      return {
-        unknown: true,
-      };
+    if (maxDepth !== '*' && this.trailDepth(trailId) >= maxDepth) {
+      return null;
     }
 
     const { def }: AnyJson = lookup.type;
@@ -169,10 +159,9 @@ export class MetadataScraper {
         break;
 
       default:
-        result.unknown = true;
-        console.warn('Unknown type scraped: ', type, value);
-        break;
+        return null;
     }
+
     return result;
   }
 
