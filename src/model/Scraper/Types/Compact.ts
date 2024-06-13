@@ -4,10 +4,10 @@
 import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { TrailParam } from '../types';
-import type { CompactType } from './types';
+import type { CompactType, MetadataType } from './types';
 
 // Class to hold a compact type.
-export class Compact {
+export class Compact implements MetadataType {
   // The raw lookup data of this type.
   lookup: LookupItem;
 

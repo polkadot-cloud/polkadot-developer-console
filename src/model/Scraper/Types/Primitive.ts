@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { LookupItem } from '../Lookup/types';
+import type { MetadataType } from './types';
 
 // Class to hold a primitive type.
-export class Primitive {
+export class Primitive implements MetadataType {
   // The raw lookup data of this type.
   lookup: LookupItem;
 

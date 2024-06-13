@@ -3,11 +3,11 @@
 
 import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
-import type { TrailId } from '../types';
-import type { TupleType } from './types';
+import type { MetadataType, TupleType } from './types';
+import type { TrailParam } from '../types';
 
 // Class to hold a tuple type.
-export class Tuple {
+export class Tuple implements MetadataType {
   // The raw lookup data of this type.
   lookup: LookupItem;
 
@@ -20,7 +20,7 @@ export class Tuple {
   }
 
   // Scrape tuple types. Overwrites the type with scraped type at each index.
-  scrape(scraper: MetadataScraper, trailId: TrailId) {
+  scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
     return this.tuple.map((id: number) => scraper.start(id, trailId));
   }
 }

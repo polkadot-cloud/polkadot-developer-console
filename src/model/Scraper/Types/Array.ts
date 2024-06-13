@@ -3,24 +3,24 @@
 
 import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
+import type { IArrayType, MetadataType } from './types';
 import type { TrailParam } from '../types';
-import type { SequenceType } from './types';
 
-// Class to hold a sequence type.
-export class Sequence {
+// Class to hold an array type.
+export class ArrayType implements MetadataType {
   // The raw lookup data of this type.
   lookup: LookupItem;
 
-  // The type of this sequence.
-  type: number;
+  // The array type and length.
+  array: IArrayType;
 
-  constructor(sequence: SequenceType, lookup: LookupItem) {
+  constructor(array: IArrayType, lookup: LookupItem) {
     this.lookup = lookup;
-    this.type = sequence.type;
+    this.array = array;
   }
 
-  // Scrape sequence type. Overwrites `type` with scraped type.
+  // Scrape array type. Overwrites `type` with scraped type.
   scrape(scraper: MetadataScraper, trailParam: TrailParam) {
-    return scraper.getType(this.type, trailParam);
+    return scraper.getType(this.array.type, trailParam);
   }
 }

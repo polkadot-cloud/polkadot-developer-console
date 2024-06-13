@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { LookupItem } from '../Lookup/types';
-import type { CompositeField, CompositeType } from './types';
 import type { MetadataScraper } from '..';
-import type { TrailId } from '../types';
+import type { TrailParam } from '../types';
+import type { CompositeField, CompositeType, MetadataType } from './types';
 
 // Class to hold a composite type.
-export class Composite {
+export class Composite implements MetadataType {
   // The raw lookup data of this type.
   lookup: LookupItem;
 
@@ -20,7 +20,7 @@ export class Composite {
   }
 
   // Scrape composite fields. Overwrites `fields` with scraped fields.
-  scrape(scraper: MetadataScraper, trailId: TrailId) {
+  scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
     return [...this.fields].map((field) => ({
       ...field,
       type: scraper.start(field.type, trailId),

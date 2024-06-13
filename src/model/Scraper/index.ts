@@ -13,21 +13,23 @@ import type {
 } from './types';
 import type { MetadataLookup } from './Lookup/types';
 import { Lookup } from './Lookup';
-import { Variant } from './Variant';
-import type { VariantType } from './Variant/types';
-import { Composite } from './Composite';
-import type { CompositeType } from './Composite/types';
-import { Sequence } from './Sequence';
-import type { SequenceType } from './Sequence/types';
-import type { IArrayType } from './Array/types';
-import { ArrayType } from './Array';
-import { BitSequence } from './BitSequence';
-import type { BitSequenceType } from './BitSequence/types';
-import { Compact } from './Compact';
-import type { CompactType } from './Compact/types';
-import { Primitive } from './Primitive';
-import { Tuple } from './Tuple';
-import type { TupleType } from './Tuple/types';
+import { Variant } from './Types/Variant';
+import type {
+  VariantType,
+  CompositeType,
+  SequenceType,
+  IArrayType,
+  BitSequenceType,
+  CompactType,
+  TupleType,
+} from './Types/types';
+import { Composite } from './Types/Composite';
+import { Sequence } from './Types/Sequence';
+import { ArrayType } from './Types/Array';
+import { BitSequence } from './Types/BitSequence';
+import { Compact } from './Types/Compact';
+import { Primitive } from './Types/Primitive';
+import { Tuple } from './Types/Tuple';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -145,7 +147,7 @@ export class MetadataScraper {
         result.bitsequence = new BitSequence(
           value as BitSequenceType,
           lookup
-        ).scrape(this, trailId);
+        ).scrape(this, trailParam);
         break;
 
       case 'compact':
@@ -162,7 +164,7 @@ export class MetadataScraper {
         };
         result.composite = new Composite(value as CompositeType, lookup).scrape(
           this,
-          trailId
+          trailParam
         );
         break;
 
@@ -181,7 +183,7 @@ export class MetadataScraper {
       case 'tuple':
         result.tuple = new Tuple(value as TupleType, lookup).scrape(
           this,
-          trailId
+          trailParam
         );
         break;
 
@@ -198,7 +200,7 @@ export class MetadataScraper {
         result.variant = new Variant(
           (value as VariantType).variants,
           lookup
-        ).scrape(this, trailId);
+        ).scrape(this, trailParam);
 
         break;
 

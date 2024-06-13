@@ -3,11 +3,11 @@
 
 import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
-import type { BitSequenceType } from './types';
-import type { TrailId } from '../types';
+import type { TrailParam } from '../types';
+import type { BitSequenceType, MetadataType } from './types';
 
 // Class to hold a sequence type.
-export class BitSequence {
+export class BitSequence implements MetadataType {
   // The raw lookup data of this type.
   lookup: LookupItem;
 
@@ -20,7 +20,7 @@ export class BitSequence {
   }
 
   // Scrape bitSequence type. Overwrites `bitStoreType` and `bitOrderType` with scraped types.
-  scrape(scraper: MetadataScraper, trailId: TrailId) {
+  scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
     return {
       bitOrderType: scraper.start(this.bitSequence.bitOrderType, trailId),
       bitStoreType: scraper.start(this.bitSequence.bitStoreType, trailId),
