@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { FormatInputFields } from 'model/Metadata/Format/InputFields';
+import { FormatInputFields } from 'model/Scraper/Format/InputFields';
 import type { AnyJson } from '@w3ux/types';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
