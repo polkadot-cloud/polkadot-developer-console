@@ -21,7 +21,7 @@ export class Inputs {
   format = () => {
     let { argTypes } = this.#rawConfig;
 
-    // if there are no arg types, (no args to format) return an empty object
+    // if there are no arg types, (no args to format) return an empty object.
     if (!argTypes) {
       return {};
     }
