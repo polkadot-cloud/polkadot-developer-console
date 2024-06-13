@@ -25,6 +25,11 @@ export class ArrayType implements MetadataType {
     return '';
   }
 
+  // TODO: implement input.
+  input() {
+    return 'todo';
+  }
+
   // Scrape array type. Overwrites `type` with scraped type.
   scrape(scraper: MetadataScraper, trailParam: TrailParam) {
     return scraper.getType(this.array.type, trailParam);

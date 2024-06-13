@@ -218,7 +218,6 @@ export const useInput = () => {
         {renderInput(input, inputArgConfig, indent, Object.keys(input.forms))}
         {selectedForm &&
           selectedForm.map((subInput: AnyJson, index: number) => {
-            console.log(subInput);
             // Exit early if subInput does not exist or if this is a simple variant.
             if (
               [null, undefined].includes(subInput) ||
@@ -272,6 +271,8 @@ export const useInput = () => {
 
     const label = inputItem?.label || '';
     const form = inputItem?.form || null;
+
+    // TODO: Use class input() methods to get form type.
 
     return (() => {
       switch (form) {

@@ -25,6 +25,11 @@ export class Sequence implements MetadataType {
     return '';
   }
 
+  // TODO: implement input.
+  input() {
+    return 'todo';
+  }
+
   // Scrape sequence type. Overwrites `type` with scraped type.
   scrape(scraper: MetadataScraper, trailParam: TrailParam) {
     return scraper.getType(this.innerType, trailParam);

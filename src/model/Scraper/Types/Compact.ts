@@ -25,6 +25,11 @@ export class Compact implements MetadataType {
     return '';
   }
 
+  // TODO: implement input.
+  input() {
+    return 'todo';
+  }
+
   // Scrape compact type. Overwrites `type` with scraped type.
   scrape(scraper: MetadataScraper, trailParam: TrailParam) {
     return scraper.getType(this.innerType, trailParam);

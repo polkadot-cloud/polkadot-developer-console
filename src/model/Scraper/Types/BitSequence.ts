@@ -31,6 +31,11 @@ export class BitSequence implements MetadataType {
     };
   }
 
+  // TODO: implement input.
+  input() {
+    return 'todo';
+  }
+
   // Scrape bitSequence type. Overwrites `bitStoreType` and `bitOrderType` with scraped types.
   scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
     return {

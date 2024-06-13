@@ -31,6 +31,11 @@ export class Variant implements MetadataType {
     };
   }
 
+  // TODO: implement input.
+  input() {
+    return 'todo';
+  }
+
   // Scrape variant fields. Overwrites `fields` with scraped fields.
   scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
     return [...this.items].map((item) => ({

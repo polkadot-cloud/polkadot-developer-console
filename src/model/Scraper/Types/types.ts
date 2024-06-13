@@ -66,11 +66,17 @@ export interface VariantField {
 
 // Metadata type required interface.
 export abstract class MetadataType {
+  // All metadata type classes must hold their type.
+  abstract type: string;
+
   // All metadata type classes must hold their lookup data.
   abstract lookup: LookupItem;
 
   // All metadata type classes must return a label.
   abstract label(): { long: string; short: string } | string;
+
+  // All metadata type classes must return their input types.
+  abstract input(): string;
 
   // All metadata type classes must implement a `scrape` method, that converts type ids to actual
   // type metadata.

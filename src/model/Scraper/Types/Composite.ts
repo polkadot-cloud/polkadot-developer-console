@@ -31,6 +31,11 @@ export class Composite implements MetadataType {
     };
   }
 
+  // TODO: implement input.
+  input() {
+    return 'todo';
+  }
+
   // Scrape composite fields. Overwrites `fields` with scraped fields.
   scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
     return [...this.fields].map((field) => ({
