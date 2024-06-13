@@ -34,6 +34,7 @@ describe('Basic array structure is intact', () => {
         'len' in item &&
         'type' in item &&
         typeof item.len === 'number' &&
+        typeof item.type === 'number' &&
         Object.keys(item).length === 2
     );
   });
