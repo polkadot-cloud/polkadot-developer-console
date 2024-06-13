@@ -15,6 +15,8 @@ import type { MetadataLookup } from './Lookup/types';
 import { Lookup } from './Lookup';
 import { Variant } from './Variant';
 import type { VariantType } from './Variant/types';
+import { Composite } from './Composite';
+import type { CompositeType } from './Composite/types';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -144,7 +146,10 @@ export class MetadataScraper {
           long: Format.typeToString(path, params),
           short: path[path.length - 1],
         };
-        result.composite = this.scrapeComposite(value, trailParam);
+        result.composite = new Composite(value as CompositeType, lookup).scrape(
+          this,
+          trailId
+        );
         break;
 
       case 'primitive':

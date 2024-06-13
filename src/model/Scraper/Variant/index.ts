@@ -8,7 +8,7 @@ import type { TrailId } from '../types';
 
 // Class to hold a variant type.
 export class Variant {
-  // The raw lookup data of this variant.
+  // The raw lookup data of this type.
   lookup: LookupItem;
 
   // The variants of this variant type.
