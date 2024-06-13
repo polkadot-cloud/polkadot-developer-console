@@ -3,7 +3,6 @@
 
 import type { AnyJson } from '@w3ux/types';
 import type { MetadataVersion } from 'model/Metadata/types';
-import { Format } from './Format';
 import type {
   ScraperConfig,
   ScraperOptions,
@@ -16,20 +15,20 @@ import { Lookup } from './Lookup';
 import { Variant } from './Types/Variant';
 import type {
   VariantType,
-  CompositeType,
   SequenceType,
   IArrayType,
   BitSequenceType,
   CompactType,
   TupleType,
+  CompositeType,
 } from './Types/types';
-import { Composite } from './Types/Composite';
 import { Sequence } from './Types/Sequence';
 import { ArrayType } from './Types/Array';
 import { BitSequence } from './Types/BitSequence';
 import { Compact } from './Types/Compact';
 import { Primitive } from './Types/Primitive';
 import { Tuple } from './Types/Tuple';
+import { Composite } from './Types/Composite';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -117,91 +116,62 @@ export class MetadataScraper {
       };
     }
 
-    const { def, path, params }: AnyJson = lookup.type;
+    const { def }: AnyJson = lookup.type;
     const [type, value] = Object.entries(def).flat();
 
     const result: AnyJson = {
       type,
-      path,
-      params,
     };
 
     switch (type) {
       case 'array':
-        result.array = new ArrayType(value as IArrayType, lookup).scrape(
-          this,
-          trailParam
-        );
+        result.class = new ArrayType(value as IArrayType, lookup);
+        result.array = result.class.scrape(this, trailParam);
         break;
 
       case 'bitSequence':
-        result.label = {
-          long: Format.typeToString(path, params),
-          short: path[path.length - 1],
-        };
+        result.class = new BitSequence(value as BitSequenceType, lookup);
+        result.label = result.class.labels();
 
-        if (labelsOnly) {
-          break;
+        if (!labelsOnly) {
+          result.bitsequence = result.class.scrape(this, trailParam);
         }
-
-        result.bitsequence = new BitSequence(
-          value as BitSequenceType,
-          lookup
-        ).scrape(this, trailParam);
         break;
 
       case 'compact':
-        result.compact = new Compact(value as CompactType, lookup).scrape(
-          this,
-          trailParam
-        );
+        result.class = new Compact(value as CompactType, lookup);
+        result.compact = result.class.scrape(this, trailParam);
         break;
 
       case 'composite':
-        result.label = {
-          long: Format.typeToString(path, params),
-          short: path[path.length - 1],
-        };
-        result.composite = new Composite(value as CompositeType, lookup).scrape(
-          this,
-          trailParam
-        );
+        result.class = new Composite(value as CompositeType, lookup);
+        result.label = result.class.labels();
+        result.composite = result.class.scrape(this, trailParam);
         break;
 
       case 'primitive':
-        result.label = (value as string).toLowerCase();
-        result.primitive = new Primitive(value as string, lookup).scrape();
+        result.class = new Primitive(value as string, lookup);
+        result.label = result.class.label();
+        result.primitive = result.class.scrape();
         break;
 
       case 'sequence':
-        result.sequence = new Sequence(value as SequenceType, lookup).scrape(
-          this,
-          trailParam
-        );
+        result.class = new Sequence(value as SequenceType, lookup);
+        result.sequence = result.class.scrape(this, trailParam);
         break;
 
       case 'tuple':
-        result.tuple = new Tuple(value as TupleType, lookup).scrape(
-          this,
-          trailParam
-        );
+        result.class = new Tuple(value as TupleType, lookup);
+        result.tuple = result.class.scrape(this, trailParam);
         break;
 
       case 'variant':
-        result.label = {
-          long: Format.typeToString(path, params),
-          short: path[path.length - 1],
-        };
+        result.class = new Variant((value as VariantType).variants, lookup);
+        result.label = result.class.labels();
 
-        if (labelsOnly) {
-          break;
+        if (!labelsOnly) {
+          result.variant = result.class.scrape(this, trailParam);
         }
-
-        result.variant = new Variant(
-          (value as VariantType).variants,
-          lookup
-        ).scrape(this, trailParam);
-
         break;
 
       default:
