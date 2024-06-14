@@ -208,6 +208,7 @@ export const ReserveParaId = () => {
                 onFocus={() => setSelectedOption(tabId, 'existing')}
                 onChange={(val) => setExistingParaIdInput(tabId, val)}
                 placeholder="Para ID"
+                shrinkPlaceholder={true}
                 numeric
               />
               <button

@@ -8,4 +8,5 @@ export type TextboxProps = InputCallbackProps & {
   value: string;
   numeric?: boolean;
   placeholder?: string;
+  shrinkPlaceholder?: boolean;
 };
