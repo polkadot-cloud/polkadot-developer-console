@@ -25,7 +25,8 @@ export class Tuple implements MetadataType {
     return '';
   }
 
-  // TODO: implement input.
+  // Tuples contain one or more child inputs, therefore no form element is needed here. TODO:
+  // `indent` input type that simply displays a label and indents child inputs.
   input() {
     return 'todo';
   }

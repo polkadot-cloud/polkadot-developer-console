@@ -25,9 +25,10 @@ export class Compact implements MetadataType {
     return '';
   }
 
-  // TODO: implement input.
+  // Compact types will just be a compact wrapper of the inner type, so an input is not needed at
+  // this level.
   input() {
-    return 'todo';
+    return null;
   }
 
   // Scrape compact type. Overwrites `type` with scraped type.

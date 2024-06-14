@@ -76,7 +76,7 @@ export abstract class MetadataType {
   abstract label(): { long: string; short: string } | string;
 
   // All metadata type classes must return their input types.
-  abstract input(): string;
+  abstract input(): string | null;
 
   // All metadata type classes must implement a `scrape` method, that converts type ids to actual
   // type metadata.

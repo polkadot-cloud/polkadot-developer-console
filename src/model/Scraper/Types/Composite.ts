@@ -31,9 +31,10 @@ export class Composite implements MetadataType {
     };
   }
 
-  // TODO: implement input.
+  // Composite types are composed of multiple properties, therefore no form element is needed here.
+  // TODO: `indent` input type that simply displays a label and indents child inputs.
   input() {
-    return 'todo';
+    return 'indent';
   }
 
   // Scrape composite fields. Overwrites `fields` with scraped fields.

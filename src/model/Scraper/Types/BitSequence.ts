@@ -31,9 +31,9 @@ export class BitSequence implements MetadataType {
     };
   }
 
-  // TODO: implement input.
+  // Bit sequences are a sequence of bits, so the input type is always 'Hash'.
   input() {
-    return 'todo';
+    return 'Hash';
   }
 
   // Scrape bitSequence type. Overwrites `bitStoreType` and `bitOrderType` with scraped types.
