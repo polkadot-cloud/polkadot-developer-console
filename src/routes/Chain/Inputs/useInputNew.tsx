@@ -164,7 +164,6 @@ export const useInputNew = () => {
 
           return (
             <Fragment key={`input_arg_${childKey}`}>
-              <h4 className="standalone">{`${field?.name ? `${field.name}: ` : ''}${field.typeName}`}</h4>
               {readInputNew(
                 field.type,
                 { ...config, inputKey: childKey },
