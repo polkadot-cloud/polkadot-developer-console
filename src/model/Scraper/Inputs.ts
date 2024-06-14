@@ -78,27 +78,7 @@ export class Inputs {
       case 'primitive':
         result.primitive = {
           label: arg.class.label(),
-          // Treat unsigned integers as text inputs. NOTE: Could improve by allowing minus and
-          // decimal in `number` input.
-          form: [
-            'char',
-            'str',
-            'i8',
-            'i16',
-            'i32',
-            'i64',
-            'i128',
-            'u8',
-            'u16',
-            'u32',
-            'u64',
-            'u128',
-          ].includes(arg.class.label())
-            ? 'text'
-            : arg.class.label() === 'bool'
-              ? 'checkbox'
-              : // Unsigned integers remain.
-                'number',
+          form: arg.class.input(),
         };
         break;
 
