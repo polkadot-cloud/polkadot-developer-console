@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { createContext, useContext, useRef } from 'react';
+import { createContext, useContext, useEffect, useRef } from 'react';
 import { defaultInputFormContext } from './defaults';
 import type {
   InputFormContextInterface,
@@ -26,9 +26,10 @@ export const useInputForm = () => useContext(InputForm);
 export const InputFormProvider = ({
   namespace,
   children,
+  activeItem,
 }: InputFormProviderProps) => {
   const { tabId } = useActiveTab();
-  const { getInputArgs } = useChainUi();
+  const { getInputArgs, resetInputArgSection } = useChainUi();
 
   // A reference to accumulate input keys for an input form.
   const inputKeysRef = useRef<Record<string, string>>({});
@@ -97,11 +98,19 @@ export const InputFormProvider = ({
       onSubmit(resultInput);
     }
 
-    // console.log('---');
-    // console.log(resultInput);
+    console.log('---');
+    console.log(resultInput);
 
     return resultInput;
   };
+
+  // Reset input keys accumulator and values on `activeItem` change.
+  useEffect(() => {
+    if (inputKeysRef.current) {
+      resetInputArgSection(tabId, namespace);
+      inputKeysRef.current = {};
+    }
+  }, [activeItem]);
 
   return (
     <InputForm.Provider

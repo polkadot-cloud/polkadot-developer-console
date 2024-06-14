@@ -12,3 +12,8 @@ export interface CallListItem {
   docs: string[];
   fieldNames: string | undefined;
 }
+
+export interface SubmitProps {
+  activePallet: string | null;
+  activeItem: string | null;
+}

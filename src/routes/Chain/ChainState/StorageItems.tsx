@@ -18,7 +18,7 @@ import { Results } from './Results';
 import { InputFormProvider } from '../InputForm/provider';
 import { InputForm } from '../InputForm';
 
-export const StorageItemsInner = () => {
+export const StorageItems = () => {
   const { tabId } = useActiveTab();
   const { chainSpec, instanceId } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
@@ -87,7 +87,7 @@ export const StorageItemsInner = () => {
   };
 
   return (
-    <>
+    <InputFormProvider namespace="storage" activeItem={activeItem}>
       <SelectFormWrapper className="withHeader">
         <PalletList
           pallets={pallets}
@@ -115,12 +115,6 @@ export const StorageItemsInner = () => {
       )}
 
       <Results storageType="storage" />
-    </>
+    </InputFormProvider>
   );
 };
-
-export const StorageItems = () => (
-  <InputFormProvider namespace="storage">
-    <StorageItemsInner />
-  </InputFormProvider>
-);

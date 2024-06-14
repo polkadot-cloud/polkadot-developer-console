@@ -13,20 +13,17 @@ import { InputForm } from '../InputForm';
 import { SelectFormWrapper, SenderWrapper } from 'library/Inputs/Wrappers';
 import { FlexWrapper } from 'routes/Common/Wrappers';
 import { useChain } from '../Provider';
-import { SubmitTx } from 'library/SubmitTx';
-import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
-import { InputFormProvider, useInputForm } from '../InputForm/provider';
-import { camelize } from '@w3ux/utils';
+import { InputFormProvider } from '../InputForm/provider';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { AccountId32 } from 'library/Inputs/AccountId32';
 import { Label } from 'library/Inputs/Label';
 import { useChainState } from 'contexts/ChainState';
+import { Submit } from './Submit';
 
-export const ExtrinsicsInner = () => {
-  const { handleSubmit } = useInputForm();
+export const Extrinsics = () => {
+  const { chainSpec } = useChain();
   const { tabId, metaKey } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
-  const { chainSpec, instanceId, chain, api } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
   const { getFromAddress, setFromAddress } = useChainState();
 
@@ -40,12 +37,6 @@ export const ExtrinsicsInner = () => {
   const chainUiSection = 'calls';
   const chainUi = getChainUi(tabId, chainUiSection);
   const Metadata = chainSpec.metadata;
-  const {
-    ss58Prefix,
-    consts: { existentialDeposit },
-  } = chainSpec;
-  const { unit, units, id: chainId } = chain;
-  const { transactionVersion } = chainSpec.version;
 
   // Fetch storage data when metadata or the selected pallet changes.
   const callData = useMemo((): PalletData => {
@@ -89,97 +80,38 @@ export const ExtrinsicsInner = () => {
     return scraper.getCallItem(activePallet, activeItem);
   }, [items, activeItem, activePallet]);
 
-  // Transaction is submittable once from address has been defined.
-  const submittable = fromAddress !== null;
-
-  // Format the transaction to submit, or return `null` if invalid.
-  const getTx = () => {
-    let tx = null;
-
-    if (!api || !submittable || !activePallet || !activeItem) {
-      return tx;
-    }
-
-    // Get transaction args from input form.
-    let resultInput = handleSubmit();
-
-    // Wrap resulting args into an array if it is not already.
-    if (!Array.isArray(resultInput) && resultInput !== undefined) {
-      resultInput = [resultInput];
-    }
-
-    try {
-      // Construct transaction.
-      tx = api.tx[camelize(activePallet)][camelize(activeItem)](
-        ...Object.values(resultInput || [undefined])
-      );
-      return tx;
-    } catch (e) {
-      return null;
-    }
-  };
-
-  // Prepare the extrinsic.
-  const submitExtrinsic = useSubmitExtrinsic({
-    instanceId,
-    api,
-    chainId,
-    ss58Prefix,
-    tx: getTx(),
-    from: fromAddress,
-    shouldSubmit: true,
-    callbackSubmit: () => {
-      /* Do nothing. */
-    },
-  });
-
   return (
-    <FlexWrapper>
-      <Header />
-      <SelectFormWrapper className="withHeader">
-        <PalletList
+    <InputFormProvider namespace="call" activeItem={activeItem}>
+      <FlexWrapper>
+        <Header />
+        <SelectFormWrapper className="withHeader">
+          <PalletList
+            activePallet={activePallet}
+            pallets={pallets}
+            chainUiSection={chainUiSection}
+            onSelect={(value) => {
+              setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
+            }}
+          />
+          <CallList items={items} activeItem={activeItem} />
+        </SelectFormWrapper>
+        <InputForm
+          argTypes={activeListItem?.argTypes}
           activePallet={activePallet}
-          pallets={pallets}
-          chainUiSection={chainUiSection}
-          onSelect={(value) => {
-            setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
-          }}
+          activeItem={activeItem}
         />
-        <CallList items={items} activeItem={activeItem} />
-      </SelectFormWrapper>
-      <InputForm
-        argTypes={activeListItem?.argTypes}
-        activePallet={activePallet}
-        activeItem={activeItem}
-      />
 
-      <SenderWrapper>
-        <Label value="Sender" marginTop />
-        <AccountId32
-          uid={`${metaKey}_sendAddress`}
-          defaultAddress={fromAddress || undefined}
-          accounts={accounts}
-          onChange={(val) => setFromAddress(tabId, val)}
-        />
-      </SenderWrapper>
-
-      <SubmitTx
-        {...submitExtrinsic}
-        valid={submittable}
-        instanceId={instanceId}
-        chainId={chainId}
-        ss58Prefix={ss58Prefix}
-        units={units}
-        unit={unit}
-        existentialDeposit={existentialDeposit}
-        transactionVersion={String(transactionVersion)}
-      />
-    </FlexWrapper>
+        <SenderWrapper>
+          <Label value="Sender" marginTop />
+          <AccountId32
+            uid={`${metaKey}_sendAddress`}
+            defaultAddress={fromAddress || undefined}
+            accounts={accounts}
+            onChange={(val) => setFromAddress(tabId, val)}
+          />
+        </SenderWrapper>
+        <Submit activePallet={activePallet} activeItem={activeItem} />
+      </FlexWrapper>
+    </InputFormProvider>
   );
 };
-
-export const Extrinsics = () => (
-  <InputFormProvider namespace="call">
-    <ExtrinsicsInner />
-  </InputFormProvider>
-);

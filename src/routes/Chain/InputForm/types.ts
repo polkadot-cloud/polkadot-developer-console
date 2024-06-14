@@ -14,6 +14,7 @@ export interface InputFormContextInterface {
 export interface InputFormProviderProps {
   namespace: InputNamespace;
   children: ReactNode;
+  activeItem: string | null;
 }
 
 export interface InputFormInnerProps {
