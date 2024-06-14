@@ -40,11 +40,9 @@ export const Textbox = ({
     }
   }, []);
 
-  const displayLabel = typeof label === 'object' ? label.short : label;
-
   return (
     <>
-      {!!label && <h4>{displayLabel}</h4>}
+      {!!label && <h4>{label}</h4>}
       <TextInputWrapper className="input">
         <input
           type="text"

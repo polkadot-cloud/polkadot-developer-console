@@ -152,25 +152,19 @@ export const useInput = () => {
         ([label, subInput]: AnyJson, index: number) => {
           const subType = Object.keys(subInput)[0];
           const childInputKey = `${inputKey}_${index}`;
-
           const subInputLabel = subInput[subType].label;
-
-          // If label contains and long and short variant, use the short variant.
-          const shortLabel =
-            typeof subInputLabel === 'object'
-              ? subInputLabel.short
-              : subInputLabel;
 
           // Prepend this type's label into child input label if they are different.
           const subInputWithLabel = {
             ...subInput[subType],
-            label: label !== shortLabel ? `${label}: ${shortLabel}` : label,
+            label:
+              label !== subInputLabel ? `${label}: ${subInputLabel}` : label,
           };
 
           // Checking if this sub type is a customInput. NOTE: Only AccountId32 supported for now.
           //
           // TODO: This should be expanded to all custom input types in the future.
-          if (shortLabel === 'AccountId32') {
+          if (subInputLabel === 'AccountId32') {
             subInputWithLabel.form.composite = {
               label: 'AccountId32',
               form: 'AccountId32',
