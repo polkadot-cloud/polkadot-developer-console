@@ -403,20 +403,7 @@ export const useInputNew = () => {
     })();
   };
 
-  // TODO: Move these to Scraper utils.
-
-  // Check if a sequence is a vector of bytes.
-  // const sequenceIsBytes = (label: string) =>
-  //   // Assuming this is called within a sequence `type`, a standalone u8 label is a vector of bytes.
-  //   label === 'u8' ||
-  //   // NOTE: BoundedVec and WeakBoundedVec are untested.
-  //   /Vec<.+>: u8/.test(label) ||
-  //   /BoundedVec<.+>: u8/.test(label) ||
-  //   /WeakBoundedVec<.+>: u8/.test(label);
-
-  // ---
-
-  // Checks if a variant is selected, or falls back to the first variant.
+  // Gets a selected variant item, or falls back to the first variant.
   const getSelectedVariant = (
     arg: AnyJson,
     { namespace, inputKey }: InputArg
@@ -437,14 +424,6 @@ export const useInputNew = () => {
       inputKeysRef.current[inputKey] = inputType;
     }
   };
-
-  // Formats an array label with its length.
-  // const formatArrayLabel = (input: AnyJson) => {
-  //   if (input?.form?.primitive) {
-  //     return `[${input.form.primitive.label};${input.len}]`;
-  //   }
-  //   return input?.label || '';
-  // };
 
   return {
     readInputNew,

@@ -95,3 +95,12 @@ export const arrayIsBytes = (arg: AnyJson) => arg?.array?.primitive === 'U8';
 
 // Check if array is a vector of primitives.
 export const arrayIsPrimitive = (arg: AnyJson) => !!arg?.array?.primitive;
+
+// Check if a sequence is a vector of bytes.
+export const sequenceIsBytes = (label: string) =>
+  // Assuming this is called within a sequence `type`, a standalone u8 label is a vector of bytes.
+  label === 'u8' ||
+  // NOTE: BoundedVec and WeakBoundedVec are untested.
+  /Vec<.+>: u8/.test(label) ||
+  /BoundedVec<.+>: u8/.test(label) ||
+  /WeakBoundedVec<.+>: u8/.test(label);
