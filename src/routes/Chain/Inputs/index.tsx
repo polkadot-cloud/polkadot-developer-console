@@ -348,7 +348,7 @@ export const useInput = () => {
             </Section>
           );
 
-        // Primitive textbox input.
+        // Basic textbox input.
         case 'text':
         case 'number':
           return (

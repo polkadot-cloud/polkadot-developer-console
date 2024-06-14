@@ -112,6 +112,7 @@ export const StorageItemsInner = () => {
         />
       </SelectFormWrapper>
       <InputForm
+        argTypes={activeListItem?.argTypes}
         inputForm={inputForm}
         activePallet={activePallet}
         activeItem={activeItem}

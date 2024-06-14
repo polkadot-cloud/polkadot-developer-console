@@ -155,6 +155,7 @@ export const ExtrinsicsInner = () => {
         <CallList items={items} activeItem={activeItem} />
       </SelectFormWrapper>
       <InputForm
+        argTypes={activeListItem?.argTypes}
         inputForm={inputForm}
         activePallet={activePallet}
         activeItem={activeItem}

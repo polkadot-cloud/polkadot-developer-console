@@ -49,10 +49,22 @@ export const InputFormWrapper = styled.div`
   overflow: visible;
   width: 100%;
 
+  h4 {
+    &.standalone {
+      color: var(--text-color-tertiary);
+      padding: 0;
+      margin: 0.5rem 0 0 0;
+    }
+  }
+
   section {
     flex: 1;
-    padding: 0.3rem 0 0 0;
+    padding: 0 0 0 0;
     width: 100%;
+
+    h4 {
+      margin: 0.25rem 0 0.3rem 0;
+    }
 
     &.footer {
       display: flex;
@@ -76,15 +88,6 @@ export const InputFormWrapper = styled.div`
       flex-flow: column wrap;
       position: relative;
       width: 100%;
-
-      > h4 {
-        margin: 0rem 0 0.3rem 0;
-        padding: 0 0.25rem;
-
-        &.marginTop {
-          margin-top: 0.25rem;
-        }
-      }
     }
   }
 `;

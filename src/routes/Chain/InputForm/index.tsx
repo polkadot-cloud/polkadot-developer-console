@@ -10,14 +10,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useInput } from '../Inputs';
 import { useInputForm } from './provider';
 import type { InputFormInnerProps } from './types';
+import { useInputNew } from '../Inputs/useInputNew';
 
 export const InputForm = ({
   inputForm,
   activePallet,
   activeItem,
+  argTypes,
   onSubmit,
 }: InputFormInnerProps) => {
   const { readInput } = useInput();
+  const { readInputNew } = useInputNew();
   const { namespace, inputKeysRef, handleSubmit } = useInputForm();
 
   // Reset input keys accumulator on every render.
@@ -33,8 +36,32 @@ export const InputForm = ({
     inputForm = [inputForm];
   }
 
+  if (!Array.isArray(argTypes)) {
+    argTypes = [argTypes];
+  }
+
   return (
     <InputFormWrapper>
+      {/* New Input Form */}
+      {!!argTypes &&
+        argTypes.map((arg: AnyJson) => {
+          inputArgIndex++;
+          return (
+            <Fragment
+              key={`input_arg_${activePallet}_${activeItem}_${inputArgIndex}`}
+            >
+              {readInputNew(arg, {
+                activePallet,
+                activeItem,
+                inputKey: `${inputArgIndex}`,
+                namespace,
+                inputKeysRef,
+              })}
+            </Fragment>
+          );
+        })}
+
+      {/* Previous Input Form */}
       {!!inputForm &&
         inputForm.map((inputItem: AnyJson) =>
           Object.entries(inputItem).map(([type, input]) => {
