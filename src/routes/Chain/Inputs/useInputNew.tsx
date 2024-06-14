@@ -67,17 +67,18 @@ export const useInputNew = () => {
       case 'array':
         return renderArray(arg, config);
 
-      // Revised up to here --------------------------------------------------------
+      case 'compact':
+        return renderCompact(arg, config);
 
-      // TODO: render `compact` type.
+      // Revised up to here --------------------------------------------------------
 
       case 'sequence':
         // Render a hash input for a vec of bytes, otherwise render a sequence input.
         // return sequenceIsBytes(arg.class.label())
-        //   ? renderLabelWithInner(
-        //       'Bytes',
-        //       renderInput({ ...arg, form: 'Bytes' }, config, indent)
-        //     )
+        //   ? <Section>
+        //     <h4 className="marginTop">Bytes</h4>
+        //       {renderInput({ ...arg, form: 'Bytes' }, config, indent)}
+        //     </Section>
         //   : renderSequence(arg, config);
         break;
 
@@ -111,6 +112,24 @@ export const useInputNew = () => {
 
     // Otherwise, allow sequence input.
     return renderSequence(arg, config, arg.class.array.len);
+  };
+
+  // Renders a compact input component.
+  const renderCompact = (arg: AnyJson, config: InputArgConfig) => {
+    const { compact } = arg;
+    const { inputKey } = config;
+
+    // Record this input type.
+    addInputTypeAtKey(config, 'Compact');
+
+    const childKey = `${inputKey}_0`;
+
+    // Render compact input.
+    return (
+      <Fragment key={`input_arg_${childKey}`}>
+        {readInputNew(compact, { ...config, inputKey: childKey })}
+      </Fragment>
+    );
   };
 
   // Renders a tuple input component.
@@ -215,8 +234,6 @@ export const useInputNew = () => {
     );
   };
 
-  // Revised up to here --------------------------------------------------------
-
   // Renders an multi-input component.
   const renderSequence = (
     arg: InputArg,
@@ -247,17 +264,6 @@ export const useInputNew = () => {
     //   );
     return null;
   };
-
-  // Renders a label with an inner input component.
-  // const renderLabelWithInner = (
-  //   label: string | number,
-  //   innerInput: ReactNode
-  // ) => (
-  //   <Section>
-  //     <h4 className="marginTop">{label}</h4>
-  //     {innerInput}
-  //   </Section>
-  // );
 
   // Renders an input component wrapped in an input section.
   const renderInput = (
