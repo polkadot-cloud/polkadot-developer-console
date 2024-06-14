@@ -16,6 +16,7 @@ import { useAccounts } from 'contexts/Accounts';
 import { useChain } from '../Provider';
 import { Textbox } from 'library/Inputs/Textbox';
 import type { InputArg } from 'contexts/ChainUi/types';
+import { arrayIsPrimitive } from 'model/Scraper/Utils';
 
 export const useInputNew = () => {
   const { chainSpec } = useChain();
@@ -63,29 +64,10 @@ export const useInputNew = () => {
       case 'primitive':
         return renderInput(arg, config, options);
 
-      // Revised up to here --------------------------------------------------------
-
       case 'array':
-        // If array is a vector of bytes, render a hash input.
-        // return arrayIsBytes(arg)
-        //   ? renderLabelWithInner(
-        //       formatArrayLabel(arg),
-        //       renderInput({ ...arg, form: 'Bytes' }, config, indent)
-        //     )
-        //   : // If array is  of a primitive type, render a textbox input.
-        //     arg?.form?.primitive
-        //     ? // Otherwise (e.g. for variants) allow for a sequence input.
-        //       renderInput(
-        //         {
-        //           ...arg.form.primitive,
-        //           label: formatArrayLabel(arg),
-        //           form: 'text',
-        //         },
-        //         config,
-        //         indent
-        //       )
-        //     : renderSequence(arg, config, arg.len);
-        break;
+        return renderArray(arg, config);
+
+      // Revised up to here --------------------------------------------------------
 
       // TODO: render `compact` type.
 
@@ -100,8 +82,35 @@ export const useInputNew = () => {
         break;
 
       default:
-        return <>{renderInput(arg, config, options)}</>;
+        return null;
     }
+  };
+
+  // Renders an array input component.
+  const renderArray = (arg: AnyJson, config: InputArgConfig) => {
+    const label = arg.class.label();
+    const input = arg.class.input();
+
+    // If array is a vector of bytes, render a hash input.
+    if (input !== 'array') {
+      return (
+        <Section>
+          <h4>{label}</h4>
+          {renderInput(arg, config, { indent: false })}
+        </Section>
+      );
+    }
+
+    // If array is of a primitive type, render a textbox input.
+    if (arrayIsPrimitive(arg)) {
+      return renderInput(arg, config, {
+        indent: false,
+        overrideInput: 'text',
+      });
+    }
+
+    // Otherwise, allow sequence input.
+    return renderSequence(arg, config, arg.class.array.len);
   };
 
   // Renders a tuple input component.
@@ -155,6 +164,7 @@ export const useInputNew = () => {
 
           return (
             <Fragment key={`input_arg_${childKey}`}>
+              <h4 className="standalone">{`${field?.name ? `${field.name}: ` : ''}${field.typeName}`}</h4>
               {readInputNew(
                 field.type,
                 { ...config, inputKey: childKey },
@@ -209,32 +219,35 @@ export const useInputNew = () => {
   // Revised up to here --------------------------------------------------------
 
   // Renders an multi-input component.
-  // const renderSequence = (
-  //   input: InputArray,
-  //   inputArgConfig: InputArgConfig,
-  //   maxLength?: number
-  // ): ReactNode => {
-  //   const [type, arrayInput]: [string, AnyJson] = Object.entries(
-  //     input?.form || {}
-  //   )?.[0] || [undefined, {}];
-  //   // If this type does not exist, return early.
-  //   if (type === undefined) {
-  //     return null;
-  //   }
+  const renderSequence = (
+    arg: InputArg,
+    config: InputArgConfig,
+    maxLength?: number
+  ) => {
+    console.debug(arg, config, maxLength);
 
-  //   // Attach length to the array input.
-  //   arrayInput.label = `[${arrayInput.label}, ${input.len}]`;
-  //   return <Section>
-  //     <h4 className="marginTop">{`${input.label}[]`}</h4>
-  //     <Sequence
-  //       {...inputArgConfig}
-  //       type={type}
-  //       arrayInput={arrayInput}
-  //       maxLength={maxLength}
-  //     />
-  //    </Section>
-  //   );
-  // };
+    //   const [type, arrayInput]: [string, AnyJson] = Object.entries(
+    //     input?.form || {}
+    //   )?.[0] || [undefined, {}];
+    //   // If this type does not exist, return early.
+    //   if (type === undefined) {
+    //     return null;
+    //   }
+
+    //   // Attach length to the array input.
+    //   arrayInput.label = `[${arrayInput.label}, ${input.len}]`;
+    //   return <Section>
+    //     <h4 className="marginTop">{`${input.label}[]`}</h4>
+    //     <Sequence
+    //       {...inputArgConfig}
+    //       type={type}
+    //       arrayInput={arrayInput}
+    //       maxLength={maxLength}
+    //     />
+    //    </Section>
+    //   );
+    return null;
+  };
 
   // Renders a label with an inner input component.
   // const renderLabelWithInner = (
@@ -254,17 +267,22 @@ export const useInputNew = () => {
     options: {
       indent?: boolean;
       prependLabel?: string;
+      overrideInput?: string;
     },
     values?: string[]
   ) => {
     const indent = options.indent || false;
-    const prependLabel = options.prependLabel || '';
+    const prependLabel = options.prependLabel || null;
+    const overrideInput = options.overrideInput || null;
 
     const { inputKeysRef, inputKey, namespace, activePallet, activeItem } =
       inputArgConfig;
 
-    const label = `${prependLabel ? `${prependLabel} ` : ``}${arg.class.label()}`;
-    const input = arg.class.input();
+    const label = !arg.class.label()
+      ? undefined
+      : `${prependLabel ? `${prependLabel} ` : ``}${arg.class.label()}`;
+
+    const input = overrideInput || arg.class.input();
 
     return (() => {
       switch (input) {
@@ -363,7 +381,7 @@ export const useInputNew = () => {
                 onChange={(val) => {
                   setInputArgAtKey(tabId, namespace, inputKey, val);
                 }}
-                label={label || 'Value'}
+                label={label}
                 value={
                   getInputArgsAtKey(tabId, namespace, inputKey) ||
                   Inputs.defaultValue(input)
@@ -381,10 +399,6 @@ export const useInputNew = () => {
   };
 
   // TODO: Move these to Scraper utils.
-
-  // Check if an array is a vector of bytes.
-  // const arrayIsBytes = (input: AnyJson) =>
-  //   input?.form?.primitive?.label === 'u8';
 
   // Check if a sequence is a vector of bytes.
   // const sequenceIsBytes = (label: string) =>

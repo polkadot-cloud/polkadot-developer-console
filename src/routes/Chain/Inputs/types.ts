@@ -39,7 +39,7 @@ export type SelectProps = InputCallbackProps & {
 };
 
 export type CheckboxProps = InputArgConfig & {
-  label: string | number;
+  label?: string | number;
   checked: boolean;
 };
 
