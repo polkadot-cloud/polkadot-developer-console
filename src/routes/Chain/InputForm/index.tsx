@@ -61,6 +61,15 @@ export const InputForm = ({
           );
         })}
 
+      <div
+        style={{
+          width: '100%',
+          color: 'var(--border-secondary-color)',
+          borderTop: '1px solid',
+          margin: '2rem 0 1rem 0',
+        }}
+      ></div>
+
       {/* Previous Input Form */}
       {!!inputForm &&
         inputForm.map((inputItem: AnyJson) =>
