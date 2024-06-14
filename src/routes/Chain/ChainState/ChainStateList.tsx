@@ -3,7 +3,7 @@
 
 import { formatInputString } from 'Utils';
 import { useChainUi } from 'contexts/ChainUi';
-import { FormatCallSignature } from 'model/Scraper/Format/CallSignature';
+import { FormatCallSignature } from 'model/Scraper/CallSignature';
 import type { PalletItemScrapedWithSig } from 'model/Scraper/types';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

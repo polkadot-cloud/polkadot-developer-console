@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/types';
-import type { PalletItemScraped } from '../types';
-import { getShortLabel, verifyOption } from '../Utils';
+import type { PalletItemScraped } from './types';
+import { getShortLabel, verifyOption } from './Utils';
 
 export class FormatCallSignature {
   // The raw input config to format.
