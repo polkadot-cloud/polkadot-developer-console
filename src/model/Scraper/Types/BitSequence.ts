@@ -5,7 +5,7 @@ import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { TrailParam } from '../types';
 import type { BitSequenceType, MetadataType } from './types';
-import { typeToString } from '../Format/Utils';
+import { typeToString } from '../Utils';
 
 // Class to hold a bit sequence type.
 export class BitSequence implements MetadataType {

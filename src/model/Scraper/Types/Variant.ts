@@ -5,7 +5,7 @@ import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { MetadataType, VariantItem } from './types';
 import type { TrailParam } from '../types';
-import { typeToString } from '../Format/Utils';
+import { typeToString } from '../Utils';
 
 // Class to hold a variant type.
 export class Variant implements MetadataType {

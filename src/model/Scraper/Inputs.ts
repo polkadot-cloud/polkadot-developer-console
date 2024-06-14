@@ -3,7 +3,7 @@
 
 import type { AnyJson } from '@w3ux/types';
 import type { PalletItemScraped } from './types';
-import { getShortLabel } from './Format/Utils';
+import { checkCompositeIsBytes, getCustomInput, getShortLabel } from './Utils';
 
 export class Inputs {
   // The raw input config to format.
@@ -144,13 +144,13 @@ export class Inputs {
     let shortLabel = getShortLabel(arg.class.label());
 
     // If this composite is a sequence of u8s, then change the label to `Bytes`.
-    if (this.checkCompositeIsBytes(shortLabel, arg)) {
+    if (checkCompositeIsBytes(shortLabel, arg)) {
       shortLabel = 'Bytes';
     }
 
     // Use a pre-defined custom input if the label matches. NOTE: Custom inputs will ignore the
     // composite type and stop the recursive input loop.
-    const customInput = this.getCustomInput(shortLabel);
+    const customInput = getCustomInput(shortLabel);
 
     const forms = customInput
       ? null
@@ -167,48 +167,6 @@ export class Inputs {
       form: customInput,
       forms,
     };
-  }
-
-  // ------------------------------------------------------
-  // Custom input components.
-  // ------------------------------------------------------
-
-  // Get a custom input component based on label. Currently only called with composite types.
-  //
-  // CONTRIBUTE: Input types should be added to this switch statement, and in the `useInput` hook.
-  getCustomInput = (label: string): string | null => {
-    // If Vec parameter is u8, or BoundedVec parameter 2 is u8, then we are dealing with bytes.
-    switch (label) {
-      // Default Substrate AccountId type:
-      // `<https://crates.parity.io/sp_runtime/struct.AccountId32.html>`;
-      case 'AccountId32':
-        return 'AccountId32';
-
-      // Substrate Core primitive hash types: `<https://docs.rs/sp-core/latest/sp_core/index.html>`.
-      case 'H160':
-      case 'H256':
-      case 'H512':
-      case 'EthereumAddress': // Ethereum address hash.
-        return 'Hash';
-
-      // Types that result in a u8 array.
-      case 'Bytes':
-        return 'Bytes';
-    }
-
-    return null;
-  };
-
-  // ------------------------------------------------------
-  // Helpers.
-  // ------------------------------------------------------
-
-  checkCompositeIsBytes(shortLabel: string, arg: AnyJson) {
-    return (
-      ['Vec', 'BoundedVec', 'WeakBoundedVec'].includes(shortLabel) &&
-      arg.composite?.[0]?.type?.sequence?.label === 'u8' &&
-      arg.composite?.length === 1
-    );
   }
 
   // ------------------------------------------------------

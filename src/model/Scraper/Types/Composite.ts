@@ -5,7 +5,12 @@ import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { TrailParam } from '../types';
 import type { CompositeField, CompositeType, MetadataType } from './types';
-import { typeToString } from '../Format/Utils';
+import {
+  checkCompositeIsBytes,
+  getCustomInput,
+  getShortLabel,
+  typeToString,
+} from '../Utils';
 
 // Class to hold a composite type.
 export class Composite implements MetadataType {
@@ -31,10 +36,21 @@ export class Composite implements MetadataType {
     };
   }
 
-  // Composite types are composed of multiple properties, therefore no form element is needed here.
-  // TODO: `indent` input type that simply displays a label and indents child inputs.
+  // Get the input component of this type.
   input() {
-    return 'indent';
+    let shortLabel = getShortLabel(this.label());
+
+    // If this composite is a sequence of u8s, then change the label to `Bytes`.
+    if (checkCompositeIsBytes(shortLabel, this)) {
+      shortLabel = 'Bytes';
+    }
+
+    // Use a pre-defined custom input if the label matches. NOTE: Custom inputs will ignore the
+    // composite type and stop the recursive input loop.
+    const customInput = getCustomInput(shortLabel);
+
+    // If a custom input is not defined, render child inputs.
+    return customInput || 'indent';
   }
 
   // Scrape composite fields. Overwrites `fields` with scraped fields.

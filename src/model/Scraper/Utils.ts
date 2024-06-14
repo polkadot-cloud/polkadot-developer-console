@@ -69,3 +69,33 @@ export const pathToString = (path: string[]): string =>
     }
     return index === 0 ? item : `${formatted}::${item}`;
   }, '');
+
+// Checks if a composite is a sequence of u8s.
+export const checkCompositeIsBytes = (shortLabel: string, arg: AnyJson) =>
+  ['Vec', 'BoundedVec', 'WeakBoundedVec'].includes(shortLabel) &&
+  arg.composite?.[0]?.type?.sequence?.label === 'u8' &&
+  arg.composite?.length === 1;
+
+// Get a custom input component based on label. Currently only called with composite types.
+export const getCustomInput = (label: string): string | null => {
+  // If Vec parameter is u8, or BoundedVec parameter 2 is u8, then we are dealing with bytes.
+  switch (label) {
+    // Default Substrate AccountId type:
+    // `<https://crates.parity.io/sp_runtime/struct.AccountId32.html>`;
+    case 'AccountId32':
+      return 'AccountId32';
+
+    // Substrate Core primitive hash types: `<https://docs.rs/sp-core/latest/sp_core/index.html>`.
+    case 'H160':
+    case 'H256':
+    case 'H512':
+    case 'EthereumAddress': // Ethereum address hash.
+      return 'Hash';
+
+    // Types that result in a u8 array.
+    case 'Bytes':
+      return 'Bytes';
+  }
+
+  return null;
+};

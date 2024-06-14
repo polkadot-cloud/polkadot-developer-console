@@ -3,7 +3,7 @@
 
 import type { AnyJson } from '@w3ux/types';
 import type { PalletItemScraped } from '../types';
-import { getShortLabel, verifyOption } from './Utils';
+import { getShortLabel, verifyOption } from '../Utils';
 
 export class FormatCallSignature {
   // The raw input config to format.
