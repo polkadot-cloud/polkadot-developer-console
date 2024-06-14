@@ -20,7 +20,7 @@ export class ArrayType extends Base implements MetadataType {
   }
 
   // Sequences contain one or more child inputs that should be wrapped in an multi-select array
-  // input.
+  // input. NOTE: not currently being used. Class needs more context.
   input() {
     return 'array';
   }

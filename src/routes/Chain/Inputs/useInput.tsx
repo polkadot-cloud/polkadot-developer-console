@@ -15,7 +15,7 @@ import { useAccounts } from 'contexts/Accounts';
 import { useChain } from '../Provider';
 import { Textbox } from 'library/Inputs/Textbox';
 import type { InputArg } from 'contexts/ChainUi/types';
-import { arrayIsPrimitive } from 'model/Scraper/Utils';
+import { arrayIsBytes, arrayIsPrimitive } from 'model/Scraper/Utils';
 import { DefaultInputs } from 'model/Scraper/DefaultInputs';
 import { Sequence } from './Sequence';
 
@@ -82,10 +82,12 @@ export const useInput = () => {
   // Renders an array input component.
   const renderArray = (arg: AnyJson, config: InputArgConfig) => {
     const label = arg.class.label();
-    const input = arg.class.input();
 
     // If array is a vector of bytes, render a hash input.
-    if (input !== 'array') {
+    //
+    // TODO: Array (and classes) need context of child type to determine input data. Once achieved,
+    // Array's input() method can detemrine its input, and `overrideInput` won't be needed here.
+    if (arrayIsBytes(arg)) {
       return (
         <Section>
           <h4>{label}</h4>
