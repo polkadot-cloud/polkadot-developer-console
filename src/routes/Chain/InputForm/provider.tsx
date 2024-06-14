@@ -97,8 +97,8 @@ export const InputFormProvider = ({
       onSubmit(resultInput);
     }
 
-    console.log('---');
-    console.log(resultInput);
+    // console.log('---');
+    // console.log(resultInput);
 
     return resultInput;
   };
