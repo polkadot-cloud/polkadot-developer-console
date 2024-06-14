@@ -1,7 +1,6 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { Inputs } from 'model/Scraper/Inputs';
 import type { AnyJson } from '@w3ux/types';
 import { Fragment } from 'react';
 import { Select } from 'library/Inputs/Select';
@@ -17,8 +16,10 @@ import { useChain } from '../Provider';
 import { Textbox } from 'library/Inputs/Textbox';
 import type { InputArg } from 'contexts/ChainUi/types';
 import { arrayIsPrimitive } from 'model/Scraper/Utils';
+import { DefaultInputs } from 'model/Scraper/DefaultInputs';
+import { Sequence } from './Sequence';
 
-export const useInputNew = () => {
+export const useInput = () => {
   const { chainSpec } = useChain();
   const { getAccounts } = useAccounts();
   const { tabId, metaKey } = useActiveTab();
@@ -28,7 +29,7 @@ export const useInputNew = () => {
 
   // Reads input and returns input components based on the input type. Called recursively for types
   // that host other types.
-  const readInputNew = (
+  const readInput = (
     arg: AnyJson,
     config: InputArgConfig,
     options: {
@@ -70,17 +71,8 @@ export const useInputNew = () => {
       case 'compact':
         return renderCompact(arg, config);
 
-      // Revised up to here --------------------------------------------------------
-
       case 'sequence':
-        // Render a hash input for a vec of bytes, otherwise render a sequence input.
-        // return sequenceIsBytes(arg.class.label())
-        //   ? <Section>
-        //     <h4 className="marginTop">Bytes</h4>
-        //       {renderInput({ ...arg, form: 'Bytes' }, config, indent)}
-        //     </Section>
-        //   : renderSequence(arg, config);
-        break;
+        return renderSequence(arg, config);
 
       default:
         return null;
@@ -114,6 +106,34 @@ export const useInputNew = () => {
     return renderSequence(arg, config, arg.class.array.len);
   };
 
+  // Renders a sequence input component.
+  const renderSequence = (
+    arg: AnyJson,
+    config: InputArgConfig,
+    maxLength?: number
+  ) => {
+    const label = arg.sequence.class.label();
+    const input = arg.class.input();
+
+    // If sequence is a vector of bytes, render a hash input.
+    if (input !== 'array') {
+      return (
+        <Section>
+          <h4>{label}</h4>
+          {renderInput(arg, config, { indent: false })}
+        </Section>
+      );
+    }
+
+    // Otherwise, allow sequence input.
+    return (
+      <Section>
+        <h4 className="marginTop">{`${label}[]`}</h4>
+        <Sequence {...config} arrayInput={arg.sequence} maxLength={maxLength} />
+      </Section>
+    );
+  };
+
   // Renders a compact input component.
   const renderCompact = (arg: AnyJson, config: InputArgConfig) => {
     const { compact } = arg;
@@ -122,12 +142,11 @@ export const useInputNew = () => {
     // Record this input type.
     addInputTypeAtKey(config, 'Compact');
 
-    const childKey = `${inputKey}_0`;
-
     // Render compact input.
+    const childKey = `${inputKey}_0`;
     return (
       <Fragment key={`input_arg_${childKey}`}>
-        {readInputNew(compact, { ...config, inputKey: childKey })}
+        {readInput(compact, { ...config, inputKey: childKey })}
       </Fragment>
     );
   };
@@ -148,7 +167,7 @@ export const useInputNew = () => {
 
           return (
             <Fragment key={`input_arg_${childKey}`}>
-              {readInputNew(item, { ...config, inputKey: childKey })}
+              {readInput(item, { ...config, inputKey: childKey })}
             </Fragment>
           );
         })}
@@ -183,7 +202,7 @@ export const useInputNew = () => {
 
           return (
             <Fragment key={`input_arg_${childKey}`}>
-              {readInputNew(
+              {readInput(
                 field.type,
                 { ...config, inputKey: childKey },
                 { prependLabel: field?.name }
@@ -224,7 +243,7 @@ export const useInputNew = () => {
               return (
                 <Fragment key={`input_arg_${childKey}`}>
                   <h4 className="standalone">{field.typeName}</h4>
-                  {readInputNew(field.type, { ...config, inputKey: childKey })}
+                  {readInput(field.type, { ...config, inputKey: childKey })}
                 </Fragment>
               );
             })}
@@ -232,37 +251,6 @@ export const useInputNew = () => {
         )}
       </>
     );
-  };
-
-  // Renders an multi-input component.
-  const renderSequence = (
-    arg: InputArg,
-    config: InputArgConfig,
-    maxLength?: number
-  ) => {
-    console.debug(arg, config, maxLength);
-
-    //   const [type, arrayInput]: [string, AnyJson] = Object.entries(
-    //     input?.form || {}
-    //   )?.[0] || [undefined, {}];
-    //   // If this type does not exist, return early.
-    //   if (type === undefined) {
-    //     return null;
-    //   }
-
-    //   // Attach length to the array input.
-    //   arrayInput.label = `[${arrayInput.label}, ${input.len}]`;
-    //   return <Section>
-    //     <h4 className="marginTop">{`${input.label}[]`}</h4>
-    //     <Sequence
-    //       {...inputArgConfig}
-    //       type={type}
-    //       arrayInput={arrayInput}
-    //       maxLength={maxLength}
-    //     />
-    //    </Section>
-    //   );
-    return null;
   };
 
   // Renders an input component wrapped in an input section.
@@ -320,7 +308,7 @@ export const useInputNew = () => {
               {...inputArgConfig}
               value={
                 getInputArgsAtKey(tabId, namespace, inputKey) ||
-                Inputs.defaultValue(input)
+                DefaultInputs.defaultValue(input)
               }
             />
           );
@@ -389,7 +377,7 @@ export const useInputNew = () => {
                 label={label}
                 value={
                   getInputArgsAtKey(tabId, namespace, inputKey) ||
-                  Inputs.defaultValue(input)
+                  DefaultInputs.defaultValue(input)
                 }
                 numeric={input === 'number'}
               />
@@ -426,6 +414,6 @@ export const useInputNew = () => {
   };
 
   return {
-    readInputNew,
+    readInput,
   };
 };

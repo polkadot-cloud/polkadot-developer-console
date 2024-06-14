@@ -9,7 +9,6 @@ import { Header } from './Header';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useMemo } from 'react';
 import type { PalletData } from '../ChainState/types';
-import { Inputs } from 'model/Scraper/Inputs';
 import { InputForm } from '../InputForm';
 import { SelectFormWrapper, SenderWrapper } from 'library/Inputs/Wrappers';
 import { FlexWrapper } from 'routes/Common/Wrappers';
@@ -90,12 +89,6 @@ export const ExtrinsicsInner = () => {
     return scraper.getCallItem(activePallet, activeItem);
   }, [items, activeItem, activePallet]);
 
-  // Get input markup for the active call item.
-  const inputForm =
-    activePallet !== null && activeItem !== null && !!activeListItem
-      ? new Inputs(activeListItem).format()
-      : null;
-
   // Transaction is submittable once from address has been defined.
   const submittable = fromAddress !== null;
 
@@ -156,7 +149,6 @@ export const ExtrinsicsInner = () => {
       </SelectFormWrapper>
       <InputForm
         argTypes={activeListItem?.argTypes}
-        inputForm={inputForm}
         activePallet={activePallet}
         activeItem={activeItem}
       />

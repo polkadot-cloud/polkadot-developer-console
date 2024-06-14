@@ -44,7 +44,6 @@ export type CheckboxProps = InputArgConfig & {
 };
 
 export type SequenceProps = InputArgConfig & {
-  type: string;
   arrayInput: AnyJson;
   maxLength?: number;
 };

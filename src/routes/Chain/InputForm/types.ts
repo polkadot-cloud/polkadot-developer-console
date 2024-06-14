@@ -17,7 +17,6 @@ export interface InputFormProviderProps {
 }
 
 export interface InputFormInnerProps {
-  inputForm: AnyJson;
   argTypes: AnyJson;
   activePallet: string | null;
   activeItem: string | null;

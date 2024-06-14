@@ -6,7 +6,6 @@ import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { ChainStateList } from './ChainStateList';
-import { Inputs } from 'model/Scraper/Inputs';
 import { useActiveTab } from 'contexts/ActiveTab';
 import type { PalletData } from './types';
 import { EncodedDetails } from './EncodedDetails';
@@ -71,12 +70,6 @@ export const StorageItemsInner = () => {
     return scraper.getStorageItem(activePallet, activeItem);
   }, [items, activeItem, activePallet]);
 
-  // Get input markup for the active storage item.
-  const inputForm =
-    activePallet !== null && activeItem !== null && !!activeListItem
-      ? new Inputs(activeListItem).format()
-      : null;
-
   // Handle storage item query submission.
   const onSubmit = (args: AnyJson) => {
     const value = chainUi.selected;
@@ -113,7 +106,6 @@ export const StorageItemsInner = () => {
       </SelectFormWrapper>
       <InputForm
         argTypes={activeListItem?.argTypes}
-        inputForm={inputForm}
         activePallet={activePallet}
         activeItem={activeItem}
         onSubmit={onSubmit}

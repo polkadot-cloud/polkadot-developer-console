@@ -6,6 +6,7 @@ import type { MetadataScraper } from '..';
 import type { MetadataType, SequenceType } from './types';
 import type { TrailParam } from '../types';
 import { Base } from './Common/Base';
+import { sequenceIsBytes } from '../Utils';
 
 // Class to hold a sequence type.
 export class Sequence extends Base implements MetadataType {
@@ -22,7 +23,15 @@ export class Sequence extends Base implements MetadataType {
   // Sequences contain one or more child inputs that should be wrapped in an multi-select array
   // input.
   input() {
-    return 'array';
+    let label = this.label();
+
+    // If this sequence is a sequence of bytes, then change the label to `Bytes`.
+    if (sequenceIsBytes(label)) {
+      label = 'Bytes';
+    }
+
+    // If a custom input is not defined, render child inputs.
+    return label || 'array';
   }
 
   // Scrape sequence type. Overwrites `type` with scraped type.
