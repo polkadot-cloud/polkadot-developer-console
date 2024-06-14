@@ -25,10 +25,10 @@ export class Sequence implements MetadataType {
     return '';
   }
 
-  // Sequences contain one or more child inputs, therefore no form element is needed here. TODO:
-  // `indent` input type that simply displays a label and indents child inputs.
+  // Sequences contain one or more child inputs that should be wrapped in an multi-select array
+  // input.
   input() {
-    return 'indent';
+    return 'array';
   }
 
   // Scrape sequence type. Overwrites `type` with scraped type.

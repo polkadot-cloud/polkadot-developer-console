@@ -31,10 +31,9 @@ export class Variant implements MetadataType {
     };
   }
 
-  // Variants contain one or more child inputs, therefore no form element is needed here. TODO:
-  // `indent` input type that simply displays a label and indents child inputs.
+  // Variants (enums) are themselves a multi-select input, that then effect child inputs.
   input() {
-    return 'todo';
+    return 'select';
   }
 
   // Scrape variant fields. Overwrites `fields` with scraped fields.

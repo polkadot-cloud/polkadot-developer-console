@@ -25,9 +25,10 @@ export class ArrayType implements MetadataType {
     return '';
   }
 
-  // TODO: implement input.
+  // Sequences contain one or more child inputs that should be wrapped in an multi-select array
+  // input.
   input() {
-    return 'todo';
+    return 'array';
   }
 
   // Scrape array type. Overwrites `type` with scraped type.
