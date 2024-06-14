@@ -17,6 +17,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import { useChain } from '../Provider';
 import { Textbox } from 'library/Inputs/Textbox';
+import { arrayIsBytes } from 'model/Scraper/Utils';
 
 export const useInput = () => {
   const { chainSpec } = useChain();
@@ -381,10 +382,6 @@ export const useInput = () => {
       }
     })();
   };
-
-  // Check if an array is a vector of bytes.
-  const arrayIsBytes = (input: AnyJson) =>
-    input?.form?.primitive?.label === 'u8';
 
   // Check if a sequence is a vector of bytes.
   const sequenceIsBytes = (label: string) =>

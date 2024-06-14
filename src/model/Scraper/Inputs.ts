@@ -3,7 +3,7 @@
 
 import type { AnyJson } from '@w3ux/types';
 import type { PalletItemScraped } from './types';
-import { checkCompositeIsBytes, getCustomInput } from './Utils';
+import { compositeIsBytes, getCustomInput } from './Utils';
 
 export class Inputs {
   // The raw input config to format.
@@ -124,7 +124,7 @@ export class Inputs {
     let label = arg.class.label();
 
     // If this composite is a sequence of u8s, then change the label to `Bytes`.
-    if (checkCompositeIsBytes(label, arg)) {
+    if (compositeIsBytes(label, arg)) {
       label = 'Bytes';
     }
 

@@ -60,12 +60,6 @@ export const pathToString = (path: string[]): string =>
     return index === 0 ? item : `${formatted}::${item}`;
   }, '');
 
-// Checks if a composite is a sequence of u8s.
-export const checkCompositeIsBytes = (shortLabel: string, arg: AnyJson) =>
-  ['Vec', 'BoundedVec', 'WeakBoundedVec'].includes(shortLabel) &&
-  arg.composite?.[0]?.type?.sequence?.label === 'u8' &&
-  arg.composite?.length === 1;
-
 // Get a custom input component based on label. Currently only called with composite types.
 export const getCustomInput = (label: string): string | null => {
   // If Vec parameter is u8, or BoundedVec parameter 2 is u8, then we are dealing with bytes.
@@ -89,3 +83,15 @@ export const getCustomInput = (label: string): string | null => {
 
   return null;
 };
+
+// Checks if a composite is a sequence of u8s.
+export const compositeIsBytes = (shortLabel: string, arg: AnyJson) =>
+  ['Vec', 'BoundedVec', 'WeakBoundedVec'].includes(shortLabel) &&
+  arg.composite?.[0]?.type?.sequence?.label === 'u8' &&
+  arg.composite?.length === 1;
+
+// Check if this array is a vector of bytes.
+export const arrayIsBytes = (arg: AnyJson) => arg?.array?.primitive === 'U8';
+
+// Check if array is a vector of primitives.
+export const arrayIsPrimitive = (arg: AnyJson) => !!arg?.array?.primitive;

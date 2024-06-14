@@ -5,7 +5,7 @@ import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { TrailParam } from '../types';
 import type { CompositeField, CompositeType, MetadataType } from './types';
-import { checkCompositeIsBytes, getCustomInput } from '../Utils';
+import { compositeIsBytes, getCustomInput } from '../Utils';
 import { Base } from './Common/Base';
 
 // Class to hold a composite type.
@@ -25,7 +25,7 @@ export class Composite extends Base implements MetadataType {
     let label = this.label();
 
     // If this composite is a sequence of u8s, then change the label to `Bytes`.
-    if (checkCompositeIsBytes(label, this)) {
+    if (compositeIsBytes(label, this)) {
       label = 'Bytes';
     }
 
