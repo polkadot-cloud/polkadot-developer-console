@@ -5,24 +5,18 @@ import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { MetadataType, TupleType } from './types';
 import type { TrailParam } from '../types';
+import { Base } from './Common/Base';
 
 // Class to hold a tuple type.
-export class Tuple implements MetadataType {
+export class Tuple extends Base implements MetadataType {
   type = 'tuple';
-
-  // The raw lookup data of this type.
-  lookup: LookupItem;
 
   // The types of this tuple.
   tuple: TupleType;
 
   constructor(tuple: TupleType, lookup: LookupItem) {
-    this.lookup = lookup;
+    super(lookup);
     this.tuple = tuple;
-  }
-
-  label() {
-    return '';
   }
 
   // Tuples contain one or more child inputs, therefore no form element is needed here.

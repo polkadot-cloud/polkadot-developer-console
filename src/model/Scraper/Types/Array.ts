@@ -5,24 +5,18 @@ import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { IArrayType, MetadataType } from './types';
 import type { TrailParam } from '../types';
+import { Base } from './Common/Base';
 
 // Class to hold an array type.
-export class ArrayType implements MetadataType {
+export class ArrayType extends Base implements MetadataType {
   type = 'array';
-
-  // The raw lookup data of this type.
-  lookup: LookupItem;
 
   // The array type and length.
   array: IArrayType;
 
   constructor(array: IArrayType, lookup: LookupItem) {
-    this.lookup = lookup;
+    super(lookup);
     this.array = array;
-  }
-
-  label() {
-    return '';
   }
 
   // Sequences contain one or more child inputs that should be wrapped in an multi-select array

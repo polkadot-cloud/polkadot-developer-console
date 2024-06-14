@@ -5,30 +5,18 @@ import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { TrailParam } from '../types';
 import type { BitSequenceType, MetadataType } from './types';
-import { typeToString } from '../Utils';
+import { Base } from './Common/Base';
 
 // Class to hold a bit sequence type.
-export class BitSequence implements MetadataType {
+export class BitSequence extends Base implements MetadataType {
   type = 'bitSequence';
-
-  // The raw lookup data of this type.
-  lookup: LookupItem;
 
   // The type of this bit sequence.
   bitSequence: BitSequenceType;
 
   constructor(bitSequence: BitSequenceType, lookup: LookupItem) {
-    this.lookup = lookup;
+    super(lookup);
     this.bitSequence = bitSequence;
-  }
-
-  // Get the labels of this bit sequence.
-  label() {
-    const { path, params } = this.lookup.type;
-    return {
-      long: typeToString(path, params),
-      short: path[path.length - 1],
-    };
   }
 
   // Bit sequences are a sequence of bits, so the input type is always 'Hash'.

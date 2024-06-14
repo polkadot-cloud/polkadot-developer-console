@@ -3,7 +3,7 @@
 
 import type { AnyJson } from '@w3ux/types';
 import type { PalletItemScraped } from './types';
-import { getShortLabel, verifyOption } from './Utils';
+import { verifyOption } from './Utils';
 
 export class FormatCallSignature {
   // The raw input config to format.
@@ -101,7 +101,7 @@ export class FormatCallSignature {
         break;
 
       case 'bitSequence':
-        str = getShortLabel(arg.class.label());
+        str = arg.class.label();
         break;
 
       case 'sequence':
@@ -126,10 +126,10 @@ export class FormatCallSignature {
   // Formats a string from a composite type.
   getCompositeString = (arg: AnyJson) => {
     let str = '';
-    const shortLabel = getShortLabel(arg.class.label());
+    const label = arg.class.label();
 
     // Expand type if short label is not defined, or if they've been defined in ignore list.
-    if (['', ...this.#ignoreLabels].includes(shortLabel)) {
+    if (['', ...this.#ignoreLabels].includes(label)) {
       str += arg.composite.reduce(
         (acc: string, field: AnyJson, index: number) => {
           // Defensive: return if field type is missing.
@@ -145,7 +145,7 @@ export class FormatCallSignature {
         ''
       );
     } else {
-      str = `${shortLabel}`;
+      str = `${label}`;
     }
 
     return str;
@@ -153,12 +153,12 @@ export class FormatCallSignature {
 
   // Formats a string from a variant type.
   getVariantType = (arg: AnyJson) => {
-    const shortLabel = getShortLabel(arg.class.label());
+    const label = arg.class.label();
 
-    let str = `${shortLabel}`;
+    let str = `${label}`;
 
     // If variant is `Option`, expand signature with its `Some` type.
-    if (verifyOption(shortLabel, arg.variant)) {
+    if (verifyOption(label, arg.variant)) {
       str +=
         arg.variant[1].fields.reduce(
           (acc: string, field: AnyJson, index: number) => {

@@ -3,7 +3,7 @@
 
 import type { AnyJson } from '@w3ux/types';
 import type { PalletItemScraped } from './types';
-import { checkCompositeIsBytes, getCustomInput, getShortLabel } from './Utils';
+import { checkCompositeIsBytes, getCustomInput } from './Utils';
 
 export class Inputs {
   // The raw input config to format.
@@ -58,7 +58,7 @@ export class Inputs {
 
       case 'bitSequence':
         result.bitSequence = {
-          label: getShortLabel(arg.class.label()),
+          label: arg.class.label(),
           // NOTE: Currently falling back to encoded hash until a custom input is created.
           form: 'Hash',
         };
@@ -66,7 +66,7 @@ export class Inputs {
 
       case 'compact':
         result.compact = {
-          label: getShortLabel(arg.compact.class.label()),
+          label: arg.compact.class.label(),
           form: this.getTypeInput(arg.compact),
         };
         break;
@@ -104,7 +104,7 @@ export class Inputs {
 
       case 'sequence':
         result.sequence = {
-          label: getShortLabel(arg.sequence.class.label()),
+          label: arg.sequence.class.label(),
           form: this.getTypeInput(arg.sequence.type),
         };
         break;
@@ -125,10 +125,10 @@ export class Inputs {
 
   // Formats a variant form input.
   getVariantInput(arg: AnyJson) {
-    const shortLabel = getShortLabel(arg.class.label());
+    const label = arg.class.label();
 
     return {
-      label: shortLabel,
+      label,
       form: 'select',
       forms: arg.variant.reduce((acc: AnyJson, { name, fields }: AnyJson) => {
         acc[name] = fields.map((field: AnyJson) =>
@@ -141,16 +141,16 @@ export class Inputs {
 
   // Formats a composite form input.
   getCompositeInput(arg: AnyJson) {
-    let shortLabel = getShortLabel(arg.class.label());
+    let label = arg.class.label();
 
     // If this composite is a sequence of u8s, then change the label to `Bytes`.
-    if (checkCompositeIsBytes(shortLabel, arg)) {
-      shortLabel = 'Bytes';
+    if (checkCompositeIsBytes(label, arg)) {
+      label = 'Bytes';
     }
 
     // Use a pre-defined custom input if the label matches. NOTE: Custom inputs will ignore the
     // composite type and stop the recursive input loop.
-    const customInput = getCustomInput(shortLabel);
+    const customInput = getCustomInput(label);
 
     const forms = customInput
       ? null
@@ -163,7 +163,7 @@ export class Inputs {
         );
 
     return {
-      label: shortLabel,
+      label,
       form: customInput,
       forms,
     };

@@ -5,30 +5,18 @@ import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { MetadataType, VariantItem } from './types';
 import type { TrailParam } from '../types';
-import { typeToString } from '../Utils';
+import { Base } from './Common/Base';
 
 // Class to hold a variant type.
-export class Variant implements MetadataType {
+export class Variant extends Base implements MetadataType {
   type = 'variant';
-
-  // The raw lookup data of this type.
-  lookup: LookupItem;
 
   // The variants of this variant type.
   items: VariantItem[];
 
   constructor(variants: VariantItem[], lookup: LookupItem) {
+    super(lookup);
     this.items = variants;
-    this.lookup = lookup;
-  }
-
-  // Get the labels of this variant.
-  label() {
-    const { path, params } = this.lookup.type;
-    return {
-      long: typeToString(path, params),
-      short: path[path.length - 1],
-    };
   }
 
   // Variants (enums) are themselves a multi-select input, that then effect child inputs.

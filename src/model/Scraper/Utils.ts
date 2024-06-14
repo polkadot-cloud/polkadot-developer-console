@@ -4,18 +4,8 @@
 import type { AnyJson } from '@w3ux/types';
 
 // ------------------------------------------------------
-// Labels.
+// Options.
 // ------------------------------------------------------
-
-// Gets a short label from a label input.
-export const getShortLabel = (
-  input: string | { long: string; short: string }
-) => (typeof input === 'string' ? input : input.short);
-
-// Gets a long label from a label input.
-export const getLongLabel = (
-  input: string | { long: string; short: string }
-) => (typeof input === 'string' ? input : input.long);
 
 // Verify if a variant is an Option.
 export const verifyOption = (

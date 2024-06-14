@@ -5,24 +5,18 @@ import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { MetadataType, SequenceType } from './types';
 import type { TrailParam } from '../types';
+import { Base } from './Common/Base';
 
 // Class to hold a sequence type.
-export class Sequence implements MetadataType {
+export class Sequence extends Base implements MetadataType {
   type = 'sequence';
-
-  // The raw lookup data of this type.
-  lookup: LookupItem;
 
   // The type of this sequence.
   innerType: number;
 
   constructor(sequence: SequenceType, lookup: LookupItem) {
-    this.lookup = lookup;
+    super(lookup);
     this.innerType = sequence.type;
-  }
-
-  label() {
-    return '';
   }
 
   // Sequences contain one or more child inputs that should be wrapped in an multi-select array

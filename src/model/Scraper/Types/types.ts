@@ -73,7 +73,7 @@ export abstract class MetadataType {
   abstract lookup: LookupItem;
 
   // All metadata type classes must return a label.
-  abstract label(): { long: string; short: string } | string;
+  abstract label(): string;
 
   // All metadata type classes must return their input types.
   abstract input(): string | null;
