@@ -1,10 +1,9 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { TrailParam } from '../types';
-import type { BitSequenceType, MetadataType } from './types';
+import type { BaseParams, BitSequenceType, MetadataType } from './types';
 import { Base } from './Common/Base';
 
 // Class to hold a bit sequence type.
@@ -14,8 +13,8 @@ export class BitSequence extends Base implements MetadataType {
   // The type of this bit sequence.
   bitSequence: BitSequenceType;
 
-  constructor(bitSequence: BitSequenceType, lookup: LookupItem) {
-    super(lookup);
+  constructor(bitSequence: BitSequenceType, { lookup, depth }: BaseParams) {
+    super(lookup, depth);
     this.bitSequence = bitSequence;
   }
 

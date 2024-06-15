@@ -1,9 +1,8 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
-import type { MetadataType, VariantItem } from './types';
+import type { BaseParams, MetadataType, VariantItem } from './types';
 import type { TrailParam } from '../types';
 import { Base } from './Common/Base';
 
@@ -14,8 +13,8 @@ export class Variant extends Base implements MetadataType {
   // The variants of this variant type.
   items: VariantItem[];
 
-  constructor(variants: VariantItem[], lookup: LookupItem) {
-    super(lookup);
+  constructor(variants: VariantItem[], { lookup, depth }: BaseParams) {
+    super(lookup, depth);
     this.items = variants;
   }
 

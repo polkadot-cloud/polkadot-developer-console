@@ -84,7 +84,9 @@ export class MetadataScraper {
     const { trailId, labelsOnly, maxDepth } = trailParam;
 
     const lookup = this.lookup.getType(typeId);
+    const depth = this.trailDepth(trailId);
 
+    // Exit if type is cyclic.
     const cyclic = this.trailCyclic(trailId, typeId);
     if (cyclic) {
       return {
@@ -92,19 +94,21 @@ export class MetadataScraper {
         typeId,
       };
     }
-
-    // Add current type id to trails record.
-    this.appendTrail(trailId, typeId);
-
     // Exit if lookup not found.
     if (!lookup) {
       return null;
     }
 
     // Exit if the depth of the trail surpasses the maximum depth.
-    if (maxDepth !== '*' && this.trailDepth(trailId) >= maxDepth) {
+    if (maxDepth !== '*' && depth >= maxDepth) {
       return null;
     }
+
+    // Add current type id to trails record.
+    this.appendTrail(trailId, typeId);
+
+    // Parameters for Base metadata type classes.
+    const baseParams = { lookup, depth };
 
     const { def }: AnyJson = lookup.type;
     const [type, value] = Object.entries(def).flat();
@@ -114,44 +118,44 @@ export class MetadataScraper {
 
     switch (type) {
       case 'array':
-        result.class = new ArrayType(value as IArrayType, lookup);
+        result.class = new ArrayType(value as IArrayType, baseParams);
         result.array = result.class.scrape(this, trailParam);
         break;
 
       case 'bitSequence':
-        result.class = new BitSequence(value as BitSequenceType, lookup);
+        result.class = new BitSequence(value as BitSequenceType, baseParams);
         if (!labelsOnly) {
           result.bitsequence = result.class.scrape(this, trailParam);
         }
         break;
 
       case 'compact':
-        result.class = new Compact(value as CompactType, lookup);
+        result.class = new Compact(value as CompactType, baseParams);
         result.compact = result.class.scrape(this, trailParam);
         break;
 
       case 'composite':
-        result.class = new Composite(value as CompositeType, lookup);
+        result.class = new Composite(value as CompositeType, baseParams);
         result.composite = result.class.scrape(this, trailParam);
         break;
 
       case 'primitive':
-        result.class = new Primitive(value as string, lookup);
+        result.class = new Primitive(value as string, baseParams);
         result.primitive = result.class.scrape();
         break;
 
       case 'sequence':
-        result.class = new Sequence(value as SequenceType, lookup);
+        result.class = new Sequence(value as SequenceType, baseParams);
         result.sequence = result.class.scrape(this, trailParam);
         break;
 
       case 'tuple':
-        result.class = new Tuple(value as TupleType, lookup);
+        result.class = new Tuple(value as TupleType, baseParams);
         result.tuple = result.class.scrape(this, trailParam);
         break;
 
       case 'variant':
-        result.class = new Variant((value as VariantType).variants, lookup);
+        result.class = new Variant((value as VariantType).variants, baseParams);
         if (!labelsOnly) {
           result.variant = result.class.scrape(this, trailParam);
         }

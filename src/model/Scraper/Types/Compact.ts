@@ -1,10 +1,9 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { TrailParam } from '../types';
-import type { CompactType, MetadataType } from './types';
+import type { BaseParams, CompactType, MetadataType } from './types';
 import { Base } from './Common/Base';
 
 // Class to hold a compact type.
@@ -14,8 +13,8 @@ export class Compact extends Base implements MetadataType {
   // The inner type of this compact type.
   innerType: number;
 
-  constructor(compact: CompactType, lookup: LookupItem) {
-    super(lookup);
+  constructor(compact: CompactType, { lookup, depth }: BaseParams) {
+    super(lookup, depth);
     this.innerType = compact.type;
   }
 

@@ -71,7 +71,7 @@ export const Extrinsics = () => {
   const activeItem = chainUi.selected || items?.[0]?.name || null;
 
   // Get the whole call item record from metadata for input formatting.
-  const activeListItem = useMemo(() => {
+  const scrapedItem = useMemo(() => {
     if (!activePallet || !activeItem) {
       return null;
     }
@@ -96,7 +96,7 @@ export const Extrinsics = () => {
           <CallList items={items} activeItem={activeItem} />
         </SelectFormWrapper>
         <InputForm
-          argTypes={activeListItem?.argTypes}
+          argTypes={scrapedItem?.argTypes}
           activePallet={activePallet}
           activeItem={activeItem}
         />

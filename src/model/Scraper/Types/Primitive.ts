@@ -1,9 +1,8 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { LookupItem } from '../Lookup/types';
 import { Base } from './Common/Base';
-import type { MetadataType } from './types';
+import type { BaseParams, MetadataType } from './types';
 
 // Class to hold a primitive type.
 export class Primitive extends Base implements MetadataType {
@@ -12,8 +11,8 @@ export class Primitive extends Base implements MetadataType {
   // The type of this primitive.
   primitive: string;
 
-  constructor(primitive: string, lookup: LookupItem) {
-    super(lookup);
+  constructor(primitive: string, { lookup, depth }: BaseParams) {
+    super(lookup, depth);
     this.primitive = primitive;
   }
 

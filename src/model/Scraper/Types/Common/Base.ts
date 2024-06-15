@@ -8,8 +8,12 @@ export class Base {
   // The raw lookup data of this type.
   lookup: LookupItem;
 
-  constructor(lookup: LookupItem) {
+  // The depth of this type.
+  depth: number;
+
+  constructor(lookup: LookupItem, depth: number) {
     this.lookup = lookup;
+    this.depth = depth;
   }
 
   // Get the full path of this type.

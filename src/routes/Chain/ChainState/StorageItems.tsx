@@ -61,7 +61,7 @@ export const StorageItems = () => {
   const activeItem = chainUi.selected || items?.[0]?.name || null;
 
   // Get the whole active storage item record from metadata for input formatting.
-  const activeListItem = useMemo(() => {
+  const scrapedItem = useMemo(() => {
     if (!activePallet || !activeItem) {
       return null;
     }
@@ -105,7 +105,7 @@ export const StorageItems = () => {
         />
       </SelectFormWrapper>
       <InputForm
-        argTypes={activeListItem?.argTypes}
+        argTypes={scrapedItem?.argTypes}
         activePallet={activePallet}
         activeItem={activeItem}
         onSubmit={onSubmit}

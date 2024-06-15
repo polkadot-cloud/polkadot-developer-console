@@ -1,10 +1,14 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { TrailParam } from '../types';
-import type { CompositeField, CompositeType, MetadataType } from './types';
+import type {
+  BaseParams,
+  CompositeField,
+  CompositeType,
+  MetadataType,
+} from './types';
 import { compositeIsBytes, getCustomInput } from '../Utils';
 import { Base } from './Common/Base';
 
@@ -15,8 +19,8 @@ export class Composite extends Base implements MetadataType {
   // The fields of this composite.
   fields: CompositeField[];
 
-  constructor(composite: CompositeType, lookup: LookupItem) {
-    super(lookup);
+  constructor(composite: CompositeType, { lookup, depth }: BaseParams) {
+    super(lookup, depth);
     this.fields = composite.fields;
   }
 

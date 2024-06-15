@@ -1,9 +1,8 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
-import type { MetadataType, SequenceType } from './types';
+import type { BaseParams, MetadataType, SequenceType } from './types';
 import type { TrailParam } from '../types';
 import { Base } from './Common/Base';
 import { sequenceIsBytes } from '../Utils';
@@ -15,8 +14,8 @@ export class Sequence extends Base implements MetadataType {
   // The type of this sequence.
   innerType: number;
 
-  constructor(sequence: SequenceType, lookup: LookupItem) {
-    super(lookup);
+  constructor(sequence: SequenceType, { lookup, depth }: BaseParams) {
+    super(lookup, depth);
     this.innerType = sequence.type;
   }
 

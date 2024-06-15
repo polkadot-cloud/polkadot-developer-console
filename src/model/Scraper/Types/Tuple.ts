@@ -1,9 +1,8 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
-import type { MetadataType, TupleType } from './types';
+import type { BaseParams, MetadataType, TupleType } from './types';
 import type { TrailParam } from '../types';
 import { Base } from './Common/Base';
 
@@ -14,8 +13,8 @@ export class Tuple extends Base implements MetadataType {
   // The types of this tuple.
   tuple: TupleType;
 
-  constructor(tuple: TupleType, lookup: LookupItem) {
-    super(lookup);
+  constructor(tuple: TupleType, { lookup, depth }: BaseParams) {
+    super(lookup, depth);
     this.tuple = tuple;
   }
 
