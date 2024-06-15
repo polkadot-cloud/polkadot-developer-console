@@ -13,8 +13,8 @@ export class BitSequence extends Base implements MetadataType {
   // The type of this bit sequence.
   bitSequence: BitSequenceType;
 
-  constructor(bitSequence: BitSequenceType, { lookup, depth }: BaseParams) {
-    super(lookup, depth);
+  constructor(bitSequence: BitSequenceType, base: BaseParams) {
+    super(base);
     this.bitSequence = bitSequence;
   }
 

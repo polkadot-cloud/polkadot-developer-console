@@ -14,8 +14,8 @@ export class Sequence extends Base implements MetadataType {
   // The type of this sequence.
   innerType: number;
 
-  constructor(sequence: SequenceType, { lookup, depth }: BaseParams) {
-    super(lookup, depth);
+  constructor(sequence: SequenceType, base: BaseParams) {
+    super(base);
     this.innerType = sequence.type;
   }
 

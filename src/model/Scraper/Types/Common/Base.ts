@@ -3,6 +3,8 @@
 
 import type { LookupItem } from 'model/Scraper/Lookup/types';
 import { typeToString } from 'model/Scraper/Utils';
+import type { BaseParams } from '../types';
+import type { TrailId, TrailParentId } from 'model/Scraper/types';
 
 export class Base {
   // The raw lookup data of this type.
@@ -11,9 +13,16 @@ export class Base {
   // The depth of this type.
   depth: number;
 
-  constructor(lookup: LookupItem, depth: number) {
+  // The trail id and parent trail of this type.
+  trail: {
+    trailId: TrailId;
+    parent: TrailParentId;
+  };
+
+  constructor({ lookup, depth, trail }: BaseParams) {
     this.lookup = lookup;
     this.depth = depth;
+    this.trail = trail;
   }
 
   // Get the full path of this type.

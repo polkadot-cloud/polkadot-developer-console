@@ -81,13 +81,13 @@ export class MetadataScraper {
 
   // Get a lookup type from metadata. Possible recursion when scraping type ids.
   getType(typeId: number, trailParam: TrailParam) {
-    const { trailId, labelsOnly, maxDepth } = trailParam;
+    const { trailId, labelsOnly, maxDepth, parent } = trailParam;
 
     const lookup = this.lookup.getType(typeId);
     const depth = this.trailDepth(trailId);
 
     // Exit if type is cyclic.
-    const cyclic = this.trailCyclic(trailId, typeId);
+    const cyclic = this.isTrailCyclic(trailId, typeId);
     if (cyclic) {
       return {
         cyclic: true,
@@ -108,7 +108,7 @@ export class MetadataScraper {
     this.appendTrail(trailId, typeId);
 
     // Parameters for Base metadata type classes.
-    const baseParams = { lookup, depth };
+    const baseParams = { lookup, depth, trail: { trailId, parent } };
 
     const { def }: AnyJson = lookup.type;
     const [type, value] = Object.entries(def).flat();
@@ -202,19 +202,19 @@ export class MetadataScraper {
   }
 
   // Calculate an entire trail, taking parents.
-  trail(trailId: TrailId): TrailId[] {
+  getTrail(trailId: TrailId): TrailId[] {
     const trail = this.#trails[trailId].trail;
     const parent = this.#trails[trailId].parent;
 
     if (parent) {
-      return this.trail(parent).concat(trail);
+      return this.getTrail(parent).concat(trail);
     }
     return trail;
   }
 
   // Calculate whether a trail has become cyclic.
-  trailCyclic(trailId: TrailId, typeId: number): boolean {
-    return this.trail(trailId).includes(typeId);
+  isTrailCyclic(trailId: TrailId, typeId: number): boolean {
+    return this.getTrail(trailId).includes(typeId);
   }
 
   // Append a typeId to a #trails.trail record.

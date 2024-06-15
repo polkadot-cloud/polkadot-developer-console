@@ -13,8 +13,8 @@ export class Variant extends Base implements MetadataType {
   // The variants of this variant type.
   items: VariantItem[];
 
-  constructor(variants: VariantItem[], { lookup, depth }: BaseParams) {
-    super(lookup, depth);
+  constructor(variants: VariantItem[], base: BaseParams) {
+    super(base);
     this.items = variants;
   }
 

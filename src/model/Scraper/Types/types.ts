@@ -4,7 +4,7 @@
 import type { AnyJson } from '@w3ux/types';
 import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
-import type { TrailParam } from '../types';
+import type { TrailId, TrailParam, TrailParentId } from '../types';
 
 // Primitive
 export type PrimitiveType = string;
@@ -68,6 +68,10 @@ export interface VariantField {
 export interface BaseParams {
   lookup: LookupItem;
   depth: number;
+  trail: {
+    trailId: TrailId;
+    parent: TrailParentId;
+  };
 }
 
 // Metadata type required interface.

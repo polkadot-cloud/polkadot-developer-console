@@ -19,8 +19,8 @@ export class Composite extends Base implements MetadataType {
   // The fields of this composite.
   fields: CompositeField[];
 
-  constructor(composite: CompositeType, { lookup, depth }: BaseParams) {
-    super(lookup, depth);
+  constructor(composite: CompositeType, base: BaseParams) {
+    super(base);
     this.fields = composite.fields;
   }
 

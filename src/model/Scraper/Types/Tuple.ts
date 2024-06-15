@@ -13,8 +13,8 @@ export class Tuple extends Base implements MetadataType {
   // The types of this tuple.
   tuple: TupleType;
 
-  constructor(tuple: TupleType, { lookup, depth }: BaseParams) {
-    super(lookup, depth);
+  constructor(tuple: TupleType, base: BaseParams) {
+    super(base);
     this.tuple = tuple;
   }
 

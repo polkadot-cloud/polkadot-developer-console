@@ -13,8 +13,8 @@ export class Compact extends Base implements MetadataType {
   // The inner type of this compact type.
   innerType: number;
 
-  constructor(compact: CompactType, { lookup, depth }: BaseParams) {
-    super(lookup, depth);
+  constructor(compact: CompactType, base: BaseParams) {
+    super(base);
     this.innerType = compact.type;
   }
 

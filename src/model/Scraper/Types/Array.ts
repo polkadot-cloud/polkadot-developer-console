@@ -13,8 +13,8 @@ export class ArrayType extends Base implements MetadataType {
   // The array type and length.
   array: IArrayType;
 
-  constructor(array: IArrayType, { lookup, depth }: BaseParams) {
-    super(lookup, depth);
+  constructor(array: IArrayType, base: BaseParams) {
+    super(base);
     this.array = array;
   }
 

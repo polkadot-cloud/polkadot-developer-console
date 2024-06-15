@@ -11,8 +11,8 @@ export class Primitive extends Base implements MetadataType {
   // The type of this primitive.
   primitive: string;
 
-  constructor(primitive: string, { lookup, depth }: BaseParams) {
-    super(lookup, depth);
+  constructor(primitive: string, base: BaseParams) {
+    super(base);
     this.primitive = primitive;
   }
 
