@@ -35,6 +35,9 @@ export class Sequence extends Base implements MetadataType {
 
   // Scrape sequence type. Overwrites `type` with scraped type.
   scrape(scraper: MetadataScraper, params: TypeParams) {
-    return scraper.getType(this.innerType, params);
+    return scraper.getType(this.innerType, {
+      ...params,
+      inputKey: `${this.inputKey}_0`,
+    });
   }
 }

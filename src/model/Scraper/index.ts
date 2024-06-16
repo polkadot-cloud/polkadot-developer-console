@@ -65,18 +65,24 @@ export class MetadataScraper {
 
   // Start scraping a type from metadata. Entry should be made from here for any new trail.
   start(typeId: number, options?: ScraperOptions) {
+    // Get the parent trail id, or set to null if no parent trail is provided. No parent trail
+    // assumes the start of a new scrape.
     const parentTrailId = options?.parentTrailId || null;
 
-    // TODO: Get or initialise inputKey, and pass to classes.
+    // Get the input key, or set to '0' if no input key is provided. No input key assumes the start
+    // of a new scrape. Input keys are used to keep track of a recursive index of a type.
+    const inputKey = options?.inputKey || '0';
 
-    // Defining a new tail.
+    // Defining this new trail.
     const trail = {
       trailId: this.newTrailId(parentTrailId),
       parent: parentTrailId,
     };
 
+    // Define definite params from options.
     const params = {
       ...trail,
+      inputKey,
       labelsOnly: !!options?.labelsOnly,
       maxDepth: options?.maxDepth || this.#maxDepth,
     };
@@ -86,7 +92,7 @@ export class MetadataScraper {
 
   // Get a lookup type from metadata. Possible recursion when scraping type ids.
   getType(typeId: number, params: TypeParams) {
-    const { trailId, labelsOnly, maxDepth, parent } = params;
+    const { trailId, inputKey, labelsOnly, maxDepth, parent } = params;
 
     const lookup = this.lookup.getType(typeId);
     const depth = this.trailDepth(trailId);
@@ -99,6 +105,7 @@ export class MetadataScraper {
         typeId,
       };
     }
+
     // Exit if lookup not found.
     if (!lookup) {
       return null;
@@ -113,7 +120,7 @@ export class MetadataScraper {
     this.appendTrail(trailId, typeId);
 
     // Parameters for Base metadata type classes.
-    const baseParams = { lookup, depth, trail: { trailId, parent } };
+    const baseParams = { lookup, depth, trail: { trailId, parent }, inputKey };
 
     const { def }: AnyJson = lookup.type;
     const [type, value] = Object.entries(def).flat();

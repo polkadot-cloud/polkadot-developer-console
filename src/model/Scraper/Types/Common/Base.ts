@@ -22,10 +22,11 @@ export class Base {
   // The input key for this type.
   inputKey: string;
 
-  constructor({ lookup, depth, trail }: BaseParams) {
+  constructor({ lookup, depth, trail, inputKey }: BaseParams) {
     this.lookup = lookup;
     this.depth = depth;
     this.trail = trail;
+    this.inputKey = inputKey;
   }
 
   // Get the full path of this type.

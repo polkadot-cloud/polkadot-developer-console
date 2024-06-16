@@ -26,6 +26,9 @@ export class Compact extends Base implements MetadataType {
 
   // Scrape compact type. Overwrites `type` with scraped type.
   scrape(scraper: MetadataScraper, params: TypeParams) {
-    return scraper.getType(this.innerType, params);
+    return scraper.getType(this.innerType, {
+      ...params,
+      inputKey: `${this.inputKey}_0`,
+    });
   }
 }

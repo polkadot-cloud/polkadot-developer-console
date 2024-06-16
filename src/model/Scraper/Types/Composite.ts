@@ -43,9 +43,13 @@ export class Composite extends Base implements MetadataType {
 
   // Scrape composite fields. Overwrites `fields` with scraped fields.
   scrape(scraper: MetadataScraper, { trailId }: TypeParams) {
-    return [...this.fields].map((field) => ({
-      ...field,
-      type: scraper.start(field.type, { parentTrailId: trailId }),
-    }));
+    return [...this.fields].map((field, index) => {
+      const inputKey = `${this.inputKey}_${index}`;
+
+      return {
+        ...field,
+        type: scraper.start(field.type, { parentTrailId: trailId, inputKey }),
+      };
+    });
   }
 }
