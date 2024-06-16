@@ -1,41 +1,39 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
-import type { TrailParam } from '../types';
-import type { BitSequenceType, MetadataType } from './types';
-import { typeToString } from '../Format/Utils';
+import type { TypeParams } from '../types';
+import type { BaseParams, BitSequenceType, MetadataType } from './types';
+import { Base } from './Common/Base';
 
 // Class to hold a bit sequence type.
-export class BitSequence implements MetadataType {
+export class BitSequence extends Base implements MetadataType {
   type = 'bitSequence';
-
-  // The raw lookup data of this type.
-  lookup: LookupItem;
 
   // The type of this bit sequence.
   bitSequence: BitSequenceType;
 
-  constructor(bitSequence: BitSequenceType, lookup: LookupItem) {
-    this.lookup = lookup;
+  constructor(bitSequence: BitSequenceType, base: BaseParams) {
+    super(base);
     this.bitSequence = bitSequence;
   }
 
-  // Get the labels of this bit sequence.
-  label() {
-    const { path, params } = this.lookup.type;
-    return {
-      long: typeToString(path, params),
-      short: path[path.length - 1],
-    };
+  // Bit sequences are a sequence of bits, so the input type is always 'Hash'.
+  input() {
+    return 'Hash';
   }
 
   // Scrape bitSequence type. Overwrites `bitStoreType` and `bitOrderType` with scraped types.
-  scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
+  scrape(scraper: MetadataScraper, { trailId }: TypeParams) {
     return {
-      bitOrderType: scraper.start(this.bitSequence.bitOrderType, trailId),
-      bitStoreType: scraper.start(this.bitSequence.bitStoreType, trailId),
+      bitOrderType: scraper.start(this.bitSequence.bitOrderType, {
+        parentTrailId: trailId,
+        inputKey: `${this.inputKey}_0`,
+      }),
+      bitStoreType: scraper.start(this.bitSequence.bitStoreType, {
+        parentTrailId: trailId,
+        inputKey: `${this.inputKey}_1`,
+      }),
     };
   }
 }

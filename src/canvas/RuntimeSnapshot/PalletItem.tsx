@@ -119,7 +119,10 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
             transform="shrink-6"
           />
         </span>
-        <button onClick={() => setPalletExpanded(!palletExpanded)}>
+        <button
+          type="button"
+          onClick={() => setPalletExpanded(!palletExpanded)}
+        >
           {name}
         </button>
       </CanvasSubheading>

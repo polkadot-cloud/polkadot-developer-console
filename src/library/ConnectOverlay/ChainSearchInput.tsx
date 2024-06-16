@@ -123,7 +123,7 @@ export const ChainSearchInput = ({
           }}
         />
         {focused && (
-          <button onClick={() => onBlur()}>
+          <button type="button" onClick={() => onBlur()}>
             <FontAwesomeIcon icon={faTimes} transform="grow-1" />
           </button>
         )}

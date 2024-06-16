@@ -1,12 +1,13 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useInput } from '.';
 import { AddInputWrapper, SequenceItemWrapper } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import type { SequenceProps } from './types';
+import { useInput } from './useInput';
+import { Section } from './Section';
 
 export const Sequence = ({
   namespace,
@@ -14,11 +15,10 @@ export const Sequence = ({
   activeItem,
   inputKey,
   inputKeysRef,
-  type,
   arrayInput,
   maxLength,
 }: SequenceProps) => {
-  const { readInput, renderInnerInput } = useInput();
+  const { readInput } = useInput();
 
   const INPUT_TYPE = 'Sequence';
 
@@ -55,33 +55,21 @@ export const Sequence = ({
           inputKeysRef.current[subInputKey] = `${INPUT_TYPE}Item`;
         }
 
-        // Amend label of input to be it's index.
-        arrayInput.label = 'Item ' + (index + 1);
-
-        // If maxLength is defined, append it to label.
-        if (maxLength) {
-          arrayInput.label += ` of ${maxLength}`;
-        }
-
         // Generate input for this index.
-        const subInput = readInput(
-          type,
-          {
-            activePallet,
-            activeItem,
-            namespace,
-            inputKey: subInputKey,
-            inputKeysRef,
-          },
-          arrayInput,
-          true
-        );
+        const subInput = readInput(arrayInput, {
+          activePallet,
+          activeItem,
+          namespace,
+          inputKeysRef,
+        });
 
         return (
           <SequenceItemWrapper key={`input_arg_${subInputKey}`}>
-            <div>{renderInnerInput(subInput)}</div>
             <div>
-              <button onClick={() => removeInput(index)}>
+              <Section indent={true}>{subInput}</Section>
+            </div>
+            <div>
+              <button type="button" onClick={() => removeInput(index)}>
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>

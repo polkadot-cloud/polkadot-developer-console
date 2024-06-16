@@ -19,7 +19,9 @@ export const InDevelopment = () => {
         This feature is currently being developed. Please check back at a later
         date.
       </p>
-      <button onClick={() => dismissMenu()}>Got it</button>
+      <button type="button" onClick={() => dismissMenu()}>
+        Got it
+      </button>
     </HelpWrapper>
   );
 };

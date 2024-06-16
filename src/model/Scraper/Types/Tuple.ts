@@ -1,32 +1,34 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
-import type { MetadataType, TupleType } from './types';
-import type { TrailParam } from '../types';
+import type { BaseParams, MetadataType, TupleType } from './types';
+import type { TypeParams } from '../types';
+import { Base } from './Common/Base';
 
 // Class to hold a tuple type.
-export class Tuple implements MetadataType {
+export class Tuple extends Base implements MetadataType {
   type = 'tuple';
-
-  // The raw lookup data of this type.
-  lookup: LookupItem;
 
   // The types of this tuple.
   tuple: TupleType;
 
-  constructor(tuple: TupleType, lookup: LookupItem) {
-    this.lookup = lookup;
+  constructor(tuple: TupleType, base: BaseParams) {
+    super(base);
     this.tuple = tuple;
   }
 
-  label() {
-    return '';
+  // Tuples contain one or more child inputs, therefore no form element is needed here.
+  input() {
+    return 'indent';
   }
 
   // Scrape tuple types. Overwrites the type with scraped type at each index.
-  scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
-    return this.tuple.map((id: number) => scraper.start(id, trailId));
+  scrape(scraper: MetadataScraper, { trailId }: TypeParams) {
+    return this.tuple.map((id: number, index) => {
+      const inputKey = `${this.inputKey}_${index}`;
+
+      return scraper.start(id, { parentTrailId: trailId, inputKey });
+    });
   }
 }

@@ -16,6 +16,7 @@ import {
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
 import type { AnyJson } from '@w3ux/types';
+import { useEffectIgnoreInitial } from '@w3ux/hooks';
 
 export const InputForm = createContext<InputFormContextInterface>(
   defaultInputFormContext
@@ -26,9 +27,10 @@ export const useInputForm = () => useContext(InputForm);
 export const InputFormProvider = ({
   namespace,
   children,
+  activeItem,
 }: InputFormProviderProps) => {
   const { tabId } = useActiveTab();
-  const { getInputArgs } = useChainUi();
+  const { getInputArgs, resetInputArgSection } = useChainUi();
 
   // A reference to accumulate input keys for an input form.
   const inputKeysRef = useRef<Record<string, string>>({});
@@ -102,6 +104,15 @@ export const InputFormProvider = ({
 
     return resultInput;
   };
+
+  // Reset input keys accumulator and values on `activeItem` change.
+  useEffectIgnoreInitial(() => {
+    if (inputKeysRef.current) {
+      // TODO: Revise this logic (removes default values after they have been assigned).
+      resetInputArgSection(tabId, namespace);
+      inputKeysRef.current = {};
+    }
+  }, [activeItem]);
 
   return (
     <InputForm.Provider

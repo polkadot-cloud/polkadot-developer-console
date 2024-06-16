@@ -4,7 +4,7 @@
 import type { AnyJson } from '@w3ux/types';
 import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
-import type { TrailParam } from '../types';
+import type { TrailId, TypeParams, TrailParentId } from '../types';
 
 // Primitive
 export type PrimitiveType = string;
@@ -64,15 +64,35 @@ export interface VariantField {
   typeName: string;
 }
 
+// Base.
+export interface BaseParams {
+  lookup: LookupItem;
+  depth: number;
+  trail: {
+    trailId: TrailId;
+    parent: TrailParentId;
+  };
+  inputKey: string;
+}
+
 // Metadata type required interface.
 export abstract class MetadataType {
+  // All metadata type classes must hold their type.
+  abstract type: string;
+
   // All metadata type classes must hold their lookup data.
   abstract lookup: LookupItem;
 
+  // All metadata type classes must hold their depth.
+  abstract depth: number;
+
   // All metadata type classes must return a label.
-  abstract label(): { long: string; short: string } | string;
+  abstract label(): string;
+
+  // All metadata type classes must return their input types.
+  abstract input(): string | null;
 
   // All metadata type classes must implement a `scrape` method, that converts type ids to actual
   // type metadata.
-  abstract scrape(scraper: MetadataScraper, trailParam: TrailParam): AnyJson;
+  abstract scrape(scraper: MetadataScraper, params: TypeParams): AnyJson;
 }

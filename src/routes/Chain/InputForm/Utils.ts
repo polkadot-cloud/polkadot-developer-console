@@ -135,7 +135,7 @@ export const formatArg = (
     default:
       return {
         type,
-        val: argValues[key],
+        val: argValues?.[key],
         child: value,
       };
   }

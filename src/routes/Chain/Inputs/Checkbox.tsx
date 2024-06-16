@@ -32,7 +32,7 @@ export const Checkbox = ({
 
   return (
     <>
-      <h4>{label}</h4>
+      {!!label && <h4>{label}</h4>}
       <Switch
         scale={0.85}
         active={checked}

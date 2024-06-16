@@ -14,10 +14,11 @@ export interface InputFormContextInterface {
 export interface InputFormProviderProps {
   namespace: InputNamespace;
   children: ReactNode;
+  activeItem: string | null;
 }
 
 export interface InputFormInnerProps {
-  inputForm: AnyJson;
+  argTypes: AnyJson;
   activePallet: string | null;
   activeItem: string | null;
   onSubmit?: (inputs: AnyJson) => void;

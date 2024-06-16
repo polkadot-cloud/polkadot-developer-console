@@ -131,9 +131,13 @@ export const HardwareAddress = ({
       </div>
       <div className="action">
         {isImported ? (
-          <button onClick={() => onRemove(address)}>Remove</button>
+          <button type="button" onClick={() => onRemove(address)}>
+            Remove
+          </button>
         ) : (
-          <button onClick={() => onConfirm(address, index)}>Import</button>
+          <button type="button" onClick={() => onConfirm(address, index)}>
+            Import
+          </button>
         )}
       </div>
     </Wrapper>

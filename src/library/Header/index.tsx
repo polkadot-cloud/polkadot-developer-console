@@ -46,14 +46,14 @@ export const Header = () => {
         <span>{version}</span>
       </div>
       <div>
-        <button onClick={() => window.open(CloudUrl)}>
+        <button type="button" onClick={() => window.open(CloudUrl)}>
           <CloudSvg className="svg" />
         </button>
-        <button onClick={() => window.open(DocsUrl)}>
+        <button type="button" onClick={() => window.open(DocsUrl)}>
           <FontAwesomeIcon icon={faBooks} transform="shrink-2" />
         </button>
 
-        <button onClick={() => window.open(GithubRepoUrl)}>
+        <button type="button" onClick={() => window.open(GithubRepoUrl)}>
           <FontAwesomeIcon icon={faGithub} transform="grow-0" />
         </button>
       </div>

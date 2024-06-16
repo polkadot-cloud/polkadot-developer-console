@@ -91,7 +91,9 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
           <FontAwesomeIcon icon={faPlug} transform="shrink-2" />
           Connect Wallets
         </h3>
-        <button onClick={() => dismissOverlay()}>Close</button>
+        <button type="button" onClick={() => dismissOverlay()}>
+          Close
+        </button>
       </div>
 
       <motion.h4 {...getMotionProps('heading')}>Hardware</motion.h4>

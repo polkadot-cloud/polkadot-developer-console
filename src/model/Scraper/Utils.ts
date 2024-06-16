@@ -4,18 +4,8 @@
 import type { AnyJson } from '@w3ux/types';
 
 // ------------------------------------------------------
-// Labels.
+// Options.
 // ------------------------------------------------------
-
-// Gets a short label from a label input.
-export const getShortLabel = (
-  input: string | { long: string; short: string }
-) => (typeof input === 'string' ? input : input.short);
-
-// Gets a long label from a label input.
-export const getLongLabel = (
-  input: string | { long: string; short: string }
-) => (typeof input === 'string' ? input : input.long);
 
 // Verify if a variant is an Option.
 export const verifyOption = (
@@ -69,3 +59,48 @@ export const pathToString = (path: string[]): string =>
     }
     return index === 0 ? item : `${formatted}::${item}`;
   }, '');
+
+// Get a custom input component based on label. Currently only called with composite types.
+export const getCustomInput = (label: string): string | null => {
+  // If Vec parameter is u8, or BoundedVec parameter 2 is u8, then we are dealing with bytes.
+  switch (label) {
+    // Default Substrate AccountId type:
+    // `<https://crates.parity.io/sp_runtime/struct.AccountId32.html>`;
+    case 'AccountId32':
+      return 'AccountId32';
+
+    // Substrate Core primitive hash types: `<https://docs.rs/sp-core/latest/sp_core/index.html>`.
+    case 'H160':
+    case 'H256':
+    case 'H512':
+    case 'EthereumAddress': // Ethereum address hash.
+      return 'Hash';
+
+    // Types that result in a u8 array.
+    case 'Bytes':
+      return 'Bytes';
+  }
+
+  return null;
+};
+
+// Checks if a composite is a sequence of u8s.
+export const compositeIsBytes = (shortLabel: string, arg: AnyJson) =>
+  ['Vec', 'BoundedVec', 'WeakBoundedVec'].includes(shortLabel) &&
+  arg.composite?.[0]?.type?.sequence?.label === 'u8' &&
+  arg.composite?.length === 1;
+
+// Check if this array is a vector of bytes.
+export const arrayIsBytes = (arg: AnyJson) => arg?.array?.primitive === 'U8';
+
+// Check if array is a vector of primitives.
+export const arrayIsPrimitive = (arg: AnyJson) => !!arg?.array?.primitive;
+
+// Check if a sequence is a vector of bytes.
+export const sequenceIsBytes = (label: string) =>
+  // Assuming this is called within a sequence `type`, a standalone u8 label is a vector of bytes.
+  label === 'u8' ||
+  // NOTE: BoundedVec and WeakBoundedVec are untested.
+  /Vec<.+>: u8/.test(label) ||
+  /BoundedVec<.+>: u8/.test(label) ||
+  /WeakBoundedVec<.+>: u8/.test(label);
