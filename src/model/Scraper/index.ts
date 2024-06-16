@@ -7,7 +7,7 @@ import type {
   ScraperConfig,
   ScraperOptions,
   TrailId,
-  TrailParam,
+  TypeParams,
   TrailParentId,
 } from './types';
 import type { MetadataLookup } from './Lookup/types';
@@ -64,28 +64,41 @@ export class MetadataScraper {
   // ------------------------------------------------------
 
   // Start scraping a type from metadata. Entry should be made from here for any new trail.
-  start(typeId: number, parent: TrailParentId, options?: ScraperOptions) {
-    // Defining a new tail.
+  start(typeId: number, options?: ScraperOptions) {
+    // Get the parent trail id, or set to null if no parent trail is provided. No parent trail
+    // assumes the start of a new scrape.
+    const parentTrailId = options?.parentTrailId || null;
+
+    // Get the input key, or set to '0' if no input key is provided. No input key assumes the start
+    // of a new scrape. Input keys are used to keep track of a recursive index of a type.
+    const inputKey = options?.inputKey || '0';
+
+    // Defining this new trail.
     const trail = {
-      trailId: this.newTrailId(parent),
-      parent,
+      trailId: this.newTrailId(parentTrailId),
+      parent: parentTrailId,
     };
 
+    // Define definite params from options.
     const params = {
       ...trail,
+      inputKey,
       labelsOnly: !!options?.labelsOnly,
       maxDepth: options?.maxDepth || this.#maxDepth,
     };
+
     return this.getType(typeId, params);
   }
 
   // Get a lookup type from metadata. Possible recursion when scraping type ids.
-  getType(typeId: number, trailParam: TrailParam) {
-    const { trailId, labelsOnly, maxDepth } = trailParam;
+  getType(typeId: number, params: TypeParams) {
+    const { trailId, inputKey, labelsOnly, maxDepth, parent } = params;
 
     const lookup = this.lookup.getType(typeId);
+    const depth = this.trailDepth(trailId);
 
-    const cyclic = this.trailCyclic(trailId, typeId);
+    // Exit if type is cyclic.
+    const cyclic = this.isTrailCyclic(trailId, typeId);
     if (cyclic) {
       return {
         cyclic: true,
@@ -93,18 +106,21 @@ export class MetadataScraper {
       };
     }
 
-    // Add current type id to trails record.
-    this.appendTrail(trailId, typeId);
-
     // Exit if lookup not found.
     if (!lookup) {
       return null;
     }
 
     // Exit if the depth of the trail surpasses the maximum depth.
-    if (maxDepth !== '*' && this.trailDepth(trailId) >= maxDepth) {
+    if (maxDepth !== '*' && depth >= maxDepth) {
       return null;
     }
+
+    // Add current type id to trails record.
+    this.appendTrail(trailId, typeId);
+
+    // Parameters for Base metadata type classes.
+    const baseParams = { lookup, depth, trail: { trailId, parent }, inputKey };
 
     const { def }: AnyJson = lookup.type;
     const [type, value] = Object.entries(def).flat();
@@ -114,46 +130,46 @@ export class MetadataScraper {
 
     switch (type) {
       case 'array':
-        result.class = new ArrayType(value as IArrayType, lookup);
-        result.array = result.class.scrape(this, trailParam);
+        result.class = new ArrayType(value as IArrayType, baseParams);
+        result.array = result.class.scrape(this, params);
         break;
 
       case 'bitSequence':
-        result.class = new BitSequence(value as BitSequenceType, lookup);
+        result.class = new BitSequence(value as BitSequenceType, baseParams);
         if (!labelsOnly) {
-          result.bitsequence = result.class.scrape(this, trailParam);
+          result.bitsequence = result.class.scrape(this, params);
         }
         break;
 
       case 'compact':
-        result.class = new Compact(value as CompactType, lookup);
-        result.compact = result.class.scrape(this, trailParam);
+        result.class = new Compact(value as CompactType, baseParams);
+        result.compact = result.class.scrape(this, params);
         break;
 
       case 'composite':
-        result.class = new Composite(value as CompositeType, lookup);
-        result.composite = result.class.scrape(this, trailParam);
+        result.class = new Composite(value as CompositeType, baseParams);
+        result.composite = result.class.scrape(this, params);
         break;
 
       case 'primitive':
-        result.class = new Primitive(value as string, lookup);
+        result.class = new Primitive(value as string, baseParams);
         result.primitive = result.class.scrape();
         break;
 
       case 'sequence':
-        result.class = new Sequence(value as SequenceType, lookup);
-        result.sequence = result.class.scrape(this, trailParam);
+        result.class = new Sequence(value as SequenceType, baseParams);
+        result.sequence = result.class.scrape(this, params);
         break;
 
       case 'tuple':
-        result.class = new Tuple(value as TupleType, lookup);
-        result.tuple = result.class.scrape(this, trailParam);
+        result.class = new Tuple(value as TupleType, baseParams);
+        result.tuple = result.class.scrape(this, params);
         break;
 
       case 'variant':
-        result.class = new Variant((value as VariantType).variants, lookup);
+        result.class = new Variant((value as VariantType).variants, baseParams);
         if (!labelsOnly) {
-          result.variant = result.class.scrape(this, trailParam);
+          result.variant = result.class.scrape(this, params);
         }
         break;
 
@@ -198,19 +214,19 @@ export class MetadataScraper {
   }
 
   // Calculate an entire trail, taking parents.
-  trail(trailId: TrailId): TrailId[] {
+  getTrail(trailId: TrailId): TrailId[] {
     const trail = this.#trails[trailId].trail;
     const parent = this.#trails[trailId].parent;
 
     if (parent) {
-      return this.trail(parent).concat(trail);
+      return this.getTrail(parent).concat(trail);
     }
     return trail;
   }
 
   // Calculate whether a trail has become cyclic.
-  trailCyclic(trailId: TrailId, typeId: number): boolean {
-    return this.trail(trailId).includes(typeId);
+  isTrailCyclic(trailId: TrailId, typeId: number): boolean {
+    return this.getTrail(trailId).includes(typeId);
   }
 
   // Append a typeId to a #trails.trail record.

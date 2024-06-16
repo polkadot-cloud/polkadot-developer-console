@@ -96,7 +96,7 @@ export const ManageTagForm = ({
       </div>
       <div className="controls">
         <span>
-          <button className="cancel" onClick={() => cancel()}>
+          <button type="button" className="cancel" onClick={() => cancel()}>
             Cancel
           </button>
           <SettingsHeaderButton onClick={() => submit()} disabled={!valid}>

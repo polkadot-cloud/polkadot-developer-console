@@ -247,7 +247,12 @@ export const TextInputWrapper = styled.div`
     &::placeholder {
       color: var(--text-color-tertiary);
       opacity: 0.5;
-      font-size: 0.8em;
+    }
+
+    &.shrinkPlaceholder {
+      &::placeholder {
+        font-size: 0.8em;
+      }
     }
   }
 

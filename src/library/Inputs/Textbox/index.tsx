@@ -14,6 +14,7 @@ export const Textbox = ({
   onChange,
   onFocus,
   placeholder,
+  shrinkPlaceholder,
 }: TextboxProps) => {
   // The input arg type of this component.
   const INPUT_TYPE = 'Textbox';
@@ -40,11 +41,9 @@ export const Textbox = ({
     }
   }, []);
 
-  const displayLabel = typeof label === 'object' ? label.short : label;
-
   return (
     <>
-      {!!label && <h4>{displayLabel}</h4>}
+      {!!label && <h4>{label}</h4>}
       <TextInputWrapper className="input">
         <input
           type="text"
@@ -52,6 +51,7 @@ export const Textbox = ({
           onChange={(ev) => handleTextboxChange(ev.currentTarget.value)}
           onFocus={onFocus}
           placeholder={placeholder}
+          className={shrinkPlaceholder ? 'shrinkPlaceholder' : ''}
         />
       </TextInputWrapper>
     </>

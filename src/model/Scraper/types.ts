@@ -75,15 +75,18 @@ export interface ScraperConfig {
 export interface ScraperOptions {
   labelsOnly?: boolean;
   maxDepth?: number | '*';
+  parentTrailId?: TrailParentId;
+  inputKey?: string;
 }
 
 export type TrailId = number;
 
 export type TrailParentId = number | null;
 
-export interface TrailParam {
+export interface TypeParams {
   trailId: TrailId;
   parent: TrailParentId;
+  inputKey: string;
   labelsOnly: boolean;
   maxDepth: number | '*';
 }

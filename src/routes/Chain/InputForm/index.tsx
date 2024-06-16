@@ -7,14 +7,14 @@ import type { AnyJson } from '@w3ux/types';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { faCircleRight } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useInput } from '../Inputs';
 import { useInputForm } from './provider';
 import type { InputFormInnerProps } from './types';
+import { useInput } from '../Inputs/useInput';
 
 export const InputForm = ({
-  inputForm,
   activePallet,
   activeItem,
+  argTypes,
   onSubmit,
 }: InputFormInnerProps) => {
   const { readInput } = useInput();
@@ -25,39 +25,24 @@ export const InputForm = ({
     inputKeysRef.current = {};
   }
 
-  // Increment input arg indexes.
-  let inputArgIndex = 0;
-
-  // if inputForm exists and is not an array, convert it into one.
-  if (!Array.isArray(inputForm) && !!inputForm) {
-    inputForm = [inputForm];
+  // Ensure argTypes is an array.
+  if (!Array.isArray(argTypes)) {
+    argTypes = [argTypes];
   }
 
   return (
     <InputFormWrapper>
-      {!!inputForm &&
-        inputForm.map((inputItem: AnyJson) =>
-          Object.entries(inputItem).map(([type, input]) => {
-            inputArgIndex++;
-            return (
-              <Fragment
-                key={`input_arg_${activePallet}_${activeItem}_${inputArgIndex}`}
-              >
-                {readInput(
-                  type,
-                  {
-                    activePallet,
-                    activeItem,
-                    inputKey: `${inputArgIndex}`,
-                    namespace,
-                    inputKeysRef,
-                  },
-                  input
-                )}
-              </Fragment>
-            );
-          })
-        )}
+      {!!argTypes &&
+        argTypes.map((arg: AnyJson, index: number) => (
+          <Fragment key={`input_arg_${activePallet}_${activeItem}_${index}`}>
+            {readInput(arg, {
+              activePallet,
+              activeItem,
+              namespace,
+              inputKeysRef,
+            })}
+          </Fragment>
+        ))}
       {onSubmit !== undefined && (
         <section className="footer">
           <ButtonText onClick={() => handleSubmit(onSubmit)}>

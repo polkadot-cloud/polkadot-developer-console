@@ -112,7 +112,10 @@ export const Results = ({
           storageType === undefined ? (
             <h4>
               No pinned chain state. Visit{' '}
-              <button onClick={() => setTabActivePage(tabId, 'default', 1)}>
+              <button
+                type="button"
+                onClick={() => setTabActivePage(tabId, 'default', 1)}
+              >
                 <FontAwesomeIcon icon={faDiagramSubtask} transform="shrink-2" />
                 Chain State
               </button>{' '}

@@ -23,12 +23,12 @@ export interface RenderInputArgs {
 export type InputArgConfig = InputCallbackProps & {
   activePallet: string | null;
   activeItem: string | null;
-  inputKey: string;
   namespace: InputNamespace;
   inputKeysRef: RefObject<Record<string, string>>;
 };
 
 export type HashProps = InputArgConfig & {
+  inputKey: string;
   value: string | number;
 };
 
@@ -39,12 +39,13 @@ export type SelectProps = InputCallbackProps & {
 };
 
 export type CheckboxProps = InputArgConfig & {
-  label: string | number;
+  label?: string | number;
+  inputKey: string;
   checked: boolean;
 };
 
 export type SequenceProps = InputArgConfig & {
-  type: string;
+  inputKey: string;
   arrayInput: AnyJson;
   maxLength?: number;
 };

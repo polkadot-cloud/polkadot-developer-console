@@ -72,7 +72,7 @@ export const TabContextMenu = ({
     <SelectListWrapper>
       <ListWrapper>
         <li>
-          <button onClick={() => onSettings()}></button>
+          <button type="button" onClick={() => onSettings()}></button>
           <div className="inner">
             <div>
               <FontAwesomeIcon icon={faBarsProgress} transform="shrink-2" />
