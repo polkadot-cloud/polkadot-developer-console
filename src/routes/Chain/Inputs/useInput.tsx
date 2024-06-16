@@ -86,7 +86,7 @@ export const useInput = () => {
     // If array is a vector of bytes, render a hash input.
     //
     // TODO: Array (and classes) need context of child type to determine input data. Once achieved,
-    // Array's input() method can detemrine its input, and `overrideInput` won't be needed here.
+    // Array's input() method can determine its input, and `overrideInput` won't be needed here.
     if (arrayIsBytes(arg)) {
       return (
         <Section>
