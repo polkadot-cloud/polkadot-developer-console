@@ -25,9 +25,6 @@ export const InputForm = ({
     inputKeysRef.current = {};
   }
 
-  // Increment input arg indexes.
-  let inputArgIndex = 0;
-
   // Ensure argTypes is an array.
   if (!Array.isArray(argTypes)) {
     argTypes = [argTypes];
@@ -36,22 +33,16 @@ export const InputForm = ({
   return (
     <InputFormWrapper>
       {!!argTypes &&
-        argTypes.map((arg: AnyJson) => {
-          inputArgIndex++;
-          return (
-            <Fragment
-              key={`input_arg_${activePallet}_${activeItem}_${inputArgIndex}`}
-            >
-              {readInput(arg, {
-                activePallet,
-                activeItem,
-                inputKey: `${inputArgIndex}`,
-                namespace,
-                inputKeysRef,
-              })}
-            </Fragment>
-          );
-        })}
+        argTypes.map((arg: AnyJson, index: number) => (
+          <Fragment key={`input_arg_${activePallet}_${activeItem}_${index}`}>
+            {readInput(arg, {
+              activePallet,
+              activeItem,
+              namespace,
+              inputKeysRef,
+            })}
+          </Fragment>
+        ))}
       {onSubmit !== undefined && (
         <section className="footer">
           <ButtonText onClick={() => handleSubmit(onSubmit)}>

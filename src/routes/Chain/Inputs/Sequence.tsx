@@ -60,7 +60,6 @@ export const Sequence = ({
           activePallet,
           activeItem,
           namespace,
-          inputKey: subInputKey,
           inputKeysRef,
         });
 

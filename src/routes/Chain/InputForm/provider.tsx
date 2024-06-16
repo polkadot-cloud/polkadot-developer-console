@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { createContext, useContext, useEffect, useRef } from 'react';
+import { createContext, useContext, useRef } from 'react';
 import { defaultInputFormContext } from './defaults';
 import type {
   InputFormContextInterface,
@@ -16,6 +16,7 @@ import {
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
 import type { AnyJson } from '@w3ux/types';
+import { useEffectIgnoreInitial } from '@w3ux/hooks';
 
 export const InputForm = createContext<InputFormContextInterface>(
   defaultInputFormContext
@@ -105,8 +106,9 @@ export const InputFormProvider = ({
   };
 
   // Reset input keys accumulator and values on `activeItem` change.
-  useEffect(() => {
+  useEffectIgnoreInitial(() => {
     if (inputKeysRef.current) {
+      // TODO: Revise this logic (removes default values after they have been assigned).
       resetInputArgSection(tabId, namespace);
       inputKeysRef.current = {};
     }
