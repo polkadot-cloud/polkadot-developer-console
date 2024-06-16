@@ -253,9 +253,11 @@ export const useInput = () => {
     },
     values?: string[]
   ) => {
-    const indent = options.indent || false;
-    const prependLabel = options.prependLabel || null;
-    const overrideInput = options.overrideInput || null;
+    const {
+      indent = false,
+      prependLabel = null,
+      overrideInput = null,
+    } = options;
 
     const { inputKeysRef, namespace, activePallet, activeItem } =
       inputArgConfig;
