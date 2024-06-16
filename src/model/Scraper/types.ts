@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 
 export interface Pallet {
   name: string;
@@ -42,8 +42,9 @@ export interface PalletItemScraped {
   docs: string[];
   modifier: string;
   fallback?: string;
-  type: AnyJson;
   value?: string;
+  argTypes: AnyJson;
+  returnType: AnyJson;
 }
 
 export interface PalletItemScrapedWithSig extends PalletItemScraped {
@@ -74,15 +75,18 @@ export interface ScraperConfig {
 export interface ScraperOptions {
   labelsOnly?: boolean;
   maxDepth?: number | '*';
+  parentTrailId?: TrailParentId;
+  inputKey?: string;
 }
 
 export type TrailId = number;
 
 export type TrailParentId = number | null;
 
-export interface TrailParam {
+export interface TypeParams {
   trailId: TrailId;
   parent: TrailParentId;
+  inputKey: string;
   labelsOnly: boolean;
   maxDepth: number | '*';
 }

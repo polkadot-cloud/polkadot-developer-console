@@ -111,7 +111,11 @@ export const Extension = ({ extension, last }: ExtensionProps) => {
           </h5>
         </div>
         <div>
-          <button onClick={() => handleClick()} disabled={disabled}>
+          <button
+            type="button"
+            onClick={() => handleClick()}
+            disabled={disabled}
+          >
             {isInstalled ? statusJsx : 'Not Installed'}
           </button>
         </div>

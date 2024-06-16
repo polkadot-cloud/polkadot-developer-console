@@ -3,23 +3,22 @@
 
 import { useMemo } from 'react';
 import { PalletList } from '../PalletList';
-import { PalletScraper } from 'model/Metadata/Scraper/Pallet';
+import { PalletScraper } from 'model/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { ChainStateList } from './ChainStateList';
-import { FormatInputFields } from 'model/Metadata/Format/InputFields';
 import { useActiveTab } from 'contexts/ActiveTab';
 import type { PalletData } from './types';
 import { EncodedDetails } from './EncodedDetails';
 import { SelectFormWrapper } from 'library/Inputs/Wrappers';
 import { useChain } from '../Provider';
 import { ChainStateController } from 'controllers/ChainState';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import { camelize } from '@w3ux/utils';
 import { Results } from './Results';
 import { InputFormProvider } from '../InputForm/provider';
 import { InputForm } from '../InputForm';
 
-export const StorageItemsInner = () => {
+export const StorageItems = () => {
   const { tabId } = useActiveTab();
   const { chainSpec, instanceId } = useChain();
   const { getChainUi, setChainUiNamespace } = useChainUi();
@@ -62,7 +61,7 @@ export const StorageItemsInner = () => {
   const activeItem = chainUi.selected || items?.[0]?.name || null;
 
   // Get the whole active storage item record from metadata for input formatting.
-  const activeListItem = useMemo(() => {
+  const scrapedItem = useMemo(() => {
     if (!activePallet || !activeItem) {
       return null;
     }
@@ -70,12 +69,6 @@ export const StorageItemsInner = () => {
     const scraper = new PalletScraper(Metadata, { maxDepth: '*' });
     return scraper.getStorageItem(activePallet, activeItem);
   }, [items, activeItem, activePallet]);
-
-  // Get input markup for the active storage item.
-  const inputForm =
-    activePallet !== null && activeItem !== null && !!activeListItem
-      ? new FormatInputFields(activeListItem).format()
-      : null;
 
   // Handle storage item query submission.
   const onSubmit = (args: AnyJson) => {
@@ -94,7 +87,7 @@ export const StorageItemsInner = () => {
   };
 
   return (
-    <>
+    <InputFormProvider namespace="storage" activeItem={activeItem}>
       <SelectFormWrapper className="withHeader">
         <PalletList
           pallets={pallets}
@@ -112,7 +105,8 @@ export const StorageItemsInner = () => {
         />
       </SelectFormWrapper>
       <InputForm
-        inputForm={inputForm}
+        argTypes={scrapedItem?.argTypes}
+        activePallet={activePallet}
         activeItem={activeItem}
         onSubmit={onSubmit}
       />
@@ -121,12 +115,6 @@ export const StorageItemsInner = () => {
       )}
 
       <Results storageType="storage" />
-    </>
+    </InputFormProvider>
   );
 };
-
-export const StorageItems = () => (
-  <InputFormProvider namespace="storage">
-    <StorageItemsInner />
-  </InputFormProvider>
-);

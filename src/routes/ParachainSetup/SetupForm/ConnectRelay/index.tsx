@@ -14,6 +14,7 @@ import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { useParachain } from 'routes/ParachainSetup/Provider';
 import { useTabs } from 'contexts/Tabs';
 import { useSettings } from 'contexts/Settings';
+import { SetupNote } from '../Wrappers';
 
 export const ConnectRelay = () => {
   const { autoTabNaming } = useSettings();
@@ -72,16 +73,16 @@ export const ConnectRelay = () => {
       </section>
       <section>
         {!apiValid ? (
-          <h4 className="note">Connecting to {relayName}...</h4>
+          <SetupNote>Connecting to {relayName}...</SetupNote>
         ) : (
-          <h4 className="note">
+          <SetupNote>
             <FontAwesomeIcon
               icon={faCheckCircle}
               transform="grow-1"
               className="icon"
             />
             Connected to {relayName}. Ready to reserve a Para ID.
-          </h4>
+          </SetupNote>
         )}
 
         <ButtonText

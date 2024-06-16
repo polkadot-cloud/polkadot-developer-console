@@ -243,6 +243,19 @@ export const TextInputWrapper = styled.div`
     text-align: left;
   }
 
+  input {
+    &::placeholder {
+      color: var(--text-color-tertiary);
+      opacity: 0.5;
+    }
+
+    &.shrinkPlaceholder {
+      &::placeholder {
+        font-size: 0.8em;
+      }
+    }
+  }
+
   &.input {
     background-color: var(--background-default);
     border: 1px solid var(--border-secondary-color);

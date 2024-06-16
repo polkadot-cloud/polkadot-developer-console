@@ -3,7 +3,7 @@
 
 import { App } from 'App';
 import { DappName } from 'consts';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import { TabsProvider } from 'contexts/Tabs';
 import type { Provider } from 'hooks/withProviders';
 import { withProviders } from 'hooks/withProviders';
@@ -34,6 +34,8 @@ import { TxMetaProvider } from 'contexts/TxMeta';
 import { OverlayProvider } from 'library/Overlay/Provider';
 import { PromptProvider } from 'contexts/Prompt';
 import { LedgerHardwareProvider } from 'contexts/LedgerHardware';
+import { ReserveParaIdProvider } from 'contexts/ParaSetup/ReserveParaId';
+import { InputMetaProvider } from 'contexts/InputMeta';
 
 export const Providers = () => {
   // !! --------------------------------
@@ -55,6 +57,7 @@ export const Providers = () => {
     ChainUiProvider,
     OverlayProvider,
     PromptProvider,
+    InputMetaProvider,
 
     // Account import related providers.
     ExtensionsProvider,
@@ -80,6 +83,7 @@ export const Providers = () => {
     ChainExplorerProvider,
 
     // Task: `parachainSetup` related providers.
+    ReserveParaIdProvider,
     ParaSetupProvider,
   ];
 

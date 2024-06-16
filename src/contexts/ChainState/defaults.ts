@@ -14,4 +14,6 @@ export const defaultChainStateContext: ChainStateContextInterface = {
   setItemPinned: (type, subscriptionKey, pinned) => {},
   getTotalPinnedItems: () => 0,
   destroyTabChainState: () => {},
+  getFromAddress: (tabId) => undefined,
+  setFromAddress: (tabId, address) => {},
 };

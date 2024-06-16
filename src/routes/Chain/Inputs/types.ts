@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import type { InputCallbackProps } from 'library/Inputs/types';
 import type { RefObject } from 'react';
@@ -21,13 +21,15 @@ export interface RenderInputArgs {
 }
 
 export type InputArgConfig = InputCallbackProps & {
-  inputKey: string;
+  activePallet: string | null;
+  activeItem: string | null;
   namespace: InputNamespace;
   inputKeysRef: RefObject<Record<string, string>>;
 };
 
 export type HashProps = InputArgConfig & {
-  defaultValue: string | number;
+  inputKey: string;
+  value: string | number;
 };
 
 export type SelectProps = InputCallbackProps & {
@@ -37,12 +39,13 @@ export type SelectProps = InputCallbackProps & {
 };
 
 export type CheckboxProps = InputArgConfig & {
-  label: string | number;
-  defaultValue: boolean;
+  label?: string | number;
+  inputKey: string;
+  checked: boolean;
 };
 
 export type SequenceProps = InputArgConfig & {
-  type: string;
+  inputKey: string;
   arrayInput: AnyJson;
   maxLength?: number;
 };

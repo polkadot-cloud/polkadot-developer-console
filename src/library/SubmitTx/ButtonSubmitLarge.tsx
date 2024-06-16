@@ -21,7 +21,11 @@ export const ButtonSubmitLarge = ({
           <div
             className={`button primary standalone${appendOrEmpty(disabled, 'disabled')}${appendOrEmpty(pulse, 'pulse')}`}
           >
-            <button onClick={() => onSubmit()} disabled={disabled}>
+            <button
+              type="button"
+              onClick={() => onSubmit()}
+              disabled={disabled}
+            >
               {icon && (
                 <FontAwesomeIcon
                   icon={icon}

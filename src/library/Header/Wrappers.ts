@@ -9,6 +9,7 @@ export const HeaderWrapper = styled.div`
   align-items: center;
   padding: 0.4rem 1.25rem 0.4rem 0.55rem;
   width: 100%;
+  height: 2.4rem;
 
   > div {
     display: flex;
@@ -47,9 +48,15 @@ export const HeaderWrapper = styled.div`
       justify-content: flex-end;
 
       > button {
-        opacity: 0.25;
+        opacity: 0.4;
         transition: opacity 0.2s;
-        margin-left: 1.25rem;
+        margin-left: 0.9rem;
+
+        > .svg {
+          margin-top: 0.15rem;
+          width: 0.9rem;
+          height: 0.9rem;
+        }
 
         &:hover {
           opacity: 1;

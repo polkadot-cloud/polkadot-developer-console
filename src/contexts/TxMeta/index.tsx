@@ -7,7 +7,7 @@ import type { ReactNode } from 'react';
 import { createContext, useContext, useRef, useState } from 'react';
 import * as defaults from './defaults';
 import type { TxMetaContextInterface, TxPayload } from './types';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import type { ApiInstanceId } from 'model/Api/types';
 
 export const TxMetaContext = createContext<TxMetaContextInterface>(

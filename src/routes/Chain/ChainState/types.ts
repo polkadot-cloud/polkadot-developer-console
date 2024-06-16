@@ -1,17 +1,14 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 import type {
   ChainStateSection,
   ChainUiNamespace,
   InputNamespace,
 } from 'contexts/ChainUi/types';
 import type { StorageType } from 'model/ChainState/types';
-import type {
-  PalletItemScraped,
-  PalletListItem,
-} from 'model/Metadata/Scraper/types';
+import type { PalletItemScraped, PalletListItem } from 'model/Scraper/types';
 
 export interface PalletData {
   pallets: PalletListItem[];

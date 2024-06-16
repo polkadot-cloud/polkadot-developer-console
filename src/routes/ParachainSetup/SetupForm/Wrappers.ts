@@ -110,7 +110,7 @@ export const ProgressWrapper = styled.div`
   }
 `;
 
-export const RelayIconWrapper = styled.div`
+export const ProgressBadgeWrapper = styled.div`
   margin-left: 0.6rem;
   width: 1.25rem;
   height: 1.25rem;
@@ -222,5 +222,137 @@ export const FooterButtonWrapper = styled.div`
         }
       }
     }
+  }
+`;
+
+// Wrapper for para id reservation option selection.
+export const ParaIdOptionsWrapper = styled.div`
+  flex: 1;
+  margin: 1.25rem 0;
+  display: flex;
+  flex-wrap: wrap;
+
+  > section {
+    flex-basis: 50%;
+    height: 8rem;
+
+    &:nth-child(odd) {
+      padding-right: 0.5rem;
+    }
+    &:nth-child(even) {
+      padding-left: 0.5rem;
+    }
+
+    @media (max-width: 550px) {
+      flex-basis: 100%;
+      flex-shrink: 0;
+      margin-bottom: 1rem;
+
+      &:nth-child(odd) {
+        padding-right: 0;
+      }
+      &:nth-child(even) {
+        padding-left: 0;
+      }
+    }
+
+    > .inner {
+      border: 1px solid var(--border-secondary-color);
+      background-color: var(--background-default);
+      border-radius: 0.4rem;
+      position: relative;
+      padding: 0.5rem 0.75rem;
+      padding-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      transition: border-color 0.2s;
+
+      &:hover {
+        border-color: var(--text-color-tertiary);
+      }
+
+      > h1 {
+        color: var(--text-color-primary);
+        margin-top: 0.5rem;
+      }
+
+      > .input {
+        background-color: var(--background-default);
+        margin: 0;
+
+        > input {
+          color: var(--text-color-primary);
+          padding: 0 0.5rem;
+          font-size: 1.6rem;
+        }
+      }
+
+      > h3 {
+        color: var(--text-color-secondary);
+        margin-bottom: 0.75rem;
+      }
+
+      > .foot {
+        border-top: 1px solid var(--border-primary-color);
+        background-color: var(--background-primary);
+        display: flex;
+        position: absolute;
+        align-items: center;
+        bottom: 0;
+        left: 0;
+        padding: 0.25rem;
+        padding-left: 0.5rem;
+        width: 100%;
+        transition: background-color 0.1s;
+
+        > span {
+          color: var(--text-color-tertiary);
+          opacity: 0.75;
+          display: flex;
+          align-items: center;
+
+          &:last-child {
+            flex-grow: 1;
+            justify-content: flex-end;
+            padding-right: 0.5rem;
+          }
+        }
+
+        &:hover {
+          > span > h4 {
+            color: var(--text-color-primary);
+          }
+        }
+      }
+
+      &.selected {
+        border-color: var(--accent-color-secondary);
+
+        > .foot {
+          border-top: 1px solid var(--accent-color-secondary);
+          > span {
+            opacity: 1;
+            > h4,
+            > svg {
+              color: var(--accent-color-secondary);
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+// Note displayed at the bottom of a setup step, often used to show succesful completion.
+export const SetupNote = styled.h4`
+  color: var(--text-color-tertiary);
+  font-family: InterSemiBold, sans-serif;
+  transition: color 0.15s;
+  margin: 1.5rem 0 0.5rem 0;
+
+  > svg {
+    margin-right: 0.35rem;
   }
 `;

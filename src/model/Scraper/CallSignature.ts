@@ -1,8 +1,9 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/utils/types';
-import type { PalletItemScraped } from '../Scraper/types';
+import type { AnyJson } from '@w3ux/types';
+import type { PalletItemScraped } from './types';
+import { verifyOption } from './Utils';
 
 export class FormatCallSignature {
   // The raw input config to format.
@@ -21,14 +22,11 @@ export class FormatCallSignature {
 
   // Formats `rawConfig` data into a string.
   format = () => {
-    const {
-      modifier,
-      type: { argTypes, returnType },
-    } = this.#rawConfig;
+    const { modifier, argTypes, returnType } = this.#rawConfig;
 
     // Format arguments and return types.
-    const [argFormatted, returnFormatted] = [argTypes, returnType].map(
-      (section) => this.getTypeString(section)
+    const [argFormatted, returnFormatted] = [argTypes, returnType].map((arg) =>
+      this.getTypeString(arg)
     );
 
     // Format the call signature based on formatted types and modifier.
@@ -80,77 +78,92 @@ export class FormatCallSignature {
 
   // A recursive function that formats a call signature by formatting its arguments and return
   // types.
-  getTypeString = (section: AnyJson) => {
+  getTypeString = (arg: AnyJson) => {
+    const type = arg?.class?.type;
+
     let str = '';
 
-    switch (section?.type) {
+    switch (type) {
       case 'array':
-        str = this.getTypeString(section.array.type);
+        str = this.getTypeString(arg.array.type);
         break;
 
       case 'compact':
-        str = this.getTypeString(section.sequence);
+        str = this.getTypeString(arg.compact);
         break;
 
       case 'composite':
-        str = this.getCompositeString(section);
+        str = this.getCompositeString(arg);
         break;
 
       case 'primitive':
+        str = arg.class.label();
+        break;
+
       case 'bitSequence':
-        str = this.getShortLabel(section.label);
+        str = arg.class.label();
         break;
 
       case 'sequence':
-        str = `Vec<${this.getTypeString(section.sequence)}>`;
+        str = `Vec<${this.getTypeString(arg.sequence)}>`;
         break;
 
       case 'tuple':
-        str = this.getTupleString(section);
+        str = this.getTupleString(arg);
         break;
 
       case 'variant':
-        str = this.getVariantType(section);
+        str = this.getVariantType(arg);
         break;
+
+      default:
+        str = '';
     }
+
     return str;
   };
 
   // Formats a string from a composite type.
-  getCompositeString = ({ composite, label }: AnyJson) => {
+  getCompositeString = (arg: AnyJson) => {
     let str = '';
+    const label = arg.class.label();
 
     // Expand type if short label is not defined, or if they've been defined in ignore list.
-    if (['', ...this.#ignoreLabels].includes(label.short)) {
-      str += composite.reduce((acc: string, field: AnyJson, index: number) => {
-        // Defensive: return if field type is missing.
-        if (!field?.type) {
-          return '';
-        }
-        acc = acc + this.getTypeString(field.type);
-        if (index < composite.length - 1) {
-          acc += ', ';
-        }
-        return acc;
-      }, '');
+    if (['', ...this.#ignoreLabels].includes(label)) {
+      str += arg.composite.reduce(
+        (acc: string, field: AnyJson, index: number) => {
+          // Defensive: return if field type is missing.
+          if (!field?.type) {
+            return '';
+          }
+          acc = acc + this.getTypeString(field.type);
+          if (index < arg.composite.length - 1) {
+            acc += ', ';
+          }
+          return acc;
+        },
+        ''
+      );
     } else {
-      str = `${label.short}`;
+      str = `${label}`;
     }
 
     return str;
   };
 
   // Formats a string from a variant type.
-  getVariantType = ({ variant, label }: AnyJson) => {
-    let str = `${label.short}`;
+  getVariantType = (arg: AnyJson) => {
+    const label = arg.class.label();
+
+    let str = `${label}`;
 
     // If variant is `Option`, expand signature with its `Some` type.
-    if (this.verifyOption(label.short, variant)) {
+    if (verifyOption(label, arg.variant)) {
       str +=
-        variant[1].fields.reduce(
+        arg.variant[1].fields.reduce(
           (acc: string, field: AnyJson, index: number) => {
             acc = acc + this.getTypeString(field.type);
-            if (index < variant[1].fields.length - 1) {
+            if (index < arg.variant[1].fields.length - 1) {
               acc += ', ';
             }
             return acc;
@@ -172,22 +185,4 @@ export class FormatCallSignature {
       }
       return acc;
     }, '');
-
-  // ------------------------------------------------------
-  // Class helpers
-  // ------------------------------------------------------
-
-  // Gets a short label from a label input.
-  getShortLabel = (input: string | { long: string; short: string }) =>
-    typeof input === 'string' ? input : input.short;
-
-  // Gets a long label from a label input.
-  getLongLabel = (input: string | { long: string; short: string }) =>
-    typeof input === 'string' ? input : input.long;
-
-  // Verify if a variant is an Option.
-  verifyOption = (shortLabel: string, variant: { name?: string }[]) =>
-    shortLabel === 'Option' &&
-    variant?.[0]?.name === 'None' &&
-    variant?.[1]?.name === 'Some';
 }

@@ -8,4 +8,6 @@ export interface InputCallbackProps {
   onChange?: (val: string) => void;
   // Custom logic to execute when the component renders. The input type is provided.
   onRender?: (inputType: string) => void;
+  // Custom logic to execute when component focuses.
+  onFocus?: () => void;
 }

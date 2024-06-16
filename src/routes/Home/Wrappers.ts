@@ -41,19 +41,5 @@ export const FormWrapper = styled.div`
     &.fullWidth {
       max-width: none;
     }
-
-    > h4 {
-      margin-bottom: 0.2rem;
-
-      &.note {
-        color: var(--text-color-secondary);
-        font-family: InterSemiBold, sans-serif;
-        margin: 1.5rem 0 0.5rem 0;
-
-        > .icon {
-          margin-right: 0.35rem;
-        }
-      }
-    }
   }
 `;

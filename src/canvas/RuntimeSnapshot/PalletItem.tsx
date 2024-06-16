@@ -5,10 +5,10 @@ import { motion } from 'framer-motion';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { CanvasSubheading, RuntimeItemWrapper } from 'canvas/Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { PalletItemScraped } from 'model/Metadata/Scraper/types';
+import type { PalletItemScraped } from 'model/Scraper/types';
 import { Fragment, useRef, useState } from 'react';
 import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
-import type { Sync } from '@w3ux/react-connect-kit/types';
+import type { Sync } from '@w3ux/types';
 import { EmptyItem } from './EmptyItem';
 import { getMotionProps } from './Utils';
 import type { PalletItemProps } from './types';
@@ -119,7 +119,10 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
             transform="shrink-6"
           />
         </span>
-        <button onClick={() => setPalletExpanded(!palletExpanded)}>
+        <button
+          type="button"
+          onClick={() => setPalletExpanded(!palletExpanded)}
+        >
           {name}
         </button>
       </CanvasSubheading>

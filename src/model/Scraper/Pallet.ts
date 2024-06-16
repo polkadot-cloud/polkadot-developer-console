@@ -13,7 +13,7 @@ import type {
 } from './types';
 import { MetadataScraper } from '.';
 import type { MetadataVersion } from 'model/Metadata/types';
-import type { AnyJson } from '@w3ux/utils/types';
+import type { AnyJson } from '@w3ux/types';
 
 export class PalletScraper extends MetadataScraper {
   // The pallet metadata in JSON format.
@@ -125,18 +125,14 @@ export class PalletScraper extends MetadataScraper {
     if (typeKey === 'plain') {
       scrapedType = {
         argTypes: undefined,
-        returnType: this.start(
-          (type as PalletStoragePlain).plain,
-          null,
-          options
-        ),
+        returnType: this.start((type as PalletStoragePlain).plain, options),
       };
     } else {
       const { key, value } = (type as PalleStorageMap).map;
 
       scrapedType = {
-        argTypes: this.start(key, null, options),
-        returnType: this.start(value, null, options),
+        argTypes: this.start(key, options),
+        returnType: this.start(value, options),
       };
     }
 
@@ -145,7 +141,7 @@ export class PalletScraper extends MetadataScraper {
       docs,
       modifier,
       fallback,
-      type: scrapedType,
+      ...scrapedType,
     };
   }
 
@@ -159,7 +155,7 @@ export class PalletScraper extends MetadataScraper {
     }
 
     const errorType = pallet.errors.type;
-    const scraped = this.start(errorType, null, { maxDepth: 2 })?.variant || [];
+    const scraped = this.start(errorType, { maxDepth: 2 })?.variant || [];
     return scraped;
   }
 
@@ -173,8 +169,7 @@ export class PalletScraper extends MetadataScraper {
     }
 
     const eventsType = pallet.events.type;
-    const scraped =
-      this.start(eventsType, null, { maxDepth: 2 })?.variant || [];
+    const scraped = this.start(eventsType, { maxDepth: 2 })?.variant || [];
     return scraped;
   }
 
@@ -222,10 +217,7 @@ export class PalletScraper extends MetadataScraper {
     if (!callType) {
       return [];
     }
-    const lookup = this.lookup.types.find(
-      ({ id }: { id: number }) => id === callType
-    );
-
+    const lookup = this.lookup.getType(callType);
     return lookup?.type?.def?.variant?.variants || [];
   }
 
@@ -258,7 +250,7 @@ export class PalletScraper extends MetadataScraper {
   startCallScrape(item: AnyJson) {
     const scrapedType = {
       argTypes: item.fields.map(({ type }: { type: number; docs: string[] }) =>
-        this.start(type, null)
+        this.start(type)
       ),
       returnType: '',
     };
@@ -267,7 +259,7 @@ export class PalletScraper extends MetadataScraper {
       name: item.name,
       docs: item.docs,
       modifier: '',
-      type: scrapedType,
+      ...scrapedType,
     };
 
     return result;
@@ -294,15 +286,15 @@ export class PalletScraper extends MetadataScraper {
 
         const scrapedType = {
           argTypes: undefined,
-          returnType: this.start(type, null),
+          returnType: this.start(type),
         };
 
         return {
           name,
           docs,
           modifier: '', // NOTE: This could be `null`.
-          type: scrapedType,
           value,
+          ...scrapedType,
         };
       });
     }
