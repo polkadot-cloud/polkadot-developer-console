@@ -5,6 +5,8 @@ import { HeaderToggleWrapper } from 'library/HeaderToggle/Wrapper';
 
 export const Header = () => (
   <HeaderToggleWrapper>
-    <button className={'active'}>Submit Extrinsic</button>
+    <button type="button" className={'active'}>
+      Submit Extrinsic
+    </button>
   </HeaderToggleWrapper>
 );

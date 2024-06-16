@@ -83,7 +83,9 @@ export const SignPrompt = ({
               <FontAwesomeIcon icon={faChevronsRight} transform="shrink-5" />
             </ButtonText>
           )}
-          <button onClick={() => closePrompt()}>Cancel</button>
+          <button type="button" onClick={() => closePrompt()}>
+            Cancel
+          </button>
         </div>
       </div>
     </QRViewerWrapper>

@@ -27,7 +27,7 @@ export const Submit = ({ activePallet, activeItem }: SubmitProps) => {
   const fromAddress = getFromAddress(tabId) || '';
 
   // Transaction is submittable once from address has been defined.
-  const submittable = fromAddress !== null;
+  const submittable = fromAddress !== '';
 
   // Format the transaction to submit, or return `null` if invalid.
   const getTx = () => {

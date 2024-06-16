@@ -69,7 +69,7 @@ export const Sequence = ({
               <Section indent={true}>{subInput}</Section>
             </div>
             <div>
-              <button onClick={() => removeInput(index)}>
+              <button type="button" onClick={() => removeInput(index)}>
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>

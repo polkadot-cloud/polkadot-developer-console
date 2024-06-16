@@ -24,7 +24,7 @@ export const TabOverlay = ({ id, name }: TabProps) => {
       <ConnectionIcon status={apiStatus} />
       <div className="name">{name}</div>
 
-      <button className="close">
+      <button type="button" className="close">
         <FontAwesomeIcon icon={faClose} transform="shrink-1" />
       </button>
     </TabWrapper>
