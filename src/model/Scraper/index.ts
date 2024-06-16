@@ -7,7 +7,7 @@ import type {
   ScraperConfig,
   ScraperOptions,
   TrailId,
-  TrailParam,
+  TypeParams,
   TrailParentId,
 } from './types';
 import type { MetadataLookup } from './Lookup/types';
@@ -64,11 +64,15 @@ export class MetadataScraper {
   // ------------------------------------------------------
 
   // Start scraping a type from metadata. Entry should be made from here for any new trail.
-  start(typeId: number, parent: TrailParentId, options?: ScraperOptions) {
+  start(typeId: number, options?: ScraperOptions) {
+    const parentTrailId = options?.parentTrailId || null;
+
+    // TODO: Get or initialise inputKey, and pass to classes.
+
     // Defining a new tail.
     const trail = {
-      trailId: this.newTrailId(parent),
-      parent,
+      trailId: this.newTrailId(parentTrailId),
+      parent: parentTrailId,
     };
 
     const params = {
@@ -76,12 +80,13 @@ export class MetadataScraper {
       labelsOnly: !!options?.labelsOnly,
       maxDepth: options?.maxDepth || this.#maxDepth,
     };
+
     return this.getType(typeId, params);
   }
 
   // Get a lookup type from metadata. Possible recursion when scraping type ids.
-  getType(typeId: number, trailParam: TrailParam) {
-    const { trailId, labelsOnly, maxDepth, parent } = trailParam;
+  getType(typeId: number, params: TypeParams) {
+    const { trailId, labelsOnly, maxDepth, parent } = params;
 
     const lookup = this.lookup.getType(typeId);
     const depth = this.trailDepth(trailId);
@@ -119,24 +124,24 @@ export class MetadataScraper {
     switch (type) {
       case 'array':
         result.class = new ArrayType(value as IArrayType, baseParams);
-        result.array = result.class.scrape(this, trailParam);
+        result.array = result.class.scrape(this, params);
         break;
 
       case 'bitSequence':
         result.class = new BitSequence(value as BitSequenceType, baseParams);
         if (!labelsOnly) {
-          result.bitsequence = result.class.scrape(this, trailParam);
+          result.bitsequence = result.class.scrape(this, params);
         }
         break;
 
       case 'compact':
         result.class = new Compact(value as CompactType, baseParams);
-        result.compact = result.class.scrape(this, trailParam);
+        result.compact = result.class.scrape(this, params);
         break;
 
       case 'composite':
         result.class = new Composite(value as CompositeType, baseParams);
-        result.composite = result.class.scrape(this, trailParam);
+        result.composite = result.class.scrape(this, params);
         break;
 
       case 'primitive':
@@ -146,18 +151,18 @@ export class MetadataScraper {
 
       case 'sequence':
         result.class = new Sequence(value as SequenceType, baseParams);
-        result.sequence = result.class.scrape(this, trailParam);
+        result.sequence = result.class.scrape(this, params);
         break;
 
       case 'tuple':
         result.class = new Tuple(value as TupleType, baseParams);
-        result.tuple = result.class.scrape(this, trailParam);
+        result.tuple = result.class.scrape(this, params);
         break;
 
       case 'variant':
         result.class = new Variant((value as VariantType).variants, baseParams);
         if (!labelsOnly) {
-          result.variant = result.class.scrape(this, trailParam);
+          result.variant = result.class.scrape(this, params);
         }
         break;
 

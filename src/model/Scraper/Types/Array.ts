@@ -3,7 +3,7 @@
 
 import type { MetadataScraper } from '..';
 import type { BaseParams, IArrayType, MetadataType } from './types';
-import type { TrailParam } from '../types';
+import type { TypeParams } from '../types';
 import { Base } from './Common/Base';
 
 // Class to hold an array type.
@@ -25,7 +25,7 @@ export class ArrayType extends Base implements MetadataType {
   }
 
   // Scrape array type. Overwrites `type` with scraped type.
-  scrape(scraper: MetadataScraper, trailParam: TrailParam) {
-    return scraper.getType(this.array.type, trailParam);
+  scrape(scraper: MetadataScraper, params: TypeParams) {
+    return scraper.getType(this.array.type, params);
   }
 }

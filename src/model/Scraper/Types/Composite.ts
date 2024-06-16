@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { MetadataScraper } from '..';
-import type { TrailParam } from '../types';
+import type { TypeParams } from '../types';
 import type {
   BaseParams,
   CompositeField,
@@ -42,10 +42,10 @@ export class Composite extends Base implements MetadataType {
   }
 
   // Scrape composite fields. Overwrites `fields` with scraped fields.
-  scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
+  scrape(scraper: MetadataScraper, { trailId }: TypeParams) {
     return [...this.fields].map((field) => ({
       ...field,
-      type: scraper.start(field.type, trailId),
+      type: scraper.start(field.type, { parentTrailId: trailId }),
     }));
   }
 }

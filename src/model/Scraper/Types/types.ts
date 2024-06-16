@@ -4,7 +4,7 @@
 import type { AnyJson } from '@w3ux/types';
 import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
-import type { TrailId, TrailParam, TrailParentId } from '../types';
+import type { TrailId, TypeParams, TrailParentId } from '../types';
 
 // Primitive
 export type PrimitiveType = string;
@@ -93,5 +93,5 @@ export abstract class MetadataType {
 
   // All metadata type classes must implement a `scrape` method, that converts type ids to actual
   // type metadata.
-  abstract scrape(scraper: MetadataScraper, trailParam: TrailParam): AnyJson;
+  abstract scrape(scraper: MetadataScraper, params: TypeParams): AnyJson;
 }

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { MetadataScraper } from '..';
-import type { TrailParam } from '../types';
+import type { TypeParams } from '../types';
 import type { BaseParams, BitSequenceType, MetadataType } from './types';
 import { Base } from './Common/Base';
 
@@ -24,10 +24,14 @@ export class BitSequence extends Base implements MetadataType {
   }
 
   // Scrape bitSequence type. Overwrites `bitStoreType` and `bitOrderType` with scraped types.
-  scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
+  scrape(scraper: MetadataScraper, { trailId }: TypeParams) {
     return {
-      bitOrderType: scraper.start(this.bitSequence.bitOrderType, trailId),
-      bitStoreType: scraper.start(this.bitSequence.bitStoreType, trailId),
+      bitOrderType: scraper.start(this.bitSequence.bitOrderType, {
+        parentTrailId: trailId,
+      }),
+      bitStoreType: scraper.start(this.bitSequence.bitStoreType, {
+        parentTrailId: trailId,
+      }),
     };
   }
 }

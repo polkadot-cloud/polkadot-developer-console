@@ -3,7 +3,7 @@
 
 import type { MetadataScraper } from '..';
 import type { BaseParams, MetadataType, SequenceType } from './types';
-import type { TrailParam } from '../types';
+import type { TypeParams } from '../types';
 import { Base } from './Common/Base';
 import { sequenceIsBytes } from '../Utils';
 
@@ -34,7 +34,7 @@ export class Sequence extends Base implements MetadataType {
   }
 
   // Scrape sequence type. Overwrites `type` with scraped type.
-  scrape(scraper: MetadataScraper, trailParam: TrailParam) {
-    return scraper.getType(this.innerType, trailParam);
+  scrape(scraper: MetadataScraper, params: TypeParams) {
+    return scraper.getType(this.innerType, params);
   }
 }

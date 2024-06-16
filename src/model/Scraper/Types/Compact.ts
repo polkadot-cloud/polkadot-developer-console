@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { MetadataScraper } from '..';
-import type { TrailParam } from '../types';
+import type { TypeParams } from '../types';
 import type { BaseParams, CompactType, MetadataType } from './types';
 import { Base } from './Common/Base';
 
@@ -25,7 +25,7 @@ export class Compact extends Base implements MetadataType {
   }
 
   // Scrape compact type. Overwrites `type` with scraped type.
-  scrape(scraper: MetadataScraper, trailParam: TrailParam) {
-    return scraper.getType(this.innerType, trailParam);
+  scrape(scraper: MetadataScraper, params: TypeParams) {
+    return scraper.getType(this.innerType, params);
   }
 }

@@ -3,7 +3,7 @@
 
 import type { MetadataScraper } from '..';
 import type { BaseParams, MetadataType, TupleType } from './types';
-import type { TrailParam } from '../types';
+import type { TypeParams } from '../types';
 import { Base } from './Common/Base';
 
 // Class to hold a tuple type.
@@ -24,7 +24,9 @@ export class Tuple extends Base implements MetadataType {
   }
 
   // Scrape tuple types. Overwrites the type with scraped type at each index.
-  scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
-    return this.tuple.map((id: number) => scraper.start(id, trailId));
+  scrape(scraper: MetadataScraper, { trailId }: TypeParams) {
+    return this.tuple.map((id: number) =>
+      scraper.start(id, { parentTrailId: trailId })
+    );
   }
 }

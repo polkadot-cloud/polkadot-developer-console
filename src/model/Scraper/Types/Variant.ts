@@ -3,7 +3,7 @@
 
 import type { MetadataScraper } from '..';
 import type { BaseParams, MetadataType, VariantItem } from './types';
-import type { TrailParam } from '../types';
+import type { TypeParams } from '../types';
 import { Base } from './Common/Base';
 
 // Class to hold a variant type.
@@ -24,12 +24,12 @@ export class Variant extends Base implements MetadataType {
   }
 
   // Scrape variant fields. Overwrites `fields` with scraped fields.
-  scrape(scraper: MetadataScraper, { trailId }: TrailParam) {
+  scrape(scraper: MetadataScraper, { trailId }: TypeParams) {
     return [...this.items].map((item) => ({
       ...item,
       fields: item.fields.map((field) => ({
         ...field,
-        type: scraper.start(field.type, trailId),
+        type: scraper.start(field.type, { parentTrailId: trailId }),
       })),
     }));
   }
