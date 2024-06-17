@@ -3,13 +3,7 @@
 
 import type { AnyJson } from '@w3ux/types';
 import type { MetadataVersion } from 'model/Metadata/types';
-import type {
-  ScraperConfig,
-  ScraperOptions,
-  TrailId,
-  TypeParams,
-  TrailParentId,
-} from './types';
+import type { ScraperConfig, ScraperOptions, TypeParams } from './types';
 import type { MetadataLookup } from './Lookup/types';
 import { Lookup } from './Lookup';
 import { Variant } from './Types/Variant';
@@ -29,10 +23,11 @@ import { Compact } from './Types/Compact';
 import { Primitive } from './Types/Primitive';
 import { Tuple } from './Types/Tuple';
 import { Composite } from './Types/Composite';
+import { Trails } from './Trails';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
-export class MetadataScraper {
+export class MetadataScraper extends Trails {
   // The metadata class instance.
   metadata: MetadataVersion;
 
@@ -42,16 +37,9 @@ export class MetadataScraper {
   // Maximum recursion depth for scraping types.
   #maxDepth: number | '*';
 
-  // Keep track of type trails that have happened for a given scrape. Allows for checking cyclic
-  // types.
-  #trails: Record<string, { parent: TrailParentId; trail: TrailId[] }> = {};
-
-  get trails() {
-    return this.#trails;
-  }
-
   // Initialize the class with metadata.
   constructor(metadata: MetadataVersion, config: ScraperConfig) {
+    super();
     this.metadata = metadata;
     this.#maxDepth = config.maxDepth;
 
@@ -98,12 +86,8 @@ export class MetadataScraper {
     const depth = this.trailDepth(trailId);
 
     // Exit if type is cyclic.
-    const cyclic = this.isTrailCyclic(trailId, typeId);
-    if (cyclic) {
-      return {
-        cyclic: true,
-        typeId,
-      };
+    if (this.isTrailCyclic(trailId, typeId)) {
+      return null;
     }
 
     // Exit if lookup not found.
@@ -178,59 +162,5 @@ export class MetadataScraper {
     }
 
     return result;
-  }
-
-  // ------------------------------------------------------
-  // Class helpers.
-  // ------------------------------------------------------
-
-  // Generates a new trail Id for a new scrape.
-  newTrailId(parent: TrailParentId): number {
-    // Get the largest trail record key, and increment it by one.
-    const trailKeys = Object.keys(this.#trails);
-    const trailKeysOrDefault = Object.keys(this.#trails).length
-      ? trailKeys
-      : [0];
-    const trailId = Math.max(...trailKeysOrDefault.map((k) => Number(k))) + 1;
-
-    // Add new trail id to trails record.
-    this.#trails[trailId] = {
-      parent,
-      trail: [],
-    };
-    return trailId;
-  }
-
-  // Calculate the depth of a trail.
-  trailDepth(trailId: TrailId): number {
-    const length = this.#trails[trailId].trail.length;
-    // As long as a parent exists, recursively calculate its length and add it to the current
-    // length.
-    const parent = this.#trails[trailId].parent;
-    if (parent) {
-      return length + this.trailDepth(parent);
-    }
-    return length;
-  }
-
-  // Calculate an entire trail, taking parents.
-  getTrail(trailId: TrailId): TrailId[] {
-    const trail = this.#trails[trailId].trail;
-    const parent = this.#trails[trailId].parent;
-
-    if (parent) {
-      return this.getTrail(parent).concat(trail);
-    }
-    return trail;
-  }
-
-  // Calculate whether a trail has become cyclic.
-  isTrailCyclic(trailId: TrailId, typeId: number): boolean {
-    return this.getTrail(trailId).includes(typeId);
-  }
-
-  // Append a typeId to a #trails.trail record.
-  appendTrail(trailId: TrailId, typeId: number) {
-    this.#trails[trailId].trail.push(typeId);
   }
 }

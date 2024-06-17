@@ -46,10 +46,19 @@ export class Composite extends Base implements MetadataType {
     return [...this.fields].map((field, index) => {
       const inputKey = `${this.inputKey}_${index}`;
 
-      return {
+      const result = {
         ...field,
-        type: scraper.start(field.type, { parentTrailId: trailId, inputKey }),
       };
+
+      // If this field is a known custom type, do not scrape child types. Otherwise, continue.
+      if (this.input() === 'indent') {
+        result.type = scraper.start(field.type, {
+          parentTrailId: trailId,
+          inputKey,
+        });
+      }
+
+      return result;
     });
   }
 }
