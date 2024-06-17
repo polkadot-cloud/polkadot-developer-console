@@ -26,14 +26,15 @@ export class Variant extends Base implements MetadataType {
   // Scrape variant fields. Overwrites `fields` with scraped fields.
   scrape(scraper: MetadataScraper, { trailId }: TypeParams) {
     // NOTE: This input key logic may need to be revised.
-    return [...this.items].map((item) => ({
-      ...item,
-      fields: item.fields.map((field, index) => {
-        const inputKey = `${this.inputKey}_${index}`;
-
+    return [...this.items].map(({ index, name, fields }) => ({
+      index,
+      name,
+      fields: fields.map(({ type, name: fieldName, typeName }, i) => {
+        const inputKey = `${this.inputKey}_${i}`;
         return {
-          ...field,
-          type: scraper.start(field.type, { parentTrailId: trailId, inputKey }),
+          name: fieldName,
+          typeName,
+          ...scraper.start(type, { parentTrailId: trailId, inputKey }),
         };
       }),
     }));

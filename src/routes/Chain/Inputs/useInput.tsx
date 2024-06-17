@@ -200,7 +200,7 @@ export const useInput = () => {
       <Section indent={true}>
         {arg.composite.map((field: AnyJson, index: number) => (
           <Fragment key={`input_arg_${inputKey}_${index}`}>
-            {readInput(field.type, config, { prependLabel: field?.name })}
+            {readInput(field, config, { prependLabel: field?.name })}
           </Fragment>
         ))}
       </Section>
@@ -230,12 +230,15 @@ export const useInput = () => {
         {/* Render selected variant item's fields if they exist. */}
         {selectedItemFields && (
           <Section indent={true}>
-            {selectedItemFields.map((field: AnyJson, index: number) => (
-              <Fragment key={`input_arg_${inputKey}_${index}`}>
-                <h4 className="standalone">{field.typeName}</h4>
-                {readInput(field.type, config)}
-              </Fragment>
-            ))}
+            {selectedItemFields.map((field: AnyJson, index: number) => {
+              const { typeName, ...rest } = field;
+              return (
+                <Fragment key={`input_arg_${inputKey}_${index}`}>
+                  <h4 className="standalone">{typeName}</h4>
+                  {readInput(rest, config)}
+                </Fragment>
+              );
+            })}
           </Section>
         )}
       </>
