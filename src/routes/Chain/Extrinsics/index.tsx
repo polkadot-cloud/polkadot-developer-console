@@ -75,7 +75,7 @@ export const Extrinsics = () => {
     if (!activePallet || !activeItem) {
       return null;
     }
-    // NOTE: Currently limiting scraper to 7 recursive levels to avoid app freezing.
+    // NOTE: Currently limiting scraper to 7 recursive levels to improve performance.
     const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
     return scraper.getCallItem(activePallet, activeItem);
   }, [items, activeItem, activePallet]);
