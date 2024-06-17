@@ -27,8 +27,8 @@ export class Tuple extends Base implements MetadataType {
   scrape(scraper: MetadataScraper, { trailId }: TypeParams) {
     return this.tuple.map((id: number, index) => {
       const inputKey = `${this.inputKey}_${index}`;
-
-      return scraper.start(id, { parentTrailId: trailId, inputKey });
+      const result = scraper.start(id, { parentTrailId: trailId, inputKey });
+      return result;
     });
   }
 }

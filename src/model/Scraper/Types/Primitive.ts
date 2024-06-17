@@ -1,6 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
+import type { MetadataScraper } from '..';
 import { Base } from './Common/Base';
 import type { BaseParams, MetadataType } from './types';
 
@@ -34,7 +35,8 @@ export class Primitive extends Base implements MetadataType {
   }
 
   // Scrape primitive type. Simply returns the type.
-  scrape() {
+  scrape(scraper: MetadataScraper) {
+    scraper.result[this.inputKey] = this.primitive;
     return this.primitive;
   }
 }
