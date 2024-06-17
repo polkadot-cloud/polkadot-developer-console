@@ -25,10 +25,15 @@ export class Tuple extends Base implements MetadataType {
 
   // Scrape tuple types. Overwrites the type with scraped type at each index.
   scrape(scraper: MetadataScraper, { trailId }: TypeParams) {
-    return this.tuple.map((id: number, index) => {
+    const scraped = this.tuple.map((id: number, index) => {
       const inputKey = `${this.inputKey}_${index}`;
       const result = scraper.start(id, { parentTrailId: trailId, inputKey });
       return result;
     });
+
+    // Register tuple type input key.
+    scraper.result[this.inputKey] = { class: this, tuple: scraped };
+
+    return scraped;
   }
 }
