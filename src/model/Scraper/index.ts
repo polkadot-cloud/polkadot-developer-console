@@ -37,6 +37,9 @@ export class MetadataScraper extends Trails {
   // Maximum recursion depth for scraping types.
   #maxDepth: number | '*';
 
+  // Map input keys to class.
+  keysToClass: Record<string, AnyJson> = {};
+
   // Initialize the class with metadata.
   constructor(metadata: MetadataVersion, config: ScraperConfig) {
     super();
@@ -160,6 +163,9 @@ export class MetadataScraper extends Trails {
       default:
         return null;
     }
+
+    // Update keys to class map.
+    this.keysToClass[inputKey] = result.class;
 
     return result;
   }
