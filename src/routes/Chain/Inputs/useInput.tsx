@@ -387,10 +387,9 @@ export const useInput = () => {
   };
 
   // Gets a selected variant item, or falls back to the first variant.
-  const getSelectedVariant = (
-    arg: AnyJson,
-    { namespace, inputKey }: InputArg
-  ) => {
+  const getSelectedVariant = (arg: AnyJson, { namespace }: InputArg) => {
+    const { inputKey } = arg.class;
+
     // Get the current variant value, if any.
     const currentInputArg = getInputArgsAtKey(tabId, namespace, inputKey);
 
