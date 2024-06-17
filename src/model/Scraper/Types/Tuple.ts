@@ -31,9 +31,6 @@ export class Tuple extends Base implements MetadataType {
       return result;
     });
 
-    // Register tuple type input key.
-    scraper.result[this.inputKey] = { class: this, tuple: scraped };
-
     return scraped;
   }
 }
