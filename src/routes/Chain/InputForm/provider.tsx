@@ -84,7 +84,7 @@ export const InputFormProvider = ({
     const isEmpty = Object.values(inputKeys).length === 0;
 
     // Determine whether there is a single argument or a tuple of arguments.
-    const isTuple = Array.isArray(inputKeys[1]);
+    const isTuple = Object.values(inputKeys)?.[0]?.[0] === 'Tuple';
 
     // Take the resulting arguments for query submission. If there are no inputs, no
     // arguments are needed for the query.
