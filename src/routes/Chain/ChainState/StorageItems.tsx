@@ -68,7 +68,6 @@ export const StorageItems = () => {
 
     const scraper = new PalletScraper(Metadata, { maxDepth: '*' });
     const result = scraper.getStorageItem(activePallet, activeItem);
-
     return result;
   }, [items, activeItem, activePallet]);
 
