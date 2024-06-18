@@ -72,7 +72,7 @@ export class MetadataScraper extends Trails {
     };
 
     // Define definite params from options.
-    const params = {
+    const params: TypeParams = {
       ...trail,
       indexKey,
       labelsOnly: !!options?.labelsOnly,
