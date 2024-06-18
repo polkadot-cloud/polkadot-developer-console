@@ -310,6 +310,17 @@ export const useInput = () => {
           return (
             <Hash
               {...inputArgConfig}
+              onMount={(value) => {
+                setInputArgAtKey(tabId, namespace, inputKey, value);
+              }}
+              onRender={(inputType) => {
+                if (inputKeysRef.current) {
+                  inputKeysRef.current[inputKey] = inputType;
+                }
+              }}
+              onChange={(val) => {
+                setInputArgAtKey(tabId, namespace, inputKey, val);
+              }}
               value={
                 getInputArgsAtKey(tabId, namespace, inputKey) ||
                 DefaultInputs.defaultValue(input)
@@ -329,8 +340,8 @@ export const useInput = () => {
                   inputArgConfig.namespace,
                   inputKey
                 )}
-                onMount={(currentValue) => {
-                  setInputArgAtKey(tabId, namespace, inputKey, currentValue);
+                onMount={(value) => {
+                  setInputArgAtKey(tabId, namespace, inputKey, value);
                 }}
                 onRender={(inputType) => {
                   if (inputKeysRef.current) {
@@ -354,6 +365,7 @@ export const useInput = () => {
           return (
             <Section indent={indent}>
               <Checkbox
+                {...inputArgConfig}
                 onMount={(value) => {
                   setInputArgAtKey(tabId, namespace, inputKey, value);
                 }}
@@ -365,7 +377,6 @@ export const useInput = () => {
                 onChange={(val) => {
                   setInputArgAtKey(tabId, namespace, inputKey, val);
                 }}
-                {...inputArgConfig}
                 label={label}
                 checked={getInputArgsAtKey(tabId, namespace, inputKey) || false}
               />
