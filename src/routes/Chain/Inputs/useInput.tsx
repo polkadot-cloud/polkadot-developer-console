@@ -114,7 +114,9 @@ export const useInput = () => {
   ) => {
     const label = arg.sequence.class.label();
     const input = arg.class.input();
-    const inputKey = arg.class.inputKey;
+
+    // TODO: pass indexKey to inputArgs.
+    // const indexKey = arg.class.indextKey;
 
     // If sequence is a vector of bytes, render a hash input.
     if (input !== 'array') {
@@ -130,12 +132,7 @@ export const useInput = () => {
     return (
       <Section>
         <h4 className="marginTop">{`${label}[]`}</h4>
-        <Sequence
-          {...config}
-          inputKey={inputKey}
-          arrayInput={arg.sequence}
-          maxLength={maxLength}
-        />
+        <Sequence {...config} arrayInput={arg.sequence} maxLength={maxLength} />
       </Section>
     );
   };
@@ -143,7 +140,7 @@ export const useInput = () => {
   // Renders a compact input component.
   const renderCompact = (arg: AnyJson, config: InputArgConfig) => {
     const { compact } = arg;
-    const { inputKey } = arg.class;
+    const { inputKey } = config;
 
     // Record this input type.
     addInputTypeAtKey(config.inputKeysRef, inputKey, 'Compact');
@@ -151,7 +148,7 @@ export const useInput = () => {
     // Render compact input.
     return (
       <Fragment key={`input_arg_${inputKey}_0`}>
-        {readInput(compact, config)}
+        {readInput(compact, { ...config, inputKey: `${inputKey}_0` })}
       </Fragment>
     );
   };
@@ -159,7 +156,7 @@ export const useInput = () => {
   // Renders a tuple input component.
   const renderTuple = (arg: AnyJson, config: InputArgConfig) => {
     const { tuple } = arg;
-    const { inputKey } = arg.class;
+    const { inputKey } = config;
 
     // Record this input type.
     addInputTypeAtKey(config.inputKeysRef, inputKey, 'Tuple');
@@ -169,7 +166,7 @@ export const useInput = () => {
       <Section indent={true}>
         {tuple.map((item: AnyJson, index: number) => (
           <Fragment key={`input_arg_${inputKey}_${index}`}>
-            {readInput(item, config)}
+            {readInput(item, { ...config, inputKey: `${inputKey}_${index}` })}
           </Fragment>
         ))}
       </Section>
@@ -178,7 +175,7 @@ export const useInput = () => {
 
   // Renders a composite input component.
   const renderComposite = (arg: AnyJson, config: InputArgConfig) => {
-    const { inputKey } = arg.class;
+    const { inputKey } = config;
     const label = arg.class.label();
     const input = arg.class.input();
 
@@ -198,18 +195,26 @@ export const useInput = () => {
     // Render the composite fields.
     return (
       <Section indent={true}>
-        {arg.composite.map((field: AnyJson, index: number) => (
-          <Fragment key={`input_arg_${inputKey}_${index}`}>
-            {readInput(field, config, { prependLabel: field?.name })}
-          </Fragment>
-        ))}
+        {arg.composite.map((field: AnyJson, index: number) => {
+          const childKey = `${inputKey}_${index}`;
+
+          return (
+            <Fragment key={`input_arg_${childKey}`}>
+              {readInput(
+                field,
+                { ...config, inputKey: childKey },
+                { prependLabel: field?.name }
+              )}
+            </Fragment>
+          );
+        })}
       </Section>
     );
   };
 
   // Renders a variant input component.
   const renderVariant = (arg: AnyJson, config: InputArgConfig) => {
-    const { inputKey } = arg.class;
+    const { inputKey } = config;
 
     // Get the selected variant item, or fall back to first item otherwise.
     const selectedItem = getSelectedVariant(arg, config);
@@ -232,10 +237,12 @@ export const useInput = () => {
           <Section indent={true}>
             {selectedItemFields.map((field: AnyJson, index: number) => {
               const { typeName, ...rest } = field;
+              const childKey = `${inputKey}_${index}`;
+
               return (
-                <Fragment key={`input_arg_${inputKey}_${index}`}>
+                <Fragment key={`input_arg_${childKey}`}>
                   <h4 className="standalone">{typeName}</h4>
-                  {readInput(rest, config)}
+                  {readInput(rest, { ...config, inputKey: childKey })}
                 </Fragment>
               );
             })}
@@ -262,10 +269,11 @@ export const useInput = () => {
       overrideInput = null,
     } = options;
 
-    const { inputKeysRef, namespace, activePallet, activeItem } =
+    const { inputKeysRef, inputKey, namespace, activePallet, activeItem } =
       inputArgConfig;
 
-    const inputKey = arg.class.inputKey;
+    // TODO: pass indexKey to inputArgs.
+    // const indexKey = arg.class.indextKey;
 
     const label = !arg.class.label()
       ? undefined
@@ -302,7 +310,6 @@ export const useInput = () => {
           return (
             <Hash
               {...inputArgConfig}
-              inputKey={inputKey}
               value={
                 getInputArgsAtKey(tabId, namespace, inputKey) ||
                 DefaultInputs.defaultValue(input)
@@ -348,7 +355,6 @@ export const useInput = () => {
             <Section indent={indent}>
               <Checkbox
                 {...inputArgConfig}
-                inputKey={inputKey}
                 label={label}
                 checked={getInputArgsAtKey(tabId, namespace, inputKey) || false}
               />

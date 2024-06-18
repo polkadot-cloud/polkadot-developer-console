@@ -38,6 +38,7 @@ export const InputForm = ({
             {readInput(arg, {
               activePallet,
               activeItem,
+              inputKey: `${index}`,
               namespace,
               inputKeysRef,
             })}

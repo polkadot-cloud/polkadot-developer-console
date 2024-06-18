@@ -25,10 +25,10 @@ export type InputArgConfig = InputCallbackProps & {
   activeItem: string | null;
   namespace: InputNamespace;
   inputKeysRef: RefObject<Record<string, string>>;
+  inputKey: string;
 };
 
 export type HashProps = InputArgConfig & {
-  inputKey: string;
   value: string | number;
 };
 
@@ -40,12 +40,10 @@ export type SelectProps = InputCallbackProps & {
 
 export type CheckboxProps = InputArgConfig & {
   label?: string | number;
-  inputKey: string;
   checked: boolean;
 };
 
 export type SequenceProps = InputArgConfig & {
-  inputKey: string;
   arrayInput: AnyJson;
   maxLength?: number;
 };

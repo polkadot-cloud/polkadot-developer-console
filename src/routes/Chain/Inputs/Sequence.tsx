@@ -48,11 +48,11 @@ export const Sequence = ({
   return (
     <>
       {indices.map((index) => {
-        const subInputKey = `${inputKey}_${index}`;
+        const childKey = `${inputKey}_${index}`;
 
         // Accumulate input key.
         if (inputKeysRef.current) {
-          inputKeysRef.current[subInputKey] = `${INPUT_TYPE}Item`;
+          inputKeysRef.current[childKey] = `${INPUT_TYPE}Item`;
         }
 
         // Generate input for this index.
@@ -61,10 +61,11 @@ export const Sequence = ({
           activeItem,
           namespace,
           inputKeysRef,
+          inputKey: childKey,
         });
 
         return (
-          <SequenceItemWrapper key={`input_arg_${subInputKey}`}>
+          <SequenceItemWrapper key={`input_arg_${childKey}`}>
             <div>
               <Section indent={true}>{subInput}</Section>
             </div>
