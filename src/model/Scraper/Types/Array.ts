@@ -26,9 +26,10 @@ export class ArrayType extends Base implements MetadataType {
 
   // Scrape array type. Overwrites `type` with scraped type.
   scrape(scraper: MetadataScraper, params: TypeParams) {
+    const indexKey = `${this.indexKey}_0`;
     return scraper.getType(this.array.type, {
       ...params,
-      inputKey: `${this.inputKey}_0`,
+      indexKey,
     });
   }
 }

@@ -31,18 +31,24 @@ export interface ChainUiContextInterface {
     value: boolean
   ) => void;
   getInputArgs: (tabId: number, section: InputNamespace) => InputArgs | null;
-  getInputArgsAtKey: (
+  getInputArgAtKey: (
     tabId: number,
     section: InputNamespace,
-    key: string
-  ) => InputArg | undefined;
+    inputKey: string
+  ) => { indexKey: string; arg: InputArg } | undefined;
   setInputArgAtKey: (
     tabId: number,
     section: InputNamespace,
-    key: string,
+    keys: InputArgTypeKeys,
     arg: InputArg
   ) => void;
   resetInputArgSection: (tabId: number, section: InputNamespace) => void;
+}
+
+// Input arg type keys.
+export interface InputArgTypeKeys {
+  indexKey: string;
+  inputKey: string;
 }
 
 // Types associated with chain ui.

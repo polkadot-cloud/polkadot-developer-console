@@ -28,11 +28,11 @@ export class BitSequence extends Base implements MetadataType {
     return {
       bitOrderType: scraper.start(this.bitSequence.bitOrderType, {
         parentTrailId: trailId,
-        inputKey: `${this.inputKey}_0`,
+        indexKey: `${this.indexKey}_0`,
       }),
       bitStoreType: scraper.start(this.bitSequence.bitStoreType, {
         parentTrailId: trailId,
-        inputKey: `${this.inputKey}_1`,
+        indexKey: `${this.indexKey}_1`,
       }),
     };
   }

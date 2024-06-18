@@ -4,30 +4,34 @@
 import { Switch } from 'library/Switch';
 import { useEffect } from 'react';
 import type { CheckboxProps } from './types';
-import { useActiveTab } from 'contexts/ActiveTab';
-import { useChainUi } from 'contexts/ChainUi';
 
 export const Checkbox = ({
-  inputKey,
-  namespace,
-  inputKeysRef,
   label,
   checked,
+  onMount,
+  onRender,
+  onChange,
 }: CheckboxProps) => {
-  const { tabId } = useActiveTab();
-  const { setInputArgAtKey } = useChainUi();
-
   // The input arg type of this component.
   const INPUT_TYPE = 'Checkbox';
 
-  // Accumulate input key.
-  if (inputKeysRef.current) {
-    inputKeysRef.current[inputKey] = INPUT_TYPE;
+  // Run `onRender` function.
+  if (onRender !== undefined) {
+    onRender(INPUT_TYPE);
   }
 
-  // Update input arg value to the default value on initial render.
+  // Handle checkbox change
+  const handleCheckboxChange = (val: boolean) => {
+    if (onChange !== undefined) {
+      onChange(val);
+    }
+  };
+
+  // Call on mount logic in initial render if provided.
   useEffect(() => {
-    setInputArgAtKey(tabId, namespace, inputKey, checked);
+    if (onMount !== undefined) {
+      onMount(checked);
+    }
   }, []);
 
   return (
@@ -37,7 +41,7 @@ export const Checkbox = ({
         scale={0.85}
         active={checked}
         disabled={false}
-        onSwitch={() => setInputArgAtKey(tabId, namespace, inputKey, !checked)}
+        onSwitch={() => handleCheckboxChange(!checked)}
       />
     </>
   );

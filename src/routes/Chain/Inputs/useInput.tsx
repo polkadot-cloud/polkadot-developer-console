@@ -24,7 +24,7 @@ export const useInput = () => {
   const { chainSpec } = useChain();
   const { getAccounts } = useAccounts();
   const { tabId, metaKey } = useActiveTab();
-  const { setInputArgAtKey, getInputArgsAtKey } = useChainUi();
+  const { setInputArgAtKey, getInputArgAtKey } = useChainUi();
 
   const accounts = getAccounts(chainSpec);
 
@@ -114,7 +114,6 @@ export const useInput = () => {
   ) => {
     const label = arg.sequence.class.label();
     const input = arg.class.input();
-    const inputKey = arg.class.inputKey;
 
     // If sequence is a vector of bytes, render a hash input.
     if (input !== 'array') {
@@ -130,12 +129,7 @@ export const useInput = () => {
     return (
       <Section>
         <h4 className="marginTop">{`${label}[]`}</h4>
-        <Sequence
-          {...config}
-          inputKey={inputKey}
-          arrayInput={arg.sequence}
-          maxLength={maxLength}
-        />
+        <Sequence {...config} arrayInput={arg.sequence} maxLength={maxLength} />
       </Section>
     );
   };
@@ -143,7 +137,7 @@ export const useInput = () => {
   // Renders a compact input component.
   const renderCompact = (arg: AnyJson, config: InputArgConfig) => {
     const { compact } = arg;
-    const { inputKey } = arg.class;
+    const { inputKey } = config;
 
     // Record this input type.
     addInputTypeAtKey(config.inputKeysRef, inputKey, 'Compact');
@@ -151,7 +145,7 @@ export const useInput = () => {
     // Render compact input.
     return (
       <Fragment key={`input_arg_${inputKey}_0`}>
-        {readInput(compact, config)}
+        {readInput(compact, { ...config, inputKey: `${inputKey}_0` })}
       </Fragment>
     );
   };
@@ -159,7 +153,7 @@ export const useInput = () => {
   // Renders a tuple input component.
   const renderTuple = (arg: AnyJson, config: InputArgConfig) => {
     const { tuple } = arg;
-    const { inputKey } = arg.class;
+    const { inputKey } = config;
 
     // Record this input type.
     addInputTypeAtKey(config.inputKeysRef, inputKey, 'Tuple');
@@ -169,7 +163,7 @@ export const useInput = () => {
       <Section indent={true}>
         {tuple.map((item: AnyJson, index: number) => (
           <Fragment key={`input_arg_${inputKey}_${index}`}>
-            {readInput(item, config)}
+            {readInput(item, { ...config, inputKey: `${inputKey}_${index}` })}
           </Fragment>
         ))}
       </Section>
@@ -178,7 +172,7 @@ export const useInput = () => {
 
   // Renders a composite input component.
   const renderComposite = (arg: AnyJson, config: InputArgConfig) => {
-    const { inputKey } = arg.class;
+    const { inputKey } = config;
     const label = arg.class.label();
     const input = arg.class.input();
 
@@ -198,18 +192,26 @@ export const useInput = () => {
     // Render the composite fields.
     return (
       <Section indent={true}>
-        {arg.composite.map((field: AnyJson, index: number) => (
-          <Fragment key={`input_arg_${inputKey}_${index}`}>
-            {readInput(field, config, { prependLabel: field?.name })}
-          </Fragment>
-        ))}
+        {arg.composite.map((field: AnyJson, index: number) => {
+          const childKey = `${inputKey}_${index}`;
+
+          return (
+            <Fragment key={`input_arg_${childKey}`}>
+              {readInput(
+                field,
+                { ...config, inputKey: childKey },
+                { prependLabel: field?.name }
+              )}
+            </Fragment>
+          );
+        })}
       </Section>
     );
   };
 
   // Renders a variant input component.
   const renderVariant = (arg: AnyJson, config: InputArgConfig) => {
-    const { inputKey } = arg.class;
+    const { inputKey } = config;
 
     // Get the selected variant item, or fall back to first item otherwise.
     const selectedItem = getSelectedVariant(arg, config);
@@ -232,10 +234,12 @@ export const useInput = () => {
           <Section indent={true}>
             {selectedItemFields.map((field: AnyJson, index: number) => {
               const { typeName, ...rest } = field;
+              const childKey = `${inputKey}_${index}`;
+
               return (
-                <Fragment key={`input_arg_${inputKey}_${index}`}>
+                <Fragment key={`input_arg_${childKey}`}>
                   <h4 className="standalone">{typeName}</h4>
-                  {readInput(rest, config)}
+                  {readInput(rest, { ...config, inputKey: childKey })}
                 </Fragment>
               );
             })}
@@ -262,16 +266,32 @@ export const useInput = () => {
       overrideInput = null,
     } = options;
 
-    const { inputKeysRef, namespace, activePallet, activeItem } =
+    const { inputKeysRef, inputKey, namespace, activePallet, activeItem } =
       inputArgConfig;
 
-    const inputKey = arg.class.inputKey;
+    const { indexKey } = arg.class;
 
+    // Group input and index key to store in input arg state.
+    const keys = { inputKey, indexKey };
+
+    // Determine input label.
     const label = !arg.class.label()
       ? undefined
       : `${prependLabel ? `${prependLabel} ` : ``}${arg.class.label()}`;
 
+    // Get the input type.
     const input = overrideInput || arg.class.input();
+
+    // Get the current input value.
+    const inputArg = getInputArgAtKey(tabId, namespace, inputKey);
+    const inputValue = inputArg?.arg;
+
+    // General `onRender` callback that registers input type with key.
+    const onRender = (inputType: string) => {
+      if (inputKeysRef.current) {
+        inputKeysRef.current[inputKey] = inputType;
+      }
+    };
 
     return (() => {
       switch (input) {
@@ -280,18 +300,14 @@ export const useInput = () => {
           return (
             <AccountId32
               uid={`${metaKey}_${namespace}_${activePallet}_${activeItem}_${inputKey}`}
-              defaultAddress={getInputArgsAtKey(tabId, namespace, inputKey)}
+              defaultAddress={inputValue}
               accounts={accounts}
               onMount={(selectedAddress) => {
-                setInputArgAtKey(tabId, namespace, inputKey, selectedAddress);
+                setInputArgAtKey(tabId, namespace, keys, selectedAddress);
               }}
-              onRender={(inputType) => {
-                if (inputKeysRef.current) {
-                  inputKeysRef.current[inputKey] = inputType;
-                }
-              }}
+              onRender={onRender}
               onChange={(val) => {
-                setInputArgAtKey(tabId, namespace, inputKey, val);
+                setInputArgAtKey(tabId, namespace, keys, val);
               }}
             />
           );
@@ -302,11 +318,14 @@ export const useInput = () => {
           return (
             <Hash
               {...inputArgConfig}
-              inputKey={inputKey}
-              value={
-                getInputArgsAtKey(tabId, namespace, inputKey) ||
-                DefaultInputs.defaultValue(input)
-              }
+              onMount={(value) => {
+                setInputArgAtKey(tabId, namespace, keys, value);
+              }}
+              onRender={onRender}
+              onChange={(val) => {
+                setInputArgAtKey(tabId, namespace, keys, val);
+              }}
+              value={inputValue || DefaultInputs.defaultValue(input)}
             />
           );
 
@@ -317,26 +336,13 @@ export const useInput = () => {
               <Select
                 label={label}
                 values={values || []}
-                value={getInputArgsAtKey(
-                  tabId,
-                  inputArgConfig.namespace,
-                  inputKey
-                )}
-                onMount={(currentValue) => {
-                  setInputArgAtKey(tabId, namespace, inputKey, currentValue);
+                value={inputValue}
+                onMount={(value) => {
+                  setInputArgAtKey(tabId, namespace, keys, value);
                 }}
-                onRender={(inputType) => {
-                  if (inputKeysRef.current) {
-                    inputKeysRef.current[inputKey] = inputType;
-                  }
-                }}
+                onRender={onRender}
                 onChange={(val) => {
-                  setInputArgAtKey(
-                    tabId,
-                    inputArgConfig.namespace,
-                    inputKey,
-                    val
-                  );
+                  setInputArgAtKey(tabId, inputArgConfig.namespace, keys, val);
                 }}
               />
             </Section>
@@ -348,9 +354,15 @@ export const useInput = () => {
             <Section indent={indent}>
               <Checkbox
                 {...inputArgConfig}
-                inputKey={inputKey}
+                onMount={(value) => {
+                  setInputArgAtKey(tabId, namespace, keys, value);
+                }}
+                onRender={onRender}
+                onChange={(val) => {
+                  setInputArgAtKey(tabId, namespace, keys, val);
+                }}
                 label={label}
-                checked={getInputArgsAtKey(tabId, namespace, inputKey) || false}
+                checked={inputValue || false}
               />
             </Section>
           );
@@ -362,21 +374,14 @@ export const useInput = () => {
             <Section indent={indent}>
               <Textbox
                 onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, inputKey, value);
+                  setInputArgAtKey(tabId, namespace, keys, value);
                 }}
-                onRender={(inputType) => {
-                  if (inputKeysRef.current) {
-                    inputKeysRef.current[inputKey] = inputType;
-                  }
-                }}
+                onRender={onRender}
                 onChange={(val) => {
-                  setInputArgAtKey(tabId, namespace, inputKey, val);
+                  setInputArgAtKey(tabId, namespace, keys, val);
                 }}
                 label={label}
-                value={
-                  getInputArgsAtKey(tabId, namespace, inputKey) ||
-                  DefaultInputs.defaultValue(input)
-                }
+                value={inputValue || DefaultInputs.defaultValue(input)}
                 numeric={input === 'number'}
               />
             </Section>
@@ -394,7 +399,7 @@ export const useInput = () => {
     const { inputKey } = arg.class;
 
     // Get the current variant value, if any.
-    const currentInputArg = getInputArgsAtKey(tabId, namespace, inputKey);
+    const currentInputArg = getInputArgAtKey(tabId, namespace, inputKey)?.arg;
 
     // Fall back to the first variant if no value is set.
     return ![undefined, ''].includes(currentInputArg)
