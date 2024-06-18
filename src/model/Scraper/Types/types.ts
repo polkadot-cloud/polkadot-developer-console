@@ -72,7 +72,7 @@ export interface BaseParams {
     trailId: TrailId;
     parent: TrailParentId;
   };
-  inputKey: string;
+  indexKey: string;
 }
 
 // Metadata type required interface.

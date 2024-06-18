@@ -15,6 +15,7 @@ import type {
   CompactType,
   TupleType,
   CompositeType,
+  MetadataType,
 } from './Types/types';
 import { Sequence } from './Types/Sequence';
 import { ArrayType } from './Types/Array';
@@ -37,8 +38,8 @@ export class MetadataScraper extends Trails {
   // Maximum recursion depth for scraping types.
   #maxDepth: number | '*';
 
-  // Map input keys to class.
-  keysToClass: Record<string, AnyJson> = {};
+  // Map index keys to scraped type class.
+  classIndex: Record<string, AnyJson> = {};
 
   // Initialize the class with metadata.
   constructor(metadata: MetadataVersion, config: ScraperConfig) {
@@ -60,9 +61,9 @@ export class MetadataScraper extends Trails {
     // assumes the start of a new scrape.
     const parentTrailId = options?.parentTrailId || null;
 
-    // Get the input key, or set to '0' if no input key is provided. No input key assumes the start
-    // of a new scrape. Input keys are used to keep track of a recursive index of a type.
-    const inputKey = options?.inputKey || '0';
+    // Get the index key, or set to '0' if no index key is provided. No index key assumes the start
+    // of a new scrape. Index keys are used to keep track of a recursive index of a type.
+    const indexKey = options?.indexKey || '0';
 
     // Defining this new trail.
     const trail = {
@@ -71,9 +72,9 @@ export class MetadataScraper extends Trails {
     };
 
     // Define definite params from options.
-    const params = {
+    const params: TypeParams = {
       ...trail,
-      inputKey,
+      indexKey,
       labelsOnly: !!options?.labelsOnly,
       maxDepth: options?.maxDepth || this.#maxDepth,
     };
@@ -83,7 +84,7 @@ export class MetadataScraper extends Trails {
 
   // Get a lookup type from metadata. Possible recursion when scraping type ids.
   getType(typeId: number, params: TypeParams) {
-    const { trailId, inputKey, labelsOnly, maxDepth, parent } = params;
+    const { trailId, indexKey, labelsOnly, maxDepth, parent } = params;
 
     const lookup = this.lookup.getType(typeId);
     const depth = this.trailDepth(trailId);
@@ -107,7 +108,7 @@ export class MetadataScraper extends Trails {
     this.appendTrail(trailId, typeId);
 
     // Parameters for Base metadata type classes.
-    const baseParams = { lookup, depth, trail: { trailId, parent }, inputKey };
+    const baseParams = { lookup, depth, trail: { trailId, parent }, indexKey };
 
     const { def }: AnyJson = lookup.type;
     const [type, value] = Object.entries(def).flat();
@@ -164,9 +165,14 @@ export class MetadataScraper extends Trails {
         return null;
     }
 
-    // Update keys to class map.
-    this.keysToClass[inputKey] = result.class;
+    // Index resulting type class by its index key. Makes class accessible at the input arg level.
+    this.classIndex[indexKey] = result.class;
 
     return result;
+  }
+
+  // Get a scraped type class from its index key.
+  getClass(indexKey: string): MetadataType {
+    return this.classIndex[indexKey];
   }
 }

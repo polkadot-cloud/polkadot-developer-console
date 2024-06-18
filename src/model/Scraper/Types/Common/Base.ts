@@ -19,14 +19,14 @@ export class Base {
     parent: TrailParentId;
   };
 
-  // The input key for this type.
-  inputKey: string;
+  // The index key for this type.
+  indexKey: string;
 
-  constructor({ lookup, depth, trail, inputKey }: BaseParams) {
+  constructor({ lookup, depth, trail, indexKey }: BaseParams) {
     this.lookup = lookup;
     this.depth = depth;
     this.trail = trail;
-    this.inputKey = inputKey;
+    this.indexKey = indexKey;
   }
 
   // Get the full path of this type.

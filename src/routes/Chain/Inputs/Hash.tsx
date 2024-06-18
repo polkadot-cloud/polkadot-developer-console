@@ -3,35 +3,29 @@
 
 import { useEffect } from 'react';
 import type { HashProps } from './types';
-import { useActiveTab } from 'contexts/ActiveTab';
-import { useChainUi } from 'contexts/ChainUi';
 import { TextInputWrapper } from 'library/Inputs/Wrappers';
 
-export const Hash = ({
-  inputKey,
-  namespace,
-  inputKeysRef,
-  value,
-}: HashProps) => {
-  const { tabId } = useActiveTab();
-  const { setInputArgAtKey } = useChainUi();
-
+export const Hash = ({ value, onMount, onRender, onChange }: HashProps) => {
   // The input arg type of this component.
   const INPUT_TYPE = 'Hash';
 
-  // Accumulate input key.
-  if (inputKeysRef.current) {
-    inputKeysRef.current[inputKey] = INPUT_TYPE;
+  // Run `onRender` function.
+  if (onRender !== undefined) {
+    onRender(INPUT_TYPE);
   }
 
   // Handle textbox value change.
   const handleTextboxChange = (val: string) => {
-    setInputArgAtKey(tabId, namespace, inputKey, val);
+    if (onChange !== undefined) {
+      onChange(val);
+    }
   };
 
-  // Update input arg value to the default value on initial render.
+  // Call on mount logic in initial render if provided.
   useEffect(() => {
-    setInputArgAtKey(tabId, namespace, inputKey, value);
+    if (onMount !== undefined) {
+      onMount(String(value));
+    }
   }, []);
 
   return (
