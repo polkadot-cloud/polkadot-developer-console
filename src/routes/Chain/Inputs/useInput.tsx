@@ -273,7 +273,9 @@ export const useInput = () => {
       inputArgConfig;
 
     const { indexKey } = arg.class;
-    const typeKeys = { inputKey, indexKey };
+
+    // Group input and index key to store in input arg state.
+    const keys = { inputKey, indexKey };
 
     const label = !arg.class.label()
       ? undefined
@@ -291,7 +293,7 @@ export const useInput = () => {
               defaultAddress={getInputArgsAtKey(tabId, namespace, inputKey)}
               accounts={accounts}
               onMount={(selectedAddress) => {
-                setInputArgAtKey(tabId, namespace, typeKeys, selectedAddress);
+                setInputArgAtKey(tabId, namespace, keys, selectedAddress);
               }}
               onRender={(inputType) => {
                 if (inputKeysRef.current) {
@@ -299,7 +301,7 @@ export const useInput = () => {
                 }
               }}
               onChange={(val) => {
-                setInputArgAtKey(tabId, namespace, typeKeys, val);
+                setInputArgAtKey(tabId, namespace, keys, val);
               }}
             />
           );
@@ -311,7 +313,7 @@ export const useInput = () => {
             <Hash
               {...inputArgConfig}
               onMount={(value) => {
-                setInputArgAtKey(tabId, namespace, typeKeys, value);
+                setInputArgAtKey(tabId, namespace, keys, value);
               }}
               onRender={(inputType) => {
                 if (inputKeysRef.current) {
@@ -319,7 +321,7 @@ export const useInput = () => {
                 }
               }}
               onChange={(val) => {
-                setInputArgAtKey(tabId, namespace, typeKeys, val);
+                setInputArgAtKey(tabId, namespace, keys, val);
               }}
               value={
                 getInputArgsAtKey(tabId, namespace, inputKey) ||
@@ -341,7 +343,7 @@ export const useInput = () => {
                   inputKey
                 )}
                 onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, typeKeys, value);
+                  setInputArgAtKey(tabId, namespace, keys, value);
                 }}
                 onRender={(inputType) => {
                   if (inputKeysRef.current) {
@@ -349,12 +351,7 @@ export const useInput = () => {
                   }
                 }}
                 onChange={(val) => {
-                  setInputArgAtKey(
-                    tabId,
-                    inputArgConfig.namespace,
-                    typeKeys,
-                    val
-                  );
+                  setInputArgAtKey(tabId, inputArgConfig.namespace, keys, val);
                 }}
               />
             </Section>
@@ -367,7 +364,7 @@ export const useInput = () => {
               <Checkbox
                 {...inputArgConfig}
                 onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, typeKeys, value);
+                  setInputArgAtKey(tabId, namespace, keys, value);
                 }}
                 onRender={(inputType) => {
                   if (inputKeysRef.current) {
@@ -375,7 +372,7 @@ export const useInput = () => {
                   }
                 }}
                 onChange={(val) => {
-                  setInputArgAtKey(tabId, namespace, typeKeys, val);
+                  setInputArgAtKey(tabId, namespace, keys, val);
                 }}
                 label={label}
                 checked={getInputArgsAtKey(tabId, namespace, inputKey) || false}
@@ -390,7 +387,7 @@ export const useInput = () => {
             <Section indent={indent}>
               <Textbox
                 onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, typeKeys, value);
+                  setInputArgAtKey(tabId, namespace, keys, value);
                 }}
                 onRender={(inputType) => {
                   if (inputKeysRef.current) {
@@ -398,7 +395,7 @@ export const useInput = () => {
                   }
                 }}
                 onChange={(val) => {
-                  setInputArgAtKey(tabId, namespace, typeKeys, val);
+                  setInputArgAtKey(tabId, namespace, keys, val);
                 }}
                 label={label}
                 value={
