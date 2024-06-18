@@ -272,8 +272,8 @@ export const useInput = () => {
     const { inputKeysRef, inputKey, namespace, activePallet, activeItem } =
       inputArgConfig;
 
-    // TODO: pass indexKey to inputArgs.
-    // const indexKey = arg.class.indextKey;
+    const { indexKey } = arg.class;
+    const typeKeys = { inputKey, indexKey };
 
     const label = !arg.class.label()
       ? undefined
@@ -291,7 +291,7 @@ export const useInput = () => {
               defaultAddress={getInputArgsAtKey(tabId, namespace, inputKey)}
               accounts={accounts}
               onMount={(selectedAddress) => {
-                setInputArgAtKey(tabId, namespace, inputKey, selectedAddress);
+                setInputArgAtKey(tabId, namespace, typeKeys, selectedAddress);
               }}
               onRender={(inputType) => {
                 if (inputKeysRef.current) {
@@ -299,7 +299,7 @@ export const useInput = () => {
                 }
               }}
               onChange={(val) => {
-                setInputArgAtKey(tabId, namespace, inputKey, val);
+                setInputArgAtKey(tabId, namespace, typeKeys, val);
               }}
             />
           );
@@ -311,7 +311,7 @@ export const useInput = () => {
             <Hash
               {...inputArgConfig}
               onMount={(value) => {
-                setInputArgAtKey(tabId, namespace, inputKey, value);
+                setInputArgAtKey(tabId, namespace, typeKeys, value);
               }}
               onRender={(inputType) => {
                 if (inputKeysRef.current) {
@@ -319,7 +319,7 @@ export const useInput = () => {
                 }
               }}
               onChange={(val) => {
-                setInputArgAtKey(tabId, namespace, inputKey, val);
+                setInputArgAtKey(tabId, namespace, typeKeys, val);
               }}
               value={
                 getInputArgsAtKey(tabId, namespace, inputKey) ||
@@ -341,7 +341,7 @@ export const useInput = () => {
                   inputKey
                 )}
                 onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, inputKey, value);
+                  setInputArgAtKey(tabId, namespace, typeKeys, value);
                 }}
                 onRender={(inputType) => {
                   if (inputKeysRef.current) {
@@ -352,7 +352,7 @@ export const useInput = () => {
                   setInputArgAtKey(
                     tabId,
                     inputArgConfig.namespace,
-                    inputKey,
+                    typeKeys,
                     val
                   );
                 }}
@@ -367,7 +367,7 @@ export const useInput = () => {
               <Checkbox
                 {...inputArgConfig}
                 onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, inputKey, value);
+                  setInputArgAtKey(tabId, namespace, typeKeys, value);
                 }}
                 onRender={(inputType) => {
                   if (inputKeysRef.current) {
@@ -375,7 +375,7 @@ export const useInput = () => {
                   }
                 }}
                 onChange={(val) => {
-                  setInputArgAtKey(tabId, namespace, inputKey, val);
+                  setInputArgAtKey(tabId, namespace, typeKeys, val);
                 }}
                 label={label}
                 checked={getInputArgsAtKey(tabId, namespace, inputKey) || false}
@@ -390,7 +390,7 @@ export const useInput = () => {
             <Section indent={indent}>
               <Textbox
                 onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, inputKey, value);
+                  setInputArgAtKey(tabId, namespace, typeKeys, value);
                 }}
                 onRender={(inputType) => {
                   if (inputKeysRef.current) {
@@ -398,7 +398,7 @@ export const useInput = () => {
                   }
                 }}
                 onChange={(val) => {
-                  setInputArgAtKey(tabId, namespace, inputKey, val);
+                  setInputArgAtKey(tabId, namespace, typeKeys, val);
                 }}
                 label={label}
                 value={

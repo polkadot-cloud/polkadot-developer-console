@@ -15,6 +15,7 @@ import type {
   CompactType,
   TupleType,
   CompositeType,
+  MetadataType,
 } from './Types/types';
 import { Sequence } from './Types/Sequence';
 import { ArrayType } from './Types/Array';
@@ -164,9 +165,14 @@ export class MetadataScraper extends Trails {
         return null;
     }
 
-    // Index resulting type class.
+    // Index resulting type class by its index key. Makes class accessible at the input arg level.
     this.keysToClass[indexKey] = result.class;
 
     return result;
+  }
+
+  // Get a scraped type class from its index key.
+  getClass(indexKey: string): MetadataType {
+    return this.keysToClass[indexKey];
   }
 }

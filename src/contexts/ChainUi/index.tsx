@@ -20,6 +20,7 @@ import type {
   InputArgsState,
   InputArg,
   ChainStateFilters,
+  InputArgTypeKeys,
 } from './types';
 import { setStateWithRef } from '@w3ux/utils';
 import type { StorageType } from 'model/ChainState/types';
@@ -175,22 +176,23 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   const getInputArgsAtKey = (
     tabId: number,
     namespace: InputNamespace,
-    key: string
+    inputKey: string
   ) => {
     if (!inputArgsRef.current[tabId]) {
       return undefined;
     }
     const args = inputArgsRef.current[tabId][namespace];
-    return args?.[key] || undefined;
+    return args?.[inputKey] || undefined;
   };
 
   // Set input args at a given input key for either a storage item or call.
   const setInputArgAtKey = (
     tabId: number,
     namespace: InputNamespace,
-    key: string,
+    keys: InputArgTypeKeys,
     arg: InputArg
   ) => {
+    const { inputKey } = keys;
     const updatedInputArgs = { ...inputArgsRef.current };
 
     // If an `InputArgs` record does not exist for the tab yet, add it now.
@@ -201,7 +203,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
       };
     }
     // Apply the new input arg and update state.
-    updatedInputArgs[tabId][namespace][key] = arg;
+    updatedInputArgs[tabId][namespace][inputKey] = arg;
     setInputArgs(updatedInputArgs);
   };
 
