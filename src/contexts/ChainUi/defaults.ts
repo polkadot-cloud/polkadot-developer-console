@@ -33,7 +33,7 @@ export const defaultChainContext: ChainUiContextInterface = {
   getStorageItemFilter: (tabId, key) => false,
   setStorageItemFilter: (tabId, key, value) => {},
   getInputArgs: (tabId, section) => null,
-  getInputArgsAtKey: (tabId, section, inputKey) => undefined,
+  getInputArgAtKey: (tabId, section, inputKey) => undefined,
   setInputArgAtKey: (tabId, section, keys, value) => {},
   resetInputArgSection: (tabId, section) => {},
 };

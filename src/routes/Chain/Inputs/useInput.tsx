@@ -24,7 +24,7 @@ export const useInput = () => {
   const { chainSpec } = useChain();
   const { getAccounts } = useAccounts();
   const { tabId, metaKey } = useActiveTab();
-  const { setInputArgAtKey, getInputArgsAtKey } = useChainUi();
+  const { setInputArgAtKey, getInputArgAtKey } = useChainUi();
 
   const accounts = getAccounts(chainSpec);
 
@@ -283,7 +283,7 @@ export const useInput = () => {
     const input = overrideInput || arg.class.input();
 
     // Get the current input value.
-    const inputArg = getInputArgsAtKey(tabId, namespace, inputKey);
+    const inputArg = getInputArgAtKey(tabId, namespace, inputKey);
     const inputValue = inputArg?.arg;
 
     // General `onRender` callback that registers input type with key.
@@ -399,7 +399,7 @@ export const useInput = () => {
     const { inputKey } = arg.class;
 
     // Get the current variant value, if any.
-    const currentInputArg = getInputArgsAtKey(tabId, namespace, inputKey)?.arg;
+    const currentInputArg = getInputArgAtKey(tabId, namespace, inputKey)?.arg;
 
     // Fall back to the first variant if no value is set.
     return ![undefined, ''].includes(currentInputArg)

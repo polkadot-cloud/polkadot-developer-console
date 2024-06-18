@@ -31,7 +31,7 @@ export interface ChainUiContextInterface {
     value: boolean
   ) => void;
   getInputArgs: (tabId: number, section: InputNamespace) => InputArgs | null;
-  getInputArgsAtKey: (
+  getInputArgAtKey: (
     tabId: number,
     section: InputNamespace,
     inputKey: string

@@ -185,7 +185,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Get input args at a key for either a storage item or call.
-  const getInputArgsAtKey = (
+  const getInputArgAtKey = (
     tabId: number,
     namespace: InputNamespace,
     inputKey: string
@@ -263,7 +263,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
         getStorageItemFilter,
         setStorageItemFilter,
         getInputArgs,
-        getInputArgsAtKey,
+        getInputArgAtKey,
         setInputArgAtKey,
         resetInputArgSection,
         destroyTabChainUi,
