@@ -35,7 +35,7 @@ export interface ChainUiContextInterface {
     tabId: number,
     section: InputNamespace,
     inputKey: string
-  ) => InputArg | undefined;
+  ) => { indexKey: string; arg: InputArg } | undefined;
   setInputArgAtKey: (
     tabId: number,
     section: InputNamespace,

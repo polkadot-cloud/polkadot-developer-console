@@ -277,11 +277,24 @@ export const useInput = () => {
     // Group input and index key to store in input arg state.
     const keys = { inputKey, indexKey };
 
+    // Determine input label.
     const label = !arg.class.label()
       ? undefined
       : `${prependLabel ? `${prependLabel} ` : ``}${arg.class.label()}`;
 
+    // Get the input type.
     const input = overrideInput || arg.class.input();
+
+    // Get the current input value.
+    const inputArg = getInputArgsAtKey(tabId, namespace, inputKey);
+    const inputValue = inputArg?.arg;
+
+    // General `onRender` callback that registers input type with key.
+    const onRender = (inputType: string) => {
+      if (inputKeysRef.current) {
+        inputKeysRef.current[inputKey] = inputType;
+      }
+    };
 
     return (() => {
       switch (input) {
@@ -290,16 +303,12 @@ export const useInput = () => {
           return (
             <AccountId32
               uid={`${metaKey}_${namespace}_${activePallet}_${activeItem}_${inputKey}`}
-              defaultAddress={getInputArgsAtKey(tabId, namespace, inputKey)}
+              defaultAddress={inputValue}
               accounts={accounts}
               onMount={(selectedAddress) => {
                 setInputArgAtKey(tabId, namespace, keys, selectedAddress);
               }}
-              onRender={(inputType) => {
-                if (inputKeysRef.current) {
-                  inputKeysRef.current[inputKey] = inputType;
-                }
-              }}
+              onRender={onRender}
               onChange={(val) => {
                 setInputArgAtKey(tabId, namespace, keys, val);
               }}
@@ -315,18 +324,11 @@ export const useInput = () => {
               onMount={(value) => {
                 setInputArgAtKey(tabId, namespace, keys, value);
               }}
-              onRender={(inputType) => {
-                if (inputKeysRef.current) {
-                  inputKeysRef.current[inputKey] = inputType;
-                }
-              }}
+              onRender={onRender}
               onChange={(val) => {
                 setInputArgAtKey(tabId, namespace, keys, val);
               }}
-              value={
-                getInputArgsAtKey(tabId, namespace, inputKey) ||
-                DefaultInputs.defaultValue(input)
-              }
+              value={inputValue || DefaultInputs.defaultValue(input)}
             />
           );
 
@@ -337,19 +339,11 @@ export const useInput = () => {
               <Select
                 label={label}
                 values={values || []}
-                value={getInputArgsAtKey(
-                  tabId,
-                  inputArgConfig.namespace,
-                  inputKey
-                )}
+                value={inputValue}
                 onMount={(value) => {
                   setInputArgAtKey(tabId, namespace, keys, value);
                 }}
-                onRender={(inputType) => {
-                  if (inputKeysRef.current) {
-                    inputKeysRef.current[inputKey] = inputType;
-                  }
-                }}
+                onRender={onRender}
                 onChange={(val) => {
                   setInputArgAtKey(tabId, inputArgConfig.namespace, keys, val);
                 }}
@@ -366,16 +360,12 @@ export const useInput = () => {
                 onMount={(value) => {
                   setInputArgAtKey(tabId, namespace, keys, value);
                 }}
-                onRender={(inputType) => {
-                  if (inputKeysRef.current) {
-                    inputKeysRef.current[inputKey] = inputType;
-                  }
-                }}
+                onRender={onRender}
                 onChange={(val) => {
                   setInputArgAtKey(tabId, namespace, keys, val);
                 }}
                 label={label}
-                checked={getInputArgsAtKey(tabId, namespace, inputKey) || false}
+                checked={inputValue || false}
               />
             </Section>
           );
@@ -389,19 +379,12 @@ export const useInput = () => {
                 onMount={(value) => {
                   setInputArgAtKey(tabId, namespace, keys, value);
                 }}
-                onRender={(inputType) => {
-                  if (inputKeysRef.current) {
-                    inputKeysRef.current[inputKey] = inputType;
-                  }
-                }}
+                onRender={onRender}
                 onChange={(val) => {
                   setInputArgAtKey(tabId, namespace, keys, val);
                 }}
                 label={label}
-                value={
-                  getInputArgsAtKey(tabId, namespace, inputKey) ||
-                  DefaultInputs.defaultValue(input)
-                }
+                value={inputValue || DefaultInputs.defaultValue(input)}
                 numeric={input === 'number'}
               />
             </Section>
@@ -419,7 +402,7 @@ export const useInput = () => {
     const { inputKey } = arg.class;
 
     // Get the current variant value, if any.
-    const currentInputArg = getInputArgsAtKey(tabId, namespace, inputKey);
+    const currentInputArg = getInputArgsAtKey(tabId, namespace, inputKey)?.arg;
 
     // Fall back to the first variant if no value is set.
     return ![undefined, ''].includes(currentInputArg)

@@ -169,7 +169,16 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     if (!inputArgsRef.current[tabId]) {
       return null;
     }
-    return inputArgsRef.current[tabId][namespace];
+
+    const inputArgsWithKeys = inputArgsRef.current[tabId][namespace];
+    if (!inputArgsWithKeys) {
+      return null;
+    }
+
+    // Extract `arg` from each input arg record.
+    return Object.fromEntries(
+      Object.entries(inputArgsWithKeys).map(([key, { arg }]) => [key, arg])
+    );
   };
 
   // Get input args at a key for either a storage item or call.
@@ -192,7 +201,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     keys: InputArgTypeKeys,
     arg: InputArg
   ) => {
-    const { inputKey } = keys;
+    const { inputKey, indexKey } = keys;
     const updatedInputArgs = { ...inputArgsRef.current };
 
     // If an `InputArgs` record does not exist for the tab yet, add it now.
@@ -203,7 +212,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
       };
     }
     // Apply the new input arg and update state.
-    updatedInputArgs[tabId][namespace][inputKey] = arg;
+    updatedInputArgs[tabId][namespace][inputKey] = { indexKey, arg };
     setInputArgs(updatedInputArgs);
   };
 
