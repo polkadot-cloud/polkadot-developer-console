@@ -39,7 +39,7 @@ export class MetadataScraper extends Trails {
   #maxDepth: number | '*';
 
   // Map index keys to scraped type class.
-  keysToClass: Record<string, AnyJson> = {};
+  classIndex: Record<string, AnyJson> = {};
 
   // Initialize the class with metadata.
   constructor(metadata: MetadataVersion, config: ScraperConfig) {
@@ -166,13 +166,13 @@ export class MetadataScraper extends Trails {
     }
 
     // Index resulting type class by its index key. Makes class accessible at the input arg level.
-    this.keysToClass[indexKey] = result.class;
+    this.classIndex[indexKey] = result.class;
 
     return result;
   }
 
   // Get a scraped type class from its index key.
   getClass(indexKey: string): MetadataType {
-    return this.keysToClass[indexKey];
+    return this.classIndex[indexKey];
   }
 }
