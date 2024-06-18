@@ -115,9 +115,6 @@ export const useInput = () => {
     const label = arg.sequence.class.label();
     const input = arg.class.input();
 
-    // TODO: pass indexKey to inputArgs.
-    // const indexKey = arg.class.indextKey;
-
     // If sequence is a vector of bytes, render a hash input.
     if (input !== 'array') {
       return (
