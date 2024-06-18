@@ -61,7 +61,7 @@ export const StorageItems = () => {
   const activeItem = chainUi.selected || items?.[0]?.name || null;
 
   // Get the whole active storage item record from metadata for input formatting.
-  const scrapedItem = useMemo(() => {
+  const scraperResult = useMemo(() => {
     if (!activePallet || !activeItem) {
       return null;
     }
@@ -69,8 +69,11 @@ export const StorageItems = () => {
     const scraper = new PalletScraper(Metadata, { maxDepth: '*' });
     const result = scraper.getStorageItem(activePallet, activeItem);
 
-    return result;
+    return { scrapedItem: result, scraper };
   }, [items, activeItem, activePallet]);
+
+  // Get scrape result.
+  const scrapedItem = scraperResult?.scrapedItem || null;
 
   // Handle storage item query submission.
   const onSubmit = (args: AnyJson) => {

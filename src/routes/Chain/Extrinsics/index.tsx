@@ -71,14 +71,19 @@ export const Extrinsics = () => {
   const activeItem = chainUi.selected || items?.[0]?.name || null;
 
   // Get the whole call item record from metadata for input formatting.
-  const scrapedItem = useMemo(() => {
+  const scraperResult = useMemo(() => {
     if (!activePallet || !activeItem) {
       return null;
     }
     // NOTE: Currently limiting scraper to 7 recursive levels to improve performance.
     const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
-    return scraper.getCallItem(activePallet, activeItem);
+    const result = scraper.getCallItem(activePallet, activeItem);
+
+    return { scrapedItem: result, scraper };
   }, [items, activeItem, activePallet]);
+
+  // Get scrape result.
+  const scrapedItem = scraperResult?.scrapedItem || null;
 
   return (
     <InputFormProvider namespace="call" activeItem={activeItem}>
