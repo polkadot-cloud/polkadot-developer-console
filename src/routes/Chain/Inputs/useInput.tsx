@@ -354,6 +354,17 @@ export const useInput = () => {
           return (
             <Section indent={indent}>
               <Checkbox
+                onMount={(value) => {
+                  setInputArgAtKey(tabId, namespace, inputKey, value);
+                }}
+                onRender={(inputType) => {
+                  if (inputKeysRef.current) {
+                    inputKeysRef.current[inputKey] = inputType;
+                  }
+                }}
+                onChange={(val) => {
+                  setInputArgAtKey(tabId, namespace, inputKey, val);
+                }}
                 {...inputArgConfig}
                 label={label}
                 checked={getInputArgsAtKey(tabId, namespace, inputKey) || false}

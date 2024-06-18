@@ -9,12 +9,12 @@ export const Textbox = ({
   label,
   value,
   numeric,
+  placeholder,
+  shrinkPlaceholder,
   onMount,
   onRender,
   onChange,
   onFocus,
-  placeholder,
-  shrinkPlaceholder,
 }: TextboxProps) => {
   // The input arg type of this component.
   const INPUT_TYPE = 'Textbox';

@@ -20,17 +20,18 @@ export interface RenderInputArgs {
   key: string;
 }
 
-export type InputArgConfig = InputCallbackProps & {
+export interface InputArgConfig {
   activePallet: string | null;
   activeItem: string | null;
   namespace: InputNamespace;
   inputKeysRef: RefObject<Record<string, string>>;
   inputKey: string;
-};
+}
 
-export type HashProps = InputArgConfig & {
-  value: string | number;
-};
+export type HashProps = InputArgConfig &
+  InputCallbackProps & {
+    value: string | number;
+  };
 
 export type SelectProps = InputCallbackProps & {
   values: string[];
@@ -38,12 +39,17 @@ export type SelectProps = InputCallbackProps & {
   value: string;
 };
 
-export type CheckboxProps = InputArgConfig & {
-  label?: string | number;
-  checked: boolean;
-};
+export type CheckboxProps = InputArgConfig &
+  InputCallbackProps & {
+    label?: string | number;
+    checked: boolean;
+    onChange?: (val: boolean) => void;
+    onMount?: (val: boolean) => void;
+    onRender?: (inputType: string) => void;
+  };
 
-export type SequenceProps = InputArgConfig & {
-  arrayInput: AnyJson;
-  maxLength?: number;
-};
+export type SequenceProps = InputArgConfig &
+  InputCallbackProps & {
+    arrayInput: AnyJson;
+    maxLength?: number;
+  };
