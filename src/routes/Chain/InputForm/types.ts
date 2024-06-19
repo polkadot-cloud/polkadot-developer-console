@@ -16,6 +16,7 @@ export interface InputFormProviderProps {
   namespace: InputNamespace;
   children: ReactNode;
   activeItem: string | null;
+  scraper: PalletScraper | null;
 }
 
 export interface InputFormInnerProps {
