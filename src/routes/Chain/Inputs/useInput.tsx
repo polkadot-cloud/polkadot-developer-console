@@ -33,12 +33,9 @@ export const useInput = () => {
   const readInput = (
     arg: AnyJson,
     config: InputArgConfig,
-    options: {
+    options?: {
       indent?: boolean;
       prependLabel?: string;
-    } = {
-      indent: false,
-      prependLabel: '',
     }
   ) => {
     const indent = options?.indent || false;
@@ -253,7 +250,7 @@ export const useInput = () => {
   const renderInput = (
     arg: AnyJson,
     inputArgConfig: InputArgConfig,
-    options: {
+    options?: {
       indent?: boolean;
       prependLabel?: string;
       overrideInput?: string;
@@ -264,7 +261,7 @@ export const useInput = () => {
       indent = false,
       prependLabel = null,
       overrideInput = null,
-    } = options;
+    } = options || {};
 
     const { inputKeysRef, inputKey, namespace, activePallet, activeItem } =
       inputArgConfig;
