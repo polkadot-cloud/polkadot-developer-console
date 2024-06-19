@@ -46,46 +46,47 @@ export const StorageItems = () => {
       nameA < nameB ? -1 : nameA > nameB ? 1 : 0
     );
 
-    const result: PalletData = {
+    // Formatted storage and pallet data.
+    const storageData: PalletData = {
       pallets,
       activePallet,
       items,
     };
 
-    return { storageData: result, scraper };
+    return { storageData, scraper };
   }, [chainUi.pallet, Metadata?.metadata]);
 
   const { storageData, scraper: listScraper } = scrapedStorageList;
   const { pallets, activePallet, items } = storageData;
 
-  // If no storage item selected, select the first one from the list or fall back to null.
+  // Get the active storage item. If no storage item selected, select the first one from the list or
+  // fall back to null.
   const activeItem = chainUi.selected || items?.[0]?.name || null;
 
-  // Get the whole active storage item record from metadata for input formatting.
+  // Get the whole active storage item record from metadata for input arg formatting.
   const scraperResult = useMemo(() => {
     if (!activePallet || !activeItem) {
-      return null;
+      return { scrapedItem: null, scraper: null };
     }
 
     const scraper = new PalletScraper(Metadata, { maxDepth: '*' });
-    const result = scraper.getStorageItem(activePallet, activeItem);
+    const scrapedItem = scraper.getStorageItem(activePallet, activeItem);
 
-    return { scrapedItem: result, scraper };
-  }, [items, activeItem, activePallet]);
+    return { scrapedItem, scraper };
+  }, [activeItem, activePallet]);
 
-  // Get scrape result.
-  const scrapedItem = scraperResult?.scrapedItem || null;
-  const itemScraper = scraperResult?.scraper || null;
+  const { scrapedItem, scraper: itemScraper } = scraperResult;
 
-  // Handle storage item query submission.
+  // Handle storage item query submission. This function is called after input arg formatting is
+  // completed. No further formatting is required by this function. Exits early if active items or
+  // value are not set.
   const onSubmit = (args: AnyJson) => {
-    const value = chainUi.selected;
-    if (!activePallet || !activeItem || !value || !value.length) {
+    if (!activePallet || !activeItem) {
       return;
     }
 
     const chainState = ChainStateController.instances[instanceId];
-    chainState.subscribe(`${value}`, {
+    chainState.subscribe(`${activeItem}`, {
       type: 'storage',
       namespace: camelize(activePallet),
       method: camelize(activeItem),

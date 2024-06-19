@@ -27,6 +27,11 @@ export const Extrinsics = () => {
   const { getChainUi, setChainUiNamespace } = useChainUi();
   const { getFromAddress, setFromAddress } = useChainState();
 
+  const chainUiSection = 'calls';
+  const chainUi = getChainUi(tabId, chainUiSection);
+  const Metadata = chainSpec.metadata;
+
+  // Get accounts for sender address input.
   const accounts = chainSpec
     ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
     : [];
@@ -34,15 +39,9 @@ export const Extrinsics = () => {
   // Get the sender address.
   const fromAddress = getFromAddress(tabId) || '';
 
-  const chainUiSection = 'calls';
-  const chainUi = getChainUi(tabId, chainUiSection);
-  const Metadata = chainSpec.metadata;
-
   // Fetch storage data when metadata or the selected pallet changes.
   const callData = useMemo((): PalletData => {
-    const scraper = new PalletScraper(Metadata, {
-      maxDepth: 7,
-    });
+    const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
     const pallets = scraper.getPalletList(['calls']);
 
     // If no pallet selected, get first one from scraper or fall back to null.
@@ -56,14 +55,13 @@ export const Extrinsics = () => {
       nameA < nameB ? -1 : nameA > nameB ? 1 : 0
     );
 
-    const result: PalletData = {
+    // Return formatted call and pallet data.
+    return {
       pallets,
       activePallet,
       items,
     };
-
-    return result;
-  }, [chainUi.pallet, chainUi.selected, Metadata?.metadata]);
+  }, [chainUi.pallet, Metadata?.metadata]);
 
   const { pallets, activePallet, items } = callData;
 
@@ -75,11 +73,11 @@ export const Extrinsics = () => {
     if (!activePallet || !activeItem) {
       return null;
     }
-    // NOTE: Currently limiting scraper to 7 recursive levels to improve performance.
-    const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
-    const result = scraper.getCallItem(activePallet, activeItem);
 
-    return { scrapedItem: result, scraper };
+    const scraper = new PalletScraper(Metadata, { maxDepth: '*' });
+    const scrapedItem = scraper.getCallItem(activePallet, activeItem);
+
+    return { scrapedItem, scraper };
   }, [items, activeItem, activePallet]);
 
   // Get scrape result.
