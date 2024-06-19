@@ -39,7 +39,7 @@ export interface CompositeField {
 }
 
 // Sequence
-export interface SequenceType {
+export interface ISequenceType {
   type: AnyJson;
 }
 

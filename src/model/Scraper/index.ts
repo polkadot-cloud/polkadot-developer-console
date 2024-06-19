@@ -9,7 +9,6 @@ import { Lookup } from './Lookup';
 import { Variant } from './Types/Variant';
 import type {
   VariantType,
-  SequenceType,
   IArrayType,
   BitSequenceType,
   CompactType,
@@ -17,7 +16,7 @@ import type {
   CompositeType,
   MetadataType,
 } from './Types/types';
-import { Sequence } from './Types/Sequence';
+import { SequenceType } from './Types/Sequence';
 import { ArrayType } from './Types/Array';
 import { BitSequence } from './Types/BitSequence';
 import { Compact } from './Types/Compact';
@@ -159,7 +158,7 @@ export class MetadataScraper extends Trails {
         break;
 
       case 'sequence':
-        typeClass = new Sequence(value as SequenceType, baseParams);
+        typeClass = new SequenceType(value as SequenceType, baseParams);
         result.sequence = typeClass.scrape(this, params);
         break;
 
@@ -178,9 +177,6 @@ export class MetadataScraper extends Trails {
       default:
         return null;
     }
-
-    // Attached scraped type class to result. TODO: remove.
-    result.class = typeClass;
 
     // Attach index key to result.
     result.indexKey = indexKey;
