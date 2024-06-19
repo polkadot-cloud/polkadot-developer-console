@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { MetadataScraper } from '..';
-import type { BaseParams, MetadataType, VariantItem } from './types';
+import type { BaseParams, MetadataType, IVariantItem } from './types';
 import type { TypeParams } from '../types';
 import { Base } from './Common/Base';
 
 // Class to hold a variant type.
-export class Variant extends Base implements MetadataType {
+export class VariantType extends Base implements MetadataType {
   type = 'variant';
 
   // The variants of this variant type.
-  items: VariantItem[];
+  items: IVariantItem[];
 
-  constructor(variants: VariantItem[], base: BaseParams) {
+  constructor(variants: IVariantItem[], base: BaseParams) {
     super(base);
     this.items = variants;
   }

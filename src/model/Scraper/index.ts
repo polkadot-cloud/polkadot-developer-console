@@ -6,24 +6,24 @@ import type { MetadataVersion } from 'model/Metadata/types';
 import type { ScraperConfig, ScraperOptions, TypeParams } from './types';
 import type { MetadataLookup } from './Lookup/types';
 import { Lookup } from './Lookup';
-import { Variant } from './Types/Variant';
+import { VariantType } from './Types/Variant';
 import type {
-  VariantType,
+  IVariantType,
   IArrayType,
-  BitSequenceType,
-  CompactType,
-  TupleType,
-  CompositeType,
+  IBitSequenceType,
+  ICompactType,
+  ITupleType,
+  ICompositeType,
   MetadataType,
 } from './Types/types';
 import { SequenceType } from './Types/Sequence';
 import { ArrayType } from './Types/Array';
-import { BitSequence } from './Types/BitSequence';
-import { Compact } from './Types/Compact';
-import { Primitive } from './Types/Primitive';
-import { Tuple } from './Types/Tuple';
-import { Composite } from './Types/Composite';
+import { CompactType } from './Types/Compact';
+import { PrimitiveType } from './Types/Primitive';
+import { TupleType } from './Types/Tuple';
+import { CompositeType } from './Types/Composite';
 import { Trails } from './Trails';
+import { BitSequenceType } from './Types/BitSequence';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -136,24 +136,24 @@ export class MetadataScraper extends Trails {
         break;
 
       case 'bitSequence':
-        typeClass = new BitSequence(value as BitSequenceType, baseParams);
+        typeClass = new BitSequenceType(value as IBitSequenceType, baseParams);
         if (!labelsOnly) {
           result.bitSequence = typeClass.scrape(this, params);
         }
         break;
 
       case 'compact':
-        typeClass = new Compact(value as CompactType, baseParams);
+        typeClass = new CompactType(value as ICompactType, baseParams);
         result.compact = typeClass.scrape(this, params);
         break;
 
       case 'composite':
-        typeClass = new Composite(value as CompositeType, baseParams);
+        typeClass = new CompositeType(value as ICompositeType, baseParams);
         result.composite = typeClass.scrape(this, params);
         break;
 
       case 'primitive':
-        typeClass = new Primitive(value as string, baseParams);
+        typeClass = new PrimitiveType(value as string, baseParams);
         result.primitive = typeClass.scrape(this, params);
         break;
 
@@ -163,12 +163,15 @@ export class MetadataScraper extends Trails {
         break;
 
       case 'tuple':
-        typeClass = new Tuple(value as TupleType, baseParams);
+        typeClass = new TupleType(value as ITupleType, baseParams);
         result.tuple = typeClass.scrape(this, params);
         break;
 
       case 'variant':
-        typeClass = new Variant((value as VariantType).variants, baseParams);
+        typeClass = new VariantType(
+          (value as IVariantType).variants,
+          baseParams
+        );
         if (!labelsOnly) {
           result.variant = typeClass.scrape(this, params);
         }

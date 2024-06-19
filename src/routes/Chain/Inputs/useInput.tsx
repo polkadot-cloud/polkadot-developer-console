@@ -21,7 +21,7 @@ import { DefaultInputs } from 'model/Scraper/DefaultInputs';
 import { Sequence } from './Sequence';
 import type { ArrayType } from 'model/Scraper/Types/Array';
 import type { SequenceType } from 'model/Scraper/Types/Sequence';
-import type { Composite } from 'model/Scraper/Types/Composite';
+import type { CompositeType } from 'model/Scraper/Types/Composite';
 
 export const useInput = () => {
   const { chainSpec } = useChain();
@@ -180,7 +180,7 @@ export const useInput = () => {
 
   // Renders a composite input component.
   const renderComposite = (arg: AnyJson, config: InputArgConfig) => {
-    const typeClass = config.scraper.getClass(arg.indexKey) as Composite;
+    const typeClass = config.scraper.getClass(arg.indexKey) as CompositeType;
     const label = typeClass.label();
     const input = typeClass.input();
     const { inputKey } = config;

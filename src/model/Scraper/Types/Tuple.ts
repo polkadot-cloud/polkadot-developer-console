@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { MetadataScraper } from '..';
-import type { BaseParams, MetadataType, TupleType } from './types';
+import type { BaseParams, MetadataType, ITupleType } from './types';
 import type { TypeParams } from '../types';
 import { Base } from './Common/Base';
 
 // Class to hold a tuple type.
-export class Tuple extends Base implements MetadataType {
+export class TupleType extends Base implements MetadataType {
   type = 'tuple';
 
   // The types of this tuple.
-  tuple: TupleType;
+  tuple: ITupleType;
 
-  constructor(tuple: TupleType, base: BaseParams) {
+  constructor(tuple: ITupleType, base: BaseParams) {
     super(base);
     this.tuple = tuple;
   }

@@ -3,17 +3,17 @@
 
 import type { MetadataScraper } from '..';
 import type { TypeParams } from '../types';
-import type { BaseParams, BitSequenceType, MetadataType } from './types';
+import type { BaseParams, IBitSequenceType, MetadataType } from './types';
 import { Base } from './Common/Base';
 
 // Class to hold a bit sequence type.
-export class BitSequence extends Base implements MetadataType {
+export class BitSequenceType extends Base implements MetadataType {
   type = 'bitSequence';
 
   // The type of this bit sequence.
-  bitSequence: BitSequenceType;
+  bitSequence: IBitSequenceType;
 
-  constructor(bitSequence: BitSequenceType, base: BaseParams) {
+  constructor(bitSequence: IBitSequenceType, base: BaseParams) {
     super(base);
     this.bitSequence = bitSequence;
   }
