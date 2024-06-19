@@ -105,11 +105,11 @@ export const StorageItems = () => {
           }}
         />
         <ChainStateList
+          scraper={listScraper}
           subject="Storage Item"
           items={items}
           activeItem={activeItem}
           chainUiSection={chainUiSection}
-          scraper={listScraper}
         />
       </SelectFormWrapper>
       <InputForm

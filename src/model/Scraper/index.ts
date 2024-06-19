@@ -62,8 +62,9 @@ export class MetadataScraper extends Trails {
     const parentTrailId = options?.parentTrailId || null;
 
     // Get an index prefix if provided. Prefixes should be used when the scraper is indexing
-    // multiple items, such as a list of constants, storage items or extrinsics. This ensures that
-    // keys stay unique and do not overwrite each other between scraped items.
+    // multiple items, such as arg types and return types, lists of constants, storage items or
+    // extrinsics. This ensures that keys stay unique and do not overwrite each other between
+    // scraped items.
     const indexPrefix = options?.indexPrefix || '';
 
     // Get the index key, or set to '0' if no index key is provided. No index key assumes the start

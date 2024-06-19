@@ -132,9 +132,21 @@ export class PalletScraper extends MetadataScraper {
     } else {
       const { key, value } = (type as PalleStorageMap).map;
 
+      // Ensure arg types and return types have unique index prefixes.
+      const currentIndexPrefix = options?.indexPrefix || null;
+      const argIndexPrefix = currentIndexPrefix
+        ? `${currentIndexPrefix}_0`
+        : '0';
+      const returnIndexPrefix = currentIndexPrefix
+        ? `${currentIndexPrefix}_1`
+        : '1';
+
       scrapedType = {
-        argTypes: this.start(key, options),
-        returnType: this.start(value, options),
+        argTypes: this.start(key, { ...options, indexPrefix: argIndexPrefix }),
+        returnType: this.start(value, {
+          ...options,
+          indexPrefix: returnIndexPrefix,
+        }),
       };
     }
 
