@@ -23,5 +23,5 @@ export interface InputFormInnerProps {
   activePallet: string | null;
   activeItem: string | null;
   onSubmit?: (inputs: AnyJson) => void;
-  itemScraper: PalletScraper | null;
+  scraper: PalletScraper | null;
 }

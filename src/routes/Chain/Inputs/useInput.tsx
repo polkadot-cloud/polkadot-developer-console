@@ -126,7 +126,11 @@ export const useInput = () => {
     return (
       <Section>
         <h4 className="marginTop">{`${label}[]`}</h4>
-        <Sequence {...config} arrayInput={arg.sequence} maxLength={maxLength} />
+        <Sequence
+          config={config}
+          arrayInput={arg.sequence}
+          maxLength={maxLength}
+        />
       </Section>
     );
   };

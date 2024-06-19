@@ -105,7 +105,7 @@ export const Extrinsics = () => {
           argTypes={scrapedItem?.argTypes}
           activePallet={activePallet}
           activeItem={activeItem}
-          itemScraper={itemScraper}
+          scraper={itemScraper}
         />
 
         <SenderWrapper>

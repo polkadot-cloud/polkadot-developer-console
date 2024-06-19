@@ -113,7 +113,7 @@ export const StorageItems = () => {
         />
       </SelectFormWrapper>
       <InputForm
-        itemScraper={itemScraper}
+        scraper={itemScraper}
         argTypes={scrapedItem?.argTypes}
         activePallet={activePallet}
         activeItem={activeItem}
