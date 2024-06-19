@@ -2,19 +2,19 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { MetadataScraper } from '..';
-import type { BaseParams, MetadataType, SequenceType } from './types';
+import type { BaseParams, MetadataType, ISequenceType } from './types';
 import type { TypeParams } from '../types';
 import { Base } from './Common/Base';
 import { sequenceIsBytes } from '../Utils';
 
 // Class to hold a sequence type.
-export class Sequence extends Base implements MetadataType {
+export class SequenceType extends Base implements MetadataType {
   type = 'sequence';
 
   // The type of this sequence.
   innerType: number;
 
-  constructor(sequence: SequenceType, base: BaseParams) {
+  constructor(sequence: ISequenceType, base: BaseParams) {
     super(base);
     this.innerType = sequence.type;
   }

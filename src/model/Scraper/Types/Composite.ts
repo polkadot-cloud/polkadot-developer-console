@@ -5,21 +5,21 @@ import type { MetadataScraper } from '..';
 import type { TypeParams } from '../types';
 import type {
   BaseParams,
-  CompositeField,
-  CompositeType,
+  ICompositeField,
+  ICompositeType,
   MetadataType,
 } from './types';
 import { compositeIsBytes, getCustomInput } from '../Utils';
 import { Base } from './Common/Base';
 
 // Class to hold a composite type.
-export class Composite extends Base implements MetadataType {
+export class CompositeType extends Base implements MetadataType {
   type = 'composite';
 
   // The fields of this composite.
-  fields: CompositeField[];
+  fields: ICompositeField[];
 
-  constructor(composite: CompositeType, base: BaseParams) {
+  constructor(composite: ICompositeType, base: BaseParams) {
     super(base);
     this.fields = composite.fields;
   }

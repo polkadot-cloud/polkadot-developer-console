@@ -5,7 +5,7 @@ import { Base } from './Common/Base';
 import type { BaseParams, MetadataType } from './types';
 
 // Class to hold a primitive type.
-export class Primitive extends Base implements MetadataType {
+export class PrimitiveType extends Base implements MetadataType {
   type = 'primitive';
 
   // The type of this primitive.

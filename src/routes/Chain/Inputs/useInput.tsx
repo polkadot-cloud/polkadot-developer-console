@@ -19,6 +19,9 @@ import type { InputArg } from 'contexts/ChainUi/types';
 import { arrayIsBytes, arrayIsPrimitive } from 'model/Scraper/Utils';
 import { DefaultInputs } from 'model/Scraper/DefaultInputs';
 import { Sequence } from './Sequence';
+import type { ArrayType } from 'model/Scraper/Types/Array';
+import type { SequenceType } from 'model/Scraper/Types/Sequence';
+import type { CompositeType } from 'model/Scraper/Types/Composite';
 
 export const useInput = () => {
   const { chainSpec } = useChain();
@@ -33,14 +36,12 @@ export const useInput = () => {
   const readInput = (
     arg: AnyJson,
     config: InputArgConfig,
-    options: {
+    options?: {
       indent?: boolean;
       prependLabel?: string;
-    } = {
-      indent: false,
-      prependLabel: '',
     }
   ) => {
+    const { scraper } = config;
     const indent = options?.indent || false;
 
     // Return early if no args are provided.
@@ -48,9 +49,10 @@ export const useInput = () => {
       return null;
     }
 
-    const { type } = arg.class;
+    const { indexKey } = arg;
+    const typeClass = scraper.getClass(indexKey);
 
-    switch (type) {
+    switch (typeClass.type) {
       case 'tuple':
         return renderTuple(arg, config);
 
@@ -82,7 +84,8 @@ export const useInput = () => {
 
   // Renders an array input component.
   const renderArray = (arg: AnyJson, config: InputArgConfig) => {
-    const label = arg.class.label();
+    const typeClass = config.scraper.getClass(arg.indexKey) as ArrayType;
+    const label = typeClass.label();
 
     // If array is a vector of bytes, render a hash input.
     if (arrayIsBytes(arg)) {
@@ -103,7 +106,7 @@ export const useInput = () => {
     }
 
     // Otherwise, allow sequence input.
-    return renderSequence(arg, config, arg.class.array.len);
+    return renderSequence(arg, config, typeClass.array.len);
   };
 
   // Renders a sequence input component.
@@ -112,8 +115,9 @@ export const useInput = () => {
     config: InputArgConfig,
     maxLength?: number
   ) => {
-    const label = arg.sequence.class.label();
-    const input = arg.class.input();
+    const typeClass = config.scraper.getClass(arg.indexKey) as SequenceType;
+    const label = typeClass.label();
+    const input = typeClass.input();
 
     // If sequence is a vector of bytes, render a hash input.
     if (input !== 'array') {
@@ -129,7 +133,11 @@ export const useInput = () => {
     return (
       <Section>
         <h4 className="marginTop">{`${label}[]`}</h4>
-        <Sequence {...config} arrayInput={arg.sequence} maxLength={maxLength} />
+        <Sequence
+          config={config}
+          arrayInput={arg.sequence}
+          maxLength={maxLength}
+        />
       </Section>
     );
   };
@@ -172,9 +180,10 @@ export const useInput = () => {
 
   // Renders a composite input component.
   const renderComposite = (arg: AnyJson, config: InputArgConfig) => {
+    const typeClass = config.scraper.getClass(arg.indexKey) as CompositeType;
+    const label = typeClass.label();
+    const input = typeClass.input();
     const { inputKey } = config;
-    const label = arg.class.label();
-    const input = arg.class.input();
 
     // If this composite is a custom input, render it and stop the recursive input loop.
     if (input !== 'indent') {
@@ -214,7 +223,7 @@ export const useInput = () => {
     const { inputKey } = config;
 
     // Get the selected variant item, or fall back to first item otherwise.
-    const selectedItem = getSelectedVariant(arg, config);
+    const selectedItem = getSelectedVariant(arg, inputKey, config);
 
     // Get all possible names of the variant.
     const itemNames = arg.variant.map(({ name }: { name: string }) => name);
@@ -253,7 +262,7 @@ export const useInput = () => {
   const renderInput = (
     arg: AnyJson,
     inputArgConfig: InputArgConfig,
-    options: {
+    options?: {
       indent?: boolean;
       prependLabel?: string;
       overrideInput?: string;
@@ -264,23 +273,30 @@ export const useInput = () => {
       indent = false,
       prependLabel = null,
       overrideInput = null,
-    } = options;
+    } = options || {};
 
-    const { inputKeysRef, inputKey, namespace, activePallet, activeItem } =
-      inputArgConfig;
+    const {
+      inputKeysRef,
+      scraper,
+      inputKey,
+      namespace,
+      activePallet,
+      activeItem,
+    } = inputArgConfig;
 
-    const { indexKey } = arg.class;
+    const { indexKey } = arg;
+    const typeClass = scraper.getClass(indexKey);
 
     // Group input and index key to store in input arg state.
     const keys = { inputKey, indexKey };
 
     // Determine input label.
-    const label = !arg.class.label()
+    const label = !typeClass.label()
       ? undefined
-      : `${prependLabel ? `${prependLabel} ` : ``}${arg.class.label()}`;
+      : `${prependLabel ? `${prependLabel} ` : ``}${typeClass.label()}`;
 
     // Get the input type.
-    const input = overrideInput || arg.class.input();
+    const input = overrideInput || typeClass.input();
 
     // Get the current input value.
     const inputArg = getInputArgAtKey(tabId, namespace, inputKey);
@@ -395,9 +411,11 @@ export const useInput = () => {
   };
 
   // Gets a selected variant item, or falls back to the first variant.
-  const getSelectedVariant = (arg: AnyJson, { namespace }: InputArg) => {
-    const { inputKey } = arg.class;
-
+  const getSelectedVariant = (
+    arg: AnyJson,
+    inputKey: string,
+    { namespace }: InputArg
+  ) => {
     // Get the current variant value, if any.
     const currentInputArg = getInputArgAtKey(tabId, namespace, inputKey)?.arg;
 

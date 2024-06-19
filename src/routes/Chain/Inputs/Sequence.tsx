@@ -9,16 +9,9 @@ import type { SequenceProps } from './types';
 import { useInput } from './useInput';
 import { Section } from './Section';
 
-export const Sequence = ({
-  namespace,
-  activePallet,
-  activeItem,
-  inputKey,
-  inputKeysRef,
-  arrayInput,
-  maxLength,
-}: SequenceProps) => {
+export const Sequence = ({ config, arrayInput, maxLength }: SequenceProps) => {
   const { readInput } = useInput();
+  const { inputKey, inputKeysRef } = config;
 
   const INPUT_TYPE = 'Sequence';
 
@@ -57,10 +50,7 @@ export const Sequence = ({
 
         // Generate input for this index.
         const subInput = readInput(arrayInput, {
-          activePallet,
-          activeItem,
-          namespace,
-          inputKeysRef,
+          ...config,
           inputKey: childKey,
         });
 

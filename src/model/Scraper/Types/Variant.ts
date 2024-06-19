@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { MetadataScraper } from '..';
-import type { BaseParams, MetadataType, VariantItem } from './types';
+import type { BaseParams, MetadataType, IVariantItem } from './types';
 import type { TypeParams } from '../types';
 import { Base } from './Common/Base';
 
 // Class to hold a variant type.
-export class Variant extends Base implements MetadataType {
+export class VariantType extends Base implements MetadataType {
   type = 'variant';
 
   // The variants of this variant type.
-  items: VariantItem[];
+  items: IVariantItem[];
 
-  constructor(variants: VariantItem[], base: BaseParams) {
+  constructor(variants: IVariantItem[], base: BaseParams) {
     super(base);
     this.items = variants;
   }
@@ -25,14 +25,14 @@ export class Variant extends Base implements MetadataType {
 
   // Scrape variant fields. Overwrites `fields` with scraped fields.
   scrape(scraper: MetadataScraper, { trailId }: TypeParams) {
-    return [...this.items].map(({ index, name, fields }) => {
-      const itemKey = `${this.indexKey}_${index}`;
+    return [...this.items].map(({ index, name, fields }, i) => {
+      const itemKey = `${this.indexKey}_${i}`;
 
       return {
         index,
         name,
-        fields: fields.map(({ type, name: fieldName, typeName }, i) => {
-          const indexKey = `${itemKey}_${i}`;
+        fields: fields.map(({ type, name: fieldName, typeName }, j) => {
+          const indexKey = `${itemKey}_${j}`;
 
           return {
             name: fieldName,

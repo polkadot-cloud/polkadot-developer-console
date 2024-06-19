@@ -84,9 +84,14 @@ export const Extrinsics = () => {
 
   // Get scrape result.
   const scrapedItem = scraperResult?.scrapedItem || null;
+  const itemScraper = scraperResult?.scraper || null;
 
   return (
-    <InputFormProvider namespace="call" activeItem={activeItem}>
+    <InputFormProvider
+      namespace="call"
+      activeItem={activeItem}
+      scraper={itemScraper}
+    >
       <FlexWrapper>
         <Header />
         <SelectFormWrapper className="withHeader">
@@ -104,6 +109,7 @@ export const Extrinsics = () => {
           argTypes={scrapedItem?.argTypes}
           activePallet={activePallet}
           activeItem={activeItem}
+          scraper={itemScraper}
         />
 
         <SenderWrapper>

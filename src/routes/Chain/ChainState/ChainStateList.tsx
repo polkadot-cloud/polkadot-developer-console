@@ -23,6 +23,7 @@ export const ChainStateList = ({
   chainUiSection,
   activeItem,
   subject,
+  scraper,
 }: ChainStateListProps) => {
   const { tabId } = useActiveTab();
   const { namespace } = useInputForm();
@@ -56,10 +57,12 @@ export const ChainStateList = ({
   // Inject call signature into items.
   const list: PalletItemScrapedWithSig[] = useMemo(
     () =>
-      items.map((item) => ({
-        ...item,
-        callSig: new FormatCallSignature(item).format(),
-      })),
+      !scraper
+        ? []
+        : items.map((item) => ({
+            ...item,
+            callSig: new FormatCallSignature(item, scraper).format(),
+          })),
     [items]
   );
 

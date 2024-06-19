@@ -84,7 +84,9 @@ export class PalletScraper extends MetadataScraper {
     // NOTE: Check if storage items are defined for this pallet as there may be none defined.
     const items = pallet.storage?.items;
     return items
-      ? items.map((item) => this.startStorageScrape(item, options))
+      ? items.map((item, i) =>
+          this.startStorageScrape(item, { ...options, indexPrefix: String(i) })
+        )
       : [];
   }
 
@@ -130,9 +132,21 @@ export class PalletScraper extends MetadataScraper {
     } else {
       const { key, value } = (type as PalleStorageMap).map;
 
+      // Ensure arg types and return types have unique index prefixes.
+      const currentIndexPrefix = options?.indexPrefix || null;
+      const argIndexPrefix = currentIndexPrefix
+        ? `${currentIndexPrefix}_0`
+        : '0';
+      const returnIndexPrefix = currentIndexPrefix
+        ? `${currentIndexPrefix}_1`
+        : '1';
+
       scrapedType = {
-        argTypes: this.start(key, options),
-        returnType: this.start(value, options),
+        argTypes: this.start(key, { ...options, indexPrefix: argIndexPrefix }),
+        returnType: this.start(value, {
+          ...options,
+          indexPrefix: returnIndexPrefix,
+        }),
       };
     }
 
@@ -281,12 +295,11 @@ export class PalletScraper extends MetadataScraper {
     const items = pallet.constants;
 
     if (items) {
-      result = items.map((item) => {
+      result = items.map((item, i) => {
         const { name, docs, type, value } = item;
-
         const scrapedType = {
           argTypes: undefined,
-          returnType: this.start(type),
+          returnType: this.start(type, { indexPrefix: String(i) }),
         };
 
         return {

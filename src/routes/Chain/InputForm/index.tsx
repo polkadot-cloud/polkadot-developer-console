@@ -14,6 +14,7 @@ import { useInput } from '../Inputs/useInput';
 export const InputForm = ({
   activePallet,
   activeItem,
+  scraper,
   argTypes,
   onSubmit,
 }: InputFormInnerProps) => {
@@ -32,12 +33,14 @@ export const InputForm = ({
 
   return (
     <InputFormWrapper>
-      {!!argTypes &&
+      {!!scraper &&
+        !!argTypes &&
         argTypes.map((arg: AnyJson, index: number) => (
           <Fragment key={`input_arg_${activePallet}_${activeItem}_${index}`}>
             {readInput(arg, {
               activePallet,
               activeItem,
+              scraper,
               inputKey: `${index}`,
               namespace,
               inputKeysRef,
