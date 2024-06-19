@@ -3,17 +3,17 @@
 
 import type { MetadataScraper } from '..';
 import type { TypeParams } from '../types';
-import type { BaseParams, CompactType, MetadataType } from './types';
+import type { BaseParams, ICompactType, MetadataType } from './types';
 import { Base } from './Common/Base';
 
 // Class to hold a compact type.
-export class Compact extends Base implements MetadataType {
+export class CompactType extends Base implements MetadataType {
   type = 'compact';
 
   // The inner type of this compact type.
   innerType: number;
 
-  constructor(compact: CompactType, base: BaseParams) {
+  constructor(compact: ICompactType, base: BaseParams) {
     super(base);
     this.innerType = compact.type;
   }

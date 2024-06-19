@@ -6,8 +6,14 @@ import type { LookupItem } from '../Lookup/types';
 import type { MetadataScraper } from '..';
 import type { TrailId, TypeParams, TrailParentId } from '../types';
 
+/*
+NOTES: 
+- These types are prefixed with `I` as to not get confused with type classes.
+- Type classes are suffixed with `Type`, as to not get confused with UI components.
+*/
+
 // Primitive
-export type PrimitiveType = string;
+export type IPrimitiveType = string;
 
 // Array
 export interface IArrayType {
@@ -16,22 +22,22 @@ export interface IArrayType {
 }
 
 // Bit Sequence
-export interface BitSequenceType {
+export interface IBitSequenceType {
   bitStoreType: AnyJson;
   bitOrderType: AnyJson;
 }
 
 // Compact
-export interface CompactType {
+export interface ICompactType {
   type: AnyJson;
 }
 
 // Composite
-export interface CompositeType {
-  fields: CompositeField[];
+export interface ICompositeType {
+  fields: ICompositeField[];
 }
 
-export interface CompositeField {
+export interface ICompositeField {
   docs: string[];
   name: string;
   type: AnyJson;
@@ -39,25 +45,25 @@ export interface CompositeField {
 }
 
 // Sequence
-export interface SequenceType {
+export interface ISequenceType {
   type: AnyJson;
 }
 
 // Tuple
-export type TupleType = number[];
+export type ITupleType = number[];
 
 // Variant
-export interface VariantType {
-  variants: VariantItem[];
+export interface IVariantType {
+  variants: IVariantItem[];
 }
-export interface VariantItem {
+export interface IVariantItem {
   name: string | null;
-  fields: VariantField[];
+  fields: IVariantField[];
   index: number;
   docs: string[];
 }
 
-export interface VariantField {
+export interface IVariantField {
   docs: string[];
   name: string;
   type: AnyJson;

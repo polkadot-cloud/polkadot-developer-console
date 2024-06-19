@@ -4,16 +4,21 @@
 import type { AnyJson } from '@w3ux/types';
 import type { PalletItemScraped } from './types';
 import { verifyOption } from './Utils';
+import type { MetadataScraper } from '.';
 
 export class FormatCallSignature {
+  // The scraper associated with this formatter.
+  scraper: MetadataScraper;
+
   // The raw input config to format.
   #rawConfig: PalletItemScraped;
 
   // Type labels to ignore when formatting call signatures.
   #ignoreLabels = ['BoundedVec', 'WeakBoundedVec'];
 
-  constructor(rawConfig: PalletItemScraped) {
+  constructor(rawConfig: PalletItemScraped, scraper: MetadataScraper) {
     this.#rawConfig = rawConfig;
+    this.scraper = scraper;
   }
 
   // ------------------------------------------------------
@@ -79,11 +84,17 @@ export class FormatCallSignature {
   // A recursive function that formats a call signature by formatting its arguments and return
   // types.
   getTypeString = (arg: AnyJson) => {
-    const type = arg?.class?.type;
-
     let str = '';
 
-    switch (type) {
+    // Defensive. If class is not indexed, return empty string.
+    if (!arg?.indexKey) {
+      return '';
+    }
+
+    const { indexKey } = arg;
+    const typeClass = this.scraper.getClass(indexKey);
+
+    switch (typeClass.type) {
       case 'array':
         str = this.getTypeString(arg.array.type);
         break;
@@ -97,11 +108,11 @@ export class FormatCallSignature {
         break;
 
       case 'primitive':
-        str = arg.class.label();
+        str = typeClass.label();
         break;
 
       case 'bitSequence':
-        str = arg.class.label();
+        str = typeClass.label();
         break;
 
       case 'sequence':
@@ -125,9 +136,10 @@ export class FormatCallSignature {
 
   // Formats a string from a composite type.
   getCompositeString = (arg: AnyJson) => {
-    let str = '';
-    const label = arg.class.label();
+    const typeClass = this.scraper.getClass(arg.indexKey);
+    const label = typeClass.label();
 
+    let str = '';
     // Expand type if short label is not defined, or if they've been defined in ignore list.
     if (['', ...this.#ignoreLabels].includes(label)) {
       str += arg.composite.reduce(
@@ -153,7 +165,8 @@ export class FormatCallSignature {
 
   // Formats a string from a variant type.
   getVariantType = (arg: AnyJson) => {
-    const label = arg.class.label();
+    const typeClass = this.scraper.getClass(arg.indexKey);
+    const label = typeClass.label();
 
     let str = `${label}`;
 

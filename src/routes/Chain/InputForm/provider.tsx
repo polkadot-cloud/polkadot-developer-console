@@ -28,6 +28,7 @@ export const InputFormProvider = ({
   namespace,
   children,
   activeItem,
+  scraper,
 }: InputFormProviderProps) => {
   const { tabId } = useActiveTab();
   const { getInputArgs, resetInputArgSection } = useChainUi();
@@ -37,7 +38,12 @@ export const InputFormProvider = ({
 
   // Handle query submission. Accumulates input values and passes them into the provided `onSubmit`
   // function.
-  const handleSubmit = (onSubmit?: (inputArgs: AnyJson) => void) => {
+  const handleSubmit = (onSubmit?: (args: AnyJson) => void) => {
+    // Exit early if no scraper is present.
+    if (!scraper) {
+      return;
+    }
+
     // Get input keys for manipulation.
     let inputKeys = { ...inputKeysRef.current } as Record<string, AnyJson>;
     const argValues = getInputArgs(tabId, namespace);
@@ -94,13 +100,13 @@ export const InputFormProvider = ({
         ? Object.values(inputKeys)?.[0][1]
         : Object.values(inputKeys)?.[0];
 
+    console.log('---');
+    console.log(resultInput);
+
     // Call a submission function if it exists.
     if (typeof onSubmit === 'function') {
       onSubmit(resultInput);
     }
-
-    console.log('---');
-    console.log(resultInput);
 
     return resultInput;
   };

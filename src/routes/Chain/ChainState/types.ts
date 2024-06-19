@@ -8,6 +8,7 @@ import type {
   InputNamespace,
 } from 'contexts/ChainUi/types';
 import type { StorageType } from 'model/ChainState/types';
+import type { PalletScraper } from 'model/Scraper/Pallet';
 import type { PalletItemScraped, PalletListItem } from 'model/Scraper/types';
 
 export interface PalletData {
@@ -28,6 +29,7 @@ export interface ChainStateListProps {
   items: PalletItemScraped[];
   activeItem: string | null;
   chainUiSection: ChainStateSection;
+  scraper: PalletScraper | null;
 }
 
 export interface EncodedDetailsProps {

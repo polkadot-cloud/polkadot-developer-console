@@ -6,25 +6,24 @@ import type { MetadataVersion } from 'model/Metadata/types';
 import type { ScraperConfig, ScraperOptions, TypeParams } from './types';
 import type { MetadataLookup } from './Lookup/types';
 import { Lookup } from './Lookup';
-import { Variant } from './Types/Variant';
+import { VariantType } from './Types/Variant';
 import type {
-  VariantType,
-  SequenceType,
+  IVariantType,
   IArrayType,
-  BitSequenceType,
-  CompactType,
-  TupleType,
-  CompositeType,
+  IBitSequenceType,
+  ICompactType,
+  ITupleType,
+  ICompositeType,
   MetadataType,
 } from './Types/types';
-import { Sequence } from './Types/Sequence';
+import { SequenceType } from './Types/Sequence';
 import { ArrayType } from './Types/Array';
-import { BitSequence } from './Types/BitSequence';
-import { Compact } from './Types/Compact';
-import { Primitive } from './Types/Primitive';
-import { Tuple } from './Types/Tuple';
-import { Composite } from './Types/Composite';
+import { CompactType } from './Types/Compact';
+import { PrimitiveType } from './Types/Primitive';
+import { TupleType } from './Types/Tuple';
+import { CompositeType } from './Types/Composite';
 import { Trails } from './Trails';
+import { BitSequenceType } from './Types/BitSequence';
 
 // Base metadata scraper class that accesses and recursively scrapes the metadata lookup.
 
@@ -61,9 +60,15 @@ export class MetadataScraper extends Trails {
     // assumes the start of a new scrape.
     const parentTrailId = options?.parentTrailId || null;
 
+    // Get an index prefix if provided. Prefixes should be used when the scraper is indexing
+    // multiple items, such as arg types and return types, lists of constants, storage items or
+    // extrinsics. This ensures that keys stay unique and do not overwrite each other between
+    // scraped items.
+    const indexPrefix = options?.indexPrefix || '';
+
     // Get the index key, or set to '0' if no index key is provided. No index key assumes the start
     // of a new scrape. Index keys are used to keep track of a recursive index of a type.
-    const indexKey = options?.indexKey || '0';
+    const indexKey = `${indexPrefix ? `${indexPrefix}_` : ``}${options?.indexKey || 0}`;
 
     // Defining this new trail.
     const trail = {
@@ -108,7 +113,12 @@ export class MetadataScraper extends Trails {
     this.appendTrail(trailId, typeId);
 
     // Parameters for Base metadata type classes.
-    const baseParams = { lookup, depth, trail: { trailId, parent }, indexKey };
+    const baseParams = {
+      lookup,
+      depth,
+      trail: { trailId, parent },
+      indexKey,
+    };
 
     const { def }: AnyJson = lookup.type;
     const [type, value] = Object.entries(def).flat();
@@ -116,48 +126,54 @@ export class MetadataScraper extends Trails {
     // Scrape the type.
     const result: AnyJson = {};
 
+    // Scrape the type class.
+    let typeClass: MetadataType;
+
     switch (type) {
       case 'array':
-        result.class = new ArrayType(value as IArrayType, baseParams);
-        result.array = result.class.scrape(this, params);
+        typeClass = new ArrayType(value as IArrayType, baseParams);
+        result.array = typeClass.scrape(this, params);
         break;
 
       case 'bitSequence':
-        result.class = new BitSequence(value as BitSequenceType, baseParams);
+        typeClass = new BitSequenceType(value as IBitSequenceType, baseParams);
         if (!labelsOnly) {
-          result.bitsequence = result.class.scrape(this, params);
+          result.bitSequence = typeClass.scrape(this, params);
         }
         break;
 
       case 'compact':
-        result.class = new Compact(value as CompactType, baseParams);
-        result.compact = result.class.scrape(this, params);
+        typeClass = new CompactType(value as ICompactType, baseParams);
+        result.compact = typeClass.scrape(this, params);
         break;
 
       case 'composite':
-        result.class = new Composite(value as CompositeType, baseParams);
-        result.composite = result.class.scrape(this, params);
+        typeClass = new CompositeType(value as ICompositeType, baseParams);
+        result.composite = typeClass.scrape(this, params);
         break;
 
       case 'primitive':
-        result.class = new Primitive(value as string, baseParams);
-        result.primitive = result.class.scrape();
+        typeClass = new PrimitiveType(value as string, baseParams);
+        result.primitive = typeClass.scrape(this, params);
         break;
 
       case 'sequence':
-        result.class = new Sequence(value as SequenceType, baseParams);
-        result.sequence = result.class.scrape(this, params);
+        typeClass = new SequenceType(value as SequenceType, baseParams);
+        result.sequence = typeClass.scrape(this, params);
         break;
 
       case 'tuple':
-        result.class = new Tuple(value as TupleType, baseParams);
-        result.tuple = result.class.scrape(this, params);
+        typeClass = new TupleType(value as ITupleType, baseParams);
+        result.tuple = typeClass.scrape(this, params);
         break;
 
       case 'variant':
-        result.class = new Variant((value as VariantType).variants, baseParams);
+        typeClass = new VariantType(
+          (value as IVariantType).variants,
+          baseParams
+        );
         if (!labelsOnly) {
-          result.variant = result.class.scrape(this, params);
+          result.variant = typeClass.scrape(this, params);
         }
         break;
 
@@ -165,8 +181,11 @@ export class MetadataScraper extends Trails {
         return null;
     }
 
+    // Attach index key to result.
+    result.indexKey = indexKey;
+
     // Index resulting type class by its index key. Makes class accessible at the input arg level.
-    this.classIndex[indexKey] = result.class;
+    this.classIndex[indexKey] = typeClass;
 
     return result;
   }

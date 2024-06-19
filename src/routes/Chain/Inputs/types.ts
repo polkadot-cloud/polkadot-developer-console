@@ -4,6 +4,7 @@
 import type { AnyJson } from '@w3ux/types';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import type { InputCallbackProps } from 'library/Inputs/types';
+import type { PalletScraper } from 'model/Scraper/Pallet';
 import type { RefObject } from 'react';
 
 export interface InputItem {
@@ -23,6 +24,7 @@ export interface RenderInputArgs {
 export interface InputArgConfig {
   activePallet: string | null;
   activeItem: string | null;
+  scraper: PalletScraper;
   namespace: InputNamespace;
   inputKeysRef: RefObject<Record<string, string>>;
   inputKey: string;
@@ -48,8 +50,8 @@ export type CheckboxProps = InputArgConfig &
     onRender?: (inputType: string) => void;
   };
 
-export type SequenceProps = InputArgConfig &
-  InputCallbackProps & {
-    arrayInput: AnyJson;
-    maxLength?: number;
-  };
+export type SequenceProps = InputCallbackProps & {
+  config: InputArgConfig;
+  arrayInput: AnyJson;
+  maxLength?: number;
+};
