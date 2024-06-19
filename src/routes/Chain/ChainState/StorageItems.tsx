@@ -75,6 +75,7 @@ export const StorageItems = () => {
 
   // Get scrape result.
   const scrapedItem = scraperResult?.scrapedItem || null;
+  const itemScraper = scraperResult?.scraper || null;
 
   // Handle storage item query submission.
   const onSubmit = (args: AnyJson) => {
@@ -112,6 +113,7 @@ export const StorageItems = () => {
         />
       </SelectFormWrapper>
       <InputForm
+        itemScraper={itemScraper}
         argTypes={scrapedItem?.argTypes}
         activePallet={activePallet}
         activeItem={activeItem}

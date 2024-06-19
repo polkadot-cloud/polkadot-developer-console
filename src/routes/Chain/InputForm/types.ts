@@ -3,6 +3,7 @@
 
 import type { AnyJson } from '@w3ux/types';
 import type { InputNamespace } from 'contexts/ChainUi/types';
+import type { PalletScraper } from 'model/Scraper/Pallet';
 import type { MutableRefObject, ReactNode } from 'react';
 
 export interface InputFormContextInterface {
@@ -22,4 +23,5 @@ export interface InputFormInnerProps {
   activePallet: string | null;
   activeItem: string | null;
   onSubmit?: (inputs: AnyJson) => void;
+  itemScraper: PalletScraper | null;
 }
