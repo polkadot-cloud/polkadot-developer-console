@@ -84,7 +84,9 @@ export class PalletScraper extends MetadataScraper {
     // NOTE: Check if storage items are defined for this pallet as there may be none defined.
     const items = pallet.storage?.items;
     return items
-      ? items.map((item) => this.startStorageScrape(item, options))
+      ? items.map((item, i) =>
+          this.startStorageScrape(item, { ...options, indexPrefix: String(i) })
+        )
       : [];
   }
 
@@ -281,12 +283,11 @@ export class PalletScraper extends MetadataScraper {
     const items = pallet.constants;
 
     if (items) {
-      result = items.map((item) => {
+      result = items.map((item, i) => {
         const { name, docs, type, value } = item;
-
         const scrapedType = {
           argTypes: undefined,
-          returnType: this.start(type),
+          returnType: this.start(type, { indexPrefix: String(i) }),
         };
 
         return {

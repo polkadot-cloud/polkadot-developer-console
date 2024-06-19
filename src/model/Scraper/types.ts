@@ -76,6 +76,7 @@ export interface ScraperOptions {
   labelsOnly?: boolean;
   maxDepth?: number | '*';
   parentTrailId?: TrailParentId;
+  indexPrefix?: string;
   indexKey?: string;
 }
 
