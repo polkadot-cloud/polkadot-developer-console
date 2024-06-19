@@ -27,8 +27,8 @@ export const StorageItems = () => {
   const chainUi = getChainUi(tabId, chainUiSection);
   const Metadata = chainSpec.metadata;
 
-  // Fetch storage data when metadata or the selected pallet changes.
-  const storageData = useMemo((): PalletData => {
+  // Fetch storage items when metadata or the selected pallet changes.
+  const scrapedStorageList = useMemo(() => {
     // Get pallet list from scraper.
     const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
     const pallets = scraper.getPalletList(['storage']);
@@ -52,9 +52,10 @@ export const StorageItems = () => {
       items,
     };
 
-    return result;
+    return { storageData: result, scraper };
   }, [chainUi.pallet, Metadata?.metadata]);
 
+  const { storageData, scraper: listScraper } = scrapedStorageList;
   const { pallets, activePallet, items } = storageData;
 
   // If no storage item selected, select the first one from the list or fall back to null.
@@ -107,6 +108,7 @@ export const StorageItems = () => {
           items={items}
           activeItem={activeItem}
           chainUiSection={chainUiSection}
+          scraper={listScraper}
         />
       </SelectFormWrapper>
       <InputForm

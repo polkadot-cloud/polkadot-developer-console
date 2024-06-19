@@ -30,7 +30,7 @@ export const Constants = () => {
   const Metadata = chainSpec.metadata;
 
   // Fetch storage data when metadata or the selected pallet changes.
-  const constantsData = useMemo((): PalletData => {
+  const scraperResult = useMemo(() => {
     // Get pallet list from scraper.
     const scraper = new PalletScraper(Metadata);
     const pallets = scraper.getPalletList(['constants']);
@@ -45,10 +45,14 @@ export const Constants = () => {
       items,
     };
 
-    return result;
+    return { scrapedItem: result, scraper };
   }, [chainUi.pallet, chainUi.selected, Metadata?.metadata]);
 
-  const { pallets, activePallet, items } = constantsData;
+  // Get scrape result.
+  const scrapedItem = scraperResult?.scrapedItem || null;
+  const listScraper = scraperResult?.scraper || null;
+
+  const { pallets, activePallet, items } = scrapedItem;
 
   // If no storage item selected, select the first one from the list or fall back to null.
   const activeItem = chainUi.selected || items?.[0]?.name || null;
@@ -80,6 +84,7 @@ export const Constants = () => {
           }}
         />
         <ChainStateList
+          scraper={listScraper}
           subject="Runtime Constant"
           items={items}
           activeItem={activeItem}
