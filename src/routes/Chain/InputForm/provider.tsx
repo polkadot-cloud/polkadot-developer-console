@@ -55,16 +55,12 @@ export const InputFormProvider = ({
         Object.entries(inputArgs || {}).map(([key, { arg }]) => [key, arg])
       );
 
-      // Gets the deepest keys of inputKeys object. There could be more than 1 key with the
-      // longest length.
+      // Gets the deepest input keys. There could be more than 1 key with the longest length.
       let { deepestKeys, maxLength } = getDeepestKeys(formattedKeys);
 
-      // Check whether there is only a single argument to pass into this query.
-      const singleInput = maxLength === 1;
-
       do {
-        // Exit early if only a single arg.
-        if (singleInput) {
+        // Exit early if only a single input to process.
+        if (maxLength === 1) {
           formattedKeys[0] = formatSingleArg(formattedKeys, argValues);
           break;
         }
