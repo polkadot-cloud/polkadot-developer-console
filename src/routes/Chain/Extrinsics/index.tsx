@@ -112,7 +112,7 @@ export const Extrinsics = () => {
               resetInputArgSection(tabId, inputNamespace);
             }}
           />
-          <CallList items={items} activeItem={activeItem} />
+          <CallList items={items} />
         </SelectFormWrapper>
         <InputForm
           argTypes={scrapedItem?.argTypes}

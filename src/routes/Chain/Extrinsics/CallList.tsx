@@ -12,6 +12,7 @@ import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { CallListItem, CallListProps } from './types';
 import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
+import type { InputNamespace } from 'contexts/ChainUi/types';
 
 export const CallList = ({ items }: CallListProps) => {
   const { tabId } = useActiveTab();
@@ -19,6 +20,7 @@ export const CallList = ({ items }: CallListProps) => {
     useChainUi();
 
   const chainUiSection = 'calls';
+  const inputNamespace: InputNamespace = 'call';
   const chainUi = getChainUi(tabId, chainUiSection);
 
   // Call selection open.
@@ -37,7 +39,7 @@ export const CallList = ({ items }: CallListProps) => {
   // Handle call change.
   const handleCallChange = (name: string) => {
     setChainUiNamespace(tabId, chainUiSection, 'selected', name);
-    resetInputArgSection(tabId, 'call');
+    resetInputArgSection(tabId, inputNamespace);
     setCallsOpen(false);
   };
 
