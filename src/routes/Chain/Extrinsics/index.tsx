@@ -19,6 +19,7 @@ import { AccountId32 } from 'library/Inputs/AccountId32';
 import { Label } from 'library/Inputs/Label';
 import { useChainState } from 'contexts/ChainState';
 import { Submit } from './Submit';
+import type { InputNamespace } from 'contexts/ChainUi/types';
 
 export const Extrinsics = () => {
   const { chainSpec } = useChain();
@@ -29,6 +30,7 @@ export const Extrinsics = () => {
     useChainUi();
 
   const chainUiSection = 'calls';
+  const inputNamespace: InputNamespace = 'call';
   const chainUi = getChainUi(tabId, chainUiSection);
   const Metadata = chainSpec.metadata;
 
@@ -43,7 +45,7 @@ export const Extrinsics = () => {
   // Fetch storage data when metadata or the selected pallet changes.
   const callData = useMemo((): PalletData => {
     const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
-    const pallets = scraper.getPalletList(['calls']);
+    const pallets = scraper.getPalletList([chainUiSection]);
 
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
@@ -107,7 +109,7 @@ export const Extrinsics = () => {
               setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
 
               // Reset input args when selected pallet changes.
-              resetInputArgSection(tabId, 'call');
+              resetInputArgSection(tabId, inputNamespace);
             }}
           />
           <CallList items={items} activeItem={activeItem} />
