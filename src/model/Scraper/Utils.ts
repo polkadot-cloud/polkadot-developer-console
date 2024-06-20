@@ -78,6 +78,10 @@ export const pathToString = (path: string[]): string =>
     return index === 0 ? item : `${formatted}::${item}`;
   }, '');
 
+// ------------------------------------------------------
+// Custom input types.
+// ------------------------------------------------------
+
 // Get a custom input component based on label. Currently only called with composite types.
 export const getCustomInput = (label: string): string | null => {
   // If Vec parameter is u8, or BoundedVec parameter 2 is u8, then we are dealing with bytes.
@@ -101,6 +105,10 @@ export const getCustomInput = (label: string): string | null => {
 
   return null;
 };
+
+// ------------------------------------------------------
+// Type overrides.
+// ------------------------------------------------------
 
 // Checks if a composite is a sequence of u8s.
 export const compositeIsBytes = (shortLabel: string, arg: AnyJson) =>
