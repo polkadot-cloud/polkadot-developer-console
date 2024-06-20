@@ -4,6 +4,12 @@
 import type { AnyJson } from '@w3ux/types';
 import type { InputArgs } from 'contexts/ChainUi/types';
 
+// Formats a single argument for a query.
+export const formatSingleArg = (
+  formattedKeys: Record<string, AnyJson>,
+  argValues: Record<string, string>
+) => formatArg(formattedKeys[0], '1', argValues?.[0], argValues);
+
 // Gets a collection of the longest keys in an inputKey field, fetching the deepest nested values in
 // an input form.
 export const getDeepestKeys = (inputKeys: Record<string, string>) => {
@@ -118,20 +124,29 @@ export const formatArg = (
   switch (type) {
     case 'AccountId32':
       return formatAccountId32(value);
+
     case 'Hash':
       return formatHash(value);
+
     case 'Bytes':
       return formatBytes(value);
+
     case 'Textbox':
       return formatText(value);
+
     case 'Checkbox':
       return formatCheckbox(value);
+
+    case 'Select':
+      return formatVariant(value, key, argValues);
+
     case 'Composite':
       return formatComposite(value);
+
     case 'Tuple':
       return formatTuple(value);
 
-    // TODO: select (enums), variant, sequences. Fall back to metadata for now.
+    // TODO: Sequences. Fall back to metadata for now.
     default:
       return {
         type,
@@ -140,6 +155,24 @@ export const formatArg = (
       };
   }
 };
+
+// Format variant.
+export const formatVariant = (
+  value: AnyJson,
+  key: string,
+  argValues: AnyJson
+) => {
+  // TODO: get fields from class lookup data and format with typed or simple enum.
+  const val = argValues?.[key];
+
+  return {
+    val,
+    child: value,
+  };
+};
+
+// Format composite: TODO: Implement field names for values.
+export const formatComposite = (values: AnyJson[]): AnyJson[] => values;
 
 // Format an account ID: Just return the string value.
 export const formatAccountId32 = (value: string): string => value;
@@ -155,9 +188,6 @@ export const formatText = (value: string): string => value;
 
 // Format checkbox: Just return the boolean value.
 export const formatCheckbox = (value: boolean): boolean => value;
-
-// Format composite: Just return the array value.
-export const formatComposite = (values: AnyJson[]): AnyJson[] => values;
 
 // Format tuple: Just return the array value.
 export const formatTuple = (values: AnyJson[]): AnyJson[] => values;

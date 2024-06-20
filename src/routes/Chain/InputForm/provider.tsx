@@ -8,7 +8,7 @@ import type {
   InputFormProviderProps,
 } from './types';
 import {
-  formatArg,
+  formatSingleArg,
   getDeepestKeys,
   getParentKeyValues,
   updateInputsAndRemoveChildren,
@@ -44,50 +44,57 @@ export const InputFormProvider = ({
 
     // Get input keys for manipulation.
     let formattedKeys = { ...inputKeys } as Record<string, AnyJson>;
-    const argValues = getInputArgs(tabId, namespace);
+    const inputArgs = getInputArgs(tabId, namespace);
 
-    // Gets the deepest keys of inputKeys object. There could be more than 1 key with the
-    // longest length.
-    let { deepestKeys, maxLength } = getDeepestKeys(formattedKeys);
-
-    // Recursively construct input values.
-    do {
-      // Take the values of those deepest keys.
-      const deepestKeysWithValue = Object.fromEntries(
-        deepestKeys.map((key) => [key, formattedKeys[key]])
+    // If no input args exist, formatted keys is simply an empty object. Otherwise, go ahead and recursively construct input values from args.
+    if (inputArgs === null) {
+      formattedKeys = {};
+    } else {
+      // Extract `arg` from each input arg record.
+      const argValues = Object.fromEntries(
+        Object.entries(inputArgs || {}).map(([key, { arg }]) => [key, arg])
       );
 
-      // Exit early if deepest key is only 1.
-      if (maxLength === 1) {
-        formattedKeys[1] = formatArg(
-          formattedKeys[1],
-          '1',
-          argValues?.[1],
-          argValues
+      // Gets the deepest keys of inputKeys object. There could be more than 1 key with the
+      // longest length.
+      let { deepestKeys, maxLength } = getDeepestKeys(formattedKeys);
+
+      // Check whether there is only a single argument to pass into this query.
+      const singleInput = maxLength === 1;
+
+      do {
+        // Exit early if only a single arg.
+        if (singleInput) {
+          formattedKeys[0] = formatSingleArg(formattedKeys, argValues);
+          break;
+        }
+
+        // Take the values of those deepest keys.
+        const deepestKeysWithValue = Object.fromEntries(
+          deepestKeys.map((key) => [key, formattedKeys[key]])
         );
-        break;
-      }
 
-      // Get parent keys of deepest keys.
-      const parentValues = getParentKeyValues(
-        inputKeys,
-        argValues || {},
-        deepestKeysWithValue
-      );
+        // Get parent keys of deepest keys.
+        const parentValues = getParentKeyValues(
+          inputKeys,
+          argValues || {},
+          deepestKeysWithValue
+        );
 
-      // For each key of `parentValues` commit the value to `inputKeys` under the same
-      // key.
-      formattedKeys = updateInputsAndRemoveChildren(
-        inputKeys,
-        parentValues,
-        deepestKeys
-      );
+        // For each key of `parentValues` commit the value to `inputKeys` under the same
+        // key.
+        formattedKeys = updateInputsAndRemoveChildren(
+          inputKeys,
+          parentValues,
+          deepestKeys
+        );
 
-      // Update `deepestKeys` for next iteration.
-      const newDeepestKeys = getDeepestKeys(formattedKeys);
-      deepestKeys = newDeepestKeys.deepestKeys;
-      maxLength = newDeepestKeys.maxLength;
-    } while (deepestKeys.length > 1);
+        // Update `deepestKeys` for next iteration.
+        const newDeepestKeys = getDeepestKeys(formattedKeys);
+        deepestKeys = newDeepestKeys.deepestKeys;
+        maxLength = newDeepestKeys.maxLength;
+      } while (deepestKeys.length > 1);
+    }
 
     // Determine whether inputs are empty.
     const isEmpty = Object.values(formattedKeys).length === 0;

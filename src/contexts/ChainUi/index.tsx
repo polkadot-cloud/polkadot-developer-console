@@ -175,13 +175,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
       return null;
     }
 
-    // Extract `arg` from each input arg record.
-    //
-    // TODO: Do this filter further down input arg formatting - indexKey is required for fetching
-    // class and formatting arg.
-    return Object.fromEntries(
-      Object.entries(inputArgsWithKeys).map(([key, { arg }]) => [key, arg])
-    );
+    return inputArgsWithKeys || null;
   };
 
   // Get input args at a key for either a storage item or call.
