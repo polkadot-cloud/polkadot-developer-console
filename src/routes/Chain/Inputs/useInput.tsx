@@ -15,8 +15,11 @@ import { useAccounts } from 'contexts/Accounts';
 import { useChain } from '../Provider';
 import { Textbox } from 'library/Inputs/Textbox';
 import type { InputArg } from 'contexts/ChainUi/types';
-import { arrayIsBytes, arrayIsPrimitive } from 'model/Scraper/Utils';
-import { DefaultInputs } from 'model/Scraper/DefaultInputs';
+import {
+  arrayIsBytes,
+  arrayIsPrimitive,
+  defaultInputValue,
+} from 'model/Scraper/Utils';
 import { Sequence } from './Sequence';
 import type { ArrayType } from 'model/Scraper/Types/Array';
 import type { SequenceType } from 'model/Scraper/Types/Sequence';
@@ -347,7 +350,7 @@ export const useInput = () => {
               onChange={(val) => {
                 setInputArgAtKey(tabId, namespace, keys, val);
               }}
-              value={inputValue || DefaultInputs.defaultValue(input)}
+              value={inputValue || defaultInputValue(input)}
             />
           );
 
@@ -397,7 +400,7 @@ export const useInput = () => {
                   setInputArgAtKey(tabId, namespace, keys, val);
                 }}
                 label={label}
-                value={inputValue || DefaultInputs.defaultValue(input)}
+                value={inputValue || defaultInputValue(input)}
                 numeric={input === 'number'}
               />
             </Section>

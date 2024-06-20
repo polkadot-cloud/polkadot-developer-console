@@ -4,6 +4,24 @@
 import type { AnyJson } from '@w3ux/types';
 
 // ------------------------------------------------------
+// Defaults.
+// ------------------------------------------------------
+
+export const defaultInputValue = (type: string): string => {
+  switch (type) {
+    case 'number':
+      return '0';
+
+    case 'char':
+    case 'str':
+      return '';
+
+    default:
+      return '';
+  }
+};
+
+// ------------------------------------------------------
 // Options.
 // ------------------------------------------------------
 
