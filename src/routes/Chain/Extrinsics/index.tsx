@@ -96,7 +96,7 @@ export const Extrinsics = () => {
   }, [activeItem]);
 
   return (
-    <InputFormProvider namespace="call" scraper={itemScraper}>
+    <InputFormProvider namespace={inputNamespace} scraper={itemScraper}>
       <FlexWrapper>
         <Header />
         <SelectFormWrapper className="withHeader">
