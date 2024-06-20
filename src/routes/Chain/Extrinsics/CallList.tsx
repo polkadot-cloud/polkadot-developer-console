@@ -12,15 +12,15 @@ import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { CallListItem, CallListProps } from './types';
 import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
-import { useInputForm } from '../InputForm/provider';
+import type { InputNamespace } from 'contexts/ChainUi/types';
 
-export const CallList = ({ items, activeItem }: CallListProps) => {
+export const CallList = ({ items }: CallListProps) => {
   const { tabId } = useActiveTab();
-  const { namespace } = useInputForm();
   const { getChainUi, setChainUiNamespace, resetInputArgSection } =
     useChainUi();
 
   const chainUiSection = 'calls';
+  const inputNamespace: InputNamespace = 'call';
   const chainUi = getChainUi(tabId, chainUiSection);
 
   // Call selection open.
@@ -34,6 +34,13 @@ export const CallList = ({ items, activeItem }: CallListProps) => {
   // Handle pallet search change.
   const handleCallSearchChange = (value: string) => {
     setChainUiNamespace(tabId, chainUiSection, 'search', value);
+  };
+
+  // Handle call change.
+  const handleCallChange = (name: string) => {
+    setChainUiNamespace(tabId, chainUiSection, 'selected', name);
+    resetInputArgSection(tabId, inputNamespace);
+    setCallsOpen(false);
   };
 
   // Filter calls based on search term, if selection is present.
@@ -59,13 +66,6 @@ export const CallList = ({ items, activeItem }: CallListProps) => {
       searchInputRef.current?.focus();
     }
   }, [callsOpen]);
-
-  // Reset input args when active item changes.
-  useEffect(() => {
-    if (namespace) {
-      resetInputArgSection(tabId, namespace);
-    }
-  }, [activeItem]);
 
   return (
     <section>
@@ -113,10 +113,7 @@ export const CallList = ({ items, activeItem }: CallListProps) => {
             <SelectItemWrapper
               key={`call_select_${name}`}
               className="option"
-              onClick={() => {
-                setChainUiNamespace(tabId, chainUiSection, 'selected', name);
-                setCallsOpen(false);
-              }}
+              onClick={() => handleCallChange(name)}
             >
               <span>
                 <SelectTextWrapper>

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { InputFormWrapper } from '../Wrappers';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
@@ -71,6 +71,14 @@ export const Constants = () => {
       }
     }
   };
+
+  // Manage `activeItem` changes.
+  useEffect(() => {
+    // On initial render, set the selected item to the first list item, if any.
+    if (activeItem) {
+      setChainUiNamespace(tabId, chainUiSection, 'selected', activeItem);
+    }
+  }, [activeItem]);
 
   return (
     <>

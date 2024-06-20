@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/types';
-import type { RefObject } from 'react';
 import { Fragment } from 'react';
 import { Select } from 'library/Inputs/Select';
 import { Section } from './Section';
@@ -22,11 +21,13 @@ import { Sequence } from './Sequence';
 import type { ArrayType } from 'model/Scraper/Types/Array';
 import type { SequenceType } from 'model/Scraper/Types/Sequence';
 import type { CompositeType } from 'model/Scraper/Types/Composite';
+import { useInputMeta } from 'contexts/InputMeta';
 
 export const useInput = () => {
   const { chainSpec } = useChain();
   const { getAccounts } = useAccounts();
   const { tabId, metaKey } = useActiveTab();
+  const { removeInputMetaValue } = useInputMeta();
   const { setInputArgAtKey, getInputArgAtKey } = useChainUi();
 
   const accounts = getAccounts(chainSpec);
@@ -145,10 +146,10 @@ export const useInput = () => {
   // Renders a compact input component.
   const renderCompact = (arg: AnyJson, config: InputArgConfig) => {
     const { compact } = arg;
-    const { inputKey } = config;
+    const { inputKey, inputKeys } = config;
 
     // Record this input type.
-    addInputTypeAtKey(config.inputKeysRef, inputKey, 'Compact');
+    addInputTypeAtKey(inputKeys, inputKey, 'Compact');
 
     // Render compact input.
     return (
@@ -161,10 +162,10 @@ export const useInput = () => {
   // Renders a tuple input component.
   const renderTuple = (arg: AnyJson, config: InputArgConfig) => {
     const { tuple } = arg;
-    const { inputKey } = config;
+    const { inputKey, inputKeys } = config;
 
     // Record this input type.
-    addInputTypeAtKey(config.inputKeysRef, inputKey, 'Tuple');
+    addInputTypeAtKey(inputKeys, inputKey, 'Tuple');
 
     // Render tuple inputs.
     return (
@@ -183,7 +184,7 @@ export const useInput = () => {
     const typeClass = config.scraper.getClass(arg.indexKey) as CompositeType;
     const label = typeClass.label();
     const input = typeClass.input();
-    const { inputKey } = config;
+    const { inputKey, inputKeys } = config;
 
     // If this composite is a custom input, render it and stop the recursive input loop.
     if (input !== 'indent') {
@@ -196,7 +197,7 @@ export const useInput = () => {
     }
 
     // Record this input type.
-    addInputTypeAtKey(config.inputKeysRef, inputKey, 'Composite');
+    addInputTypeAtKey(inputKeys, inputKey, 'Composite');
 
     // Render the composite fields.
     return (
@@ -276,7 +277,7 @@ export const useInput = () => {
     } = options || {};
 
     const {
-      inputKeysRef,
+      inputKeys,
       scraper,
       inputKey,
       namespace,
@@ -304,9 +305,18 @@ export const useInput = () => {
 
     // General `onRender` callback that registers input type with key.
     const onRender = (inputType: string) => {
-      if (inputKeysRef.current) {
-        inputKeysRef.current[inputKey] = inputType;
-      }
+      inputKeys[inputKey] = inputType;
+    };
+
+    // A unique identifier for the input component. Currently only used for account address inputs.
+    const inputId = `${metaKey}_${namespace}_${activePallet}_${activeItem}_${inputKey}`;
+
+    // General `onMount` callback that sets an initial value for an input.
+    const onMount = <T,>(value: T) => {
+      removeInputMetaValue(tabId, inputId);
+
+      // Set initial input value.
+      setInputArgAtKey(tabId, namespace, keys, value);
     };
 
     return (() => {
@@ -315,12 +325,10 @@ export const useInput = () => {
         case 'AccountId32':
           return (
             <AccountId32
-              uid={`${metaKey}_${namespace}_${activePallet}_${activeItem}_${inputKey}`}
+              inputId={inputId}
               defaultAddress={inputValue}
               accounts={accounts}
-              onMount={(selectedAddress) => {
-                setInputArgAtKey(tabId, namespace, keys, selectedAddress);
-              }}
+              onMount={onMount}
               onRender={onRender}
               onChange={(val) => {
                 setInputArgAtKey(tabId, namespace, keys, val);
@@ -334,9 +342,7 @@ export const useInput = () => {
           return (
             <Hash
               {...inputArgConfig}
-              onMount={(value) => {
-                setInputArgAtKey(tabId, namespace, keys, value);
-              }}
+              onMount={onMount}
               onRender={onRender}
               onChange={(val) => {
                 setInputArgAtKey(tabId, namespace, keys, val);
@@ -353,9 +359,7 @@ export const useInput = () => {
                 label={label}
                 values={values || []}
                 value={inputValue}
-                onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, keys, value);
-                }}
+                onMount={onMount}
                 onRender={onRender}
                 onChange={(val) => {
                   setInputArgAtKey(tabId, inputArgConfig.namespace, keys, val);
@@ -370,9 +374,7 @@ export const useInput = () => {
             <Section indent={indent}>
               <Checkbox
                 {...inputArgConfig}
-                onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, keys, value);
-                }}
+                onMount={onMount}
                 onRender={onRender}
                 onChange={(val) => {
                   setInputArgAtKey(tabId, namespace, keys, val);
@@ -389,9 +391,7 @@ export const useInput = () => {
           return (
             <Section indent={indent}>
               <Textbox
-                onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, keys, value);
-                }}
+                onMount={onMount}
                 onRender={onRender}
                 onChange={(val) => {
                   setInputArgAtKey(tabId, namespace, keys, val);
@@ -427,13 +427,11 @@ export const useInput = () => {
 
   // Record an input type to an input key.
   const addInputTypeAtKey = (
-    inputKeysRef: RefObject<Record<string, string>>,
+    inputKeys: Record<string, string>,
     inputKey: string,
     inputType: string
   ) => {
-    if (inputKeysRef.current) {
-      inputKeysRef.current[inputKey] = inputType;
-    }
+    inputKeys[inputKey] = inputType;
   };
 
   return {

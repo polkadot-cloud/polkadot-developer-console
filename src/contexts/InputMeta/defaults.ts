@@ -5,7 +5,8 @@
 import type { InputMetaContextInterface } from './types';
 
 export const defaultInputMetaContext: InputMetaContextInterface = {
-  getInputMetaValue: () => undefined,
-  setInputMetaValue: () => {},
-  removeInputMeta: () => {},
+  getInputMetaValue: (tabId, inputId) => undefined,
+  setInputMetaValue: (tabId, inputId, value) => {},
+  removeInputMetaValue: (tabId, inputId) => {},
+  removeInputMeta: (tabId) => {},
 };

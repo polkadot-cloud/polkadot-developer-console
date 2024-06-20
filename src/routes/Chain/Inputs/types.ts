@@ -5,7 +5,6 @@ import type { AnyJson } from '@w3ux/types';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import type { InputCallbackProps } from 'library/Inputs/types';
 import type { PalletScraper } from 'model/Scraper/Pallet';
-import type { RefObject } from 'react';
 
 export interface InputItem {
   form: AnyJson;
@@ -26,7 +25,7 @@ export interface InputArgConfig {
   activeItem: string | null;
   scraper: PalletScraper;
   namespace: InputNamespace;
-  inputKeysRef: RefObject<Record<string, string>>;
+  inputKeys: Record<string, string>;
   inputKey: string;
 }
 
