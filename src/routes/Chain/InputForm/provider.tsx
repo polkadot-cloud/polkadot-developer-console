@@ -50,18 +50,13 @@ export const InputFormProvider = ({
     if (inputArgs === null) {
       formattedKeys = {};
     } else {
-      // Extract `arg` from each input arg record.
-      const argValues = Object.fromEntries(
-        Object.entries(inputArgs || {}).map(([key, { arg }]) => [key, arg])
-      );
-
       // Gets the deepest input keys. There could be more than 1 key with the longest length.
       let { deepestKeys, maxLength } = getDeepestKeys(formattedKeys);
 
       do {
         // Exit early if only a single input to process.
         if (maxLength === 1) {
-          formattedKeys[0] = formatSingleArg(formattedKeys, argValues);
+          formattedKeys[0] = formatSingleArg(formattedKeys, inputArgs);
           break;
         }
 
@@ -73,7 +68,7 @@ export const InputFormProvider = ({
         // Get parent keys of deepest keys.
         const parentValues = getParentKeyValues(
           inputKeys,
-          argValues || {},
+          inputArgs || {},
           deepestKeysWithValue
         );
 

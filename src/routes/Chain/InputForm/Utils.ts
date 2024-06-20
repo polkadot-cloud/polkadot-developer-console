@@ -7,8 +7,8 @@ import type { InputArgs } from 'contexts/ChainUi/types';
 // Formats a single argument for a query.
 export const formatSingleArg = (
   formattedKeys: Record<string, AnyJson>,
-  argValues: Record<string, string>
-) => formatArg(formattedKeys[0], '1', argValues?.[0], argValues);
+  inputArgs: InputArgs
+) => formatArg(formattedKeys[0], '1', inputArgs?.[0]?.arg, inputArgs);
 
 // Gets a collection of the longest keys in an inputKey field, fetching the deepest nested values in
 // an input form.
@@ -44,7 +44,7 @@ export const getDeepestKeys = (inputKeys: Record<string, string>) => {
 // Gets the value for each parent key for the provided input keys.
 export const getParentKeyValues = (
   inputKeys: Record<string, string>,
-  argValues: InputArgs,
+  inputArgs: InputArgs,
   deepestKeys: Record<string, AnyJson>
 ) => {
   // Ensure deepest keys are ordered by key for correct passing of arguments order.
@@ -62,10 +62,10 @@ export const getParentKeyValues = (
       const currentValue = acc[parentKey] || [];
 
       // The user inputted value for this key.
-      const argValue = argValues[key];
+      const argValue = inputArgs[key]?.arg;
 
       // Format current value based on its form input.
-      const formattedValue = formatArg(type, key, argValue, argValues);
+      const formattedValue = formatArg(type, key, argValue, inputArgs);
 
       // Accumulate current value to the parent key.
       acc[parentKey] = currentValue.concat(formattedValue);
@@ -82,10 +82,12 @@ export const getParentKeyValues = (
 
       // If `Select` for possible typed enums, include the value in an array.
       const inputType =
-        parentInput === 'Select' ? [parentInput, argValues[key]] : parentInput;
+        parentInput === 'Select'
+          ? [parentInput, inputArgs[key]?.arg]
+          : parentInput;
 
       // Format current value based on its form input.
-      const formattedValue = formatArg(parentInput, key, value, argValues);
+      const formattedValue = formatArg(parentInput, key, value, inputArgs);
       acc[key] = [inputType, formattedValue];
       return acc;
     },
@@ -119,7 +121,7 @@ export const formatArg = (
   type: string,
   key: string,
   value: AnyJson,
-  argValues: AnyJson
+  inputArgs: AnyJson
 ) => {
   switch (type) {
     case 'AccountId32':
@@ -137,42 +139,18 @@ export const formatArg = (
     case 'Checkbox':
       return formatCheckbox(value);
 
-    case 'Select':
-      return formatVariant(value, key, argValues);
-
-    case 'Composite':
-      return formatComposite(value);
-
     case 'Tuple':
       return formatTuple(value);
 
-    // TODO: Sequences. Fall back to metadata for now.
+    // TODO: Sequences, Variants, Composites. Fall back to metadata for now.
     default:
       return {
         type,
-        val: argValues?.[key],
+        val: inputArgs?.[key]?.arg,
         child: value,
       };
   }
 };
-
-// Format variant.
-export const formatVariant = (
-  value: AnyJson,
-  key: string,
-  argValues: AnyJson
-) => {
-  // TODO: get fields from class lookup data and format with typed or simple enum.
-  const val = argValues?.[key];
-
-  return {
-    val,
-    child: value,
-  };
-};
-
-// Format composite: TODO: Implement field names for values.
-export const formatComposite = (values: AnyJson[]): AnyJson[] => values;
 
 // Format an account ID: Just return the string value.
 export const formatAccountId32 = (value: string): string => value;
