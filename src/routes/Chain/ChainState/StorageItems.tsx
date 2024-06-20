@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
@@ -21,7 +21,8 @@ import { InputForm } from '../InputForm';
 export const StorageItems = () => {
   const { tabId } = useActiveTab();
   const { chainSpec, instanceId } = useChain();
-  const { getChainUi, setChainUiNamespace } = useChainUi();
+  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
+    useChainUi();
 
   const chainUiSection = 'storage';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -93,6 +94,17 @@ export const StorageItems = () => {
       args,
     });
   };
+
+  // Manage `activeItem` changes.
+  useEffect(() => {
+    // Reset input args when active item changes.
+    resetInputArgSection(tabId, 'storage');
+
+    // On initial render, set the selected item to the first list item, if any.
+    if (activeItem) {
+      setChainUiNamespace(tabId, chainUiSection, 'selected', activeItem);
+    }
+  }, [activeItem]);
 
   return (
     <InputFormProvider namespace="storage" scraper={itemScraper}>

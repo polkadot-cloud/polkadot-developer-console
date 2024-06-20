@@ -15,7 +15,6 @@ import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { useBrowseListWithKeys } from 'hooks/useBrowseListWithKeys';
 import { SelectDropdown } from 'library/SelectDropdown';
 import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
-import { useInputForm } from '../InputForm/provider';
 import { useSelectFirst } from 'hooks/useSelectFirst';
 
 export const ChainStateList = ({
@@ -26,9 +25,7 @@ export const ChainStateList = ({
   scraper,
 }: ChainStateListProps) => {
   const { tabId } = useActiveTab();
-  const { namespace } = useInputForm();
-  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
-    useChainUi();
+  const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUi = getChainUi(tabId, chainUiSection);
 
@@ -110,19 +107,6 @@ export const ChainStateList = ({
       searchInputRef.current?.focus();
     }
   }, [dropdownOpen]);
-
-  // Manage `activeItem` changes.
-  useEffect(() => {
-    // Reset input args when active item changes.
-    if (namespace) {
-      resetInputArgSection(tabId, namespace);
-    }
-
-    // On initial render, set the selected item to the first list item, if any.
-    if (activeItem) {
-      setChainUiNamespace(tabId, chainUiSection, 'selected', activeItem);
-    }
-  }, [activeItem]);
 
   return (
     <section>
