@@ -17,6 +17,7 @@ import { camelize } from '@w3ux/utils';
 import { Results } from './Results';
 import { InputFormProvider } from '../InputForm/provider';
 import { InputForm } from '../InputForm';
+import type { InputNamespace } from 'contexts/ChainUi/types';
 
 export const StorageItems = () => {
   const { tabId } = useActiveTab();
@@ -25,6 +26,7 @@ export const StorageItems = () => {
     useChainUi();
 
   const chainUiSection = 'storage';
+  const inputNamespace: InputNamespace = 'storage';
   const chainUi = getChainUi(tabId, chainUiSection);
   const Metadata = chainSpec.metadata;
 
@@ -32,7 +34,7 @@ export const StorageItems = () => {
   const scrapedStorageList = useMemo(() => {
     // Get pallet list from scraper.
     const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
-    const pallets = scraper.getPalletList(['storage']);
+    const pallets = scraper.getPalletList([chainUiSection]);
 
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
@@ -104,7 +106,7 @@ export const StorageItems = () => {
   }, [activeItem]);
 
   return (
-    <InputFormProvider namespace="storage" scraper={itemScraper}>
+    <InputFormProvider namespace={inputNamespace} scraper={itemScraper}>
       <SelectFormWrapper className="withHeader">
         <PalletList
           pallets={pallets}
@@ -115,7 +117,7 @@ export const StorageItems = () => {
             setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
 
             // Reset input args when selected pallet changes.
-            resetInputArgSection(tabId, 'storage');
+            resetInputArgSection(tabId, inputNamespace);
           }}
         />
         <ChainStateList
@@ -124,7 +126,7 @@ export const StorageItems = () => {
           items={items}
           activeItem={activeItem}
           chainUiSection={chainUiSection}
-          inputNamespace="storage"
+          inputNamespace={inputNamespace}
         />
       </SelectFormWrapper>
       <InputForm
