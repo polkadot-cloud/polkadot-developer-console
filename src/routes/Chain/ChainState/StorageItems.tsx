@@ -21,7 +21,8 @@ import { InputForm } from '../InputForm';
 export const StorageItems = () => {
   const { tabId } = useActiveTab();
   const { chainSpec, instanceId } = useChain();
-  const { getChainUi, setChainUiNamespace } = useChainUi();
+  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
+    useChainUi();
 
   const chainUiSection = 'storage';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -110,7 +111,11 @@ export const StorageItems = () => {
           activePallet={activePallet}
           chainUiSection={chainUiSection}
           onSelect={(value) => {
+            // Update selected pallet in chain ui state.
             setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
+
+            // Reset input args when selected pallet changes.
+            resetInputArgSection(tabId, 'storage');
           }}
         />
         <ChainStateList

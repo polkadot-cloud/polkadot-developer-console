@@ -24,8 +24,9 @@ export const Extrinsics = () => {
   const { chainSpec } = useChain();
   const { tabId, metaKey } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
-  const { getChainUi, setChainUiNamespace } = useChainUi();
   const { getFromAddress, setFromAddress } = useChainState();
+  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
+    useChainUi();
 
   const chainUiSection = 'calls';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -102,7 +103,11 @@ export const Extrinsics = () => {
             pallets={pallets}
             chainUiSection={chainUiSection}
             onSelect={(value) => {
+              // Update selected pallet in chain ui state.
               setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
+
+              // Reset input args when selected pallet changes.
+              resetInputArgSection(tabId, 'call');
             }}
           />
           <CallList items={items} activeItem={activeItem} />
