@@ -7,7 +7,7 @@ import { PalletScraper } from 'model/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { Header } from './Header';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import type { PalletData } from '../ChainState/types';
 import { InputForm } from '../InputForm';
 import { SelectFormWrapper, SenderWrapper } from 'library/Inputs/Wrappers';
@@ -24,8 +24,9 @@ export const Extrinsics = () => {
   const { chainSpec } = useChain();
   const { tabId, metaKey } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
-  const { getChainUi, setChainUiNamespace } = useChainUi();
   const { getFromAddress, setFromAddress } = useChainState();
+  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
+    useChainUi();
 
   const chainUiSection = 'calls';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -84,6 +85,17 @@ export const Extrinsics = () => {
   const scrapedItem = scraperResult?.scrapedItem || null;
   const itemScraper = scraperResult?.scraper || null;
 
+  // Manage `activeItem` changes.
+  useEffect(() => {
+    // Reset input args when active item changes.
+    resetInputArgSection(tabId, 'call');
+
+    // On initial render, set the selected item to the first list item, if any.
+    if (activeItem) {
+      setChainUiNamespace(tabId, chainUiSection, 'selected', activeItem);
+    }
+  }, [activeItem]);
+
   return (
     <InputFormProvider namespace="call" scraper={itemScraper}>
       <FlexWrapper>
@@ -109,7 +121,7 @@ export const Extrinsics = () => {
         <SenderWrapper>
           <Label value="Sender" marginTop />
           <AccountId32
-            uid={`${metaKey}_sendAddress`}
+            inputId={`${metaKey}_sendAddress`}
             defaultAddress={fromAddress || undefined}
             accounts={accounts}
             onChange={(val) => setFromAddress(tabId, val)}

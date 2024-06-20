@@ -12,13 +12,10 @@ import { SearchInput } from 'library/ContextMenu/SearchInput';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { CallListItem, CallListProps } from './types';
 import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
-import { useInputForm } from '../InputForm/provider';
 
-export const CallList = ({ items, activeItem }: CallListProps) => {
+export const CallList = ({ items }: CallListProps) => {
   const { tabId } = useActiveTab();
-  const { namespace } = useInputForm();
-  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
-    useChainUi();
+  const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUiSection = 'calls';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -59,13 +56,6 @@ export const CallList = ({ items, activeItem }: CallListProps) => {
       searchInputRef.current?.focus();
     }
   }, [callsOpen]);
-
-  // Reset input args when active item changes.
-  useEffect(() => {
-    if (namespace) {
-      resetInputArgSection(tabId, namespace);
-    }
-  }, [activeItem]);
 
   return (
     <section>

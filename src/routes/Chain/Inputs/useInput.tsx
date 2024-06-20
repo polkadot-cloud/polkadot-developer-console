@@ -21,11 +21,13 @@ import { Sequence } from './Sequence';
 import type { ArrayType } from 'model/Scraper/Types/Array';
 import type { SequenceType } from 'model/Scraper/Types/Sequence';
 import type { CompositeType } from 'model/Scraper/Types/Composite';
+import { useInputMeta } from 'contexts/InputMeta';
 
 export const useInput = () => {
   const { chainSpec } = useChain();
   const { getAccounts } = useAccounts();
   const { tabId, metaKey } = useActiveTab();
+  const { removeInputMetaValue } = useInputMeta();
   const { setInputArgAtKey, getInputArgAtKey } = useChainUi();
 
   const accounts = getAccounts(chainSpec);
@@ -308,18 +310,27 @@ export const useInput = () => {
       }
     };
 
+    // A unique identifier for the input component. Currently only used for account address inputs.
+    const inputId = `${metaKey}_${namespace}_${activePallet}_${activeItem}_${inputKey}`;
+
+    // General `onMount` callback that sets an initial value for an input.
+    const onMount = <T,>(value: T) => {
+      removeInputMetaValue(tabId, inputId);
+
+      // Set initial input value.
+      setInputArgAtKey(tabId, namespace, keys, value);
+    };
+
     return (() => {
       switch (input) {
         // Input tailored for account addresses.
         case 'AccountId32':
           return (
             <AccountId32
-              uid={`${metaKey}_${namespace}_${activePallet}_${activeItem}_${inputKey}`}
+              inputId={inputId}
               defaultAddress={inputValue}
               accounts={accounts}
-              onMount={() => {
-                // setInputArgAtKey(tabId, namespace, keys, value);
-              }}
+              onMount={onMount}
               onRender={onRender}
               onChange={(val) => {
                 setInputArgAtKey(tabId, namespace, keys, val);
@@ -333,9 +344,7 @@ export const useInput = () => {
           return (
             <Hash
               {...inputArgConfig}
-              onMount={(value) => {
-                setInputArgAtKey(tabId, namespace, keys, value);
-              }}
+              onMount={onMount}
               onRender={onRender}
               onChange={(val) => {
                 setInputArgAtKey(tabId, namespace, keys, val);
@@ -352,9 +361,7 @@ export const useInput = () => {
                 label={label}
                 values={values || []}
                 value={inputValue}
-                onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, keys, value);
-                }}
+                onMount={onMount}
                 onRender={onRender}
                 onChange={(val) => {
                   setInputArgAtKey(tabId, inputArgConfig.namespace, keys, val);
@@ -369,9 +376,7 @@ export const useInput = () => {
             <Section indent={indent}>
               <Checkbox
                 {...inputArgConfig}
-                onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, keys, value);
-                }}
+                onMount={onMount}
                 onRender={onRender}
                 onChange={(val) => {
                   setInputArgAtKey(tabId, namespace, keys, val);
@@ -388,9 +393,7 @@ export const useInput = () => {
           return (
             <Section indent={indent}>
               <Textbox
-                onMount={() => {
-                  // setInputArgAtKey(tabId, namespace, keys, value);
-                }}
+                onMount={onMount}
                 onRender={onRender}
                 onChange={(val) => {
                   setInputArgAtKey(tabId, namespace, keys, val);
