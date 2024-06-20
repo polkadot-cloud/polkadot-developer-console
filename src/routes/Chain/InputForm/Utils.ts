@@ -41,8 +41,8 @@ export const getDeepestKeys = (inputKeys: Record<string, string>) => {
   return { deepestKeys: deepestKeys.keys, maxLength: deepestKeys.maxLength };
 };
 
-// Gets the value for each parent key for the provided input keys.
-export const getParentKeyValues = (
+// Build the values of each parent key for the provided input keys.
+export const buildParentKeyValues = (
   inputKeys: Record<string, string>,
   inputArgs: InputArgs,
   deepestKeys: Record<string, AnyJson>
@@ -61,10 +61,10 @@ export const getParentKeyValues = (
       // Get the current value of this parent key if it exists.
       const currentValue = acc[parentKey] || [];
 
-      // The user inputted value for this key.
+      // Get the arg value for this key.
       const argValue = inputArgs[key]?.arg;
 
-      // Format current value based on its form input.
+      // Format arg value based on its form input.
       const formattedValue = formatArg(type, key, argValue, inputArgs);
 
       // Accumulate current value to the parent key.
