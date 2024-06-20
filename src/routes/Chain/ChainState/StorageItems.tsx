@@ -21,8 +21,7 @@ import { InputForm } from '../InputForm';
 export const StorageItems = () => {
   const { tabId } = useActiveTab();
   const { chainSpec, instanceId } = useChain();
-  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
-    useChainUi();
+  const { getChainUi, setChainUiNamespace } = useChainUi();
 
   const chainUiSection = 'storage';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -97,9 +96,6 @@ export const StorageItems = () => {
 
   // Manage `activeItem` changes.
   useEffect(() => {
-    // Reset input args when active item changes.
-    resetInputArgSection(tabId, 'storage');
-
     // On initial render, set the selected item to the first list item, if any.
     if (activeItem) {
       setChainUiNamespace(tabId, chainUiSection, 'selected', activeItem);
@@ -123,6 +119,7 @@ export const StorageItems = () => {
           items={items}
           activeItem={activeItem}
           chainUiSection={chainUiSection}
+          inputNamespace="storage"
         />
       </SelectFormWrapper>
       <InputForm

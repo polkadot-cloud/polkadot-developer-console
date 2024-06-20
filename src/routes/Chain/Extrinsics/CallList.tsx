@@ -15,7 +15,8 @@ import { SelectItemWrapper, SelectTextWrapper } from 'library/Inputs/Wrappers';
 
 export const CallList = ({ items }: CallListProps) => {
   const { tabId } = useActiveTab();
-  const { getChainUi, setChainUiNamespace } = useChainUi();
+  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
+    useChainUi();
 
   const chainUiSection = 'calls';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -31,6 +32,13 @@ export const CallList = ({ items }: CallListProps) => {
   // Handle pallet search change.
   const handleCallSearchChange = (value: string) => {
     setChainUiNamespace(tabId, chainUiSection, 'search', value);
+  };
+
+  // Handle call change.
+  const handleCallChange = (name: string) => {
+    setChainUiNamespace(tabId, chainUiSection, 'selected', name);
+    resetInputArgSection(tabId, 'call');
+    setCallsOpen(false);
   };
 
   // Filter calls based on search term, if selection is present.
@@ -103,10 +111,7 @@ export const CallList = ({ items }: CallListProps) => {
             <SelectItemWrapper
               key={`call_select_${name}`}
               className="option"
-              onClick={() => {
-                setChainUiNamespace(tabId, chainUiSection, 'selected', name);
-                setCallsOpen(false);
-              }}
+              onClick={() => handleCallChange(name)}
             >
               <span>
                 <SelectTextWrapper>

@@ -23,9 +23,11 @@ export const ChainStateList = ({
   activeItem,
   subject,
   scraper,
+  inputNamespace,
 }: ChainStateListProps) => {
   const { tabId } = useActiveTab();
-  const { getChainUi, setChainUiNamespace } = useChainUi();
+  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
+    useChainUi();
 
   const chainUi = getChainUi(tabId, chainUiSection);
 
@@ -41,6 +43,22 @@ export const ChainStateList = ({
   // Handle search change.
   const handleSearchChange = (value: string) => {
     setChainUiNamespace(tabId, chainUiSection, 'search', value);
+  };
+
+  // Handle item change.
+  const handelItemChange = (value: string, closeDropdown: boolean) => {
+    // Updated the selected item in chain ui state.
+    setChainUiNamespace(tabId, chainUiSection, 'selected', value);
+
+    // If an input namespace is provided, reset input arg values.
+    if (inputNamespace) {
+      resetInputArgSection(tabId, inputNamespace);
+    }
+
+    // Close item the dropdown if requested.
+    if (closeDropdown) {
+      setDropdownOpen(false);
+    }
   };
 
   // Gets a filtered list by applying a search term on list items, if not empty.
@@ -81,9 +99,7 @@ export const ChainStateList = ({
     listItems: filteredList.map(({ name }) => name),
     listOpenRef: dropdownOpenRef,
     activeValue: activeItem,
-    onUpdate: (newItem: string) => {
-      setChainUiNamespace(tabId, chainUiSection, 'selected', newItem);
-    },
+    onUpdate: (value: string) => handelItemChange(value, false),
   });
 
   // Dropdown search input ref.
@@ -92,9 +108,7 @@ export const ChainStateList = ({
   // If the currently selected pallet is not in the filtered list, select the first item.
   useSelectFirst({
     isActive: chainUi['selectOnSearch'] === true,
-    onSelect: (value) => {
-      setChainUiNamespace(tabId, chainUiSection, 'selected', value);
-    },
+    onSelect: (value) => handelItemChange(value, false),
     activeItem,
     searchTerm: chainUi.search,
     getFiltered: (searchTerm: string) =>
@@ -152,10 +166,7 @@ export const ChainStateList = ({
             <SelectItemWrapper
               key={`${chainUiSection}_select_${name}`}
               className={`option${filteredSelectedItem.name === name ? ` selected` : ``}`}
-              onClick={() => {
-                setChainUiNamespace(tabId, chainUiSection, 'selected', name);
-                setDropdownOpen(false);
-              }}
+              onClick={() => handelItemChange(name, true)}
             >
               <span>
                 <SelectTextWrapper>

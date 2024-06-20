@@ -24,9 +24,8 @@ export const Extrinsics = () => {
   const { chainSpec } = useChain();
   const { tabId, metaKey } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
+  const { getChainUi, setChainUiNamespace } = useChainUi();
   const { getFromAddress, setFromAddress } = useChainState();
-  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
-    useChainUi();
 
   const chainUiSection = 'calls';
   const chainUi = getChainUi(tabId, chainUiSection);
@@ -87,9 +86,6 @@ export const Extrinsics = () => {
 
   // Manage `activeItem` changes.
   useEffect(() => {
-    // Reset input args when active item changes.
-    resetInputArgSection(tabId, 'call');
-
     // On initial render, set the selected item to the first list item, if any.
     if (activeItem) {
       setChainUiNamespace(tabId, chainUiSection, 'selected', activeItem);
