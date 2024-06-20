@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/types';
-import type { RefObject } from 'react';
 import { Fragment } from 'react';
 import { Select } from 'library/Inputs/Select';
 import { Section } from './Section';
@@ -148,7 +147,7 @@ export const useInput = () => {
     const { inputKey } = config;
 
     // Record this input type.
-    addInputTypeAtKey(config.inputKeysRef, inputKey, 'Compact');
+    addInputTypeAtKey(config.inputKeys, inputKey, 'Compact');
 
     // Render compact input.
     return (
@@ -164,7 +163,7 @@ export const useInput = () => {
     const { inputKey } = config;
 
     // Record this input type.
-    addInputTypeAtKey(config.inputKeysRef, inputKey, 'Tuple');
+    addInputTypeAtKey(config.inputKeys, inputKey, 'Tuple');
 
     // Render tuple inputs.
     return (
@@ -196,7 +195,7 @@ export const useInput = () => {
     }
 
     // Record this input type.
-    addInputTypeAtKey(config.inputKeysRef, inputKey, 'Composite');
+    addInputTypeAtKey(config.inputKeys, inputKey, 'Composite');
 
     // Render the composite fields.
     return (
@@ -276,7 +275,7 @@ export const useInput = () => {
     } = options || {};
 
     const {
-      inputKeysRef,
+      inputKeys,
       scraper,
       inputKey,
       namespace,
@@ -304,8 +303,8 @@ export const useInput = () => {
 
     // General `onRender` callback that registers input type with key.
     const onRender = (inputType: string) => {
-      if (inputKeysRef.current) {
-        inputKeysRef.current[inputKey] = inputType;
+      if (inputKeys) {
+        inputKeys[inputKey] = inputType;
       }
     };
 
@@ -318,8 +317,8 @@ export const useInput = () => {
               uid={`${metaKey}_${namespace}_${activePallet}_${activeItem}_${inputKey}`}
               defaultAddress={inputValue}
               accounts={accounts}
-              onMount={(selectedAddress) => {
-                setInputArgAtKey(tabId, namespace, keys, selectedAddress);
+              onMount={() => {
+                // setInputArgAtKey(tabId, namespace, keys, value);
               }}
               onRender={onRender}
               onChange={(val) => {
@@ -389,8 +388,8 @@ export const useInput = () => {
           return (
             <Section indent={indent}>
               <Textbox
-                onMount={(value) => {
-                  setInputArgAtKey(tabId, namespace, keys, value);
+                onMount={() => {
+                  // setInputArgAtKey(tabId, namespace, keys, value);
                 }}
                 onRender={onRender}
                 onChange={(val) => {
@@ -427,13 +426,11 @@ export const useInput = () => {
 
   // Record an input type to an input key.
   const addInputTypeAtKey = (
-    inputKeysRef: RefObject<Record<string, string>>,
+    inputKeys: Record<string, string>,
     inputKey: string,
     inputType: string
   ) => {
-    if (inputKeysRef.current) {
-      inputKeysRef.current[inputKey] = inputType;
-    }
+    inputKeys[inputKey] = inputType;
   };
 
   return {

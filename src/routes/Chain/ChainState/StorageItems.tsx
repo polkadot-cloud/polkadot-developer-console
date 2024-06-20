@@ -95,11 +95,7 @@ export const StorageItems = () => {
   };
 
   return (
-    <InputFormProvider
-      namespace="storage"
-      activeItem={activeItem}
-      scraper={itemScraper}
-    >
+    <InputFormProvider namespace="storage" scraper={itemScraper}>
       <SelectFormWrapper className="withHeader">
         <PalletList
           pallets={pallets}
