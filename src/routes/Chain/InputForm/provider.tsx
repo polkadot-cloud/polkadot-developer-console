@@ -7,15 +7,11 @@ import type {
   InputFormContextInterface,
   InputFormProviderProps,
 } from './types';
-import {
-  buildParentKeyValues,
-  formatSingleArg,
-  getDeepestKeys,
-  updateInputsAndRemoveChildren,
-} from './Utils';
+
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
 import type { AnyJson } from '@w3ux/types';
+import { ArgBuilder } from 'model/Scraper/ArgBuilder';
 
 export const InputForm = createContext<InputFormContextInterface>(
   defaultInputFormContext
@@ -46,47 +42,11 @@ export const InputFormProvider = ({
     let formattedInputs = { ...inputKeys } as Record<string, AnyJson>;
     const inputArgs = getInputArgs(tabId, namespace);
 
-    // If no input args exist, formatted keys is simply an empty object. Otherwise, go ahead and recursively construct input values from args.
     if (inputArgs === null) {
       formattedInputs = {};
     } else {
-      // Gets the deepest input keys. There could be more than 1 key with the longest length.
-      let { deepestKeys, maxLength } = getDeepestKeys(formattedInputs);
-
-      do {
-        // Exit early if only a single input to process.
-        if (maxLength === 1) {
-          formattedInputs[0] = formatSingleArg(formattedInputs, inputArgs);
-          break;
-        }
-
-        // Take the values of those deepest keys.
-        const deepestKeysWithValue = Object.fromEntries(
-          deepestKeys.map((key) => [key, formattedInputs[key]])
-        );
-
-        // Class abstraction complete up to here.. ----------------
-
-        // Get parent keys of deepest keys.
-        const parentValues = buildParentKeyValues(
-          inputKeys,
-          inputArgs || {},
-          deepestKeysWithValue
-        );
-
-        // For each key of `parentValues` commit the value to `inputKeys` under the same
-        // key.
-        formattedInputs = updateInputsAndRemoveChildren(
-          inputKeys,
-          parentValues,
-          deepestKeys
-        );
-
-        // Update `deepestKeys` for next iteration.
-        const newDeepestKeys = getDeepestKeys(formattedInputs);
-        deepestKeys = newDeepestKeys.deepestKeys;
-        maxLength = newDeepestKeys.maxLength;
-      } while (deepestKeys.length > 1);
+      // Format input arguments.
+      formattedInputs = new ArgBuilder(inputArgs, inputKeys).build();
     }
 
     // Determine whether inputs are empty.
@@ -102,8 +62,6 @@ export const InputFormProvider = ({
       : isTuple
         ? Object.values(formattedInputs)?.[0][1]
         : Object.values(formattedInputs)?.[0];
-
-    // Abstract into class end. ----------------
 
     console.log('---');
     console.log(resultInput);
