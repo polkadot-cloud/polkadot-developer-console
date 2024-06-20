@@ -5,7 +5,6 @@ import type { AnyJson } from '@w3ux/types';
 
 export interface CallListProps {
   items: AnyJson;
-  activeItem: string | null;
 }
 export interface CallListItem {
   name: string;

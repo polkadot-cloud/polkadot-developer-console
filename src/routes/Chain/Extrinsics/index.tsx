@@ -7,7 +7,7 @@ import { PalletScraper } from 'model/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
 import { Header } from './Header';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import type { PalletData } from '../ChainState/types';
 import { InputForm } from '../InputForm';
 import { SelectFormWrapper, SenderWrapper } from 'library/Inputs/Wrappers';
@@ -19,15 +19,18 @@ import { AccountId32 } from 'library/Inputs/AccountId32';
 import { Label } from 'library/Inputs/Label';
 import { useChainState } from 'contexts/ChainState';
 import { Submit } from './Submit';
+import type { InputNamespace } from 'contexts/ChainUi/types';
 
 export const Extrinsics = () => {
   const { chainSpec } = useChain();
   const { tabId, metaKey } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
-  const { getChainUi, setChainUiNamespace } = useChainUi();
   const { getFromAddress, setFromAddress } = useChainState();
+  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
+    useChainUi();
 
   const chainUiSection = 'calls';
+  const inputNamespace: InputNamespace = 'call';
   const chainUi = getChainUi(tabId, chainUiSection);
   const Metadata = chainSpec.metadata;
 
@@ -42,7 +45,7 @@ export const Extrinsics = () => {
   // Fetch storage data when metadata or the selected pallet changes.
   const callData = useMemo((): PalletData => {
     const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
-    const pallets = scraper.getPalletList(['calls']);
+    const pallets = scraper.getPalletList([chainUiSection]);
 
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
@@ -84,12 +87,16 @@ export const Extrinsics = () => {
   const scrapedItem = scraperResult?.scrapedItem || null;
   const itemScraper = scraperResult?.scraper || null;
 
+  // Manage `activeItem` changes.
+  useEffect(() => {
+    // On initial render, set the selected item to the first list item, if any.
+    if (activeItem) {
+      setChainUiNamespace(tabId, chainUiSection, 'selected', activeItem);
+    }
+  }, [activeItem]);
+
   return (
-    <InputFormProvider
-      namespace="call"
-      activeItem={activeItem}
-      scraper={itemScraper}
-    >
+    <InputFormProvider namespace={inputNamespace} scraper={itemScraper}>
       <FlexWrapper>
         <Header />
         <SelectFormWrapper className="withHeader">
@@ -98,10 +105,14 @@ export const Extrinsics = () => {
             pallets={pallets}
             chainUiSection={chainUiSection}
             onSelect={(value) => {
+              // Update selected pallet in chain ui state.
               setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
+
+              // Reset input args when selected pallet changes.
+              resetInputArgSection(tabId, inputNamespace);
             }}
           />
-          <CallList items={items} activeItem={activeItem} />
+          <CallList items={items} />
         </SelectFormWrapper>
         <InputForm
           argTypes={scrapedItem?.argTypes}
@@ -113,7 +124,7 @@ export const Extrinsics = () => {
         <SenderWrapper>
           <Label value="Sender" marginTop />
           <AccountId32
-            uid={`${metaKey}_sendAddress`}
+            inputId={`${metaKey}_sendAddress`}
             defaultAddress={fromAddress || undefined}
             accounts={accounts}
             onChange={(val) => setFromAddress(tabId, val)}

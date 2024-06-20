@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { PalletList } from '../PalletList';
 import { PalletScraper } from 'model/Scraper/Pallet';
 import { useChainUi } from 'contexts/ChainUi';
@@ -17,13 +17,16 @@ import { camelize } from '@w3ux/utils';
 import { Results } from './Results';
 import { InputFormProvider } from '../InputForm/provider';
 import { InputForm } from '../InputForm';
+import type { InputNamespace } from 'contexts/ChainUi/types';
 
 export const StorageItems = () => {
   const { tabId } = useActiveTab();
   const { chainSpec, instanceId } = useChain();
-  const { getChainUi, setChainUiNamespace } = useChainUi();
+  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
+    useChainUi();
 
   const chainUiSection = 'storage';
+  const inputNamespace: InputNamespace = 'storage';
   const chainUi = getChainUi(tabId, chainUiSection);
   const Metadata = chainSpec.metadata;
 
@@ -31,7 +34,7 @@ export const StorageItems = () => {
   const scrapedStorageList = useMemo(() => {
     // Get pallet list from scraper.
     const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
-    const pallets = scraper.getPalletList(['storage']);
+    const pallets = scraper.getPalletList([chainUiSection]);
 
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
@@ -94,19 +97,27 @@ export const StorageItems = () => {
     });
   };
 
+  // Manage `activeItem` changes.
+  useEffect(() => {
+    // On initial render, set the selected item to the first list item, if any.
+    if (activeItem) {
+      setChainUiNamespace(tabId, chainUiSection, 'selected', activeItem);
+    }
+  }, [activeItem]);
+
   return (
-    <InputFormProvider
-      namespace="storage"
-      activeItem={activeItem}
-      scraper={itemScraper}
-    >
+    <InputFormProvider namespace={inputNamespace} scraper={itemScraper}>
       <SelectFormWrapper className="withHeader">
         <PalletList
           pallets={pallets}
           activePallet={activePallet}
           chainUiSection={chainUiSection}
           onSelect={(value) => {
+            // Update selected pallet in chain ui state.
             setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
+
+            // Reset input args when selected pallet changes.
+            resetInputArgSection(tabId, inputNamespace);
           }}
         />
         <ChainStateList
@@ -115,6 +126,7 @@ export const StorageItems = () => {
           items={items}
           activeItem={activeItem}
           chainUiSection={chainUiSection}
+          inputNamespace={inputNamespace}
         />
       </SelectFormWrapper>
       <InputForm

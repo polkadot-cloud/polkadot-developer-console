@@ -11,14 +11,12 @@ import { Section } from './Section';
 
 export const Sequence = ({ config, arrayInput, maxLength }: SequenceProps) => {
   const { readInput } = useInput();
-  const { inputKey, inputKeysRef } = config;
+  const { inputKey, inputKeys } = config;
 
   const INPUT_TYPE = 'Sequence';
 
   // Accumulate input key.
-  if (inputKeysRef.current) {
-    inputKeysRef.current[inputKey] = INPUT_TYPE;
-  }
+  inputKeys[inputKey] = INPUT_TYPE;
 
   // The number of inputs being rendererd.
   const [inputs, setInputs] = useState<number[]>([0]);
@@ -44,9 +42,7 @@ export const Sequence = ({ config, arrayInput, maxLength }: SequenceProps) => {
         const childKey = `${inputKey}_${index}`;
 
         // Accumulate input key.
-        if (inputKeysRef.current) {
-          inputKeysRef.current[childKey] = `${INPUT_TYPE}Item`;
-        }
+        inputKeys[childKey] = `${INPUT_TYPE}Item`;
 
         // Generate input for this index.
         const subInput = readInput(arrayInput, {

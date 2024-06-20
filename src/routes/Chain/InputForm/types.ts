@@ -4,18 +4,17 @@
 import type { AnyJson } from '@w3ux/types';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import type { PalletScraper } from 'model/Scraper/Pallet';
-import type { MutableRefObject, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 export interface InputFormContextInterface {
   namespace: InputNamespace;
-  inputKeysRef: MutableRefObject<Record<string, string>>;
+  inputKeys: Record<string, string>;
   handleSubmit: (onSubmit?: (inputArgs: AnyJson) => void) => AnyJson;
 }
 
 export interface InputFormProviderProps {
   namespace: InputNamespace;
   children: ReactNode;
-  activeItem: string | null;
   scraper: PalletScraper | null;
 }
 

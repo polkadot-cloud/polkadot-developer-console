@@ -19,12 +19,7 @@ export const InputForm = ({
   onSubmit,
 }: InputFormInnerProps) => {
   const { readInput } = useInput();
-  const { namespace, inputKeysRef, handleSubmit } = useInputForm();
-
-  // Reset input keys accumulator on every render.
-  if (inputKeysRef.current) {
-    inputKeysRef.current = {};
-  }
+  const { namespace, inputKeys, handleSubmit } = useInputForm();
 
   // Ensure argTypes is an array.
   if (!Array.isArray(argTypes)) {
@@ -43,7 +38,7 @@ export const InputForm = ({
               scraper,
               inputKey: `${index}`,
               namespace,
-              inputKeysRef,
+              inputKeys,
             })}
           </Fragment>
         ))}

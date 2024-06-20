@@ -30,6 +30,7 @@ export interface ChainStateListProps {
   activeItem: string | null;
   chainUiSection: ChainStateSection;
   scraper: PalletScraper | null;
+  inputNamespace?: InputNamespace;
 }
 
 export interface EncodedDetailsProps {

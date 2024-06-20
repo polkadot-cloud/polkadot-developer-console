@@ -117,7 +117,7 @@ export const Transfer = () => {
         <div>
           <Label value="From" />
           <AccountId32
-            uid={`${metaKey}_transferFromAddress`}
+            inputId={`${metaKey}_transferFromAddress`}
             defaultAddress={fromAddress}
             accounts={accounts}
             onChange={(val) => setFromAddress(val)}
@@ -126,7 +126,7 @@ export const Transfer = () => {
 
           <Label value="Recipient" marginTop />
           <AccountId32
-            uid={`${metaKey}_transferRecipientAddress`}
+            inputId={`${metaKey}_transferRecipientAddress`}
             defaultAddress={toAddress}
             accounts={accounts}
             onChange={(val) => setToAddress(val)}

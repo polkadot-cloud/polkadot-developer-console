@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { createContext, useContext, useRef } from 'react';
+import { createContext, useContext } from 'react';
 import { defaultInputFormContext } from './defaults';
 import type {
   InputFormContextInterface,
@@ -16,7 +16,6 @@ import {
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
 import type { AnyJson } from '@w3ux/types';
-import { useEffectIgnoreInitial } from '@w3ux/hooks';
 
 export const InputForm = createContext<InputFormContextInterface>(
   defaultInputFormContext
@@ -27,14 +26,13 @@ export const useInputForm = () => useContext(InputForm);
 export const InputFormProvider = ({
   namespace,
   children,
-  activeItem,
   scraper,
 }: InputFormProviderProps) => {
   const { tabId } = useActiveTab();
-  const { getInputArgs, resetInputArgSection } = useChainUi();
+  const { getInputArgs } = useChainUi();
 
   // A reference to accumulate input keys for an input form.
-  const inputKeysRef = useRef<Record<string, string>>({});
+  const inputKeys: Record<string, string> = {};
 
   // Handle query submission. Accumulates input values and passes them into the provided `onSubmit`
   // function.
@@ -45,23 +43,28 @@ export const InputFormProvider = ({
     }
 
     // Get input keys for manipulation.
-    let inputKeys = { ...inputKeysRef.current } as Record<string, AnyJson>;
+    let formattedKeys = { ...inputKeys } as Record<string, AnyJson>;
     const argValues = getInputArgs(tabId, namespace);
 
     // Gets the deepest keys of inputKeys object. There could be more than 1 key with the
     // longest length.
-    let { deepestKeys, maxLength } = getDeepestKeys(inputKeys);
+    let { deepestKeys, maxLength } = getDeepestKeys(formattedKeys);
 
     // Recursively construct input values.
     do {
       // Take the values of those deepest keys.
       const deepestKeysWithValue = Object.fromEntries(
-        deepestKeys.map((key) => [key, inputKeys[key]])
+        deepestKeys.map((key) => [key, formattedKeys[key]])
       );
 
       // Exit early if deepest key is only 1.
       if (maxLength === 1) {
-        inputKeys[1] = formatArg(inputKeys[1], '1', argValues?.[1], argValues);
+        formattedKeys[1] = formatArg(
+          formattedKeys[1],
+          '1',
+          argValues?.[1],
+          argValues
+        );
         break;
       }
 
@@ -74,31 +77,31 @@ export const InputFormProvider = ({
 
       // For each key of `parentValues` commit the value to `inputKeys` under the same
       // key.
-      inputKeys = updateInputsAndRemoveChildren(
+      formattedKeys = updateInputsAndRemoveChildren(
         inputKeys,
         parentValues,
         deepestKeys
       );
 
       // Update `deepestKeys` for next iteration.
-      const newDeepestKeys = getDeepestKeys(inputKeys);
+      const newDeepestKeys = getDeepestKeys(formattedKeys);
       deepestKeys = newDeepestKeys.deepestKeys;
       maxLength = newDeepestKeys.maxLength;
     } while (deepestKeys.length > 1);
 
     // Determine whether inputs are empty.
-    const isEmpty = Object.values(inputKeys).length === 0;
+    const isEmpty = Object.values(formattedKeys).length === 0;
 
     // Determine whether there is a single argument or a tuple of arguments.
-    const isTuple = Object.values(inputKeys)?.[0]?.[0] === 'Tuple';
+    const isTuple = Object.values(formattedKeys)?.[0]?.[0] === 'Tuple';
 
     // Take the resulting arguments for query submission. If there are no inputs, no
     // arguments are needed for the query.
     const resultInput = isEmpty
       ? null
       : isTuple
-        ? Object.values(inputKeys)?.[0][1]
-        : Object.values(inputKeys)?.[0];
+        ? Object.values(formattedKeys)?.[0][1]
+        : Object.values(formattedKeys)?.[0];
 
     console.log('---');
     console.log(resultInput);
@@ -111,20 +114,11 @@ export const InputFormProvider = ({
     return resultInput;
   };
 
-  // Reset input keys accumulator and values on `activeItem` change.
-  useEffectIgnoreInitial(() => {
-    if (inputKeysRef.current) {
-      // TODO: Revise this logic (removes default values after they have been assigned).
-      resetInputArgSection(tabId, namespace);
-      inputKeysRef.current = {};
-    }
-  }, [activeItem]);
-
   return (
     <InputForm.Provider
       value={{
         namespace,
-        inputKeysRef,
+        inputKeys,
         handleSubmit,
       }}
     >
