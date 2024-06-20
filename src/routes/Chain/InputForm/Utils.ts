@@ -8,7 +8,7 @@ import type { InputArgs } from 'contexts/ChainUi/types';
 export const formatSingleArg = (
   formattedKeys: Record<string, AnyJson>,
   inputArgs: InputArgs
-) => formatArg(formattedKeys[0], '1', inputArgs?.[0]?.arg, inputArgs);
+) => formatArg(formattedKeys[0], '0', inputArgs?.[0]?.arg, inputArgs);
 
 // Gets a collection of the longest keys in an inputKey field, fetching the deepest nested values in
 // an input form.
