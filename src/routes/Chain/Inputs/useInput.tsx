@@ -146,10 +146,10 @@ export const useInput = () => {
   // Renders a compact input component.
   const renderCompact = (arg: AnyJson, config: InputArgConfig) => {
     const { compact } = arg;
-    const { inputKey } = config;
+    const { inputKey, inputKeys } = config;
 
     // Record this input type.
-    addInputTypeAtKey(config.inputKeys, inputKey, 'Compact');
+    addInputTypeAtKey(inputKeys, inputKey, 'Compact');
 
     // Render compact input.
     return (
@@ -162,10 +162,10 @@ export const useInput = () => {
   // Renders a tuple input component.
   const renderTuple = (arg: AnyJson, config: InputArgConfig) => {
     const { tuple } = arg;
-    const { inputKey } = config;
+    const { inputKey, inputKeys } = config;
 
     // Record this input type.
-    addInputTypeAtKey(config.inputKeys, inputKey, 'Tuple');
+    addInputTypeAtKey(inputKeys, inputKey, 'Tuple');
 
     // Render tuple inputs.
     return (
@@ -184,7 +184,7 @@ export const useInput = () => {
     const typeClass = config.scraper.getClass(arg.indexKey) as CompositeType;
     const label = typeClass.label();
     const input = typeClass.input();
-    const { inputKey } = config;
+    const { inputKey, inputKeys } = config;
 
     // If this composite is a custom input, render it and stop the recursive input loop.
     if (input !== 'indent') {
@@ -197,7 +197,7 @@ export const useInput = () => {
     }
 
     // Record this input type.
-    addInputTypeAtKey(config.inputKeys, inputKey, 'Composite');
+    addInputTypeAtKey(inputKeys, inputKey, 'Composite');
 
     // Render the composite fields.
     return (
@@ -305,9 +305,7 @@ export const useInput = () => {
 
     // General `onRender` callback that registers input type with key.
     const onRender = (inputType: string) => {
-      if (inputKeys) {
-        inputKeys[inputKey] = inputType;
-      }
+      inputKeys[inputKey] = inputType;
     };
 
     // A unique identifier for the input component. Currently only used for account address inputs.
