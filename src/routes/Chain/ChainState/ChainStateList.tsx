@@ -46,7 +46,7 @@ export const ChainStateList = ({
   };
 
   // Handle item change.
-  const handelItemChange = (value: string, closeDropdown: boolean) => {
+  const handleItemChange = (value: string, closeDropdown: boolean) => {
     // Updated the selected item in chain ui state.
     setChainUiNamespace(tabId, chainUiSection, 'selected', value);
 
@@ -99,7 +99,7 @@ export const ChainStateList = ({
     listItems: filteredList.map(({ name }) => name),
     listOpenRef: dropdownOpenRef,
     activeValue: activeItem,
-    onUpdate: (value: string) => handelItemChange(value, false),
+    onUpdate: (value: string) => handleItemChange(value, false),
   });
 
   // Dropdown search input ref.
@@ -108,7 +108,7 @@ export const ChainStateList = ({
   // If the currently selected pallet is not in the filtered list, select the first item.
   useSelectFirst({
     isActive: chainUi['selectOnSearch'] === true,
-    onSelect: (value) => handelItemChange(value, false),
+    onSelect: (value) => handleItemChange(value, false),
     activeItem,
     searchTerm: chainUi.search,
     getFiltered: (searchTerm: string) =>
@@ -166,7 +166,7 @@ export const ChainStateList = ({
             <SelectItemWrapper
               key={`${chainUiSection}_select_${name}`}
               className={`option${filteredSelectedItem.name === name ? ` selected` : ``}`}
-              onClick={() => handelItemChange(name, true)}
+              onClick={() => handleItemChange(name, true)}
             >
               <span>
                 <SelectTextWrapper>
