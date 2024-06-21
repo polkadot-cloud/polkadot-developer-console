@@ -5,10 +5,11 @@ import type { AnyJson } from '@w3ux/types';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import type { PalletScraper } from 'model/Scraper/Pallet';
 import type { ReactNode } from 'react';
+import type { InputKeys } from '../Inputs/types';
 
 export interface InputFormContextInterface {
   namespace: InputNamespace;
-  inputKeys: Record<string, string>;
+  inputKeys: InputKeys;
   handleSubmit: (onSubmit?: (inputArgs: AnyJson) => void) => AnyJson;
 }
 

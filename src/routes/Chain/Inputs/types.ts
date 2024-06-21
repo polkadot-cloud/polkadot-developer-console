@@ -6,6 +6,23 @@ import type { InputNamespace } from 'contexts/ChainUi/types';
 import type { InputCallbackProps } from 'library/Inputs/types';
 import type { PalletScraper } from 'model/Scraper/Pallet';
 
+// All supported input types.
+export type InputType =
+  | 'AccountId32'
+  | 'Hash'
+  | 'Bytes'
+  | 'Textbox'
+  | 'Boolean'
+  | 'Variant'
+  | 'Composite'
+  | 'Compact'
+  | 'Sequence'
+  | 'SequenceItem'
+  | 'Tuple';
+
+// Input keys record structure.
+export type InputKeys = Record<string, InputType>;
+
 export interface InputItem {
   form: AnyJson;
   label: string | number;
@@ -25,7 +42,7 @@ export interface InputArgConfig {
   activeItem: string | null;
   scraper: PalletScraper;
   namespace: InputNamespace;
-  inputKeys: Record<string, string>;
+  inputKeys: InputKeys;
   inputKey: string;
 }
 
@@ -46,7 +63,7 @@ export type CheckboxProps = InputArgConfig &
     checked: boolean;
     onChange?: (val: boolean) => void;
     onMount?: (val: boolean) => void;
-    onRender?: (inputType: string) => void;
+    onRender?: (inputType: InputType) => void;
   };
 
 export type SequenceProps = InputCallbackProps & {

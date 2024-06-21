@@ -12,6 +12,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
 import type { AnyJson } from '@w3ux/types';
 import { ArgBuilder } from 'model/Scraper/ArgBuilder';
+import type { InputKeys } from '../Inputs/types';
 
 export const InputForm = createContext<InputFormContextInterface>(
   defaultInputFormContext
@@ -28,7 +29,7 @@ export const InputFormProvider = ({
   const { getInputArgs } = useChainUi();
 
   // A reference to accumulate input keys for an input form.
-  const inputKeys: Record<string, string> = {};
+  const inputKeys: InputKeys = {};
 
   // Handle query submission. Accumulates input values and passes them into the provided `onSubmit`
   // function.
@@ -39,15 +40,11 @@ export const InputFormProvider = ({
     }
 
     // Get input keys for manipulation.
-    let formattedInputs = { ...inputKeys } as Record<string, AnyJson>;
     const inputArgs = getInputArgs(tabId, namespace);
 
-    if (inputArgs === null) {
-      formattedInputs = {};
-    } else {
-      // Format input arguments.
-      formattedInputs = new ArgBuilder(inputArgs, inputKeys).build();
-    }
+    // Format input arguments.
+    const formattedInputs: Record<string, AnyJson> =
+      inputArgs === null ? {} : new ArgBuilder(inputArgs, inputKeys).build();
 
     // Determine whether inputs are empty.
     const isEmpty = Object.values(formattedInputs).length === 0;

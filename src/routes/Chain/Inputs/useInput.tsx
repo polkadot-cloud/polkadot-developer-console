@@ -4,7 +4,7 @@
 import { Fragment } from 'react';
 import { Select } from 'library/Inputs/Select';
 import { Section } from './Section';
-import type { InputArgConfig } from './types';
+import type { InputArgConfig, InputKeys, InputType } from './types';
 import { Hash } from './Hash';
 import { Checkbox } from './Checkbox';
 import { AccountId32 } from 'library/Inputs/AccountId32';
@@ -308,7 +308,7 @@ export const useInput = () => {
     const inputValue = inputArg?.value;
 
     // General `onRender` callback that registers input type with key.
-    const onRender = (inputType: string) => {
+    const onRender = (inputType: InputType) => {
       inputKeys[inputKey] = inputType;
     };
 
@@ -435,9 +435,9 @@ export const useInput = () => {
 
   // Record an input type to an input key.
   const addInputTypeAtKey = (
-    inputKeys: Record<string, string>,
+    inputKeys: InputKeys,
     inputKey: string,
-    inputType: string
+    inputType: InputType
   ) => {
     inputKeys[inputKey] = inputType;
   };

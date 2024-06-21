@@ -3,16 +3,17 @@
 
 import type { AnyJson } from '@w3ux/types';
 import type { InputArgs } from 'contexts/ChainUi/types';
+import type { InputKeys } from 'routes/Chain/Inputs/types';
 
 // A class to take input keys and values, and formats them into a submittable array of arguments.
 export class ArgBuilder {
   // Form input keys.
-  inputKeys: Record<string, string>;
+  inputKeys: InputKeys;
 
   // The resulting formatted arguments.
   formattedArgs: Record<string, AnyJson>;
 
-  constructor(inputArgs: InputArgs | null, inputKeys: Record<string, string>) {
+  constructor(inputArgs: InputArgs | null, inputKeys: InputKeys) {
     this.inputKeys = inputKeys;
     this.formattedArgs = { ...inputArgs } || {};
   }
@@ -64,6 +65,7 @@ export class ArgBuilder {
   // Formats an input arg value.
   formatInput(key: string, value: AnyJson) {
     const inputType = this.inputKeys[key];
+
     switch (inputType) {
       case 'AccountId32':
         return value;
@@ -77,7 +79,7 @@ export class ArgBuilder {
       case 'Textbox':
         return value;
 
-      case 'Checkbox':
+      case 'Boolean':
         return value;
 
       case 'Tuple':
@@ -133,7 +135,7 @@ export class ArgBuilder {
 
         // If `Select` for possible typed enums, include the value in an array.
         const inputType =
-          parentInputType === 'Select'
+          parentInputType === 'Variant'
             ? [parentInputType, this.formattedArgs[key]?.value]
             : parentInputType;
 
