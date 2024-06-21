@@ -1,8 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/types';
-import type { PalletItemScraped } from './types';
+import type { PalletItemScraped, ScrapedFieldItem, ScrapedItem } from './types';
 import { verifyOption } from './Utils';
 import type { MetadataScraper } from '.';
 
@@ -83,7 +82,7 @@ export class FormatCallSignature {
 
   // A recursive function that formats a call signature by formatting its arguments and return
   // types.
-  getTypeString = (arg: AnyJson) => {
+  getTypeString = (arg: ScrapedItem) => {
     let str = '';
 
     // Defensive. If class is not indexed, return empty string.
@@ -135,7 +134,7 @@ export class FormatCallSignature {
   };
 
   // Formats a string from a composite type.
-  getCompositeString = (arg: AnyJson) => {
+  getCompositeString = (arg: ScrapedItem) => {
     const typeClass = this.scraper.getClass(arg.indexKey);
     const label = typeClass.label();
 
@@ -143,12 +142,8 @@ export class FormatCallSignature {
     // Expand type if short label is not defined, or if they've been defined in ignore list.
     if (['', ...this.#ignoreLabels].includes(label)) {
       str += arg.composite.reduce(
-        (acc: string, field: AnyJson, index: number) => {
-          // Defensive: return if field type is missing.
-          if (!field?.type) {
-            return '';
-          }
-          acc = acc + this.getTypeString(field.type);
+        (acc: string, field: ScrapedFieldItem, index: number) => {
+          acc = acc + this.getTypeString(field);
           if (index < arg.composite.length - 1) {
             acc += ', ';
           }
@@ -164,7 +159,7 @@ export class FormatCallSignature {
   };
 
   // Formats a string from a variant type.
-  getVariantType = (arg: AnyJson) => {
+  getVariantType = (arg: ScrapedItem) => {
     const typeClass = this.scraper.getClass(arg.indexKey);
     const label = typeClass.label();
 
@@ -174,8 +169,8 @@ export class FormatCallSignature {
     if (verifyOption(label, arg.variant)) {
       str +=
         arg.variant[1].fields.reduce(
-          (acc: string, field: AnyJson, index: number) => {
-            acc = acc + this.getTypeString(field.type);
+          (acc: string, field: ScrapedFieldItem, index: number) => {
+            acc = acc + this.getTypeString(field);
             if (index < arg.variant[1].fields.length - 1) {
               acc += ', ';
             }
@@ -189,8 +184,8 @@ export class FormatCallSignature {
   };
 
   // Formats a string from a tuple type.
-  getTupleString = ({ tuple }: AnyJson) =>
-    tuple.reduce((acc: string, subSection: AnyJson, index: number) => {
+  getTupleString = ({ tuple }: ScrapedItem) =>
+    tuple.reduce((acc: string, subSection: ScrapedItem, index: number) => {
       const sigType = this.getTypeString(subSection);
       acc += sigType;
       if (index !== tuple.length - 1) {

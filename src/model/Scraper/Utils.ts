@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/types';
+import type { ScrapedItem } from './types';
 
 // ------------------------------------------------------
 // Defaults.
@@ -111,16 +112,17 @@ export const getCustomInput = (label: string): string | null => {
 // ------------------------------------------------------
 
 // Checks if a composite is a sequence of u8s.
-export const compositeIsBytes = (shortLabel: string, arg: AnyJson) =>
+export const compositeIsBytes = (shortLabel: string, arg: ScrapedItem) =>
   ['Vec', 'BoundedVec', 'WeakBoundedVec'].includes(shortLabel) &&
   arg.composite?.[0]?.type?.sequence?.label === 'u8' &&
   arg.composite?.length === 1;
 
 // Check if this array is a vector of bytes.
-export const arrayIsBytes = (arg: AnyJson) => arg?.array?.primitive === 'U8';
+export const arrayIsBytes = (arg: ScrapedItem) =>
+  arg?.array?.primitive === 'U8';
 
 // Check if array is a vector of primitives.
-export const arrayIsPrimitive = (arg: AnyJson) => !!arg?.array?.primitive;
+export const arrayIsPrimitive = (arg: ScrapedItem) => !!arg?.array?.primitive;
 
 // Check if a sequence is a vector of bytes.
 export const sequenceIsBytes = (label: string) =>

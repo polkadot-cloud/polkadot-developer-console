@@ -3,13 +3,13 @@
 
 import { Fragment } from 'react/jsx-runtime';
 import { InputFormWrapper } from '../Wrappers';
-import type { AnyJson } from '@w3ux/types';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { faCircleRight } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useInputForm } from './provider';
 import type { InputFormInnerProps } from './types';
 import { useInput } from '../Inputs/useInput';
+import type { InputArg } from 'contexts/ChainUi/types';
 
 export const InputForm = ({
   activePallet,
@@ -30,7 +30,7 @@ export const InputForm = ({
     <InputFormWrapper>
       {!!scraper &&
         !!argTypes &&
-        argTypes.map((arg: AnyJson, index: number) => (
+        argTypes.map((arg: InputArg, index: number) => (
           <Fragment key={`input_arg_${activePallet}_${activeItem}_${index}`}>
             {readInput(arg, {
               activePallet,

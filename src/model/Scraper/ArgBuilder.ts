@@ -35,7 +35,7 @@ export class ArgBuilder {
       if (maxLength === 1) {
         this.formattedArgs[0] = this.formatInput(
           '0',
-          this.formattedArgs['0']?.arg
+          this.formattedArgs['0']?.value
         );
         break;
       }
@@ -87,7 +87,7 @@ export class ArgBuilder {
       default:
         return {
           type: inputType,
-          val: this.formattedArgs?.[key]?.arg,
+          val: this.formattedArgs?.[key]?.value,
           child: value,
         };
     }
@@ -115,7 +115,7 @@ export class ArgBuilder {
         // Format arg value based on its form input.
         const formattedValue = this.formatInput(
           key,
-          this.formattedArgs[key]?.arg
+          this.formattedArgs[key]?.value
         );
 
         // Concatenate value to parent key.
@@ -134,7 +134,7 @@ export class ArgBuilder {
         // If `Select` for possible typed enums, include the value in an array.
         const inputType =
           parentInputType === 'Select'
-            ? [parentInputType, this.formattedArgs[key]?.arg]
+            ? [parentInputType, this.formattedArgs[key]?.value]
             : parentInputType;
 
         // Format current value based on its form input.
