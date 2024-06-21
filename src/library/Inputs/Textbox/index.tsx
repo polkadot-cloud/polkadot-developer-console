@@ -32,7 +32,7 @@ export const Textbox = ({
 
     // Remove leading zeroes if numeric.
     if (numeric) {
-      val = val.replace(/^0+/, '');
+      val = val.replace(/^0+/, '') || '0';
     }
 
     if (onChange !== undefined) {
