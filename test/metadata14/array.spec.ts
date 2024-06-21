@@ -20,7 +20,7 @@ describe('Basic array structure is intact', () => {
   const lookupTypes = lookup.types;
 
   // Get all composite types from lookup.
-  const lookupArray: AnyJson = lookupTypes
+  const lookupArray = lookupTypes
     .filter(({ type: { def } }) => 'array' in def)
     .map((item) => item.type.def.array);
 
