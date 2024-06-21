@@ -29,6 +29,12 @@ export const Textbox = ({
     if (numeric && isNaN(Number(val))) {
       return;
     }
+
+    // Remove leading zeroes if numeric.
+    if (numeric) {
+      val = val.replace(/^0+/, '');
+    }
+
     if (onChange !== undefined) {
       onChange(val);
     }
