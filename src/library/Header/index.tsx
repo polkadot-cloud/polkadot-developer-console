@@ -7,9 +7,8 @@ import { version } from '../../../package.json';
 import { useGlitch } from 'react-powerglitch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { CloudUrl, DocsUrl, GithubRepoUrl } from 'consts';
+import { DocsUrl, GithubRepoUrl } from 'consts';
 import { faBooks } from '@fortawesome/pro-solid-svg-icons';
-import CloudSvg from 'svg/PolkadotCloud.svg?react';
 
 export const Header = () => {
   const glitch = useGlitch({
@@ -46,9 +45,6 @@ export const Header = () => {
         <span>{version}</span>
       </div>
       <div>
-        <button type="button" onClick={() => window.open(CloudUrl)}>
-          <CloudSvg className="svg" />
-        </button>
         <button type="button" onClick={() => window.open(DocsUrl)}>
           <FontAwesomeIcon icon={faBooks} transform="shrink-2" />
         </button>
