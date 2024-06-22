@@ -62,25 +62,31 @@ const runTests = async () => {
   //
   // Struct values can be passed as an object.
 
-  result = await api.query.xcmPallet.supportedVersion(4, {
+  result = await api.query.xcmPallet.supportedVersion(
+    4,
     // Typed Enum
-    V4: {
-      // Number
-      parents: 0,
-      // Struct
-      interior: {
-        // Typed Enum
-        X1:
-          // Array
-          [
-            // Struct
-            {
-              Parachain: 2101, // Number
-            },
-          ],
-      },
-    },
-  });
+    {
+      V4:
+        // Struct
+        {
+          // [field]: Number
+          parents: 0,
+          // [field]: Struct
+          interior: {
+            // Typed Enum
+            X1:
+              // Array
+              [
+                // Struct
+                {
+                  // [field]: Number
+                  Parachain: 2101,
+                },
+              ],
+          },
+        },
+    }
+  );
   console.debug(result.toHuman());
 
   // TODO: Bitsequence
