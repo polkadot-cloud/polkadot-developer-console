@@ -26,7 +26,7 @@ export const Select = ({
   disabled,
 }: SelectProps) => {
   // The input arg type of this component.
-  const INPUT_TYPE = 'Variant';
+  const INPUT_TYPE = 'variant';
 
   // Whether select options are open.
   const [open, setOpen] = useState<boolean>(false);
