@@ -12,7 +12,7 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useChainUi } from 'contexts/ChainUi';
 import type { AnyJson } from '@w3ux/types';
 import { ArgBuilder } from 'model/Scraper/ArgBuilder';
-import type { InputKeys } from '../Inputs/types';
+import type { InputMeta } from '../Inputs/types';
 
 export const InputForm = createContext<InputFormContextInterface>(
   defaultInputFormContext
@@ -29,7 +29,7 @@ export const InputFormProvider = ({
   const { getInputArgs } = useChainUi();
 
   // A reference to accumulate input keys for an input form.
-  const inputKeysRef = useRef<InputKeys>({});
+  const inputMetaRef = useRef<InputMeta>({});
 
   // Handle query submission. Accumulates input values and passes them into the provided `onSubmit`
   // function.
@@ -48,7 +48,7 @@ export const InputFormProvider = ({
         ? {}
         : new ArgBuilder(
             inputArgs,
-            { ...inputKeysRef.current },
+            { ...inputMetaRef.current },
             scraper
           ).build();
 
@@ -66,26 +66,21 @@ export const InputFormProvider = ({
         ? Object.values(formattedInputs)?.[0][1]
         : Object.values(formattedInputs)?.[0];
 
-    // console.log('---');
-    // console.log(resultInput);
+    console.log('---');
+    console.log(resultInput);
 
     // Call a submission function if it exists.
     if (typeof onSubmit === 'function') {
       onSubmit(resultInput);
     }
-
-    console.log('after submit', inputKeysRef.current);
-
     return resultInput;
   };
-
-  console.log(inputKeysRef.current);
 
   return (
     <InputForm.Provider
       value={{
         namespace,
-        inputKeysRef,
+        inputMetaRef,
         handleSubmit,
       }}
     >

@@ -22,7 +22,7 @@ export type InputType =
   | 'Tuple';
 
 // Input keys record structure.
-export type InputKeys = Record<
+export type InputMeta = Record<
   string,
   { inputType: InputType; indexKey: string }
 >;
@@ -46,7 +46,7 @@ export interface InputArgConfig {
   activeItem: string | null;
   scraper: PalletScraper;
   namespace: InputNamespace;
-  inputKeysRef: MutableRefObject<InputKeys>;
+  inputMetaRef: MutableRefObject<InputMeta>;
   inputKey: string;
 }
 

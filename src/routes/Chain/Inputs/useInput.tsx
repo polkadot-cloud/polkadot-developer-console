@@ -5,7 +5,7 @@ import type { MutableRefObject } from 'react';
 import { Fragment } from 'react';
 import { Select } from 'library/Inputs/Select';
 import { Section } from './Section';
-import type { InputArgConfig, InputKeys, InputType } from './types';
+import type { InputArgConfig, InputMeta, InputType } from './types';
 import { Hash } from './Hash';
 import { Checkbox } from './Checkbox';
 import { AccountId32 } from 'library/Inputs/AccountId32';
@@ -89,10 +89,10 @@ export const useInput = () => {
   // Renders a tuple input component.
   const renderTuple = (arg: ScrapedItem, config: InputArgConfig) => {
     const { tuple, indexKey } = arg;
-    const { inputKey, inputKeysRef } = config;
+    const { inputKey, inputMetaRef } = config;
 
     // Record this input type.
-    addInputTypeAtKey(inputKeysRef, inputKey, indexKey, 'Tuple');
+    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'Tuple');
 
     // Render tuple inputs.
     return (
@@ -171,10 +171,10 @@ export const useInput = () => {
   // Renders a compact input component.
   const renderCompact = (arg: ScrapedItem, config: InputArgConfig) => {
     const { compact, indexKey } = arg;
-    const { inputKey, inputKeysRef } = config;
+    const { inputKey, inputMetaRef } = config;
 
     // Record this input type.
-    addInputTypeAtKey(inputKeysRef, inputKey, indexKey, 'Compact');
+    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'Compact');
 
     // Render compact input.
     return (
@@ -190,7 +190,7 @@ export const useInput = () => {
     const typeClass = config.scraper.getClass(indexKey) as CompositeType;
     const label = typeClass.label();
     const input = typeClass.input();
-    const { inputKey, inputKeysRef } = config;
+    const { inputKey, inputMetaRef } = config;
 
     // If this composite is a custom input, render it and stop the recursive input loop.
     if (input !== 'indent') {
@@ -203,7 +203,7 @@ export const useInput = () => {
     }
 
     // Record this input type.
-    addInputTypeAtKey(inputKeysRef, inputKey, indexKey, 'Composite');
+    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'Composite');
 
     // Render the composite fields.
     return (
@@ -285,7 +285,7 @@ export const useInput = () => {
     } = options || {};
 
     const {
-      inputKeysRef,
+      inputMetaRef,
       scraper,
       inputKey,
       namespace,
@@ -313,7 +313,7 @@ export const useInput = () => {
 
     // General `onRender` callback that registers input type with key.
     const onRender = (inputType: InputType) => {
-      inputKeysRef.current[inputKey] = { inputType, indexKey };
+      inputMetaRef.current[inputKey] = { inputType, indexKey };
     };
 
     // A unique identifier for the input component. Currently only used for account address inputs.
@@ -439,12 +439,12 @@ export const useInput = () => {
 
   // Record an input type to an input key.
   const addInputTypeAtKey = (
-    inputKeysRef: MutableRefObject<InputKeys>,
+    inputMetaRef: MutableRefObject<InputMeta>,
     inputKey: string,
     indexKey: string,
     inputType: InputType
   ) => {
-    inputKeysRef.current[inputKey] = { inputType, indexKey };
+    inputMetaRef.current[inputKey] = { inputType, indexKey };
   };
 
   return {

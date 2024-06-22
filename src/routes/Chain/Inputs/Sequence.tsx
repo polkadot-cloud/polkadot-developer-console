@@ -16,12 +16,12 @@ export const Sequence = ({
   maxLength,
 }: SequenceProps) => {
   const { readInput } = useInput();
-  const { inputKey, inputKeysRef } = config;
+  const { inputKey, inputMetaRef } = config;
 
   const INPUT_TYPE = 'Sequence';
 
   // Accumulate input key.
-  inputKeysRef.current[inputKey] = { inputType: INPUT_TYPE, indexKey };
+  inputMetaRef.current[inputKey] = { inputType: INPUT_TYPE, indexKey };
 
   // The number of inputs being rendererd.
   const [inputs, setInputs] = useState<number[]>([0]);
@@ -47,7 +47,7 @@ export const Sequence = ({
         const childKey = `${inputKey}_${index}`;
 
         // Accumulate input key.
-        inputKeysRef.current[childKey] = {
+        inputMetaRef.current[childKey] = {
           inputType: `${INPUT_TYPE}Item`,
           indexKey: childKey,
         };

@@ -3,14 +3,14 @@
 
 import type { AnyJson } from '@w3ux/types';
 import type { InputArgs } from 'contexts/ChainUi/types';
-import type { InputKeys } from 'routes/Chain/Inputs/types';
+import type { InputMeta } from 'routes/Chain/Inputs/types';
 import type { PalletScraper } from './Pallet';
 import type { CompositeType } from './Types/Composite';
 
 // A class to take input keys and values, and formats them into a submittable array of arguments.
 export class ArgBuilder {
-  // Form input keys.
-  inputKeys: InputKeys;
+  // Form input meta.
+  inputMeta: InputMeta;
 
   // The resulting formatted arguments.
   formattedArgs: Record<string, AnyJson>;
@@ -20,15 +20,15 @@ export class ArgBuilder {
 
   constructor(
     inputArgs: InputArgs | null,
-    inputKeys: InputKeys,
+    inputMeta: InputMeta,
     scraper: PalletScraper
   ) {
-    this.inputKeys = inputKeys;
+    this.inputMeta = inputMeta;
     this.formattedArgs = { ...inputArgs } || {};
     this.scraper = scraper;
 
     console.log({ ...inputArgs });
-    console.log({ ...inputKeys });
+    console.log({ ...inputMeta });
   }
 
   // ------------------------------------------------------
@@ -144,7 +144,7 @@ export class ArgBuilder {
     // Add parent key type to newly combined `parentKeyWithValues` entries.
     const parentKeys = Object.entries(parentKeysWithValues).reduce(
       (acc: Record<string, AnyJson>, [key, value]) => {
-        const parentInputType = this.inputKeys[key].inputType;
+        const parentInputType = this.inputMeta[key].inputType;
 
         // If `Select` for possible typed enums, include the value in an array.
         const inputType =
@@ -152,7 +152,6 @@ export class ArgBuilder {
             ? [parentInputType, this.formattedArgs[key]?.value]
             : parentInputType;
 
-        // TODO: Add indexKey from `this.inputKeys` to this accumulator.
         acc[key] = [inputType, value];
         return acc;
       },
@@ -172,16 +171,16 @@ export class ArgBuilder {
       this.formattedArgs[inputKey] = this.formatInput(inputKey, value);
     });
 
-    // Delete this iteration of deepest keys from `inputKeys` and `formattedArgs`.
+    // Delete this iteration of deepest keys from `inputMeta` and `formattedArgs`.
     deepestKeys.forEach((key) => {
-      delete this.inputKeys[key];
+      delete this.inputMeta[key];
       delete this.formattedArgs[key];
     });
   }
 
   // Formats an accumulated parent key input.
   formatInput(inputKey: string, [inputType, entries]: AnyJson) {
-    const indexKey = this.inputKeys[inputKey].indexKey;
+    const indexKey = this.inputMeta[inputKey].indexKey;
 
     // If array (type with value), get the first element of the array as the input type.
     if (Array.isArray(inputType)) {

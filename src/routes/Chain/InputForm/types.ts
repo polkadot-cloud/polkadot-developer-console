@@ -5,11 +5,11 @@ import type { AnyJson } from '@w3ux/types';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import type { PalletScraper } from 'model/Scraper/Pallet';
 import type { MutableRefObject, ReactNode } from 'react';
-import type { InputKeys } from '../Inputs/types';
+import type { InputMeta } from '../Inputs/types';
 
 export interface InputFormContextInterface {
   namespace: InputNamespace;
-  inputKeysRef: MutableRefObject<InputKeys>;
+  inputMetaRef: MutableRefObject<InputMeta>;
   handleSubmit: (onSubmit?: (inputArgs: AnyJson) => void) => AnyJson;
 }
 

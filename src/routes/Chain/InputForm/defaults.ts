@@ -6,6 +6,6 @@ import type { InputFormContextInterface } from './types';
 
 export const defaultInputFormContext: InputFormContextInterface = {
   namespace: 'storage',
-  inputKeysRef: { current: {} },
+  inputMetaRef: { current: {} },
   handleSubmit: () => ({}),
 };
