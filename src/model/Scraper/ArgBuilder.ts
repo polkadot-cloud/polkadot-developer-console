@@ -191,12 +191,12 @@ export class ArgBuilder {
       case 'Composite':
         return this.formatComposite(entries, indexKey);
 
-      // TODO: custom logic to construct variant from its items and fields, if needed. Should simply
-      // return its value if its a simple variant.
+      // TODO: Logic to construct variant from its items and fields, if needed. Should simply return
+      // its value if its a simple variant.
       case 'Variant':
         return entries;
 
-      // TODO: Test: staking.deprecateControllerBatch can be used to test this.
+      // TODO: Test: `staking.deprecateControllerBatch` can be used to test this.
       case 'Sequence':
         return entries;
 
@@ -206,14 +206,17 @@ export class ArgBuilder {
     }
   }
 
-  // Format a composite input value.
+  // Format a composite input value. Accumulate composite fields and value entires into an object.
+  // Assumes fields and entries are of the same length.
   formatComposite = (entries: AnyJson, indexKey: string) => {
     const typeClass = this.scraper.getClass(indexKey) as CompositeType;
     const fields = typeClass.fields;
 
-    // TODO: Construct composite object from its fields.
-    console.debug(fields);
+    const result = fields.reduce((acc: AnyJson, { name }, i) => {
+      acc[name] = entries[i].value;
+      return acc;
+    }, {});
 
-    return entries;
+    return result;
   };
 }
