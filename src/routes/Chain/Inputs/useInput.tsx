@@ -78,7 +78,7 @@ export const useInput = () => {
         return renderCompact(arg, config);
 
       case 'sequence':
-        return renderSequence(arg, config);
+        return renderSequence(arg, config, 'sequence');
 
       default:
         return null;
@@ -128,14 +128,15 @@ export const useInput = () => {
       });
     }
 
-    // Otherwise, allow sequence input.
-    return renderSequence(arg, config, typeClass.array.len);
+    // Otherwise, allow multi input.
+    return renderSequence(arg, config, 'array', typeClass.array.len);
   };
 
   // Renders a sequence input component.
   const renderSequence = (
     arg: ScrapedItem,
     config: InputArgConfig,
+    type: 'array' | 'sequence',
     maxLength?: number
   ) => {
     const { indexKey } = arg;
@@ -156,11 +157,11 @@ export const useInput = () => {
     // Otherwise, allow sequence input.
     return (
       <Section>
-        <h4 className="marginTop">{`${label}[]`}</h4>
+        <h4 className="marginTop">{`${label ? `${label}[]` : 'Array'}`}</h4>
         <Sequence
           indexKey={indexKey}
           config={config}
-          arrayInput={arg.sequence}
+          arrayInput={arg[type]}
           maxLength={maxLength}
         />
       </Section>
