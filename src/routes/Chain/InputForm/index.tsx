@@ -19,7 +19,7 @@ export const InputForm = ({
   onSubmit,
 }: InputFormInnerProps) => {
   const { readInput } = useInput();
-  const { namespace, inputMetaRef, handleSubmit } = useInputForm();
+  const { namespace, inputMeta, handleSubmit } = useInputForm();
 
   // Ensure argTypes is an array.
   if (!Array.isArray(argTypes)) {
@@ -38,7 +38,7 @@ export const InputForm = ({
               scraper,
               inputKey: `${index}`,
               namespace,
-              inputMetaRef,
+              inputMeta,
             })}
           </Fragment>
         ))}
