@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useRef } from 'react';
 import { defaultInputFormContext } from './defaults';
 import type {
   InputFormContextInterface,
@@ -29,7 +29,7 @@ export const InputFormProvider = ({
   const { getInputArgs } = useChainUi();
 
   // A reference to accumulate input keys for an input form.
-  const inputKeys: InputKeys = {};
+  const inputKeysRef = useRef<InputKeys>({});
 
   // Handle query submission. Accumulates input values and passes them into the provided `onSubmit`
   // function.
@@ -46,7 +46,11 @@ export const InputFormProvider = ({
     const formattedInputs: Record<string, AnyJson> =
       inputArgs === null
         ? {}
-        : new ArgBuilder(inputArgs, inputKeys, scraper).build();
+        : new ArgBuilder(
+            inputArgs,
+            { ...inputKeysRef.current },
+            scraper
+          ).build();
 
     // Determine whether inputs are empty.
     const isEmpty = Object.values(formattedInputs).length === 0;
@@ -62,22 +66,26 @@ export const InputFormProvider = ({
         ? Object.values(formattedInputs)?.[0][1]
         : Object.values(formattedInputs)?.[0];
 
-    console.log('---');
-    console.log(resultInput);
+    // console.log('---');
+    // console.log(resultInput);
 
     // Call a submission function if it exists.
     if (typeof onSubmit === 'function') {
       onSubmit(resultInput);
     }
 
+    console.log('after submit', inputKeysRef.current);
+
     return resultInput;
   };
+
+  console.log(inputKeysRef.current);
 
   return (
     <InputForm.Provider
       value={{
         namespace,
-        inputKeys,
+        inputKeysRef,
         handleSubmit,
       }}
     >
