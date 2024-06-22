@@ -18,7 +18,6 @@ import type {
   ChainStateSection,
   InputNamespace,
   InputArgsState,
-  InputArg,
   ChainStateFilters,
   InputArgTypeKeys,
 } from './types';
@@ -26,6 +25,7 @@ import { setStateWithRef } from '@w3ux/utils';
 import type { StorageType } from 'model/ChainState/types';
 import * as local from './Local';
 import { checkLocalChainUi } from 'IntegrityChecks/Local';
+import type { AnyJson } from '@w3ux/types';
 
 checkLocalChainUi();
 
@@ -175,13 +175,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
       return null;
     }
 
-    // Extract `arg` from each input arg record.
-    //
-    // TODO: Do this filter further down input arg formatting - indexKey is required for fetching
-    // class and formatting arg.
-    return Object.fromEntries(
-      Object.entries(inputArgsWithKeys).map(([key, { arg }]) => [key, arg])
-    );
+    return inputArgsWithKeys || null;
   };
 
   // Get input args at a key for either a storage item or call.
@@ -202,7 +196,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     tabId: number,
     namespace: InputNamespace,
     keys: InputArgTypeKeys,
-    arg: InputArg
+    value: AnyJson
   ) => {
     const { inputKey, indexKey } = keys;
     const updatedInputArgs = { ...inputArgsRef.current };
@@ -215,7 +209,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
       };
     }
     // Apply the new input arg and update state.
-    updatedInputArgs[tabId][namespace][inputKey] = { indexKey, arg };
+    updatedInputArgs[tabId][namespace][inputKey] = { indexKey, value };
     setInputArgs(updatedInputArgs);
   };
 

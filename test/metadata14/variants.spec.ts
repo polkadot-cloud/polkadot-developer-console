@@ -25,7 +25,7 @@ describe('Basic variant structure is intact', () => {
   const lookupTypes = lookup.types;
 
   // Get variant types from lookup.
-  const lookupVariants: AnyJson = lookupTypes
+  const lookupVariants = lookupTypes
     .filter(({ type: { def } }) => 'variant' in def)
     .map((item) => item.type.def.variant);
 

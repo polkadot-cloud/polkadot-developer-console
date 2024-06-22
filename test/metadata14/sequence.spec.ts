@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import assert from 'assert';
-import type { AnyJson } from '@w3ux/types';
 import * as metadataJson from './data/metadataV14.json';
+import type { AnyJson } from '@w3ux/types';
 
 /* Metadata sequence tests.
 
@@ -20,7 +20,7 @@ describe('Basic sequence structure is intact', () => {
   const lookupTypes = lookup.types;
 
   // Get all sequence types from lookup.
-  const lookupSequence: AnyJson = lookupTypes
+  const lookupSequence = lookupTypes
     .filter(({ type: { def } }) => 'sequence' in def)
     .map((item) => item.type.def.sequence);
 

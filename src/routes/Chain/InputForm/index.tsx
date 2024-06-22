@@ -3,13 +3,13 @@
 
 import { Fragment } from 'react/jsx-runtime';
 import { InputFormWrapper } from '../Wrappers';
-import type { AnyJson } from '@w3ux/types';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { faCircleRight } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useInputForm } from './provider';
 import type { InputFormInnerProps } from './types';
 import { useInput } from '../Inputs/useInput';
+import type { ScrapedItem } from 'model/Scraper/types';
 
 export const InputForm = ({
   activePallet,
@@ -19,7 +19,7 @@ export const InputForm = ({
   onSubmit,
 }: InputFormInnerProps) => {
   const { readInput } = useInput();
-  const { namespace, inputKeys, handleSubmit } = useInputForm();
+  const { namespace, inputMetaRef, handleSubmit } = useInputForm();
 
   // Ensure argTypes is an array.
   if (!Array.isArray(argTypes)) {
@@ -30,7 +30,7 @@ export const InputForm = ({
     <InputFormWrapper>
       {!!scraper &&
         !!argTypes &&
-        argTypes.map((arg: AnyJson, index: number) => (
+        argTypes.map((arg: ScrapedItem, index: number) => (
           <Fragment key={`input_arg_${activePallet}_${activeItem}_${index}`}>
             {readInput(arg, {
               activePallet,
@@ -38,7 +38,7 @@ export const InputForm = ({
               scraper,
               inputKey: `${index}`,
               namespace,
-              inputKeys,
+              inputMetaRef,
             })}
           </Fragment>
         ))}

@@ -20,7 +20,7 @@ describe('Basic bitSequence structure is intact', () => {
   const lookupTypes = lookup.types;
 
   // Get all bitSequence types from lookup.
-  const lookupBitSequence: AnyJson = lookupTypes
+  const lookupBitSequence = lookupTypes
     .filter(({ type: { def } }) => 'bitSequence' in def)
     .map((item) => item.type.def.bitSequence);
 

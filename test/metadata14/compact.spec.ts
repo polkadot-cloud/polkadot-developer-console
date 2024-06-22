@@ -20,7 +20,7 @@ describe('Basic compact structure is intact', () => {
   const lookupTypes = lookup.types;
 
   // Get all composite types from lookup.
-  const lookupCompact: AnyJson = lookupTypes
+  const lookupCompact = lookupTypes
     .filter(({ type: { def } }) => 'compact' in def)
     .map((item) => item.type.def.compact);
 

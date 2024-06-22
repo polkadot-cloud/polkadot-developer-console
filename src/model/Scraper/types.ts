@@ -3,6 +3,17 @@
 
 import type { AnyJson } from '@w3ux/types';
 
+// All supported metadata types.
+export type MetadataType =
+  | 'primitive'
+  | 'composite'
+  | 'variant'
+  | 'sequence'
+  | 'bitSequence'
+  | 'array'
+  | 'tuple'
+  | 'compact';
+
 export interface Pallet {
   name: string;
   index: number;
@@ -91,3 +102,14 @@ export interface TypeParams {
   labelsOnly: boolean;
   maxDepth: number | '*';
 }
+
+// A scraped result item that could be of any metadata type.
+export type ScrapedItem = { [key in MetadataType]?: AnyJson } & {
+  indexKey: string;
+};
+
+// A scraped field item result item that could be of any metadata type.
+export type ScrapedFieldItem = ScrapedItem & {
+  name: string;
+  typeName: string;
+};
