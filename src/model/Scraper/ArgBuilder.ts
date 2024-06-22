@@ -197,7 +197,7 @@ export class ArgBuilder {
       case 'Variant':
         return entries;
 
-      // TODO: Test
+      // TODO: Test: staking.deprecateControllerBatch can be used to test this.
       case 'Sequence':
         return entries;
 
