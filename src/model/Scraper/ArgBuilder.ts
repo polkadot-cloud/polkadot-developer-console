@@ -6,6 +6,7 @@ import type { InputArgs } from 'contexts/ChainUi/types';
 import type { InputMeta } from 'routes/Chain/Inputs/types';
 import type { PalletScraper } from './Pallet';
 import type { CompositeType } from './Types/Composite';
+import type { VariantType } from './Types/Variant';
 
 // A class to take input keys and values, and formats them into a submittable array of arguments.
 export class ArgBuilder {
@@ -114,15 +115,20 @@ export class ArgBuilder {
 
   // Build the values of each parent key for the provided input keys.
   //
-  // 1: Collects the deepest keys and their values, and concatenates these values to the parent keys.
-  // 2: Reformats the newly formed parent keys by combining its type with its formatted values.
+  // 1: Collects the deepest keys and their values, and concatenates these values to the parent
+  // keys.
+  // 2: Reformats the newly formed parent keys by combining its type with its formatted
+  // values.
   buildParentKeyValues(deepestKeyValues: Record<string, AnyJson>) {
-    // Ensure deepest keys are ordered by key for correct passing of arguments order.
-    const sortedDeepestKeys = Object.fromEntries(
-      Object.entries(deepestKeyValues).sort(
-        ([a], [b]) => parseInt(a) - parseInt(b)
-      )
-    );
+    const sortedDeepestKeys = Object.keys(deepestKeyValues)
+      .sort()
+      .reduce(
+        (acc, key) => ({
+          ...acc,
+          [key]: deepestKeyValues[key],
+        }),
+        {}
+      );
 
     // Concatenate deepest key values to each corresponding parent key.
     const parentKeysWithValues = Object.entries(sortedDeepestKeys).reduce(
@@ -148,7 +154,7 @@ export class ArgBuilder {
 
         // If `Select` for possible typed enums, include the value in an array.
         const inputType =
-          parentInputType === 'Variant'
+          parentInputType === 'variant'
             ? [parentInputType, this.formattedArgs[key]?.value]
             : parentInputType;
 
@@ -182,22 +188,22 @@ export class ArgBuilder {
   formatInput(inputKey: string, [inputType, entries]: AnyJson) {
     const indexKey = this.inputMeta[inputKey].indexKey;
 
-    // If array (type with value), get the first element of the array as the input type.
+    // If array (enum with value), get the first element of the array as the input type.
+    let selectedValue = undefined;
     if (Array.isArray(inputType)) {
+      selectedValue = inputType[1];
       inputType = inputType[0];
     }
 
     switch (inputType) {
-      case 'Composite':
+      case 'composite':
         return this.formatComposite(entries, indexKey);
 
-      // TODO: Logic to construct variant from its items and fields, if needed. Should simply return
-      // its value if its a simple variant.
-      case 'Variant':
-        return entries;
+      case 'variant':
+        return this.formatVariant(entries, indexKey, selectedValue);
 
       // TODO: Test: `staking.deprecateControllerBatch` can be used to test this.
-      case 'Sequence':
+      case 'sequence':
         return entries;
 
       default:
@@ -206,9 +212,51 @@ export class ArgBuilder {
     }
   }
 
+  // Format a variant input value. Select the correct variant item based on the input value, and
+  // then format fields based on provided entries. Should simply return its value if its a simple
+  // variant. (no fields).
+  formatVariant(entries: AnyJson, indexKey: string, selectedValue: string) {
+    const typeClass = this.scraper.getClass(indexKey) as VariantType;
+    const items = typeClass.items;
+    const selectedItem = items.find((item) => item.name === selectedValue);
+
+    // Simply return the selected value if this enum has no fields.
+    if (!selectedItem?.fields) {
+      return selectedValue;
+    }
+
+    // Check if variant fields are of tuple or named field map.
+    const isTuple = selectedItem.fields.every(({ name }) => name === null);
+
+    // Build resulting value from entries and variant type.
+    let result;
+    if (isTuple) {
+      // Enum with unamed fields.
+      result = {
+        [selectedValue]:
+          // If only one entry, return it directly.
+          entries.length === 1
+            ? entries[0]
+            : // If multiple entries, return them as an array.
+              entries.map((entry: AnyJson) => entry),
+      };
+    } else {
+      // Enum with named fields.
+      result = {
+        [selectedValue]: selectedItem.fields.reduce(
+          (acc: AnyJson, { name }, i) => {
+            acc[name] = entries[i];
+            return acc;
+          },
+          {}
+        ),
+      };
+    }
+    return result;
+  }
+
   // Format a composite input value. Accumulate composite fields and value entires into an object.
-  // Assumes fields and entries are of the same length.
-  formatComposite = (entries: AnyJson, indexKey: string) => {
+  formatComposite(entries: AnyJson, indexKey: string) {
     const typeClass = this.scraper.getClass(indexKey) as CompositeType;
     const fields = typeClass.fields;
 
@@ -218,5 +266,5 @@ export class ArgBuilder {
     }, {});
 
     return result;
-  };
+  }
 }

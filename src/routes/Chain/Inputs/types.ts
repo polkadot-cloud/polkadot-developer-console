@@ -12,14 +12,14 @@ export type InputType =
   | 'AccountId32'
   | 'Hash'
   | 'Bytes'
-  | 'Textbox'
-  | 'Boolean'
-  | 'Variant'
-  | 'Composite'
-  | 'Compact'
-  | 'Sequence'
-  | 'SequenceItem'
-  | 'Tuple';
+  | 'str'
+  | 'bool'
+  | 'variant'
+  | 'composite'
+  | 'compact'
+  | 'sequence'
+  | 'sequenceItem'
+  | 'tuple';
 
 // Input keys record structure.
 export type InputMeta = Record<
