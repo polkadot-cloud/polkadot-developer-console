@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import assert from 'assert';
-import type { AnyJson } from '@w3ux/types';
 import * as metadataJson from './data/metadataV14.json';
 
 /* Metadata primitive tests.
@@ -20,7 +19,7 @@ describe('Basic primitive structure is intact', () => {
   const lookupTypes = lookup.types;
 
   // Get all primitive types from lookup.
-  const lookupPrimitive: AnyJson = lookupTypes
+  const lookupPrimitive = lookupTypes
     .filter(({ type: { def } }) => 'primitive' in def)
     .map((item) => item.type.def.primitive);
 
@@ -31,6 +30,6 @@ describe('Basic primitive structure is intact', () => {
   });
 
   it('Primitive types are strings representing the primitive type', () => {
-    lookupPrimitive.every((item: AnyJson) => typeof item === 'string');
+    lookupPrimitive.every((item) => typeof item === 'string');
   });
 });

@@ -20,15 +20,13 @@ describe('Basic composite structure is intact', () => {
   const lookupTypes = lookup.types;
 
   // Get all composite types from lookup.
-  const lookupComposite: AnyJson = lookupTypes
+  const lookupComposite = lookupTypes
     .filter(({ type: { def } }) => 'composite' in def)
     .map((item) => item.type.def.composite);
 
   // Get composite fields from composite types. Every composite type has a single `fields`
   // property.
-  const compositeFields: AnyJson = lookupComposite.map(
-    ({ fields }: { fields: AnyJson[] }) => fields
-  );
+  const compositeFields = lookupComposite.map(({ fields }: AnyJson) => fields);
 
   it('Metadata lookup contains 280 composite types', () => {
     assert.ok(lookupComposite.length === 280);

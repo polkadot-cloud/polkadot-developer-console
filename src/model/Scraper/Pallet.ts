@@ -263,8 +263,9 @@ export class PalletScraper extends MetadataScraper {
   // Starts scraping a call.
   startCallScrape(item: AnyJson) {
     const scrapedType = {
-      argTypes: item.fields.map(({ type }: { type: number; docs: string[] }) =>
-        this.start(type)
+      argTypes: item.fields.map(
+        ({ type }: { type: number; docs: string[] }, i: number) =>
+          this.start(type, { indexPrefix: String(i) })
       ),
       returnType: '',
     };

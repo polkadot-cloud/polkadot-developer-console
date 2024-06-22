@@ -1,11 +1,11 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { AnyJson } from '@w3ux/types';
+import type { MutableRefObject } from 'react';
 import { Fragment } from 'react';
 import { Select } from 'library/Inputs/Select';
 import { Section } from './Section';
-import type { InputArgConfig } from './types';
+import type { InputArgConfig, InputMeta, InputType } from './types';
 import { Hash } from './Hash';
 import { Checkbox } from './Checkbox';
 import { AccountId32 } from 'library/Inputs/AccountId32';
@@ -14,14 +14,17 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { useAccounts } from 'contexts/Accounts';
 import { useChain } from '../Provider';
 import { Textbox } from 'library/Inputs/Textbox';
-import type { InputArg } from 'contexts/ChainUi/types';
-import { arrayIsBytes, arrayIsPrimitive } from 'model/Scraper/Utils';
-import { DefaultInputs } from 'model/Scraper/DefaultInputs';
+import {
+  arrayIsBytes,
+  arrayIsPrimitive,
+  defaultInputValue,
+} from 'model/Scraper/Utils';
 import { Sequence } from './Sequence';
 import type { ArrayType } from 'model/Scraper/Types/Array';
 import type { SequenceType } from 'model/Scraper/Types/Sequence';
 import type { CompositeType } from 'model/Scraper/Types/Composite';
 import { useInputMeta } from 'contexts/InputMeta';
+import type { ScrapedFieldItem, ScrapedItem } from 'model/Scraper/types';
 
 export const useInput = () => {
   const { chainSpec } = useChain();
@@ -35,7 +38,7 @@ export const useInput = () => {
   // Reads input and returns input components based on the input type. Called recursively for types
   // that host other types.
   const readInput = (
-    arg: AnyJson,
+    arg: ScrapedItem,
     config: InputArgConfig,
     options?: {
       indent?: boolean;
@@ -83,8 +86,28 @@ export const useInput = () => {
     }
   };
 
+  // Renders a tuple input component.
+  const renderTuple = (arg: ScrapedItem, config: InputArgConfig) => {
+    const { tuple, indexKey } = arg;
+    const { inputKey, inputMetaRef } = config;
+
+    // Record this input type.
+    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'Tuple');
+
+    // Render tuple inputs.
+    return (
+      <Section indent={true}>
+        {tuple.map((item: ScrapedItem, index: number) => (
+          <Fragment key={`input_arg_${inputKey}_${index}`}>
+            {readInput(item, { ...config, inputKey: `${inputKey}_${index}` })}
+          </Fragment>
+        ))}
+      </Section>
+    );
+  };
+
   // Renders an array input component.
-  const renderArray = (arg: AnyJson, config: InputArgConfig) => {
+  const renderArray = (arg: ScrapedItem, config: InputArgConfig) => {
     const typeClass = config.scraper.getClass(arg.indexKey) as ArrayType;
     const label = typeClass.label();
 
@@ -112,11 +135,12 @@ export const useInput = () => {
 
   // Renders a sequence input component.
   const renderSequence = (
-    arg: AnyJson,
+    arg: ScrapedItem,
     config: InputArgConfig,
     maxLength?: number
   ) => {
-    const typeClass = config.scraper.getClass(arg.indexKey) as SequenceType;
+    const { indexKey } = arg;
+    const typeClass = config.scraper.getClass(indexKey) as SequenceType;
     const label = typeClass.label();
     const input = typeClass.input();
 
@@ -135,6 +159,7 @@ export const useInput = () => {
       <Section>
         <h4 className="marginTop">{`${label}[]`}</h4>
         <Sequence
+          indexKey={indexKey}
           config={config}
           arrayInput={arg.sequence}
           maxLength={maxLength}
@@ -144,12 +169,12 @@ export const useInput = () => {
   };
 
   // Renders a compact input component.
-  const renderCompact = (arg: AnyJson, config: InputArgConfig) => {
-    const { compact } = arg;
-    const { inputKey, inputKeys } = config;
+  const renderCompact = (arg: ScrapedItem, config: InputArgConfig) => {
+    const { compact, indexKey } = arg;
+    const { inputKey, inputMetaRef } = config;
 
     // Record this input type.
-    addInputTypeAtKey(inputKeys, inputKey, 'Compact');
+    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'Compact');
 
     // Render compact input.
     return (
@@ -159,32 +184,13 @@ export const useInput = () => {
     );
   };
 
-  // Renders a tuple input component.
-  const renderTuple = (arg: AnyJson, config: InputArgConfig) => {
-    const { tuple } = arg;
-    const { inputKey, inputKeys } = config;
-
-    // Record this input type.
-    addInputTypeAtKey(inputKeys, inputKey, 'Tuple');
-
-    // Render tuple inputs.
-    return (
-      <Section indent={true}>
-        {tuple.map((item: AnyJson, index: number) => (
-          <Fragment key={`input_arg_${inputKey}_${index}`}>
-            {readInput(item, { ...config, inputKey: `${inputKey}_${index}` })}
-          </Fragment>
-        ))}
-      </Section>
-    );
-  };
-
   // Renders a composite input component.
-  const renderComposite = (arg: AnyJson, config: InputArgConfig) => {
-    const typeClass = config.scraper.getClass(arg.indexKey) as CompositeType;
+  const renderComposite = (arg: ScrapedItem, config: InputArgConfig) => {
+    const { indexKey } = arg;
+    const typeClass = config.scraper.getClass(indexKey) as CompositeType;
     const label = typeClass.label();
     const input = typeClass.input();
-    const { inputKey, inputKeys } = config;
+    const { inputKey, inputMetaRef } = config;
 
     // If this composite is a custom input, render it and stop the recursive input loop.
     if (input !== 'indent') {
@@ -197,12 +203,12 @@ export const useInput = () => {
     }
 
     // Record this input type.
-    addInputTypeAtKey(inputKeys, inputKey, 'Composite');
+    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'Composite');
 
     // Render the composite fields.
     return (
       <Section indent={true}>
-        {arg.composite.map((field: AnyJson, index: number) => {
+        {arg.composite.map((field: ScrapedFieldItem, index: number) => {
           const childKey = `${inputKey}_${index}`;
 
           return (
@@ -220,7 +226,7 @@ export const useInput = () => {
   };
 
   // Renders a variant input component.
-  const renderVariant = (arg: AnyJson, config: InputArgConfig) => {
+  const renderVariant = (arg: ScrapedItem, config: InputArgConfig) => {
     const { inputKey } = config;
 
     // Get the selected variant item, or fall back to first item otherwise.
@@ -242,17 +248,19 @@ export const useInput = () => {
         {/* Render selected variant item's fields if they exist. */}
         {selectedItemFields && (
           <Section indent={true}>
-            {selectedItemFields.map((field: AnyJson, index: number) => {
-              const { typeName, ...rest } = field;
-              const childKey = `${inputKey}_${index}`;
+            {selectedItemFields.map(
+              (field: ScrapedFieldItem, index: number) => {
+                const { typeName, ...rest } = field;
+                const childKey = `${inputKey}_${index}`;
 
-              return (
-                <Fragment key={`input_arg_${childKey}`}>
-                  <h4 className="standalone">{typeName}</h4>
-                  {readInput(rest, { ...config, inputKey: childKey })}
-                </Fragment>
-              );
-            })}
+                return (
+                  <Fragment key={`input_arg_${childKey}`}>
+                    <h4 className="standalone">{typeName}</h4>
+                    {readInput(rest, { ...config, inputKey: childKey })}
+                  </Fragment>
+                );
+              }
+            )}
           </Section>
         )}
       </>
@@ -261,7 +269,7 @@ export const useInput = () => {
 
   // Renders an input component wrapped in an input section.
   const renderInput = (
-    arg: AnyJson,
+    arg: ScrapedItem,
     inputArgConfig: InputArgConfig,
     options?: {
       indent?: boolean;
@@ -277,7 +285,7 @@ export const useInput = () => {
     } = options || {};
 
     const {
-      inputKeys,
+      inputMetaRef,
       scraper,
       inputKey,
       namespace,
@@ -301,11 +309,11 @@ export const useInput = () => {
 
     // Get the current input value.
     const inputArg = getInputArgAtKey(tabId, namespace, inputKey);
-    const inputValue = inputArg?.arg;
+    const inputValue = inputArg?.value;
 
     // General `onRender` callback that registers input type with key.
-    const onRender = (inputType: string) => {
-      inputKeys[inputKey] = inputType;
+    const onRender = (inputType: InputType) => {
+      inputMetaRef.current[inputKey] = { inputType, indexKey };
     };
 
     // A unique identifier for the input component. Currently only used for account address inputs.
@@ -347,7 +355,7 @@ export const useInput = () => {
               onChange={(val) => {
                 setInputArgAtKey(tabId, namespace, keys, val);
               }}
-              value={inputValue || DefaultInputs.defaultValue(input)}
+              value={inputValue || defaultInputValue(input)}
             />
           );
 
@@ -397,7 +405,7 @@ export const useInput = () => {
                   setInputArgAtKey(tabId, namespace, keys, val);
                 }}
                 label={label}
-                value={inputValue || DefaultInputs.defaultValue(input)}
+                value={inputValue || defaultInputValue(input)}
                 numeric={input === 'number'}
               />
             </Section>
@@ -412,26 +420,31 @@ export const useInput = () => {
 
   // Gets a selected variant item, or falls back to the first variant.
   const getSelectedVariant = (
-    arg: AnyJson,
+    arg: ScrapedItem,
     inputKey: string,
-    { namespace }: InputArg
+    { namespace }: InputArgConfig
   ) => {
     // Get the current variant value, if any.
-    const currentInputArg = getInputArgAtKey(tabId, namespace, inputKey)?.arg;
+    const currentInputValue = getInputArgAtKey(
+      tabId,
+      namespace,
+      inputKey
+    )?.value;
 
     // Fall back to the first variant if no value is set.
-    return ![undefined, ''].includes(currentInputArg)
-      ? currentInputArg
+    return ![undefined, ''].includes(currentInputValue)
+      ? currentInputValue
       : arg.variant[0].name;
   };
 
   // Record an input type to an input key.
   const addInputTypeAtKey = (
-    inputKeys: Record<string, string>,
+    inputMetaRef: MutableRefObject<InputMeta>,
     inputKey: string,
-    inputType: string
+    indexKey: string,
+    inputType: InputType
   ) => {
-    inputKeys[inputKey] = inputType;
+    inputMetaRef.current[inputKey] = { inputType, indexKey };
   };
 
   return {

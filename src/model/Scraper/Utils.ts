@@ -2,6 +2,25 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { AnyJson } from '@w3ux/types';
+import type { ScrapedItem } from './types';
+
+// ------------------------------------------------------
+// Defaults.
+// ------------------------------------------------------
+
+export const defaultInputValue = (type: string): string => {
+  switch (type) {
+    case 'number':
+      return '0';
+
+    case 'char':
+    case 'str':
+      return '';
+
+    default:
+      return '';
+  }
+};
 
 // ------------------------------------------------------
 // Options.
@@ -60,6 +79,10 @@ export const pathToString = (path: string[]): string =>
     return index === 0 ? item : `${formatted}::${item}`;
   }, '');
 
+// ------------------------------------------------------
+// Custom input types.
+// ------------------------------------------------------
+
 // Get a custom input component based on label. Currently only called with composite types.
 export const getCustomInput = (label: string): string | null => {
   // If Vec parameter is u8, or BoundedVec parameter 2 is u8, then we are dealing with bytes.
@@ -84,17 +107,22 @@ export const getCustomInput = (label: string): string | null => {
   return null;
 };
 
+// ------------------------------------------------------
+// Type overrides.
+// ------------------------------------------------------
+
 // Checks if a composite is a sequence of u8s.
-export const compositeIsBytes = (shortLabel: string, arg: AnyJson) =>
+export const compositeIsBytes = (shortLabel: string, arg: ScrapedItem) =>
   ['Vec', 'BoundedVec', 'WeakBoundedVec'].includes(shortLabel) &&
   arg.composite?.[0]?.type?.sequence?.label === 'u8' &&
   arg.composite?.length === 1;
 
 // Check if this array is a vector of bytes.
-export const arrayIsBytes = (arg: AnyJson) => arg?.array?.primitive === 'U8';
+export const arrayIsBytes = (arg: ScrapedItem) =>
+  arg?.array?.primitive === 'U8';
 
 // Check if array is a vector of primitives.
-export const arrayIsPrimitive = (arg: AnyJson) => !!arg?.array?.primitive;
+export const arrayIsPrimitive = (arg: ScrapedItem) => !!arg?.array?.primitive;
 
 // Check if a sequence is a vector of bytes.
 export const sequenceIsBytes = (label: string) =>

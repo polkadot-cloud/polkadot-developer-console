@@ -35,12 +35,12 @@ export interface ChainUiContextInterface {
     tabId: number,
     section: InputNamespace,
     inputKey: string
-  ) => { indexKey: string; arg: InputArg } | undefined;
+  ) => InputArg | undefined;
   setInputArgAtKey: (
     tabId: number,
     section: InputNamespace,
     keys: InputArgTypeKeys,
-    arg: InputArg
+    value: AnyJson
   ) => void;
   resetInputArgSection: (tabId: number, section: InputNamespace) => void;
 }
@@ -113,7 +113,10 @@ export type InputArgsState = Record<
 export type InputArgs = Record<string, InputArg>;
 
 // One input arg value.
-export type InputArg = AnyJson | undefined;
+export interface InputArg {
+  indexKey: string;
+  value: AnyJson;
+}
 
 // The section input args are being applied to.
 export type InputNamespace = 'storage' | 'call';

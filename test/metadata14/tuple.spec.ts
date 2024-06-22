@@ -20,7 +20,7 @@ describe('Basic tuple structure is intact', () => {
   const lookupTypes = lookup.types;
 
   // Get all tuple types from lookup.
-  const lookupTuple: AnyJson = lookupTypes
+  const lookupTuple = lookupTypes
     .filter(({ type: { def } }) => 'tuple' in def)
     .map((item) => item.type.def.tuple);
 
