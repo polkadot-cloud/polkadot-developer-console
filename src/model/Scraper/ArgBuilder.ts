@@ -16,6 +16,9 @@ export class ArgBuilder {
   constructor(inputArgs: InputArgs | null, inputKeys: InputKeys) {
     this.inputKeys = inputKeys;
     this.formattedArgs = { ...inputArgs } || {};
+
+    console.log({ ...inputArgs });
+    console.log({ ...inputKeys });
   }
 
   // ------------------------------------------------------
@@ -31,141 +34,39 @@ export class ArgBuilder {
 
     let { deepestKeys, maxLength } = this.getDeepestKeys();
     // Accumulate formatted args.
+    let i = 0;
     do {
+      console.debug('iteration', i);
+
       // If only a single input to process, format it and exit early.
       if (maxLength === 1) {
-        this.formattedArgs[0] = this.formatInput(
-          '0',
-          this.formattedArgs['0']?.value
-        );
+        this.formattedArgs[0] = this.formattedArgs['0']?.value || '';
         break;
       }
 
-      // Take the values of deepest keys.
+      // Take the values of deepest keys. As deepest values are usually primitive types, the deepest
+      // keys should always return a value - not a composite or typed variant.
       const deepestKeysWithValue = Object.fromEntries(
         deepestKeys.map((key) => [key, this.formattedArgs[key]])
       );
 
-      // Get parent keys of deepest keys.
-      const parentValues = this.buildParentKeyValues(deepestKeysWithValue);
+      // Get parent keys of deepest keys along with their type and value.
+      const parentKeysWithValue =
+        this.buildParentKeyValues(deepestKeysWithValue);
 
       // For each key of `parentValues` commit the value to `formattedArgs` under the same key, and
       // delete the processed deepest keys.
-      this.updateInputsAndRemoveChildren(parentValues, deepestKeys);
+      this.updateInputsAndRemoveChildren(parentKeysWithValue, deepestKeys);
 
       // Update `deepestKeys` and `maxLength` for next iteration.
       const newDeepestKeys = this.getDeepestKeys();
       deepestKeys = newDeepestKeys.deepestKeys;
       maxLength = newDeepestKeys.maxLength;
+
+      i++;
     } while (deepestKeys.length > 1);
 
     return this.formattedArgs;
-  }
-
-  // Formats an input arg value.
-  formatInput(key: string, value: AnyJson) {
-    const inputType = this.inputKeys[key];
-
-    switch (inputType) {
-      case 'AccountId32':
-        return value;
-
-      case 'Hash':
-        return value;
-
-      case 'Bytes':
-        return value;
-
-      case 'Textbox':
-        return value;
-
-      case 'Boolean':
-        return value;
-
-      case 'Tuple':
-        return value;
-
-      // TODO: Sequences, Variants, Composites. Fall back to metadata for now.
-      default:
-        return {
-          type: inputType,
-          val: this.formattedArgs?.[key]?.value,
-          child: value,
-        };
-    }
-  }
-
-  // Build the values of each parent key for the provided input keys.
-  //
-  // 1: Collects the deepest keys and their values, and concatenates these values to the parent keys.
-  // 2: Reformats the newly formed parent keys by combining its type with its formatted values.
-  buildParentKeyValues(deepestKeys: Record<string, AnyJson>) {
-    // Ensure deepest keys are ordered by key for correct passing of arguments order.
-    const sortedDeepestKeys = Object.fromEntries(
-      Object.entries(deepestKeys).sort(([a], [b]) => parseInt(a) - parseInt(b))
-    );
-
-    // Concatenate deepest key values to each corresponding parent key.
-    const parentKeysWithValues = Object.entries(sortedDeepestKeys).reduce(
-      (acc: Record<string, AnyJson[]>, [key]) => {
-        // Split key by underscore and remove the last element to get the parent key.
-        const parentKey = key.split('_').slice(0, -1).join('_');
-
-        // Get the current value of this parent key if it exists.
-        const currentValue = acc[parentKey] || [];
-
-        // Format arg value based on its form input.
-        const formattedValue = this.formatInput(
-          key,
-          this.formattedArgs[key]?.value
-        );
-
-        // Concatenate value to parent key.
-        acc[parentKey] = currentValue.concat(formattedValue);
-
-        return acc;
-      },
-      {}
-    );
-
-    // Combine parent key type with the formatted values.
-    const parentKeys = Object.entries(parentKeysWithValues).reduce(
-      (acc: Record<string, AnyJson>, [key, value]) => {
-        const parentInputType = this.inputKeys[key];
-
-        // If `Select` for possible typed enums, include the value in an array.
-        const inputType =
-          parentInputType === 'Variant'
-            ? [parentInputType, this.formattedArgs[key]?.value]
-            : parentInputType;
-
-        // Format current value based on its form input.
-        const formattedValue = this.formatInput(key, value);
-
-        acc[key] = [inputType, formattedValue];
-        return acc;
-      },
-      {}
-    );
-    return parentKeys;
-  }
-
-  // Update input keys with values and delete corresponding child keys.
-  updateInputsAndRemoveChildren(
-    parentValues: Record<string, AnyJson>,
-    deepestKeys: string[]
-  ) {
-    // For each key of `parentValues` commit the arg to `formattedArgs` under the same
-    // key.
-    Object.entries(parentValues).forEach(([key, value]) => {
-      this.formattedArgs[key] = value;
-    });
-
-    // Delete this iteration of deepest keys from `inputKeys` and `formattedArgs`.
-    deepestKeys.forEach((key) => {
-      delete this.inputKeys[key];
-      delete this.formattedArgs[key];
-    });
   }
 
   // Gets a collection of the longest keys present in `formattedArgs`. This is the equivalent of
@@ -197,4 +98,97 @@ export class ArgBuilder {
 
     return { deepestKeys: keys, maxLength };
   };
+
+  // Build the values of each parent key for the provided input keys.
+  //
+  // 1: Collects the deepest keys and their values, and concatenates these values to the parent keys.
+  // 2: Reformats the newly formed parent keys by combining its type with its formatted values.
+  buildParentKeyValues(deepestKeyValues: Record<string, AnyJson>) {
+    // Ensure deepest keys are ordered by key for correct passing of arguments order.
+    const sortedDeepestKeys = Object.fromEntries(
+      Object.entries(deepestKeyValues).sort(
+        ([a], [b]) => parseInt(a) - parseInt(b)
+      )
+    );
+
+    // Concatenate deepest key values to each corresponding parent key.
+    const parentKeysWithValues = Object.entries(sortedDeepestKeys).reduce(
+      (acc: Record<string, AnyJson[]>, [key]) => {
+        // Split key by underscore and remove the last element to get the parent key.
+        const parentKey = key.split('_').slice(0, -1).join('_');
+
+        // Get the current value of this parent key if it exists.
+        const currentValue = acc[parentKey] || [];
+
+        // Concatenate value to parent key.
+        acc[parentKey] = currentValue.concat(this.formattedArgs[key]?.value);
+
+        return acc;
+      },
+      {}
+    );
+
+    // Add parent key type to newly combined `parentKeyWithValues` entries.
+    const parentKeys = Object.entries(parentKeysWithValues).reduce(
+      (acc: Record<string, AnyJson>, [key, value]) => {
+        const parentInputType = this.inputKeys[key];
+
+        // If `Select` for possible typed enums, include the value in an array.
+        const inputType =
+          parentInputType === 'Variant'
+            ? [parentInputType, this.formattedArgs[key]?.value]
+            : parentInputType;
+
+        acc[key] = [inputType, value];
+        return acc;
+      },
+      {}
+    );
+    return parentKeys;
+  }
+
+  // Update input keys with values and delete corresponding child keys.
+  updateInputsAndRemoveChildren(
+    parentValues: Record<string, AnyJson>,
+    deepestKeys: string[]
+  ) {
+    // For each key of `parentValues` commit the arg to `formattedArgs` under the same
+    // key.
+    Object.entries(parentValues).forEach(([key, value]) => {
+      this.formattedArgs[key] = this.formatInput(key, value);
+    });
+
+    // Delete this iteration of deepest keys from `inputKeys` and `formattedArgs`.
+    deepestKeys.forEach((key) => {
+      delete this.inputKeys[key];
+      delete this.formattedArgs[key];
+    });
+  }
+
+  // Formats an input arg value. NOTE: This function is probably not needed. Formatting values is
+  // done in` updateInputsAndRemoveChildren`.
+  formatInput(key: string, value: AnyJson) {
+    const inputType = this.inputKeys[key];
+
+    switch (inputType) {
+      // TODO: custom logic to construct composite from its fields.
+      case 'Composite':
+        return value;
+
+      // TODO: custom logic to construct variant from its fields.
+      case 'Variant':
+        return value;
+
+      // TODO: custom logic to construct compact type from its child.
+      case 'Compact':
+        return value;
+
+      // TODO: Test
+      case 'Sequence':
+        return value;
+
+      default:
+        return value;
+    }
+  }
 }
