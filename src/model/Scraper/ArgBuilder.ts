@@ -28,8 +28,8 @@ export class ArgBuilder {
     this.formattedArgs = { ...inputArgs } || {};
     this.scraper = scraper;
 
-    console.log({ ...inputArgs });
-    console.log({ ...inputMeta });
+    // console.log({ ...inputArgs });
+    // console.log({ ...inputMeta });
   }
 
   // ------------------------------------------------------
