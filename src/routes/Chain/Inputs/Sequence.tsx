@@ -18,7 +18,7 @@ export const Sequence = ({
   const { readInput } = useInput();
   const { inputKey, inputMetaRef } = config;
 
-  const INPUT_TYPE = 'Sequence';
+  const INPUT_TYPE = 'sequence';
 
   // Accumulate input key.
   inputMetaRef.current[inputKey] = { inputType: INPUT_TYPE, indexKey };

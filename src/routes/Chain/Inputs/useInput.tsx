@@ -92,7 +92,7 @@ export const useInput = () => {
     const { inputKey, inputMetaRef } = config;
 
     // Record this input type.
-    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'Tuple');
+    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'tuple');
 
     // Render tuple inputs.
     return (
@@ -174,7 +174,7 @@ export const useInput = () => {
     const { inputKey, inputMetaRef } = config;
 
     // Record this input type.
-    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'Compact');
+    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'compact');
 
     // Render compact input.
     return (
@@ -203,7 +203,7 @@ export const useInput = () => {
     }
 
     // Record this input type.
-    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'Composite');
+    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'composite');
 
     // Render the composite fields.
     return (

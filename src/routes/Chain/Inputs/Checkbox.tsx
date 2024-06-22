@@ -13,7 +13,7 @@ export const Checkbox = ({
   onChange,
 }: CheckboxProps) => {
   // The input arg type of this component.
-  const INPUT_TYPE = 'Boolean';
+  const INPUT_TYPE = 'bool';
 
   // Run `onRender` function.
   if (onRender !== undefined) {

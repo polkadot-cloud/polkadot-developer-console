@@ -17,7 +17,7 @@ export const Textbox = ({
   onFocus,
 }: TextboxProps) => {
   // The input arg type of this component.
-  const INPUT_TYPE = 'Textbox';
+  const INPUT_TYPE = 'str';
 
   // Run `onRender` function.
   if (onRender !== undefined) {
