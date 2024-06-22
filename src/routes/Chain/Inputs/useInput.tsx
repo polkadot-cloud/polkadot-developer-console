@@ -1,7 +1,6 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import type { MutableRefObject } from 'react';
 import { Fragment } from 'react';
 import { Select } from 'library/Inputs/Select';
 import { Section } from './Section';
@@ -89,10 +88,10 @@ export const useInput = () => {
   // Renders a tuple input component.
   const renderTuple = (arg: ScrapedItem, config: InputArgConfig) => {
     const { tuple, indexKey } = arg;
-    const { inputKey, inputMetaRef } = config;
+    const { inputKey, inputMeta } = config;
 
     // Record this input type.
-    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'tuple');
+    addInputTypeAtKey(inputMeta, inputKey, indexKey, 'tuple');
 
     // Render tuple inputs.
     return (
@@ -171,10 +170,10 @@ export const useInput = () => {
   // Renders a compact input component.
   const renderCompact = (arg: ScrapedItem, config: InputArgConfig) => {
     const { compact, indexKey } = arg;
-    const { inputKey, inputMetaRef } = config;
+    const { inputKey, inputMeta } = config;
 
     // Record this input type.
-    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'compact');
+    addInputTypeAtKey(inputMeta, inputKey, indexKey, 'compact');
 
     // Render compact input.
     return (
@@ -190,7 +189,7 @@ export const useInput = () => {
     const typeClass = config.scraper.getClass(indexKey) as CompositeType;
     const label = typeClass.label();
     const input = typeClass.input();
-    const { inputKey, inputMetaRef } = config;
+    const { inputKey, inputMeta } = config;
 
     // If this composite is a custom input, render it and stop the recursive input loop.
     if (input !== 'indent') {
@@ -203,7 +202,7 @@ export const useInput = () => {
     }
 
     // Record this input type.
-    addInputTypeAtKey(inputMetaRef, inputKey, indexKey, 'composite');
+    addInputTypeAtKey(inputMeta, inputKey, indexKey, 'composite');
 
     // Render the composite fields.
     return (
@@ -285,7 +284,7 @@ export const useInput = () => {
     } = options || {};
 
     const {
-      inputMetaRef,
+      inputMeta,
       scraper,
       inputKey,
       namespace,
@@ -313,7 +312,7 @@ export const useInput = () => {
 
     // General `onRender` callback that registers input type with key.
     const onRender = (inputType: InputType) => {
-      inputMetaRef.current[inputKey] = { inputType, indexKey };
+      inputMeta[inputKey] = { inputType, indexKey };
     };
 
     // A unique identifier for the input component. Currently only used for account address inputs.
@@ -439,12 +438,12 @@ export const useInput = () => {
 
   // Record an input type to an input key.
   const addInputTypeAtKey = (
-    inputMetaRef: MutableRefObject<InputMeta>,
+    inputMeta: InputMeta,
     inputKey: string,
     indexKey: string,
     inputType: InputType
   ) => {
-    inputMetaRef.current[inputKey] = { inputType, indexKey };
+    inputMeta[inputKey] = { inputType, indexKey };
   };
 
   return {

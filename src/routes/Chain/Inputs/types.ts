@@ -5,7 +5,6 @@ import type { AnyJson } from '@w3ux/types';
 import type { InputNamespace } from 'contexts/ChainUi/types';
 import type { InputCallbackProps } from 'library/Inputs/types';
 import type { PalletScraper } from 'model/Scraper/Pallet';
-import type { MutableRefObject } from 'react';
 
 // All supported input types.
 export type InputType =
@@ -46,7 +45,7 @@ export interface InputArgConfig {
   activeItem: string | null;
   scraper: PalletScraper;
   namespace: InputNamespace;
-  inputMetaRef: MutableRefObject<InputMeta>;
+  inputMeta: InputMeta;
   inputKey: string;
 }
 
