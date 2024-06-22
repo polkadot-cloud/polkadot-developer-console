@@ -21,7 +21,10 @@ export type InputType =
   | 'Tuple';
 
 // Input keys record structure.
-export type InputKeys = Record<string, InputType>;
+export type InputKeys = Record<
+  string,
+  { inputType: InputType; indexKey: string }
+>;
 
 export interface InputItem {
   form: AnyJson;
@@ -68,6 +71,7 @@ export type CheckboxProps = InputArgConfig &
 
 export type SequenceProps = InputCallbackProps & {
   config: InputArgConfig;
+  indexKey: string;
   arrayInput: AnyJson;
   maxLength?: number;
 };

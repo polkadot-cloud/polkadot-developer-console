@@ -4,6 +4,8 @@
 import type { AnyJson } from '@w3ux/types';
 import type { InputArgs } from 'contexts/ChainUi/types';
 import type { InputKeys } from 'routes/Chain/Inputs/types';
+import type { PalletScraper } from './Pallet';
+import type { CompositeType } from './Types/Composite';
 
 // A class to take input keys and values, and formats them into a submittable array of arguments.
 export class ArgBuilder {
@@ -13,9 +15,17 @@ export class ArgBuilder {
   // The resulting formatted arguments.
   formattedArgs: Record<string, AnyJson>;
 
-  constructor(inputArgs: InputArgs | null, inputKeys: InputKeys) {
+  // The scraper associated with this input form.
+  scraper: PalletScraper;
+
+  constructor(
+    inputArgs: InputArgs | null,
+    inputKeys: InputKeys,
+    scraper: PalletScraper
+  ) {
     this.inputKeys = inputKeys;
     this.formattedArgs = { ...inputArgs } || {};
+    this.scraper = scraper;
 
     console.log({ ...inputArgs });
     console.log({ ...inputKeys });
@@ -56,7 +66,10 @@ export class ArgBuilder {
 
       // For each key of `parentValues` commit the value to `formattedArgs` under the same key, and
       // delete the processed deepest keys.
-      this.updateInputsAndRemoveChildren(parentKeysWithValue, deepestKeys);
+      this.formatParentValuesAndRemoveChildren(
+        parentKeysWithValue,
+        deepestKeys
+      );
 
       // Update `deepestKeys` and `maxLength` for next iteration.
       const newDeepestKeys = this.getDeepestKeys();
@@ -121,7 +134,7 @@ export class ArgBuilder {
         const currentValue = acc[parentKey] || [];
 
         // Concatenate value to parent key.
-        acc[parentKey] = currentValue.concat(this.formattedArgs[key]?.value);
+        acc[parentKey] = currentValue.concat(this.formattedArgs[key]);
 
         return acc;
       },
@@ -131,7 +144,7 @@ export class ArgBuilder {
     // Add parent key type to newly combined `parentKeyWithValues` entries.
     const parentKeys = Object.entries(parentKeysWithValues).reduce(
       (acc: Record<string, AnyJson>, [key, value]) => {
-        const parentInputType = this.inputKeys[key];
+        const parentInputType = this.inputKeys[key].inputType;
 
         // If `Select` for possible typed enums, include the value in an array.
         const inputType =
@@ -139,6 +152,7 @@ export class ArgBuilder {
             ? [parentInputType, this.formattedArgs[key]?.value]
             : parentInputType;
 
+        // TODO: Add indexKey from `this.inputKeys` to this accumulator.
         acc[key] = [inputType, value];
         return acc;
       },
@@ -147,15 +161,15 @@ export class ArgBuilder {
     return parentKeys;
   }
 
-  // Update input keys with values and delete corresponding child keys.
-  updateInputsAndRemoveChildren(
+  // Update accumulated parent keys with their actual values and delete corresponding child keys.
+  formatParentValuesAndRemoveChildren(
     parentValues: Record<string, AnyJson>,
     deepestKeys: string[]
   ) {
     // For each key of `parentValues` commit the arg to `formattedArgs` under the same
     // key.
-    Object.entries(parentValues).forEach(([key, value]) => {
-      this.formattedArgs[key] = this.formatInput(key, value);
+    Object.entries(parentValues).forEach(([inputKey, value]) => {
+      this.formattedArgs[inputKey] = this.formatInput(inputKey, value);
     });
 
     // Delete this iteration of deepest keys from `inputKeys` and `formattedArgs`.
@@ -165,30 +179,42 @@ export class ArgBuilder {
     });
   }
 
-  // Formats an input arg value. NOTE: This function is probably not needed. Formatting values is
-  // done in` updateInputsAndRemoveChildren`.
-  formatInput(key: string, value: AnyJson) {
-    const inputType = this.inputKeys[key];
+  // Formats an accumulated parent key input.
+  formatInput(inputKey: string, [inputType, entries]: AnyJson) {
+    const indexKey = this.inputKeys[inputKey].indexKey;
+
+    // If array (type with value), get the first element of the array as the input type.
+    if (Array.isArray(inputType)) {
+      inputType = inputType[0];
+    }
 
     switch (inputType) {
-      // TODO: custom logic to construct composite from its fields.
       case 'Composite':
-        return value;
+        return this.formatComposite(entries, indexKey);
 
-      // TODO: custom logic to construct variant from its fields.
+      // TODO: custom logic to construct variant from its items and fields, if needed. Should simply
+      // return its value if its a simple variant.
       case 'Variant':
-        return value;
-
-      // TODO: custom logic to construct compact type from its child.
-      case 'Compact':
-        return value;
+        return entries;
 
       // TODO: Test
       case 'Sequence':
-        return value;
+        return entries;
 
       default:
-        return value;
+        // Default behaviour: Return inner values in an array.
+        return entries?.map((val: AnyJson) => val.value);
     }
   }
+
+  // Format a composite input value.
+  formatComposite = (entries: AnyJson, indexKey: string) => {
+    const typeClass = this.scraper.getClass(indexKey) as CompositeType;
+    const fields = typeClass.fields;
+
+    // TODO: Construct composite object from its fields.
+    console.debug(fields);
+
+    return entries;
+  };
 }

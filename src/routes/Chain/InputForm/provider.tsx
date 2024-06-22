@@ -44,7 +44,9 @@ export const InputFormProvider = ({
 
     // Format input arguments.
     const formattedInputs: Record<string, AnyJson> =
-      inputArgs === null ? {} : new ArgBuilder(inputArgs, inputKeys).build();
+      inputArgs === null
+        ? {}
+        : new ArgBuilder(inputArgs, inputKeys, scraper).build();
 
     // Determine whether inputs are empty.
     const isEmpty = Object.values(formattedInputs).length === 0;

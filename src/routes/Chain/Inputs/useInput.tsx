@@ -87,11 +87,11 @@ export const useInput = () => {
 
   // Renders a tuple input component.
   const renderTuple = (arg: ScrapedItem, config: InputArgConfig) => {
-    const { tuple } = arg;
+    const { tuple, indexKey } = arg;
     const { inputKey, inputKeys } = config;
 
     // Record this input type.
-    addInputTypeAtKey(inputKeys, inputKey, 'Tuple');
+    addInputTypeAtKey(inputKeys, inputKey, indexKey, 'Tuple');
 
     // Render tuple inputs.
     return (
@@ -138,7 +138,8 @@ export const useInput = () => {
     config: InputArgConfig,
     maxLength?: number
   ) => {
-    const typeClass = config.scraper.getClass(arg.indexKey) as SequenceType;
+    const { indexKey } = arg;
+    const typeClass = config.scraper.getClass(indexKey) as SequenceType;
     const label = typeClass.label();
     const input = typeClass.input();
 
@@ -157,6 +158,7 @@ export const useInput = () => {
       <Section>
         <h4 className="marginTop">{`${label}[]`}</h4>
         <Sequence
+          indexKey={indexKey}
           config={config}
           arrayInput={arg.sequence}
           maxLength={maxLength}
@@ -167,11 +169,11 @@ export const useInput = () => {
 
   // Renders a compact input component.
   const renderCompact = (arg: ScrapedItem, config: InputArgConfig) => {
-    const { compact } = arg;
+    const { compact, indexKey } = arg;
     const { inputKey, inputKeys } = config;
 
     // Record this input type.
-    addInputTypeAtKey(inputKeys, inputKey, 'Compact');
+    addInputTypeAtKey(inputKeys, inputKey, indexKey, 'Compact');
 
     // Render compact input.
     return (
@@ -183,7 +185,8 @@ export const useInput = () => {
 
   // Renders a composite input component.
   const renderComposite = (arg: ScrapedItem, config: InputArgConfig) => {
-    const typeClass = config.scraper.getClass(arg.indexKey) as CompositeType;
+    const { indexKey } = arg;
+    const typeClass = config.scraper.getClass(indexKey) as CompositeType;
     const label = typeClass.label();
     const input = typeClass.input();
     const { inputKey, inputKeys } = config;
@@ -199,7 +202,7 @@ export const useInput = () => {
     }
 
     // Record this input type.
-    addInputTypeAtKey(inputKeys, inputKey, 'Composite');
+    addInputTypeAtKey(inputKeys, inputKey, indexKey, 'Composite');
 
     // Render the composite fields.
     return (
@@ -309,7 +312,7 @@ export const useInput = () => {
 
     // General `onRender` callback that registers input type with key.
     const onRender = (inputType: InputType) => {
-      inputKeys[inputKey] = inputType;
+      inputKeys[inputKey] = { inputType, indexKey };
     };
 
     // A unique identifier for the input component. Currently only used for account address inputs.
@@ -437,9 +440,10 @@ export const useInput = () => {
   const addInputTypeAtKey = (
     inputKeys: InputKeys,
     inputKey: string,
+    indexKey: string,
     inputType: InputType
   ) => {
-    inputKeys[inputKey] = inputType;
+    inputKeys[inputKey] = { inputType, indexKey };
   };
 
   return {
