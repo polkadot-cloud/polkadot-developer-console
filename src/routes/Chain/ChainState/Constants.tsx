@@ -29,7 +29,7 @@ export const Constants = () => {
   const chainUi = getChainUi(tabId, chainUiSection);
   const Metadata = chainSpec.metadata;
 
-  // Fetch storage data when metadata or the selected pallet changes.
+  // Fetch constants when metadata or the selected pallet changes.
   const scraperResult = useMemo(() => {
     // Get pallet list from scraper.
     const scraper = new PalletScraper(Metadata);

@@ -81,10 +81,10 @@ export interface PalletListItem {
 
 export interface ScraperConfig {
   maxDepth: number | '*';
+  labelsOnly: boolean;
 }
 
 export interface ScraperOptions {
-  labelsOnly?: boolean;
   maxDepth?: number | '*';
   parentTrailId?: TrailParentId;
   indexPrefix?: string;
@@ -99,7 +99,6 @@ export interface TypeParams {
   trailId: TrailId;
   parent: TrailParentId;
   indexKey: string;
-  labelsOnly: boolean;
   maxDepth: number | '*';
 }
 
