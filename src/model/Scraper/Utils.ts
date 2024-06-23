@@ -27,11 +27,8 @@ export const defaultInputValue = (type: string): string => {
 // ------------------------------------------------------
 
 // Verify if a variant is an Option.
-export const verifyOption = (
-  shortLabel: string,
-  variant: { name?: string }[]
-) =>
-  shortLabel === 'Option' &&
+export const verifyOption = (label: string, variant: { name?: string }[]) =>
+  label === 'Option' &&
   variant?.[0]?.name === 'None' &&
   variant?.[1]?.name === 'Some';
 
