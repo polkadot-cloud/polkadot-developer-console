@@ -61,7 +61,7 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
       return;
     }
     fetchingStorageRef.current = 'syncing';
-    const result = name ? scraper.getStorage(name, { labelsOnly: true }) : [];
+    const result = name ? scraper.getStorage(name) : [];
     fetchingStorageRef.current = 'synced';
     setStorageItems(result);
   };
