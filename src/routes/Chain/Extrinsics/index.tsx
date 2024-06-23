@@ -43,7 +43,10 @@ export const Extrinsics = () => {
 
   // Fetch storage data when metadata or the selected pallet changes.
   const callData = useMemo((): PalletData => {
-    const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
+    const scraper = new PalletScraper(Metadata, {
+      maxDepth: 7,
+      labelsOnly: true,
+    });
     const pallets = scraper.getPalletList([chainUiSection]);
 
     // If no pallet selected, get first one from scraper or fall back to null.
@@ -76,7 +79,10 @@ export const Extrinsics = () => {
       return null;
     }
 
-    const scraper = new PalletScraper(Metadata, { maxDepth: '*' });
+    const scraper = new PalletScraper(Metadata, {
+      maxDepth: '*',
+      labelsOnly: false,
+    });
     const scrapedItem = scraper.getCallItem(activePallet, activeItem);
 
     return { scrapedItem, scraper };

@@ -15,6 +15,7 @@ import type {
   ITupleType,
   ICompositeType,
   MetadataType,
+  BaseParams,
 } from './Types/types';
 import { SequenceType } from './Types/Sequence';
 import { ArrayType } from './Types/Array';
@@ -40,10 +41,14 @@ export class MetadataScraper extends Trails {
   // Map index keys to scraped type class.
   classIndex: Record<string, AnyJson> = {};
 
+  // Whether this scraper is for formatting labels only.
+  #labelsOnly = false;
+
   // Initialize the class with metadata.
   constructor(metadata: MetadataVersion, config: ScraperConfig) {
     super();
     this.metadata = metadata;
+    this.#labelsOnly = config.labelsOnly;
     this.#maxDepth = config.maxDepth;
 
     // Assign a new lookup instnace.
@@ -80,7 +85,6 @@ export class MetadataScraper extends Trails {
     const params: TypeParams = {
       ...trail,
       indexKey,
-      labelsOnly: !!options?.labelsOnly,
       maxDepth: options?.maxDepth || this.#maxDepth,
     };
 
@@ -89,7 +93,7 @@ export class MetadataScraper extends Trails {
 
   // Get a lookup type from metadata. Possible recursion when scraping type ids.
   getType(typeId: number, params: TypeParams) {
-    const { trailId, indexKey, labelsOnly, maxDepth, parent } = params;
+    const { trailId, indexKey, maxDepth, parent } = params;
 
     const lookup = this.lookup.getType(typeId);
     const depth = this.trailDepth(trailId);
@@ -113,7 +117,7 @@ export class MetadataScraper extends Trails {
     this.appendTrail(trailId, typeId);
 
     // Parameters for Base metadata type classes.
-    const baseParams = {
+    const baseParams: BaseParams = {
       lookup,
       depth,
       trail: { trailId, parent },
@@ -137,7 +141,7 @@ export class MetadataScraper extends Trails {
 
       case 'bitSequence':
         typeClass = new BitSequenceType(value as IBitSequenceType, baseParams);
-        if (!labelsOnly) {
+        if (!this.#labelsOnly) {
           result.bitSequence = typeClass.scrape(this, params);
         }
         break;
@@ -172,7 +176,7 @@ export class MetadataScraper extends Trails {
           (value as IVariantType).variants,
           baseParams
         );
-        if (!labelsOnly) {
+        if (!this.#labelsOnly) {
           result.variant = typeClass.scrape(this, params);
         }
         break;

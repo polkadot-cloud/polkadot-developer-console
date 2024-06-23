@@ -32,16 +32,17 @@ export const StorageItems = () => {
   // Fetch storage items when metadata or the selected pallet changes.
   const scrapedStorageList = useMemo(() => {
     // Get pallet list from scraper.
-    const scraper = new PalletScraper(Metadata, { maxDepth: 7 });
+    const scraper = new PalletScraper(Metadata, {
+      maxDepth: 7,
+      labelsOnly: true,
+    });
     const pallets = scraper.getPalletList([chainUiSection]);
 
     // If no pallet selected, get first one from scraper or fall back to null.
     const activePallet = chainUi.pallet || pallets?.[0].name || null;
 
     // Get storage items for the active pallet.
-    const palletStorage = activePallet
-      ? scraper.getStorage(activePallet, { labelsOnly: true })
-      : [];
+    const palletStorage = activePallet ? scraper.getStorage(activePallet) : [];
 
     // Sort the storage items by name.
     const items = palletStorage.sort(({ name: nameA }, { name: nameB }) =>
@@ -71,7 +72,10 @@ export const StorageItems = () => {
       return { scrapedItem: null, scraper: null };
     }
 
-    const scraper = new PalletScraper(Metadata, { maxDepth: '*' });
+    const scraper = new PalletScraper(Metadata, {
+      maxDepth: '*',
+      labelsOnly: false,
+    });
     const scrapedItem = scraper.getStorageItem(activePallet, activeItem);
 
     return { scrapedItem, scraper };
