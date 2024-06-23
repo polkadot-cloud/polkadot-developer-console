@@ -26,20 +26,6 @@ export type InputMeta = Record<
   { inputType: InputType; indexKey: string }
 >;
 
-export interface InputItem {
-  form: AnyJson;
-  label: string | number;
-}
-
-export interface InputArray extends InputItem {
-  len: number;
-}
-
-export interface RenderInputArgs {
-  inputItem: InputItem;
-  key: string;
-}
-
 export interface InputArgConfig {
   activePallet: string | null;
   activeItem: string | null;
@@ -48,21 +34,6 @@ export interface InputArgConfig {
   inputMeta: InputMeta;
   inputKey: string;
 }
-
-export type SelectProps = InputCallbackProps & {
-  values: string[];
-  label: string | number;
-  value: string;
-};
-
-export type CheckboxProps = InputArgConfig &
-  InputCallbackProps & {
-    label?: string | number;
-    checked: boolean;
-    onChange?: (val: boolean) => void;
-    onMount?: (val: boolean) => void;
-    onRender?: (inputType: InputType) => void;
-  };
 
 export type SequenceProps = InputCallbackProps & {
   config: InputArgConfig;

@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Fragment } from 'react';
-import { Select } from 'library/Inputs/Select';
 import { Section } from './Section';
 import type { InputArgConfig, InputMeta, InputType } from './types';
-import { Checkbox } from './Checkbox';
+import { Select } from 'library/Inputs/Select';
+import { Checkbox } from 'library/Inputs/Checkbox';
 import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
