@@ -12,3 +12,4 @@ CHANGELOG.md
 .yarn
 .licenserc.json
 .env.yarn
+test/data/**/*

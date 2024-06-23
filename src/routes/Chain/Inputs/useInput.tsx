@@ -30,7 +30,8 @@ export const useInput = () => {
   const { getAccounts } = useAccounts();
   const { tabId, metaKey } = useActiveTab();
   const { removeInputMetaValue } = useInputMeta();
-  const { setInputArgAtKey, getInputArgAtKey } = useChainUi();
+  const { setInputArgAtKey, getInputArgAtKey, resetInputArgsFromKey } =
+    useChainUi();
 
   const accounts = getAccounts(chainSpec);
 
@@ -370,6 +371,13 @@ export const useInput = () => {
                 onMount={onMount}
                 onRender={onRender}
                 onChange={(val) => {
+                  // Child inputs changed - remove args.
+                  resetInputArgsFromKey(
+                    tabId,
+                    inputArgConfig.namespace,
+                    inputArgConfig.inputKey
+                  );
+                  // Commit new input arg value.
                   setInputArgAtKey(tabId, inputArgConfig.namespace, keys, val);
                 }}
               />

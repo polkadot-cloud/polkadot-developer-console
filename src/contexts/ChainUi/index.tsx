@@ -213,8 +213,8 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
     setInputArgs(updatedInputArgs);
   };
 
-  // Reset input args at a given key for either a storage item or call.
-  const resetInputArgSection = (tabId: number, namespace: InputNamespace) => {
+  // Reset input args at a given key and namespace.
+  const resetInputArgs = (tabId: number, namespace: InputNamespace) => {
     if (!inputArgsRef.current[tabId]) {
       return;
     }
@@ -222,6 +222,33 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
 
     // Reset the input args for the given namespace and update state.
     updatedInputArgs[tabId][namespace] = {};
+    setInputArgs(updatedInputArgs);
+  };
+
+  // Reset input args from an input key and namespace. Removes input args from any child input of
+  // the provided key. Should be used on select input changes, that allow variant selection.
+  const resetInputArgsFromKey = (
+    tabId: number,
+    namespace: InputNamespace,
+    fromKey: string
+  ) => {
+    if (!inputArgsRef.current[tabId]) {
+      return;
+    }
+
+    // Duplicate arg state for manipulation.
+    const updatedInputArgs = { ...inputArgsRef.current };
+    const args = updatedInputArgs[tabId][namespace];
+
+    // Iterate through keys state and remove keys that start with `fromKey`.
+    for (const key in args) {
+      if (key.startsWith(fromKey) && key !== fromKey) {
+        delete args[key];
+      }
+    }
+
+    // Update state.
+    updatedInputArgs[tabId][namespace] = args;
     setInputArgs(updatedInputArgs);
   };
 
@@ -259,7 +286,8 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
         getInputArgs,
         getInputArgAtKey,
         setInputArgAtKey,
-        resetInputArgSection,
+        resetInputArgs,
+        resetInputArgsFromKey,
         destroyTabChainUi,
       }}
     >
