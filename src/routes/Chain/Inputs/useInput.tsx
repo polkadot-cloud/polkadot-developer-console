@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { Fragment } from 'react';
-import { Section } from './Section';
+import { Section } from 'library/Inputs/Section';
 import type { InputArgConfig, InputMeta, InputType } from './types';
 import { Select } from 'library/Inputs/Select';
 import { Checkbox } from 'library/Inputs/Checkbox';
