@@ -3,7 +3,7 @@
 
 import { useEffect } from 'react';
 import type { HashProps } from './types';
-import { TextInputWrapper } from 'library/Inputs/Wrappers';
+import { TextInputWrapper } from '../Wrappers';
 
 export const Hash = ({ value, onMount, onRender, onChange }: HashProps) => {
   // The input arg type of this component.

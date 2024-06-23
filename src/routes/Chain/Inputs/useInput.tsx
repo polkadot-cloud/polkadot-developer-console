@@ -5,7 +5,6 @@ import { Fragment } from 'react';
 import { Select } from 'library/Inputs/Select';
 import { Section } from './Section';
 import type { InputArgConfig, InputMeta, InputType } from './types';
-import { Hash } from './Hash';
 import { Checkbox } from './Checkbox';
 import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useChainUi } from 'contexts/ChainUi';
@@ -24,6 +23,7 @@ import type { SequenceType } from 'model/Scraper/Types/Sequence';
 import type { CompositeType } from 'model/Scraper/Types/Composite';
 import { useInputMeta } from 'contexts/InputMeta';
 import type { ScrapedFieldItem, ScrapedItem } from 'model/Scraper/types';
+import { Hash } from 'library/Inputs/Hash';
 
 export const useInput = () => {
   const { chainSpec } = useChain();

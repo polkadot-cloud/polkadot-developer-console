@@ -49,11 +49,6 @@ export interface InputArgConfig {
   inputKey: string;
 }
 
-export type HashProps = InputArgConfig &
-  InputCallbackProps & {
-    value: string | number;
-  };
-
 export type SelectProps = InputCallbackProps & {
   values: string[];
   label: string | number;
