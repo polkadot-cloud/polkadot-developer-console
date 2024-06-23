@@ -46,7 +46,8 @@ export interface ChainUiContextInterface {
   resetInputArgsFromKey: (
     tabId: number,
     section: InputNamespace,
-    fromKey: string
+    fromKey: string,
+    includeKey: boolean
   ) => void;
 }
 

@@ -8,6 +8,8 @@ import { useState } from 'react';
 import type { SequenceProps } from './types';
 import { useInput } from './useInput';
 import { Section } from 'library/Inputs/Section';
+import { useChainUi } from 'contexts/ChainUi';
+import { useActiveTab } from 'contexts/ActiveTab';
 
 export const Sequence = ({
   config,
@@ -15,7 +17,9 @@ export const Sequence = ({
   arrayInput,
   maxLength,
 }: SequenceProps) => {
+  const { tabId } = useActiveTab();
   const { readInput } = useInput();
+  const { resetInputArgsFromKey } = useChainUi();
   const { inputKey, inputMeta } = config;
 
   const INPUT_TYPE = 'sequence';
@@ -29,7 +33,11 @@ export const Sequence = ({
   const indices = Array.from(Array(inputs.length).keys());
 
   // Removes an input from state.
-  const removeInput = (index: number) => {
+  const removeInput = (childKey: string, index: number) => {
+    // Remove input args from this index.
+    resetInputArgsFromKey(tabId, config.namespace, childKey, true);
+
+    // Remove input from state.
     setInputs(inputs.filter((_, i) => i !== index));
   };
 
@@ -64,7 +72,10 @@ export const Sequence = ({
               <Section indent={true}>{subInput}</Section>
             </div>
             <div>
-              <button type="button" onClick={() => removeInput(index)}>
+              <button
+                type="button"
+                onClick={() => removeInput(childKey, index)}
+              >
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
