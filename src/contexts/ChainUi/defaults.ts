@@ -35,5 +35,5 @@ export const defaultChainContext: ChainUiContextInterface = {
   getInputArgs: (tabId, section) => null,
   getInputArgAtKey: (tabId, section, inputKey) => undefined,
   setInputArgAtKey: (tabId, section, keys, value) => {},
-  resetInputArgSection: (tabId, section) => {},
+  resetInputArgs: (tabId, section) => {},
 };

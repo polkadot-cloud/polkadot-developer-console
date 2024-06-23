@@ -214,7 +214,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Reset input args at a given key for either a storage item or call.
-  const resetInputArgSection = (tabId: number, namespace: InputNamespace) => {
+  const resetInputArgs = (tabId: number, namespace: InputNamespace) => {
     if (!inputArgsRef.current[tabId]) {
       return;
     }
@@ -259,7 +259,7 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
         getInputArgs,
         getInputArgAtKey,
         setInputArgAtKey,
-        resetInputArgSection,
+        resetInputArgs,
         destroyTabChainUi,
       }}
     >
