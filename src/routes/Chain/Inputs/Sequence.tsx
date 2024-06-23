@@ -7,7 +7,7 @@ import { faAdd, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import type { SequenceProps } from './types';
 import { useInput } from './useInput';
-import { Section } from './Section';
+import { Section } from 'library/Inputs/Section';
 
 export const Sequence = ({
   config,
