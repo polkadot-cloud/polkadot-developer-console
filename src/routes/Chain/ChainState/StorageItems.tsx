@@ -22,8 +22,7 @@ import type { InputNamespace } from 'contexts/ChainUi/types';
 export const StorageItems = () => {
   const { tabId } = useActiveTab();
   const { chainSpec, instanceId } = useChain();
-  const { getChainUi, setChainUiNamespace, resetInputArgs } =
-    useChainUi();
+  const { getChainUi, setChainUiNamespace, resetInputArgs } = useChainUi();
 
   const chainUiSection = 'storage';
   const inputNamespace: InputNamespace = 'storage';

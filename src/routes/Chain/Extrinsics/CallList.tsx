@@ -16,8 +16,7 @@ import type { InputNamespace } from 'contexts/ChainUi/types';
 
 export const CallList = ({ items }: CallListProps) => {
   const { tabId } = useActiveTab();
-  const { getChainUi, setChainUiNamespace, resetInputArgs } =
-    useChainUi();
+  const { getChainUi, setChainUiNamespace, resetInputArgs } = useChainUi();
 
   const chainUiSection = 'calls';
   const inputNamespace: InputNamespace = 'call';

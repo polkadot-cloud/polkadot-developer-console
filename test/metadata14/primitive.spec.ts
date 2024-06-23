@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import assert from 'assert';
-import * as metadataJson from './data/metadataV14.json';
+import * as metadataJson from '../data/metadataV14.json';
 
 /* Metadata primitive tests.
 

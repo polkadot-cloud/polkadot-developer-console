@@ -26,8 +26,7 @@ export const ChainStateList = ({
   inputNamespace,
 }: ChainStateListProps) => {
   const { tabId } = useActiveTab();
-  const { getChainUi, setChainUiNamespace, resetInputArgs } =
-    useChainUi();
+  const { getChainUi, setChainUiNamespace, resetInputArgs } = useChainUi();
 
   const chainUi = getChainUi(tabId, chainUiSection);
 

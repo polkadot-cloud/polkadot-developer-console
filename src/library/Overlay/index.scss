@@ -33,7 +33,7 @@
 
   ::-webkit-scrollbar-thumb {
     background-color: transparent; /* color of the scroll thumb */
-    border-radius: .6rem; /* roundness of the scroll thumb */
+    border-radius: 0.6rem; /* roundness of the scroll thumb */
     border: 0.1rem solid transparent; /* creates padding around scroll thumb */
   }
 }
@@ -362,7 +362,7 @@
   > .section {
     @include modal-scrollbar;
 
-    border-radius: .6rem;
+    border-radius: 0.6rem;
     display: flex;
     flex-direction: column;
     flex-basis: 33.33%;
@@ -381,7 +381,7 @@
   > .section {
     @include modal-scrollbar;
 
-    border-radius: .6rem;
+    border-radius: 0.6rem;
     display: flex;
     flex-direction: column;
     flex-basis: 50%;
@@ -435,7 +435,7 @@
 .modal-scroll {
   @include modal-scrollbar;
 
-  border-radius: .6rem;
+  border-radius: 0.6rem;
   position: relative;
   z-index: 99;
   max-height: 100%;
@@ -465,7 +465,7 @@
 
   ::-webkit-scrollbar-thumb {
     background-color: transparent; /* color of the scroll thumb */
-    border-radius: .6rem; /* roundness of the scroll thumb */
+    border-radius: 0.6rem; /* roundness of the scroll thumb */
     border: 0.1rem solid transparent; /* creates padding around scroll thumb */
   }
 }
