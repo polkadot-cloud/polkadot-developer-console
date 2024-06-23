@@ -42,7 +42,12 @@ export interface ChainUiContextInterface {
     keys: InputArgTypeKeys,
     value: AnyJson
   ) => void;
-  resetInputArgSection: (tabId: number, section: InputNamespace) => void;
+  resetInputArgs: (tabId: number, section: InputNamespace) => void;
+  resetInputArgsFromKey: (
+    tabId: number,
+    section: InputNamespace,
+    fromKey: string
+  ) => void;
 }
 
 // Input arg type keys.

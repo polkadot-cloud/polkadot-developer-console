@@ -26,8 +26,7 @@ export const ChainStateList = ({
   inputNamespace,
 }: ChainStateListProps) => {
   const { tabId } = useActiveTab();
-  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
-    useChainUi();
+  const { getChainUi, setChainUiNamespace, resetInputArgs } = useChainUi();
 
   const chainUi = getChainUi(tabId, chainUiSection);
 
@@ -52,7 +51,7 @@ export const ChainStateList = ({
 
     // If an input namespace is provided, reset input arg values.
     if (inputNamespace) {
-      resetInputArgSection(tabId, inputNamespace);
+      resetInputArgs(tabId, inputNamespace);
     }
 
     // Close item the dropdown if requested.

@@ -22,8 +22,7 @@ import type { InputNamespace } from 'contexts/ChainUi/types';
 export const StorageItems = () => {
   const { tabId } = useActiveTab();
   const { chainSpec, instanceId } = useChain();
-  const { getChainUi, setChainUiNamespace, resetInputArgSection } =
-    useChainUi();
+  const { getChainUi, setChainUiNamespace, resetInputArgs } = useChainUi();
 
   const chainUiSection = 'storage';
   const inputNamespace: InputNamespace = 'storage';
@@ -117,7 +116,7 @@ export const StorageItems = () => {
             setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
 
             // Reset input args when selected pallet changes.
-            resetInputArgSection(tabId, inputNamespace);
+            resetInputArgs(tabId, inputNamespace);
           }}
         />
         <ChainStateList
