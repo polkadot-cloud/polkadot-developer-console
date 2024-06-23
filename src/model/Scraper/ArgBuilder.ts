@@ -202,10 +202,9 @@ export class ArgBuilder {
       case 'variant':
         return this.formatVariant(entries, indexKey, selectedValue);
 
-      // TODO: Test: `staking.deprecateControllerBatch` can be used to test this, as can `X1` xcm
-      // location configs.
       case 'sequence':
-        return entries;
+        // NOTE: Wrapping entries in an array here.
+        return [entries?.map((val: AnyJson) => val.value)];
 
       default:
         // Default behaviour: Return inner values in an array.

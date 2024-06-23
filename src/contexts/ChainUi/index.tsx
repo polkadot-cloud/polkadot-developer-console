@@ -230,7 +230,8 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
   const resetInputArgsFromKey = (
     tabId: number,
     namespace: InputNamespace,
-    fromKey: string
+    fromKey: string,
+    includeKey: boolean
   ) => {
     if (!inputArgsRef.current[tabId]) {
       return;
@@ -242,7 +243,10 @@ export const ChainUiProvider = ({ children }: { children: ReactNode }) => {
 
     // Iterate through keys state and remove keys that start with `fromKey`.
     for (const key in args) {
-      if (key.startsWith(fromKey) && key !== fromKey) {
+      if (!includeKey && key === fromKey) {
+        continue;
+      }
+      if (key.startsWith(fromKey)) {
         delete args[key];
       }
     }

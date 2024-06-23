@@ -375,7 +375,8 @@ export const useInput = () => {
                   resetInputArgsFromKey(
                     tabId,
                     inputArgConfig.namespace,
-                    inputArgConfig.inputKey
+                    inputArgConfig.inputKey,
+                    false
                   );
                   // Commit new input arg value.
                   setInputArgAtKey(tabId, inputArgConfig.namespace, keys, val);
