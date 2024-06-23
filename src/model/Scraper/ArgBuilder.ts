@@ -202,7 +202,8 @@ export class ArgBuilder {
       case 'variant':
         return this.formatVariant(entries, indexKey, selectedValue);
 
-      // TODO: Test: `staking.deprecateControllerBatch` can be used to test this.
+      // TODO: Test: `staking.deprecateControllerBatch` can be used to test this, as can `X1` xcm
+      // location configs.
       case 'sequence':
         return entries;
 
