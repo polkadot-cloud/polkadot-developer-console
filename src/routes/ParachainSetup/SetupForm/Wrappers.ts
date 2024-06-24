@@ -273,8 +273,9 @@ export const ParaIdOptionsWrapper = styled.div`
         border-color: var(--text-color-tertiary);
       }
 
-      > h1 {
+      h1 {
         color: var(--text-color-primary);
+        text-align: left;
         margin-top: 0.5rem;
       }
 
