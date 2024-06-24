@@ -26,7 +26,7 @@ export const useDisconnectTab = () => useContext(DisconnectTab);
 export const DisconnectTabProvider = ({ children }: DisconnectTabProps) => {
   const { autoTabNaming } = useSettings();
   const { destroyTabChainUi } = useChainUi();
-  const { removeInputMeta } = useInputMeta();
+  const { destroyInputMeta } = useInputMeta();
   const { destroyStateParaSetup } = useParaSetup();
   const { destroyAllApiInstances } = useChainSpaceEnv();
   const { destroyStateChainExplorer } = useChainExplorer();
@@ -40,7 +40,7 @@ export const DisconnectTabProvider = ({ children }: DisconnectTabProps) => {
     // If destroying tab, destroy ui state associated with this tab.
     if (destroyIndex) {
       destroyTabChainUi(tabId);
-      removeInputMeta(tabId);
+      destroyInputMeta(tabId);
     }
 
     // Destroy all api instances related to the tab.
