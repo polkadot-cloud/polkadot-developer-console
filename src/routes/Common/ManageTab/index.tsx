@@ -13,20 +13,15 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { SubHeadingWrapper } from './Wrappers';
 import { isDirectoryId } from 'config/networks/Utils';
 import { useChainExplorer } from 'contexts/ChainExplorer';
-import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
-import { useSettings } from 'contexts/Settings';
-import { useParaSetup } from 'contexts/ParaSetup';
+import { useDisconnectTab } from 'contexts/DisconnectTab';
 
 export const ManageTab = () => {
-  const { autoTabNaming } = useSettings();
+  const { disconnectTab } = useDisconnectTab();
   const { getTabApiIndexes } = useApiIndexer();
   const { tab, tabId, ownerId } = useActiveTab();
-  const { destroyTabParaSetup } = useParaSetup();
-  const { destroyAllApiInstances } = useChainSpaceEnv();
-  const { renameTab, getTabActiveTask, getAutoTabName } = useTabs();
-  const { updateSs58, updateUnits, updateUnit, removeChainExplorerTaskState } =
-    useChainExplorer();
+  const { renameTab, getTabActiveTask } = useTabs();
+  const { updateSs58, updateUnits, updateUnit } = useChainExplorer();
 
   const activeTask = getTabActiveTask(tabId);
   const apiInstances = getTabApiIndexes(ownerId);
@@ -38,18 +33,9 @@ export const ManageTab = () => {
     !isDirectoryId(tab.taskData.chain?.id || '');
 
   // Handle disconnecting from tab.
-  const handleDisconnectTab = () => {
+  const confirmDisconnectTab = () => {
     if (window.confirm('Are you sure you want to disconnect this tab?')) {
-      destroyAllApiInstances(ownerId);
-
-      // Reset task related state.
-      removeChainExplorerTaskState(tabId);
-      destroyTabParaSetup(tabId);
-
-      // Reset tab name if auto naming is enabled.
-      if (autoTabNaming) {
-        renameTab(tabId, getAutoTabName(tabId, 'New Tab'));
-      }
+      disconnectTab(ownerId);
     }
   };
 
@@ -66,9 +52,7 @@ export const ManageTab = () => {
       <Input
         label="Rename Tab"
         placeholder="Tab Name"
-        onSubmit={(value: string) => {
-          renameTab(tabId, value);
-        }}
+        onSubmit={(value: string) => renameTab(tabId, value)}
         initialValue={tab?.name || ''}
       />
       {isCustomChain && apiInstances.length && (
@@ -127,11 +111,7 @@ export const ManageTab = () => {
 
           <SettingsSubmitWrapper>
             <div className="buttons">
-              <button
-                onClick={() => {
-                  handleDisconnectTab();
-                }}
-              >
+              <button onClick={() => confirmDisconnectTab()}>
                 Disconnect from API
               </button>
             </div>

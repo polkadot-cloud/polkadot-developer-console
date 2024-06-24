@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import type { ChainId, DirectoryId } from 'config/networks/types';
-import type { ConnectFrom, TabChainData } from 'contexts/Tabs/types';
+import type { BaseTaskData } from 'contexts/Tabs/types';
 import type { IntegrityCheckedParachainContext } from 'routes/ParachainSetup/Provider/types';
 
 export interface ParaSetupContextInterface {
@@ -15,7 +15,7 @@ export interface ParaSetupContextInterface {
   setActiveStep: (tabId: number, step: SetupStep) => void;
   getSelectedRelayChain: (tabId: number) => DirectoryId | undefined;
   setSelectedRelayChain: (tabId: number, chainId: DirectoryId) => void;
-  destroyTabParaSetup: (tabId: number) => void;
+  destroyStateParaSetup: (tabId: number) => void;
   setupParachainIntegrityCheck: (
     tabId: number
   ) => IntegrityCheckedParachainContext | false;
@@ -32,9 +32,6 @@ export type SetupStepsState = Record<number, SetupStep>;
 
 export type SelectedRelayChains = Record<number, ChainId>;
 
-export interface ParachainSetupTaskData {
-  chain: TabChainData | undefined;
-  connectFrom: ConnectFrom;
-  autoConnect: boolean;
+export type ParachainSetupTaskData = BaseTaskData & {
   selectedRelayChain: DirectoryId;
-}
+};

@@ -163,7 +163,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   // Generate auto tab name.
   const getAutoTabName = (id: number, startsWith: string) => {
     // If tab already starts with the provided string, return it.
-    const currentName = getTab(id)?.name || '';
+    const currentName =
+      tabsRef.current.find((tab) => tab.id === id)?.name || '';
+
     if (currentName.startsWith(startsWith)) {
       return currentName;
     }
