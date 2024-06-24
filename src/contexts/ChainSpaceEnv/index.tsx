@@ -181,7 +181,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
           handleDisconnect(ownerId, instanceId);
           break;
         case 'error':
-          handleDisconnect(ownerId, instanceId, true);
+          handleDisconnect(ownerId, instanceId);
           break;
         case 'destroyed':
           handleDisconnect(ownerId, instanceId);

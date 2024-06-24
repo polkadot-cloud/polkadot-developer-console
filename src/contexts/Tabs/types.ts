@@ -61,6 +61,13 @@ export interface Tab {
   activePage: number;
 }
 
+export interface BaseTaskData {
+  id: string;
+  chain: TabChainData | undefined;
+  connectFrom: ConnectFrom;
+  autoConnect: boolean;
+}
+
 export type TaskData =
   | ChainExplorerTaskData
   | ParachainSetupTaskData

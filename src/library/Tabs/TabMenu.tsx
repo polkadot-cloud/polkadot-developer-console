@@ -14,6 +14,7 @@ import { useParaSetup } from 'contexts/ParaSetup';
 import { useSettings } from 'contexts/Settings';
 import { useTabs } from 'contexts/Tabs';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
+import type { TabTask } from 'contexts/Tabs/types';
 import { ListWrapper, SelectListWrapper } from 'library/ContextMenu/Wrappers';
 
 export const TabContextMenu = ({
@@ -29,7 +30,7 @@ export const TabContextMenu = ({
     useChainSpaceEnv();
   const { destroyTabParaSetup } = useParaSetup();
   const { removeChainExplorerTaskState } = useChainExplorer();
-  const { getTab, setTabActiveTask, renameTab, getAutoTabName } = useTabs();
+  const { getTab, renameTab, getAutoTabName, setTabActiveTask } = useTabs();
 
   const tab = getTab(tabId);
   const ownerId = tabIdToOwnerId(tabId);
@@ -42,7 +43,10 @@ export const TabContextMenu = ({
     apiStatus
   );
   const canReconnect =
-    !!tab?.taskData?.chain?.id && !canDisconnect && !apiStatusActive;
+    !!tab?.taskData?.id &&
+    !!tab?.taskData?.chain?.id &&
+    !canDisconnect &&
+    !apiStatusActive;
 
   const apiStatusText = canDisconnect
     ? 'Disconnect'
@@ -93,8 +97,10 @@ export const TabContextMenu = ({
                 handleDisconnectTab();
               } else if (canReconnect) {
                 instantiateApiFromTab(tabId);
-                // Update tab task.
-                setTabActiveTask(tabId, 'chainExplorer');
+                // Update tab task. NOTE: We know for certain with `canReconnect` that
+                // `tab.taskData` is defined.
+                const tabTask = tab.taskData!.id as TabTask;
+                setTabActiveTask(tabId, tabTask);
               }
               closeMenu();
             }}

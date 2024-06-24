@@ -74,6 +74,8 @@ export const ChainExplorerProvider = ({
       chainMeta = localChain || defaultCustomEndpointChainMeta;
     }
 
+    const tabTask: TabTask = 'chainExplorer';
+
     const chainData: TabChainData = {
       ...chainMeta,
       id: chainId,
@@ -91,8 +93,9 @@ export const ChainExplorerProvider = ({
                 ? getAutoTabName(tab.id, NetworkDirectory[chainId].name)
                 : tab.name,
             // Chain is now assigned the `chainExplorer` task.
-            activeTask: 'chainExplorer' as TabTask,
+            activeTask: tabTask,
             taskData: {
+              id: tabTask,
               chain: chainData,
               connectFrom: isDirectory
                 ? 'directory'
