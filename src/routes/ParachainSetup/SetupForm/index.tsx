@@ -32,14 +32,6 @@ export const SetupForm = () => {
 
         {activeStep === 'reserve_para_id' && <ReserveParaId />}
 
-        {activeStep === 'configure_node' && (
-          <FormWrapper>
-            <h3>
-              Configure your Parachain Node to connect to the Relay Chain.
-            </h3>
-          </FormWrapper>
-        )}
-
         {activeStep === 'register_parathread' && (
           <FormWrapper>
             <h3>Register your Parathread on the Relay Chain.</h3>
