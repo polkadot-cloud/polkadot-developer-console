@@ -7,11 +7,9 @@ import {
   faLinkSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useChainExplorer } from 'contexts/ChainExplorer';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useDisconnectTab } from 'contexts/DisconnectTab';
 import { useMenu } from 'contexts/Menu';
-import { useParaSetup } from 'contexts/ParaSetup';
-import { useSettings } from 'contexts/Settings';
 import { useTabs } from 'contexts/Tabs';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
 import type { TabTask } from 'contexts/Tabs/types';
@@ -25,12 +23,9 @@ export const TabContextMenu = ({
   onSettings: () => void;
 }) => {
   const { closeMenu } = useMenu();
-  const { autoTabNaming } = useSettings();
-  const { getApiStatus, destroyAllApiInstances, instantiateApiFromTab } =
-    useChainSpaceEnv();
-  const { destroyTabParaSetup } = useParaSetup();
-  const { removeChainExplorerTaskState } = useChainExplorer();
-  const { getTab, renameTab, getAutoTabName, setTabActiveTask } = useTabs();
+  const { disconnectTab } = useDisconnectTab();
+  const { getTab, setTabActiveTask } = useTabs();
+  const { getApiStatus, instantiateApiFromTab } = useChainSpaceEnv();
 
   const tab = getTab(tabId);
   const ownerId = tabIdToOwnerId(tabId);
@@ -47,20 +42,6 @@ export const TabContextMenu = ({
     !!tab?.taskData?.chain?.id &&
     !canDisconnect &&
     !apiStatusActive;
-
-  // Handle disconnect from tab.
-  const handleDisconnectTab = () => {
-    destroyAllApiInstances(ownerId);
-
-    // Reset task related state.
-    removeChainExplorerTaskState(tabId);
-    destroyTabParaSetup(tabId);
-
-    // Reset tab name if auto naming is enabled.
-    if (autoTabNaming) {
-      renameTab(tabId, getAutoTabName(tabId, 'New Tab'));
-    }
-  };
 
   return (
     <SelectListWrapper>
@@ -114,7 +95,7 @@ export const TabContextMenu = ({
           <button
             onClick={() => {
               if (canDisconnect) {
-                handleDisconnectTab();
+                disconnectTab(ownerId);
               }
               closeMenu();
             }}

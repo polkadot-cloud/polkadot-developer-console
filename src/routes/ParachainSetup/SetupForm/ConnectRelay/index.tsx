@@ -12,17 +12,15 @@ import { useParaSetup } from 'contexts/ParaSetup';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { useParachain } from 'routes/ParachainSetup/Provider';
-import { useTabs } from 'contexts/Tabs';
-import { useSettings } from 'contexts/Settings';
 import { SetupNote } from '../Wrappers';
+import { useDisconnectTab } from 'contexts/DisconnectTab';
 
 export const ConnectRelay = () => {
-  const { autoTabNaming } = useSettings();
   const { tabId, ownerId } = useActiveTab();
-  const { renameTab, getAutoTabName } = useTabs();
+  const { getApiStatus } = useChainSpaceEnv();
+  const { disconnectTab } = useDisconnectTab();
   const { getSelectedRelayChain } = useParaSetup();
   const { chainSpec, instanceId } = useParachain();
-  const { getApiStatus, destroyAllApiInstances } = useChainSpaceEnv();
 
   const relayChain = getSelectedRelayChain(tabId);
   const apiStatus = getApiStatus(instanceId);
@@ -44,17 +42,6 @@ export const ConnectRelay = () => {
 
   // API can be assumed as valid when it is ready and the chain spec has been fetched.
   const apiValid = ['ready'].includes(apiStatus) && chainSpec !== undefined;
-
-  // Handle disconnect from api instance. This will destroy the api instance and reset the tab
-  // active task.
-  const handleDisconnect = () => {
-    destroyAllApiInstances(ownerId);
-
-    // Reset tab name if auto naming is enabled.
-    if (autoTabNaming) {
-      renameTab(tabId, getAutoTabName(tabId, 'New Tab'));
-    }
-  };
 
   return (
     <FormWrapper>
@@ -89,14 +76,14 @@ export const ConnectRelay = () => {
           className="lg"
           onClick={() => {
             if (apiStatus !== 'ready') {
-              handleDisconnect();
+              disconnectTab(ownerId);
             } else {
               if (
                 confirm(
                   'Are you sure you want to disconnect? This will reset your setup progress.'
                 )
               ) {
-                handleDisconnect();
+                disconnectTab(ownerId);
               }
             }
           }}

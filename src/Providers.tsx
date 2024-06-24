@@ -36,6 +36,7 @@ import { PromptProvider } from 'contexts/Prompt';
 import { LedgerHardwareProvider } from 'contexts/LedgerHardware';
 import { ReserveParaIdProvider } from 'contexts/ParaSetup/ReserveParaId';
 import { InputMetaProvider } from 'contexts/InputMeta';
+import { DisconnectTabProvider } from 'contexts/DisconnectTab';
 
 export const Providers = () => {
   // !! --------------------------------
@@ -85,6 +86,9 @@ export const Providers = () => {
     // Task: `parachainSetup` related providers.
     ReserveParaIdProvider,
     ParaSetupProvider,
+
+    // Tab disconnect and destroy provider.
+    DisconnectTabProvider,
   ];
 
   return withProviders(providers, App);
