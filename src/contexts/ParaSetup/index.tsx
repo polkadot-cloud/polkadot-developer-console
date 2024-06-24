@@ -40,7 +40,6 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     getAutoTabName,
     getTabTaskData,
     setTabTaskData,
-    setTabActiveTask,
   } = useTabs();
   const { tab } = useActiveTab();
   const { autoTabNaming } = useSettings();
@@ -91,7 +90,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Destroy parachain setup state associated with a tab. Currently only being used on tab close.
-  const destroyTabParaSetup = (tabId: number) => {
+  const destroyStateParaSetup = (tabId: number) => {
     const updated = { ...activeSteps };
     delete updated[tabId];
     setActiveSteps(updated);
@@ -150,14 +149,13 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     chainId: DirectoryId,
     endpoint: string
   ) => {
+    const tabTask: TabTask = 'parachainSetup';
+
     // Reset local active page on connect.
     localTabs.setActivePage(tabId, 'default', 0);
 
     // Store the selected relay chain to state.
     setSelectedRelayChain(tabId, chainId);
-
-    // Update tab task.
-    setTabActiveTask(tabId, 'parachainSetup');
 
     // Get chain metadata.
     const chainMeta = getChainMeta(chainId as DirectoryId);
@@ -178,8 +176,9 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
               ? getAutoTabName(item.id, 'Parachain Setup')
               : item.name,
             // Chain is now assigned the `chainExplorer` task.
-            activeTask: 'parachainSetup' as TabTask,
+            activeTask: tabTask,
             taskData: {
+              id: tabTask,
               chain: chainData,
               connectFrom: 'directory' as ConnectFrom,
               autoConnect: true,
@@ -226,7 +225,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
         getSelectedRelayChain,
         setSelectedRelayChain,
 
-        destroyTabParaSetup,
+        destroyStateParaSetup,
         setupParachainIntegrityCheck,
       }}
     >

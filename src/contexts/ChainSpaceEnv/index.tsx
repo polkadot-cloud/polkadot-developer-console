@@ -21,7 +21,7 @@ import type {
 } from './types';
 import { defaultChainSpaceEnvContext } from './defaults';
 import { useGlobalChainSpace } from 'contexts/GlobalChainSpace';
-import type { ChainId } from 'config/networks/types';
+import type { ChainId, DirectoryId } from 'config/networks/types';
 import { ApiController } from 'controllers/Api';
 import { BlockNumber } from 'model/BlockNumber';
 import { useApiIndexer } from 'contexts/ApiIndexer';
@@ -37,6 +37,8 @@ import { u16 } from 'scale-ts';
 import type { AnyJson } from '@w3ux/types';
 import { getApiInstanceOwnerAndIndex } from './Utils';
 import { useTxMeta } from 'contexts/TxMeta';
+import { useSettings } from 'contexts/Settings';
+import { NetworkDirectory } from 'config/networks';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
   defaultChainSpaceEnvContext
@@ -46,15 +48,22 @@ export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
 export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   const {
+    tabs,
+    renameTab,
+    getAutoTabName,
+    getTabTaskData,
+    getTabActiveTask,
+    resetTabActiveTask,
+  } = useTabs();
+  const {
     getTabApiIndex,
     setTabApiIndex,
     getTabApiIndexes,
     removeTabApiIndex,
   } = useApiIndexer();
+  const { autoTabNaming } = useSettings();
   const { destroyInstanceTxMeta } = useTxMeta();
   const { globalChainSpace } = useGlobalChainSpace();
-  const { tabs, resetTabActiveTask, getTabActiveTask, getTabTaskData } =
-    useTabs();
 
   // The chain spec of each api instance associated with this chain space. NOTE: Requires ref as it
   // is used in event listener.
@@ -153,6 +162,8 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
       const { ownerId, instanceId, chainId, event } =
         e.detail as APIStatusEventDetail;
 
+      const tabId = ownerIdToTabId(ownerId);
+
       switch (event) {
         case 'ready':
           setApiStatus(instanceId, 'ready');
@@ -175,16 +186,27 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
           setApiStatus(instanceId, 'connecting');
           break;
         case 'connected':
+          // If auto rename is enabled, ensure correct name is applied.
+          if (autoTabNaming) {
+            renameTab(
+              tabId,
+              getAutoTabName(
+                tabId,
+                NetworkDirectory[chainId as DirectoryId].name
+              )
+            );
+          }
+
           setApiStatus(instanceId, 'connected');
           break;
         case 'disconnected':
-          handleDisconnect(ownerId, instanceId);
+          handleApiDisconnect(ownerId, instanceId);
           break;
         case 'error':
-          handleDisconnect(ownerId, instanceId, true);
+          handleApiDisconnect(ownerId, instanceId);
           break;
         case 'destroyed':
-          handleDisconnect(ownerId, instanceId);
+          handleApiDisconnect(ownerId, instanceId);
           break;
       }
     }
@@ -212,7 +234,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   };
 
   // Handle a chain disconnect.
-  const handleDisconnect = async (
+  const handleApiDisconnect = async (
     ownerId: OwnerId,
     instanceId: ApiInstanceId,
     destroy = false
@@ -254,7 +276,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         destroyInstanceTxMeta(instanceId);
 
         // Disconnect from API.
-        handleDisconnect(ownerId, instanceId, true);
+        handleApiDisconnect(ownerId, instanceId, true);
       }
     }
   };

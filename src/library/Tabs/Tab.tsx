@@ -18,20 +18,16 @@ import {
 } from 'contexts/Tabs/defaults';
 import { ConnectionIcon } from './ConectionIcon';
 import * as localTabs from 'contexts/Tabs/Local';
-import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { tabIdToOwnerId } from 'contexts/Tabs/Utils';
-import { useParaSetup } from 'contexts/ParaSetup';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { useChainExplorer } from 'contexts/ChainExplorer';
-import { useInputMeta } from 'contexts/InputMeta';
+import { useDisconnectTab } from 'contexts/DisconnectTab';
 
 export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   const {
     tabs,
     dragId,
     switchTab,
-    destroyTab,
     tabHoverIndex,
     activeTabIndex,
     setSelectedTabId,
@@ -42,11 +38,8 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
   } = useTabs();
   const { tabId } = useActiveTab();
   const { openMenu, closeMenu } = useMenu();
-  const { destroyTabChainUi } = useChainUi();
-  const { removeInputMeta } = useInputMeta();
-  const { destroyTabParaSetup } = useParaSetup();
-  const { removeChainExplorerTaskState } = useChainExplorer();
-  const { destroyAllApiInstances, getApiStatus } = useChainSpaceEnv();
+  const { getApiStatus } = useChainSpaceEnv();
+  const { disconnectTab } = useDisconnectTab();
 
   const {
     listeners,
@@ -57,7 +50,8 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
     setActivatorNodeRef,
   } = useSortable({ id });
 
-  // Get any api status for the tab, if present.
+  // Get the first api status for the tab, if present. TODO: Could be improved to show status of all
+  // api instances for a tab.
   const apiStatus = getApiStatus(`${tabIdToOwnerId(id)}_0`);
 
   // Update the tab to instantiated.
@@ -168,19 +162,7 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
             setDestroying(true);
             setTabHoverIndex(0);
             setTimeout(() => {
-              // Destroy ui state associated with this tab.
-              destroyTabChainUi(id);
-              removeInputMeta(id);
-
-              // Destroy all apis and api state associated with this tab.
-              destroyAllApiInstances(tabIdToOwnerId(id));
-
-              // Reset task related state.
-              removeChainExplorerTaskState(id);
-              destroyTabParaSetup(id);
-
-              // Destroy tab instance.
-              destroyTab(index, id);
+              disconnectTab(tabIdToOwnerId(id), index);
             }, 125);
           }}
         >

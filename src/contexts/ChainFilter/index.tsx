@@ -112,6 +112,21 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Removes all chain filter state for a tab.
+  const destroyChainFilter = (tabId: number) => {
+    const newSearchTerms = { ...searchTerms };
+    const newCustomEndpoints = { ...customEndpoints };
+    const newAppliedTags = { ...appliedTags };
+
+    delete newSearchTerms[tabId];
+    delete newCustomEndpoints[tabId];
+    delete newAppliedTags[tabId];
+
+    setSearchTerms(newSearchTerms);
+    setCustomEndpoints(newCustomEndpoints);
+    setAppliedTags(newAppliedTags);
+  };
+
   return (
     <ChainFilter.Provider
       value={{
@@ -125,6 +140,7 @@ export const ChainFilterProvider = ({ children }: { children: ReactNode }) => {
         appliedTags,
         applyTags,
         removeAppliedTag,
+        destroyChainFilter,
       }}
     >
       {children}

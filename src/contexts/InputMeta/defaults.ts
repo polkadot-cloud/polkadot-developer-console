@@ -8,5 +8,5 @@ export const defaultInputMetaContext: InputMetaContextInterface = {
   getInputMetaValue: (tabId, inputId) => undefined,
   setInputMetaValue: (tabId, inputId, value) => {},
   removeInputMetaValue: (tabId, inputId) => {},
-  removeInputMeta: (tabId) => {},
+  destroyInputMeta: (tabId) => {},
 };

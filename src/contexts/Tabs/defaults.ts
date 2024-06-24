@@ -47,6 +47,7 @@ export const defaultTabs: Tabs = [
     name: 'Polkadot Relay Chain',
     activeTask: 'chainExplorer',
     taskData: {
+      id: 'chainExplorer',
       connectFrom: 'directory',
       autoConnect: true,
       chain: {

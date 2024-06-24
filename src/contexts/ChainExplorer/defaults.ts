@@ -12,7 +12,7 @@ export const defaultChainExplorerContext: ChainExplorerContextInterface = {
   updateUnit: (id, unit) => {},
   forgetTabChain: (tabId) => {},
   chainExplorerIntegrityCheck: (tabId) => false,
-  removeChainExplorerTaskState: (tabId) => {},
+  destroyStateChainExplorer: (tabId) => {},
 };
 
 export const defaultCustomEndpointChainMeta = {

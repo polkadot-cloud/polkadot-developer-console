@@ -22,8 +22,7 @@ export const getTabs = (): Tabs | undefined => {
 
         return {
           ...tab,
-          // If this tab is configured to auto-connect, set the active task to chainExplorer
-          // immediately.
+          // If this tab is configured to auto-connect, set the active task immediately.
           activeTask: !autoConnect ? null : tab.activeTask,
           activePage: getActivePage(tab.id, 'default'),
         };
