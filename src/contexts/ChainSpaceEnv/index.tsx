@@ -200,13 +200,13 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
           setApiStatus(instanceId, 'connected');
           break;
         case 'disconnected':
-          handleDisconnect(ownerId, instanceId);
+          handleApiDisconnect(ownerId, instanceId);
           break;
         case 'error':
-          handleDisconnect(ownerId, instanceId);
+          handleApiDisconnect(ownerId, instanceId);
           break;
         case 'destroyed':
-          handleDisconnect(ownerId, instanceId);
+          handleApiDisconnect(ownerId, instanceId);
           break;
       }
     }
@@ -234,7 +234,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   };
 
   // Handle a chain disconnect.
-  const handleDisconnect = async (
+  const handleApiDisconnect = async (
     ownerId: OwnerId,
     instanceId: ApiInstanceId,
     destroy = false
@@ -276,7 +276,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         destroyInstanceTxMeta(instanceId);
 
         // Disconnect from API.
-        handleDisconnect(ownerId, instanceId, true);
+        handleApiDisconnect(ownerId, instanceId, true);
       }
     }
   };
