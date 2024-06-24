@@ -66,9 +66,7 @@ export const ManageTab = () => {
       <Input
         label="Rename Tab"
         placeholder="Tab Name"
-        onSubmit={(value: string) => {
-          renameTab(tabId, value);
-        }}
+        onSubmit={(value: string) => renameTab(tabId, value)}
         initialValue={tab?.name || ''}
       />
       {isCustomChain && apiInstances.length && (

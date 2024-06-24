@@ -7,7 +7,7 @@ import type { OwnerId } from 'types';
 export const tabIdToOwnerId = (tabId: number): OwnerId =>
   String(`tab_${tabId}`);
 
-// Converts an `ownerId` to a tab id. This takes the first number in the string, after the first
+// Converts an `ownerId` to a tab id. This takes the first number in the string, before the first
 // underscore.
 export const ownerIdToTabId = (ownerId: OwnerId): number => {
   const result = ownerId.split('_');

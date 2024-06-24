@@ -48,16 +48,6 @@ export const TabContextMenu = ({
     !canDisconnect &&
     !apiStatusActive;
 
-  const apiStatusText = canDisconnect
-    ? 'Disconnect'
-    : apiStatus === 'connecting'
-      ? 'Connecting..'
-      : canReconnect
-        ? 'Reconnect'
-        : 'Not Connected';
-
-  const apiButtonInactive = apiStatusActive || canReconnect;
-
   // Handle disconnect from tab.
   const handleDisconnectTab = () => {
     destroyAllApiInstances(ownerId);
@@ -90,35 +80,58 @@ export const TabContextMenu = ({
       </ListWrapper>
       <h5 className="inline">API</h5>
       <ListWrapper>
-        <li className={`${apiButtonInactive ? `` : ` inactive`}`}>
+        {canReconnect && (
+          <li>
+            <button
+              onClick={() => {
+                if (canReconnect) {
+                  instantiateApiFromTab(tabId);
+                  // Update tab task. NOTE: We know for certain with `canReconnect` that
+                  // `tab.taskData` is defined.
+                  const tabTask = tab.taskData!.id as TabTask;
+                  setTabActiveTask(tabId, tabTask);
+                }
+                closeMenu();
+              }}
+            ></button>
+            <div className="inner">
+              <div className={!canReconnect ? 'none' : undefined}>
+                {canReconnect && (
+                  <FontAwesomeIcon icon={faLink} transform="shrink-3" />
+                )}
+              </div>
+              <div>
+                <h3 className={canReconnect ? undefined : 'inactive'}>
+                  {canReconnect ? 'Reconnect' : 'Not Connected'}
+                </h3>
+              </div>
+              <div></div>
+            </div>
+          </li>
+        )}
+
+        <li className={`${canDisconnect ? `` : ` inactive`}`}>
           <button
             onClick={() => {
               if (canDisconnect) {
                 handleDisconnectTab();
-              } else if (canReconnect) {
-                instantiateApiFromTab(tabId);
-                // Update tab task. NOTE: We know for certain with `canReconnect` that
-                // `tab.taskData` is defined.
-                const tabTask = tab.taskData!.id as TabTask;
-                setTabActiveTask(tabId, tabTask);
               }
               closeMenu();
             }}
           ></button>
           <div className="inner">
-            <div
-              className={!canDisconnect && !canReconnect ? 'none' : undefined}
-            >
+            <div className={!canDisconnect ? 'none' : undefined}>
               {canDisconnect && (
                 <FontAwesomeIcon icon={faLinkSlash} transform="shrink-4" />
               )}
-              {canReconnect && (
-                <FontAwesomeIcon icon={faLink} transform="shrink-3" />
-              )}
             </div>
             <div>
-              <h3 className={apiButtonInactive ? undefined : 'inactive'}>
-                {apiStatusText}
+              <h3 className={apiStatusActive ? undefined : 'inactive'}>
+                {canDisconnect
+                  ? 'Disconnect'
+                  : apiStatus === 'connecting'
+                    ? 'Connecting..'
+                    : 'Not Connected'}
               </h3>
             </div>
             <div></div>
