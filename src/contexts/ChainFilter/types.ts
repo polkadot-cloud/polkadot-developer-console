@@ -15,6 +15,7 @@ export interface ChainFilterInterface {
   getAppliedTags: (tabId: number) => [DirectoryId, TagItem][];
   applyTags: (tabId: number, tagIds: TagId[]) => void;
   removeAppliedTag: (tabId: number | '*', tagId: TagId) => void;
+  destroyChainFilter: (tabId: number) => void;
 }
 
 export type SearchTerms = Record<number, string>;

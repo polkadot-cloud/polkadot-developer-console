@@ -16,6 +16,7 @@ import { useSettings } from 'contexts/Settings';
 import { useTabs } from 'contexts/Tabs';
 import { useChainUi } from 'contexts/ChainUi';
 import { useInputMeta } from 'contexts/InputMeta';
+import { useChainFilter } from 'contexts/ChainFilter';
 
 export const DisconnectTab = createContext<DisconnectTabContextInterface>(
   defaultDisconnectTabContext
@@ -27,6 +28,7 @@ export const DisconnectTabProvider = ({ children }: DisconnectTabProps) => {
   const { autoTabNaming } = useSettings();
   const { destroyTabChainUi } = useChainUi();
   const { destroyInputMeta } = useInputMeta();
+  const { destroyChainFilter } = useChainFilter();
   const { destroyStateParaSetup } = useParaSetup();
   const { destroyAllApiInstances } = useChainSpaceEnv();
   const { destroyStateChainExplorer } = useChainExplorer();
@@ -41,6 +43,7 @@ export const DisconnectTabProvider = ({ children }: DisconnectTabProps) => {
     if (destroyIndex) {
       destroyTabChainUi(tabId);
       destroyInputMeta(tabId);
+      destroyChainFilter(tabId);
     }
 
     // Destroy all api instances related to the tab.
