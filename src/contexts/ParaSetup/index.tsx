@@ -90,7 +90,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Destroy parachain setup state associated with a tab. Currently only being used on tab close.
-  const destroyTabParaSetup = (tabId: number) => {
+  const destroyStateParaSetup = (tabId: number) => {
     const updated = { ...activeSteps };
     delete updated[tabId];
     setActiveSteps(updated);
@@ -225,7 +225,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
         getSelectedRelayChain,
         setSelectedRelayChain,
 
-        destroyTabParaSetup,
+        destroyStateParaSetup,
         setupParachainIntegrityCheck,
       }}
     >

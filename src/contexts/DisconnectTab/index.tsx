@@ -27,9 +27,9 @@ export const DisconnectTabProvider = ({ children }: DisconnectTabProps) => {
   const { autoTabNaming } = useSettings();
   const { destroyTabChainUi } = useChainUi();
   const { removeInputMeta } = useInputMeta();
-  const { destroyTabParaSetup } = useParaSetup();
+  const { destroyStateParaSetup } = useParaSetup();
   const { destroyAllApiInstances } = useChainSpaceEnv();
-  const { removeChainExplorerTaskState } = useChainExplorer();
+  const { destroyStateChainExplorer } = useChainExplorer();
   const { renameTab, getAutoTabName, destroyTab } = useTabs();
 
   // Handle disconnect (and destroy) of a tab, handling both api and task related clean up before
@@ -47,8 +47,8 @@ export const DisconnectTabProvider = ({ children }: DisconnectTabProps) => {
     destroyAllApiInstances(ownerId);
 
     // Reset task related state.
-    removeChainExplorerTaskState(tabId);
-    destroyTabParaSetup(tabId);
+    destroyStateChainExplorer(tabId);
+    destroyStateParaSetup(tabId);
 
     // If not destroying tab, Reset tab name if auto naming is enabled.
     if (!destroyIndex && autoTabNaming) {

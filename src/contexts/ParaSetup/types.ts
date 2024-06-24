@@ -15,7 +15,7 @@ export interface ParaSetupContextInterface {
   setActiveStep: (tabId: number, step: SetupStep) => void;
   getSelectedRelayChain: (tabId: number) => DirectoryId | undefined;
   setSelectedRelayChain: (tabId: number, chainId: DirectoryId) => void;
-  destroyTabParaSetup: (tabId: number) => void;
+  destroyStateParaSetup: (tabId: number) => void;
   setupParachainIntegrityCheck: (
     tabId: number
   ) => IntegrityCheckedParachainContext | false;

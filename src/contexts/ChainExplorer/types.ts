@@ -21,7 +21,7 @@ export interface ChainExplorerContextInterface {
   chainExplorerIntegrityCheck: (
     tabId: number
   ) => IntegrityCheckedChainContext | false;
-  removeChainExplorerTaskState: (tabId: number) => void;
+  destroyStateChainExplorer: (tabId: number) => void;
 }
 
 export type ChainExplorerTaskData = BaseTaskData;

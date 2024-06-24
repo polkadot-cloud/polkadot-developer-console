@@ -213,7 +213,7 @@ export const ChainExplorerProvider = ({
   };
 
   // Remove task related state on disconnect.
-  const removeChainExplorerTaskState = (tabId: number) => {
+  const destroyStateChainExplorer = (tabId: number) => {
     destroyTabChainUi(tabId);
     destroyTabChainState();
   };
@@ -228,7 +228,7 @@ export const ChainExplorerProvider = ({
         forgetTabChain,
         connectChainExplorer,
         chainExplorerIntegrityCheck,
-        removeChainExplorerTaskState,
+        destroyStateChainExplorer,
       }}
     >
       {children}
