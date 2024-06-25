@@ -42,7 +42,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: page
+          name: github-pages
           path: build
 
       # - name: Deploy
@@ -57,7 +57,7 @@ jobs:
     permissions:
       id-token: write
       pages: write
-      
+
     environment:
       name: github-pages
       url: ${{steps.deployment.outputs.page_url}}
@@ -65,7 +65,7 @@ jobs:
     steps:
     - uses: actions/download-artifact@master
       with:
-        name: page
+        name: github-pages
         path: .
     - uses: actions/configure-pages@v1
     - uses: actions/upload-pages-artifact@v1
