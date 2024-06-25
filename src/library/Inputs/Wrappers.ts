@@ -267,7 +267,7 @@ export const TextInputWrapper = styled.div`
 
     > input,
     > .deadInput {
-      color: var(--text-color-secondary);
+      color: var(--text-color-primary);
       font-size: 0.8rem;
     }
   }
