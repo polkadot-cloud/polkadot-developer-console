@@ -30,18 +30,6 @@ export const CallList = ({ items }: CallListProps) => {
     setCallsOpenState(value);
   };
 
-  // Handle pallet search change.
-  const handleCallSearchChange = (value: string) => {
-    setChainUiNamespace(tabId, chainUiSection, 'search', value);
-  };
-
-  // Handle call change.
-  const handleCallChange = (name: string) => {
-    setChainUiNamespace(tabId, chainUiSection, 'selected', name);
-    resetInputArgs(tabId, inputNamespace);
-    setCallsOpen(false);
-  };
-
   // Filter calls based on search term, if selection is present.
   const filteredCalls =
     items.length > 0
@@ -55,6 +43,21 @@ export const CallList = ({ items }: CallListProps) => {
     filteredCalls.find(({ name }: CallListItem) => name === chainUi.selected) ||
     filteredCalls[0] ||
     '';
+
+  // Handle pallet search change.
+  const handleCallSearchChange = (value: string) => {
+    setChainUiNamespace(tabId, chainUiSection, 'search', value);
+  };
+
+  // Handle call change.
+  const handleCallChange = (name: string) => {
+    // Updated the selected item in chain ui state if it has changed.
+    if (selectedItem?.name !== name) {
+      setChainUiNamespace(tabId, chainUiSection, 'selected', name);
+      resetInputArgs(tabId, inputNamespace);
+    }
+    setCallsOpen(false);
+  };
 
   // Call search input ref.
   const searchInputRef = useRef<HTMLInputElement>(null);

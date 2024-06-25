@@ -46,14 +46,15 @@ export const ChainStateList = ({
 
   // Handle item change.
   const handleItemChange = (value: string, closeDropdown: boolean) => {
-    // Updated the selected item in chain ui state.
-    setChainUiNamespace(tabId, chainUiSection, 'selected', value);
+    // Updated the selected item in chain ui state if it has changed.
+    if (activeListItem.name !== value) {
+      setChainUiNamespace(tabId, chainUiSection, 'selected', value);
 
-    // If an input namespace is provided, reset input arg values.
-    if (inputNamespace) {
-      resetInputArgs(tabId, inputNamespace);
+      // If an input namespace is provided, reset input arg values.
+      if (inputNamespace) {
+        resetInputArgs(tabId, inputNamespace);
+      }
     }
-
     // Close item the dropdown if requested.
     if (closeDropdown) {
       setDropdownOpen(false);
