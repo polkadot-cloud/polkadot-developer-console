@@ -58,10 +58,7 @@ jobs:
     - uses: actions/download-artifact@master
       with:
         name: github-pages
-        path: .
+        path: build
     - uses: actions/configure-pages@v5
-    - uses: actions/upload-pages-artifact@v3
-      with:
-        path: .
     - id: deployment
       uses: actions/deploy-pages@main
