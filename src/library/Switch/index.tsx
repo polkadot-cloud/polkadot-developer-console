@@ -20,10 +20,10 @@ export const Switch = ({
 
   // Determine toggle button color based on switch config.
   const buttonColor = disabled
-    ? 'var(--background-default)'
+    ? 'var(--background-input)'
     : active
-      ? 'var(--background-default)'
-      : 'var(--background-default)';
+      ? 'var(--background-input)'
+      : 'var(--background-input)';
 
   // Determine toggle button border color based on disabled state. NOTE: Border is not currently
   // used.

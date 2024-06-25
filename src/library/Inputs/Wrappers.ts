@@ -99,7 +99,7 @@ export const SelectItemWrapper = styled.button`
   }
 
   &.input {
-    background-color: var(--background-default);
+    background-color: var(--background-input);
     border: 1px solid var(--border-secondary-color);
     border-radius: 0.4rem;
 
@@ -257,7 +257,7 @@ export const TextInputWrapper = styled.div`
   }
 
   &.input {
-    background-color: var(--background-default);
+    background-color: var(--background-input);
     border: 1px solid var(--border-secondary-color);
     border-radius: 0.25rem;
 

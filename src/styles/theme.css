@@ -2,14 +2,15 @@
 SPDX-License-Identifier: GPL-3.0-only */
 
 .theme-light {
-  --background-default: #efeeee;
-  --background-primary: #f3f2f2;
+  --background-default: #f2f2f2;
+  --background-primary: #f6f5f5;
   --background-invert: #888;
   --background-tooltip: #222;
   --background-floating-card: rgb(255 255 255 / 90%);
   --background-modal: #f4f2f2;
   --background-canvas-card: rgb(237 237 237 / 100%);
   --background-canvas-card-secondary: rgb(255 255 255 / 35%);
+  --background-input: #efeeee;
 
   --border-primary-color: #e4e4e4;
   --border-secondary-color: #d3d1d1;
@@ -23,7 +24,7 @@ SPDX-License-Identifier: GPL-3.0-only */
   --button-tab-background: #e4e2e2;
   --button-hover-background: #e2e2e2;
 
-  --tab-active-background: #dedddd;
+  --tab-active-background: #dfdfdf;
 
   --status-success-color: green;
   --status-success-color-transparent: rgb(0 128 0 / 25%);
@@ -48,9 +49,9 @@ SPDX-License-Identifier: GPL-3.0-only */
   );
   --gradient-tab-fade: linear-gradient(
     90deg,
-    rgba(239, 238, 238, 0) 0%,
-    rgba(239, 238, 238, 1) 70%,
-    rgba(239, 238, 238, 1) 100%
+    rgba(242, 242, 242, 0) 0%,
+    rgba(242, 242, 242, 1) 70%,
+    rgba(242, 242, 242, 1) 100%
   );
   --gradient-tab-fade-hover: linear-gradient(
     90deg,
@@ -127,6 +128,8 @@ SPDX-License-Identifier: GPL-3.0-only */
   );
 
   /* NOTE: these colors are still light and need to be updated for dark theme. */
+  --background-input: #efeeee;
+
   --background-floating-card: rgb(43 38 43 / 95%);
   --background-modal: rgb(43 38 43);
   --background-canvas-card: rgb(44 40 44 / 90%);
