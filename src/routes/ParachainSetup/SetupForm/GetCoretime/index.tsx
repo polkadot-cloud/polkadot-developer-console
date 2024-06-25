@@ -5,6 +5,9 @@ import { FormWrapper } from 'routes/Home/Wrappers';
 
 export const GetCoretime = () => (
   <FormWrapper>
-    <h3>Get bulk or instantaneous Coretime and start processing blocks.</h3>
+    <h3>
+      Get bulk or instantaneous Coretime and start processing blocks for your
+      parachain.
+    </h3>
   </FormWrapper>
 );
