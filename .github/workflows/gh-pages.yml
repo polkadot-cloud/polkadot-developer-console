@@ -8,7 +8,7 @@ env:
   FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
 
 jobs:
-  build:
+  merge:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,10 +32,23 @@ jobs:
       - name: Install
         run: yarn install
 
+  build:
+    runs-on: ubuntu-latest
+    needs: merge
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-deploy
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org
+          cache: 'yarn'
+
       - name: Build
         working-directory: '.'
         run: yarn build:pages
-
 
       - name: Update `gh-pages` branch
         uses: JamesIves/github-pages-deploy-action@v4
@@ -47,7 +60,7 @@ jobs:
         with:
           name: github-pages
           path: build
-
+                
   deploy:
     runs-on: ubuntu-latest
     needs: build
