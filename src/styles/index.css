@@ -112,3 +112,9 @@ select:focus,
 textarea:focus {
   outline: none;
 }
+
+/* Define text highlight color */
+
+::selection {
+  background: #dbd3ed;
+}
