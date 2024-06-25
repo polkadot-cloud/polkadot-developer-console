@@ -40,6 +40,9 @@ export const AccountId32 = ({
     onRender(INPUT_TYPE);
   }
 
+  // Ref object for the input element.
+  const inputRef = useRef<HTMLInputElement>(null);
+
   // Get input value from input meta.
   const inputMetaValue = getInputMetaValue(tabId, inputId);
 
@@ -131,11 +134,15 @@ export const AccountId32 = ({
         </span>
 
         <input
+          ref={inputRef}
           type="text"
           className="ignore-outside-alerter-search-input"
           value={value || ''}
           onChange={(ev) => handleInputChange(ev.currentTarget.value)}
           onFocus={() => {
+            // Select entire value on focus.
+            inputRef.current?.select();
+
             if (!dropdownOpen) {
               setDropdownOpen(true);
             }
