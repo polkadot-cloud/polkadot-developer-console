@@ -18,7 +18,8 @@ export const ProgressWrapper = styled.div`
   > section {
     display: flex;
     justify-content: space-between;
-    padding: 0.5rem var(--progress-vertical-padding) 0.5rem 0;
+    padding: 0.5rem var(--progress-vertical-padding) 0.5rem
+      var(--progress-vertical-padding);
     align-items: flex-start;
 
     &.label {
