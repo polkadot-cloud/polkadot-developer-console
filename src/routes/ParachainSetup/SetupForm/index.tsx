@@ -7,8 +7,10 @@ import { ConnectRelay } from './ConnectRelay';
 import { Progress } from './Progress';
 import { Footer } from './Footer';
 import { ReserveParaId } from './ReserveParaId';
-import { FormWrapper, HomePageWrapper } from '../../Home/Wrappers';
+import { HomePageWrapper } from '../../Home/Wrappers';
 import { FlexWrapper } from 'routes/Common/Wrappers';
+import { RegisterParathread } from './RegisterParathread';
+import { GetCoretime } from './GetCoretime';
 
 export const SetupForm = () => {
   const { tabId } = useActiveTab();
@@ -32,19 +34,9 @@ export const SetupForm = () => {
 
         {activeStep === 'reserve_para_id' && <ReserveParaId />}
 
-        {activeStep === 'register_parathread' && (
-          <FormWrapper>
-            <h3>Register your Parathread on the Relay Chain.</h3>
-          </FormWrapper>
-        )}
+        {activeStep === 'register_parathread' && <RegisterParathread />}
 
-        {activeStep === 'get_coretime' && (
-          <FormWrapper>
-            <h3>
-              Get bulk or instantaneous Coretime and start processing blocks.
-            </h3>
-          </FormWrapper>
-        )}
+        {activeStep === 'get_coretime' && <GetCoretime />}
 
         <Footer nextDisabled={nextDisabled} />
       </HomePageWrapper>
