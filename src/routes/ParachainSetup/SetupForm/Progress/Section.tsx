@@ -14,14 +14,16 @@ export const Section = ({
   className,
 }: SectionProps) => {
   const { tabId } = useActiveTab();
-  const { getActiveStep } = useParaSetup();
+  const { getActiveStep, setActiveStep } = useParaSetup();
   const activeStep = getActiveStep(tabId);
 
   return (
     <section
       className={`label ${activeStep === stepId ? `active` : `inactive`} ${className ? className : ``}`}
     >
-      <h4>{label}</h4>
+      <button type="button" onClick={() => setActiveStep(tabId, stepId)}>
+        <h4>{label}</h4>
+      </button>
       <div
         className={`status ${activeStep === stepId ? `active` : ``} ${!collapsedStatus ? `collapsed` : !showStatus ? `hidden` : ``}`}
       >
