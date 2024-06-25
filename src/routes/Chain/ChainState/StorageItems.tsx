@@ -116,11 +116,13 @@ export const StorageItems = () => {
           activePallet={activePallet}
           chainUiSection={chainUiSection}
           onSelect={(value) => {
-            // Update selected pallet in chain ui state.
-            setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
+            // Update selected pallet in chain ui state if it has changed.
+            if (value !== activePallet) {
+              setChainUiNamespace(tabId, chainUiSection, 'pallet', value);
 
-            // Reset input args when selected pallet changes.
-            resetInputArgs(tabId, inputNamespace);
+              // Reset input args when selected pallet changes.
+              resetInputArgs(tabId, inputNamespace);
+            }
           }}
         />
         <ChainStateList

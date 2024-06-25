@@ -179,9 +179,11 @@ export const ReserveParaId = () => {
               className={`inner ${selectedOption === 'new' ? ' selected' : ''}`}
             >
               <h3>Reserve Next Para ID</h3>
-              <h1>
-                {nextParaId ? new BigNumber(nextParaId).toString() : '...'}
-              </h1>
+              <button onClick={() => setSelectedOption(tabId, 'new')}>
+                <h1>
+                  {nextParaId ? new BigNumber(nextParaId).toString() : '...'}
+                </h1>
+              </button>
               <button
                 className="foot"
                 onClick={() => setSelectedOption(tabId, 'new')}

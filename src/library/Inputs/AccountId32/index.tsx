@@ -40,8 +40,11 @@ export const AccountId32 = ({
     onRender(INPUT_TYPE);
   }
 
+  // Ref object for the input element.
+  const inputRef = useRef<HTMLInputElement>(null);
+
   // Get input value from input meta.
-  const inputMetaValue = getInputMetaValue(tabId, inputId);
+  const inputMetaValue = getInputMetaValue(tabId, inputId) || '';
 
   // The current selected address. If input meta value is not present, use the the first imported
   // account, if any.
@@ -60,11 +63,17 @@ export const AccountId32 = ({
 
   // Handle input value change.
   const handleInputChange = (val: string) => {
+    // Update input search value.
     setInputMetaValue(tabId, inputId, val);
-    setSearchValue(val);
+
+    // Get the first address from `accounts` that starts with `val`, or fall back to default.
+    const address =
+      accounts.find(({ name }) => name.startsWith(val))?.address ||
+      defaultAddress ||
+      '';
 
     if (onChange !== undefined) {
-      onChange(val);
+      onChange(address);
     }
   };
 
@@ -77,9 +86,6 @@ export const AccountId32 = ({
     }
   };
 
-  // The current search  value of the input.
-  const [searchValue, setSearchValue] = useState<string>('');
-
   // Pallet selection open.
   const [dropdownOpen, setDropdownOpenState] = useState<boolean>(false);
   const dropdownOpenRef = useRef(dropdownOpen);
@@ -91,11 +97,13 @@ export const AccountId32 = ({
 
   // Filter accounts based on search term, if present.
   const filteredAccounts =
-    searchValue !== ''
+    inputMetaValue !== ''
       ? accounts.filter(
           ({ address, name }) =>
-            name.toLowerCase().includes(formatInputString(searchValue, true)) ||
-            address.toLowerCase().includes(searchValue.toLowerCase())
+            name
+              .toLowerCase()
+              .includes(formatInputString(inputMetaValue, true)) ||
+            address.toLowerCase().includes(inputMetaValue.toLowerCase())
         )
       : accounts;
 
@@ -131,11 +139,15 @@ export const AccountId32 = ({
         </span>
 
         <input
+          ref={inputRef}
           type="text"
           className="ignore-outside-alerter-search-input"
           value={value || ''}
           onChange={(ev) => handleInputChange(ev.currentTarget.value)}
           onFocus={() => {
+            // Select entire value on focus.
+            inputRef.current?.select();
+
             if (!dropdownOpen) {
               setDropdownOpen(true);
             }

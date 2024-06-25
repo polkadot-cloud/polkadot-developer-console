@@ -165,7 +165,7 @@ export const SelectItemWrapper = styled.button`
 
 export const SelectDropdownWrapper = styled.div`
   background: var(--background-primary);
-  border: 1px solid var(--border-primary-color);
+  border: 1px solid var(--border-secondary-color);
   box-shadow: var(--shadow-dropdown);
   border-bottom-left-radius: 0.4rem;
   border-bottom-right-radius: 0.4rem;
@@ -267,7 +267,7 @@ export const TextInputWrapper = styled.div`
 
     > input,
     > .deadInput {
-      color: var(--text-color-secondary);
+      color: var(--text-color-primary);
       font-size: 0.8rem;
     }
   }

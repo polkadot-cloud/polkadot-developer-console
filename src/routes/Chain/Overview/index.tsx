@@ -5,7 +5,7 @@ import { NetworkDirectory } from 'config/networks';
 import { isDirectoryId } from 'config/networks/Utils';
 import { CardsWrapper } from './Wrappers';
 import ConnectedSVG from 'svg/Connected.svg?react';
-import Odometer from '@w3ux/react-odometer';
+import { Odometer } from '@w3ux/react-odometer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHive } from '@fortawesome/free-brands-svg-icons';
 import { faList } from '@fortawesome/free-solid-svg-icons';
