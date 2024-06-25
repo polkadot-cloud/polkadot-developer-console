@@ -36,19 +36,11 @@ jobs:
         working-directory: '.'
         run: yarn build:pages
 
-      # - name: Setup Pages
-      #   uses: actions/configure-pages@v3
-
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
           path: build
-
-      # - name: Deploy
-      #   uses: JamesIves/github-pages-deploy-action@v4
-      #   with:
-      #     folder: build
 
   deploy:
     runs-on: ubuntu-latest
@@ -67,8 +59,8 @@ jobs:
       with:
         name: github-pages
         path: .
-    - uses: actions/configure-pages@v1
-    - uses: actions/upload-pages-artifact@v1
+    - uses: actions/configure-pages@v5
+    - uses: actions/upload-pages-artifact@v3
       with:
         path: .
     - id: deployment
