@@ -21,7 +21,7 @@ import type {
 } from './types';
 import { defaultChainSpaceEnvContext } from './defaults';
 import { useGlobalChainSpace } from 'contexts/GlobalChainSpace';
-import type { ChainId, DirectoryId } from 'config/networks/types';
+import type { ChainId } from 'config/networks/types';
 import { ApiController } from 'controllers/Api';
 import { BlockNumber } from 'model/BlockNumber';
 import { useApiIndexer } from 'contexts/ApiIndexer';
@@ -37,8 +37,6 @@ import { u16 } from 'scale-ts';
 import type { AnyJson } from '@w3ux/types';
 import { getApiInstanceOwnerAndIndex } from './Utils';
 import { useTxMeta } from 'contexts/TxMeta';
-import { useSettings } from 'contexts/Settings';
-import { NetworkDirectory } from 'config/networks';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
   defaultChainSpaceEnvContext
@@ -47,21 +45,14 @@ export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
 export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
 export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
-  const {
-    tabs,
-    renameTab,
-    getAutoTabName,
-    getTabTaskData,
-    getTabActiveTask,
-    resetTabActiveTask,
-  } = useTabs();
+  const { tabs, getTabTaskData, getTabActiveTask, resetTabActiveTask } =
+    useTabs();
   const {
     getTabApiIndex,
     setTabApiIndex,
     getTabApiIndexes,
     removeTabApiIndex,
   } = useApiIndexer();
-  const { autoTabNaming } = useSettings();
   const { destroyInstanceTxMeta } = useTxMeta();
   const { globalChainSpace } = useGlobalChainSpace();
 
@@ -162,8 +153,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
       const { ownerId, instanceId, chainId, event } =
         e.detail as APIStatusEventDetail;
 
-      const tabId = ownerIdToTabId(ownerId);
-
       switch (event) {
         case 'ready':
           setApiStatus(instanceId, 'ready');
@@ -186,17 +175,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
           setApiStatus(instanceId, 'connecting');
           break;
         case 'connected':
-          // If auto rename is enabled, ensure correct name is applied.
-          if (autoTabNaming) {
-            renameTab(
-              tabId,
-              getAutoTabName(
-                tabId,
-                NetworkDirectory[chainId as DirectoryId].name
-              )
-            );
-          }
-
           setApiStatus(instanceId, 'connected');
           break;
         case 'disconnected':
