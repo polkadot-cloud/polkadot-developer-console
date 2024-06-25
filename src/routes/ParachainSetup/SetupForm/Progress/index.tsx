@@ -63,15 +63,6 @@ export const Progress = () => {
 
       <Connector />
       <Section
-        stepId="configure_node"
-        label="Configure Node"
-        collapsedStatus={collapsedStatus}
-        showStatus={showStatus}
-      >
-        ...
-      </Section>
-      <Connector />
-      <Section
         stepId="register_parathread"
         label="Register Parathread"
         collapsedStatus={collapsedStatus}
