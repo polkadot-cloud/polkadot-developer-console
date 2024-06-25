@@ -42,8 +42,8 @@ SPDX-License-Identifier: GPL-3.0-only */
 
   --gradient-background: linear-gradient(
     180deg,
-    #efeeee 0%,
-    #efeeee 100px,
+    #f2f2f2 0%,
+    #f2f2f2 100px,
     #e6e6e6 80%,
     #f2eafb 100%
   );
