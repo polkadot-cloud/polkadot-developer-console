@@ -12,6 +12,9 @@ export const GetCoretime = () => (
       </section>
     </Prompt>
 
-    <h3>Get bulk or instantaneous Coretime and start processing blocks.</h3>
+    <h3>
+      Get bulk or instantaneous Coretime and start processing blocks for your
+      parachain.
+    </h3>
   </FormWrapper>
 );
