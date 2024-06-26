@@ -44,8 +44,7 @@ export const SearchInput = ({
             // Enter key action.
             if (ev.key === 'Enter') {
               onEnter();
-            }
-            if (ev.key === 'Escape') {
+            } else if (ev.key === 'Escape') {
               // Escape action on non-empty search value.
               if (
                 // If chainUi is being used, check if the currently selected item's search value is
