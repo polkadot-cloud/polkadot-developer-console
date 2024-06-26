@@ -166,7 +166,7 @@ export const ReserveParaId = () => {
 
   return (
     <FormWrapper>
-      <h3>Reserve a Para ID or select an existing one from your accounts.</h3>
+      <h3>Reserve a Para ID or select an existing one from your accounts</h3>
       <section>
         <AccountId32
           inputId={`${metaKey}_managerAddress`}
