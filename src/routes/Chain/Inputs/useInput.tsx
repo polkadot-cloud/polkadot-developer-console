@@ -21,7 +21,6 @@ import { Sequence } from './Sequence';
 import type { ArrayType } from 'model/Scraper/Types/Array';
 import type { SequenceType } from 'model/Scraper/Types/Sequence';
 import type { CompositeType } from 'model/Scraper/Types/Composite';
-import { useInputMeta } from 'contexts/InputMeta';
 import type { ScrapedFieldItem, ScrapedItem } from 'model/Scraper/types';
 import { Hash } from 'library/Inputs/Hash';
 
@@ -29,7 +28,6 @@ export const useInput = () => {
   const { chainSpec } = useChain();
   const { getAccounts } = useAccounts();
   const { tabId, metaKey } = useActiveTab();
-  const { removeInputMetaValue } = useInputMeta();
   const { setInputArgAtKey, getInputArgAtKey, resetInputArgsFromKey } =
     useChainUi();
 
@@ -322,8 +320,6 @@ export const useInput = () => {
 
     // General `onMount` callback that sets an initial value for an input.
     const onMount = <T,>(value: T) => {
-      removeInputMetaValue(tabId, inputId);
-
       // Set initial input value.
       setInputArgAtKey(tabId, namespace, keys, value);
     };
