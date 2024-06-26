@@ -65,7 +65,7 @@ export const AccountId32 = ({
   // The current value of the input. Attempts to find an account name, or uses the selected address,
   // if present.
   const value =
-    inputMetaValue !== undefined
+    inputMetaValue !== ''
       ? inputMetaValue
       : accounts?.find(({ address }) => address === selectedAddress)?.name ||
         selectedAddress;
@@ -129,12 +129,7 @@ export const AccountId32 = ({
 
   // Set correct input value on tab change.
   useEffect(() => {
-    setInputMetaValue(
-      tabId,
-      inputId,
-      accounts?.find(({ address }) => address === selectedAddress)?.name ||
-        selectedAddress
-    );
+    setInputMetaValue(tabId, inputId, inputValue);
     if (onMount !== undefined) {
       onMount(selectedAddress);
     }
@@ -205,7 +200,7 @@ export const AccountId32 = ({
         {filteredAccounts.map(({ name, address }, i) => (
           <SelectItemWrapper
             key={`pallet_${i}_${name}`}
-            className={`option${value === name ? ` selected` : ``}`}
+            className={`option${inputValue === name ? ` selected` : ``}`}
             onClick={() => {
               setDropdownOpen(false);
               setInputMetaValue(tabId, inputId, name);
