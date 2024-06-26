@@ -15,7 +15,7 @@ export const getRelayChain = (id: DirectoryId): DirectoryId | undefined => {
 };
 
 // Get the first letter of the chain name.
-export const getChainInitial = (id: DirectoryId) => {
+export const getChainInitial = (id: DirectoryId): string | undefined => {
   const entry = NetworkDirectory[id];
   return entry?.initial;
 };
@@ -24,6 +24,7 @@ export const getChainInitial = (id: DirectoryId) => {
 export const getChainMeta = (id: DirectoryId) => {
   const system = NetworkDirectory[id].system;
   return {
+    chain: system.chain,
     ss58: system.ss58,
     units: system.units,
     unit: system.unit,

@@ -13,16 +13,18 @@ export type DirectoryId =
 export type ChainId = DirectoryId | 'custom';
 
 export interface NetworkDirectoryItem {
-  system: {
-    chain: string;
-    ss58: number;
-    units: number;
-    unit: string;
-  };
+  system: NetworkDirectoryItemSystem;
   name: string;
   initial?: string;
   color: string;
   providers: Record<string, string>;
   isRelayChain?: boolean;
   relayChain?: DirectoryId;
+}
+
+export interface NetworkDirectoryItemSystem {
+  chain: string;
+  ss58: number;
+  units: number;
+  unit: string;
 }
