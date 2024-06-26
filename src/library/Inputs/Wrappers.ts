@@ -99,7 +99,7 @@ export const SelectItemWrapper = styled.button`
   }
 
   &.input {
-    background-color: var(--background-default);
+    background-color: var(--background-input);
     border: 1px solid var(--border-secondary-color);
     border-radius: 0.4rem;
 
@@ -257,18 +257,26 @@ export const TextInputWrapper = styled.div`
   }
 
   &.input {
-    background-color: var(--background-default);
+    background-color: var(--background-input);
     border: 1px solid var(--border-secondary-color);
     border-radius: 0.25rem;
 
     &:hover {
       border-color: var(--accent-color-secondary);
+
+      &.disabled {
+        border-color: var(--border-secondary-color);
+      }
     }
 
     > input,
     > .deadInput {
       color: var(--text-color-primary);
       font-size: 0.8rem;
+
+      &:disabled {
+        color: var(--text-color-tertiary);
+      }
     }
   }
 

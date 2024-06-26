@@ -30,7 +30,9 @@ export const FormWrapper = styled.div`
   flex: 1;
 
   > h3 {
-    margin-bottom: 1rem;
+    font-family: InterSemiBold, sans-serif;
+    font-size: 0.95rem;
+    margin-bottom: 1.1rem;
   }
 
   > section {

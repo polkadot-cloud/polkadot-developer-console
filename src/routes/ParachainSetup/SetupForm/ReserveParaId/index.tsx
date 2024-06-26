@@ -5,7 +5,7 @@ import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { FormWrapper } from 'routes/Home/Wrappers';
 import { useParachain } from 'routes/ParachainSetup/Provider';
-import { ParaIdOptionsWrapper, SetupNote } from '../Wrappers';
+import { SetupNote } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
 import { useEffect } from 'react';
@@ -20,6 +20,7 @@ import { SubmitTx } from 'library/SubmitTx';
 import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import { useReserveParaId } from 'contexts/ParaSetup/ReserveParaId';
 import type { ReservedParaId } from 'contexts/ParaSetup/ReserveParaId/types';
+import { ParaIdOptionsWrapper } from './Wrappers';
 
 export const ReserveParaId = () => {
   const {
@@ -165,7 +166,7 @@ export const ReserveParaId = () => {
 
   return (
     <FormWrapper>
-      <h3>Reserve a Para ID or select an existing one from your accounts.</h3>
+      <h3>Reserve a Para ID or select an existing one from your accounts</h3>
       <section>
         <AccountId32
           inputId={`${metaKey}_managerAddress`}
