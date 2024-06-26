@@ -14,7 +14,7 @@ export const GetCoretime = () => (
 
     <h3>
       Get bulk or instantaneous Coretime and start processing blocks for your
-      parachain.
+      parachain(s).
     </h3>
   </FormWrapper>
 );
