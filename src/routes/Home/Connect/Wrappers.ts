@@ -146,28 +146,46 @@ export const ChainItemWrapper = styled.div`
               height: var(--directory-item-icon-size);
               z-index: 0;
 
-              > svg {
+              svg {
                 width: 100%;
                 height: 100%;
               }
             }
 
             > .secondary {
-              height: calc((var(--directory-item-icon-size)) * 1.15);
-              width: calc((var(--directory-item-icon-size)) * 1.15);
               background-color: var(--button-tab-background);
-              border: 0.75px solid var(--border-secondary-color);
-              color: var(--text-color-primary);
-              font-family: Inter, sans-serif;
+              border-radius: 50%;
               position: absolute;
-              top: -0.1rem;
-              left: 0.9rem;
-              border-radius: 2rem;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 0.75rem;
+              top: -0.15rem;
+              left: 0.75rem;
+              width: calc((var(--directory-item-icon-size)) * 1.3);
+              height: calc((var(--directory-item-icon-size)) * 1.3);
               z-index: 1;
+
+              &.initial {
+                border: 1px solid var(--border-primary-color);
+                color: var(--text-color-primary);
+                font-family: InterSemiBold, sans-serif;
+                top: -0.1rem;
+                left: 0.9rem;
+                border-radius: 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: calc((var(--directory-item-icon-size)) * 1.2);
+                height: calc((var(--directory-item-icon-size)) * 1.2);
+                font-size: 0.78rem;
+              }
+            }
+
+            > .secondary {
+              display: flex;
+              place-items: center;
+              justify-content: center;
+              svg {
+                width: 70%;
+                height: 70%;
+              }
             }
           }
         }

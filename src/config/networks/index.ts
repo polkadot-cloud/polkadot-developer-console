@@ -17,7 +17,6 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'DOT',
     },
     name: 'Polkadot Relay Chain',
-    icon: 'polkadot',
     color: '#c10e7d',
     providers: {
       'Automata 1RPC': 'wss://1rpc.io/dot',
@@ -39,7 +38,6 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'DOT',
     },
     name: 'Polkadot Asset Hub',
-    icon: 'polkadot',
     initial: 'A',
     color: '#552bbf',
     providers: {
@@ -58,7 +56,6 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'DOT',
     },
     name: 'Polkadot Bridge Hub',
-    icon: 'polkadot',
     initial: 'B',
     color: '#552bbf',
     providers: {
@@ -75,7 +72,6 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'DOT',
     },
     name: 'Polkadot Collectives',
-    icon: 'polkadot',
     initial: 'C',
     color: '#552bbf',
     providers: {
@@ -91,7 +87,6 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'KSM',
     },
     name: 'Kusama Relay Chain',
-    icon: 'kusama',
     color: '#000',
     providers: {
       'Automata 1RPC': 'wss://1rpc.io/ksm',
@@ -113,7 +108,6 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'ROC',
     },
     name: 'Rococo Relay Chain',
-    icon: 'rococo',
     color: '#552bbf',
     providers: {
       Parity: 'wss://rococo-rpc.polkadot.io',
@@ -128,7 +122,6 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       unit: 'WND',
     },
     name: 'Westend Relay Chain',
-    icon: 'westend',
     color: '#c63860',
     providers: {
       Dwellir: 'wss://westend-rpc.dwellir.com',

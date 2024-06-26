@@ -20,11 +20,7 @@ import {
   faPlus,
 } from '@fortawesome/pro-duotone-svg-icons';
 import { useChainExplorer } from 'contexts/ChainExplorer';
-import {
-  getChainInitial,
-  getDirectoryIcon,
-  getRelayChain,
-} from 'config/networks/Utils';
+import { getChainInitial, getRelayChain } from 'config/networks/Utils';
 
 export interface ChainDirectoryItemProps {
   chainId: DirectoryId;
@@ -46,16 +42,37 @@ export const ChainDirectoryItem = ({
   // Get any relay chain this chain is registered with.
   const relayId = getRelayChain(chainId);
 
+  // Get the assigned chain initial, if any.
+  const chainInitial = getChainInitial(chainId);
+
+  // If a relay chain entry exists, use that as icon key, otherwise, use chainId.
+  const primaryIconKey = relayId ? relayId : chainId;
+
   // Lazily load the icon for the chain.
-  const Icon = useMemo(
+  const PrimaryIcon = useMemo(
     () =>
       lazy(
         () =>
           import(
-            `../../../../config/networks/icons/${getDirectoryIcon(chainId)}/Inline.tsx`
+            `../../../../config/networks/icons/${primaryIconKey}/Inline.tsx`
           )
       ),
     []
+  );
+
+  // If relay chain is different from icon, lazily load the icon, otherwise lazy load the same as
+  // the primary icon. (This is a React workaround it is not possible to conditionally memoize a
+  // lazily loaded component. Could explore child component for secondary icon).
+  const secondaryIconKey = chainInitial || primaryIconKey;
+  const SecondaryIcon = useMemo(
+    () =>
+      lazy(
+        () =>
+          import(
+            `../../../../config/networks/icons/${secondaryIconKey}/Inline.tsx`
+          )
+      ),
+    [chainId]
   );
 
   // Handle tag provider select. Connect to chain on successful selection.
@@ -82,10 +99,12 @@ export const ChainDirectoryItem = ({
           <Suspense fallback={<div />}>
             <div className={`icon${relayId ? ' hasSecondary' : ''}`}>
               <div className="primary">
-                <Icon />
+                <PrimaryIcon />
               </div>
               {relayId ? (
-                <div className="secondary">{getChainInitial(chainId)}</div>
+                <div className={`secondary${chainInitial ? ` initial` : ``}`}>
+                  {chainInitial || <SecondaryIcon />}
+                </div>
               ) : null}
             </div>
           </Suspense>
