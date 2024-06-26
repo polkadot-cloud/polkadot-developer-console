@@ -105,10 +105,6 @@ export const ChainStateProvider = ({ children }: { children: ReactNode }) => {
     // temporary invalid subscription.
     const filteredEntries = Object.entries(chainStateSubscriptions).filter(
       ([, subscription]) => {
-        if (subscription.result === undefined) {
-          return false;
-        }
-
         if (type === undefined) {
           return true;
         }

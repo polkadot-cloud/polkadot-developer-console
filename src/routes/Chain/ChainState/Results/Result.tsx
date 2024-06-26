@@ -27,11 +27,12 @@ export const ChainStateResult = ({
 
   // Determine whether the result is empty.
   const isEmpty =
-    [undefined, null, ''].includes(resultJson) ||
+    [null, ''].includes(resultJson) ||
     (Array.isArray(resultJson) && resultJson.length === 0);
 
   // Format the JSON for display if it is not empty.
-  const display = !isEmpty ? formatJSON(resultJson) : 'None';
+  const display =
+    result === undefined ? '...' : !isEmpty ? formatJSON(resultJson) : 'None';
 
   return (
     <section>
