@@ -11,6 +11,7 @@ import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useParachain } from 'routes/ParachainSetup/Provider';
 import { Label } from 'library/Inputs/Label';
 import { Prompt } from '../Prompt';
+import { Hash } from 'library/Inputs/Hash';
 
 export const RegisterParathread = () => {
   const { chainSpec } = useParachain();
@@ -67,6 +68,28 @@ export const RegisterParathread = () => {
           readOnly={true}
           disabled={true}
           disabledText="Para ID Registrant Not Set"
+        />
+      </section>
+
+      <section>
+        <Label value="WebAssembly Runtime" />
+        <Hash
+          onChange={(val) => {
+            console.debug(val);
+            // TODO: implement
+          }}
+          value={''}
+        />
+      </section>
+
+      <section>
+        <Label value="Genesis State" />
+        <Hash
+          onChange={(val) => {
+            console.debug(val);
+            // TODO: implement
+          }}
+          value={''}
         />
       </section>
     </FormWrapper>
