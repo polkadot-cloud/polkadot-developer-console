@@ -62,6 +62,7 @@ export const ContentWrapper = styled.div`
   a {
     color: var(--accent-color-primary);
   }
+
   .header {
     width: 100%;
     display: flex;

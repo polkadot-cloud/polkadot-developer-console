@@ -55,6 +55,11 @@ export const ParaIdOptionsWrapper = styled.div`
         color: var(--text-color-primary);
         text-align: left;
         margin-top: 0.5rem;
+
+        &.standalone {
+          margin-top: 2.5rem;
+          padding-left: 0.2rem;
+        }
       }
 
       > .input {
