@@ -81,7 +81,6 @@ p {
 /* Define default anchor style. */
 
 a {
-  font-family: InterBold, sans-serif;
   text-decoration: none;
   cursor: pointer;
 }
