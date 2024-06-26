@@ -28,6 +28,9 @@ export const AccountId32 = ({
   onMount,
   onRender,
   onChange,
+  readOnly,
+  disabled: defaultDisabled,
+  disabledText,
 }: AccountId32Props) => {
   const { tabId } = useActiveTab();
   const { getInputMetaValue, setInputMetaValue } = useInputMeta();
@@ -40,18 +43,24 @@ export const AccountId32 = ({
     onRender(INPUT_TYPE);
   }
 
-  // Ref object for the input element.
+  // Ref for the input element.
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Track whether the input form has been filtered.
+  const editedRef = useRef<boolean>(false);
 
   // Get input value from input meta.
   const inputMetaValue = getInputMetaValue(tabId, inputId) || '';
 
-  // The current selected address. If input meta value is not present, use the the first imported
-  // account, if any.
-  const selectedAddress =
-    inputMetaValue === undefined
-      ? defaultAddress || accounts?.[0]?.address || ''
-      : defaultAddress || '';
+  // If the input has not yet been edited, use the default address, or the first imported account,
+  // if any. Otherwise, filter the accounts based on the input value.
+  let selectedAddress;
+  if (!editedRef.current) {
+    selectedAddress = defaultAddress || accounts?.[0]?.address || '';
+  } else {
+    selectedAddress =
+      accounts?.find(({ name }) => name === inputMetaValue)?.address || '';
+  }
 
   // The current value of the input. Attempts to find an account name, or uses the selected address,
   // if present.
@@ -63,14 +72,13 @@ export const AccountId32 = ({
 
   // Handle input value change.
   const handleInputChange = (val: string) => {
+    editedRef.current = true;
     // Update input search value.
     setInputMetaValue(tabId, inputId, val);
 
     // Get the first address from `accounts` that starts with `val`, or fall back to default.
     const address =
-      accounts.find(({ name }) => name.startsWith(val))?.address ||
-      defaultAddress ||
-      '';
+      accounts.find(({ name }) => name.startsWith(val))?.address || '';
 
     if (onChange !== undefined) {
       onChange(address);
@@ -107,6 +115,18 @@ export const AccountId32 = ({
         )
       : accounts;
 
+  // Input is disabled if there are no accounts to choose from.
+  const disabled = defaultDisabled || accounts.length === 0;
+
+  // Determine input value. If read only, always display the current value - even if disabled - or
+  // fall back to disabled text. Otherwise. If disabled, show the disabled text.
+  let inputValue;
+  if (readOnly) {
+    inputValue = value || disabledText || 'No Accounts';
+  } else {
+    inputValue = disabled ? disabledText || 'No Accounts' : value || '';
+  }
+
   // Set correct input value on tab change.
   useEffect(() => {
     setInputMetaValue(
@@ -129,7 +149,7 @@ export const AccountId32 = ({
 
   return (
     <span style={{ position: 'relative' }}>
-      <TextInputWrapper className="input">
+      <TextInputWrapper className={`input${disabled ? ` disabled` : ``}`}>
         <span className="icon">
           <Polkicon
             address={selectedAddress}
@@ -142,7 +162,7 @@ export const AccountId32 = ({
           ref={inputRef}
           type="text"
           className="ignore-outside-alerter-search-input"
-          value={value || ''}
+          value={inputValue}
           onChange={(ev) => handleInputChange(ev.currentTarget.value)}
           onFocus={() => {
             // Select entire value on focus.
@@ -160,6 +180,7 @@ export const AccountId32 = ({
               ev.currentTarget.blur();
             }
           }}
+          disabled={disabled}
         />
         <span
           onClick={() => {

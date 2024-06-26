@@ -3,7 +3,7 @@
 
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useParaSetup } from 'contexts/ParaSetup';
-import { ProgressWrapper, ProgressBadgeWrapper } from '../Wrappers';
+import { ProgressWrapper, ProgressBadgeWrapper } from './Wrappers';
 import { Icon } from '../Icon';
 import { Section } from './Section';
 import { Connector } from './Connector';

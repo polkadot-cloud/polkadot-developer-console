@@ -46,11 +46,11 @@ export const Header = () => {
       </div>
       <div>
         <button type="button" onClick={() => window.open(DocsUrl)}>
-          <FontAwesomeIcon icon={faBooks} transform="shrink-2" />
+          <FontAwesomeIcon icon={faBooks} transform="shrink-1" />
         </button>
 
         <button type="button" onClick={() => window.open(GithubRepoUrl)}>
-          <FontAwesomeIcon icon={faGithub} transform="grow-0" />
+          <FontAwesomeIcon icon={faGithub} transform="grow-1" />
         </button>
       </div>
     </HeaderWrapper>

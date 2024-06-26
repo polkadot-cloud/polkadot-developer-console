@@ -52,12 +52,6 @@ export const HeaderWrapper = styled.div`
         transition: opacity 0.2s;
         margin-left: 0.9rem;
 
-        > .svg {
-          margin-top: 0.15rem;
-          width: 0.9rem;
-          height: 0.9rem;
-        }
-
         &:hover {
           opacity: 1;
         }
