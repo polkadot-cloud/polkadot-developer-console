@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { FormWrapper } from 'routes/Home/Wrappers';
-import { SetupPrompt } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleInfo } from '@fortawesome/pro-regular-svg-icons';
 import { faExternalLinkAlt } from '@fortawesome/pro-solid-svg-icons';
 import { useReserveParaId } from 'contexts/ParaSetup/ReserveParaId';
 import { useActiveTab } from 'contexts/ActiveTab';
@@ -12,6 +10,7 @@ import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useParachain } from 'routes/ParachainSetup/Provider';
 import { Label } from 'library/Inputs/Label';
+import { Prompt } from '../Prompt';
 
 export const RegisterParathread = () => {
   const { chainSpec } = useParachain();
@@ -36,17 +35,14 @@ export const RegisterParathread = () => {
 
   return (
     <FormWrapper>
-      <h3>Register your Parathread</h3>
-
-      <SetupPrompt>
-        <section>
-          <FontAwesomeIcon icon={faCircleInfo} className="info-svg" />
-        </section>
+      <Prompt>
         <section>
           <h4>
             You can now configure your node using your acquired Para ID, and
             export your WebAssembly runtime and genesis state. Details on how to
-            do this can be found in the Substrate.io article{' '}
+            do this can be found in the Substrate.io article:
+          </h4>
+          <h4>
             <a
               href="https://docs.substrate.io/tutorials/build-a-parachain/acquire-a-testnet-slot/#export-required-files"
               rel="noreferrer"
@@ -58,7 +54,9 @@ export const RegisterParathread = () => {
             .
           </h4>
         </section>
-      </SetupPrompt>
+      </Prompt>
+
+      <h3>Register your Parathread</h3>
 
       <section>
         <Label value="Registrant" />
