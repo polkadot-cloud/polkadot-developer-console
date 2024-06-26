@@ -263,12 +263,20 @@ export const TextInputWrapper = styled.div`
 
     &:hover {
       border-color: var(--accent-color-secondary);
+
+      &.disabled {
+        border-color: var(--border-secondary-color);
+      }
     }
 
     > input,
     > .deadInput {
       color: var(--text-color-primary);
       font-size: 0.8rem;
+
+      &:disabled {
+        color: var(--text-color-tertiary);
+      }
     }
   }
 

@@ -17,7 +17,7 @@ export const RegisterParathread = () => {
   const { chainSpec } = useParachain();
   const { tabId, metaKey } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
-  const { getSelectedAccount } = useReserveParaId();
+  const { getSelectedAccount, validateParaId } = useReserveParaId();
 
   const accounts = chainSpec
     ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
@@ -26,10 +26,14 @@ export const RegisterParathread = () => {
   // Get the selected account for the Para ID.
   const selectedAccount = getSelectedAccount(tabId) || '';
 
-  // Get the selected account for the Para ID.
-  const registrantInputValues = accounts.filter(
-    (account) => account.address === selectedAccount
-  );
+  // Get whether a valid para id has been entered.
+  const isValidParaId = validateParaId(tabId, selectedAccount);
+
+  // Get the selected account if a valid para id has been entered, otherwise return an empty array.
+  const registrantInputValues = !isValidParaId
+    ? []
+    : accounts.filter((account) => account.address === selectedAccount);
+
   return (
     <FormWrapper>
       <h3>Register your Parathread</h3>
@@ -60,8 +64,11 @@ export const RegisterParathread = () => {
         <Label value="Registrant" />
         <AccountId32
           inputId={`${metaKey}_registerParathreadRegistrant`}
-          defaultAddress={selectedAccount}
+          defaultAddress={isValidParaId ? selectedAccount : ''}
           accounts={registrantInputValues}
+          readOnly={true}
+          disabled={true}
+          disabledText="Para ID Registrant Not Set"
         />
       </section>
     </FormWrapper>
