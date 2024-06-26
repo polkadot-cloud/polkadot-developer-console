@@ -20,7 +20,6 @@ export interface NetworkDirectoryItem {
     unit: string;
   };
   name: string;
-  icon: DirectoryId;
   initial?: string;
   color: string;
   providers: Record<string, string>;
