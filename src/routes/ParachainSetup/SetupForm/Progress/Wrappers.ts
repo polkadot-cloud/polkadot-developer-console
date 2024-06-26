@@ -78,6 +78,10 @@ export const ProgressWrapper = styled.div`
         border-color: transparent;
         opacity: 0;
       }
+
+      @media (max-width: 850px) {
+        display: none;
+      }
     }
 
     > .connector {
