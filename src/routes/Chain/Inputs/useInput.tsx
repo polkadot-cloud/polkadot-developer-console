@@ -350,7 +350,6 @@ export const useInput = () => {
         case 'Bytes':
           return (
             <Hash
-              {...inputArgConfig}
               onMount={onMount}
               onRender={onRender}
               onChange={(val) => {
@@ -390,7 +389,6 @@ export const useInput = () => {
           return (
             <Section indent={indent}>
               <Checkbox
-                {...inputArgConfig}
                 onMount={onMount}
                 onRender={onRender}
                 onChange={(val) => {
