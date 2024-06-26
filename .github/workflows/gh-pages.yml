@@ -49,7 +49,7 @@ jobs:
 
       - name: Build
         working-directory: '.'
-        run: yarn build:pages
+        run: yarn build
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
