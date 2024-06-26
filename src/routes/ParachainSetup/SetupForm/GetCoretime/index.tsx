@@ -9,8 +9,6 @@ import { faExternalLink } from '@fortawesome/pro-regular-svg-icons';
 
 export const GetCoretime = () => (
   <FormWrapper>
-    <h3>Get Coretime and start processing blocks.</h3>
-
     <Prompt>
       <section>
         <h4>
@@ -19,6 +17,8 @@ export const GetCoretime = () => (
         </h4>
       </section>
     </Prompt>
+
+    <h3>Coretime Marketplace Platforms:</h3>
 
     <ParaIdOptionsWrapper>
       <section>
