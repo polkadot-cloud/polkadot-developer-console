@@ -11,6 +11,7 @@ import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useParachain } from 'routes/ParachainSetup/Provider';
 import { Label } from 'library/Inputs/Label';
 import { Prompt } from '../Prompt';
+import { Hash } from 'library/Inputs/Hash';
 
 export const RegisterParathread = () => {
   const { chainSpec } = useParachain();
@@ -38,9 +39,9 @@ export const RegisterParathread = () => {
       <Prompt>
         <section>
           <h4>
-            You can now configure your node using your acquired Para ID, and
-            export your WebAssembly runtime and genesis state. Details on how to
-            do this can be found in the Substrate.io article:
+            Configure your node using your acquired Para ID, and export your
+            updated WebAssembly runtime and genesis state. Details on how to do
+            this can be found in the Substrate.io article:
           </h4>
           <h4>
             <a
@@ -67,6 +68,28 @@ export const RegisterParathread = () => {
           readOnly={true}
           disabled={true}
           disabledText="Para ID Registrant Not Set"
+        />
+      </section>
+
+      <section>
+        <Label value="WebAssembly Runtime" />
+        <Hash
+          onChange={(val) => {
+            console.debug(val);
+            // TODO: implement
+          }}
+          value={''}
+        />
+      </section>
+
+      <section>
+        <Label value="Genesis State" />
+        <Hash
+          onChange={(val) => {
+            console.debug(val);
+            // TODO: implement
+          }}
+          value={''}
         />
       </section>
     </FormWrapper>
