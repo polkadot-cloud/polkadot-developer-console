@@ -39,9 +39,9 @@ export const RegisterParathread = () => {
       <Prompt>
         <section>
           <h4>
-            You can now configure your node using your acquired Para ID, and
-            export your updated WebAssembly runtime and genesis state. Details
-            on how to do this can be found in the Substrate.io article:
+            Configure your node using your acquired Para ID, and export your
+            updated WebAssembly runtime and genesis state. Details on how to do
+            this can be found in the Substrate.io article:
           </h4>
           <h4>
             <a
