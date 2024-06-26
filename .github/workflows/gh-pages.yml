@@ -51,11 +51,6 @@ jobs:
         working-directory: '.'
         run: yarn build:pages
 
-      - name: Update `gh-pages` branch
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: build
-
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
