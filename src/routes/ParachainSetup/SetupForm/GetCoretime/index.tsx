@@ -12,7 +12,7 @@ export const GetCoretime = () => (
     <Prompt>
       <section>
         <h4>
-          Developer console does not yet support purchasing of Coretime. Please
+          Developer Console does not yet support purchasing of Coretime. Please
           use the following platforms to continue to purchase Coretime.
         </h4>
       </section>
