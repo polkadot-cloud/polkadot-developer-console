@@ -19,6 +19,11 @@ export const useBrowseListWithKeys = ({
       (item: AnyJson) => item === activeValue
     );
 
+    // Ignore all other controls here.
+    if (!['ArrowDown', 'ArrowUp'].includes(key)) {
+      return;
+    }
+
     // Determine the new item index, defaulting to the active pallet if present in the filtered
     // list, otherwise 0
     let newIndex = activeIndex > listItems.length - 1 ? 0 : activeIndex;
