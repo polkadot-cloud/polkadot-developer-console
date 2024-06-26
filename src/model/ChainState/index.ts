@@ -134,6 +134,33 @@ export class ChainState {
             args = [args];
           }
 
+          // Prepare subscription config metadata.
+          const subscriptionConfig = {
+            type,
+            namespace,
+            method,
+            args,
+            timestamp,
+            pinned: config?.pinned || false,
+          };
+
+          // Prepare subscription data for event detail.
+          const detail: ChainStateEventDetail = {
+            ...subscriptionConfig,
+            ownerId: this.#ownerId,
+            instanceId: this.#instanceId,
+            key: subscriptionKey,
+            pinned,
+            result: undefined,
+          };
+
+          // Dispatch an event to the UI for preloading state.
+          document.dispatchEvent(
+            new CustomEvent('callback-new-chain-state-subscription', {
+              detail,
+            })
+          );
+
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const unsub = await (api as any)[apiNamespace][namespace][method](
             ...Object.values(args || [undefined]),
@@ -142,35 +169,20 @@ export class ChainState {
               const result =
                 type === 'raw' ? res.data.unwrapOr(undefined) : res;
 
-              const callConfig = {
-                type,
-                namespace,
-                method,
-                args,
-                timestamp,
-                pinned: config?.pinned || false,
-              };
-
               if (result !== undefined) {
                 // Persist result to class chain state.
                 this.subscriptions[subscriptionKey] = {
-                  ...callConfig,
-                  result,
-                };
-
-                const detail: ChainStateEventDetail = {
-                  ...callConfig,
-                  ownerId: this.#ownerId,
-                  instanceId: this.#instanceId,
-                  key: subscriptionKey,
-                  pinned,
+                  ...subscriptionConfig,
                   result,
                 };
 
                 // Send result to UI.
                 document.dispatchEvent(
                   new CustomEvent('callback-new-chain-state-subscription', {
-                    detail,
+                    detail: {
+                      ...detail,
+                      result,
+                    },
                   })
                 );
               } else {
