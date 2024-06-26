@@ -50,7 +50,7 @@ export const HeaderWrapper = styled.div`
       > button {
         opacity: 0.4;
         transition: opacity 0.2s;
-        margin-left: 0.9rem;
+        margin-left: 0.95rem;
 
         &:hover {
           opacity: 1;
