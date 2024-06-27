@@ -25,6 +25,7 @@ import { isCustomEvent } from 'Utils';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useReserveParaId } from './ReserveParaId';
 import * as local from './Local';
+import { useRegisterParathread } from './RegisterParathread';
 
 export const ParaSetupContext = createContext<ParaSetupContextInterface>(
   defaultParaSetupContext
@@ -50,6 +51,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
     removeTabParaIdData,
     removeNextParaIdChain,
   } = useReserveParaId();
+  const { removeTabParathreadData } = useRegisterParathread();
   const { getChainSpec, handleConnectApi, getApiInstanceById } =
     useChainSpaceEnv();
 
@@ -100,6 +102,7 @@ export const ParaSetupProvider = ({ children }: { children: ReactNode }) => {
       removeNextParaId(chainId);
       removeNextParaIdChain(chainId);
       removeTabParaIdData(tabId);
+      removeTabParathreadData(tabId);
     }
   };
 

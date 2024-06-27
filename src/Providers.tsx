@@ -35,6 +35,7 @@ import { OverlayProvider } from 'library/Overlay/Provider';
 import { PromptProvider } from 'contexts/Prompt';
 import { LedgerHardwareProvider } from 'contexts/LedgerHardware';
 import { ReserveParaIdProvider } from 'contexts/ParaSetup/ReserveParaId';
+import { RegisterParathreadProvider } from 'contexts/ParaSetup/RegisterParathread';
 import { InputMetaProvider } from 'contexts/InputMeta';
 import { DisconnectTabProvider } from 'contexts/DisconnectTab';
 
@@ -85,6 +86,7 @@ export const Providers = () => {
 
     // Task: `parachainSetup` related providers.
     ReserveParaIdProvider,
+    RegisterParathreadProvider,
     ParaSetupProvider,
 
     // Tab disconnect and destroy provider.

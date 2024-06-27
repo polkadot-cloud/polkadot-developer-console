@@ -127,20 +127,13 @@ export const AccountId32 = ({
     inputValue = disabled ? disabledText || 'No Accounts' : value || '';
   }
 
-  // Set correct input value on tab change.
+  // Call on mount logic in initial render if provided. Set correct input value on tab change.
   useEffect(() => {
     setInputMetaValue(tabId, inputId, inputValue);
     if (onMount !== undefined) {
       onMount(selectedAddress);
     }
   }, [tabId]);
-
-  // Call on mount logic in initial render if provided.
-  useEffect(() => {
-    if (onMount !== undefined) {
-      onMount(selectedAddress);
-    }
-  }, []);
 
   return (
     <span style={{ position: 'relative' }}>
@@ -179,7 +172,7 @@ export const AccountId32 = ({
         />
         <span
           onClick={() => {
-            if (!dropdownOpen) {
+            if (!dropdownOpen && !readOnly && !disabled) {
               setDropdownOpen(true);
             }
           }}

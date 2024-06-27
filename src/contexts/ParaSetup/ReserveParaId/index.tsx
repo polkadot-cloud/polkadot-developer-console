@@ -250,8 +250,10 @@ export const ReserveParaIdProvider = ({
         getReservedNextParaId,
         setReservedNextParaId,
 
+        // Validate a para id for a tab.
         validateParaId,
 
+        // Tab destroy state tidy up.
         removeTabParaIdData,
       }}
     >
