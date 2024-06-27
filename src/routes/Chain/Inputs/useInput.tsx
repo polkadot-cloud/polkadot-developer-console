@@ -204,9 +204,12 @@ export const useInput = () => {
     // Record this input type.
     addInputTypeAtKey(inputMeta, inputKey, indexKey, 'composite');
 
+    // Do not indent composite if it only contains one field.
+    const totalFields = arg.composite.length;
+
     // Render the composite fields.
     return (
-      <Section indent={true}>
+      <Section indent={totalFields > 1}>
         {arg.composite.map((field: ScrapedFieldItem, index: number) => {
           const childKey = `${inputKey}_${index}`;
 

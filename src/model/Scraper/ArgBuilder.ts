@@ -49,9 +49,15 @@ export class ArgBuilder {
     do {
       console.debug('iteration', i);
 
-      // If only a single input to process, format it and exit early.
+      // If up to top level arguments, format values and exit early.
       if (maxLength === 1) {
-        this.formattedArgs[0] = this.formattedArgs['0']?.value || '';
+        this.formattedArgs = Object.entries(this.formattedArgs).reduce(
+          (acc: Record<string, AnyJson>, [key, arg]) => {
+            acc[key] = arg?.value || '';
+            return acc;
+          },
+          {}
+        );
         break;
       }
 
@@ -79,6 +85,11 @@ export class ArgBuilder {
 
       i++;
     } while (deepestKeys.length > 1);
+
+    // If extrinsic args are being formatted, collate arguments into a single array.
+    if (Object.keys(this.formattedArgs).length > 1) {
+      return { 0: Object.values(this.formattedArgs) };
+    }
 
     return this.formattedArgs;
   }
@@ -196,6 +207,9 @@ export class ArgBuilder {
     }
 
     switch (inputType) {
+      case 'compact':
+        return this.formatCompact(entries);
+
       case 'composite':
         return this.formatComposite(entries, indexKey);
 
@@ -260,11 +274,38 @@ export class ArgBuilder {
     const typeClass = this.scraper.getClass(indexKey) as CompositeType;
     const fields = typeClass.fields;
 
-    const result = fields.reduce((acc: AnyJson, { name }, i) => {
-      acc[name] = entries[i].value;
-      return acc;
-    }, {});
+    // if a field does not have a name, this composite type should be treated as a tuple.
+    const isTuple = fields.every(({ name }) => name === null);
+
+    let result;
+    if (isTuple) {
+      result =
+        entries.length === 1
+          ? // If only one entry, return it directly.
+            entries[0]
+          : // If multiple entries, return them as an array.
+            entries.map(({ value }: { value: string }) => value);
+    } else {
+      // Names present - format object with names as keys.
+      result = fields.reduce((acc: AnyJson, { name }, i) => {
+        acc[name] = entries[i].value;
+        return acc;
+      }, {});
+    }
 
     return result;
+  }
+
+  // Format a compact input value. Simply unwrap if it is an array of > 1 value, otherwise return.
+  formatCompact(entries: AnyJson) {
+    if (!Array.isArray(entries)) {
+      return entries;
+    }
+
+    if (entries.length === 1) {
+      return entries[0];
+    }
+
+    return entries;
   }
 }
