@@ -140,6 +140,11 @@ export const RegisterParathread = () => {
           value={genesisState}
         />
       </section>
+
+      <section>
+        {/* TODO: Esimtated deposit for registering parathread */}
+      </section>
+
       <section>
         <SubmitTx
           {...submitExtrinsic}
