@@ -12,12 +12,15 @@ import { useParachain } from 'routes/ParachainSetup/Provider';
 import { Label } from 'library/Inputs/Label';
 import { Prompt } from '../Prompt';
 import { Hash } from 'library/Inputs/Hash';
+import { useRegisterParathread } from 'contexts/ParaSetup/RegisterParathread';
 
 export const RegisterParathread = () => {
   const { chainSpec } = useParachain();
   const { tabId, metaKey } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
   const { getSelectedAccount, validateParaId } = useReserveParaId();
+  const { getRuntimeValue, setRuntimeValue, getGenesisState, setGenesisState } =
+    useRegisterParathread();
 
   const accounts = chainSpec
     ? getAccounts(chainSpec.version.specName, chainSpec.ss58Prefix)
@@ -75,10 +78,9 @@ export const RegisterParathread = () => {
         <Label value="WebAssembly Runtime" />
         <Hash
           onChange={(val) => {
-            console.debug(val);
-            // TODO: implement
+            setRuntimeValue(tabId, val);
           }}
-          value={''}
+          value={getRuntimeValue(tabId) || ''}
         />
       </section>
 
@@ -86,10 +88,9 @@ export const RegisterParathread = () => {
         <Label value="Genesis State" />
         <Hash
           onChange={(val) => {
-            console.debug(val);
-            // TODO: implement
+            setGenesisState(tabId, val);
           }}
-          value={''}
+          value={getGenesisState(tabId) || ''}
         />
       </section>
     </FormWrapper>
