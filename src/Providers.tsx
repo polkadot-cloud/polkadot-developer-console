@@ -39,10 +39,10 @@ import { RegisterParathreadProvider } from 'contexts/ParaSetup/RegisterParathrea
 import { InputMetaProvider } from 'contexts/InputMeta';
 import { DisconnectTabProvider } from 'contexts/DisconnectTab';
 
-// !! --------------------------------
-// !! Provider order matters.
-// !! --------------------------------
 export const Providers = () => {
+  // !! --------------------------------
+  // !! Provider order matters.
+  // !! --------------------------------
   const providers: Provider<AnyJson>[] = [
     // Workspace and tab providers.
     SettingsProvider,
