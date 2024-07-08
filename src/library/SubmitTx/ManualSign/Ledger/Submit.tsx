@@ -34,7 +34,7 @@ export const Submit = ({
   const { instanceId, transactionVersion, chainId, ss58Prefix } =
     useExtrinsicData();
 
-  const { appName } = getLedgerApp(chainId);
+  const { txMetadataChainId } = getLedgerApp(chainId);
 
   const getAddressIndex = () =>
     (getAccount(submitAddress || '', chainId, ss58Prefix) as LedgerAccount)
@@ -46,12 +46,12 @@ export const Submit = ({
     const accountIndex = getAddressIndex();
     const payload = await getTxPayload(instanceId);
 
-    await handleSignTx(appName, uid, accountIndex, payload);
+    await handleSignTx(txMetadataChainId, uid, accountIndex, payload);
   };
 
   // Check device runtime version.
   const handleCheckRuntimeVersion = async () => {
-    await checkRuntimeVersion(appName, transactionVersion);
+    await checkRuntimeVersion(txMetadataChainId, transactionVersion);
   };
 
   // Is the transaction ready to be submitted?

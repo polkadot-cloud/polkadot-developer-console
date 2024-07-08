@@ -9,7 +9,6 @@ import type { LedgerResponse } from 'contexts/LedgerHardware/types';
 import { useTxMeta } from 'contexts/TxMeta';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import { getLedgerApp } from 'contexts/LedgerHardware/Utils';
 import type { SubmitProps } from '../../types';
 import { Submit } from './Submit';
 import { appendOrEmpty } from '@w3ux/utils';
@@ -45,7 +44,6 @@ export const Ledger = ({
   const { instanceId, chainId, ss58Prefix, valid } = useExtrinsicData();
 
   const txFeesValid = txFeeValid(instanceId);
-  const { appName } = getLedgerApp(chainId);
 
   // Handle new Ledger status report.
   const handleLedgerStatusResponse = (response: LedgerResponse) => {
@@ -120,7 +118,7 @@ export const Ledger = ({
       {runtimesInconsistent && (
         <div className="inner warning">
           <div>
-            <p className="prompt">{`Your ${appName} Ledger app is not configured to the latest runtime version`}</p>
+            <p className="prompt">{`Your Polkadot Ledger app is not configured to the latest runtime version`}</p>
           </div>
         </div>
       )}

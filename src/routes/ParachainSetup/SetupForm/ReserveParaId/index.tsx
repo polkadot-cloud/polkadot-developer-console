@@ -107,10 +107,11 @@ export const ReserveParaId = () => {
 
   // Prepare extrinsic for reserving the next para id.
   const submitExtrinsic = useSubmitExtrinsic({
-    instanceId,
     api,
+    instanceId,
     chainId,
     ss58Prefix: ss58,
+    unit,
     tx: getTx(),
     from: selectedAccount,
     shouldSubmit: true,
