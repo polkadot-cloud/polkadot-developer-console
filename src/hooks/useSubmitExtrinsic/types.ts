@@ -11,6 +11,7 @@ export interface UseSubmitExtrinsicProps {
   instanceId: ApiInstanceId;
   api: ApiPromise;
   chainId: ChainId;
+  unit: string;
   ss58Prefix: number;
   tx: AnyJson;
   from: MaybeAddress;

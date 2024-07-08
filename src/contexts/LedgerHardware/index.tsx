@@ -81,35 +81,42 @@ export const LedgerHardwareProvider = ({
 
   // Checks whether runtime version is inconsistent with device metadata.
   const checkRuntimeVersion = async (
-    appName: string,
+    txMetadataChainId: string,
     transactionVersion: string
   ) => {
     try {
       setIsExecuting(true);
-      const { app } = await Ledger.initialise(appName);
+      const { app } = await Ledger.initialise(txMetadataChainId);
       const result = await Ledger.getVersion(app);
+      const major = result?.major || 0;
 
       if (Ledger.isError(result)) {
         throw new Error(result.error_message);
       }
+
       setIsExecuting(false);
       resetFeedback();
 
-      if (result.major < transactionVersion) {
+      if (major < transactionVersion) {
         runtimesInconsistent.current = true;
       }
+
       setIntegrityChecked(true);
     } catch (err) {
-      handleErrors(appName, err);
+      handleErrors(err);
     }
   };
 
   // Gets an address from Ledger device.
-  const handleGetAddress = async (appName: string, accountIndex: number) => {
+  const handleGetAddress = async (
+    txMetadataChainId: string,
+    accountIndex: number,
+    ss58Prefix: number
+  ) => {
     try {
       setIsExecuting(true);
-      const { app, productName } = await Ledger.initialise(appName);
-      const result = await Ledger.getAddress(app, accountIndex);
+      const { app, productName } = await Ledger.initialise(txMetadataChainId);
+      const result = await Ledger.getAddress(app, accountIndex, ss58Prefix);
 
       if (Ledger.isError(result)) {
         throw new Error(result.error_message);
@@ -126,29 +133,27 @@ export const LedgerHardwareProvider = ({
         body: [result],
       });
     } catch (err) {
-      handleErrors(appName, err);
+      handleErrors(err);
     }
   };
 
   // Signs a payload on Ledger device.
   const handleSignTx = async (
-    appName: string,
+    txMetadataChainId: string,
     uid: number,
     index: number,
     payload: AnyJson
   ) => {
     try {
       setIsExecuting(true);
-      const { app, productName } = await Ledger.initialise(appName);
+      const { app, productName } = await Ledger.initialise(txMetadataChainId);
       setFeedback('Approve transaction on Ledger');
 
       const result = await Ledger.signPayload(app, index, payload);
 
-      if (Ledger.isError(result)) {
-        throw new Error(result.error_message);
-      }
       setIsExecuting(false);
       setFeedback('Signed Transaction Successfully.');
+
       setTransportResponse({
         statusCode: 'SignedPayload',
         device: { productName },
@@ -158,12 +163,12 @@ export const LedgerHardwareProvider = ({
         },
       });
     } catch (err) {
-      handleErrors(appName, err);
+      handleErrors(err);
     }
   };
 
   // Handles errors that occur during device calls.
-  const handleErrors = (appName: string, err: unknown) => {
+  const handleErrors = (err: unknown) => {
     // Update feedback and status code state based on error received.
     switch (getLedgerErrorType(String(err))) {
       // Occurs when the device does not respond to a request within the timeout period.
@@ -221,7 +226,7 @@ export const LedgerHardwareProvider = ({
       // Occurs when the app (e.g. Polkadot) is not open.
       case 'appNotOpen':
         setStatusFeedback({
-          message: `Open the ${appName} app on your Ledger device.`,
+          message: `Open the Polkadot app on your Ledger device.`,
           helpKey: 'Open App On Ledger',
           code: 'TransactionRejected',
         });
@@ -244,7 +249,7 @@ export const LedgerHardwareProvider = ({
         break;
       // Handle all other errors.
       default:
-        setFeedback(`Open the ${appName} app on your Ledger device.`);
+        setFeedback(`Open the Polkadot app on your Ledger device.`);
         setStatusCode('failure', 'AppNotOpen');
     }
 

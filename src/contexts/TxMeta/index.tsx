@@ -67,7 +67,7 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
   const txFeeValid = (instanceId: ApiInstanceId) =>
     !getTxFee(instanceId).isZero();
 
-  // Store the payloads of transactions if extrinsics require manual signing (e.g. Ledger). payloads
+  // Store the payloads of transactions if extrinsics require manual signing (e.g. Ledger). Payloads
   // are calculated asynchronously and extrinsic associated with them may be cancelled. For this
   // reason we give every payload a uid, and check whether this uid matches the active extrinsic
   // before submitting it.
@@ -82,6 +82,10 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
   const getTxPayload = (instanceId: ApiInstanceId) =>
     txPayloadsRef.current[instanceId]?.payload;
 
+  // Get a  JSON representation of a payload for a given api instance.
+  const getTxPayloadValue = (instanceId: ApiInstanceId) =>
+    txPayloadsRef.current[instanceId]?.payloadValue;
+
   // Get a uid for a given tx payload.
   const getTxPayloadUid = (instanceId: ApiInstanceId) =>
     txPayloadsRef.current[instanceId]?.uid;
@@ -94,6 +98,7 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
   const setTxPayload = (
     instanceId: ApiInstanceId,
     payload: AnyJson,
+    payloadValue: AnyJson,
     uid: number
   ) => {
     setStateWithRef(
@@ -101,6 +106,7 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
         ...txPayloadsRef.current,
         [instanceId]: {
           payload,
+          payloadValue,
           uid,
         },
       },
@@ -211,6 +217,7 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
 
         // Manage payloads.
         getTxPayload,
+        getTxPayloadValue,
         getTxPayloadUid,
         setTxPayload,
         removeTxPayload,

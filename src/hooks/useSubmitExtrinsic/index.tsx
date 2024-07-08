@@ -18,6 +18,7 @@ import { useLedgerHardware } from 'contexts/LedgerHardware';
 export const useSubmitExtrinsic = ({
   instanceId,
   chainId,
+  unit,
   ss58Prefix,
   api,
   tx,
@@ -30,8 +31,8 @@ export const useSubmitExtrinsic = ({
     getTxFee,
     setTxFee,
     setSender,
-    getTxPayload,
     setTxPayload,
+    getTxPayloadValue,
     getTxSignature,
     removeTxPayload,
     removeTxSignature,
@@ -39,17 +40,20 @@ export const useSubmitExtrinsic = ({
   } = useTxMeta();
   const { getNonce } = useAccounts();
   const { extensionsStatus } = useExtensions();
+  const { handleResetLedgerTask } = useLedgerHardware();
   const { addPendingNonce, removePendingNonce } = useTxMeta();
   const { getAccount, requiresManualSign } = useImportedAccounts();
-  const { handleResetLedgerTask } = useLedgerHardware();
 
   const txFees = getTxFee(instanceId);
   const nonce = getNonce(instanceId, from);
 
   const { buildPayload } = useBuildPayload({
     instanceId,
+    chainId,
     api,
     nonce,
+    unit,
+    ss58Prefix,
     setPayload: setTxPayload,
   });
 
@@ -199,13 +203,17 @@ export const useSubmitExtrinsic = ({
     // pre-submission state update
     setSubmitting(true);
 
-    const txPayload = getTxPayload(instanceId);
     const txSignature = getTxSignature(instanceId);
+    const txPayloadValue = getTxPayloadValue(instanceId);
 
     // handle signed transaction.
     if (getTxSignature(instanceId)) {
       try {
-        txRef.current.addSignature(fromRef.current, txSignature, txPayload);
+        txRef.current.addSignature(
+          fromRef.current,
+          txSignature,
+          txPayloadValue
+        );
 
         const unsub = await txRef.current.send(
           ({ status, events = [] }: { status: AnyJson; events: AnyJson[] }) => {
