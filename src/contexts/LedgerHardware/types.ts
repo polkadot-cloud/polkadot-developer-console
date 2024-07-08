@@ -8,7 +8,7 @@ export interface LedgerHardwareContextInterface {
   integrityChecked: boolean;
   setIntegrityChecked: (checked: boolean) => void;
   checkRuntimeVersion: (
-    appName: string,
+    txMetadataChainId: string,
     transactionVersion: string
   ) => Promise<void>;
   transportResponse: AnyJson;
@@ -21,11 +21,15 @@ export interface LedgerHardwareContextInterface {
   setFeedback: (message: string | null, helpKey?: string | null) => void;
   resetFeedback: () => void;
   handleUnmount: () => void;
-  handleErrors: (appName: string, err: unknown) => void;
+  handleErrors: (err: unknown) => void;
   runtimesInconsistent: boolean;
-  handleGetAddress: (appName: string, accountIndex: number) => Promise<void>;
+  handleGetAddress: (
+    txMetadataChainId: string,
+    accountIndex: number,
+    ss58Prefix: number
+  ) => Promise<void>;
   handleSignTx: (
-    appName: string,
+    txMetadataChainId: string,
     uid: number,
     index: number,
     payload: AnyJson
@@ -66,9 +70,9 @@ export type LedgerTask = 'get_address' | 'sign_tx';
 
 export type PairingStatus = 'paired' | 'unpaired' | 'unknown';
 
-export interface LedgerApp {
+export interface LedgerChain {
   network: DirectoryId;
-  appName: string;
+  txMetadataChainId: string;
 }
 
 export interface HandleErrorFeedback {

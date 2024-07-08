@@ -19,7 +19,7 @@ import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { ImportButtonWrapper, SubHeadingWrapper } from './Wrappers';
 import { faUsbDrive } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { LedgerApps } from 'contexts/LedgerHardware/defaults';
+import { LedgerChains } from 'contexts/LedgerHardware/defaults';
 import { useLedgerHardware } from 'contexts/LedgerHardware';
 import type { LedgerResponse } from 'contexts/LedgerHardware/types';
 import {
@@ -54,6 +54,9 @@ export const ManageLedger = ({
   // The directory id of the address list.
   const [directoryId, setDirectoryId] = useState<DirectoryId>('polkadot');
 
+  // The SS58 prefix of the network.
+  const ss58 = NetworkDirectory[directoryId].system.ss58;
+
   // Store addresses retreived from Ledger device. Defaults to local addresses.
   const [addresses, setAddresses] = useState<LedgerAccount[]>(
     getLedgerAccounts(directoryId)
@@ -64,13 +67,13 @@ export const ManageLedger = ({
   // shown instead.
   const [searchActive, setSearchActive] = useState<boolean>(false);
 
-  const { appName } = getLedgerApp(directoryId);
+  const { txMetadataChainId } = getLedgerApp(directoryId);
 
   // Get the currently actve chain name.
   const activeChain = NetworkDirectory[directoryId as DirectoryId];
 
   // Get the supported chains for ledger import.
-  const supportedChains = LedgerApps.map((a) => a.network);
+  const supportedChains = LedgerChains.map((a) => a.network);
 
   // Get whether the ledger device is currently executing a task.
   const isExecuting = getIsExecuting();
@@ -139,7 +142,7 @@ export const ManageLedger = ({
 
   // Ledger address getter.
   const onGetAddress = async () => {
-    await handleGetAddress(appName, getNextAddressIndex());
+    await handleGetAddress(txMetadataChainId, getNextAddressIndex(), ss58);
   };
 
   // Handle new Ledger status report.

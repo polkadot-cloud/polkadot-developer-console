@@ -58,10 +58,11 @@ export const Submit = ({ activePallet, activeItem }: SubmitProps) => {
 
   // Prepare the extrinsic.
   const submitExtrinsic = useSubmitExtrinsic({
-    instanceId,
     api,
+    instanceId,
     chainId,
     ss58Prefix,
+    unit,
     tx: getTx(),
     from: fromAddress,
     shouldSubmit: true,
