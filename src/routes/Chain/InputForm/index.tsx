@@ -32,14 +32,20 @@ export const InputForm = ({
         !!argTypes &&
         argTypes.map((arg: ScrapedItem, index: number) => (
           <Fragment key={`input_arg_${activePallet}_${activeItem}_${index}`}>
-            {readInput(arg, {
-              activePallet,
-              activeItem,
-              scraper,
-              inputKey: `${index}`,
-              namespace,
-              inputMeta,
-            })}
+            {readInput(
+              arg,
+              {
+                activePallet,
+                activeItem,
+                scraper,
+                inputKey: `${index}`,
+                namespace,
+                inputMeta,
+              },
+              {
+                prependLabel: `Arg ${index}: `,
+              }
+            )}
           </Fragment>
         ))}
       {onSubmit !== undefined && (
