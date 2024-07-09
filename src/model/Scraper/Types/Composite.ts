@@ -26,7 +26,7 @@ export class CompositeType extends Base implements MetadataType {
 
   // Get the input component of this type.
   input() {
-    let label = this.label();
+    let label = this.label;
 
     // If this composite is a sequence of u8s, then change the label to `Bytes`.
     if (compositeIsBytes(label, this)) {
