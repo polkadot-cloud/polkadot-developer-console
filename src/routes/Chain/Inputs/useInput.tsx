@@ -106,8 +106,9 @@ export const useInput = () => {
 
   // Renders an array input component.
   const renderArray = (arg: ScrapedItem, config: InputArgConfig) => {
-    const typeClass = config.scraper.getClass(arg.indexKey) as ArrayType;
-    const label = typeClass.label();
+    const { indexKey } = arg;
+    const typeClass = config.scraper.getClass(indexKey) as ArrayType;
+    const label = typeClass.label;
 
     // If array is a vector of bytes, render a hash input.
     if (arrayIsBytes(arg)) {
@@ -140,8 +141,8 @@ export const useInput = () => {
   ) => {
     const { indexKey } = arg;
     const typeClass = config.scraper.getClass(indexKey) as SequenceType;
-    const label = typeClass.label();
     const input = typeClass.input();
+    const label = typeClass.label;
 
     // If sequence is a vector of bytes, render a hash input.
     if (input !== 'array') {
@@ -187,9 +188,9 @@ export const useInput = () => {
   const renderComposite = (arg: ScrapedItem, config: InputArgConfig) => {
     const { indexKey } = arg;
     const typeClass = config.scraper.getClass(indexKey) as CompositeType;
-    const label = typeClass.label();
     const input = typeClass.input();
     const { inputKey, inputMeta } = config;
+    const label = typeClass.label;
 
     // If this composite is a custom input, render it and stop the recursive input loop.
     if (input !== 'indent') {
@@ -255,9 +256,19 @@ export const useInput = () => {
                 const { typeName, ...rest } = field;
                 const childKey = `${inputKey}_${index}`;
 
+                const childTypeClass = config.scraper.getClass(field.indexKey);
+                const childLabel = childTypeClass.label;
+
+                // Check if the child label is the same as the parent label. Compact types will
+                // always have a label, so we can ignore this one.
+                const duplicateLabel =
+                  childLabel === typeName || childTypeClass.type === 'compact';
+
                 return (
                   <Fragment key={`input_arg_${childKey}`}>
-                    <h4 className="standalone">{typeName}</h4>
+                    {!duplicateLabel && (
+                      <h4 className="standalone">{typeName}</h4>
+                    )}
                     {readInput(rest, { ...config, inputKey: childKey })}
                   </Fragment>
                 );
@@ -272,7 +283,7 @@ export const useInput = () => {
   // Renders an input component wrapped in an input section.
   const renderInput = (
     arg: ScrapedItem,
-    inputArgConfig: InputArgConfig,
+    config: InputArgConfig,
     options?: {
       indent?: boolean;
       prependLabel?: string;
@@ -293,7 +304,7 @@ export const useInput = () => {
       namespace,
       activePallet,
       activeItem,
-    } = inputArgConfig;
+    } = config;
 
     const { indexKey } = arg;
     const typeClass = scraper.getClass(indexKey);
@@ -302,9 +313,9 @@ export const useInput = () => {
     const keys = { inputKey, indexKey };
 
     // Determine input label.
-    const label = !typeClass.label()
+    const label = !typeClass.label
       ? undefined
-      : `${prependLabel ? `${prependLabel} ` : ``}${typeClass.label()}`;
+      : `${prependLabel ? `${prependLabel} ` : ``}${typeClass.label}`;
 
     // Get the input type.
     const input = overrideInput || typeClass.input();
@@ -372,12 +383,12 @@ export const useInput = () => {
                   // Child inputs changed - remove args.
                   resetInputArgsFromKey(
                     tabId,
-                    inputArgConfig.namespace,
-                    inputArgConfig.inputKey,
+                    config.namespace,
+                    config.inputKey,
                     false
                   );
                   // Commit new input arg value.
-                  setInputArgAtKey(tabId, inputArgConfig.namespace, keys, val);
+                  setInputArgAtKey(tabId, config.namespace, keys, val);
                 }}
               />
             </Section>

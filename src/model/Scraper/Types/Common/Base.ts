@@ -22,22 +22,22 @@ export class Base {
   // The index key for this type.
   indexKey: string;
 
+  // The label for this type. (the last index of lookup path).
+  label: string;
+
   constructor({ lookup, depth, trail, indexKey }: BaseParams) {
     this.lookup = lookup;
     this.depth = depth;
     this.trail = trail;
     this.indexKey = indexKey;
+
+    const { path } = this.lookup.type;
+    this.label = path[path.length - 1];
   }
 
   // Get the full path of this type.
   path() {
     const { path, params } = this.lookup.type;
     return typeToString(path, params);
-  }
-
-  // Get the label of this type (the last index of the path).
-  label() {
-    const { path } = this.lookup.type;
-    return path[path.length - 1];
   }
 }

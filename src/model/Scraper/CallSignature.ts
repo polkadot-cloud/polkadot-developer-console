@@ -107,11 +107,11 @@ export class FormatCallSignature {
         break;
 
       case 'primitive':
-        str = typeClass.label();
+        str = typeClass.label;
         break;
 
       case 'bitSequence':
-        str = typeClass.label();
+        str = typeClass.label;
         break;
 
       case 'sequence':
@@ -136,7 +136,7 @@ export class FormatCallSignature {
   // Formats a string from a composite type.
   getCompositeString = (arg: ScrapedItem) => {
     const typeClass = this.scraper.getClass(arg.indexKey);
-    const label = typeClass.label();
+    const label = typeClass.label;
 
     let str = '';
     // Expand type if short label is not defined, or if they've been defined in ignore list.
@@ -161,7 +161,7 @@ export class FormatCallSignature {
   // Formats a string from a variant type.
   getVariantType = (arg: ScrapedItem) => {
     const typeClass = this.scraper.getClass(arg.indexKey);
-    const label = typeClass.label();
+    const label = typeClass.label;
 
     let str = `${label}`;
 

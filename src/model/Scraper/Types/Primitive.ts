@@ -14,11 +14,7 @@ export class PrimitiveType extends Base implements MetadataType {
   constructor(primitive: string, base: BaseParams) {
     super(base);
     this.primitive = primitive;
-  }
-
-  // Get the label of this primitive.
-  override label() {
-    return this.primitive.toLowerCase();
+    this.label = this.primitive.toLowerCase();
   }
 
   // Get the input type of this primitive.
