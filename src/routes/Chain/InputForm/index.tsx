@@ -16,6 +16,7 @@ export const InputForm = ({
   activeItem,
   scraper,
   argTypes,
+  fieldNames,
   onSubmit,
 }: InputFormInnerProps) => {
   const { readInput } = useInput();
@@ -30,18 +31,28 @@ export const InputForm = ({
     <InputFormWrapper>
       {!!scraper &&
         !!argTypes &&
-        argTypes.map((arg: ScrapedItem, index: number) => (
-          <Fragment key={`input_arg_${activePallet}_${activeItem}_${index}`}>
-            {readInput(arg, {
-              activePallet,
-              activeItem,
-              scraper,
-              inputKey: `${index}`,
-              namespace,
-              inputMeta,
-            })}
-          </Fragment>
-        ))}
+        argTypes.map((arg: ScrapedItem, index: number) => {
+          const fieldName = fieldNames?.[index] || null;
+
+          return (
+            <Fragment key={`input_arg_${activePallet}_${activeItem}_${index}`}>
+              {readInput(
+                arg,
+                {
+                  activePallet,
+                  activeItem,
+                  scraper,
+                  inputKey: `${index}`,
+                  namespace,
+                  inputMeta,
+                },
+                {
+                  prependLabel: `${fieldName ? `${fieldName}: ` : ``}`,
+                }
+              )}
+            </Fragment>
+          );
+        })}
       {onSubmit !== undefined && (
         <section className="footer">
           <ButtonText onClick={() => handleSubmit(onSubmit)}>

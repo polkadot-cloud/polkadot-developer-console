@@ -53,7 +53,7 @@ export const InputFormWrapper = styled.div`
     &.standalone {
       color: var(--text-color-tertiary);
       padding: 0;
-      margin: 0.5rem 0 0 0;
+      margin: 0.6rem 0 0 0;
     }
   }
 

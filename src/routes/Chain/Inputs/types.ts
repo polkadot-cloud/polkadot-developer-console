@@ -35,9 +35,15 @@ export interface InputArgConfig {
   inputKey: string;
 }
 
+export interface InputOptions {
+  indent?: boolean;
+  prependLabel?: string;
+  overrideInput?: string;
+}
+
 export type SequenceProps = InputCallbackProps & {
   config: InputArgConfig;
   indexKey: string;
   arrayInput: AnyJson;
-  maxLength?: number;
+  maxLength: number | null;
 };
