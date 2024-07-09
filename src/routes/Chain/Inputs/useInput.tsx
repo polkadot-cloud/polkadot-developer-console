@@ -3,7 +3,12 @@
 
 import { Fragment } from 'react';
 import { Section } from 'library/Inputs/Section';
-import type { InputArgConfig, InputMeta, InputType } from './types';
+import type {
+  InputArgConfig,
+  InputMeta,
+  InputOptions,
+  InputType,
+} from './types';
 import { Select } from 'library/Inputs/Select';
 import { Checkbox } from 'library/Inputs/Checkbox';
 import { AccountId32 } from 'library/Inputs/AccountId32';
@@ -38,10 +43,7 @@ export const useInput = () => {
   const readInput = (
     arg: ScrapedItem,
     config: InputArgConfig,
-    options?: {
-      indent?: boolean;
-      prependLabel?: string;
-    }
+    options?: InputOptions
   ) => {
     const { scraper } = config;
     const indent = options?.indent || false;
@@ -59,10 +61,10 @@ export const useInput = () => {
         return renderTuple(arg, config);
 
       case 'composite':
-        return renderComposite(arg, config);
+        return renderComposite(arg, config, options);
 
       case 'variant':
-        return renderVariant(arg, config);
+        return renderVariant(arg, config, options);
 
       case 'bitSequence':
         return renderInput(arg, config, { indent });
@@ -71,13 +73,13 @@ export const useInput = () => {
         return renderInput(arg, config, options);
 
       case 'array':
-        return renderArray(arg, config);
+        return renderArray(arg, config, options);
 
       case 'compact':
-        return renderCompact(arg, config);
+        return renderCompact(arg, config, options);
 
       case 'sequence':
-        return renderSequence(arg, config, 'sequence');
+        return renderSequence(arg, config, 'sequence', null, options);
 
       default:
         return null;
@@ -105,10 +107,16 @@ export const useInput = () => {
   };
 
   // Renders an array input component.
-  const renderArray = (arg: ScrapedItem, config: InputArgConfig) => {
+  const renderArray = (
+    arg: ScrapedItem,
+    config: InputArgConfig,
+    options?: InputOptions
+  ) => {
     const { indexKey } = arg;
     const typeClass = config.scraper.getClass(indexKey) as ArrayType;
-    const label = typeClass.label;
+
+    // Determine input label.
+    const label = formatLabel(typeClass.label, options);
 
     // If array is a vector of bytes, render a hash input.
     if (arrayIsBytes(arg)) {
@@ -137,12 +145,15 @@ export const useInput = () => {
     arg: ScrapedItem,
     config: InputArgConfig,
     type: 'array' | 'sequence',
-    maxLength?: number
+    maxLength: number | null,
+    options?: InputOptions
   ) => {
     const { indexKey } = arg;
     const typeClass = config.scraper.getClass(indexKey) as SequenceType;
     const input = typeClass.input();
-    const label = typeClass.label;
+
+    // Determine input label.
+    const label = `${formatLabel(typeClass?.label || 'Array', options)}[]`;
 
     // If sequence is a vector of bytes, render a hash input.
     if (input !== 'array') {
@@ -157,7 +168,7 @@ export const useInput = () => {
     // Otherwise, allow sequence input.
     return (
       <Section>
-        <h4 className="marginTop">{`${label ? `${label}[]` : 'Array'}`}</h4>
+        <h4 className="marginTop">{`${label}`}</h4>
         <Sequence
           indexKey={indexKey}
           config={config}
@@ -169,7 +180,11 @@ export const useInput = () => {
   };
 
   // Renders a compact input component.
-  const renderCompact = (arg: ScrapedItem, config: InputArgConfig) => {
+  const renderCompact = (
+    arg: ScrapedItem,
+    config: InputArgConfig,
+    options?: InputOptions
+  ) => {
     const { compact, indexKey } = arg;
     const { inputKey, inputMeta } = config;
 
@@ -179,18 +194,24 @@ export const useInput = () => {
     // Render compact input.
     return (
       <Fragment key={`input_arg_${inputKey}_0`}>
-        {readInput(compact, { ...config, inputKey: `${inputKey}_0` })}
+        {readInput(compact, { ...config, inputKey: `${inputKey}_0` }, options)}
       </Fragment>
     );
   };
 
   // Renders a composite input component.
-  const renderComposite = (arg: ScrapedItem, config: InputArgConfig) => {
+  const renderComposite = (
+    arg: ScrapedItem,
+    config: InputArgConfig,
+    options?: InputOptions
+  ) => {
     const { indexKey } = arg;
     const typeClass = config.scraper.getClass(indexKey) as CompositeType;
     const input = typeClass.input();
     const { inputKey, inputMeta } = config;
-    const label = typeClass.label;
+
+    // Determine input label.
+    const label = formatLabel(typeClass.label, options);
 
     // If this composite is a custom input, render it and stop the recursive input loop.
     if (input !== 'indent') {
@@ -219,7 +240,9 @@ export const useInput = () => {
               {readInput(
                 field,
                 { ...config, inputKey: childKey },
-                { prependLabel: field?.name }
+                {
+                  prependLabel: `${options?.prependLabel || ''}${field?.name || ''}`,
+                }
               )}
             </Fragment>
           );
@@ -229,7 +252,11 @@ export const useInput = () => {
   };
 
   // Renders a variant input component.
-  const renderVariant = (arg: ScrapedItem, config: InputArgConfig) => {
+  const renderVariant = (
+    arg: ScrapedItem,
+    config: InputArgConfig,
+    options?: InputOptions
+  ) => {
     const { inputKey } = config;
 
     // Get the selected variant item, or fall back to first item otherwise.
@@ -246,7 +273,7 @@ export const useInput = () => {
     return (
       <>
         {/* Render variant select dropdown. */}
-        {renderInput(arg, config, { indent: false }, itemNames)}
+        {renderInput(arg, config, { ...options, indent: false }, itemNames)}
 
         {/* Render selected variant item's fields if they exist. */}
         {selectedItemFields && (
@@ -284,11 +311,7 @@ export const useInput = () => {
   const renderInput = (
     arg: ScrapedItem,
     config: InputArgConfig,
-    options?: {
-      indent?: boolean;
-      prependLabel?: string;
-      overrideInput?: string;
-    },
+    options?: InputOptions,
     values?: string[]
   ) => {
     const {
@@ -463,6 +486,10 @@ export const useInput = () => {
   ) => {
     inputMeta[inputKey] = { inputType, indexKey };
   };
+
+  // Format an input label.
+  const formatLabel = (label: string | undefined, options?: InputOptions) =>
+    options?.prependLabel ? `${options.prependLabel}${label}` : label;
 
   return {
     readInput,

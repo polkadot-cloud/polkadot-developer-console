@@ -92,6 +92,11 @@ export const Extrinsics = () => {
   const scrapedItem = scraperResult?.scrapedItem || null;
   const itemScraper = scraperResult?.scraper || null;
 
+  const fieldNames = itemScraper?.getCallFieldNames(
+    activePallet || '',
+    activeItem || ''
+  );
+
   // Manage `activeItem` changes.
   useEffect(() => {
     // On initial render, set the selected item to the first list item, if any.
@@ -126,6 +131,7 @@ export const Extrinsics = () => {
           activePallet={activePallet}
           activeItem={activeItem}
           scraper={itemScraper}
+          fieldNames={fieldNames}
         />
 
         <SenderWrapper>

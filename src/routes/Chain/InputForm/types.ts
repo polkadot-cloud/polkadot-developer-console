@@ -23,6 +23,7 @@ export interface InputFormInnerProps {
   argTypes: AnyJson;
   activePallet: string | null;
   activeItem: string | null;
-  onSubmit?: (inputs: AnyJson) => void;
   scraper: PalletScraper | null;
+  fieldNames?: string[];
+  onSubmit?: (inputs: AnyJson) => void;
 }

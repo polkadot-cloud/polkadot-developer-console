@@ -224,6 +224,32 @@ export class PalletScraper extends MetadataScraper {
     return formattedCallList;
   }
 
+  // Get field names for a pallet call.
+  getCallFieldNames(palletName: string, activeItem: string) {
+    const pallet = this.getPallet(palletName);
+    if (!pallet) {
+      return [];
+    }
+
+    // NOTE: Checking if calls are defined for this pallet as there may be none defined.
+    const callType = pallet.calls?.type;
+    if (!callType) {
+      return [];
+    }
+
+    // Get call variant type without scraping, All call signatures need is to read the `fields`
+    // property.
+    const callList = this.getPalletCalls(palletName);
+
+    // Get the active call item.
+    const callItem = callList.find(
+      ({ name }: { name: string }) => name === activeItem
+    );
+
+    // Get name property from each field.
+    return callItem?.fields.map(({ name }: { name: string }) => name) || [];
+  }
+
   getPalletCalls(palletName: string) {
     const pallet = this.pallets?.find(
       ({ name }: { name: string }) => name === palletName
