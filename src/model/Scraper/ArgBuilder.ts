@@ -7,6 +7,7 @@ import type { InputMeta } from 'routes/Chain/Inputs/types';
 import type { PalletScraper } from './Pallet';
 import type { CompositeType } from './Types/Composite';
 import type { VariantType } from './Types/Variant';
+import { getParentKey } from './Utils';
 
 // A class to take input keys and values, and formats them into a submittable array of arguments.
 export class ArgBuilder {
@@ -144,8 +145,8 @@ export class ArgBuilder {
     // Concatenate deepest key values to each corresponding parent key.
     const parentKeysWithValues = Object.entries(sortedDeepestKeys).reduce(
       (acc: Record<string, AnyJson[]>, [key]) => {
-        // Split key by underscore and remove the last element to get the parent key.
-        const parentKey = key.split('_').slice(0, -1).join('_');
+        // Get parent index key.
+        const parentKey = getParentKey(key);
 
         // Get the current value of this parent key if it exists.
         const currentValue = acc[parentKey] || [];

@@ -93,7 +93,7 @@ export abstract class MetadataType {
   abstract depth: number;
 
   // All metadata type classes must return a label.
-  abstract label(): string;
+  abstract label: string;
 
   // All metadata type classes must return their input types.
   abstract input(): string | null;

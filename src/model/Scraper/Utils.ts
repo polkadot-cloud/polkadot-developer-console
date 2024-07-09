@@ -23,6 +23,14 @@ export const defaultInputValue = (type: string): string => {
 };
 
 // ------------------------------------------------------
+// Index key utils.
+// ------------------------------------------------------
+
+// Get the parent key from an index key.
+export const getParentKey = (key: string): string =>
+  key.split('_').slice(0, -1).join('_');
+
+// ------------------------------------------------------
 // Options.
 // ------------------------------------------------------
 

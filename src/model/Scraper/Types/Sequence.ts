@@ -22,7 +22,7 @@ export class SequenceType extends Base implements MetadataType {
   // Sequences contain one or more child inputs that should be wrapped in an multi-select array
   // input.
   input() {
-    let label = this.label();
+    let label = this.label;
 
     // If this sequence is a sequence of bytes, then change the label to `Bytes`.
     if (sequenceIsBytes(label)) {
