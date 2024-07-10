@@ -56,8 +56,10 @@ export const AccountWrapper = styled.section`
 
     > div {
       &.icon {
+        width: 3rem;
+        min-width: 3rem;
+        height: 3rem;
         padding-left: 0.75rem;
-        flex: 0;
       }
 
       &.content {
