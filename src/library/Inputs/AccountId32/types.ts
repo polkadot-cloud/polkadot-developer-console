@@ -14,3 +14,9 @@ export type AccountId32Props = InputCallbackProps & {
   disabled?: boolean;
   disabledText?: string;
 };
+
+export interface AccountId32ReadOnlyProps {
+  defaultAddress: string | undefined;
+  accounts: ImportedAccount[];
+  emptyText?: string;
+}
