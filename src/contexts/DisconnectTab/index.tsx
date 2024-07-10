@@ -59,7 +59,7 @@ export const DisconnectTabProvider = ({ children }: DisconnectTabProps) => {
     }
 
     // If destroying tab, destroy the tab itself.
-    if (destroyIndex) {
+    if (destroyIndex !== undefined) {
       destroyTab(destroyIndex, tabId);
     }
   };

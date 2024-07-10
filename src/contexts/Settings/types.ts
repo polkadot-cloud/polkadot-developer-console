@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 export interface SettingsContextInterface {
+  activePage: number;
+  setActivePage: (page: number) => void;
   tabsHidden: boolean;
   setTabsHidden: (hidden: boolean) => void;
   autoConnect: boolean;
@@ -13,6 +15,7 @@ export interface SettingsContextInterface {
 }
 
 export interface LocalSettings {
+  activePage?: number;
   tabsHidden?: boolean;
   autoConnect?: boolean;
   autoTabNaming?: boolean;

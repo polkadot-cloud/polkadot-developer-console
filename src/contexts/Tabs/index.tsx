@@ -36,12 +36,12 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Current active tab id.
   const [selectedTabId, setSelectedTabIdState] = useState<number>(
-    local.getSelectedTabId() || 1
+    local.getSelectedTabId() || 0
   );
 
   // Current active tab index.
   const [activeTabIndex, setSelectedTabIndexState] = useState<number>(
-    local.getActiveTabIndex() || 1
+    local.getActiveTabIndex() || 0
   );
 
   // Current hovered tab index.
@@ -99,7 +99,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Get the largest id from a list of tabs.
   const getLargestId = (list: Tabs) =>
-    [...list].sort((a, b) => b.id - a.id)?.[0].id || 0;
+    [...list].sort((a, b) => b.id - a.id)?.[0]?.id || 0;
 
   // Creates a new tab and makes it active.
   const createTab = () => {
@@ -138,7 +138,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
     // If the active tab is being closed, fall back to its previous tab.
     if (id === selectedTabId) {
-      setSelectedTabId(Object.values(newTabs)[Math.max(index - 1, 0)]?.id);
+      setSelectedTabId(getLargestId(newTabs));
       setSelectedTabIndex(Math.max(index - 1, 0));
     }
     // Re-sync the active tab index if the destroyed tab was in front of it.

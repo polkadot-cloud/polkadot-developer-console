@@ -155,20 +155,18 @@ export const Tab = ({ index, id, name, initial = false }: TabProps) => {
       <div className={`name ${apiStatus}`}>{name}</div>
       <div className="fade" />
 
-      {tabs.length > 1 && (
-        <button
-          className="close"
-          onMouseUp={() => {
-            setDestroying(true);
-            setTabHoverIndex(0);
-            setTimeout(() => {
-              disconnectTab(tabIdToOwnerId(id), index);
-            }, 125);
-          }}
-        >
-          <FontAwesomeIcon icon={faClose} transform="shrink-1" />
-        </button>
-      )}
+      <button
+        className="close"
+        onMouseUp={() => {
+          setDestroying(true);
+          setTabHoverIndex(0);
+          setTimeout(() => {
+            disconnectTab(tabIdToOwnerId(id), index);
+          }, 125);
+        }}
+      >
+        <FontAwesomeIcon icon={faClose} transform="shrink-1" />
+      </button>
     </TabWrapper>
   );
 };

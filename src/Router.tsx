@@ -10,6 +10,7 @@ import { useSetActivePage } from 'hooks/useSetActivePage';
 import { ParachainSetup } from 'routes/ParachainSetup';
 import { Default } from 'routes/Home';
 import type { ReactNode } from 'react';
+import { Splash } from 'routes/Splash';
 
 export const Router = () => {
   const { tabId } = useActiveTab();
@@ -22,6 +23,11 @@ export const Router = () => {
 
   // Gets the active task component for the tab, or the default component otherwise.
   const getActiveTaskComponent = (): ReactNode => {
+    // Fall back to splash page if active tab is 0 (no tab).
+    if (tabId === 0) {
+      return <Splash />;
+    }
+
     switch (tabActiveTask) {
       case 'chainExplorer':
         return <Chain />;

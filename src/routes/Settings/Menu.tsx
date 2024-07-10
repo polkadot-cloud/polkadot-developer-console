@@ -7,15 +7,11 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { accentColors } from 'styles/accents/developer-console';
 import type { RouteSectionProvider } from 'routes/Common/types';
-import { useActiveTab } from 'contexts/ActiveTab';
-import { useTabs } from 'contexts/Tabs';
+import { useSettings } from 'contexts/Settings';
 
 export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
   const navigate = useNavigate();
-  const { tab, tabId } = useActiveTab();
-  const { setTabActivePage } = useTabs();
-
-  const activePage = tab?.activePage || 0;
+  const { activePage, setActivePage } = useSettings();
 
   return (
     <HeaderMenuWrapper
@@ -31,9 +27,7 @@ export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
             <button
               key={`menu-section-${key}-${index}`}
               className={activePage === Number(key) ? 'active' : undefined}
-              onClick={() => {
-                setTabActivePage(tabId, 'settings', Number(key));
-              }}
+              onClick={() => setActivePage(Number(key))}
             >
               {section?.icon && (
                 <FontAwesomeIcon icon={section.icon} className="icon" />
