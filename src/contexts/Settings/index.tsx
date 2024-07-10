@@ -14,6 +14,11 @@ export const SettingsContext = createContext<SettingsContextInterface>(
 export const useSettings = () => useContext(SettingsContext);
 
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
+  // The active settings page.
+  const [activePage, setActivePageState] = useState<number>(
+    local.getActivePage()
+  );
+
   // Whether tabs are currently hidden.
   const [tabsHidden, setTabsHiddenState] = useState<boolean>(
     local.getSetting('tabsHidden')
@@ -33,25 +38,31 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const [chainColorEnabled, setChainColorEnabledState] =
     useState<boolean>(true);
 
-  // Set tabs hidden state, to save to local storage.
+  // Sets active settings page, saves to local storage.
+  const setActivePage = (value: number) => {
+    local.setActivePage(value);
+    setActivePageState(value);
+  };
+
+  // Set tabs hidden state, saves to local storage.
   const setTabsHidden = (value: boolean) => {
     local.setSetting('tabsHidden', value);
     setTabsHiddenState(value);
   };
 
-  // Set auto connect state, to save to local storage.
+  // Set auto connect state, saves to local storage.
   const setAutoConnect = (value: boolean) => {
     local.setSetting('autoConnect', value);
     setAutoConnectState(value);
   };
 
-  // Set auto tab naming state, to save to local storage.
+  // Set auto tab naming state, saves to local storage.
   const setAutoTabNaming = (value: boolean) => {
     local.setSetting('autoTabNaming', value);
     setAutoTabNamingState(value);
   };
 
-  // Set chain color enabled state, to save to local storage.
+  // Set chain color enabled state, saves to local storage.
   const setChainColorEnabled = (value: boolean) => {
     local.setSetting('chainColorEnabled', value);
     setChainColorEnabledState(value);
@@ -60,6 +71,8 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   return (
     <SettingsContext.Provider
       value={{
+        activePage,
+        setActivePage,
         tabsHidden,
         setTabsHidden,
         autoConnect,

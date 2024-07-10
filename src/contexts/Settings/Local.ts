@@ -27,6 +27,18 @@ export const getSetting = (
   return defaultValue !== undefined ? defaultValue : false;
 };
 
+// Gets the active page from local storage, or returns 0 otherwise.
+export const getActivePage = (): number => {
+  const result = localStorageOrDefault(`activePage`, undefined, true) as
+    | number
+    | undefined;
+
+  if (result) {
+    return result as number;
+  }
+  return 0;
+};
+
 // ------------------------------------------------------
 // Setters.
 // ------------------------------------------------------
@@ -43,4 +55,9 @@ export const setSetting = (key: SettingsKey, value: boolean) => {
     [key]: value,
   };
   localStorage.setItem(`settings`, JSON.stringify(updated));
+};
+
+// Sets the active page to local storage.
+export const setActivePage = (value: number) => {
+  localStorage.setItem(`activePage`, JSON.stringify(value));
 };

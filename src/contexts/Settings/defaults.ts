@@ -5,6 +5,8 @@
 import type { SettingsContextInterface } from './types';
 
 export const defaultSettingsContext: SettingsContextInterface = {
+  activePage: 0,
+  setActivePage: (page) => {},
   tabsHidden: false,
   setTabsHidden: (hidden) => {},
   autoConnect: true,
