@@ -31,9 +31,7 @@ export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
             <button
               key={`menu-section-${key}-${index}`}
               className={activePage === Number(key) ? 'active' : undefined}
-              onClick={() => {
-                setTabActivePage(tabId, 'settings', Number(key));
-              }}
+              onClick={() => setTabActivePage(tabId, 'settings', Number(key))}
             >
               {section?.icon && (
                 <FontAwesomeIcon icon={section.icon} className="icon" />
