@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/pro-solid-svg-icons';
 import { useReserveParaId } from 'contexts/ParaSetup/ReserveParaId';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { AccountId32 } from 'library/Inputs/AccountId32';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useParachain } from 'routes/ParachainSetup/Provider';
 import { Label } from 'library/Inputs/Label';
@@ -15,9 +14,10 @@ import { Hash } from 'library/Inputs/Hash';
 import { useRegisterParathread } from 'contexts/ParaSetup/RegisterParathread';
 import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import { SubmitTx } from 'library/SubmitTx';
+import { AccountId32ReadOnly } from 'library/Inputs/AccountId32/ReadOnly';
 
 export const RegisterParathread = () => {
-  const { tabId, metaKey } = useActiveTab();
+  const { tabId } = useActiveTab();
   const { getAccounts } = useImportedAccounts();
   const { chainSpec, api, instanceId, chain } = useParachain();
   const { getSelectedAccount, validateParaId } = useReserveParaId();
@@ -112,13 +112,10 @@ export const RegisterParathread = () => {
 
       <section>
         <Label value="Registrant" />
-        <AccountId32
-          inputId={`${metaKey}_registerParathreadRegistrant`}
+        <AccountId32ReadOnly
           defaultAddress={isValidParaId ? selectedAccount : ''}
           accounts={registrantInputValues}
-          readOnly={true}
-          disabled={true}
-          disabledText="Para ID Registrant Not Set"
+          emptyText="Para ID Registrant Not Set"
         />
       </section>
 

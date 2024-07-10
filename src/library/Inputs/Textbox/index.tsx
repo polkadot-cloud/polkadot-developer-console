@@ -26,6 +26,9 @@ export const Textbox = ({
 
   // Handle textbox value change.
   const handleTextboxChange = (val: string) => {
+    // Firstly truncate the decimal.
+    val = String(Number(~~val));
+
     if (numeric && isNaN(Number(val))) {
       return;
     }

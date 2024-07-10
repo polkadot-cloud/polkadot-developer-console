@@ -10,7 +10,12 @@ export type AccountId32Props = InputCallbackProps & {
   accounts: ImportedAccount[];
   defaultAddress: string | undefined;
   heightRef?: RefObject<HTMLDivElement>;
-  readOnly?: boolean;
   disabled?: boolean;
   disabledText?: string;
 };
+
+export interface AccountId32ReadOnlyProps {
+  defaultAddress: string | undefined;
+  accounts: ImportedAccount[];
+  emptyText?: string;
+}
