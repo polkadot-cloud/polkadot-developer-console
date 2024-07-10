@@ -6,6 +6,7 @@ import BigNumber from 'bignumber.js';
 import { useAccounts } from 'contexts/Accounts';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
+import { useInputMeta } from 'contexts/InputMeta';
 import { useTxMeta } from 'contexts/TxMeta';
 import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import { AccountId32 } from 'library/Inputs/AccountId32';
@@ -19,7 +20,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export const Transfer = () => {
   const { getTxFee } = useTxMeta();
-  const { metaKey } = useActiveTab();
+  const { tabId, metaKey } = useActiveTab();
   const {
     address,
     instanceId,
@@ -32,6 +33,7 @@ export const Transfer = () => {
     transactionVersion,
   } = useOverlay().modal.config.options;
   const { getNotEnoughFunds } = useAccounts();
+  const { removeInputMetaValue } = useInputMeta();
   const { setModalStatus, setModalResize } = useOverlay().modal;
   const { getAccounts: getImportedAccounts } = useImportedAccounts();
 
@@ -102,8 +104,21 @@ export const Transfer = () => {
     },
   });
 
+  // Define the input ids for the `from` and `to` address inputs.
+  const fromInputId = `${metaKey}_transferFromAddress`;
+  const toInputId = `${metaKey}_transferRecipientAddress`;
+
   // Resize modal on element changes that effect modal height.
   useEffect(() => setModalResize(), [notEnoughFunds]);
+
+  // On modal close, reset input meta values.
+  useEffect(
+    () => () => {
+      removeInputMetaValue(tabId, fromInputId);
+      removeInputMetaValue(tabId, toInputId);
+    },
+    []
+  );
 
   // Hard value on minimum modal height.
   const MIN_HEIGHT = 200;
