@@ -28,7 +28,6 @@ export const AccountId32 = ({
   onMount,
   onRender,
   onChange,
-  readOnly,
   disabled: defaultDisabled,
   disabledText,
 }: AccountId32Props) => {
@@ -118,14 +117,8 @@ export const AccountId32 = ({
   // Input is disabled if there are no accounts to choose from.
   const disabled = defaultDisabled || accounts.length === 0;
 
-  // Determine input value. If read only, always display the current value - even if disabled - or
-  // fall back to disabled text. Otherwise. If disabled, show the disabled text.
-  let inputValue;
-  if (readOnly) {
-    inputValue = value || disabledText || 'No Accounts';
-  } else {
-    inputValue = disabled ? disabledText || 'No Accounts' : value || '';
-  }
+  // Determine input value. If disabled, show the disabled text.
+  const inputValue = disabled ? disabledText || 'No Accounts' : value || '';
 
   // Call on mount logic in initial render if provided. Set correct input value on tab change.
   useEffect(() => {
@@ -172,7 +165,7 @@ export const AccountId32 = ({
         />
         <span
           onClick={() => {
-            if (!dropdownOpen && !readOnly && !disabled) {
+            if (!dropdownOpen && !disabled) {
               setDropdownOpen(true);
             }
           }}
