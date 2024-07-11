@@ -57,8 +57,20 @@ export const AccountId32 = ({
   if (!editedRef.current) {
     selectedAddress = defaultAddress || accounts?.[0]?.address || '';
   } else {
-    selectedAddress =
-      accounts?.find(({ name }) => name === inputMetaValue)?.address || '';
+    selectedAddress = accounts?.find(
+      ({ name }) => name === inputMetaValue
+    )?.address;
+
+    // If `selectedAddress` was not found and the input value is a valid address, use it as the
+    // selected address.
+    if (selectedAddress === undefined && isValidAddress(inputMetaValue)) {
+      selectedAddress = inputMetaValue;
+    }
+
+    // If `selectedAddress` is still undefined, set it to an empty string.
+    if (selectedAddress === undefined) {
+      selectedAddress = '';
+    }
   }
 
   // The current value of the input. Attempts to find an account name, or uses the selected address,
@@ -75,9 +87,18 @@ export const AccountId32 = ({
     // Update input search value.
     setInputMetaValue(tabId, inputId, val);
 
-    // Get the first address from `accounts` that starts with `val`, or fall back to default.
-    const address =
-      accounts.find(({ name }) => name.startsWith(val))?.address || '';
+    // Get the first address from `accounts` that starts with `val`.
+    let address = accounts.find(({ name }) => name.startsWith(val))?.address;
+
+    // If `address` was not found, assign the value itself if it is a valid address.
+    if (address === undefined && isValidAddress(val)) {
+      address = val;
+    }
+
+    // If `address` is still undefined, set it to an empty string.
+    if (address === undefined) {
+      address = '';
+    }
 
     if (onChange !== undefined) {
       onChange(address);
