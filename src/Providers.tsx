@@ -38,6 +38,7 @@ import { ReserveParaIdProvider } from 'contexts/ParaSetup/ReserveParaId';
 import { RegisterParathreadProvider } from 'contexts/ParaSetup/RegisterParathread';
 import { InputMetaProvider } from 'contexts/InputMeta';
 import { DisconnectTabProvider } from 'contexts/DisconnectTab';
+import { WalletConnectProvider } from 'contexts/WalletConnect';
 
 export const Providers = () => {
   // !! --------------------------------
@@ -61,20 +62,21 @@ export const Providers = () => {
     PromptProvider,
     InputMetaProvider,
 
-    // Account import related providers.
-    ExtensionsProvider,
-    [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
-    VaultAccountsProvider,
-    LedgerHardwareProvider,
-    LedgerAccountsProvider,
-    ImportedAccountsProvider,
-
     // Transaction providers.
     TxMetaProvider,
 
     // Chain space environment and api indexer.
     ApiIndexerProvider,
     ChainSpaceEnvProvider,
+
+    // Account import related providers.
+    ExtensionsProvider,
+    [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
+    WalletConnectProvider,
+    VaultAccountsProvider,
+    LedgerHardwareProvider,
+    LedgerAccountsProvider,
+    ImportedAccountsProvider,
 
     // Account formatting and balances provider.
     AccountsProvider,
