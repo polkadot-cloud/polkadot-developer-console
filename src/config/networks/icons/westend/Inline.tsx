@@ -1,5 +1,5 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
-// SPDX-License-Identifier: GPL-3.0-only
+// SPDX-License-Identifier: AGPL-3.0
 
 export const Inline = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">

@@ -1,5 +1,5 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
-// SPDX-License-Identifier: GPL-3.0-only
+// SPDX-License-Identifier: AGPL-3.0
 
 import { usePrompt } from 'contexts/Prompt';
 import { ContentWrapper, HeightWrapper, PromptWrapper } from './Wrappers';
