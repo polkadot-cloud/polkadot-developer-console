@@ -8,13 +8,14 @@ import type { WalletConnectContextInterface } from './types';
 import UniversalProvider from '@walletconnect/universal-provider';
 import { WalletConnectModal } from '@walletconnect/modal';
 import type { AnyFunction } from '@w3ux/types';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const WalletConnectContext =
   createContext<WalletConnectContextInterface>(defaults.defaultWalletConnect);
 
 export const useWalletConnect = () => useContext(WalletConnectContext);
 
-// ProjectID configured on `https://cloud.walletconnect.com/`.
+// ProjectId configured on `https://cloud.walletconnect.com/`.
 const wcProjectId = 'dcb8a7c6d01ace818286c005f75d70b9';
 
 export const WalletConnectProvider = ({
@@ -22,6 +23,10 @@ export const WalletConnectProvider = ({
 }: {
   children: ReactNode;
 }) => {
+  const { getConnectedChains } = useChainSpaceEnv();
+
+  const connectedChains = getConnectedChains();
+
   // The WalletConnect provider.
   const wcProvider = useRef<UniversalProvider | null>(null);
 
@@ -83,11 +88,10 @@ export const WalletConnectProvider = ({
   // Reconnect WalletConnect provider if connected chains change / disconnect, or when the provider
   // is set.
   useEffect(() => {
-    // TODO: Handle APIs changing.
-    if (initialised /* || apisUpdated*/) {
+    if (initialised) {
       connectProvider();
     }
-  }, [initialised /*, apisUpdated*/]);
+  }, [initialised, connectedChains]);
 
   return (
     <WalletConnectContext.Provider

@@ -76,6 +76,15 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   // Stores pallet versions of a chain, keyed by tab.
   const [palletVersions, setPalletVersions] = useState<PalletVersions>({});
 
+  // Get all unique connected chains from chain specs.
+  const getConnectedChains = () => {
+    const chains = Object.values(chainSpecs)
+      .filter((spec) => spec.chain !== null)
+      .map((spec) => spec.version.specName) as string[];
+
+    return [...new Set(chains)];
+  };
+
   // Setter for api status. Updates state and ref.
   const setApiStatuses = (newApiStatuses: ChainSpaceApiStatuses) => {
     setStateWithRef(newApiStatuses, setApiStatusesState, apiStatusesRef);
@@ -383,6 +392,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         getApiInstanceById,
         getApiInstance,
         getPalletVersions,
+        getConnectedChains,
 
         // Connect and Disconnect
         handleConnectApi,
