@@ -64,10 +64,10 @@ export const WalletConnectProvider = ({
       requiredNamespaces: {
         polkadot: {
           methods: ['polkadot_signTransaction', 'polkadot_signMessage'],
-          chains: [
-            // TODO: Only connect to chains that are being used in tabs.
-            'polkadot:91b171bb158e2d3848fa23a9f1c25182', // polkadot Relay chain.
-          ],
+          chains: connectedChains.map(
+            (chain) =>
+              `polkadot:${chain.genesisHash.substring(2).substring(0, 32)}`
+          ),
           events: ['chainChanged", "accountsChanged'],
         },
       },
