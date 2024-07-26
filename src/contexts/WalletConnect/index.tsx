@@ -60,14 +60,20 @@ export const WalletConnectProvider = ({
       return;
     }
 
+    const caips = connectedChains.map(
+      (chain) => `polkadot:${chain.genesisHash.substring(2).substring(0, 32)}`
+    );
+
+    // If there are no chains connected, return early.
+    if (!caips.length) {
+      return;
+    }
+
     const { uri, approval } = await wcProvider.current.client.connect({
       requiredNamespaces: {
         polkadot: {
           methods: ['polkadot_signTransaction', 'polkadot_signMessage'],
-          chains: connectedChains.map(
-            (chain) =>
-              `polkadot:${chain.genesisHash.substring(2).substring(0, 32)}`
-          ),
+          chains: caips,
           events: ['chainChanged", "accountsChanged'],
         },
       },
