@@ -41,6 +41,7 @@
     "@zondax/ledger-substrate": "^0.44.2",
     "bignumber.js": "^9.1.2",
     "buffer": "^6.0.3",
+    "compare-versions": "^6.1.1",
     "date-fns": "^3.3.1",
     "framer-motion": "^11.1.7",
     "html5-qrcode": "^2.3.8",
