@@ -76,12 +76,39 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   // Stores pallet versions of a chain, keyed by tab.
   const [palletVersions, setPalletVersions] = useState<PalletVersions>({});
 
+  // Gets an api instace by instance id.
+  const getApiInstanceById = (instanceId: ApiInstanceId) => {
+    const { ownerId, index } = getApiInstanceOwnerAndIndex(instanceId);
+    return ApiController.instances[ownerId]?.[index];
+  };
+
+  // Gets an api instance by tab and label.
+  const getApiInstance = (ownerId: OwnerId, label: ApiIndexLabel) => {
+    const apiIndex = getTabApiIndex(ownerId, label);
+
+    if (apiIndex !== undefined) {
+      return ApiController.instances[ownerId]?.[apiIndex.index];
+    }
+  };
+
   // Get all unique connected chains from chain specs.
   const getConnectedChains = () => {
-    const chains = Object.values(chainSpecs)
-      .filter((spec) => spec.chain !== null)
-      .map((spec) => spec.version.specName) as string[];
-
+    const chains = Object.entries(chainSpecs).reduce(
+      (acc: string[], [instanceId, spec]) => {
+        // Filter out disconnected chains.
+        if (spec.chain === null) {
+          return acc;
+        }
+        // Filter out chains with no api instance
+        const api = getApiInstanceById(instanceId)?.api;
+        if (!api) {
+          return acc;
+        }
+        acc.push(spec.version.specName);
+        return acc;
+      },
+      []
+    );
     return [...new Set(chains)];
   };
 
@@ -273,21 +300,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     // NOTE: assumes instanceId is in the format `ownerId_index`. E.g. `tab_0_1`.
     const result = instanceId.split('_');
     return Number(result[2]);
-  };
-
-  // Gets an api instace by instance id.
-  const getApiInstanceById = (instanceId: ApiInstanceId) => {
-    const { ownerId, index } = getApiInstanceOwnerAndIndex(instanceId);
-    return ApiController.instances[ownerId]?.[index];
-  };
-
-  // Gets an api instance by tab and label.
-  const getApiInstance = (ownerId: OwnerId, label: ApiIndexLabel) => {
-    const apiIndex = getTabApiIndex(ownerId, label);
-
-    if (apiIndex !== undefined) {
-      return ApiController.instances[ownerId]?.[apiIndex.index];
-    }
   };
 
   // Destroy an api instance given a tab and label.
