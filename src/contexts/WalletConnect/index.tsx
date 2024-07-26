@@ -91,7 +91,7 @@ export const WalletConnectProvider = ({
     if (initialised) {
       connectProvider();
     }
-  }, [initialised, connectedChains]);
+  }, [initialised, JSON.stringify(connectedChains)]);
 
   return (
     <WalletConnectContext.Provider

@@ -17,6 +17,7 @@ import type {
   ChainSpaceChainSpecs,
   ChainSpaceEnvContextInterface,
   ChainSpaceEnvProps,
+  ConnectedChain,
   PalletVersions,
 } from './types';
 import { defaultChainSpaceEnvContext } from './defaults';
@@ -94,7 +95,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
   // Get all unique connected chains from chain specs.
   const getConnectedChains = () => {
     const chains = Object.entries(chainSpecs).reduce(
-      (acc: string[], [instanceId, spec]) => {
+      (acc: ConnectedChain[], [instanceId, spec]) => {
         // Filter out disconnected chains.
         if (spec.chain === null) {
           return acc;
@@ -104,7 +105,10 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         if (!api) {
           return acc;
         }
-        acc.push(spec.version.specName);
+        acc.push({
+          specName: spec.version.specName,
+          genesisHash: api.genesisHash.toHex(),
+        });
         return acc;
       },
       []

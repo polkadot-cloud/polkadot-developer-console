@@ -22,7 +22,12 @@ export interface ChainSpaceEnvContextInterface {
   destroyApiInstance: (ownerId: OwnerId, label: ApiIndexLabel) => void;
   destroyAllApiInstances: (ownerId: OwnerId) => void;
   instantiateApiFromTab: (tabId: number) => void;
-  getConnectedChains: () => string[];
+  getConnectedChains: () => ConnectedChain[];
+}
+
+export interface ConnectedChain {
+  specName: string;
+  genesisHash: string;
 }
 
 export interface ChainSpaceEnvProps {
