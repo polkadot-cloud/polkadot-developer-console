@@ -1,5 +1,5 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
-// SPDX-License-Identifier: GPL-3.0-only
+// SPDX-License-Identifier: AGPL-3.0
 
 import type { ChainId } from 'config/networks/types';
 import type { ApiIndexLabel } from 'contexts/ApiIndexer/types';
@@ -22,6 +22,12 @@ export interface ChainSpaceEnvContextInterface {
   destroyApiInstance: (ownerId: OwnerId, label: ApiIndexLabel) => void;
   destroyAllApiInstances: (ownerId: OwnerId) => void;
   instantiateApiFromTab: (tabId: number) => void;
+  getConnectedChains: () => ConnectedChain[];
+}
+
+export interface ConnectedChain {
+  specName: string;
+  genesisHash: string;
 }
 
 export interface ChainSpaceEnvProps {

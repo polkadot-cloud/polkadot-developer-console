@@ -1,5 +1,5 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
-// SPDX-License-Identifier: GPL-3.0-only
+// SPDX-License-Identifier: AGPL-3.0
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
 import type { APIChainSpec } from 'model/Api/types';
@@ -15,6 +15,7 @@ export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
   destroyApiInstance: (ownerId, label) => {},
   destroyAllApiInstances: (ownerId) => {},
   instantiateApiFromTab: (tabId) => {},
+  getConnectedChains: () => [],
 };
 
 // NOTE: Only dummy values to keep the type checker happy. They should be over-written by the

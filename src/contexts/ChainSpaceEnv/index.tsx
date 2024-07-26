@@ -1,5 +1,5 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
-// SPDX-License-Identifier: GPL-3.0-only
+// SPDX-License-Identifier: AGPL-3.0
 
 import { setStateWithRef } from '@w3ux/utils';
 import { isCustomEvent } from 'Utils';
@@ -17,6 +17,7 @@ import type {
   ChainSpaceChainSpecs,
   ChainSpaceEnvContextInterface,
   ChainSpaceEnvProps,
+  ConnectedChain,
   PalletVersions,
 } from './types';
 import { defaultChainSpaceEnvContext } from './defaults';
@@ -75,6 +76,45 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
 
   // Stores pallet versions of a chain, keyed by tab.
   const [palletVersions, setPalletVersions] = useState<PalletVersions>({});
+
+  // Gets an api instace by instance id.
+  const getApiInstanceById = (instanceId: ApiInstanceId) => {
+    const { ownerId, index } = getApiInstanceOwnerAndIndex(instanceId);
+    return ApiController.instances[ownerId]?.[index];
+  };
+
+  // Gets an api instance by tab and label.
+  const getApiInstance = (ownerId: OwnerId, label: ApiIndexLabel) => {
+    const apiIndex = getTabApiIndex(ownerId, label);
+
+    if (apiIndex !== undefined) {
+      return ApiController.instances[ownerId]?.[apiIndex.index];
+    }
+  };
+
+  // Get all unique connected chains from chain specs.
+  const getConnectedChains = () => {
+    const chains = Object.entries(chainSpecs).reduce(
+      (acc: ConnectedChain[], [instanceId, spec]) => {
+        // Filter out disconnected chains.
+        if (spec.chain === null) {
+          return acc;
+        }
+        // Filter out chains with no api instance
+        const api = getApiInstanceById(instanceId)?.api;
+        if (!api) {
+          return acc;
+        }
+        acc.push({
+          specName: spec.version.specName,
+          genesisHash: api.genesisHash.toHex(),
+        });
+        return acc;
+      },
+      []
+    );
+    return [...new Set(chains)];
+  };
 
   // Setter for api status. Updates state and ref.
   const setApiStatuses = (newApiStatuses: ChainSpaceApiStatuses) => {
@@ -266,21 +306,6 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     return Number(result[2]);
   };
 
-  // Gets an api instace by instance id.
-  const getApiInstanceById = (instanceId: ApiInstanceId) => {
-    const { ownerId, index } = getApiInstanceOwnerAndIndex(instanceId);
-    return ApiController.instances[ownerId]?.[index];
-  };
-
-  // Gets an api instance by tab and label.
-  const getApiInstance = (ownerId: OwnerId, label: ApiIndexLabel) => {
-    const apiIndex = getTabApiIndex(ownerId, label);
-
-    if (apiIndex !== undefined) {
-      return ApiController.instances[ownerId]?.[apiIndex.index];
-    }
-  };
-
   // Destroy an api instance given a tab and label.
   const destroyApiInstance = (ownerId: OwnerId, label: ApiIndexLabel) => {
     const apiIndex = getTabApiIndex(ownerId, label);
@@ -383,6 +408,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         getApiInstanceById,
         getApiInstance,
         getPalletVersions,
+        getConnectedChains,
 
         // Connect and Disconnect
         handleConnectApi,

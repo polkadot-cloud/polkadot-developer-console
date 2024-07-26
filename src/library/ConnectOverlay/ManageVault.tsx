@@ -1,5 +1,5 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
-// SPDX-License-Identifier: GPL-3.0-only
+// SPDX-License-Identifier: AGPL-3.0
 
 import { Polkicon } from '@w3ux/react-polkicon';
 import { HardwareAddress } from 'library/HardwareAddress';
