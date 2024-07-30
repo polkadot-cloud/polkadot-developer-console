@@ -8,7 +8,6 @@ import ConnectedSVG from 'svg/Connected.svg?react';
 import { Odometer } from '@w3ux/react-odometer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHive } from '@fortawesome/free-brands-svg-icons';
-import { faList } from '@fortawesome/free-solid-svg-icons';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { isCustomEvent } from 'Utils';
 import { useEffect, useRef, useState } from 'react';
@@ -22,6 +21,7 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useChain } from '../Provider';
 import { Pinned } from './Pinned';
 import { useOverlay } from 'library/Overlay/Provider';
+import { faListTree } from '@fortawesome/pro-duotone-svg-icons';
 
 export const Overview = () => {
   const { tabId, ownerId } = useActiveTab();
@@ -115,21 +115,20 @@ export const Overview = () => {
       <CardsWrapper>
         <section>
           <div className="inner">
-            <h4>
-              <FontAwesomeIcon icon={faHive} transform="shrink-3" />
-              Latest Block
-            </h4>
+            <h4>Latest Block</h4>
             <h3 className={chainSpecReady ? undefined : 'shimmer syncing'}>
+              <FontAwesomeIcon
+                icon={faHive}
+                transform="shrink-3"
+                className="icon"
+              />
               <Odometer value={new BigNumber(blockNumber || 0).toFormat()} />
             </h3>
           </div>
         </section>
         <section>
           <div className="inner">
-            <h4>
-              <FontAwesomeIcon icon={faList} transform="shrink-3" /> Runtime
-              Snapshot
-            </h4>
+            <h4>Runtime</h4>
             <h3>
               <button
                 onClick={() =>
@@ -143,7 +142,12 @@ export const Overview = () => {
                   })
                 }
               >
-                Open
+                <FontAwesomeIcon
+                  icon={faListTree}
+                  transform="shrink-3"
+                  className="icon"
+                />
+                Open Snapshot
               </button>
             </h3>
           </div>

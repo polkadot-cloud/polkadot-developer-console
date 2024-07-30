@@ -8,6 +8,7 @@ export type DirectoryId =
   | 'westend'
   | 'statemint'
   | 'bridge-hub-polkadot'
+  | 'people-polkadot'
   | 'collectives';
 
 export type ChainId = DirectoryId | 'custom';
@@ -19,6 +20,9 @@ export interface NetworkDirectoryItem {
   color: string;
   providers: Record<string, string>;
   isRelayChain?: boolean;
+  smoldot?: {
+    relayChain: string;
+  };
   relayChain?: DirectoryId;
 }
 

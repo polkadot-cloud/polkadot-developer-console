@@ -46,9 +46,24 @@ export const CardsWrapper = styled.div`
         font-family: InterBold, sans-serif;
         font-size: 1rem;
         margin-bottom: 0.2rem;
+        display: flex;
+        align-items: center;
+
+        > .icon {
+          margin-right: 0.2rem;
+        }
 
         &.syncing {
           opacity: 0.6;
+        }
+
+        > button {
+          margin-right: 1rem;
+          display: flex;
+          align-items: center;
+          > .icon {
+            margin-right: 0.2rem;
+          }
         }
       }
     }

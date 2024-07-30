@@ -29,6 +29,9 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       Stakeworld: 'wss://dot-rpc.stakeworld.io',
     },
     isRelayChain: true,
+    smoldot: {
+      relayChain: 'polkadot',
+    },
   },
   statemint: {
     system: {
@@ -79,6 +82,21 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
     },
     relayChain: 'polkadot',
   },
+  'people-polkadot': {
+    system: {
+      chain: 'Polkadot People',
+      ss58: 0,
+      units: 10,
+      unit: 'DOT',
+    },
+    name: 'Polkadot People Chain',
+    initial: 'P',
+    color: '#552bbf',
+    providers: {
+      Parity: 'wss://polkadot-people-rpc.polkadot.io',
+    },
+    relayChain: 'polkadot',
+  },
   kusama: {
     system: {
       chain: 'Kusama',
@@ -99,6 +117,9 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       Stakeworld: 'wss://ksm-rpc.stakeworld.io',
     },
     isRelayChain: true,
+    smoldot: {
+      relayChain: 'ksmcc3',
+    },
   },
   rococo: {
     system: {
@@ -113,6 +134,9 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       Parity: 'wss://rococo-rpc.polkadot.io',
     },
     isRelayChain: true,
+    smoldot: {
+      relayChain: 'rococo_v2_2',
+    },
   },
   westend: {
     system: {
@@ -133,5 +157,8 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       Stakeworld: 'wss://wnd-rpc.stakeworld.io',
     },
     isRelayChain: true,
+    smoldot: {
+      relayChain: 'westend2',
+    },
   },
 };
