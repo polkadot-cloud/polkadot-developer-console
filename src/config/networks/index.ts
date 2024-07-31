@@ -29,6 +29,9 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       Stakeworld: 'wss://dot-rpc.stakeworld.io',
     },
     isRelayChain: true,
+    smoldot: {
+      relayChain: 'polkadot',
+    },
   },
   statemint: {
     system: {
@@ -79,6 +82,21 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
     },
     relayChain: 'polkadot',
   },
+  'people-polkadot': {
+    system: {
+      chain: 'Polkadot People',
+      ss58: 0,
+      units: 10,
+      unit: 'DOT',
+    },
+    name: 'Polkadot People Chain',
+    initial: 'P',
+    color: '#552bbf',
+    providers: {
+      Parity: 'wss://polkadot-people-rpc.polkadot.io',
+    },
+    relayChain: 'polkadot',
+  },
   kusama: {
     system: {
       chain: 'Kusama',
@@ -99,6 +117,24 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       Stakeworld: 'wss://ksm-rpc.stakeworld.io',
     },
     isRelayChain: true,
+    smoldot: {
+      relayChain: 'ksmcc3',
+    },
+  },
+  'people-kusama': {
+    system: {
+      chain: 'Kusama People',
+      ss58: 0,
+      units: 12,
+      unit: 'KSM',
+    },
+    name: 'Kusama People Chain',
+    initial: 'P',
+    color: '#552bbf',
+    providers: {
+      Parity: 'wss://kusama-people-rpc.polkadot.io',
+    },
+    relayChain: 'kusama',
   },
   rococo: {
     system: {
@@ -113,6 +149,9 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       Parity: 'wss://rococo-rpc.polkadot.io',
     },
     isRelayChain: true,
+    smoldot: {
+      relayChain: 'rococo_v2_2',
+    },
   },
   westend: {
     system: {
@@ -133,5 +172,23 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       Stakeworld: 'wss://wnd-rpc.stakeworld.io',
     },
     isRelayChain: true,
+    smoldot: {
+      relayChain: 'westend2',
+    },
+  },
+  'people-westend': {
+    system: {
+      chain: 'Westend People',
+      ss58: 0,
+      units: 12,
+      unit: 'WND',
+    },
+    name: 'Westend People Chain',
+    initial: 'P',
+    color: '#552bbf',
+    providers: {
+      Parity: 'wss://westend-people-rpc.polkadot.io',
+    },
+    relayChain: 'westend',
   },
 };
