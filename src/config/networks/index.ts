@@ -121,6 +121,21 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       relayChain: 'ksmcc3',
     },
   },
+  'people-kusama': {
+    system: {
+      chain: 'Kusama People',
+      ss58: 0,
+      units: 12,
+      unit: 'KSM',
+    },
+    name: 'Kusama People Chain',
+    initial: 'P',
+    color: '#552bbf',
+    providers: {
+      Parity: 'wss://kusama-people-rpc.polkadot.io',
+    },
+    relayChain: 'kusama',
+  },
   rococo: {
     system: {
       chain: 'Rococo',
@@ -160,5 +175,20 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
     smoldot: {
       relayChain: 'westend2',
     },
+  },
+  'people-westend': {
+    system: {
+      chain: 'Westend People',
+      ss58: 0,
+      units: 12,
+      unit: 'WND',
+    },
+    name: 'Westend People Chain',
+    initial: 'P',
+    color: '#552bbf',
+    providers: {
+      Parity: 'wss://westend-people-rpc.polkadot.io',
+    },
+    relayChain: 'westend',
   },
 };

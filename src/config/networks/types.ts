@@ -9,6 +9,8 @@ export type DirectoryId =
   | 'statemint'
   | 'bridge-hub-polkadot'
   | 'people-polkadot'
+  | 'people-kusama'
+  | 'people-westend'
   | 'collectives';
 
 export type ChainId = DirectoryId | 'custom';
