@@ -998,6 +998,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ledgerhq/devices@npm:^8.4.2":
+  version: 8.4.2
+  resolution: "@ledgerhq/devices@npm:8.4.2"
+  dependencies:
+    "@ledgerhq/errors": "npm:^6.18.0"
+    "@ledgerhq/logs": "npm:^6.12.0"
+    rxjs: "npm:^7.8.1"
+    semver: "npm:^7.3.5"
+  checksum: 10c0/b7149c6302d23928fd2d3622d9018af10a56f6960732de0d72e881d19b75b0036f6248ca0845cfe9dfeda32ecb52c352423e79e109c7decf8437948fed7843cd
+  languageName: node
+  linkType: hard
+
 "@ledgerhq/errors@npm:^6.16.4":
   version: 6.16.4
   resolution: "@ledgerhq/errors@npm:6.16.4"
@@ -1005,19 +1017,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport-webhid@npm:^6.28.6":
-  version: 6.28.6
-  resolution: "@ledgerhq/hw-transport-webhid@npm:6.28.6"
-  dependencies:
-    "@ledgerhq/devices": "npm:^8.3.0"
-    "@ledgerhq/errors": "npm:^6.16.4"
-    "@ledgerhq/hw-transport": "npm:^6.30.6"
-    "@ledgerhq/logs": "npm:^6.12.0"
-  checksum: 10c0/ec30cefed165e57ae95474901ead5cea0eb30fde0d47c4b40e71e0de5a372da0032d47beb1a2a4c0b537bcca699bdfbd04127528b31ca8ebe036a0c82d37131a
+"@ledgerhq/errors@npm:^6.18.0":
+  version: 6.18.0
+  resolution: "@ledgerhq/errors@npm:6.18.0"
+  checksum: 10c0/0dad36bd049c1eb346b83d2b99c1dde0445c53ae3a2f73d4f9a7f5e278ef61d1e589cc0b30bb81dd3082ad9a751f7d82b662214088e19b09769bded45447fb54
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport@npm:6.30.6, @ledgerhq/hw-transport@npm:^6.30.6":
+"@ledgerhq/hw-transport-webhid@npm:^6.29.2":
+  version: 6.29.2
+  resolution: "@ledgerhq/hw-transport-webhid@npm:6.29.2"
+  dependencies:
+    "@ledgerhq/devices": "npm:^8.4.2"
+    "@ledgerhq/errors": "npm:^6.18.0"
+    "@ledgerhq/hw-transport": "npm:^6.31.2"
+    "@ledgerhq/logs": "npm:^6.12.0"
+  checksum: 10c0/86a610bf99eb44fbd93a7d0afc621f13a5f43e63fc86c64f686f88cc528d0ea62a51f674b8a6148aaa4330cc8ef2c2b2e461bbea5a71ae39305f82124a83377b
+  languageName: node
+  linkType: hard
+
+"@ledgerhq/hw-transport@npm:6.30.6":
   version: 6.30.6
   resolution: "@ledgerhq/hw-transport@npm:6.30.6"
   dependencies:
@@ -1026,6 +1045,18 @@ __metadata:
     "@ledgerhq/logs": "npm:^6.12.0"
     events: "npm:^3.3.0"
   checksum: 10c0/85dc3e4938f921996821fbb0ce65808b210823f53aeeb98fb3537348cebab0c852702dca72a3d763b58b9362257d0f16f76930bacd8cc594ee5cd3d367836fda
+  languageName: node
+  linkType: hard
+
+"@ledgerhq/hw-transport@npm:^6.31.2":
+  version: 6.31.2
+  resolution: "@ledgerhq/hw-transport@npm:6.31.2"
+  dependencies:
+    "@ledgerhq/devices": "npm:^8.4.2"
+    "@ledgerhq/errors": "npm:^6.18.0"
+    "@ledgerhq/logs": "npm:^6.12.0"
+    events: "npm:^3.3.0"
+  checksum: 10c0/3fc61c2e844639b7ec73e5eaec2f34235a414ec802df2491ea3d32d854f5f53c592b35b874a9ce899a6087a74a5a750b20c91aae19aaa44eea2faa390edf593f
   languageName: node
   linkType: hard
 
@@ -5179,7 +5210,7 @@ __metadata:
     "@fortawesome/pro-solid-svg-icons": "npm:^6.5.2"
     "@fortawesome/react-fontawesome": "npm:^0.2.0"
     "@fortawesome/sharp-regular-svg-icons": "npm:^6.5.2"
-    "@ledgerhq/hw-transport-webhid": "npm:^6.28.6"
+    "@ledgerhq/hw-transport-webhid": "npm:^6.29.2"
     "@polkadot/api": "npm:^12.0.2"
     "@polkadot/rpc-provider": "npm:^11.0.2"
     "@polkadot/util": "npm:^12.6.2"
