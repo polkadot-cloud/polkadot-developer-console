@@ -998,10 +998,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ledgerhq/devices@npm:^8.4.0":
+  version: 8.4.2
+  resolution: "@ledgerhq/devices@npm:8.4.2"
+  dependencies:
+    "@ledgerhq/errors": "npm:^6.18.0"
+    "@ledgerhq/logs": "npm:^6.12.0"
+    rxjs: "npm:^7.8.1"
+    semver: "npm:^7.3.5"
+  checksum: 10c0/b7149c6302d23928fd2d3622d9018af10a56f6960732de0d72e881d19b75b0036f6248ca0845cfe9dfeda32ecb52c352423e79e109c7decf8437948fed7843cd
+  languageName: node
+  linkType: hard
+
 "@ledgerhq/errors@npm:^6.16.4":
   version: 6.16.4
   resolution: "@ledgerhq/errors@npm:6.16.4"
   checksum: 10c0/6c0f31ac188486063f33ef3ae2e8b7cf5bdd73616ea4715caab3e3a7b722b3b230742c5dd6227b080f70f28598df6833b6c62f38a8a238035e4d48f2073c3636
+  languageName: node
+  linkType: hard
+
+"@ledgerhq/errors@npm:^6.17.0, @ledgerhq/errors@npm:^6.18.0":
+  version: 6.18.0
+  resolution: "@ledgerhq/errors@npm:6.18.0"
+  checksum: 10c0/0dad36bd049c1eb346b83d2b99c1dde0445c53ae3a2f73d4f9a7f5e278ef61d1e589cc0b30bb81dd3082ad9a751f7d82b662214088e19b09769bded45447fb54
   languageName: node
   linkType: hard
 
@@ -1026,6 +1045,18 @@ __metadata:
     "@ledgerhq/logs": "npm:^6.12.0"
     events: "npm:^3.3.0"
   checksum: 10c0/85dc3e4938f921996821fbb0ce65808b210823f53aeeb98fb3537348cebab0c852702dca72a3d763b58b9362257d0f16f76930bacd8cc594ee5cd3d367836fda
+  languageName: node
+  linkType: hard
+
+"@ledgerhq/hw-transport@npm:6.31.0":
+  version: 6.31.0
+  resolution: "@ledgerhq/hw-transport@npm:6.31.0"
+  dependencies:
+    "@ledgerhq/devices": "npm:^8.4.0"
+    "@ledgerhq/errors": "npm:^6.17.0"
+    "@ledgerhq/logs": "npm:^6.12.0"
+    events: "npm:^3.3.0"
+  checksum: 10c0/6d277a05eb5a202a17a7a942e63022ae26321795c640d59a75b032e33274c731da5f23fbf00132efa57bc715bea8505d6a1293c20b121d603459b25c1d784444
   languageName: node
   linkType: hard
 
@@ -4070,14 +4101,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zondax/ledger-substrate@npm:^0.44.2":
-  version: 0.44.2
-  resolution: "@zondax/ledger-substrate@npm:0.44.2"
+"@zondax/ledger-substrate@npm:^0.44.7":
+  version: 0.44.7
+  resolution: "@zondax/ledger-substrate@npm:0.44.7"
   dependencies:
-    "@ledgerhq/hw-transport": "npm:6.30.6"
+    "@ledgerhq/hw-transport": "npm:6.31.0"
     "@zondax/ledger-js": "npm:^0.8.2"
-    axios: "npm:^1.6.8"
-  checksum: 10c0/635aa85636c883c8e99d9b5f18368d6b0196af47315be5b46b8130c63e9cd1930bb7cb58fb6756cb4c137d485ef19ecce8c7df70bfb0f0003f84b3022ad29993
+    axios: "npm:^1.7.2"
+  checksum: 10c0/f5cf07ae8671b449bf787e21f226fc9c0ac1ed0cc68a5f42e7d4c55b9f9738f2e3c277a4b3eff2cfb66d4664ad7d150eb08156df3fbbcb80b4f5129ac1a659a2
   languageName: node
   linkType: hard
 
@@ -4405,7 +4436,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.8":
+"axios@npm:^1.7.2":
   version: 1.7.2
   resolution: "axios@npm:1.7.2"
   dependencies:
@@ -5200,7 +5231,7 @@ __metadata:
     "@w3ux/types": "npm:0.2.0"
     "@w3ux/utils": "npm:0.4.0"
     "@web3modal/wagmi": "npm:^5.0.7"
-    "@zondax/ledger-substrate": "npm:^0.44.2"
+    "@zondax/ledger-substrate": "npm:^0.44.7"
     bignumber.js: "npm:^9.1.2"
     buffer: "npm:^6.0.3"
     compare-versions: "npm:^6.1.1"
