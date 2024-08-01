@@ -52,7 +52,7 @@
     "react-powerglitch": "^1.0.3",
     "react-router-dom": "^6.23.0",
     "scale-ts": "^1.6.0",
-    "styled-components": "^6.1.8",
+    "styled-components": "^6.1.12",
     "usehooks-ts": "^3.1.0",
     "viem": "^2.17.8",
     "wagmi": "^2.11.3"
