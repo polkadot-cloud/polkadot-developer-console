@@ -5231,7 +5231,7 @@ __metadata:
     scale-ts: "npm:^1.6.0"
     styled-components: "npm:^6.1.8"
     tsup: "npm:^8.0.2"
-    tsx: "npm:^4.15.1"
+    tsx: "npm:^4.16.4"
     typescript: "npm:^5.2.2"
     usehooks-ts: "npm:^3.1.0"
     viem: "npm:^2.17.8"
@@ -5658,7 +5658,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.21.4, esbuild@npm:~0.21.4":
+"esbuild@npm:^0.21.4, esbuild@npm:~0.21.5":
   version: 0.21.5
   resolution: "esbuild@npm:0.21.5"
   dependencies:
@@ -10305,11 +10305,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:^4.15.1":
-  version: 4.15.1
-  resolution: "tsx@npm:4.15.1"
+"tsx@npm:^4.16.4":
+  version: 4.16.4
+  resolution: "tsx@npm:4.16.4"
   dependencies:
-    esbuild: "npm:~0.21.4"
+    esbuild: "npm:~0.21.5"
     fsevents: "npm:~2.3.3"
     get-tsconfig: "npm:^4.7.5"
   dependenciesMeta:
@@ -10317,7 +10317,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: 10c0/ae361b98ba4b99cab3faa5d448a80d6c44c2a88768c1dea11ccf7c444ccd2253ae2914744a5cdcb7aa5f6a3a18a2cb933623ae467b9b0b767c103ee913b0fdd1
+  checksum: 10c0/fa95522689f8c8cc08fecbd819b116c53664788c7ab3bec7730a149b8480d703f60fe7442f58470b755f3e8e720391721fc86e1e6617d57cc267b2b1e012f8ea
   languageName: node
   linkType: hard
 
