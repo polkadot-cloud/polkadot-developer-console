@@ -23,8 +23,12 @@ export const WorkspaceSettings = () => {
   const { setTabsHidden } = useSettings();
 
   // Go back to index page and reload the console.
-  const reloadConsole = () => {
-    window.location.reload();
+  const reloadConsole = (goToDefaultRoute: boolean) => {
+    if (goToDefaultRoute) {
+      window.location.href = '/';
+    } else {
+      window.location.reload();
+    }
   };
 
   // Handle import of workspace file.
@@ -41,7 +45,7 @@ export const WorkspaceSettings = () => {
 
     importWorkspace(file);
     setTabsHidden(false);
-    reloadConsole();
+    reloadConsole(false);
   };
 
   return (
@@ -127,7 +131,7 @@ export const WorkspaceSettings = () => {
               ) {
                 removeLocalStorageState(true);
                 setTabsHidden(false);
-                reloadConsole();
+                reloadConsole(true);
               }
             }}
           >
