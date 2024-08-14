@@ -36,7 +36,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
 
   // Current active tab id.
   const [selectedTabId, setSelectedTabIdState] = useState<number>(
-    local.getSelectedTabId() || 0
+    local.getSelectedTabId() || tabs?.[0]?.id || 0
   );
 
   // Current active tab index.

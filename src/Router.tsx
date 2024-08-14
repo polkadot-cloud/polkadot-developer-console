@@ -23,7 +23,7 @@ export const Router = () => {
 
   // Gets the active task component for the tab, or the default component otherwise.
   const getActiveTaskComponent = (): ReactNode => {
-    // Fall back to splash page if active tab is 0 (no tab).
+    // Fall back to splash page if active tab is 0 (no tab)
     if (tabId === 0) {
       return <Splash />;
     }
