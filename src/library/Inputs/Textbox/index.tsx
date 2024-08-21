@@ -26,8 +26,8 @@ export const Textbox = ({
 
   // Handle textbox value change.
   const handleTextboxChange = (val: string) => {
-    // If numeric, check if the value is a number.
-    if (numeric && isNaN(Number(val))) {
+    // If `numeric` flag set, check if the value is a number.
+    if (numeric && Number.isNaN(Number(val))) {
       return;
     }
 
