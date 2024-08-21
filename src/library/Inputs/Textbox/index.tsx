@@ -26,16 +26,14 @@ export const Textbox = ({
 
   // Handle textbox value change.
   const handleTextboxChange = (val: string) => {
-    // Firstly truncate the decimal.
-    val = String(Number(~~val));
-
+    // If numeric, check if the value is a number.
     if (numeric && isNaN(Number(val))) {
       return;
     }
 
-    // Remove leading zeroes if numeric.
+    // Remove double leading zeros if numeric.
     if (numeric) {
-      val = val.replace(/^0+/, '') || '0';
+      val = val.replace(/0{2,}\./g, '0.');
     }
 
     if (onChange !== undefined) {
