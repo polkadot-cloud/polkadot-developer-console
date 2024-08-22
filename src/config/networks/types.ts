@@ -11,6 +11,7 @@ export type DirectoryId =
   | 'people-polkadot'
   | 'people-kusama'
   | 'people-westend'
+  | 'coretime-kusama'
   | 'collectives';
 
 export type ChainId = DirectoryId | 'custom';
