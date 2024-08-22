@@ -121,6 +121,26 @@ export const NetworkDirectory: Record<DirectoryId, NetworkDirectoryItem> = {
       relayChain: 'ksmcc3',
     },
   },
+  'coretime-kusama': {
+    system: {
+      chain: 'Kusama Coretime',
+      ss58: 0,
+      units: 12,
+      unit: 'KSM',
+    },
+    name: 'Kusama Coretime Chain',
+    initial: 'C',
+    color: '#552bbf',
+    providers: {
+      Dwellir: 'wss://coretime-kusama-rpc.dwellir.com',
+      'IBP-GeoDNS1': 'wss://sys.ibp.network/coretime-kusama',
+      'IBP-GeoDNS2': 'wss://sys.dotters.network%2Fcoretime-kusama',
+      LuckyFriday: 'wss://rpc-coretime-kusama.luckyfriday.io',
+      Parity: 'wss://kusama-coretime-rpc.polkadot.io',
+      Stakeworld: 'wss://ksm-rpc.stakeworld.io/coretime',
+    },
+    relayChain: 'kusama',
+  },
   'people-kusama': {
     system: {
       chain: 'Kusama People',
