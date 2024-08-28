@@ -48,6 +48,7 @@ export const HeaderWrapper = styled.div`
       justify-content: flex-end;
 
       > button {
+        color: var(--text-color-primary);
         opacity: 0.4;
         transition: opacity 0.2s;
         margin-left: 0.95rem;
