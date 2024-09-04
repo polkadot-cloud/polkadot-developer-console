@@ -103,7 +103,7 @@ export const ConnectOverlay = () => {
           left: `${x}px`,
           top: `${y}px`,
           opacity: show ? 1 : 0,
-          zIndex: 99,
+          zIndex: 50,
           width: '100%',
           maxWidth: `${CONNECT_OVERLAY_MAX_WIDTH}px`,
         }}

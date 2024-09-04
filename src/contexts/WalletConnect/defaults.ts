@@ -20,4 +20,5 @@ export const defaultWalletConnect: WalletConnectContextInterface = {
   wcProvider: null,
   wcModal: null,
   wcMeta: null,
+  wcSession: null,
 };

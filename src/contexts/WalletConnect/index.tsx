@@ -34,7 +34,13 @@ export const WalletConnectProvider = ({
   const wcModal = useRef<WalletConnectModal | null>(null);
 
   // Connect metadata for the WalletConnect provider.
-  const wcMeta = useRef<{ uri: string; approval: AnyFunction } | null>(null);
+  const [wcMeta, setWcMeta] = useState<{
+    uri: string;
+    approval: AnyFunction;
+  } | null>(null);
+
+  // The WalletConnect session.
+  const [wcSession] = useState<AnyFunction | null>(null);
 
   // Store whether the provider has been initialised.
   const [initialised, setInitialised] = useState<boolean>(false);
@@ -51,6 +57,7 @@ export const WalletConnectProvider = ({
 
     wcProvider.current = provider;
     wcModal.current = modal;
+
     setInitialised(true);
   };
 
@@ -79,9 +86,8 @@ export const WalletConnectProvider = ({
       },
     });
 
-    if (uri) {
-      wcMeta.current = { uri, approval };
-    }
+    const newWcMeta = uri ? { uri, approval } : null;
+    setWcMeta(newWcMeta);
   };
 
   // On initial render, initiate the WalletConnect provider.
@@ -104,7 +110,8 @@ export const WalletConnectProvider = ({
       value={{
         wcProvider: wcProvider.current,
         wcModal: wcModal.current,
-        wcMeta: wcMeta.current,
+        wcMeta,
+        wcSession,
       }}
     >
       {children}

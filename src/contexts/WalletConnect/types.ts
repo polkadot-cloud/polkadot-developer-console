@@ -9,6 +9,7 @@ export interface WalletConnectContextInterface {
   wcProvider: UniversalProvider | null;
   wcModal: WalletConnectModal | null;
   wcMeta: WalletConnectConnectedMeta | null;
+  wcSession: AnyFunction | null;
 }
 
 export interface WalletConnectConnectedMeta {

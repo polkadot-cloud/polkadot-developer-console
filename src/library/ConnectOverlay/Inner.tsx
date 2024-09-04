@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ItemWrapper } from './Wrappers';
 import PolkadotVaultSVG from '@w3ux/extension-assets/PolkadotVault.svg?react';
 import LedgerSquareSVG from '@w3ux/extension-assets/LedgerSquare.svg?react';
+import WalletConnectSVG from '@w3ux/extension-assets/WalletConnect.svg?react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import type { ConnectInnerProps } from './types';
@@ -13,6 +14,7 @@ import { Extension } from './Extension';
 import { useConnect } from 'contexts/Connect';
 import { ManageVault } from './ManageVault';
 import { ManageLedger } from './ManageLedger';
+import { ManageWalletConnect } from './ManageWalletConnect';
 
 export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
   const { dismissOverlay } = useConnect();
@@ -173,6 +175,49 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
         </ItemWrapper>
       </motion.span>
 
+      <motion.h4 {...getMotionProps('heading')}>Wallets</motion.h4>
+
+      <motion.span {...getMotionProps('wallet_connect')}>
+        <ItemWrapper
+          className={`${selectedConnectItem === 'wallet_connect' ? ` last` : ``}`}
+        >
+          <div>
+            <WalletConnectSVG style={{ width: '2rem', height: '2rem' }} />
+          </div>
+          <div>
+            <div>
+              <h4>Wallet Connect</h4>
+              <h5>
+                <a
+                  href="https://walletconnect.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  walletconnect.com
+                  <FontAwesomeIcon
+                    icon={faExternalLinkAlt}
+                    transform="shrink-5"
+                  />
+                </a>
+              </h5>
+            </div>
+            <div>
+              <button
+                onClick={() =>
+                  setSelectedConnectItem(
+                    selectedConnectItem === 'wallet_connect'
+                      ? undefined
+                      : 'wallet_connect'
+                  )
+                }
+              >
+                {selectedConnectItem === 'wallet_connect' ? 'Done' : 'Manage'}
+              </button>
+            </div>
+          </div>
+        </ItemWrapper>
+      </motion.span>
+
       <motion.h4 {...getMotionProps('heading')}>Web Extensions</motion.h4>
 
       {extensionItems.map((extension, i) => (
@@ -196,6 +241,13 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
 
       <motion.span {...getManageProps('ledger')}>
         <ManageLedger
+          getMotionProps={getMotionProps}
+          selectedConnectItem={selectedConnectItem}
+        />
+      </motion.span>
+
+      <motion.span {...getManageProps('wallet_connect')}>
+        <ManageWalletConnect
           getMotionProps={getMotionProps}
           selectedConnectItem={selectedConnectItem}
         />
