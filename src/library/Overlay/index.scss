@@ -362,14 +362,16 @@
   > .section {
     @include modal-scrollbar;
 
-    border-radius: 0.6rem;
-    display: flex;
-    flex-direction: column;
-    flex-basis: 33.33%;
-    min-width: 33.33%;
-    height: auto;
-    overflow: hidden auto;
-    flex-grow: 1;
+    & {
+      display: flex;
+      border-radius: 0.6rem;
+      flex-direction: column;
+      flex-basis: 33.33%;
+      min-width: 33.33%;
+      height: auto;
+      overflow: hidden auto;
+      flex-grow: 1;
+    }
   }
 }
 
@@ -381,14 +383,16 @@
   > .section {
     @include modal-scrollbar;
 
-    border-radius: 0.6rem;
-    display: flex;
-    flex-direction: column;
-    flex-basis: 50%;
-    min-width: 50%;
-    height: auto;
-    overflow: hidden auto;
-    flex-grow: 1;
+    & {
+      border-radius: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      flex-basis: 50%;
+      min-width: 50%;
+      height: auto;
+      overflow: hidden auto;
+      flex-grow: 1;
+    }
   }
 }
 
@@ -435,12 +439,14 @@
 .modal-scroll {
   @include modal-scrollbar;
 
-  border-radius: 0.6rem;
-  position: relative;
-  z-index: 99;
-  max-height: 100%;
-  width: 100%;
-  max-width: 600px;
+  & {
+    border-radius: 0.6rem;
+    position: relative;
+    z-index: 99;
+    max-height: 100%;
+    width: 100%;
+    max-width: 600px;
+  }
 
   &.lg {
     max-width: 800px;
