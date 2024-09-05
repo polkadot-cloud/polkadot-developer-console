@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import type { DirectoryId } from 'config/networks/types';
 import { ImportButtonWrapper, SubHeadingWrapper } from './Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQrcode } from '@fortawesome/free-solid-svg-icons';
+import { faQrcode, faSquareMinus } from '@fortawesome/free-solid-svg-icons';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { useWcAccounts } from '@w3ux/react-connect-kit';
 import type { WCAccount } from '@w3ux/react-connect-kit/types';
@@ -18,17 +18,30 @@ import { remToUnit } from '@w3ux/utils';
 import { NetworkDirectory } from 'config/networks';
 import { useWalletConnect } from 'contexts/WalletConnect';
 import type { AnyJson } from '@w3ux/types';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
 export const ManageWalletConnect = ({
   getMotionProps,
   selectedConnectItem,
 }: ManageHardwareProps) => {
-  const { getWcAccounts, wcAccountExists, renameWcAccount, removeWcAccount } =
-    useWcAccounts();
-  const { wcMeta, wcModal } = useWalletConnect();
+  const { getConnectedChains } = useChainSpaceEnv();
+  const { wcInitialised, wcMeta, handleNewSession } = useWalletConnect();
+  const {
+    addWcAccount,
+    getWcAccounts,
+    wcAccountExists,
+    renameWcAccount,
+    removeWcAccount,
+  } = useWcAccounts();
 
-  // The directory id of the address list.
-  const [directoryId, setDirectoryId] = useState<DirectoryId>('polkadot');
+  // Connected chains determines which Wallet Connect accounts can be imported. Wallet Connect will
+  // automatically re-initialise if chains are changed & this UI will update accordingly.
+  const connectedChains = getConnectedChains();
+
+  // The directory id of the address list. If no chains are connected, just default to Polkadot.
+  const [directoryId, setDirectoryId] = useState<DirectoryId>(
+    (connectedChains?.[0]?.specName as DirectoryId) || 'polkadot'
+  );
 
   // Whether the search input is active. When active, addresses are hidden and search results are
   // shown instead.
@@ -60,10 +73,46 @@ export const ManageWalletConnect = ({
     renameWcAccount(directoryId, address, newName);
   };
 
-  // Handle removing an address.
-  const handleRemove = (address: string) => {
-    if (confirm('Are you sure you want to remove this account?')) {
-      removeWcAccount(directoryId, address);
+  // Handle importing of address.
+  const handleImportAddresses = async () => {
+    if (!wcInitialised) {
+      return;
+    }
+
+    setImportActive(!importActive);
+
+    // if there is a URI from the client connect step open the modal
+    if (wcMeta) {
+      const wcSession = await handleNewSession();
+
+      // Get accounts from session.
+      const walletConnectAccounts = Object.values(wcSession.namespaces)
+        .map((namespace: AnyJson) => namespace.accounts)
+        .flat();
+
+      // Get the caip of the active chain.
+      const caip = connectedChains
+        .find((chain) => chain.specName === directoryId)
+        ?.genesisHash.substring(2)
+        .substring(0, 32);
+
+      // Only get accounts for the currently selected `caip`.
+      let filteredAccounts = walletConnectAccounts.filter((wcAccount) => {
+        const prefix = wcAccount.split(':')[1];
+        return prefix === caip;
+      });
+
+      // grab account addresses from CAIP account formatted accounts
+      filteredAccounts = walletConnectAccounts.map((wcAccount) => {
+        const address = wcAccount.split(':')[2];
+        return address;
+      });
+
+      // Save accounts to local storage.
+      filteredAccounts.forEach((address) => {
+        console.log('adding', address);
+        addWcAccount(directoryId, address, wcAccounts.length);
+      });
     }
   };
 
@@ -75,6 +124,16 @@ export const ManageWalletConnect = ({
       setImportActive(false);
     }
   }, [selectedConnectItem]);
+
+  // Disconnect from Wallet Connect and remove imported accounts.
+  const disconnectWc = () => {
+    // Remove imported Wallet Connect accounts.
+    wcAccounts.forEach((account) => {
+      removeWcAccount(directoryId, account.address);
+    });
+
+    // TODO: Disconnect from Wallet Connect client.
+  };
 
   return (
     <>
@@ -98,43 +157,40 @@ export const ManageWalletConnect = ({
               : 'New Account'}
           </h5>
           <ImportButtonWrapper>
-            <button
-              onClick={async () => {
-                setImportActive(!importActive);
-
-                // if there is a URI from the client connect step open the modal
-                if (wcMeta) {
-                  // Summon Wallet Connect modal that presents QR Code.
-                  wcModal?.openModal({ uri: wcMeta.uri });
-
-                  // Get session from approval.
-                  const walletConnectSession = await wcMeta?.approval();
-
-                  // Get accounts from session.
-                  const walletConnectAccounts = Object.values(
-                    walletConnectSession.namespaces
-                  )
-                    .map((namespace: AnyJson) => namespace.accounts)
-                    .flat();
-
-                  // grab account addresses from CAIP account formatted accounts
-                  const accounts = walletConnectAccounts.map((wcAccount) => {
-                    const address = wcAccount.split(':')[2];
-                    return address;
-                  });
-
-                  // TODO: Save accounts in console.
-                  console.log(accounts);
-                }
-              }}
-            >
-              {!importActive && (
-                <FontAwesomeIcon icon={faQrcode} transform="shrink-2" />
-              )}
-              {/* TODO: Only allow import if Wallet Connect has been initialised.
-               */}
-              {importActive ? 'Cancel Import' : 'Import Account'}
-            </button>
+            {wcAccounts.length > 0 ? (
+              <button
+                onClick={() => {
+                  if (
+                    confirm(
+                      'Are you sure you want to disconnect from Wallet Connect?'
+                    )
+                  ) {
+                    disconnectWc();
+                  }
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faSquareMinus}
+                  style={{ marginRight: '0.4rem' }}
+                />
+                Disconnect
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  handleImportAddresses();
+                }}
+              >
+                {!importActive && (
+                  <FontAwesomeIcon icon={faQrcode} transform="shrink-2" />
+                )}
+                {!wcInitialised
+                  ? 'Initialising'
+                  : importActive
+                    ? 'Cancel Import'
+                    : 'Import Account'}
+              </button>
+            )}
           </ImportButtonWrapper>
         </SubHeadingWrapper>
       </motion.div>
@@ -150,9 +206,12 @@ export const ManageWalletConnect = ({
             Identicon={
               <Polkicon address={address} size={remToUnit('2.1rem')} />
             }
+            allowAction={false}
             existsHandler={wcAccountExists}
             renameHandler={handleRename}
-            onRemove={handleRemove}
+            onRemove={() => {
+              // Do nothing.
+            }}
             onConfirm={() => {
               /* Do nothing. Not shown in UI. */
             }}

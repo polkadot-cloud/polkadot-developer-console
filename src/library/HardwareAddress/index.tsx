@@ -16,6 +16,7 @@ export const HardwareAddress = ({
   index,
   initial,
   disableEditIfImported = false,
+  allowAction = true,
   Identicon,
   existsHandler,
   renameHandler,
@@ -129,17 +130,19 @@ export const HardwareAddress = ({
           </div>
         </div>
       </div>
-      <div className="action">
-        {isImported ? (
-          <button type="button" onClick={() => onRemove(address)}>
-            Remove
-          </button>
-        ) : (
-          <button type="button" onClick={() => onConfirm(address, index)}>
-            Import
-          </button>
-        )}
-      </div>
+      {allowAction && (
+        <div className="action">
+          {isImported ? (
+            <button type="button" onClick={() => onRemove(address)}>
+              Remove
+            </button>
+          ) : (
+            <button type="button" onClick={() => onConfirm(address, index)}>
+              Import
+            </button>
+          )}
+        </div>
+      )}
     </Wrapper>
   );
 };

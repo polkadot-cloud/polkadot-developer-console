@@ -24,7 +24,6 @@ export const WalletConnectProvider = ({
   children: ReactNode;
 }) => {
   const { getConnectedChains } = useChainSpaceEnv();
-
   const connectedChains = getConnectedChains();
 
   // The WalletConnect provider.
@@ -40,7 +39,7 @@ export const WalletConnectProvider = ({
   } | null>(null);
 
   // The WalletConnect session.
-  const [wcSession] = useState<AnyFunction | null>(null);
+  const [wcSession, setWcSession] = useState<AnyFunction | null>(null);
 
   // Store whether the provider has been initialised.
   const [initialised, setInitialised] = useState<boolean>(false);
@@ -90,6 +89,23 @@ export const WalletConnectProvider = ({
     setWcMeta(newWcMeta);
   };
 
+  // Handle `approval()` by summoning a new modal and initiating a new Wallet Connect session.
+  const handleNewSession = async () => {
+    if (!wcMeta || !wcModal.current || !initialised) {
+      return;
+    }
+
+    // Summon Wallet Connect modal that presents QR Code.
+    wcModal.current.openModal({ uri: wcMeta.uri });
+
+    // Get session from approval.
+    const newWcSession = await wcMeta?.approval();
+
+    setWcSession(newWcSession);
+
+    return newWcSession;
+  };
+
   // On initial render, initiate the WalletConnect provider.
   useEffect(() => {
     if (!wcProvider.current) {
@@ -113,6 +129,7 @@ export const WalletConnectProvider = ({
         wcModal: wcModal.current,
         wcMeta,
         wcSession,
+        handleNewSession,
       }}
     >
       {children}

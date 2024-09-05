@@ -11,6 +11,7 @@ export interface WalletConnectContextInterface {
   wcModal: WalletConnectModal | null;
   wcMeta: WalletConnectConnectedMeta | null;
   wcSession: AnyFunction | null;
+  handleNewSession: () => Promise<AnyFunction>;
 }
 
 export interface WalletConnectConnectedMeta {
