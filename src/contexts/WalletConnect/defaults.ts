@@ -17,6 +17,7 @@ export const WalletConnectChains = [
 ];
 
 export const defaultWalletConnect: WalletConnectContextInterface = {
+  wcInitialised: false,
   wcProvider: null,
   wcModal: null,
   wcMeta: null,

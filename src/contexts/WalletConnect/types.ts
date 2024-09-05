@@ -6,6 +6,7 @@ import type { WalletConnectModal } from '@walletconnect/modal';
 import type { AnyFunction } from '@w3ux/types';
 
 export interface WalletConnectContextInterface {
+  wcInitialised: boolean;
   wcProvider: UniversalProvider | null;
   wcModal: WalletConnectModal | null;
   wcMeta: WalletConnectConnectedMeta | null;
