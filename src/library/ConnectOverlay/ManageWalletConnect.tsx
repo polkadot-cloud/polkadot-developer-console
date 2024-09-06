@@ -25,7 +25,13 @@ export const ManageWalletConnect = ({
   selectedConnectItem,
 }: ManageHardwareProps) => {
   const { getConnectedChains } = useChainSpaceEnv();
-  const { wcInitialised, wcMeta, handleNewSession } = useWalletConnect();
+  const {
+    wcMeta,
+    wcProvider,
+    wcInitialised,
+    handleNewSession,
+    disconnectSession,
+  } = useWalletConnect();
   const {
     addWcAccount,
     getWcAccounts,
@@ -81,9 +87,15 @@ export const ManageWalletConnect = ({
 
     setImportActive(!importActive);
 
-    // if there is a URI from the client connect step open the modal
-    if (wcMeta) {
-      const wcSession = await handleNewSession();
+    // If there is a URI from the client connect step open the modal
+    if (wcMeta && wcProvider) {
+      // Retrieve a new session or get current one.
+      let wcSession;
+      if (wcMeta.uri) {
+        wcSession = await handleNewSession();
+      } else {
+        wcSession = wcProvider.session;
+      }
 
       // Get accounts from session.
       const walletConnectAccounts = Object.values(wcSession.namespaces)
@@ -126,13 +138,14 @@ export const ManageWalletConnect = ({
   }, [selectedConnectItem]);
 
   // Disconnect from Wallet Connect and remove imported accounts.
-  const disconnectWc = () => {
+  const disconnectWc = async () => {
     // Remove imported Wallet Connect accounts.
     wcAccounts.forEach((account) => {
       removeWcAccount(directoryId, account.address);
     });
 
-    // TODO: Disconnect from Wallet Connect client.
+    // Disconnect from Wallet Connect session.
+    await disconnectSession();
   };
 
   return (

@@ -7,6 +7,7 @@ import * as defaults from './defaults';
 import type { WalletConnectContextInterface } from './types';
 import UniversalProvider from '@walletconnect/universal-provider';
 import { WalletConnectModal } from '@walletconnect/modal';
+import { getSdkError } from '@walletconnect/utils';
 import type { AnyFunction } from '@w3ux/types';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 
@@ -34,12 +35,9 @@ export const WalletConnectProvider = ({
 
   // Connect metadata for the WalletConnect provider.
   const [wcMeta, setWcMeta] = useState<{
-    uri: string;
+    uri: string | undefined;
     approval: AnyFunction;
   } | null>(null);
-
-  // The WalletConnect session.
-  const [wcSession, setWcSession] = useState<AnyFunction | null>(null);
 
   // Store whether the provider has been initialised.
   const [initialised, setInitialised] = useState<boolean>(false);
@@ -50,6 +48,7 @@ export const WalletConnectProvider = ({
       projectId: wcProjectId,
       relayUrl: 'wss://relay.walletconnect.com',
     });
+
     const modal = new WalletConnectModal({
       projectId: wcProjectId,
     });
@@ -75,6 +74,9 @@ export const WalletConnectProvider = ({
       return;
     }
 
+    // If an existing session exists, get the topic and add to `connect` to restore it.
+    const pairingTopic = wcProvider.current.session?.pairingTopic;
+
     const { uri, approval } = await wcProvider.current.client.connect({
       requiredNamespaces: {
         polkadot: {
@@ -83,9 +85,10 @@ export const WalletConnectProvider = ({
           events: ['chainChanged", "accountsChanged'],
         },
       },
+      pairingTopic,
     });
 
-    const newWcMeta = uri ? { uri, approval } : null;
+    const newWcMeta = { uri, approval };
     setWcMeta(newWcMeta);
   };
 
@@ -96,14 +99,36 @@ export const WalletConnectProvider = ({
     }
 
     // Summon Wallet Connect modal that presents QR Code.
-    wcModal.current.openModal({ uri: wcMeta.uri });
+    if (wcMeta.uri) {
+      wcModal.current.openModal({ uri: wcMeta.uri });
+    }
 
     // Get session from approval.
     const newWcSession = await wcMeta?.approval();
 
-    setWcSession(newWcSession);
+    // Update session data in provider.
+    if (wcProvider.current) {
+      wcProvider.current.session = newWcSession;
+    }
 
     return newWcSession;
+  };
+
+  // Disconnect from current session.
+  const disconnectSession = async () => {
+    if (!wcProvider.current) {
+      return;
+    }
+
+    const topic = wcProvider.current.session?.topic;
+    if (topic) {
+      await wcProvider.current.client.disconnect({
+        topic,
+        reason: getSdkError('USER_DISCONNECTED'),
+      });
+    }
+
+    setWcMeta(null);
   };
 
   // On initial render, initiate the WalletConnect provider.
@@ -128,8 +153,8 @@ export const WalletConnectProvider = ({
         wcProvider: wcProvider.current,
         wcModal: wcModal.current,
         wcMeta,
-        wcSession,
         handleNewSession,
+        disconnectSession,
       }}
     >
       {children}
