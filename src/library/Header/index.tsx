@@ -7,8 +7,8 @@ import { version } from '../../../package.json';
 import { useGlitch } from 'react-powerglitch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { DiscussionsUrl, GithubRepoUrl } from 'consts';
-import { faMessages } from '@fortawesome/pro-duotone-svg-icons';
+import { DiscussionsUrl, DocsUrl, GithubRepoUrl } from 'consts';
+import { faFileDoc, faMessages } from '@fortawesome/pro-solid-svg-icons';
 
 export const Header = () => {
   const glitch = useGlitch({
@@ -45,6 +45,10 @@ export const Header = () => {
         <span>{version}</span>
       </div>
       <div>
+        <button type="button" onClick={() => window.open(DocsUrl)}>
+          <FontAwesomeIcon icon={faFileDoc} transform="grow-2" />
+        </button>
+
         <button type="button" onClick={() => window.open(DiscussionsUrl)}>
           <FontAwesomeIcon icon={faMessages} transform="shrink-0" />
         </button>
