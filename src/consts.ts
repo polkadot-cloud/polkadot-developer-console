@@ -9,5 +9,7 @@ export const DiscussionsUrl =
 export const GithubRepoUrl =
   'https://github.com/polkadot-cloud/developer-console';
 
+export const DocsUrl = 'https://docs.polkadot.cloud';
+
 export const ZondaxMetadataHashApiUrl =
   'https://api.zondax.ch/polkadot/node/metadata/hash';
