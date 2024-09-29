@@ -75,7 +75,7 @@ export const ConnectOverlay = () => {
   // Close the overlay if clicked outside of its container.
   useOutsideAlerter(overlayRef, () => {
     dismissOverlay();
-  });
+  }, ['wcm-modal']);
 
   // Check position and show the overlay if overlay has been opened.
   useEffect(() => {
