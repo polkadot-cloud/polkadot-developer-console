@@ -19,6 +19,7 @@ import { NetworkDirectory } from 'config/networks';
 import { useWalletConnect } from 'contexts/WalletConnect';
 import type { AnyJson } from '@w3ux/types';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { faLink } from '@fortawesome/pro-duotone-svg-icons';
 
 export const ManageWalletConnect = ({
   getMotionProps,
@@ -79,6 +80,21 @@ export const ManageWalletConnect = ({
     renameWcAccount(directoryId, address, newName);
   };
 
+  // Initiate a new Wallet Connect session, if not already initialised.
+  const initialiseWcSession = async () => {
+    if (wcMeta && wcProvider) {
+      let wcSession;
+      if (wcMeta.uri) {
+        wcSession = await handleNewSession();
+      } else {
+        wcSession = wcProvider.session;
+      }
+      return wcSession;
+    } else {
+      return null;
+    }
+  };
+
   // Handle importing of address.
   const handleImportAddresses = async () => {
     if (!wcInitialised) {
@@ -90,11 +106,9 @@ export const ManageWalletConnect = ({
     // If there is a URI from the client connect step open the modal
     if (wcMeta && wcProvider) {
       // Retrieve a new session or get current one.
-      let wcSession;
-      if (wcMeta.uri) {
-        wcSession = await handleNewSession();
-      } else {
-        wcSession = wcProvider.session;
+      const wcSession = await initialiseWcSession();
+      if (wcSession === null) {
+        return;
       }
 
       // Get accounts from session.
@@ -122,7 +136,6 @@ export const ManageWalletConnect = ({
 
       // Save accounts to local storage.
       filteredAccounts.forEach((address) => {
-        console.log('adding', address);
         addWcAccount(directoryId, address, wcAccounts.length);
       });
     }
@@ -139,13 +152,15 @@ export const ManageWalletConnect = ({
 
   // Disconnect from Wallet Connect and remove imported accounts.
   const disconnectWc = async () => {
-    // Remove imported Wallet Connect accounts.
-    wcAccounts.forEach((account) => {
-      removeWcAccount(directoryId, account.address);
-    });
+    if (confirm('Are you sure you want to disconnect from Wallet Connect?')) {
+      // Remove imported Wallet Connect accounts.
+      wcAccounts.forEach((account) => {
+        removeWcAccount(directoryId, account.address);
+      });
 
-    // Disconnect from Wallet Connect session.
-    await disconnectSession();
+      // Disconnect from Wallet Connect session.
+      await disconnectSession();
+    }
   };
 
   return (
@@ -163,25 +178,25 @@ export const ManageWalletConnect = ({
       <motion.div {...getMotionProps('address_config', !searchActive)}>
         <SubHeadingWrapper>
           <h5>
-            {!importActive
-              ? `${
-                  wcAccounts.length || 'No'
-                } ${wcAccounts.length === 1 ? 'Account' : 'Accounts'}`
-              : 'New Account'}
+            {wcProvider?.session === undefined
+              ? 'Wallet Connect is Disconnected'
+              : !importActive
+                ? `${
+                    wcAccounts.length || 'No'
+                  } ${wcAccounts.length === 1 ? 'Account' : 'Accounts'}`
+                : 'New Account'}
           </h5>
           <ImportButtonWrapper>
-            {wcAccounts.length > 0 ? (
-              <button
-                onClick={() => {
-                  if (
-                    confirm(
-                      'Are you sure you want to disconnect from Wallet Connect?'
-                    )
-                  ) {
-                    disconnectWc();
-                  }
-                }}
-              >
+            {wcProvider?.session === undefined ? (
+              <button onClick={() => initialiseWcSession()}>
+                <FontAwesomeIcon
+                  icon={faLink}
+                  style={{ marginRight: '0.4rem' }}
+                />
+                Reconnect
+              </button>
+            ) : wcAccounts.length > 0 ? (
+              <button onClick={() => disconnectWc()}>
                 <FontAwesomeIcon
                   icon={faSquareMinus}
                   style={{ marginRight: '0.4rem' }}
