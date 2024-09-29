@@ -42,10 +42,19 @@ export const WalletConnectProvider = ({
   // Store whether the provider has been initialised.
   const [initialised, setInitialised] = useState<boolean>(false);
 
+  // Store whether the wallet connect session is active.
+  const [wcSessionActive, setWcSessionActive] = useState<boolean>(false);
+
   // Init WalletConnect provider & modal, and update as initialised.
   const initProvider = async () => {
     const provider = await UniversalProvider.init({
       projectId: wcProjectId,
+      metadata: {
+        name: 'Polkadot Developer Console',
+        description: 'A next-generation Polkadot Developer Console',
+        url: 'https://console.polkadot.cloud/',
+        icons: [], // TODO: Add icon. 500px by 500px.
+      },
       relayUrl: 'wss://relay.walletconnect.com',
     });
 
@@ -65,6 +74,11 @@ export const WalletConnectProvider = ({
       return;
     }
 
+    // Disconnect from current session if it exists.
+    await disconnectSession();
+
+    // TODO: Check tabs for chain data and ensure `connectedChains` is up to date and synced.
+
     const caips = connectedChains.map(
       (chain) => `polkadot:${chain.genesisHash.substring(2).substring(0, 32)}`
     );
@@ -77,7 +91,7 @@ export const WalletConnectProvider = ({
     // If an existing session exists, get the topic and add to `connect` to restore it.
     const pairingTopic = wcProvider.current.session?.pairingTopic;
 
-    const { uri, approval } = await wcProvider.current.client.connect({
+    const connectConfig = {
       requiredNamespaces: {
         polkadot: {
           methods: ['polkadot_signTransaction', 'polkadot_signMessage'],
@@ -86,8 +100,10 @@ export const WalletConnectProvider = ({
         },
       },
       pairingTopic,
-    });
+    };
 
+    const { uri, approval } =
+      await wcProvider.current.client.connect(connectConfig);
     const newWcMeta = { uri, approval };
     setWcMeta(newWcMeta);
   };
@@ -128,6 +144,7 @@ export const WalletConnectProvider = ({
       });
     }
 
+    setWcSessionActive(false);
     setWcMeta(null);
   };
 
@@ -155,6 +172,8 @@ export const WalletConnectProvider = ({
         wcMeta,
         handleNewSession,
         disconnectSession,
+        wcSessionActive,
+        setWcSessionActive,
       }}
     >
       {children}

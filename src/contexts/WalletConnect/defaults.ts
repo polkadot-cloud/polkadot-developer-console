@@ -1,5 +1,6 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
 import type { WalletConnectContextInterface } from './types';
 
@@ -23,4 +24,6 @@ export const defaultWalletConnect: WalletConnectContextInterface = {
   wcMeta: null,
   handleNewSession: () => Promise.resolve(),
   disconnectSession: () => Promise.resolve(),
+  wcSessionActive: false,
+  setWcSessionActive: () => {},
 };

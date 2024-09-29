@@ -25,14 +25,6 @@ export const ManageWalletConnect = ({
   getMotionProps,
   selectedConnectItem,
 }: ManageHardwareProps) => {
-  const { getConnectedChains } = useChainSpaceEnv();
-  const {
-    wcMeta,
-    wcProvider,
-    wcInitialised,
-    handleNewSession,
-    disconnectSession,
-  } = useWalletConnect();
   const {
     addWcAccount,
     getWcAccounts,
@@ -40,6 +32,16 @@ export const ManageWalletConnect = ({
     renameWcAccount,
     removeWcAccount,
   } = useWcAccounts();
+  const {
+    wcMeta,
+    wcProvider,
+    wcInitialised,
+    wcSessionActive,
+    handleNewSession,
+    disconnectSession,
+    setWcSessionActive,
+  } = useWalletConnect();
+  const { getConnectedChains } = useChainSpaceEnv();
 
   // Connected chains determines which Wallet Connect accounts can be imported. Wallet Connect will
   // automatically re-initialise if chains are changed & this UI will update accordingly.
@@ -89,6 +91,7 @@ export const ManageWalletConnect = ({
       } else {
         wcSession = wcProvider.session;
       }
+      setWcSessionActive(true);
       return wcSession;
     } else {
       return null;
@@ -178,7 +181,7 @@ export const ManageWalletConnect = ({
       <motion.div {...getMotionProps('address_config', !searchActive)}>
         <SubHeadingWrapper>
           <h5>
-            {wcProvider?.session === undefined
+            {!wcSessionActive
               ? 'Wallet Connect is Disconnected'
               : !importActive
                 ? `${
@@ -187,7 +190,7 @@ export const ManageWalletConnect = ({
                 : 'New Account'}
           </h5>
           <ImportButtonWrapper>
-            {wcProvider?.session === undefined ? (
+            {!wcSessionActive ? (
               <button onClick={() => initialiseWcSession()}>
                 <FontAwesomeIcon
                   icon={faLink}
