@@ -36,7 +36,7 @@ import { PalletScraper } from 'model/Scraper/Pallet';
 import { xxhashAsHex } from '@polkadot/util-crypto';
 import { u16 } from 'scale-ts';
 import type { AnyJson } from '@w3ux/types';
-import { getApiInstanceOwnerAndIndex } from './Utils';
+import { eqSet, getApiInstanceOwnerAndIndex } from './Utils';
 import { useTxMeta } from 'contexts/TxMeta';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
@@ -46,8 +46,13 @@ export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
 export const useChainSpaceEnv = () => useContext(ChainSpaceEnv);
 
 export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
-  const { tabs, getTabTaskData, getTabActiveTask, resetTabActiveTask } =
-    useTabs();
+  const {
+    tabs,
+    getTabTaskData,
+    getTabActiveTask,
+    resetTabActiveTask,
+    getActiveTaskChainIds,
+  } = useTabs();
   const {
     getTabApiIndex,
     setTabApiIndex,
@@ -376,6 +381,16 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     }));
   };
 
+  // Get whether all tab chains are connected.
+  const allActiveChainsConnected = (): boolean => {
+    const tabChainIds = getActiveTaskChainIds();
+    const connectedChains = getConnectedChains();
+    const connectedChainIds = new Set(
+      connectedChains.map((chain) => chain.specName)
+    );
+    return eqSet(tabChainIds, connectedChainIds);
+  };
+
   // Get pallet versions by tab Id.
   const getPalletVersions = (
     ownerId: OwnerId
@@ -415,6 +430,9 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         instantiateApiFromTab,
         destroyApiInstance,
         destroyAllApiInstances,
+
+        // Sync states
+        allActiveChainsConnected,
       }}
     >
       {children}

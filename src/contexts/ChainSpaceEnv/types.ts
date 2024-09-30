@@ -23,6 +23,7 @@ export interface ChainSpaceEnvContextInterface {
   destroyAllApiInstances: (ownerId: OwnerId) => void;
   instantiateApiFromTab: (tabId: number) => void;
   getConnectedChains: () => ConnectedChain[];
+  allActiveChainsConnected: () => boolean;
 }
 
 export interface ConnectedChain {

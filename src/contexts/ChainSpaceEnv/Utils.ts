@@ -13,3 +13,7 @@ export const getApiInstanceOwnerAndIndex = (instanceId: ApiInstanceId) => {
     index: Number(last),
   };
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const eqSet = (xs: Set<any>, ys: Set<any>) =>
+  xs.size === ys.size && [...xs].every((x) => ys.has(x));

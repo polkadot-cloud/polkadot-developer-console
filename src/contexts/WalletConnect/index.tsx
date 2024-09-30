@@ -24,13 +24,15 @@ export const WalletConnectProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const { getConnectedChains } = useChainSpaceEnv();
+  const { getConnectedChains, allActiveChainsConnected } = useChainSpaceEnv();
+
+  const allChainsReady = allActiveChainsConnected();
   const connectedChains = getConnectedChains();
 
   // The WalletConnect provider.
   const wcProvider = useRef<UniversalProvider | null>(null);
 
-  // The WaleltConnect modal handler.
+  // The WalletConnect modal handler.
   const wcModal = useRef<WalletConnectModal | null>(null);
 
   // Connect metadata for the WalletConnect provider.
@@ -156,12 +158,12 @@ export const WalletConnectProvider = ({
   }, []);
 
   // Reconnect WalletConnect provider if connected chains change / disconnect, or when the provider
-  // is set.
+  // is set. Initially, all active chains (in all tabs) must be connected and ready.
   useEffect(() => {
-    if (initialised) {
+    if (initialised && allChainsReady) {
       connectProvider();
     }
-  }, [initialised, JSON.stringify(connectedChains)]);
+  }, [initialised, JSON.stringify(connectedChains), allChainsReady]);
 
   return (
     <WalletConnectContext.Provider

@@ -19,6 +19,7 @@ import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
 import { checkLocalTabs } from 'IntegrityChecks/Local';
 import type { Route } from 'App';
+import type { ChainId } from 'config/networks/types';
 
 checkLocalTabs();
 
@@ -291,6 +292,15 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
+  // Get all tab chains with an active task.
+  const getActiveTaskChainIds = (): Set<ChainId> =>
+    new Set(
+      tabs
+        .filter((tab) => tab.activeTask !== null)
+        .map((tab) => tab?.taskData?.chain?.id)
+        .filter((chain) => chain !== undefined)
+    );
+
   return (
     <TabsContext.Provider
       value={{
@@ -330,6 +340,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         resetTabActiveTask,
         getTabTaskData,
         setTabTaskData,
+        getActiveTaskChainIds,
 
         // Intantiated tab ids.
         instantiatedIds: instantiatedIds.current,
