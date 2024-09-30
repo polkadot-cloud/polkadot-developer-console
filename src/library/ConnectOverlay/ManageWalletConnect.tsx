@@ -175,6 +175,9 @@ export const ManageWalletConnect = ({
           directoryId={directoryId}
           setDirectoryId={setDirectoryId}
           activeChain={activeChain}
+          supportedChains={connectedChains.map(
+            (chain) => chain.specName as DirectoryId
+          )}
         />
       </motion.div>
 
