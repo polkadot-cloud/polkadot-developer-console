@@ -33,7 +33,6 @@ export const ManageWalletConnect = ({
     removeWcAccount,
   } = useWcAccounts();
   const {
-    wcProvider,
     wcInitialised,
     wcSessionActive,
     disconnectSession,
@@ -88,42 +87,39 @@ export const ManageWalletConnect = ({
 
     setImportActive(!importActive);
 
-    // If there is a URI from the client connect step open the modal
-    if (wcProvider) {
-      // Retrieve a new session or get current one.
-      const wcSession = await initialiseNewSession();
-      if (wcSession === null) {
-        return;
-      }
-
-      // Get accounts from session.
-      const walletConnectAccounts = Object.values(wcSession.namespaces)
-        .map((namespace: AnyJson) => namespace.accounts)
-        .flat();
-
-      // Get the caip of the active chain.
-      const caip = connectedChains
-        .find((chain) => chain.specName === directoryId)
-        ?.genesisHash.substring(2)
-        .substring(0, 32);
-
-      // Only get accounts for the currently selected `caip`.
-      let filteredAccounts = walletConnectAccounts.filter((wcAccount) => {
-        const prefix = wcAccount.split(':')[1];
-        return prefix === caip;
-      });
-
-      // grab account addresses from CAIP account formatted accounts
-      filteredAccounts = walletConnectAccounts.map((wcAccount) => {
-        const address = wcAccount.split(':')[2];
-        return address;
-      });
-
-      // Save accounts to local storage.
-      filteredAccounts.forEach((address) => {
-        addWcAccount(directoryId, address, wcAccounts.length);
-      });
+    // Retrieve a new session or get current one.
+    const wcSession = await initialiseNewSession();
+    if (wcSession === null) {
+      return;
     }
+
+    // Get accounts from session.
+    const walletConnectAccounts = Object.values(wcSession.namespaces)
+      .map((namespace: AnyJson) => namespace.accounts)
+      .flat();
+
+    // Get the caip of the active chain.
+    const caip = connectedChains
+      .find((chain) => chain.specName === directoryId)
+      ?.genesisHash.substring(2)
+      .substring(0, 32);
+
+    // Only get accounts for the currently selected `caip`.
+    let filteredAccounts = walletConnectAccounts.filter((wcAccount) => {
+      const prefix = wcAccount.split(':')[1];
+      return prefix === caip;
+    });
+
+    // grab account addresses from CAIP account formatted accounts
+    filteredAccounts = walletConnectAccounts.map((wcAccount) => {
+      const address = wcAccount.split(':')[2];
+      return address;
+    });
+
+    // Save accounts to local storage.
+    filteredAccounts.forEach((address) => {
+      addWcAccount(directoryId, address, wcAccounts.length);
+    });
   };
 
   // Resets UI when the selected connect item changes from `wallet_connect`, Cancelling import and

@@ -19,7 +19,6 @@ export const WalletConnectChains = [
 
 export const defaultWalletConnect: WalletConnectContextInterface = {
   wcInitialised: false,
-  wcProvider: null,
   wcModal: null,
   initialiseNewSession: () => Promise.resolve(),
   disconnectSession: () => Promise.resolve(),

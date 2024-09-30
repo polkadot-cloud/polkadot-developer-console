@@ -196,7 +196,6 @@ export const WalletConnectProvider = ({
     <WalletConnectContext.Provider
       value={{
         wcInitialised: initialised,
-        wcProvider: wcProvider.current,
         wcModal: wcModal.current,
         initialiseNewSession,
         disconnectSession,
