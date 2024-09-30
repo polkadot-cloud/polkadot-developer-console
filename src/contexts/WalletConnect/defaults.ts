@@ -18,9 +18,8 @@ export const WalletConnectChains = [
 ];
 
 export const defaultWalletConnect: WalletConnectContextInterface = {
-  wcInitialised: false,
-  initialiseNewSession: () => Promise.resolve(),
-  disconnectSession: () => Promise.resolve(),
+  wcInitialized: false,
+  initializeWcSession: () => Promise.resolve(),
+  disconnectWcSession: () => Promise.resolve(),
   wcSessionActive: false,
-  setWcSessionActive: () => {},
 };

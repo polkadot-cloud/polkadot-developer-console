@@ -2,14 +2,12 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import type { AnyFunction, AnyJson } from '@w3ux/types';
-import type { Dispatch, SetStateAction } from 'react';
 
 export interface WalletConnectContextInterface {
-  wcInitialised: boolean;
-  initialiseNewSession: () => Promise<AnyJson>;
-  disconnectSession: () => Promise<void>;
+  wcInitialized: boolean;
   wcSessionActive: boolean;
-  setWcSessionActive: Dispatch<SetStateAction<boolean>>;
+  initializeWcSession: () => Promise<AnyJson>;
+  disconnectWcSession: () => Promise<void>;
 }
 
 export interface WalletConnectConnectedMeta {

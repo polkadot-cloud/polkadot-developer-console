@@ -44,13 +44,13 @@ export const WalletConnectProvider = ({
     approval: AnyFunction;
   } | null>(null);
 
-  // Store whether the provider has been initialised.
-  const [initialised, setInitialised] = useState<boolean>(false);
+  // Store whether the provider has been wcInitialized.
+  const [wcInitialized, setWcInitialized] = useState<boolean>(false);
 
   // Store whether the wallet connect session is active.
   const [wcSessionActive, setWcSessionActive] = useState<boolean>(false);
 
-  // Init WalletConnect provider & modal, and update as initialised.
+  // Init WalletConnect provider & modal, and update as wcInitialized.
   const initProvider = async () => {
     const provider = await UniversalProvider.init({
       projectId: wcProjectId,
@@ -69,18 +69,18 @@ export const WalletConnectProvider = ({
 
     wcProvider.current = provider;
     wcModal.current = modal;
-    setInitialised(true);
+    setWcInitialized(true);
   };
 
   // Connect WalletConnect provider and retrieve metadata.
   const connectProvider = async () => {
-    if (!initialised) {
+    if (!wcInitialized) {
       return;
     }
 
     // Disconnect from current session if it exists.
     if (pairingInitiated.current) {
-      await disconnectSession();
+      await disconnectWcSession();
     }
 
     const caips = connectedChains.map(
@@ -120,9 +120,9 @@ export const WalletConnectProvider = ({
     }
   };
 
-  // Initiate a new Wallet Connect session, if not already initialised.
-  const initialiseNewSession = async () => {
-    if (initialised) {
+  // Initiate a new Wallet Connect session, if not already wcInitialized.
+  const initializeWcSession = async () => {
+    if (wcInitialized) {
       let wcSession;
       if (wcProvider.current?.session) {
         wcSession = wcProvider.current.session;
@@ -136,7 +136,7 @@ export const WalletConnectProvider = ({
 
   // Handle `approval()` by summoning a new modal and initiating a new Wallet Connect session.
   const initializeNewSession = async () => {
-    if (!initialised) {
+    if (!wcInitialized) {
       return;
     }
 
@@ -158,7 +158,7 @@ export const WalletConnectProvider = ({
   };
 
   // Disconnect from current session.
-  const disconnectSession = async () => {
+  const disconnectWcSession = async () => {
     if (!wcProvider.current) {
       return;
     }
@@ -186,20 +186,18 @@ export const WalletConnectProvider = ({
   // Reconnect WalletConnect provider if connected chains change / disconnect, or when the provider
   // is set. Initially, all active chains (in all tabs) must be connected and ready.
   useEffect(() => {
-    if (initialised && allChainsReady) {
-      console.log('ok to connect provider now');
+    if (wcInitialized && allChainsReady) {
       connectProvider();
     }
-  }, [initialised, JSON.stringify(connectedChains), allChainsReady]);
+  }, [wcInitialized, JSON.stringify(connectedChains), allChainsReady]);
 
   return (
     <WalletConnectContext.Provider
       value={{
-        wcInitialised: initialised,
-        initialiseNewSession,
-        disconnectSession,
+        initializeWcSession,
+        disconnectWcSession,
+        wcInitialized,
         wcSessionActive,
-        setWcSessionActive,
       }}
     >
       {children}

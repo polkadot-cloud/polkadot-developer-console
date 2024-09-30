@@ -33,10 +33,10 @@ export const ManageWalletConnect = ({
     removeWcAccount,
   } = useWcAccounts();
   const {
-    wcInitialised,
+    wcInitialized,
     wcSessionActive,
-    disconnectSession,
-    initialiseNewSession,
+    disconnectWcSession,
+    initializeWcSession,
   } = useWalletConnect();
   const { getConnectedChains } = useChainSpaceEnv();
 
@@ -81,14 +81,14 @@ export const ManageWalletConnect = ({
 
   // Handle importing of address.
   const handleImportAddresses = async () => {
-    if (!wcInitialised) {
+    if (!wcInitialized) {
       return;
     }
 
     setImportActive(!importActive);
 
     // Retrieve a new session or get current one.
-    const wcSession = await initialiseNewSession();
+    const wcSession = await initializeWcSession();
     if (wcSession === null) {
       return;
     }
@@ -140,7 +140,7 @@ export const ManageWalletConnect = ({
       });
 
       // Disconnect from Wallet Connect session.
-      await disconnectSession();
+      await disconnectWcSession();
     }
   };
 
@@ -173,7 +173,7 @@ export const ManageWalletConnect = ({
 
           <ImportButtonWrapper>
             {!wcSessionActive ? (
-              <button onClick={() => initialiseNewSession()}>
+              <button onClick={() => initializeWcSession()}>
                 <FontAwesomeIcon
                   icon={faLink}
                   style={{ marginRight: '0.4rem' }}
@@ -197,7 +197,7 @@ export const ManageWalletConnect = ({
                 {!importActive && (
                   <FontAwesomeIcon icon={faQrcode} transform="shrink-2" />
                 )}
-                {!wcInitialised
+                {!wcInitialized
                   ? 'Initialising'
                   : importActive
                     ? 'Cancel Import'
