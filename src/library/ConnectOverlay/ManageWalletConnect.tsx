@@ -33,7 +33,6 @@ export const ManageWalletConnect = ({
     removeWcAccount,
   } = useWcAccounts();
   const {
-    wcMeta,
     wcProvider,
     wcInitialised,
     wcSessionActive,
@@ -83,12 +82,12 @@ export const ManageWalletConnect = ({
 
   // Initiate a new Wallet Connect session, if not already initialised.
   const initialiseWcSession = async () => {
-    if (wcMeta && wcProvider) {
+    if (wcProvider) {
       let wcSession;
-      if (wcMeta.uri) {
-        wcSession = await handleNewSession();
-      } else {
+      if (wcProvider.session) {
         wcSession = wcProvider.session;
+      } else {
+        wcSession = await handleNewSession();
       }
       return wcSession;
     } else {
@@ -105,7 +104,7 @@ export const ManageWalletConnect = ({
     setImportActive(!importActive);
 
     // If there is a URI from the client connect step open the modal
-    if (wcMeta && wcProvider) {
+    if (wcProvider) {
       // Retrieve a new session or get current one.
       const wcSession = await initialiseWcSession();
       if (wcSession === null) {
@@ -128,6 +127,8 @@ export const ManageWalletConnect = ({
         const prefix = wcAccount.split(':')[1];
         return prefix === caip;
       });
+
+      console.log(filteredAccounts);
 
       // grab account addresses from CAIP account formatted accounts
       filteredAccounts = walletConnectAccounts.map((wcAccount) => {
@@ -190,7 +191,16 @@ export const ManageWalletConnect = ({
                   } ${wcAccounts.length === 1 ? 'Account' : 'Accounts'}`
                 : 'New Account'}
           </h5>
+
           <ImportButtonWrapper>
+            <button onClick={() => handleImportAddresses()}>
+              <FontAwesomeIcon
+                icon={faLink}
+                style={{ marginRight: '0.4rem' }}
+              />
+              Test Accounts
+            </button>
+
             {!wcSessionActive ? (
               <button onClick={() => initialiseWcSession()}>
                 <FontAwesomeIcon

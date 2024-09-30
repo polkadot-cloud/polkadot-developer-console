@@ -7,9 +7,9 @@ import * as defaults from './defaults';
 import type { WalletConnectContextInterface } from './types';
 import UniversalProvider from '@walletconnect/universal-provider';
 import { WalletConnectModal } from '@walletconnect/modal';
-import { getSdkError } from '@walletconnect/utils';
 import type { AnyFunction } from '@w3ux/types';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { getSdkError } from '@walletconnect/utils';
 
 export const WalletConnectContext =
   createContext<WalletConnectContextInterface>(defaults.defaultWalletConnect);
@@ -34,6 +34,9 @@ export const WalletConnectProvider = ({
 
   // The WalletConnect modal handler.
   const wcModal = useRef<WalletConnectModal | null>(null);
+
+  // Track whether pairing has been initiated.
+  const pairingInitiated = useRef<boolean>(false);
 
   // Connect metadata for the WalletConnect provider.
   const [wcMeta, setWcMeta] = useState<{
@@ -77,7 +80,9 @@ export const WalletConnectProvider = ({
     }
 
     // Disconnect from current session if it exists.
-    await disconnectSession();
+    if (pairingInitiated.current) {
+      await disconnectSession();
+    }
 
     const caips = connectedChains.map(
       (chain) => `polkadot:${chain.genesisHash.substring(2).substring(0, 32)}`
@@ -90,7 +95,6 @@ export const WalletConnectProvider = ({
 
     // If an existing session exists, get the topic and add to `connect` to restore it.
     const pairingTopic = wcProvider.current.session?.pairingTopic;
-
     const connectConfig = {
       requiredNamespaces: {
         polkadot: {
@@ -100,14 +104,14 @@ export const WalletConnectProvider = ({
         },
       },
       pairingTopic,
+      skipPairing: !!pairingTopic,
     };
 
     const { uri, approval } =
       await wcProvider.current.client.connect(connectConfig);
-    const newWcMeta = { uri, approval };
 
-    setWcMeta(newWcMeta);
-
+    pairingInitiated.current = true;
+    setWcMeta({ uri, approval });
     if (pairingTopic) {
       setWcSessionActive(true);
     }
@@ -118,7 +122,6 @@ export const WalletConnectProvider = ({
     if (!wcMeta || !wcModal.current || !initialised) {
       return;
     }
-
     // Summon Wallet Connect modal that presents QR Code.
     if (wcMeta.uri) {
       wcModal.current.openModal({ uri: wcMeta.uri });
@@ -150,6 +153,7 @@ export const WalletConnectProvider = ({
       });
     }
 
+    pairingInitiated.current = false;
     setWcSessionActive(false);
     setWcMeta(null);
   };
@@ -176,7 +180,6 @@ export const WalletConnectProvider = ({
         wcInitialised: initialised,
         wcProvider: wcProvider.current,
         wcModal: wcModal.current,
-        wcMeta,
         handleNewSession,
         disconnectSession,
         wcSessionActive,

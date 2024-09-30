@@ -10,7 +10,6 @@ export interface WalletConnectContextInterface {
   wcInitialised: boolean;
   wcProvider: UniversalProvider | null;
   wcModal: WalletConnectModal | null;
-  wcMeta: WalletConnectConnectedMeta | null;
   handleNewSession: () => Promise<AnyFunction>;
   disconnectSession: () => Promise<void>;
   wcSessionActive: boolean;
