@@ -294,35 +294,46 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   return (
     <TabsContext.Provider
       value={{
+        // Raw tab data.
         tabs,
         tabsRef: tabsRef.current,
+
+        // Active tab id & index.
+        selectedTabId,
+        setSelectedTabId,
+        setSelectedTabIndex,
+        activeTabIndex,
+
+        // Basic tab operations.
+        getTab,
         setTabs,
         createTab,
-        selectedTabId,
-        getTab,
         destroyTab,
-        setSelectedTabId,
+        switchTab,
+        renameTab,
+
+        // Manage tab UI.
         tabHoverIndex,
         setTabHoverIndex,
-        activeTabIndex,
-        setSelectedTabIndex,
-        addInstantiatedId,
-        setDragId,
         dragId,
-        renameTab,
+        setDragId,
         getAutoTabName,
         redirectCounter,
         incrementRedirectCounter,
         setTabAutoConnect,
         setTabActivePage,
-        switchTab,
+        setTabConnectFrom,
+
+        // Manage tab tasks.
         getTabActiveTask,
         setTabActiveTask,
         resetTabActiveTask,
         getTabTaskData,
         setTabTaskData,
-        setTabConnectFrom,
+
+        // Intantiated tab ids.
         instantiatedIds: instantiatedIds.current,
+        addInstantiatedId,
       }}
     >
       {children}
