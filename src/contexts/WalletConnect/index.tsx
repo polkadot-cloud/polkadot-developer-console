@@ -53,7 +53,7 @@ export const WalletConnectProvider = ({
         name: 'Polkadot Developer Console',
         description: 'A next-generation Polkadot Developer Console',
         url: 'https://console.polkadot.cloud/',
-        icons: [], // TODO: Add icon. 500px by 500px.
+        icons: ['https://console.polkadot.cloud/img/wallet-connect-icon.png'],
       },
       relayUrl: 'wss://relay.walletconnect.com',
     });
