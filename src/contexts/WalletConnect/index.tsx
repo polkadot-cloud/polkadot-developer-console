@@ -94,24 +94,28 @@ export const WalletConnectProvider = ({
     }
 
     // If an existing session exists, get the topic and add to `connect` to restore it.
-    const pairingTopic = wcProvider.current.session?.pairingTopic;
-    const connectConfig = {
-      requiredNamespaces: {
-        polkadot: {
-          methods: ['polkadot_signTransaction', 'polkadot_signMessage'],
-          chains: caips,
-          events: ['chainChanged", "accountsChanged'],
-        },
-      },
-      pairingTopic,
-      skipPairing: !!pairingTopic,
-    };
 
-    const { uri, approval } =
-      await wcProvider.current.client.connect(connectConfig);
+    const pairingTopic = wcProvider.current.session?.pairingTopic;
+
+    // If no pairing topic or session exists, go ahead and create one, and store meta data for
+    // wcModal to use.
+    if (!pairingTopic) {
+      const connectConfig = {
+        requiredNamespaces: {
+          polkadot: {
+            methods: ['polkadot_signTransaction', 'polkadot_signMessage'],
+            chains: caips,
+            events: ['chainChanged", "accountsChanged'],
+          },
+        },
+        skipPairing: false,
+      };
+      const { uri, approval } =
+        await wcProvider.current.client.connect(connectConfig);
+      setWcMeta({ uri, approval });
+    }
 
     pairingInitiated.current = true;
-    setWcMeta({ uri, approval });
     if (pairingTopic) {
       setWcSessionActive(true);
     }
