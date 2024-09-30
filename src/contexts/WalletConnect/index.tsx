@@ -69,13 +69,12 @@ export const WalletConnectProvider = ({
 
     wcProvider.current = provider;
     wcModal.current = modal;
-
     setInitialised(true);
   };
 
   // Connect WalletConnect provider and retrieve metadata.
   const connectProvider = async () => {
-    if (!wcProvider.current || !wcModal.current) {
+    if (!initialised) {
       return;
     }
 
@@ -93,12 +92,12 @@ export const WalletConnectProvider = ({
       return;
     }
 
-    // If an existing session exists, get the topic and add to `connect` to restore it.
-
-    const pairingTopic = wcProvider.current.session?.pairingTopic;
+    // If an existing session exists, get the topic and add to `connect` to restore it. NOTE:
+    // Initialisation has already happened, so we know the provider exists.
+    const pairingTopic = wcProvider.current!.session?.pairingTopic;
 
     // If no pairing topic or session exists, go ahead and create one, and store meta data for
-    // wcModal to use.
+    // `wcModal` to use.
     if (!pairingTopic) {
       const connectConfig = {
         requiredNamespaces: {
@@ -111,7 +110,7 @@ export const WalletConnectProvider = ({
         skipPairing: false,
       };
       const { uri, approval } =
-        await wcProvider.current.client.connect(connectConfig);
+        await wcProvider.current!.client.connect(connectConfig);
       setWcMeta({ uri, approval });
     }
 
@@ -121,14 +120,29 @@ export const WalletConnectProvider = ({
     }
   };
 
+  // Initiate a new Wallet Connect session, if not already initialised.
+  const initialiseNewSession = async () => {
+    if (initialised) {
+      let wcSession;
+      if (wcProvider.current?.session) {
+        wcSession = wcProvider.current.session;
+      } else {
+        wcSession = await initializeNewSession();
+      }
+      return wcSession;
+    }
+    return null;
+  };
+
   // Handle `approval()` by summoning a new modal and initiating a new Wallet Connect session.
-  const handleNewSession = async () => {
-    if (!wcMeta || !wcModal.current || !initialised) {
+  const initializeNewSession = async () => {
+    if (!initialised) {
       return;
     }
+
     // Summon Wallet Connect modal that presents QR Code.
-    if (wcMeta.uri) {
-      wcModal.current.openModal({ uri: wcMeta.uri });
+    if (wcMeta?.uri) {
+      wcModal.current!.openModal({ uri: wcMeta.uri });
     }
 
     // Get session from approval.
@@ -184,7 +198,7 @@ export const WalletConnectProvider = ({
         wcInitialised: initialised,
         wcProvider: wcProvider.current,
         wcModal: wcModal.current,
-        handleNewSession,
+        initialiseNewSession,
         disconnectSession,
         wcSessionActive,
         setWcSessionActive,

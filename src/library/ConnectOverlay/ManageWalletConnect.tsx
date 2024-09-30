@@ -36,8 +36,8 @@ export const ManageWalletConnect = ({
     wcProvider,
     wcInitialised,
     wcSessionActive,
-    handleNewSession,
     disconnectSession,
+    initialiseNewSession,
   } = useWalletConnect();
   const { getConnectedChains } = useChainSpaceEnv();
 
@@ -80,21 +80,6 @@ export const ManageWalletConnect = ({
     renameWcAccount(directoryId, address, newName);
   };
 
-  // Initiate a new Wallet Connect session, if not already initialised.
-  const initialiseWcSession = async () => {
-    if (wcProvider) {
-      let wcSession;
-      if (wcProvider.session) {
-        wcSession = wcProvider.session;
-      } else {
-        wcSession = await handleNewSession();
-      }
-      return wcSession;
-    } else {
-      return null;
-    }
-  };
-
   // Handle importing of address.
   const handleImportAddresses = async () => {
     if (!wcInitialised) {
@@ -106,7 +91,7 @@ export const ManageWalletConnect = ({
     // If there is a URI from the client connect step open the modal
     if (wcProvider) {
       // Retrieve a new session or get current one.
-      const wcSession = await initialiseWcSession();
+      const wcSession = await initialiseNewSession();
       if (wcSession === null) {
         return;
       }
@@ -127,8 +112,6 @@ export const ManageWalletConnect = ({
         const prefix = wcAccount.split(':')[1];
         return prefix === caip;
       });
-
-      console.log(filteredAccounts);
 
       // grab account addresses from CAIP account formatted accounts
       filteredAccounts = walletConnectAccounts.map((wcAccount) => {
@@ -193,16 +176,8 @@ export const ManageWalletConnect = ({
           </h5>
 
           <ImportButtonWrapper>
-            <button onClick={() => handleImportAddresses()}>
-              <FontAwesomeIcon
-                icon={faLink}
-                style={{ marginRight: '0.4rem' }}
-              />
-              Test Accounts
-            </button>
-
             {!wcSessionActive ? (
-              <button onClick={() => initialiseWcSession()}>
+              <button onClick={() => initialiseNewSession()}>
                 <FontAwesomeIcon
                   icon={faLink}
                   style={{ marginRight: '0.4rem' }}

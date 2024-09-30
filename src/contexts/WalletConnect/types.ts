@@ -3,14 +3,14 @@
 
 import type UniversalProvider from '@walletconnect/universal-provider';
 import type { WalletConnectModal } from '@walletconnect/modal';
-import type { AnyFunction } from '@w3ux/types';
+import type { AnyFunction, AnyJson } from '@w3ux/types';
 import type { Dispatch, SetStateAction } from 'react';
 
 export interface WalletConnectContextInterface {
   wcInitialised: boolean;
   wcProvider: UniversalProvider | null;
   wcModal: WalletConnectModal | null;
-  handleNewSession: () => Promise<AnyFunction>;
+  initialiseNewSession: () => Promise<AnyJson>;
   disconnectSession: () => Promise<void>;
   wcSessionActive: boolean;
   setWcSessionActive: Dispatch<SetStateAction<boolean>>;
