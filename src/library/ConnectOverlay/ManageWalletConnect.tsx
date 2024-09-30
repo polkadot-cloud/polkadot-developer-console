@@ -39,7 +39,6 @@ export const ManageWalletConnect = ({
     wcSessionActive,
     handleNewSession,
     disconnectSession,
-    setWcSessionActive,
   } = useWalletConnect();
   const { getConnectedChains } = useChainSpaceEnv();
 
@@ -91,7 +90,6 @@ export const ManageWalletConnect = ({
       } else {
         wcSession = wcProvider.session;
       }
-      setWcSessionActive(true);
       return wcSession;
     } else {
       return null;
@@ -199,7 +197,7 @@ export const ManageWalletConnect = ({
                   icon={faLink}
                   style={{ marginRight: '0.4rem' }}
                 />
-                Reconnect
+                Connect
               </button>
             ) : wcAccounts.length > 0 ? (
               <button onClick={() => disconnectWc()}>

@@ -79,8 +79,6 @@ export const WalletConnectProvider = ({
     // Disconnect from current session if it exists.
     await disconnectSession();
 
-    // TODO: Check tabs for chain data and ensure `connectedChains` is up to date and synced.
-
     const caips = connectedChains.map(
       (chain) => `polkadot:${chain.genesisHash.substring(2).substring(0, 32)}`
     );
@@ -107,7 +105,12 @@ export const WalletConnectProvider = ({
     const { uri, approval } =
       await wcProvider.current.client.connect(connectConfig);
     const newWcMeta = { uri, approval };
+
     setWcMeta(newWcMeta);
+
+    if (pairingTopic) {
+      setWcSessionActive(true);
+    }
   };
 
   // Handle `approval()` by summoning a new modal and initiating a new Wallet Connect session.
@@ -129,6 +132,7 @@ export const WalletConnectProvider = ({
       wcProvider.current.session = newWcSession;
     }
 
+    setWcSessionActive(true);
     return newWcSession;
   };
 
@@ -161,6 +165,7 @@ export const WalletConnectProvider = ({
   // is set. Initially, all active chains (in all tabs) must be connected and ready.
   useEffect(() => {
     if (initialised && allChainsReady) {
+      console.log('ok to connect provider now');
       connectProvider();
     }
   }, [initialised, JSON.stringify(connectedChains), allChainsReady]);
