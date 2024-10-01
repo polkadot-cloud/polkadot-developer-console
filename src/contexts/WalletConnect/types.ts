@@ -4,6 +4,7 @@
 import type { AnyFunction, AnyJson } from '@w3ux/types';
 
 export interface WalletConnectContextInterface {
+  connectProvider: () => Promise<void>;
   wcInitialized: boolean;
   wcSessionActive: boolean;
   initializeWcSession: () => Promise<AnyJson>;

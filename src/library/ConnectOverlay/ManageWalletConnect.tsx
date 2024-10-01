@@ -35,6 +35,7 @@ export const ManageWalletConnect = ({
   const {
     wcInitialized,
     wcSessionActive,
+    connectProvider,
     disconnectWcSession,
     initializeWcSession,
   } = useWalletConnect();
@@ -111,7 +112,7 @@ export const ManageWalletConnect = ({
     });
 
     // grab account addresses from CAIP account formatted accounts
-    filteredAccounts = walletConnectAccounts.map((wcAccount) => {
+    filteredAccounts = filteredAccounts.map((wcAccount) => {
       const address = wcAccount.split(':')[2];
       return address;
     });
@@ -120,6 +121,8 @@ export const ManageWalletConnect = ({
     filteredAccounts.forEach((address) => {
       addWcAccount(directoryId, address, wcAccounts.length);
     });
+
+    setImportActive(false);
   };
 
   // Resets UI when the selected connect item changes from `wallet_connect`, Cancelling import and
@@ -144,18 +147,21 @@ export const ManageWalletConnect = ({
     }
   };
 
+  // Get the supported chains for wallet connect account import.
+  const supportedChains = connectedChains.map(
+    (chain) => chain.specName as DirectoryId
+  );
+
   return (
     <>
-      <motion.div {...getMotionProps('address_config', !importActive)}>
+      <motion.div {...getMotionProps('address_config', true)}>
         <ChainSearchInput
           onSearchFocused={onSearchFocused}
           onSearchBlurred={onSearchBlurred}
           directoryId={directoryId}
           setDirectoryId={setDirectoryId}
           activeChain={activeChain}
-          supportedChains={connectedChains.map(
-            (chain) => chain.specName as DirectoryId
-          )}
+          supportedChains={supportedChains}
         />
       </motion.div>
 
@@ -175,6 +181,10 @@ export const ManageWalletConnect = ({
             {!wcSessionActive ? (
               <button
                 onClick={async () => {
+                  // If client is disconnected, initialise a new client first.
+                  if (!wcSessionActive) {
+                    await connectProvider();
+                  }
                   const newSession = await initializeWcSession();
                   if (newSession) {
                     handleImportAddresses();
@@ -187,29 +197,30 @@ export const ManageWalletConnect = ({
                 />
                 Connect
               </button>
-            ) : wcAccounts.length > 0 ? (
-              <button onClick={() => disconnectWc()}>
-                <FontAwesomeIcon
-                  icon={faSquareMinus}
-                  style={{ marginRight: '0.4rem' }}
-                />
-                Disconnect
-              </button>
             ) : (
-              <button
-                onClick={() => {
-                  handleImportAddresses();
-                }}
-              >
-                {!importActive && (
-                  <FontAwesomeIcon icon={faQrcode} transform="shrink-2" />
-                )}
-                {!wcInitialized
-                  ? 'Initialising'
-                  : importActive
-                    ? 'Cancel Import'
-                    : 'Import Account'}
-              </button>
+              <>
+                <button
+                  onClick={() => {
+                    handleImportAddresses();
+                  }}
+                >
+                  {!importActive && (
+                    <FontAwesomeIcon icon={faQrcode} transform="shrink-2" />
+                  )}
+                  {!wcInitialized
+                    ? 'Initialising'
+                    : importActive
+                      ? 'Cancel Import'
+                      : 'Import'}
+                </button>
+                <button onClick={() => disconnectWc()}>
+                  <FontAwesomeIcon
+                    icon={faSquareMinus}
+                    style={{ marginRight: '0.4rem' }}
+                  />
+                  Disconnect
+                </button>
+              </>
             )}
           </ImportButtonWrapper>
         </SubHeadingWrapper>

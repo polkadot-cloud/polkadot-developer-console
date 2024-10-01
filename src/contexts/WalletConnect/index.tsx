@@ -10,6 +10,8 @@ import { WalletConnectModal } from '@walletconnect/modal';
 import type { AnyFunction } from '@w3ux/types';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { getSdkError } from '@walletconnect/utils';
+import { useTabs } from 'contexts/Tabs';
+import { eqSet } from 'contexts/ChainSpaceEnv/Utils';
 
 export const WalletConnectContext =
   createContext<WalletConnectContextInterface>(defaults.defaultWalletConnect);
@@ -24,10 +26,14 @@ export const WalletConnectProvider = ({
 }: {
   children: ReactNode;
 }) => {
+  const { getActiveTaskChainIds } = useTabs();
   const { getConnectedChains, allActiveChainsConnected } = useChainSpaceEnv();
 
   const allChainsReady = allActiveChainsConnected();
   const connectedChains = getConnectedChains();
+  const connectedChainIds = new Set(
+    connectedChains.map((chain) => chain.specName)
+  );
 
   // The WalletConnect provider.
   const wcProvider = useRef<UniversalProvider | null>(null);
@@ -49,6 +55,9 @@ export const WalletConnectProvider = ({
 
   // Store whether the wallet connect session is active.
   const [wcSessionActive, setWcSessionActive] = useState<boolean>(false);
+
+  // Store the set of chain ids the mot recent session is connected to.
+  const sessionChains = useRef<Set<string>>(new Set());
 
   // Init WalletConnect provider & modal, and update as wcInitialized.
   const initProvider = async () => {
@@ -82,6 +91,9 @@ export const WalletConnectProvider = ({
     if (pairingInitiated.current) {
       await disconnectWcSession();
     }
+
+    // Update most recent connected chains.
+    sessionChains.current = connectedChainIds;
 
     const caips = connectedChains.map(
       (chain) => `polkadot:${chain.genesisHash.substring(2).substring(0, 32)}`
@@ -129,6 +141,8 @@ export const WalletConnectProvider = ({
       } else {
         wcSession = await initializeNewSession();
       }
+
+      setWcSessionActive(true);
       return wcSession;
     }
     return null;
@@ -153,7 +167,6 @@ export const WalletConnectProvider = ({
       wcProvider.current.session = newWcSession;
     }
 
-    setWcSessionActive(true);
     return newWcSession;
   };
 
@@ -174,8 +187,8 @@ export const WalletConnectProvider = ({
     }
 
     pairingInitiated.current = false;
+    sessionChains.current = new Set();
     setWcSessionActive(false);
-    setWcMeta(null);
   };
 
   // On initial render, initiate the WalletConnect provider.
@@ -196,14 +209,28 @@ export const WalletConnectProvider = ({
   // Reconnect provider if connected chains change / disconnect, or when the provider is set. This
   // can only happen once pairing has been initiated.
   useEffect(() => {
-    if (pairingInitiated.current && wcInitialized && allChainsReady) {
+    const connectedChainsStale = !eqSet(
+      sessionChains.current,
+      connectedChainIds
+    );
+    if (
+      pairingInitiated.current &&
+      wcInitialized &&
+      allChainsReady &&
+      connectedChainsStale
+    ) {
       connectProvider();
     }
-  }, [JSON.stringify(connectedChains), allChainsReady]);
+  }, [
+    allChainsReady,
+    JSON.stringify(connectedChains),
+    JSON.stringify(getActiveTaskChainIds()),
+  ]);
 
   return (
     <WalletConnectContext.Provider
       value={{
+        connectProvider,
         initializeWcSession,
         disconnectWcSession,
         wcInitialized,
