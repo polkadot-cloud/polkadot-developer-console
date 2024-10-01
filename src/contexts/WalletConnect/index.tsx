@@ -169,6 +169,8 @@ export const WalletConnectProvider = ({
         topic,
         reason: getSdkError('USER_DISCONNECTED'),
       });
+
+      delete wcProvider.current.session;
     }
 
     pairingInitiated.current = false;
@@ -183,13 +185,21 @@ export const WalletConnectProvider = ({
     }
   }, []);
 
-  // Reconnect WalletConnect provider if connected chains change / disconnect, or when the provider
-  // is set. Initially, all active chains (in all tabs) must be connected and ready.
+  // Initially, all active chains (in all tabs) must be connected and ready for the initial provider
+  // connection.
   useEffect(() => {
     if (wcInitialized && allChainsReady) {
       connectProvider();
     }
   }, [wcInitialized, JSON.stringify(connectedChains), allChainsReady]);
+
+  // Reconnect provider if connected chains change / disconnect, or when the provider is set. This
+  // can only happen once pairing has been initiated.
+  useEffect(() => {
+    if (pairingInitiated.current && wcInitialized && allChainsReady) {
+      connectProvider();
+    }
+  }, [JSON.stringify(connectedChains), allChainsReady]);
 
   return (
     <WalletConnectContext.Provider
