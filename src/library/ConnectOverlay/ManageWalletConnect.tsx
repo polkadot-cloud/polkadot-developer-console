@@ -173,7 +173,14 @@ export const ManageWalletConnect = ({
 
           <ImportButtonWrapper>
             {!wcSessionActive ? (
-              <button onClick={() => initializeWcSession()}>
+              <button
+                onClick={async () => {
+                  const newSession = await initializeWcSession();
+                  if (newSession) {
+                    handleImportAddresses();
+                  }
+                }}
+              >
                 <FontAwesomeIcon
                   icon={faLink}
                   style={{ marginRight: '0.4rem' }}
