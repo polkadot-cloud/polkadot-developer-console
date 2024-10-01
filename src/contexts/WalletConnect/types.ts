@@ -8,6 +8,7 @@ export interface WalletConnectContextInterface {
   wcInitialized: boolean;
   wcSessionActive: boolean;
   initializeWcSession: () => Promise<AnyJson>;
+  updateWcSession: () => Promise<void>;
   disconnectWcSession: () => Promise<void>;
 }
 

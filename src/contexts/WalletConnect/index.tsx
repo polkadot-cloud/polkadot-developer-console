@@ -108,19 +108,20 @@ export const WalletConnectProvider = ({
     // Initialisation has already happened, so we know the provider exists.
     const pairingTopic = wcProvider.current!.session?.pairingTopic;
 
+    const namespaces = {
+      polkadot: {
+        methods: ['polkadot_signTransaction', 'polkadot_signMessage'],
+        chains: caips,
+        events: ['chainChanged", "accountsChanged'],
+      },
+    };
+    const connectConfig = {
+      optionalNamespaces: namespaces,
+    };
+
     // If no pairing topic or session exists, go ahead and create one, and store meta data for
     // `wcModal` to use.
     if (!pairingTopic) {
-      const connectConfig = {
-        requiredNamespaces: {
-          polkadot: {
-            methods: ['polkadot_signTransaction', 'polkadot_signMessage'],
-            chains: caips,
-            events: ['chainChanged", "accountsChanged'],
-          },
-        },
-        skipPairing: false,
-      };
       const { uri, approval } =
         await wcProvider.current!.client.connect(connectConfig);
       setWcMeta({ uri, approval });
@@ -129,6 +130,39 @@ export const WalletConnectProvider = ({
     pairingInitiated.current = true;
     if (pairingTopic) {
       setWcSessionActive(true);
+    }
+  };
+
+  // Update session namespaces. NOTE: This method is currently not in use due to a
+  // default chain error upon reconnecting to the session.
+  const updateWcSession = async () => {
+    if (!wcInitialized) {
+      return;
+    }
+    // Update most recent connected chains.
+    sessionChains.current = connectedChainIds;
+
+    const caips = connectedChains.map(
+      (chain) => `polkadot:${chain.genesisHash.substring(2).substring(0, 32)}`
+    );
+
+    // If there are no chains connected, return early.
+    if (!caips.length) {
+      return;
+    }
+    const topic = wcProvider.current!.session?.topic;
+    if (topic) {
+      await wcProvider.current!.client.update({
+        topic,
+        namespaces: {
+          polkadot: {
+            chains: caips,
+            accounts: [],
+            methods: ['polkadot_signTransaction', 'polkadot_signMessage'],
+            events: ['chainChanged", "accountsChanged'],
+          },
+        },
+      });
     }
   };
 
@@ -201,7 +235,7 @@ export const WalletConnectProvider = ({
   // Initially, all active chains (in all tabs) must be connected and ready for the initial provider
   // connection.
   useEffect(() => {
-    if (wcInitialized && allChainsReady) {
+    if (!pairingInitiated.current && wcInitialized && allChainsReady) {
       connectProvider();
     }
   }, [wcInitialized, JSON.stringify(connectedChains), allChainsReady]);
@@ -232,6 +266,7 @@ export const WalletConnectProvider = ({
       value={{
         connectProvider,
         initializeWcSession,
+        updateWcSession,
         disconnectWcSession,
         wcInitialized,
         wcSessionActive,
