@@ -91,7 +91,7 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
       <div className="title">
         <h3>
           <FontAwesomeIcon icon={faPlug} transform="shrink-2" />
-          Connect Wallets
+          Connect Accounts
         </h3>
         <button type="button" onClick={() => dismissOverlay()}>
           Close
