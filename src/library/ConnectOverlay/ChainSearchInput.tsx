@@ -77,9 +77,8 @@ export const ChainSearchInput = ({
     : NetworkDirectory;
 
   // Filter results by search value.
-  const filtered = !focused
-    ? {}
-    : searchValue === ''
+  const filtered =
+    searchValue === ''
       ? results
       : Object.fromEntries(
           Object.entries(results).filter(([, { name }]) =>
