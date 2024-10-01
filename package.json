@@ -82,7 +82,7 @@
     "prettier-plugin-organize-imports": "^3.2.4",
     "sass": "^1.78.0",
     "tsup": "^8.0.2",
-    "tsx": "^4.15.1",
+    "tsx": "^4.19.1",
     "typescript": "^5.2.2",
     "vite": "^5.2.10",
     "vite-plugin-checker": "^0.7.2",
