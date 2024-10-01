@@ -86,7 +86,7 @@ export const ManageWalletConnect = ({
       return;
     }
 
-    setImportActive(!importActive);
+    setImportActive(true);
 
     // Retrieve a new session or get current one.
     const wcSession = await initializeWcSession();
@@ -229,7 +229,7 @@ export const ManageWalletConnect = ({
       <motion.div {...getMotionProps('address', showAddresses)}>
         {wcAccounts.map(({ address, name }: WCAccount, i) => (
           <HardwareAddress
-            key={`wc_imported_${i}`}
+            key={`wc_imported_${directoryId}_${i}`}
             network={directoryId}
             address={address}
             index={i}
