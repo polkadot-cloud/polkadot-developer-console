@@ -69,7 +69,9 @@ export const ImportedAccountsProvider = ({
 
     return (
       allAccounts.find(
-        (a) => a.address === address && ['vault', 'ledger'].includes(a.source)
+        (a) =>
+          a.address === address &&
+          ['vault', 'ledger', 'wallet_connect'].includes(a.source)
       ) !== undefined
     );
   };
