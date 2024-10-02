@@ -24,5 +24,5 @@ export const defaultWalletConnect: WalletConnectContextInterface = {
   updateWcSession: () => Promise.resolve(),
   disconnectWcSession: () => Promise.resolve(),
   wcSessionActive: false,
-  signWcTx: (payload, from) => Promise.resolve(null),
+  signWcTx: (caip, payload, from) => Promise.resolve(null),
 };

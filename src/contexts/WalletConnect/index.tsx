@@ -252,6 +252,7 @@ export const WalletConnectProvider = ({
 
   // Attempt to sign a transaction and receive a signature.
   const signWcTx = async (
+    caip: string,
     payload: AnyJson,
     from: string
   ): Promise<string | null> => {
@@ -262,7 +263,7 @@ export const WalletConnectProvider = ({
 
     const result: { signature: string } =
       await wcProvider.current.client.request({
-        chainId: 'polkadot:afdc188f45c71dacbaa0b62e16a91f72',
+        chainId: caip,
         topic,
         request: {
           method: 'polkadot_signTransaction',
