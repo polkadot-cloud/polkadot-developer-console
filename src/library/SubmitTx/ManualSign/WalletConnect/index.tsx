@@ -53,20 +53,19 @@ export const WalletConnect = ({
   } else {
     buttonText = 'Sign';
     buttonOnClick = async () => {
-      const caip = getChainIdCaip(chainId);
       const from = getSender(instanceId);
+      const caip = getChainIdCaip(chainId);
+
       const payload = getTxPayload(instanceId);
       if (!from || !payload) {
         return;
       }
 
       const signature = await signWcTx(caip, from, payload);
-
       if (signature) {
         setTxSignature(instanceId, signature);
       }
     };
-
     buttonDisabled = disabled;
   }
 
