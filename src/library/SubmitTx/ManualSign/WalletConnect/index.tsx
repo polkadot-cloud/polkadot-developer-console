@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { useTxMeta } from 'contexts/TxMeta';
 import { EstimatedTxFee } from 'library/Tx/EstimatedTxFee';
 import type { SubmitProps } from '../../types';
@@ -34,9 +34,6 @@ export const WalletConnect = ({
   const { accountHasSigner } = useImportedAccounts();
   const { instanceId, chainId, ss58Prefix, valid } = useExtrinsicData();
 
-  // TODO: Replace with real WC request status.
-  const requestStatus = 0;
-
   // The state under which submission is disabled.
   const disabled =
     submitting ||
@@ -54,7 +51,7 @@ export const WalletConnect = ({
     buttonOnClick = onSubmit;
     buttonDisabled = disabled;
   } else {
-    buttonText = requestStatus === 0 ? 'Sign' : 'Signing';
+    buttonText = 'Sign';
     buttonOnClick = async () => {
       const caip = getChainIdCaip(chainId);
       const from = getSender(instanceId);
@@ -70,7 +67,7 @@ export const WalletConnect = ({
       }
     };
 
-    buttonDisabled = disabled || requestStatus !== 0;
+    buttonDisabled = disabled;
   }
 
   return (
