@@ -36,7 +36,7 @@ export const ManualSign = (props: SubmitProps & { buttons?: ReactNode[] }) => {
       return <Vault {...props} />;
     case 'ledger':
       return <Ledger {...props} />;
-    case 'wallet-connect':
+    case 'wallet_connect':
       return <WalletConnect {...props} />;
     default:
       return <Vault {...props} />;
