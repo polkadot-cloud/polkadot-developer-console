@@ -25,9 +25,9 @@ export const WalletConnect = ({
   const {
     getSender,
     txFeeValid,
-    getTxPayload,
     setTxSignature,
     getTxSignature,
+    getTxPayloadValue,
   } = useTxMeta();
   const { signWcTx } = useWalletConnect();
   const { getChainIdCaip } = useChainSpaceEnv();
@@ -56,14 +56,18 @@ export const WalletConnect = ({
       const from = getSender(instanceId);
       const caip = getChainIdCaip(chainId);
 
-      const payload = getTxPayload(instanceId);
+      const payload = getTxPayloadValue(instanceId);
       if (!from || !payload) {
         return;
       }
 
-      const signature = await signWcTx(caip, from, payload);
-      if (signature) {
-        setTxSignature(instanceId, signature);
+      try {
+        const signature = await signWcTx(caip, payload, from);
+        if (signature) {
+          setTxSignature(instanceId, signature);
+        }
+      } catch (e) {
+        // Silent Error.
       }
     };
     buttonDisabled = disabled;
