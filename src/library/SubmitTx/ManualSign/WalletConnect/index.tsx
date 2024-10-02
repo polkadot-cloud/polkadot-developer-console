@@ -11,6 +11,8 @@ import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { faSquarePen } from '@fortawesome/free-solid-svg-icons';
 import { useExtrinsicData } from 'library/SubmitTx/ExtrinsicDataProvider';
+import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
+import { useWalletConnect } from 'contexts/WalletConnect';
 
 export const WalletConnect = ({
   onSubmit,
@@ -20,8 +22,16 @@ export const WalletConnect = ({
   submitAddress,
   displayFor,
 }: SubmitProps & { buttons?: ReactNode[] }) => {
+  const {
+    getSender,
+    txFeeValid,
+    getTxPayload,
+    setTxSignature,
+    getTxSignature,
+  } = useTxMeta();
+  const { signWcTx } = useWalletConnect();
+  const { getChainIdCaip } = useChainSpaceEnv();
   const { accountHasSigner } = useImportedAccounts();
-  const { txFeeValid, getTxSignature } = useTxMeta();
   const { instanceId, chainId, ss58Prefix, valid } = useExtrinsicData();
 
   // TODO: Replace with real WC request status.
@@ -46,9 +56,20 @@ export const WalletConnect = ({
   } else {
     buttonText = requestStatus === 0 ? 'Sign' : 'Signing';
     buttonOnClick = async () => {
-      // TODO: Request signature from WC.
-      console.log('Get signature...');
+      const caip = getChainIdCaip(chainId);
+      const from = getSender(instanceId);
+      const payload = getTxPayload(instanceId);
+      if (!from || !payload) {
+        return;
+      }
+
+      const signature = await signWcTx(caip, from, payload);
+
+      if (signature) {
+        setTxSignature(instanceId, signature);
+      }
     };
+
     buttonDisabled = disabled || requestStatus !== 0;
   }
 

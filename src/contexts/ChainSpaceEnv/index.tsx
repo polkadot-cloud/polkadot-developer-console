@@ -121,6 +121,14 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
     return [...new Set(chains)];
   };
 
+  // Get a caip for a chain id. Used for submitting transactions via Wallet Connect.
+  const getChainIdCaip = (chainId: string) => {
+    const chain = getConnectedChains().find(
+      (connectedChain) => connectedChain.specName === chainId
+    );
+    return `polkadot:${chain?.genesisHash.substring(2).substring(0, 32) || ''}`;
+  };
+
   // Setter for api status. Updates state and ref.
   const setApiStatuses = (newApiStatuses: ChainSpaceApiStatuses) => {
     setStateWithRef(newApiStatuses, setApiStatusesState, apiStatusesRef);
@@ -424,6 +432,7 @@ export const ChainSpaceEnvProvider = ({ children }: ChainSpaceEnvProps) => {
         getApiInstance,
         getPalletVersions,
         getConnectedChains,
+        getChainIdCaip,
 
         // Connect and Disconnect
         handleConnectApi,
