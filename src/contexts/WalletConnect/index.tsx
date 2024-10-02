@@ -12,6 +12,7 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { getSdkError } from '@walletconnect/utils';
 import { useTabs } from 'contexts/Tabs';
 import { eqSet } from 'contexts/ChainSpaceEnv/Utils';
+import { getUnixTime } from 'date-fns';
 
 export const WalletConnectContext =
   createContext<WalletConnectContextInterface>(defaults.defaultWalletConnect);
@@ -127,15 +128,33 @@ export const WalletConnectProvider = ({
 
     // If no pairing topic or session exists, go ahead and create one, and store meta data for
     // `wcModal` to use.
+    let expiry;
+    let expired = false;
     if (!pairingTopic) {
       const { uri, approval } =
         await wcProvider.current!.client.connect(connectConfig);
       setWcMeta({ uri, approval });
+
+      // Check session expiry and disconnect from session if expired.
+      expiry = wcProvider.current!.session?.expiry;
     }
 
-    pairingInitiated.current = true;
-    if (pairingTopic) {
-      setWcSessionActive(true);
+    // If a session has been connected to, check if it has not expired. If it has, disconnect from
+    // the session (user will need to manually connect to a new session in the UI).
+    if (expiry) {
+      const nowUnix = getUnixTime(new Date());
+      if (nowUnix > expiry) {
+        disconnectWcSession();
+        expired = true;
+      }
+    }
+
+    // If the session has not expired, flag as an initiated session.
+    if (!expired) {
+      pairingInitiated.current = true;
+      if (pairingTopic) {
+        setWcSessionActive(true);
+      }
     }
   };
 
