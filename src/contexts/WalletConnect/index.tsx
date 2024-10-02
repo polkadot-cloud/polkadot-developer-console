@@ -77,6 +77,12 @@ export const WalletConnectProvider = ({
     });
 
     wcProvider.current = provider;
+
+    // Subscribe to session delete
+    wcProvider.current.on('session_delete', () => {
+      disconnectWcSession();
+    });
+
     wcModal.current = modal;
     setWcInitialized(true);
   };
