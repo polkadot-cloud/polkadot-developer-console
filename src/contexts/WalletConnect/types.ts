@@ -10,6 +10,7 @@ export interface WalletConnectContextInterface {
   initializeWcSession: () => Promise<AnyJson>;
   updateWcSession: () => Promise<void>;
   disconnectWcSession: () => Promise<void>;
+  signWcTx: (payload: AnyJson, from: string) => Promise<string | null>;
 }
 
 export interface WalletConnectConnectedMeta {

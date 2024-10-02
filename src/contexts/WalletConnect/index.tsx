@@ -7,7 +7,7 @@ import * as defaults from './defaults';
 import type { WalletConnectContextInterface } from './types';
 import UniversalProvider from '@walletconnect/universal-provider';
 import { WalletConnectModal } from '@walletconnect/modal';
-import type { AnyFunction } from '@w3ux/types';
+import type { AnyFunction, AnyJson } from '@w3ux/types';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { getSdkError } from '@walletconnect/utils';
 import { useTabs } from 'contexts/Tabs';
@@ -250,6 +250,32 @@ export const WalletConnectProvider = ({
     setWcSessionActive(false);
   };
 
+  // Attempt to sign a transaction and receive a signature.
+  const signWcTx = async (
+    payload: AnyJson,
+    from: string
+  ): Promise<string | null> => {
+    if (!wcProvider.current || !wcProvider.current.session?.topic) {
+      return null;
+    }
+    const topic = wcProvider.current.session.topic;
+
+    const result: { signature: string } =
+      await wcProvider.current.client.request({
+        chainId: 'polkadot:afdc188f45c71dacbaa0b62e16a91f72',
+        topic,
+        request: {
+          method: 'polkadot_signTransaction',
+          params: {
+            address: from,
+            transactionPayload: payload,
+          },
+        },
+      });
+
+    return result?.signature || null;
+  };
+
   // On initial render, initiate the WalletConnect provider.
   useEffect(() => {
     if (!wcProvider.current) {
@@ -295,6 +321,7 @@ export const WalletConnectProvider = ({
         disconnectWcSession,
         wcInitialized,
         wcSessionActive,
+        signWcTx,
       }}
     >
       {children}
