@@ -26,7 +26,7 @@ export class ArgBuilder {
     scraper: PalletScraper
   ) {
     this.inputMeta = inputMeta;
-    this.formattedArgs = { ...inputArgs } || {};
+    this.formattedArgs = { ...(inputArgs || {}) };
     this.scraper = scraper;
 
     // console.log({ ...inputArgs });
