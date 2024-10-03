@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import assert from 'assert';
-import { u8aToHex, u8aToNumber } from '@polkadot/util';
-import { base58Decode, base58Encode } from '@polkadot/util-crypto';
+import { u8aToHex, u8aToNumber } from '@w3ux/utils/util';
+import { base58Decode, base58Encode } from '@w3ux/utils/util-crypto';
 
 // Test decoding and encoding of an account. Extracts the SS58 Prefix and public key, before
 // encoding back to the correct address.
