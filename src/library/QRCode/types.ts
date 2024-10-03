@@ -1,7 +1,6 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
-import type { HexString } from '@polkadot/util/types';
 import type { CSSProperties } from 'react';
 
 export interface FrameState {
@@ -12,7 +11,7 @@ export interface FrameState {
 }
 
 export interface ScanType {
-  signature: HexString;
+  signature: `0x${string}`;
 }
 
 export interface TimerState {
