@@ -33,7 +33,7 @@ import type { ApiIndexLabel } from 'contexts/ApiIndexer/types';
 import type { MetadataVersion } from 'model/Metadata/types';
 import type { ApiPromise } from '@polkadot/api';
 import { PalletScraper } from 'model/Scraper/Pallet';
-import { xxhashAsHex } from '@polkadot/util-crypto';
+import { xxhashAsHex } from '@w3ux/utils/util-crypto';
 import { u16 } from 'scale-ts';
 import type { AnyJson } from '@w3ux/types';
 import { eqSet, getApiInstanceOwnerAndIndex } from './Utils';
