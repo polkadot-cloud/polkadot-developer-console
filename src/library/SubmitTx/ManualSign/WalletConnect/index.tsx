@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
-import { type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useTxMeta } from 'contexts/TxMeta';
 import { EstimatedTxFee } from 'library/Tx/EstimatedTxFee';
 import type { SubmitProps } from '../../types';
@@ -34,6 +34,9 @@ export const WalletConnect = ({
   const { accountHasSigner } = useImportedAccounts();
   const { instanceId, chainId, ss58Prefix, valid } = useExtrinsicData();
 
+  // Store whether the user is currently signing a transaction.
+  const [isSgning, setIsSigning] = useState<boolean>(false);
+
   // The state under which submission is disabled.
   const disabled =
     submitting ||
@@ -42,16 +45,16 @@ export const WalletConnect = ({
     !txFeeValid(instanceId);
 
   // Format submit button based on whether signature currently exists or submission is ongoing.
-  let buttonText: string;
   let buttonOnClick: () => void;
   let buttonDisabled: boolean;
 
-  if (getTxSignature(instanceId) !== undefined || submitting) {
-    buttonText = submitText || '';
+  const alreadySubmitted =
+    getTxSignature(instanceId) !== undefined || submitting;
+
+  if (alreadySubmitted) {
     buttonOnClick = onSubmit;
     buttonDisabled = disabled;
   } else {
-    buttonText = 'Sign';
     buttonOnClick = async () => {
       const from = getSender(instanceId);
       const caip = getChainIdCaip(chainId);
@@ -60,6 +63,7 @@ export const WalletConnect = ({
       if (!from || !payload) {
         return;
       }
+      setIsSigning(true);
 
       try {
         const signature = await signWcTx(caip, payload, from);
@@ -69,9 +73,16 @@ export const WalletConnect = ({
       } catch (e) {
         // Silent Error.
       }
+      setIsSigning(false);
     };
     buttonDisabled = disabled;
   }
+
+  const buttonText = alreadySubmitted
+    ? submitText || ''
+    : isSgning
+      ? 'Signing...'
+      : 'Sign';
 
   return (
     <div className={`inner${appendOrEmpty(displayFor === 'card', 'col')}`}>
