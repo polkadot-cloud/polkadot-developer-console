@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import type { DirectoryId } from 'config/networks/types';
 import { ImportButtonWrapper, SubHeadingWrapper } from './Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQrcode, faSquareMinus } from '@fortawesome/free-solid-svg-icons';
+import { faSquareMinus } from '@fortawesome/free-solid-svg-icons';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { useWcAccounts } from '@w3ux/react-connect-kit';
 import type { WCAccount } from '@w3ux/react-connect-kit/types';
@@ -19,7 +19,7 @@ import { NetworkDirectory } from 'config/networks';
 import { useWalletConnect } from 'contexts/WalletConnect';
 import type { AnyJson } from '@w3ux/types';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { faLink } from '@fortawesome/pro-duotone-svg-icons';
+import { faLink, faRefresh } from '@fortawesome/pro-duotone-svg-icons';
 
 export const ManageWalletConnect = ({
   getMotionProps,
@@ -205,13 +205,13 @@ export const ManageWalletConnect = ({
                   }}
                 >
                   {!importActive && (
-                    <FontAwesomeIcon icon={faQrcode} transform="shrink-2" />
+                    <FontAwesomeIcon icon={faRefresh} transform="shrink-2" />
                   )}
                   {!wcInitialized
                     ? 'Initialising'
                     : importActive
-                      ? 'Cancel Import'
-                      : 'Import'}
+                      ? 'Cancel'
+                      : 'Refresh'}
                 </button>
                 <button onClick={() => disconnectWc()}>
                   <FontAwesomeIcon
