@@ -11,7 +11,7 @@ import type { AnyFunction, AnyJson } from '@w3ux/types';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { getSdkError } from '@walletconnect/utils';
 import { useTabs } from 'contexts/Tabs';
-import { eqSet } from 'contexts/ChainSpaceEnv/Utils';
+import { isSuperset } from 'contexts/ChainSpaceEnv/Utils';
 import { getUnixTime } from 'date-fns';
 
 export const WalletConnectContext =
@@ -292,10 +292,11 @@ export const WalletConnectProvider = ({
     }
   }, [wcInitialized, JSON.stringify(connectedChains), allChainsReady]);
 
-  // Reconnect provider if connected chains change / disconnect, or when the provider is set. This
-  // can only happen once pairing has been initiated.
+  // Reconnect provider to a new session if a new connected chain is added, or when the provider is
+  // set. This can only happen once pairing has been initiated. Doing this will require approval
+  // from the user again.
   useEffect(() => {
-    const connectedChainsStale = !eqSet(
+    const connectedChainsStale = !isSuperset(
       sessionChains.current,
       connectedChainIds
     );
