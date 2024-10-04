@@ -92,7 +92,7 @@ export const useSubmitExtrinsic = ({
 
   // Check if account source has a manual signer.
   const isManualSigner = (accountSource: string) =>
-    ['vault', 'ledger'].includes(accountSource);
+    ['vault', 'ledger', 'wallet_connect'].includes(accountSource);
 
   // Extrinsic submission handler.
   const onSubmit = async () => {

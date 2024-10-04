@@ -19,6 +19,7 @@ import * as local from './Local';
 import { useSettings } from 'contexts/Settings';
 import { checkLocalTabs } from 'IntegrityChecks/Local';
 import type { Route } from 'App';
+import type { ChainId } from 'config/networks/types';
 
 checkLocalTabs();
 
@@ -291,38 +292,59 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     setTabs(newTabs);
   };
 
+  // Get all tab chains with an active task.
+  const getActiveTaskChainIds = (): Set<ChainId> =>
+    new Set(
+      tabs
+        .filter((tab) => tab.activeTask !== null)
+        .map((tab) => tab?.taskData?.chain?.id)
+        .filter((chain) => chain !== undefined)
+    );
+
   return (
     <TabsContext.Provider
       value={{
+        // Raw tab data.
         tabs,
         tabsRef: tabsRef.current,
+
+        // Active tab id & index.
+        selectedTabId,
+        setSelectedTabId,
+        setSelectedTabIndex,
+        activeTabIndex,
+
+        // Basic tab operations.
+        getTab,
         setTabs,
         createTab,
-        selectedTabId,
-        getTab,
         destroyTab,
-        setSelectedTabId,
+        switchTab,
+        renameTab,
+
+        // Manage tab UI.
         tabHoverIndex,
         setTabHoverIndex,
-        activeTabIndex,
-        setSelectedTabIndex,
-        addInstantiatedId,
-        setDragId,
         dragId,
-        renameTab,
+        setDragId,
         getAutoTabName,
         redirectCounter,
         incrementRedirectCounter,
         setTabAutoConnect,
         setTabActivePage,
-        switchTab,
+        setTabConnectFrom,
+
+        // Manage tab tasks.
         getTabActiveTask,
         setTabActiveTask,
         resetTabActiveTask,
         getTabTaskData,
         setTabTaskData,
-        setTabConnectFrom,
+        getActiveTaskChainIds,
+
+        // Intantiated tab ids.
         instantiatedIds: instantiatedIds.current,
+        addInstantiatedId,
       }}
     >
       {children}

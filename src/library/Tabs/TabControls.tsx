@@ -41,7 +41,7 @@ export const TabControls = ({ tabContainerRef }: ControlsProps) => {
       <div>
         <ControlWithTooltip
           icon={faPlug}
-          tooltipText="Connect Wallets"
+          tooltipText="Connect Accounts"
           onClick={(ev) => {
             closeTooltip();
             openConnectOverlay(ev);

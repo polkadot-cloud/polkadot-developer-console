@@ -1,17 +1,23 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
-import type UniversalProvider from '@walletconnect/universal-provider';
-import type { WalletConnectModal } from '@walletconnect/modal';
-import type { AnyFunction } from '@w3ux/types';
+import type { AnyFunction, AnyJson } from '@w3ux/types';
 
 export interface WalletConnectContextInterface {
-  wcProvider: UniversalProvider | null;
-  wcModal: WalletConnectModal | null;
-  wcMeta: WalletConnectConnectedMeta | null;
+  connectProvider: () => Promise<void>;
+  wcInitialized: boolean;
+  wcSessionActive: boolean;
+  initializeWcSession: () => Promise<AnyJson>;
+  updateWcSession: () => Promise<void>;
+  disconnectWcSession: () => Promise<void>;
+  signWcTx: (
+    caip: string,
+    payload: AnyJson,
+    from: string
+  ) => Promise<string | null>;
 }
 
 export interface WalletConnectConnectedMeta {
-  uri: string;
+  uri: string | undefined;
   approval: AnyFunction;
 }

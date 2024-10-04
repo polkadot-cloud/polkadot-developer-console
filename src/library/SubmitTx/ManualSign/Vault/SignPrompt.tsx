@@ -23,6 +23,7 @@ export const SignPrompt = ({
 }: SignerPromptProps) => {
   const { closePrompt } = usePrompt();
   const { getTxPayload, setTxSignature } = useTxMeta();
+
   const payload = getTxPayload(instanceId);
   const payloadU8a = payload?.toU8a();
 
