@@ -186,7 +186,7 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
           </div>
           <div>
             <div>
-              <h4>Wallet Connect</h4>
+              <h4>Wallet Connect (Beta)</h4>
               <h5>
                 <a
                   href="https://walletconnect.com/"
