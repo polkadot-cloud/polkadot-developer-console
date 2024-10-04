@@ -14,9 +14,15 @@ export const useOutsideAlerter = (
       if (ev) {
         if (ref.current && !ref.current.contains(ev.target as Node)) {
           const target = ev.target as HTMLElement;
-          const invalid = ignore.some((i) => target.closest(`.${i}`) !== null);
+          // Ignore tags with a name of `ignore`, or if there is a class of `ignore` in the parent
+          // tree.
+          const tagName = target.tagName.toLowerCase();
+          const ignored = ignore.some(
+            (i) =>
+              i.toLowerCase() === tagName || target.closest(`.${i}`) !== null
+          );
 
-          if (!invalid) {
+          if (!ignored) {
             callback();
           }
         }

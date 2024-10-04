@@ -6,9 +6,10 @@ import { createContext, useContext } from 'react';
 import { defaultImportedAccountsContext } from './defaults';
 import type { ImportedAccountsContextInterface } from './types';
 import {
-  useExtensionAccounts,
-  useLedgerAccounts,
+  useWcAccounts,
   useVaultAccounts,
+  useLedgerAccounts,
+  useExtensionAccounts,
 } from '@w3ux/react-connect-kit';
 
 export const ImportedAccountsContext =
@@ -23,6 +24,7 @@ export const ImportedAccountsProvider = ({
 }: {
   children: ReactNode;
 }) => {
+  const { getWcAccounts } = useWcAccounts();
   const { getVaultAccounts } = useVaultAccounts();
   const { getLedgerAccounts } = useLedgerAccounts();
   const { getExtensionAccounts } = useExtensionAccounts();
@@ -31,7 +33,8 @@ export const ImportedAccountsProvider = ({
   const getAccounts = (chainId: string, ss58Prefix: number) =>
     getExtensionAccounts(ss58Prefix)
       .concat(getVaultAccounts(chainId))
-      .concat(getLedgerAccounts(chainId));
+      .concat(getLedgerAccounts(chainId))
+      .concat(getWcAccounts(chainId));
 
   // Gets one account for a chain id and ss58 prefix, or undefined if not found.
   const getAccount = (address: string, chainId: string, ss58Prefix: number) =>
@@ -66,7 +69,9 @@ export const ImportedAccountsProvider = ({
 
     return (
       allAccounts.find(
-        (a) => a.address === address && ['vault', 'ledger'].includes(a.source)
+        (a) =>
+          a.address === address &&
+          ['vault', 'ledger', 'wallet_connect'].includes(a.source)
       ) !== undefined
     );
   };

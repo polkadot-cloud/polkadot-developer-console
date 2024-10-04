@@ -45,6 +45,7 @@ export interface TabsContextInterface {
   resetTabActiveTask: (tabId: number) => void;
   getTabTaskData: (tabId: number) => TaskData;
   setTabTaskData: (tabId: number, value: TaskData) => void;
+  getActiveTaskChainIds: () => Set<ChainId>;
 }
 
 export type Tabs = Tab[];

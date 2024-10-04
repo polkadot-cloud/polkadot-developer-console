@@ -16,6 +16,8 @@ export const defaultChainSpaceEnvContext: ChainSpaceEnvContextInterface = {
   destroyAllApiInstances: (ownerId) => {},
   instantiateApiFromTab: (tabId) => {},
   getConnectedChains: () => [],
+  getChainIdCaip: (chainId) => '',
+  allActiveChainsConnected: () => false,
 };
 
 // NOTE: Only dummy values to keep the type checker happy. They should be over-written by the

@@ -21,6 +21,7 @@ import {
   ExtensionsProvider,
   LedgerAccountsProvider,
   VaultAccountsProvider,
+  WCAccountsProvider,
 } from '@w3ux/react-connect-kit';
 import { ChainStateProvider } from 'contexts/ChainState';
 import { ActiveTabProvider } from 'contexts/ActiveTab';
@@ -73,6 +74,7 @@ export const Providers = () => {
     ExtensionsProvider,
     [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
     WalletConnectProvider,
+    WCAccountsProvider,
     VaultAccountsProvider,
     LedgerHardwareProvider,
     LedgerAccountsProvider,

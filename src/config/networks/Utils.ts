@@ -30,3 +30,12 @@ export const getChainMeta = (id: DirectoryId) => {
     unit: system.unit,
   };
 };
+
+// Gets the correct icon filename for a given chain.
+export const getIconFilename = (id: DirectoryId): string => {
+  const entry = NetworkDirectory[id];
+  if (entry?.relayChain) {
+    return entry.relayChain;
+  }
+  return id;
+};
