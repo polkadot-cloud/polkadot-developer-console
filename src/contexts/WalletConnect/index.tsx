@@ -19,7 +19,7 @@ export const WalletConnectContext =
 
 export const useWalletConnect = () => useContext(WalletConnectContext);
 
-// ProjectId configured on `https://cloud.walletconnect.com/`.
+// `projectId` configured on `https://cloud.walletconnect.com/`.
 const wcProjectId = 'dcb8a7c6d01ace818286c005f75d70b9';
 
 export const WalletConnectProvider = ({
