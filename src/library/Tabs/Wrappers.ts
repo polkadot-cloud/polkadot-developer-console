@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 export const TabsWrapper = styled(motion.div)`
-  --tab-height: 2rem;
+  --tab-height: 1.9rem;
   --tab-border-radius: 0.35rem;
 
   background-color: var(--background-list-item);
@@ -16,7 +16,7 @@ export const TabsWrapper = styled(motion.div)`
   border-bottom-width: 1px;
   border-style: solid;
   display: flex;
-  padding: 0.25rem 0rem 0.25rem 0.3rem;
+  padding: 0.15rem 0.15rem 0.15rem 0.15rem;
   overflow-x: auto;
   overflow-y: hidden;
   width: 100%;
