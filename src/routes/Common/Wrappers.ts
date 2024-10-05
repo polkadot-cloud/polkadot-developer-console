@@ -12,10 +12,10 @@ export const StickyMenu = styled.div`
   background-color: var(--background-default);
   position: sticky;
   z-index: 10;
-  top: calc(5.02rem);
+  top: calc(4.5rem);
   transition: top 0.15s;
 
   &.tabsHidden {
-    top: calc(2.46rem);
+    top: calc(2.06rem);
   }
 `;
