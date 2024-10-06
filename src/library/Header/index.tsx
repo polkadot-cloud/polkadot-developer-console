@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { DiscussionsUrl, DocsUrl, GithubRepoUrl } from 'consts';
 import { faFileDoc, faMessages } from '@fortawesome/pro-solid-svg-icons';
+import LogoSVG from 'svg/Logo.svg?react';
 
 export const Header = () => {
   const glitch = useGlitch({
@@ -29,20 +30,21 @@ export const Header = () => {
   return (
     <HeaderWrapper>
       <div>
-        <span
-          ref={glitch.ref}
-          style={{ width: '1.1rem', height: '1.1rem', marginRight: '0.4rem' }}
-        >
-          <HeaderSVG
-            style={{
-              width: '100%',
-              height: '100%',
-              fill: 'var(--accent-color-primary)',
-            }}
-          />
+        <span className="icon">
+          <span ref={glitch.ref}>
+            <HeaderSVG
+              style={{
+                width: '100%',
+                height: '100%',
+                fill: 'var(--accent-color-primary)',
+              }}
+            />
+          </span>
         </span>
-        <h1>Polkadot Developer Console</h1>
-        <span>{version}</span>
+        <span className="logo">
+          <LogoSVG />
+        </span>
+        <span className="version">{version}</span>
       </div>
       <div>
         <button type="button" onClick={() => window.open(DocsUrl)}>

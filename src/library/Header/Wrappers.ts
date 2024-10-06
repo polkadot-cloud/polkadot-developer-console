@@ -17,30 +17,34 @@ export const HeaderWrapper = styled.div`
     flex-grow: 1;
 
     &:first-child {
-      > h1 {
-        color: var(--accent-color-secondary);
-        font-family: Inter, sans-serif;
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        /* NOTE: Text gradients not yet standardised. Falls back to color on non-webkit compatible
-        browsers. */
-        background: linear-gradient(
-          90deg,
-          var(--accent-color-primary) 0%,
-          var(--accent-color-primary) 40%,
-          var(--accent-color-secondary) 100%
-        );
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-
       > span {
         color: var(--text-color-primary);
-        font-family: InterSemiBold, sans-serif;
-        margin-left: 0.35rem;
-        margin-right: 0.5rem;
-        font-size: 0.7rem;
-        opacity: 0.75;
+        margin: 0 0.5rem;
+        position: relative;
+
+        &.icon {
+          width: 1rem;
+          height: 1rem;
+          top: -0.14rem;
+          margin-left: 0;
+        }
+
+        &.logo {
+          top: 0.09rem;
+          margin: 0;
+          display: flex;
+          align-items: center;
+
+          > svg {
+            width: auto;
+            height: 0.83rem;
+          }
+        }
+
+        &.version {
+          font-size: 0.7rem;
+          opacity: 0.75;
+        }
       }
     }
 
