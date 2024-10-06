@@ -30,7 +30,7 @@ export const HeaderWrapper = styled.div`
         }
 
         &.logo {
-          top: 0.09rem;
+          top: 0.1rem;
           margin: 0;
           display: flex;
           align-items: center;
