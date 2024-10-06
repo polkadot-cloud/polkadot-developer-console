@@ -44,6 +44,7 @@ export const HeaderWrapper = styled.div`
         &.version {
           font-size: 0.7rem;
           opacity: 0.75;
+          top: 0.05rem;
         }
       }
     }
