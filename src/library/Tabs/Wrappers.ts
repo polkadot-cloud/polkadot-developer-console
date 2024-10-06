@@ -207,7 +207,7 @@ export const ControlsWrapper = styled.div`
   position: sticky;
   right: 0rem;
   z-index: 5;
-  padding-right: 0.25rem;
+  padding-right: 0.1rem;
 
   > div {
     &:last-child {

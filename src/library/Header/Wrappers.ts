@@ -7,7 +7,7 @@ export const HeaderWrapper = styled.div`
   background-color: var(--background-default);
   display: flex;
   align-items: center;
-  padding: 0.2rem 1.25rem 0.2rem 0.55rem;
+  padding: 0.2rem 1.2rem 0.2rem 0.55rem;
   width: 100%;
   height: 2.1rem;
 
@@ -55,7 +55,7 @@ export const HeaderWrapper = styled.div`
         color: var(--text-color-primary);
         opacity: 0.4;
         transition: opacity 0.2s;
-        margin-left: 0.95rem;
+        margin-left: 0.9rem;
 
         &:hover {
           opacity: 1;
