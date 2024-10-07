@@ -7,7 +7,7 @@ import { FormWrapper } from 'routes/Home/Wrappers';
 import { useParachain } from 'routes/ParachainSetup/Provider';
 import { SetupNote } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
+import { w3CheckCircle } from '@w3ux/icons/regular';
 import { useEffect } from 'react';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { NextFreeParaId } from 'model/NextFreeParaId';
@@ -21,6 +21,7 @@ import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import { useReserveParaId } from 'contexts/ParaSetup/ReserveParaId';
 import type { ReservedParaId } from 'contexts/ParaSetup/ReserveParaId/types';
 import { ParaIdOptionsWrapper } from './Wrappers';
+import { W3Icon } from '@w3ux/icons';
 
 export const ReserveParaId = () => {
   const {
@@ -194,10 +195,11 @@ export const ReserveParaId = () => {
                   <h4>{selectedOption === 'new' ? ' Selected' : 'Select'}</h4>
                 </span>
                 <span>
-                  <FontAwesomeIcon
-                    icon={selectedOption === 'new' ? faCheckCircle : faCircle}
-                    transform="grow-2"
-                  />
+                  {selectedOption === 'new' ? (
+                    <W3Icon icon={w3CheckCircle} transform="grow-2" />
+                  ) : (
+                    <FontAwesomeIcon icon={faCircle} transform="grow-2" />
+                  )}
                 </span>
               </button>
             </div>
@@ -225,12 +227,11 @@ export const ReserveParaId = () => {
                   </h4>
                 </span>
                 <span>
-                  <FontAwesomeIcon
-                    icon={
-                      selectedOption === 'existing' ? faCheckCircle : faCircle
-                    }
-                    transform="grow-2"
-                  />
+                  {selectedOption === 'existing' ? (
+                    <W3Icon icon={w3CheckCircle} transform="grow-2" />
+                  ) : (
+                    <FontAwesomeIcon icon={faCircle} transform="grow-2" />
+                  )}
                 </span>
               </button>
             </div>
@@ -239,7 +240,7 @@ export const ReserveParaId = () => {
 
         <SetupNote>
           {validateParaId(tabId, selectedAccount) ? (
-            <FontAwesomeIcon icon={faCheckCircle} transform="grow-1" />
+            <W3Icon icon={w3CheckCircle} transform="grow-1" />
           ) : null}
           {selectedOption === 'existing' ? existingFeedback : newFeedback}
         </SetupNote>
