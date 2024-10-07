@@ -20,8 +20,8 @@ import { useWalletConnect } from 'contexts/WalletConnect';
 import type { AnyJson } from '@w3ux/types';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { faRefresh } from '@fortawesome/pro-duotone-svg-icons';
-import { W3Icon } from '@w3ux/icons';
-import { w3Link } from '@w3ux/icons/duotone';
+import { W3Icon } from '@polkadot-cloud/icons';
+import { w3Link } from '@polkadot-cloud/icons/duotone';
 
 export const ManageWalletConnect = ({
   getMotionProps,

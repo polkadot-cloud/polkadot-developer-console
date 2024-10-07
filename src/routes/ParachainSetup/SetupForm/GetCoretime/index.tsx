@@ -4,8 +4,8 @@
 import { FormWrapper } from 'routes/Home/Wrappers';
 import { Prompt } from '../Prompt';
 import { ParaIdOptionsWrapper } from '../ReserveParaId/Wrappers';
-import { W3Icon } from '@w3ux/icons';
-import { w3ExternalLink } from '@w3ux/icons/regular';
+import { W3Icon } from '@polkadot-cloud/icons';
+import { w3ExternalLink } from '@polkadot-cloud/icons/regular';
 
 export const GetCoretime = () => (
   <FormWrapper>

@@ -7,7 +7,7 @@ import { FormWrapper } from 'routes/Home/Wrappers';
 import { useParachain } from 'routes/ParachainSetup/Provider';
 import { SetupNote } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { w3CheckCircle } from '@w3ux/icons/regular';
+import { w3CheckCircle } from '@polkadot-cloud/icons/regular';
 import { useEffect } from 'react';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { NextFreeParaId } from 'model/NextFreeParaId';
@@ -21,7 +21,7 @@ import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import { useReserveParaId } from 'contexts/ParaSetup/ReserveParaId';
 import type { ReservedParaId } from 'contexts/ParaSetup/ReserveParaId/types';
 import { ParaIdOptionsWrapper } from './Wrappers';
-import { W3Icon } from '@w3ux/icons';
+import { W3Icon } from '@polkadot-cloud/icons';
 
 export const ReserveParaId = () => {
   const {

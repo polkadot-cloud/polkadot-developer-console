@@ -1796,6 +1796,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@polkadot-cloud/icons@npm:^1.0.0-alpha.22":
+  version: 1.0.0-alpha.22
+  resolution: "@polkadot-cloud/icons@npm:1.0.0-alpha.22"
+  checksum: 10c0/1f943ff9164f3aec95eb35a05eed19bc7d0424dd1af1459d6564d164aa69d4b20b17149039c00e8847195601ab64c91e50d34ee018d0e8ec857e85a5bb0b3f90
+  languageName: node
+  linkType: hard
+
 "@polkadot/api-augment@npm:10.13.1":
   version: 10.13.1
   resolution: "@polkadot/api-augment@npm:10.13.1"
@@ -3657,13 +3664,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@w3ux/icons@npm:1.0.0-alpha.20":
-  version: 1.0.0-alpha.20
-  resolution: "@w3ux/icons@npm:1.0.0-alpha.20"
-  checksum: 10c0/b971d40a0de2b5fde9480371e8e64d67e9bbe9bba6b399e5d0276a978895ad42d7123056c041626ad23cd2beebc84238a956527baf63d1ea3878d79e4bda6cb0
-  languageName: node
-  linkType: hard
-
 "@w3ux/react-connect-kit@npm:^1.7.0":
   version: 1.7.0
   resolution: "@w3ux/react-connect-kit@npm:1.7.0"
@@ -5485,6 +5485,7 @@ __metadata:
     "@fortawesome/react-fontawesome": "npm:^0.2.0"
     "@fortawesome/sharp-regular-svg-icons": "npm:^6.5.2"
     "@ledgerhq/hw-transport-webhid": "npm:^6.29.2"
+    "@polkadot-cloud/icons": "npm:^1.0.0-alpha.22"
     "@polkadot/api": "npm:^12.0.2"
     "@polkadot/rpc-provider": "npm:12.0.2"
     "@tanstack/react-query": "npm:^5.53.3"
@@ -5497,7 +5498,6 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.2.1"
     "@w3ux/extension-assets": "npm:^0.3.1"
     "@w3ux/hooks": "npm:^1.1.0"
-    "@w3ux/icons": "npm:1.0.0-alpha.20"
     "@w3ux/react-connect-kit": "npm:^1.7.0"
     "@w3ux/react-odometer": "npm:^1.1.0"
     "@w3ux/react-polkicon": "npm:^1.3.0"

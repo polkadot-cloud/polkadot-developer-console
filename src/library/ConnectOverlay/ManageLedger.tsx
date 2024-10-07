@@ -17,12 +17,12 @@ import { ChainSearchInput } from './ChainSearchInput';
 import type { ManageHardwareProps } from './types';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { ImportButtonWrapper, SubHeadingWrapper } from './Wrappers';
-import { W3Icon } from '@w3ux/icons';
+import { W3Icon } from '@polkadot-cloud/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LedgerChains } from 'contexts/LedgerHardware/defaults';
 import { useLedgerHardware } from 'contexts/LedgerHardware';
 import type { LedgerResponse } from 'contexts/LedgerHardware/types';
-import { w3UsbDrive } from '@w3ux/icons/duotone';
+import { w3UsbDrive } from '@polkadot-cloud/icons/duotone';
 import {
   getLedgerApp,
   getLocalLedgerAddresses,
