@@ -17,11 +17,12 @@ import { ChainSearchInput } from './ChainSearchInput';
 import type { ManageHardwareProps } from './types';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { ImportButtonWrapper, SubHeadingWrapper } from './Wrappers';
-import { faUsbDrive } from '@fortawesome/pro-duotone-svg-icons';
+import { W3Icon } from '@w3ux/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LedgerChains } from 'contexts/LedgerHardware/defaults';
 import { useLedgerHardware } from 'contexts/LedgerHardware';
 import type { LedgerResponse } from 'contexts/LedgerHardware/types';
+import { w3UsbDrive } from '@w3ux/icons/duotone';
 import {
   getLedgerApp,
   getLocalLedgerAddresses,
@@ -275,10 +276,7 @@ export const ManageLedger = ({
                 }
               }}
             >
-              <FontAwesomeIcon
-                icon={faUsbDrive}
-                style={{ marginRight: '0.4rem' }}
-              />
+              <W3Icon icon={w3UsbDrive} style={{ marginRight: '0.4rem' }} />
 
               {isExecuting ? 'Cancel Import' : 'Import Next Account'}
             </button>
