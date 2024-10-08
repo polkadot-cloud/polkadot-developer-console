@@ -6,14 +6,12 @@ import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { FormWrapper } from 'routes/Home/Wrappers';
 import { useParachain } from 'routes/ParachainSetup/Provider';
 import { SetupNote } from '../Wrappers';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { iconCheckCircle } from '@polkadot-cloud/icons/regular';
+import { iconCheckCircle, iconCircle } from '@polkadot-cloud/icons/regular';
 import { useEffect } from 'react';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { NextFreeParaId } from 'model/NextFreeParaId';
 import { useActiveTab } from 'contexts/ActiveTab';
 import BigNumber from 'bignumber.js';
-import { faCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { Textbox } from 'library/Inputs/Textbox';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { SubmitTx } from 'library/SubmitTx';
@@ -198,7 +196,7 @@ export const ReserveParaId = () => {
                   {selectedOption === 'new' ? (
                     <CloudIcon icon={iconCheckCircle} transform="grow-2" />
                   ) : (
-                    <FontAwesomeIcon icon={faCircle} transform="grow-2" />
+                    <CloudIcon icon={iconCircle} transform="grow-2" />
                   )}
                 </span>
               </button>
@@ -230,7 +228,7 @@ export const ReserveParaId = () => {
                   {selectedOption === 'existing' ? (
                     <CloudIcon icon={iconCheckCircle} transform="grow-2" />
                   ) : (
-                    <FontAwesomeIcon icon={faCircle} transform="grow-2" />
+                    <CloudIcon icon={iconCircle} transform="grow-2" />
                   )}
                 </span>
               </button>
