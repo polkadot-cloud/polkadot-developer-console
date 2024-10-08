@@ -807,15 +807,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/pro-duotone-svg-icons@npm:^6.5.2":
-  version: 6.6.0
-  resolution: "@fortawesome/pro-duotone-svg-icons@npm:6.6.0::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40fortawesome%2Fpro-duotone-svg-icons%2F-%2F6.6.0%2Fpro-duotone-svg-icons-6.6.0.tgz"
-  dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:6.6.0"
-  checksum: 10c0/8e278ded5127c2158e7ebe95bdb9a635359cd92d5b94864eabf54021ee6c691c1b30e0a55719154322be229771c9c2bd5232c3abc29439f7e0d2eb1b49e80c1b
-  languageName: node
-  linkType: hard
-
 "@fortawesome/react-fontawesome@npm:^0.2.0":
   version: 0.2.2
   resolution: "@fortawesome/react-fontawesome@npm:0.2.2::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40fortawesome%2Freact-fontawesome%2F-%2F0.2.2%2Freact-fontawesome-0.2.2.tgz"
@@ -1787,12 +1778,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot-cloud/icons@npm:1.0.0-alpha.28":
-  version: 1.0.0-alpha.28
-  resolution: "@polkadot-cloud/icons@npm:1.0.0-alpha.28"
+"@polkadot-cloud/icons@npm:1.0.0-alpha.29":
+  version: 1.0.0-alpha.29
+  resolution: "@polkadot-cloud/icons@npm:1.0.0-alpha.29"
   peerDependencies:
     react: ^18
-  checksum: 10c0/9e39bec210f1074f40270250bc8af73bcb26309af8202f9523be687dd441a405793ca2af7db0c23cb52f26bf27d33566e1e22c1164bf2e3c81cac03a272b1092
+  checksum: 10c0/4bfa8b1d39a874ee1a6e9ca75f2e684e9ca6889e18c0acacfc734405a423c4d41017dfb7eb5c72c7b3f6ffb91cb3fc24bec50a7786650ebfc9aea5359a12a391
   languageName: node
   linkType: hard
 
@@ -5473,11 +5464,10 @@ __metadata:
     "@fortawesome/fontawesome-svg-core": "npm:^6.5.2"
     "@fortawesome/free-brands-svg-icons": "npm:^6.5.2"
     "@fortawesome/free-solid-svg-icons": "npm:^6.5.2"
-    "@fortawesome/pro-duotone-svg-icons": "npm:^6.5.2"
     "@fortawesome/react-fontawesome": "npm:^0.2.0"
     "@fortawesome/sharp-regular-svg-icons": "npm:^6.5.2"
     "@ledgerhq/hw-transport-webhid": "npm:^6.29.2"
-    "@polkadot-cloud/icons": "npm:1.0.0-alpha.28"
+    "@polkadot-cloud/icons": "npm:1.0.0-alpha.29"
     "@polkadot/api": "npm:^12.0.2"
     "@polkadot/rpc-provider": "npm:12.0.2"
     "@tanstack/react-query": "npm:^5.53.3"
