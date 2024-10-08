@@ -19,9 +19,8 @@ import { NetworkDirectory } from 'config/networks';
 import { useWalletConnect } from 'contexts/WalletConnect';
 import type { AnyJson } from '@w3ux/types';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
-import { faRefresh } from '@fortawesome/pro-duotone-svg-icons';
+import { iconRefresh, iconLink } from '@polkadot-cloud/icons/duotone';
 import { CloudIcon } from '@polkadot-cloud/icons';
-import { iconLink } from '@polkadot-cloud/icons/duotone';
 
 export const ManageWalletConnect = ({
   getMotionProps,
@@ -204,7 +203,7 @@ export const ManageWalletConnect = ({
                   }}
                 >
                   {!importActive && (
-                    <FontAwesomeIcon icon={faRefresh} transform="shrink-2" />
+                    <CloudIcon icon={iconRefresh} transform="shrink-2" />
                   )}
                   {!wcInitialized
                     ? 'Initialising'

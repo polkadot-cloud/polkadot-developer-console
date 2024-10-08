@@ -1787,12 +1787,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot-cloud/icons@npm:1.0.0-alpha.25":
-  version: 1.0.0-alpha.25
-  resolution: "@polkadot-cloud/icons@npm:1.0.0-alpha.25"
+"@polkadot-cloud/icons@npm:1.0.0-alpha.28":
+  version: 1.0.0-alpha.28
+  resolution: "@polkadot-cloud/icons@npm:1.0.0-alpha.28"
   peerDependencies:
     react: ^18
-  checksum: 10c0/8845ba01af970147d8e3833f25fa0953a1dcb3119e76fa9547a868262710661bf27f6f8d43eb91e776198aa53156a8444240bbabfae57aa3bc236c3dc8930b46
+  checksum: 10c0/9e39bec210f1074f40270250bc8af73bcb26309af8202f9523be687dd441a405793ca2af7db0c23cb52f26bf27d33566e1e22c1164bf2e3c81cac03a272b1092
   languageName: node
   linkType: hard
 
@@ -5477,7 +5477,7 @@ __metadata:
     "@fortawesome/react-fontawesome": "npm:^0.2.0"
     "@fortawesome/sharp-regular-svg-icons": "npm:^6.5.2"
     "@ledgerhq/hw-transport-webhid": "npm:^6.29.2"
-    "@polkadot-cloud/icons": "npm:1.0.0-alpha.25"
+    "@polkadot-cloud/icons": "npm:1.0.0-alpha.28"
     "@polkadot/api": "npm:^12.0.2"
     "@polkadot/rpc-provider": "npm:12.0.2"
     "@tanstack/react-query": "npm:^5.53.3"

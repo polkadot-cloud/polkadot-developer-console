@@ -5,9 +5,9 @@ import { PageWithMenu } from 'routes/Common/PageWithMenu';
 import type { PageSections, RouteSectionProvider } from 'routes/Common/types';
 import { TabMenu } from 'library/TabMenu';
 import {
-  faListTimeline,
-  faRectangleList,
-} from '@fortawesome/pro-duotone-svg-icons';
+  iconListTimeline,
+  iconRectangleList,
+} from '@polkadot-cloud/icons/duotone';
 import { SetupForm } from 'routes/ParachainSetup/SetupForm';
 import { useParaSetup } from 'contexts/ParaSetup';
 import { ParachainContext } from './Provider';
@@ -32,7 +32,7 @@ export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
     0: {
       label: 'Setup Form',
-      icon: faRectangleList,
+      icon: iconRectangleList,
       Component: SetupForm,
       pageWidth: 'wide',
     },
@@ -41,7 +41,7 @@ export const useRouteSections = (): RouteSectionProvider => {
   if (balancesPaleltExists) {
     sections[1] = {
       label: 'Accounts',
-      icon: faListTimeline,
+      icon: iconListTimeline,
       Component: Accounts,
       pageWidth: 'wide',
     };

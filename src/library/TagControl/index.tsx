@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { CloudIcon } from '@polkadot-cloud/icons';
 import { TagControlWrapper } from './Wrapper';
 import type { TagControlProps } from './types';
 
@@ -16,9 +16,9 @@ export const TagControl = ({
     className={`${large ? 'large' : ``}${light ? 'light' : ``}`}
     onClick={(ev) => onClick(ev)}
   >
-    {icon && (
-      <FontAwesomeIcon icon={icon} transform="shrink-1" className="icon" />
-    )}
+    {icon ? (
+      <CloudIcon icon={icon} transform="shrink-1" className="icon" />
+    ) : null}
     {name}
   </TagControlWrapper>
 );

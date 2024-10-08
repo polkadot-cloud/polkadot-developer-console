@@ -21,7 +21,8 @@ import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useChain } from '../Provider';
 import { Pinned } from './Pinned';
 import { useOverlay } from 'library/Overlay/Provider';
-import { faListTree } from '@fortawesome/pro-duotone-svg-icons';
+import { iconListTree } from '@polkadot-cloud/icons/duotone';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const Overview = () => {
   const { tabId, ownerId } = useActiveTab();
@@ -142,8 +143,8 @@ export const Overview = () => {
                   })
                 }
               >
-                <FontAwesomeIcon
-                  icon={faListTree}
+                <CloudIcon
+                  icon={iconListTree}
                   transform="shrink-3"
                   className="icon"
                 />

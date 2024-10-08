@@ -10,17 +10,17 @@ import { useMenu } from 'contexts/Menu';
 import { ConfigTagMenu } from './TagsMenu/ConfigTagMenu';
 import type { TagId } from 'contexts/Tags/types';
 import { type DirectoryId } from 'config/networks/types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
 import {
-  faArrowRightFromLine,
-  faHashtag,
-  faPlus,
-} from '@fortawesome/pro-duotone-svg-icons';
+  iconPlus,
+  iconArrowRightFromLine,
+  iconHashtag,
+} from '@polkadot-cloud/icons/duotone';
 import { useChainExplorer } from 'contexts/ChainExplorer';
 import { getChainInitial, getRelayChain } from 'config/networks/Utils';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export interface ChainDirectoryItemProps {
   chainId: DirectoryId;
@@ -123,8 +123,8 @@ export const ChainDirectoryItem = ({
             }}
           >
             Connect
-            <FontAwesomeIcon
-              icon={faArrowRightFromLine}
+            <CloudIcon
+              icon={iconArrowRightFromLine}
               transform="grow-0"
               className="iconRight"
             />
@@ -134,7 +134,7 @@ export const ChainDirectoryItem = ({
 
       <div className="body">
         <h5>
-          <FontAwesomeIcon icon={faHashtag} transform="shrink-2" />
+          <CloudIcon icon={iconHashtag} transform="shrink-2" />
           {chainId}
         </h5>
       </div>
@@ -149,7 +149,7 @@ export const ChainDirectoryItem = ({
           <TagControl
             light
             name={'Add'}
-            icon={faPlus}
+            icon={iconPlus}
             onClick={(ev) => {
               openMenu(
                 ev,

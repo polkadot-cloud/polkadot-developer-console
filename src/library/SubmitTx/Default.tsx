@@ -7,11 +7,12 @@ import type { SubmitProps } from './types';
 import { ButtonSubmitLarge } from './ButtonSubmitLarge';
 import { appendOrEmpty } from '@w3ux/utils';
 import { EstimatedTxFee } from 'library/Tx/EstimatedTxFee';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowAltCircleUp } from '@fortawesome/pro-duotone-svg-icons';
+import { iconArrowAltCircleUp } from '@polkadot-cloud/icons/duotone';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { useExtrinsicData } from './ExtrinsicDataProvider';
+import { CloudIcon } from '@polkadot-cloud/icons';
+import { faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
 
 export const Default = ({
   onSubmit,
@@ -42,8 +43,8 @@ export const Default = ({
           {displayFor !== 'card' && (
             <ButtonText onClick={() => onSubmit()} disabled={disabled}>
               {submitText || ''}
-              <FontAwesomeIcon
-                icon={faArrowAltCircleUp}
+              <CloudIcon
+                icon={iconArrowAltCircleUp}
                 transform="grow-2"
                 className="iconRight"
               />

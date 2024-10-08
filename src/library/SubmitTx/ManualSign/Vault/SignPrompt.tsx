@@ -1,14 +1,13 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { useTxMeta } from 'contexts/TxMeta';
 import { QrDisplayPayload } from 'library/QRCode/DisplayPayload';
 import { QrScanSignature } from 'library/QRCode/ScanSignature';
 import type { SignerPromptProps } from 'library/SubmitTx/types';
 import type { AnyJson } from '@w3ux/types';
-import { faChevronRight } from '@fortawesome/pro-duotone-svg-icons';
+import { iconChevronRight } from '@polkadot-cloud/icons/duotone';
 import {
   iconChevronsLeft,
   iconChevronsRight,
@@ -38,8 +37,8 @@ export const SignPrompt = ({
 
       <div className="progress">
         <span className={stage === 1 ? 'active' : undefined}>Scan</span>
-        <FontAwesomeIcon
-          icon={faChevronRight}
+        <CloudIcon
+          icon={iconChevronRight}
           transform="shrink-4"
           className="arrow"
         />

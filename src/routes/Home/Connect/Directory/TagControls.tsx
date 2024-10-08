@@ -8,8 +8,7 @@ import { useMenu } from 'contexts/Menu';
 import { FilterTagMenu } from './TagsMenu/FilterTagMenu';
 import type { TagId } from 'contexts/Tags/types';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { faPlus } from '@fortawesome/pro-duotone-svg-icons';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { iconPlus, iconTimes } from '@polkadot-cloud/icons/duotone';
 
 export const TagControls = () => {
   const { openMenu } = useMenu();
@@ -37,7 +36,7 @@ export const TagControls = () => {
         <h5>Tags</h5>
         <TagControl
           name="Add"
-          icon={faPlus}
+          icon={iconPlus}
           onClick={(ev) =>
             openMenu(ev, <FilterTagMenu onSelect={handleOnSelect} />)
           }
@@ -50,7 +49,7 @@ export const TagControls = () => {
             <TagControl
               key={`applied_tag_${tagId}`}
               name={name}
-              icon={faClose}
+              icon={iconTimes}
               large
               onClick={() => removeAppliedTag(tabId, tagId)}
             />

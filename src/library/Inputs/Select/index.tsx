@@ -13,7 +13,8 @@ import {
 } from 'library/Inputs/Wrappers';
 import type { SelectProps } from './types';
 import { Icon } from './Icon';
-import { faCheck } from '@fortawesome/pro-duotone-svg-icons';
+import { iconCheck } from '@polkadot-cloud/icons/duotone';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const Select = ({
   values,
@@ -70,10 +71,11 @@ export const Select = ({
           <SelectTextWrapper>{currentValue || `No Values`}</SelectTextWrapper>
         </span>
         <span>
-          <FontAwesomeIcon
-            icon={disabled ? faCheck : faChevronDown}
-            transform="shrink-4"
-          />
+          {disabled ? (
+            <CloudIcon icon={iconCheck} transform="shrink-4" />
+          ) : (
+            <FontAwesomeIcon icon={faChevronDown} transform="shrink-4" />
+          )}
         </span>
       </SelectItemWrapper>
 

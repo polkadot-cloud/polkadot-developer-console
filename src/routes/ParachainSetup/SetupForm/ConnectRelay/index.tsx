@@ -5,7 +5,7 @@ import { NetworkDirectory } from 'config/networks';
 import { Select } from 'library/Inputs/Select';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeftToBracket } from '@fortawesome/pro-duotone-svg-icons';
+import { iconArrowLeftToBracket } from '@polkadot-cloud/icons/duotone';
 import { FormWrapper } from 'routes/Home/Wrappers';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useParaSetup } from 'contexts/ParaSetup';
@@ -14,6 +14,7 @@ import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { useParachain } from 'routes/ParachainSetup/Provider';
 import { SetupNote } from '../Wrappers';
 import { useDisconnectTab } from 'contexts/DisconnectTab';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const ConnectRelay = () => {
   const { tabId, ownerId } = useActiveTab();
@@ -89,7 +90,7 @@ export const ConnectRelay = () => {
           }}
         >
           <>
-            <FontAwesomeIcon icon={faArrowLeftToBracket} className="iconLeft" />
+            <CloudIcon icon={iconArrowLeftToBracket} className="iconLeft" />
             {apiValid ? 'Disconnect & Cancel Setup' : 'Cancel Connect'}
           </>
         </ButtonText>
