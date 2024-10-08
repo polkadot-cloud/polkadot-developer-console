@@ -4,9 +4,6 @@ on:
   push:
     branches: [main]
 
-env:
-  FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
-
 jobs:
   merge:
     runs-on: ubuntu-latest

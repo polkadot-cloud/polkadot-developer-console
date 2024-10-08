@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
-
 jobs:
   check-license:
     runs-on: ubuntu-latest
