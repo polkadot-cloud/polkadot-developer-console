@@ -12,7 +12,6 @@ import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { useExtrinsicData } from './ExtrinsicDataProvider';
 import { CloudIcon } from '@polkadot-cloud/icons';
-import { faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
 
 export const Default = ({
   onSubmit,
@@ -58,7 +57,7 @@ export const Default = ({
           disabled={disabled}
           onSubmit={onSubmit}
           submitText={submitText || ''}
-          icon={faArrowAltCircleUp}
+          icon={iconArrowAltCircleUp}
           pulse={!disabled}
         />
       )}

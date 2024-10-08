@@ -13,13 +13,14 @@ import type {
   ChainStateConstants,
   ChainStateSubscriptions,
 } from 'contexts/ChainState/types';
-import { iconDiagramSubtask } from '@polkadot-cloud/icons/duotone';
+import {
+  iconDiagramSubtask,
+  iconFilterList,
+} from '@polkadot-cloud/icons/duotone';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useTabs } from 'contexts/Tabs';
 import { CloudIcon } from '@polkadot-cloud/icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilterList } from '@fortawesome/pro-duotone-svg-icons';
 
 export const Results = ({
   storageType,
@@ -101,7 +102,7 @@ export const Results = ({
             }}
           >
             {filtered ? `${getStorageTypeLabel()} Only` : 'Filter'}
-            <FontAwesomeIcon icon={faFilterList} />
+            <CloudIcon icon={iconFilterList} />
           </button>
         )}
       </FilterWrapper>
