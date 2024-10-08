@@ -12,6 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v4
+        with:
+          cache: 'yarn'
       - name: Check License Lines
         uses: kt3k/license_checker@v1.0.6
 
@@ -22,6 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v4
+        with:
+          cache: 'yarn'
       - name: Check Markdown Links
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
@@ -40,6 +44,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
+          cache: 'yarn'
           node-version: ${{ matrix.node-version }}
       - run: yarn install
       - run: yarn test
