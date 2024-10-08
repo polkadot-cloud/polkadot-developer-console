@@ -21,7 +21,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@ledgerhq/hw-transport-webhid": "^6.29.2",
-    "@polkadot-cloud/icons": "1.0.0-alpha.30",
+    "@polkadot-cloud/icons": "1.0.0",
     "@polkadot/api": "^12.0.2",
     "@polkadot/rpc-provider": "12.0.2",
     "@tanstack/react-query": "^5.53.3",
