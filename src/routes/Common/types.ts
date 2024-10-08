@@ -3,14 +3,14 @@
 
 import type { FC } from 'react';
 import type { PageWidth } from './PageWithMenu/types';
-import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 import type { AnyFunction, AnyJson } from '@w3ux/types';
+import type { IconProps } from '@polkadot-cloud/icons';
 
 export type PageSections = Record<
   number,
   {
     label: string;
-    icon?: IconProp;
+    icon?: FC<IconProps>;
     Component: FC;
     pageWidth?: PageWidth;
   }

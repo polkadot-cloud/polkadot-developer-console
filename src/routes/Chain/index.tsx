@@ -10,11 +10,11 @@ import { TabMenu } from 'library/TabMenu';
 import { Accounts } from './Accounts';
 import { useActiveTab } from 'contexts/ActiveTab';
 import {
-  faDiagramSubtask,
-  faInboxOut,
-  faListTimeline,
-  faTableLayout,
-} from '@fortawesome/pro-duotone-svg-icons';
+  iconDiagramSubtask,
+  iconInboxOut,
+  iconListTimeline,
+  iconTableLayout,
+} from '@polkadot-cloud/icons/duotone';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useApiIndexer } from 'contexts/ApiIndexer';
 import { useChainExplorer } from 'contexts/ChainExplorer';
@@ -35,19 +35,19 @@ export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
     0: {
       label: 'Overview',
-      icon: faTableLayout,
+      icon: iconTableLayout,
       Component: Overview,
       pageWidth: 'wide',
     },
     1: {
       label: 'Chain State',
-      icon: faDiagramSubtask,
+      icon: iconDiagramSubtask,
       Component: ChainState,
       pageWidth: 'wide',
     },
     2: {
       label: 'Extrinsics',
-      icon: faInboxOut,
+      icon: iconInboxOut,
       Component: Extrinsics,
       pageWidth: 'wide',
     },
@@ -56,7 +56,7 @@ export const useRouteSections = (): RouteSectionProvider => {
   if (balancesPaleltExists) {
     sections[3] = {
       label: 'Accounts',
-      icon: faListTimeline,
+      icon: iconListTimeline,
       Component: Accounts,
       pageWidth: 'wide',
     };

@@ -12,7 +12,7 @@ import BigNumber from 'bignumber.js';
 import { ButtonIcon } from 'library/Buttons/ButtonIcon';
 import { AccountWrapper } from './Wrappers';
 import { ButtonIconCircle } from 'library/Buttons/ButtonIconCircle';
-import { faBars, faPaperPlane } from '@fortawesome/pro-solid-svg-icons';
+import { iconBars, iconPaperPlane } from '@polkadot-cloud/icons/solid';
 import { useOverlay } from 'library/Overlay/Provider';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useChain } from 'routes/Chain/Provider';
@@ -65,8 +65,8 @@ export const Account = ({
             <div className="menu">
               <ButtonIconCircle
                 id={`account_transfer_${address}`}
-                icon={faPaperPlane}
-                transform="shrink-4"
+                icon={iconPaperPlane}
+                transform="shrink-3"
                 tooltipText="Transfer Funds"
                 onClick={() => {
                   openModal({
@@ -87,8 +87,8 @@ export const Account = ({
               />
               <ButtonIconCircle
                 id={`account_menu_${address}`}
-                icon={faBars}
-                transform="shrink-5"
+                icon={iconBars}
+                transform="shrink-3"
                 tooltipText="More Options"
                 onClick={(ev) => {
                   openMenu(

@@ -1,21 +1,21 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { useTxMeta } from 'contexts/TxMeta';
 import { QrDisplayPayload } from 'library/QRCode/DisplayPayload';
 import { QrScanSignature } from 'library/QRCode/ScanSignature';
 import type { SignerPromptProps } from 'library/SubmitTx/types';
 import type { AnyJson } from '@w3ux/types';
-import { faChevronRight } from '@fortawesome/pro-duotone-svg-icons';
+import { iconChevronRight } from '@polkadot-cloud/icons/duotone';
 import {
-  faChevronsLeft,
-  faChevronsRight,
-} from '@fortawesome/pro-solid-svg-icons';
+  iconChevronsLeft,
+  iconChevronsRight,
+} from '@polkadot-cloud/icons/solid';
 import { QRViewerWrapper } from 'library/QRCode/Wrappers';
 import { usePrompt } from 'contexts/Prompt';
 import { ButtonText } from 'library/Buttons/ButtonText';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const SignPrompt = ({
   submitAddress,
@@ -37,8 +37,8 @@ export const SignPrompt = ({
 
       <div className="progress">
         <span className={stage === 1 ? 'active' : undefined}>Scan</span>
-        <FontAwesomeIcon
-          icon={faChevronRight}
+        <CloudIcon
+          icon={iconChevronRight}
           transform="shrink-4"
           className="arrow"
         />
@@ -70,7 +70,7 @@ export const SignPrompt = ({
         <div>
           {stage === 2 && (
             <ButtonText onClick={() => setStage(1)}>
-              <FontAwesomeIcon icon={faChevronsLeft} transform="shrink-3" />
+              <CloudIcon icon={iconChevronsRight} transform="shrink-3" />
               Back to Scan
             </ButtonText>
           )}
@@ -81,7 +81,7 @@ export const SignPrompt = ({
               }}
             >
               I Have Scanned
-              <FontAwesomeIcon icon={faChevronsRight} transform="shrink-5" />
+              <CloudIcon icon={iconChevronsLeft} transform="shrink-3" />
             </ButtonText>
           )}
           <button type="button" onClick={() => closePrompt()}>

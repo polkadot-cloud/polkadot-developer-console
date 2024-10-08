@@ -5,11 +5,11 @@ import { useActiveTab } from 'contexts/ActiveTab';
 import { SearchWrapper } from '../Wrappers';
 import type { SearchInputProps } from './types';
 import { useChainUi } from 'contexts/ChainUi';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faWandSparkles,
-  faDeleteLeft,
-} from '@fortawesome/pro-duotone-svg-icons';
+  iconWandSparkles,
+  iconDeleteLeft,
+} from '@polkadot-cloud/icons/duotone';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const SearchInput = ({
   inputRef,
@@ -94,7 +94,7 @@ export const SearchInput = ({
             }
           }}
         >
-          <FontAwesomeIcon icon={faDeleteLeft} transform="grow-1" />
+          <CloudIcon icon={iconDeleteLeft} transform="grow-1" />
         </button>
       </div>
       {isChainUi && (
@@ -109,7 +109,7 @@ export const SearchInput = ({
             );
           }}
         >
-          <FontAwesomeIcon icon={faWandSparkles} transform="shrink-3" />
+          <CloudIcon icon={iconWandSparkles} transform="shrink-3" />
         </button>
       )}
     </SearchWrapper>

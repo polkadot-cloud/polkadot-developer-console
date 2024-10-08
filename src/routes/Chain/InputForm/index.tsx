@@ -4,12 +4,12 @@
 import { Fragment } from 'react/jsx-runtime';
 import { InputFormWrapper } from '../Wrappers';
 import { ButtonText } from 'library/Buttons/ButtonText';
-import { faCircleRight } from '@fortawesome/pro-duotone-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { iconCircleRight } from '@polkadot-cloud/icons/duotone';
 import { useInputForm } from './provider';
 import type { InputFormInnerProps } from './types';
 import { useInput } from '../Inputs/useInput';
 import type { ScrapedItem } from 'model/Scraper/types';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const InputForm = ({
   activePallet,
@@ -57,8 +57,8 @@ export const InputForm = ({
         <section className="footer">
           <ButtonText onClick={() => handleSubmit(onSubmit)}>
             Submit
-            <FontAwesomeIcon
-              icon={faCircleRight}
+            <CloudIcon
+              icon={iconCircleRight}
               transform="shrink-1"
               className="iconRight"
             />

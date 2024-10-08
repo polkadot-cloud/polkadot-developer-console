@@ -13,8 +13,8 @@ import { ButtonWithTooltip } from '../ButtonWithTooltip';
 import type { RouteSectionProvider } from 'routes/Common/types';
 import { useTooltip } from 'contexts/Tooltip';
 import { useActiveTab } from 'contexts/ActiveTab';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSettings } from 'contexts/Settings';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
   const { pathname } = useLocation();
@@ -40,7 +40,7 @@ export const TabMenu = ({ label, sections }: RouteSectionProvider) => {
               className={activePage === Number(key) ? 'active' : undefined}
             >
               {section?.icon && (
-                <FontAwesomeIcon icon={section.icon} className="icon" />
+                <CloudIcon icon={section.icon} className="icon" />
               )}
               {section.label}
             </button>

@@ -4,8 +4,8 @@
 import { FormWrapper } from 'routes/Home/Wrappers';
 import { Prompt } from '../Prompt';
 import { ParaIdOptionsWrapper } from '../ReserveParaId/Wrappers';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExternalLink } from '@fortawesome/pro-regular-svg-icons';
+import { CloudIcon } from '@polkadot-cloud/icons';
+import { iconExternalLink } from '@polkadot-cloud/icons/regular';
 
 export const GetCoretime = () => (
   <FormWrapper>
@@ -35,7 +35,7 @@ export const GetCoretime = () => (
               <span>
                 <h4>
                   https://www.lastic.xyz{' '}
-                  <FontAwesomeIcon icon={faExternalLink} transform="shrink-4" />
+                  <CloudIcon icon={iconExternalLink} transform="shrink-2" />
                 </h4>
               </span>
               <span></span>
@@ -56,7 +56,7 @@ export const GetCoretime = () => (
               <span>
                 <h4>
                   https://app.regionx.tech{' '}
-                  <FontAwesomeIcon icon={faExternalLink} transform="shrink-4" />
+                  <CloudIcon icon={iconExternalLink} transform="shrink-2" />
                 </h4>
               </span>
               <span></span>

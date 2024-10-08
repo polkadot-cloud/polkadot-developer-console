@@ -17,17 +17,17 @@ import { ChainSearchInput } from './ChainSearchInput';
 import type { ManageHardwareProps } from './types';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { ImportButtonWrapper, SubHeadingWrapper } from './Wrappers';
-import { faUsbDrive } from '@fortawesome/pro-duotone-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { CloudIcon } from '@polkadot-cloud/icons';
 import { LedgerChains } from 'contexts/LedgerHardware/defaults';
 import { useLedgerHardware } from 'contexts/LedgerHardware';
 import type { LedgerResponse } from 'contexts/LedgerHardware/types';
+import { iconUsbDrive } from '@polkadot-cloud/icons/duotone';
 import {
   getLedgerApp,
   getLocalLedgerAddresses,
 } from 'contexts/LedgerHardware/Utils';
-import { faSquareMinus } from '@fortawesome/pro-solid-svg-icons';
 import type { AnyJson } from '@w3ux/types';
+import { iconSquareMinus } from '@polkadot-cloud/icons/solid';
 
 export const ManageLedger = ({
   getMotionProps,
@@ -259,8 +259,8 @@ export const ManageLedger = ({
                   }
                 }}
               >
-                <FontAwesomeIcon
-                  icon={faSquareMinus}
+                <CloudIcon
+                  icon={iconSquareMinus}
                   style={{ marginRight: '0.4rem' }}
                 />
                 Reset
@@ -275,8 +275,8 @@ export const ManageLedger = ({
                 }
               }}
             >
-              <FontAwesomeIcon
-                icon={faUsbDrive}
+              <CloudIcon
+                icon={iconUsbDrive}
                 style={{ marginRight: '0.4rem' }}
               />
 

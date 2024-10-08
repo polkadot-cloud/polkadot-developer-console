@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import { FormWrapper } from 'routes/Home/Wrappers';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExternalLinkAlt } from '@fortawesome/pro-solid-svg-icons';
+import { CloudIcon } from '@polkadot-cloud/icons';
+import { iconExternalLink } from '@polkadot-cloud/icons/regular';
 import { useReserveParaId } from 'contexts/ParaSetup/ReserveParaId';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
@@ -101,7 +101,7 @@ export const RegisterParathread = () => {
               target="_blank"
             >
               Acquire a testnet slot{' '}
-              <FontAwesomeIcon icon={faExternalLinkAlt} transform="shrink-3" />
+              <CloudIcon icon={iconExternalLink} transform="shrink-3" />
             </a>
             .
           </h4>

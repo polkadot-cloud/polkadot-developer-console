@@ -4,15 +4,15 @@
 import { Suspense, lazy, useMemo } from 'react';
 import { useMenu } from 'contexts/Menu';
 import type { DirectoryId } from 'config/networks/types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ButtonText } from 'library/Buttons/ButtonText';
 import { ConnectContextMenu } from 'library/ConnectContextMenu';
 import {
-  faArrowRightFromLine,
-  faHashtag,
-} from '@fortawesome/pro-duotone-svg-icons';
+  iconArrowRightFromLine,
+  iconHashtag,
+} from '@polkadot-cloud/icons/duotone';
 import { ChainItemWrapper } from '../Connect/Wrappers';
 import { getIconFilename } from 'config/networks/Utils';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export interface ChainItemProps {
   chainId: DirectoryId;
@@ -68,8 +68,8 @@ export const ChainItem = ({ chainId, name, onSelect }: ChainItemProps) => {
             }}
           >
             Connect
-            <FontAwesomeIcon
-              icon={faArrowRightFromLine}
+            <CloudIcon
+              icon={iconArrowRightFromLine}
               transform="grow-0"
               className="iconRight"
             />
@@ -79,7 +79,7 @@ export const ChainItem = ({ chainId, name, onSelect }: ChainItemProps) => {
 
       <div className="body">
         <h5>
-          <FontAwesomeIcon icon={faHashtag} transform="shrink-2" />
+          <CloudIcon icon={iconHashtag} transform="shrink-2" />
           {chainId}
         </h5>
       </div>

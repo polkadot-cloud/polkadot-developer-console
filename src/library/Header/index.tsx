@@ -8,8 +8,9 @@ import { useGlitch } from 'react-powerglitch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { DiscussionsUrl, DocsUrl, GithubRepoUrl } from 'consts';
-import { faFileDoc, faMessages } from '@fortawesome/pro-solid-svg-icons';
+import { iconFileDoc, iconMessages } from '@polkadot-cloud/icons/solid';
 import LogoSVG from 'svg/Logo.svg?react';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const Header = () => {
   const glitch = useGlitch({
@@ -48,11 +49,11 @@ export const Header = () => {
       </div>
       <div>
         <button type="button" onClick={() => window.open(DocsUrl)}>
-          <FontAwesomeIcon icon={faFileDoc} transform="grow-2" />
+          <CloudIcon icon={iconFileDoc} transform="grow-2" />
         </button>
 
         <button type="button" onClick={() => window.open(DiscussionsUrl)}>
-          <FontAwesomeIcon icon={faMessages} transform="shrink-0" />
+          <CloudIcon icon={iconMessages} transform="shrink-0" />
         </button>
 
         <button type="button" onClick={() => window.open(GithubRepoUrl)}>

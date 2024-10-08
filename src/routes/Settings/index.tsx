@@ -6,10 +6,10 @@ import { TabSettings } from './TabSettings';
 import { TagSettings } from './TagSettings';
 import type { PageSections, RouteSectionProvider } from 'routes/Common/types';
 import {
-  faBrowsers,
-  faRectangleHistory,
-  faTags,
-} from '@fortawesome/pro-duotone-svg-icons';
+  iconBrowsers,
+  iconRectangleHistory,
+  iconTags,
+} from '@polkadot-cloud/icons/duotone';
 import { useSettings } from 'contexts/Settings';
 import { StickyMenu } from 'routes/Common/Wrappers';
 import { SettingsMenu } from './Menu';
@@ -21,17 +21,17 @@ export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
     0: {
       label: 'Tabs',
-      icon: faRectangleHistory,
+      icon: iconRectangleHistory,
       Component: TabSettings,
     },
     1: {
       label: 'Tags',
-      icon: faTags,
+      icon: iconTags,
       Component: TagSettings,
     },
     2: {
       label: 'Workspace',
-      icon: faBrowsers,
+      icon: iconBrowsers,
       Component: WorkspaceSettings,
     },
   };
