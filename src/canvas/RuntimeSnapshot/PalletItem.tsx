@@ -4,15 +4,16 @@
 import { motion } from 'framer-motion';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { CanvasSubheading, RuntimeItemWrapper } from 'canvas/Wrappers';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { PalletItemScraped } from 'model/Scraper/types';
 import { Fragment, useRef, useState } from 'react';
-import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
+import { CloudIcon } from '@polkadot-cloud/icons';
+import { iconChevronDown } from '@polkadot-cloud/icons/solid';
 import type { Sync } from '@w3ux/types';
 import { EmptyItem } from './EmptyItem';
 import { getMotionProps } from './Utils';
 import type { PalletItemProps } from './types';
 import { Subheading } from './Subheading';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
   const { name } = pallet;
@@ -114,10 +115,11 @@ export const PalletItem = ({ pallet, scraper }: PalletItemProps) => {
     <>
       <CanvasSubheading>
         <span>
-          <FontAwesomeIcon
-            icon={palletExpanded ? faChevronDown : faChevronRight}
-            transform="shrink-6"
-          />
+          {palletExpanded ? (
+            <CloudIcon icon={iconChevronDown} transform="shrink-6" />
+          ) : (
+            <FontAwesomeIcon icon={faChevronRight} transform="shrink-6" />
+          )}
         </span>
         <button
           type="button"

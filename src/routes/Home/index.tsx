@@ -7,20 +7,20 @@ import { TabMenu } from 'library/TabMenu';
 import { Connect } from './Connect';
 import { Parachain } from './Parachain';
 import {
-  faLayerPlus,
-  faPlugCircleBolt,
-} from '@fortawesome/pro-duotone-svg-icons';
+  iconLayerPlus,
+  iconPlugCircleBolt,
+} from '@polkadot-cloud/icons/duotone';
 
 export const useRouteSections = (): RouteSectionProvider => {
   const sections: PageSections = {
     0: {
       label: 'Connect',
-      icon: faPlugCircleBolt,
+      icon: iconPlugCircleBolt,
       Component: Connect,
     },
     1: {
       label: 'New Parachain',
-      icon: faLayerPlus,
+      icon: iconLayerPlus,
       Component: Parachain,
     },
     // Coretime tab is disabled until more iterations are made with chain spaces.

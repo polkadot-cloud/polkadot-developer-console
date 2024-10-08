@@ -13,14 +13,14 @@ import type {
   ChainStateConstants,
   ChainStateSubscriptions,
 } from 'contexts/ChainState/types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faDiagramSubtask,
-  faFilterList,
-} from '@fortawesome/pro-duotone-svg-icons';
+  iconDiagramSubtask,
+  iconFilterList,
+} from '@polkadot-cloud/icons/duotone';
 import { useChainUi } from 'contexts/ChainUi';
 import { useActiveTab } from 'contexts/ActiveTab';
 import { useTabs } from 'contexts/Tabs';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const Results = ({
   storageType,
@@ -102,7 +102,7 @@ export const Results = ({
             }}
           >
             {filtered ? `${getStorageTypeLabel()} Only` : 'Filter'}
-            <FontAwesomeIcon icon={faFilterList} />
+            <CloudIcon icon={iconFilterList} />
           </button>
         )}
       </FilterWrapper>
@@ -116,7 +116,7 @@ export const Results = ({
                 type="button"
                 onClick={() => setTabActivePage(tabId, 'default', 1)}
               >
-                <FontAwesomeIcon icon={faDiagramSubtask} transform="shrink-2" />
+                <CloudIcon icon={iconDiagramSubtask} transform="shrink-2" />
                 Chain State
               </button>{' '}
               to query and pin chain state items.

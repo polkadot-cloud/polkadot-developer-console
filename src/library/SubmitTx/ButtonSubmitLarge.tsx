@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import type { ButtonSubmitLargeProps } from './types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { CloudIcon } from '@polkadot-cloud/icons';
 import { appendOrEmpty } from '@w3ux/utils';
 import { CallToActionWrapper } from 'library/CallToAction';
 
@@ -27,10 +27,7 @@ export const ButtonSubmitLarge = ({
               disabled={disabled}
             >
               {icon && (
-                <FontAwesomeIcon
-                  icon={icon}
-                  transform={iconTransform || undefined}
-                />
+                <CloudIcon icon={icon} transform={iconTransform || undefined} />
               )}
               {submitText}
             </button>

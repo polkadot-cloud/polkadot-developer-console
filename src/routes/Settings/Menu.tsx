@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { accentColors } from 'styles/accents/developer-console';
 import type { RouteSectionProvider } from 'routes/Common/types';
 import { useSettings } from 'contexts/Settings';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export const SettingsMenu = ({ label, sections }: RouteSectionProvider) => {
               onClick={() => setActivePage(Number(key))}
             >
               {section?.icon && (
-                <FontAwesomeIcon icon={section.icon} className="icon" />
+                <CloudIcon icon={section.icon} className="icon" />
               )}
               {section.label}
             </button>

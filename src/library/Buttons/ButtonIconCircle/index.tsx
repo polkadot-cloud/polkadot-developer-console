@@ -1,25 +1,23 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
-import type { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faClone } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { MouseEvent as ReactMouseEvent, RefObject } from 'react';
+import type { FC, MouseEvent as ReactMouseEvent, RefObject } from 'react';
 import { useRef } from 'react';
 import { Wrapper } from './Wrapper';
 import { useTooltip } from 'contexts/Tooltip';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const ButtonIconCircle = ({
   tooltipText,
   id,
   transform,
   onClick,
-  icon = faClone, // Default icon to clone (most used).
+  icon,
 }: {
   tooltipText?: string;
   transform?: string;
   id: string;
-  icon?: IconProp;
+  icon?: FC;
   onClick: (
     ev: ReactMouseEvent<HTMLElement, MouseEvent>,
     ref: RefObject<HTMLButtonElement>
@@ -42,7 +40,7 @@ export const ButtonIconCircle = ({
         }
       }}
     >
-      <FontAwesomeIcon icon={icon} transform={transform} />
+      {icon && <CloudIcon icon={icon} transform={transform} />}
     </Wrapper>
   );
 };

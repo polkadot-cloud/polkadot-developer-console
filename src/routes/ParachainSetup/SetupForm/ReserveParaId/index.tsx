@@ -6,14 +6,12 @@ import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { FormWrapper } from 'routes/Home/Wrappers';
 import { useParachain } from 'routes/ParachainSetup/Provider';
 import { SetupNote } from '../Wrappers';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
+import { iconCheckCircle, iconCircle } from '@polkadot-cloud/icons/regular';
 import { useEffect } from 'react';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { NextFreeParaId } from 'model/NextFreeParaId';
 import { useActiveTab } from 'contexts/ActiveTab';
 import BigNumber from 'bignumber.js';
-import { faCircle } from '@fortawesome/sharp-regular-svg-icons';
 import { Textbox } from 'library/Inputs/Textbox';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { SubmitTx } from 'library/SubmitTx';
@@ -21,6 +19,7 @@ import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import { useReserveParaId } from 'contexts/ParaSetup/ReserveParaId';
 import type { ReservedParaId } from 'contexts/ParaSetup/ReserveParaId/types';
 import { ParaIdOptionsWrapper } from './Wrappers';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const ReserveParaId = () => {
   const {
@@ -194,10 +193,11 @@ export const ReserveParaId = () => {
                   <h4>{selectedOption === 'new' ? ' Selected' : 'Select'}</h4>
                 </span>
                 <span>
-                  <FontAwesomeIcon
-                    icon={selectedOption === 'new' ? faCheckCircle : faCircle}
-                    transform="grow-2"
-                  />
+                  {selectedOption === 'new' ? (
+                    <CloudIcon icon={iconCheckCircle} transform="grow-2" />
+                  ) : (
+                    <CloudIcon icon={iconCircle} transform="grow-2" />
+                  )}
                 </span>
               </button>
             </div>
@@ -225,12 +225,11 @@ export const ReserveParaId = () => {
                   </h4>
                 </span>
                 <span>
-                  <FontAwesomeIcon
-                    icon={
-                      selectedOption === 'existing' ? faCheckCircle : faCircle
-                    }
-                    transform="grow-2"
-                  />
+                  {selectedOption === 'existing' ? (
+                    <CloudIcon icon={iconCheckCircle} transform="grow-2" />
+                  ) : (
+                    <CloudIcon icon={iconCircle} transform="grow-2" />
+                  )}
                 </span>
               </button>
             </div>
@@ -239,7 +238,7 @@ export const ReserveParaId = () => {
 
         <SetupNote>
           {validateParaId(tabId, selectedAccount) ? (
-            <FontAwesomeIcon icon={faCheckCircle} transform="grow-1" />
+            <CloudIcon icon={iconCheckCircle} transform="grow-1" />
           ) : null}
           {selectedOption === 'existing' ? existingFeedback : newFeedback}
         </SetupNote>

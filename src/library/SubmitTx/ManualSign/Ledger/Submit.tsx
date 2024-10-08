@@ -1,9 +1,8 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
-import { faSquarePen } from '@fortawesome/free-solid-svg-icons';
-import { faCheckCircle } from '@fortawesome/pro-duotone-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { CloudIcon } from '@polkadot-cloud/icons';
+import { iconCheckCircle, iconSquarePen } from '@polkadot-cloud/icons/duotone';
 import type { LedgerAccount } from '@w3ux/react-connect-kit/types';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import { useLedgerHardware } from 'contexts/LedgerHardware';
@@ -76,11 +75,11 @@ export const Submit = ({
         : 'Sign';
 
   // Button icon.
-  const icon = !integrityChecked ? faCheckCircle : faSquarePen;
+  const icon = !integrityChecked ? iconCheckCircle : iconSquarePen;
 
   return displayFor !== 'card' ? (
     <ButtonText onClick={handleOnClick} disabled={disabled}>
-      <FontAwesomeIcon
+      <CloudIcon
         icon={icon}
         transform="grow-2"
         style={{ marginRight: '0.4rem' }}
