@@ -816,15 +816,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/pro-solid-svg-icons@npm:^6.5.2":
-  version: 6.6.0
-  resolution: "@fortawesome/pro-solid-svg-icons@npm:6.6.0::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40fortawesome%2Fpro-solid-svg-icons%2F-%2F6.6.0%2Fpro-solid-svg-icons-6.6.0.tgz"
-  dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:6.6.0"
-  checksum: 10c0/9bdf705e571a963e61023bfaa862ead6d51548a5101f3ae30b4214f8be56e44f3792ca289314321f5cb7843717f0d8e7d4c381d812e772da8f841753010ded7e
-  languageName: node
-  linkType: hard
-
 "@fortawesome/react-fontawesome@npm:^0.2.0":
   version: 0.2.2
   resolution: "@fortawesome/react-fontawesome@npm:0.2.2::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40fortawesome%2Freact-fontawesome%2F-%2F0.2.2%2Freact-fontawesome-0.2.2.tgz"
@@ -1796,10 +1787,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot-cloud/icons@npm:^1.0.0-alpha.22":
-  version: 1.0.0-alpha.22
-  resolution: "@polkadot-cloud/icons@npm:1.0.0-alpha.22"
-  checksum: 10c0/1f943ff9164f3aec95eb35a05eed19bc7d0424dd1af1459d6564d164aa69d4b20b17149039c00e8847195601ab64c91e50d34ee018d0e8ec857e85a5bb0b3f90
+"@polkadot-cloud/icons@npm:1.0.0-alpha.25":
+  version: 1.0.0-alpha.25
+  resolution: "@polkadot-cloud/icons@npm:1.0.0-alpha.25"
+  peerDependencies:
+    react: ^18
+  checksum: 10c0/8845ba01af970147d8e3833f25fa0953a1dcb3119e76fa9547a868262710661bf27f6f8d43eb91e776198aa53156a8444240bbabfae57aa3bc236c3dc8930b46
   languageName: node
   linkType: hard
 
@@ -5481,11 +5474,10 @@ __metadata:
     "@fortawesome/free-brands-svg-icons": "npm:^6.5.2"
     "@fortawesome/free-solid-svg-icons": "npm:^6.5.2"
     "@fortawesome/pro-duotone-svg-icons": "npm:^6.5.2"
-    "@fortawesome/pro-solid-svg-icons": "npm:^6.5.2"
     "@fortawesome/react-fontawesome": "npm:^0.2.0"
     "@fortawesome/sharp-regular-svg-icons": "npm:^6.5.2"
     "@ledgerhq/hw-transport-webhid": "npm:^6.29.2"
-    "@polkadot-cloud/icons": "npm:^1.0.0-alpha.22"
+    "@polkadot-cloud/icons": "npm:1.0.0-alpha.25"
     "@polkadot/api": "npm:^12.0.2"
     "@polkadot/rpc-provider": "npm:12.0.2"
     "@tanstack/react-query": "npm:^5.53.3"

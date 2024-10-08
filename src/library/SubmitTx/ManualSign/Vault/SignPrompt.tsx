@@ -10,12 +10,13 @@ import type { SignerPromptProps } from 'library/SubmitTx/types';
 import type { AnyJson } from '@w3ux/types';
 import { faChevronRight } from '@fortawesome/pro-duotone-svg-icons';
 import {
-  faChevronsLeft,
-  faChevronsRight,
-} from '@fortawesome/pro-solid-svg-icons';
+  iconChevronsLeft,
+  iconChevronsRight,
+} from '@polkadot-cloud/icons/solid';
 import { QRViewerWrapper } from 'library/QRCode/Wrappers';
 import { usePrompt } from 'contexts/Prompt';
 import { ButtonText } from 'library/Buttons/ButtonText';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const SignPrompt = ({
   submitAddress,
@@ -70,7 +71,7 @@ export const SignPrompt = ({
         <div>
           {stage === 2 && (
             <ButtonText onClick={() => setStage(1)}>
-              <FontAwesomeIcon icon={faChevronsLeft} transform="shrink-3" />
+              <CloudIcon icon={iconChevronsRight} transform="shrink-3" />
               Back to Scan
             </ButtonText>
           )}
@@ -81,7 +82,7 @@ export const SignPrompt = ({
               }}
             >
               I Have Scanned
-              <FontAwesomeIcon icon={faChevronsRight} transform="shrink-5" />
+              <CloudIcon icon={iconChevronsLeft} transform="shrink-3" />
             </ButtonText>
           )}
           <button type="button" onClick={() => closePrompt()}>

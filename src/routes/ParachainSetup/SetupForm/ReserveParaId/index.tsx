@@ -7,7 +7,7 @@ import { FormWrapper } from 'routes/Home/Wrappers';
 import { useParachain } from 'routes/ParachainSetup/Provider';
 import { SetupNote } from '../Wrappers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { w3CheckCircle } from '@polkadot-cloud/icons/regular';
+import { iconCheckCircle } from '@polkadot-cloud/icons/regular';
 import { useEffect } from 'react';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { NextFreeParaId } from 'model/NextFreeParaId';
@@ -21,7 +21,7 @@ import { useSubmitExtrinsic } from 'hooks/useSubmitExtrinsic';
 import { useReserveParaId } from 'contexts/ParaSetup/ReserveParaId';
 import type { ReservedParaId } from 'contexts/ParaSetup/ReserveParaId/types';
 import { ParaIdOptionsWrapper } from './Wrappers';
-import { W3Icon } from '@polkadot-cloud/icons';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const ReserveParaId = () => {
   const {
@@ -196,7 +196,7 @@ export const ReserveParaId = () => {
                 </span>
                 <span>
                   {selectedOption === 'new' ? (
-                    <W3Icon icon={w3CheckCircle} transform="grow-2" />
+                    <CloudIcon icon={iconCheckCircle} transform="grow-2" />
                   ) : (
                     <FontAwesomeIcon icon={faCircle} transform="grow-2" />
                   )}
@@ -228,7 +228,7 @@ export const ReserveParaId = () => {
                 </span>
                 <span>
                   {selectedOption === 'existing' ? (
-                    <W3Icon icon={w3CheckCircle} transform="grow-2" />
+                    <CloudIcon icon={iconCheckCircle} transform="grow-2" />
                   ) : (
                     <FontAwesomeIcon icon={faCircle} transform="grow-2" />
                   )}
@@ -240,7 +240,7 @@ export const ReserveParaId = () => {
 
         <SetupNote>
           {validateParaId(tabId, selectedAccount) ? (
-            <W3Icon icon={w3CheckCircle} transform="grow-1" />
+            <CloudIcon icon={iconCheckCircle} transform="grow-1" />
           ) : null}
           {selectedOption === 'existing' ? existingFeedback : newFeedback}
         </SetupNote>

@@ -3,10 +3,10 @@
 
 import { Body } from 'library/Body';
 import { Wrapper } from './Wrapper';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/pro-solid-svg-icons';
+import { iconPlus } from '@polkadot-cloud/icons/solid';
 import { useTabs } from 'contexts/Tabs';
 import HeaderSVG from 'svg/Header.svg?react';
+import { CloudIcon } from '@polkadot-cloud/icons';
 
 export const Splash = () => {
   const { createTab } = useTabs();
@@ -18,8 +18,7 @@ export const Splash = () => {
           <HeaderSVG className="icon" />
           <h2>Get Started with Developer Console</h2>
           <button type="button" onClick={() => createTab()}>
-            <FontAwesomeIcon icon={faPlus} transform="shrink-2" /> Create a New
-            Tab
+            <CloudIcon icon={iconPlus} transform="shrink-2" /> Create a New Tab
           </button>
         </section>
       </Wrapper>
