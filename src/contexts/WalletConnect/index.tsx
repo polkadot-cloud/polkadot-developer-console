@@ -221,6 +221,9 @@ export const WalletConnectProvider = ({
     // Get session from approval.
     const newWcSession = await wcMeta?.approval();
 
+    // Close modal on approval completion.
+    wcModal.current!.closeModal();
+
     // Update session data in provider.
     if (wcProvider.current) {
       wcProvider.current.session = newWcSession;
