@@ -28,6 +28,20 @@
     "unused-imports",
     "react-hooks"
   ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+    "typescript": {
+        "alwaysTryTypes": true,
+        "project": [
+          "tsconfig.json",
+          "packages/*/tsconfig.json"
+        ]
+      }
+    }
+  },
   "rules": {
     // Stylistic
     // ---------
@@ -85,13 +99,5 @@
       }
     ],
     "@typescript-eslint/no-shadow": "error"
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
-    },
-    "import/resolver": {
-      "typescript": {}
-    }
   }
 }
