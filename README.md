@@ -43,5 +43,5 @@ To create a production build of the application, run:
 ```
 yarn build
 ```
-The production-ready files will be generated in the `build` directory.
 
+The production-ready files will be generated in the `build` directory.
