@@ -1,4 +1,7 @@
 *.css
+*.sass
+*.scss
+*.woff2
 *.svg
 *.png
 *.json

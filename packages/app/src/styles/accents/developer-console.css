@@ -1,0 +1,10 @@
+/* @license Copyright 2024 @polkadot-cloud/library authors & contributors
+SPDX-License-Identifier: AGPL-3.0 */
+
+.accent-developer-console {
+  --accent-color-primary-light: #552bbf;
+  --accent-color-primary-dark: #6d39ee;
+
+  --accent-color-secondary-light: rgb(178 60 129); /* #b23c81 */
+  --accent-color-secondary-dark: rgb(178 60 129);
+}

@@ -1,0 +1,20 @@
+/* Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
+SPDX-License-Identifier: AGPL-3.0 */
+
+/* NOTE: This file should be imported in the main library entry file. */
+
+/* Shimmer animation: used for loading states. Can be applied to any element. */
+
+.shimmer {
+  color: grey;
+  display: inline-block;
+  mask: linear-gradient(-60deg, #000 30%, #0005, #000 70%) right/300% 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    -webkit-mask-position: left;
+  }
+}

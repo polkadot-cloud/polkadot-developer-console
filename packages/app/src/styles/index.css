@@ -1,0 +1,120 @@
+/* Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
+SPDX-License-Identifier: AGPL-3.0 */
+
+/* NOTE: This file should be imported in the main library entry file. */
+
+/* Every element conforms to border-box by default. */
+
+html {
+  font-size: 14.5px;
+  @media (min-width: 600px) {
+    font-size: 15.5px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Define default body style and cancel out spacing. */
+
+body {
+  font-family: Inter, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  font-weight: normal;
+  margin: 0;
+}
+
+/* Define default header tag styling. */
+
+h1 {
+  font-family: InterBold, sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.6rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+h2 {
+  font-family: InterBold, sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+h3 {
+  font-family: InterSemiBold, sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+h4 {
+  color: var(--text-color-secondary);
+  font-family: Inter, sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.35rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+h5 {
+  color: var(--text-color-tertiary);
+  font-size: 0.69rem;
+  line-height: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Define default paragraph style. */
+
+p {
+  font-size: 1.04rem;
+  line-height: 1.5rem;
+  margin: 0.75rem 0;
+}
+
+/* Define default anchor style. */
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Define bare-bones button style. */
+
+button {
+  -webkit-tap-highlight-color: transparent;
+  font-family: Inter, sans-serif;
+  font-size: 0.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+/* Define default input style. */
+
+input {
+  font-family: Inter, sans-serif;
+  background: none;
+  border: none;
+}
+
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+/* Define text highlight color */
+
+::selection {
+  background: #dbd3ed;
+}

@@ -1,0 +1,193 @@
+/* Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
+SPDX-License-Identifier: AGPL-3.0 */
+
+.theme-light {
+  --background-default: #f2f2f2;
+  --background-primary: #f6f5f5;
+  --background-invert: #888;
+  --background-tooltip: #222;
+  --background-floating-card: rgb(255 255 255 / 90%);
+  --background-modal: #f4f2f2;
+  --background-canvas-card: rgb(237 237 237 / 100%);
+  --background-canvas-card-secondary: rgb(255 255 255 / 35%);
+  --background-input: #efeeee;
+
+  --border-primary-color: #e4e4e4;
+  --border-secondary-color: #d3d1d1;
+  --border-tertiary-color: #dddcdc;
+
+  --border-gradient: linear-gradient(45deg, #c3c3c3, #e6e6e6);
+
+  --button-primary-background: #efeeee;
+  --button-secondary-background: #e7e5e5;
+  --button-tertiary-background: #e7e7e7;
+  --button-tab-background: #e4e2e2;
+  --button-hover-background: #e2e2e2;
+
+  --tab-active-background: #dfdfdf;
+
+  --status-success-color: green;
+  --status-success-color-transparent: rgb(0 128 0 / 25%);
+  --status-warning-color: #a78a3a;
+  --status-warning-color-transparent: rgb(236 211 125 / 50%);
+  --status-danger-color: #ae2324;
+  --status-danger-color-transparent: rgb(255 0 0 / 25%);
+
+  --text-color-primary: #3f3f3f;
+  --text-color-secondary: #666;
+  --text-color-tertiary: #888;
+  --text-color-invert: #fafafa;
+
+  --modal-background-color: rgb(224 222 222 / 70%);
+
+  --gradient-background: linear-gradient(
+    180deg,
+    #f2f2f2 0%,
+    #f2f2f2 100px,
+    #e6e6e6 80%,
+    #f2eafb 100%
+  );
+  --gradient-tab-fade: linear-gradient(
+    90deg,
+    rgba(242, 242, 242, 0) 0%,
+    rgba(242, 242, 242, 1) 70%,
+    rgba(242, 242, 242, 1) 100%
+  );
+  --gradient-tab-fade-hover: linear-gradient(
+    90deg,
+    rgba(222, 221, 221, 0) 0%,
+    rgba(222, 221, 221, 1) 50%,
+    rgba(228, 226, 226, 1) 100%
+  );
+
+  --shadow-input: 0 2px 4px 1px rgba(0, 0, 0, 0.03);
+
+  --shadow-dropdown: 0 1px 3wpx -2px rgba(0, 0, 0, 0.1);
+
+  --shadow-floating-menu: 0 4px 6px -1px rgba(0, 0, 0, 0.07),
+    0 2px 4px -2px rgba(0, 0, 0, 0.07);
+
+  --shadow-notification: 0 2px 3px -1px rgba(0, 0, 0, 0.05),
+    0 1px 4px -2px rgba(0, 0, 0, 0.05);
+
+  --card-shadow-color: rgb(158 158 158 / 20%);
+  --card-deep-shadow-color: rgb(158 158 158 / 50%);
+  --card-shadow-color-secondary: #e7e7e7;
+
+  --card-shadow: -1px -2px 12px 1px var(--card-shadow-color-secondary),
+    0px 0.5px 1px 0px var(--card-deep-shadow-color),
+    0 3.5px 6px -1px var(--card-shadow-color),
+    0.4px -0.4px 0px 0px var(--card-shadow-color),
+    -0.4px 0px 0px 0px var(--card-shadow-color);
+
+  --card-shadow-secondary: 0px 1px 1px 0px var(--card-shadow-color-secondary),
+    0 0.5px 1px -1px var(--card-shadow-color-secondary),
+    0.4px -0.4px 0px 0px var(--card-shadow-color-secondary),
+    -0.4px 0px 0px 0px var(--card-shadow-color-secondary);
+
+  --accent-color-primary: var(--accent-color-primary-light);
+  --accent-color-secondary: var(--accent-color-secondary-light);
+  --accent-color-tertiary: var(--accent-color-tertiary-light);
+  --accent-color-stroke: var(--accent-color-stroke-light);
+  --accent-color-transparent: var(--accent-color-transparent-light);
+  --accent-color-pending: var(--accent-color-pending-light);
+}
+
+.theme-dark {
+  --background-default: rgb(36 32 36);
+  --background-primary: rgb(41 37 41);
+  --background-invert: #ddd;
+  --background-tooltip: #eee;
+
+  --border-primary-color: rgb(58 52 58);
+  --border-secondary-color: rgb(95 90 95);
+
+  --button-primary-background: rgb(55 50 55);
+  --button-secondary-background: rgb(55 50 55);
+  --button-tertiary-background: rgb(54 49 54);
+  --button-tab-background: rgb(56 51 56);
+  --button-hover-background: rgb(66 61 68);
+
+  --status-success-color: #74da77;
+  --status-success-color-transparent: rgb(0 128 0 / 25%);
+  --status-warning-color: rgb(219 161 0 / 100%);
+  --status-warning-color-transparent: rgb(255 165 0 / 50%);
+  --status-danger-color: #d14445;
+  --status-danger-color-transparent: rgb(255 0 0 / 25%);
+
+  --text-color-primary: #b8b3b9;
+  --text-color-secondary: #938e94;
+  --text-color-tertiary: #817d82;
+  --text-color-invert: #0f0e0f;
+
+  --gradient-background: linear-gradient(
+    180deg,
+    rgb(36 32 36) 0%,
+    rgb(36 32 36) 100px,
+    rgb(32 28 32) 100%
+  );
+
+  /* NOTE: these colors are still light and need to be updated for dark theme. */
+  --background-input: #efeeee;
+
+  --background-floating-card: rgb(43 38 43 / 95%);
+  --background-modal: rgb(43 38 43);
+  --background-canvas-card: rgb(44 40 44 / 90%);
+  --background-canvas-card-secondary: rgb(44 40 44 / 35%);
+
+  --tab-active-background: rgb(56 51 56);
+
+  --border-tertiary-color: rgb(95 90 95);
+
+  --border-gradient: linear-gradient(45deg, #c3c3c3, #e6e6e6);
+
+  --gradient-tab-fade: linear-gradient(
+    90deg,
+    rgba(239, 238, 238, 0) 0%,
+    rgba(239, 238, 238, 1) 70%,
+    rgba(239, 238, 238, 1) 100%
+  );
+
+  --gradient-tab-fade-hover: linear-gradient(
+    90deg,
+    rgba(228, 226, 226, 0) 0%,
+    rgba(228, 226, 226, 1) 50%,
+    rgba(228, 226, 226, 1) 100%
+  );
+
+  --modal-background-color: rgb(22 18 22 / 70%);
+
+  --shadow-input: 0 2px 4px 1px rgba(0, 0, 0, 0.03);
+
+  --shadow-dropdown: 0 1px 4px -2px rgba(0, 0, 0, 0.1);
+
+  --shadow-floating-menu: 0 4px 6px -1px rgba(0, 0, 0, 0.07),
+    0 2px 4px -2px rgba(0, 0, 0, 0.07);
+
+  --shadow-notification: 0 2px 3px -1px rgba(0, 0, 0, 0.05),
+    0 1px 4px -2px rgba(0, 0, 0, 0.05);
+
+  /* --- Update for dark theme end. */
+
+  --card-shadow-color: rgb(28 24 28 / 25%);
+  --card-deep-shadow-color: rgb(28 24 28 / 50%);
+  --card-shadow-color-secondary: rgb(28 24 28 / 25%);
+
+  --card-shadow: -1px -2px 12px 1px var(--card-shadow-color-secondary),
+    0px 0.75px 1px 0px var(--card-deep-shadow-color),
+    0 3.5px 6px -1px var(--card-shadow-color),
+    0.4px -0.4px 0px 0px var(--card-shadow-color),
+    -0.4px 0px 0px 0px var(--card-shadow-color);
+
+  --card-shadow-secondary: 0px 1px 1px 0px var(--card-shadow-color-secondary),
+    0 0.5px 1px -1px var(--card-shadow-color-secondary),
+    0.4px -0.4px 0px 0px var(--card-shadow-color-secondary),
+    -0.4px 0px 0px 0px var(--card-shadow-color-secondary);
+
+  --accent-color-primary: var(--accent-color-primary-dark);
+  --accent-color-secondary: var(--accent-color-secondary-dark);
+  --accent-color-tertiary: var(--accent-color-tertiary-dark);
+  --accent-color-stroke: var(--accent-color-stroke-dark);
+  --accent-color-transparent: var(--accent-color-transparent-dark);
+  --accent-color-pending: var(--accent-color-pending-dark);
+}
