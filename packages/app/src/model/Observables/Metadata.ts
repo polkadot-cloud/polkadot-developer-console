@@ -8,7 +8,7 @@ import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';
 import type { OwnerId } from 'types';
 
-export class ChainSpec implements ObservableGetter {
+export class Metadata implements ObservableGetter {
   // ------------------------------------------------------
   // Class members.
   // ------------------------------------------------------
@@ -43,7 +43,7 @@ export class ChainSpec implements ObservableGetter {
           true
         );
 
-        const observable = client.chainHead$().follow$;
+        const observable = client.chainHead$().metadata$;
 
         // Handle subscription failure.
         const error = async () => {
@@ -57,29 +57,27 @@ export class ChainSpec implements ObservableGetter {
 
         const subscription = observable.subscribe({
           next: async (data: AnyJson) => {
-            if (data?.type === 'initialized') {
-              const {
-                finalizedBlockRuntime: { spec },
-              } = data;
-
-              // Check if this is the correct data to persist, return `null` otherwise.
-              if (
-                !('apis' in spec) ||
-                !('implName' in spec) ||
-                !('implVersion' in spec) ||
-                !('specName' in spec) ||
-                !('specVersion' in spec) ||
-                !('transactionVersion' in spec)
-              ) {
-                reject(null);
-              } else {
-                // Persist chain spec data to class.
-                this.#value = spec;
-              }
-
-              // Call `complete` to stop observable emissions & resolve function.
-              subscription.complete();
+            if (!data) {
+              return;
             }
+            // Check if this is the correct data to persist, return `null` otherwise.
+            if (
+              !('lookup' in data) ||
+              !('pallets' in data) ||
+              !('extrinsic' in data) ||
+              !('type' in data) ||
+              !('apis' in data) ||
+              !('outerEnums' in data) ||
+              !('custom' in data)
+            ) {
+              reject(null);
+            } else {
+              // Persist data to class.
+              this.#value = data;
+            }
+
+            // Call `complete` to stop observable emissions & resolve function.
+            subscription.complete();
           },
           error,
           complete,

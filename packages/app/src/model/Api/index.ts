@@ -26,6 +26,7 @@ import { getObservableClient } from '@polkadot-api/observable-client';
 import { ChainSpec } from 'model/Observables/ChainSpec';
 
 import { getDataFromObservable } from 'model/Observables/util';
+import { Metadata } from 'model/Observables/Metadata';
 
 export class Api {
   // ------------------------------------------------------
@@ -171,15 +172,25 @@ export class Api {
   }
 
   async fetchChainSpec() {
-    const result = await getDataFromObservable(
-      this.#instanceId,
-      'chainSpec',
-      new ChainSpec(this.#ownerId, this.#instanceId)
-    );
+    const [resultChainSpec, resultMetadata] = await Promise.all([
+      // Get chain spec via observable.
+      getDataFromObservable(
+        this.#instanceId,
+        'chainSpec',
+        new ChainSpec(this.#ownerId, this.#instanceId)
+      ),
+      // Get metadata via observable.
+      getDataFromObservable(
+        this.#instanceId,
+        'metadata',
+        new Metadata(this.#ownerId, this.#instanceId)
+      ),
+    ]);
 
-    console.log('Chain Spec: ', result);
+    // Debugging results for now.
+    console.debug('Chain Spec: ', resultChainSpec);
+    console.debug('Metadata', Object.keys(resultMetadata));
 
-    // TODO: Get metadata via observable in the same manner as chainSpec. Promise.all for these.
     // TODO: Get ss58 prefix via constant.
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -206,6 +217,7 @@ export class Api {
       // Also retreive the JSON formatted metadata here for the UI to construct from.
       const metadataPJs = this.api.runtimeMetadata;
       const metadataJson = metadataPJs.asV14.toJSON();
+      console.log(metadataJson);
 
       // Set chainspec and metadata, or dispatch an error and disconnect otherwise.
       if (specVersion && metadataJson) {
