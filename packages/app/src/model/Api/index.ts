@@ -12,6 +12,7 @@ import type {
   ErrDetail,
   ApiInstanceId,
   APIChainSpecEventDetail,
+  PapiObservableClient,
 } from './types';
 import { MetadataController } from 'controllers/Metadata';
 import { SubscriptionsController } from 'controllers/Subscriptions';
@@ -50,7 +51,7 @@ export class Api {
   #papiProvider: JsonRpcProvider;
 
   // PAPI Instance.
-  #papi: AnyJson;
+  #papiClient: PapiObservableClient;
 
   // The current RPC endpoint.
   #rpcEndpoint: string;
@@ -99,8 +100,8 @@ export class Api {
     return this.#papiProvider;
   }
 
-  get papi() {
-    return this.#papi;
+  get papiClient() {
+    return this.#papiClient;
   }
 
   get rpcEndpoint() {
@@ -145,11 +146,16 @@ export class Api {
       this.#api = new ApiPromise({ provider: this.provider });
 
       // Initialize PAPI Client.
-      this.#papi = getObservableClient(createRawClient(this.#papiProvider));
+      this.#papiClient = getObservableClient(
+        createRawClient(this.#papiProvider)
+      );
 
-      // Initialise api events.
+      // NOTE: Unlike Polkadot JS API, observable client does not have an asynchronous
+      // initialization stage that leads to `isReady`. If using observable client, we can
+      // immediately attempt to fetch the chainSpec via the client.
+
+      // Initialise Polkadot JS API events and wait until ready.
       this.initPolkadotJsApiEvents();
-
       await this.#api.isReady;
 
       // Set initialized flag.
@@ -202,14 +208,17 @@ export class Api {
   }
 
   async handleFetchChainData() {
-    // Fetch chain spec. NOTE: This is a one-time fetch. It's currently not possible to update the
-    // chain spec without a refresh.
+    // Fetch chain spec from Polkadot JS API.
+    //
+    // NOTE: This is a one-time fetch. It's currently not possible to update the chain spec without
+    // a refresh.
     if (!this.chainSpec) {
       // Fetch chain spec.
       await this.fetchChainSpec();
       // Fetch chain constants.
       this.fetchConsts();
     }
+
     const detail: APIChainSpecEventDetail = {
       chainSpaceId: this.chainSpaceId,
       ownerId: this.ownerId,
