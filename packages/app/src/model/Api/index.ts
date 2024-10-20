@@ -18,6 +18,10 @@ import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { AnyJson } from '@w3ux/types';
 import BigNumber from 'bignumber.js';
 import type { ChainSpaceId, OwnerId } from 'types';
+import type { JsonRpcProvider } from '@polkadot-api/ws-provider/web';
+import { getWsProvider } from '@polkadot-api/ws-provider/web';
+import { createClient as createRawClient } from '@polkadot-api/substrate-client';
+import { getObservableClient } from '@polkadot-api/observable-client';
 
 export class Api {
   // ------------------------------------------------------
@@ -36,11 +40,17 @@ export class Api {
   // The supplied chain id.
   #chainId: ChainId;
 
-  // API provider.
+  // Polkadot JS API provider.
   #provider: WsProvider;
 
-  // API instance.
+  // Polkadot JS API instance.
   #api: ApiPromise;
+
+  // PAPI Provider.
+  #papiProvider: JsonRpcProvider;
+
+  // PAPI Instance.
+  #papi: AnyJson;
 
   // The current RPC endpoint.
   #rpcEndpoint: string;
@@ -85,6 +95,14 @@ export class Api {
     return this.#api;
   }
 
+  get papiProvider() {
+    return this.#papiProvider;
+  }
+
+  get papi() {
+    return this.#papi;
+  }
+
   get rpcEndpoint() {
     return this.#rpcEndpoint;
   }
@@ -114,17 +132,23 @@ export class Api {
   // Initialize the API.
   async initialize() {
     try {
-      // Initialize provider.
+      // Initialize Polkadot JS API provider.
       this.#provider = new WsProvider(this.#rpcEndpoint);
+
+      // Initialize PAPI provider.
+      this.#papiProvider = getWsProvider(this.#rpcEndpoint);
 
       // Tell UI api is connecting.
       this.dispatchEvent(this.ensureEventStatus('connecting'));
 
-      // Initialise api.
+      // Initialise Polkadot JS API.
       this.#api = new ApiPromise({ provider: this.provider });
 
+      // Initialize PAPI Client.
+      this.#papi = getObservableClient(createRawClient(this.#papiProvider));
+
       // Initialise api events.
-      this.initApiEvents();
+      this.initPolkadotJsApiEvents();
 
       await this.#api.isReady;
 
@@ -227,8 +251,8 @@ export class Api {
   // Event handling.
   // ------------------------------------------------------
 
-  // Set up API event listeners. Relays information to `document` for the UI to handle.
-  async initApiEvents() {
+  // Set up Polkadot JS API event listeners. Relays information to `document` for the UI to handle.
+  async initPolkadotJsApiEvents() {
     this.#api.on('ready', async () => {
       this.dispatchEvent(this.ensureEventStatus('ready'));
       this.handleFetchChainData();
