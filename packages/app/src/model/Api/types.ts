@@ -7,7 +7,8 @@ import type { MetadataVersion } from 'controllers/Metadata/types';
 import type { ChainSpaceId, OwnerId } from 'types';
 
 // TODO: Replace with actual PAPI client interface when available
-export type PapiObservableClient = unknown;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type PapiObservableClient = any;
 
 // An id associated with an api instance. ChainState, ChainSpec, subscriptions, etc. all use this id
 // to associate with an api instance.
@@ -44,7 +45,6 @@ export interface APIChainSpec {
   chain: string | null;
   version: APIChainSpecVersion;
   ss58Prefix: number;
-  magicNumber: number;
   metadata: MetadataVersion | AnyJson; // NOTE: This could be improved, but no significant impact on the app.
   consts: AnyJson;
 }

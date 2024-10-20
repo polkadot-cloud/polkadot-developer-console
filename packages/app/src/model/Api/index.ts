@@ -23,6 +23,10 @@ import type { JsonRpcProvider } from '@polkadot-api/ws-provider/web';
 import { getWsProvider } from '@polkadot-api/ws-provider/web';
 import { createClient as createRawClient } from '@polkadot-api/substrate-client';
 import { getObservableClient } from '@polkadot-api/observable-client';
+import { ChainSpec } from 'model/Observables/ChainSpec';
+
+import { getDataFromObservable } from 'model/Observables/util';
+import { Metadata } from 'model/Observables/Metadata';
 
 export class Api {
   // ------------------------------------------------------
@@ -168,34 +172,59 @@ export class Api {
   }
 
   async fetchChainSpec() {
-    // Fetch chain specs.
+    const [resultChainSpec, resultMetadata] = await Promise.all([
+      // Get chain spec via observable.
+      getDataFromObservable(
+        this.#instanceId,
+        'chainSpec',
+        new ChainSpec(this.#ownerId, this.#instanceId)
+      ),
+      // Get metadata via observable.
+      getDataFromObservable(
+        this.#instanceId,
+        'metadata',
+        new Metadata(this.#ownerId, this.#instanceId)
+      ),
+    ]);
+
+    // Debugging results for now.
+    console.debug('Chain Spec: ', resultChainSpec);
+    console.debug('Metadata', Object.keys(resultMetadata));
+
+    // TODO: Get ss58 prefix via constant.
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newChainSpec = await Promise.all<any>([
+      // NOTE: This info is not available with observable client - manipulate spec name instead?
       this.api.rpc.system.chain(),
       this.api.consts.system.version,
+      // NOTE: This can be read directly from `buildConstant` in the observable client.
       this.api.consts.system.ss58Prefix,
     ]);
 
     // Check that chain values have been fetched before committing to state.
     if (newChainSpec.every((c) => c?.toHuman() !== undefined)) {
       const chain = newChainSpec[0].toString();
+      console.log('chain', chain);
+
       const specVersion =
         newChainSpec[1].toJSON() as unknown as APIChainSpecVersion;
+      console.log('specVersion', specVersion);
+
       const ss58Prefix = Number(newChainSpec[2].toString());
+      console.log('ss58Prefix', ss58Prefix);
 
       // Also retreive the JSON formatted metadata here for the UI to construct from.
       const metadataPJs = this.api.runtimeMetadata;
       const metadataJson = metadataPJs.asV14.toJSON();
+      console.log(metadataJson);
 
       // Set chainspec and metadata, or dispatch an error and disconnect otherwise.
       if (specVersion && metadataJson) {
-        const magicNumber = metadataJson.magicNumber;
-
         this.chainSpec = {
           chain,
           version: specVersion,
           ss58Prefix,
-          magicNumber: magicNumber as number,
           metadata: MetadataController.instantiate(metadataJson),
           consts: {},
         };
