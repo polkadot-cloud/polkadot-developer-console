@@ -1,6 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
+import { getLookupFn } from '@polkadot-api/metadata-builders';
 import type { AnyJson, VoidFn } from '@w3ux/types';
 import { ApiController } from 'controllers/Api';
 import type { ObservableGetter } from 'controllers/Subscriptions/types';
@@ -72,8 +73,9 @@ export class Metadata implements ObservableGetter {
             ) {
               reject(null);
             } else {
-              // Persist data to class.
-              this.#value = data;
+              // Persist data to class. NOTE: Currently not using `LookupEntry`, can explore this
+              // later.
+              this.#value = getLookupFn(data)?.metadata || null;
             }
 
             // Call `complete` to stop observable emissions & resolve function.
