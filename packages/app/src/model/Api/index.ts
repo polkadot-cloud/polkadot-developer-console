@@ -12,12 +12,17 @@ import type {
   ErrDetail,
   ApiInstanceId,
   APIChainSpecEventDetail,
+  PapiObservableClient,
 } from './types';
 import { MetadataController } from 'controllers/Metadata';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { AnyJson } from '@w3ux/types';
 import BigNumber from 'bignumber.js';
 import type { ChainSpaceId, OwnerId } from 'types';
+import type { JsonRpcProvider } from '@polkadot-api/ws-provider/web';
+import { getWsProvider } from '@polkadot-api/ws-provider/web';
+import { createClient as createRawClient } from '@polkadot-api/substrate-client';
+import { getObservableClient } from '@polkadot-api/observable-client';
 
 export class Api {
   // ------------------------------------------------------
@@ -36,11 +41,17 @@ export class Api {
   // The supplied chain id.
   #chainId: ChainId;
 
-  // API provider.
+  // Polkadot JS API provider.
   #provider: WsProvider;
 
-  // API instance.
+  // Polkadot JS API instance.
   #api: ApiPromise;
+
+  // PAPI Provider.
+  #papiProvider: JsonRpcProvider;
+
+  // PAPI Instance.
+  #papiClient: PapiObservableClient;
 
   // The current RPC endpoint.
   #rpcEndpoint: string;
@@ -85,6 +96,14 @@ export class Api {
     return this.#api;
   }
 
+  get papiProvider() {
+    return this.#papiProvider;
+  }
+
+  get papiClient() {
+    return this.#papiClient;
+  }
+
   get rpcEndpoint() {
     return this.#rpcEndpoint;
   }
@@ -114,18 +133,29 @@ export class Api {
   // Initialize the API.
   async initialize() {
     try {
-      // Initialize provider.
+      // Initialize Polkadot JS API provider.
       this.#provider = new WsProvider(this.#rpcEndpoint);
+
+      // Initialize PAPI provider.
+      this.#papiProvider = getWsProvider(this.#rpcEndpoint);
 
       // Tell UI api is connecting.
       this.dispatchEvent(this.ensureEventStatus('connecting'));
 
-      // Initialise api.
+      // Initialise Polkadot JS API.
       this.#api = new ApiPromise({ provider: this.provider });
 
-      // Initialise api events.
-      this.initApiEvents();
+      // Initialize PAPI Client.
+      this.#papiClient = getObservableClient(
+        createRawClient(this.#papiProvider)
+      );
 
+      // NOTE: Unlike Polkadot JS API, observable client does not have an asynchronous
+      // initialization stage that leads to `isReady`. If using observable client, we can
+      // immediately attempt to fetch the chainSpec via the client.
+
+      // Initialise Polkadot JS API events and wait until ready.
+      this.initPolkadotJsApiEvents();
       await this.#api.isReady;
 
       // Set initialized flag.
@@ -178,14 +208,17 @@ export class Api {
   }
 
   async handleFetchChainData() {
-    // Fetch chain spec. NOTE: This is a one-time fetch. It's currently not possible to update the
-    // chain spec without a refresh.
+    // Fetch chain spec from Polkadot JS API.
+    //
+    // NOTE: This is a one-time fetch. It's currently not possible to update the chain spec without
+    // a refresh.
     if (!this.chainSpec) {
       // Fetch chain spec.
       await this.fetchChainSpec();
       // Fetch chain constants.
       this.fetchConsts();
     }
+
     const detail: APIChainSpecEventDetail = {
       chainSpaceId: this.chainSpaceId,
       ownerId: this.ownerId,
@@ -227,8 +260,8 @@ export class Api {
   // Event handling.
   // ------------------------------------------------------
 
-  // Set up API event listeners. Relays information to `document` for the UI to handle.
-  async initApiEvents() {
+  // Set up Polkadot JS API event listeners. Relays information to `document` for the UI to handle.
+  async initPolkadotJsApiEvents() {
     this.#api.on('ready', async () => {
       this.dispatchEvent(this.ensureEventStatus('ready'));
       this.handleFetchChainData();
