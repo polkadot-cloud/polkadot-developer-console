@@ -44,7 +44,6 @@ export interface APIChainSpec {
   chain: string | null;
   version: APIChainSpecVersion;
   ss58Prefix: number;
-  magicNumber: number;
   metadata: MetadataVersion | AnyJson; // NOTE: This could be improved, but no significant impact on the app.
   consts: AnyJson;
 }

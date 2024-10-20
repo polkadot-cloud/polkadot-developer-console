@@ -169,19 +169,27 @@ export class Api {
 
   async fetchChainSpec() {
     // Fetch chain specs.
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newChainSpec = await Promise.all<any>([
+      // NOTE: This info is not available with observable client - manipulate spec name instead?
       this.api.rpc.system.chain(),
       this.api.consts.system.version,
+      // NOTE: This can be read directly from `buildConstant` in the observable client.
       this.api.consts.system.ss58Prefix,
     ]);
 
     // Check that chain values have been fetched before committing to state.
     if (newChainSpec.every((c) => c?.toHuman() !== undefined)) {
       const chain = newChainSpec[0].toString();
+      console.log('chain', chain);
+
       const specVersion =
         newChainSpec[1].toJSON() as unknown as APIChainSpecVersion;
+      console.log('specVersion', specVersion);
+
       const ss58Prefix = Number(newChainSpec[2].toString());
+      console.log('ss58Prefix', ss58Prefix);
 
       // Also retreive the JSON formatted metadata here for the UI to construct from.
       const metadataPJs = this.api.runtimeMetadata;
@@ -189,13 +197,10 @@ export class Api {
 
       // Set chainspec and metadata, or dispatch an error and disconnect otherwise.
       if (specVersion && metadataJson) {
-        const magicNumber = metadataJson.magicNumber;
-
         this.chainSpec = {
           chain,
           version: specVersion,
           ss58Prefix,
-          magicNumber: magicNumber as number,
           metadata: MetadataController.instantiate(metadataJson),
           consts: {},
         };
