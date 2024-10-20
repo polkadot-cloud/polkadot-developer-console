@@ -23,6 +23,8 @@ import type { JsonRpcProvider } from '@polkadot-api/ws-provider/web';
 import { getWsProvider } from '@polkadot-api/ws-provider/web';
 import { createClient as createRawClient } from '@polkadot-api/substrate-client';
 import { getObservableClient } from '@polkadot-api/observable-client';
+import { ChainSpec } from 'model/Observables/ChainSpec';
+import type { ObservableGetter } from 'controllers/Subscriptions/types';
 
 export class Api {
   // ------------------------------------------------------
@@ -168,7 +170,34 @@ export class Api {
   }
 
   async fetchChainSpec() {
-    // Fetch chain specs.
+    // -------------------------------------------------------------------------------------------
+    // TODO: Extract this logic into a separate function.
+
+    // Instantiate chain spec observable and add it to subscriptions in case the Api is terminated
+    // before the subscription is resolved.
+    SubscriptionsController.set(
+      this.#instanceId,
+      'chainSpec',
+      new ChainSpec(this.#ownerId, this.#instanceId)
+    );
+
+    // Get the observable immediately and await subscribe() to resolve with chain spec data.
+    const result = await (
+      SubscriptionsController.get(
+        this.#instanceId,
+        'chainSpec'
+      ) as ObservableGetter
+    ).get();
+
+    // Remove the subscription from the controller.
+    SubscriptionsController.remove(this.#instanceId, 'chainSpec');
+
+    // --------------------------------------------------------------------------------------------
+
+    console.log('Chain Spec: ', result);
+
+    // TODO: Get metadata via observable in the same manner as chainSpec. Promise.all for these.
+    // TODO: Get ss58 prefix via constant.
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newChainSpec = await Promise.all<any>([
