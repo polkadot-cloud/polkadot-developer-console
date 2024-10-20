@@ -24,7 +24,8 @@ import { getWsProvider } from '@polkadot-api/ws-provider/web';
 import { createClient as createRawClient } from '@polkadot-api/substrate-client';
 import { getObservableClient } from '@polkadot-api/observable-client';
 import { ChainSpec } from 'model/Observables/ChainSpec';
-import type { ObservableGetter } from 'controllers/Subscriptions/types';
+
+import { getDataFromObservable } from 'model/Observables/util';
 
 export class Api {
   // ------------------------------------------------------
@@ -170,29 +171,11 @@ export class Api {
   }
 
   async fetchChainSpec() {
-    // -------------------------------------------------------------------------------------------
-    // TODO: Extract this logic into a separate function.
-
-    // Instantiate chain spec observable and add it to subscriptions in case the Api is terminated
-    // before the subscription is resolved.
-    SubscriptionsController.set(
+    const result = await getDataFromObservable(
       this.#instanceId,
       'chainSpec',
       new ChainSpec(this.#ownerId, this.#instanceId)
     );
-
-    // Get the observable immediately and await subscribe() to resolve with chain spec data.
-    const result = await (
-      SubscriptionsController.get(
-        this.#instanceId,
-        'chainSpec'
-      ) as ObservableGetter
-    ).get();
-
-    // Remove the subscription from the controller.
-    SubscriptionsController.remove(this.#instanceId, 'chainSpec');
-
-    // --------------------------------------------------------------------------------------------
 
     console.log('Chain Spec: ', result);
 
