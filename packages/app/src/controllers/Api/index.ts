@@ -73,9 +73,16 @@ export class ApiController {
     return instanceIndex;
   }
 
-  // Get an instance `api` by ownerId and instanceIndex.
-  static getInstanceApi(ownerId: OwnerId, instanceIndex: number) {
-    return this.#instances[ownerId][instanceIndex].api;
+  // Get an instance `api` by ownerId and instanceIndex. Returns Polkadot JS API instance by
+  // default, or Polkadot API's Observable client if `observable` is true.
+  static getInstanceApi(
+    ownerId: OwnerId,
+    instanceIndex: number,
+    observable = false
+  ) {
+    return !observable
+      ? this.#instances[ownerId][instanceIndex].api
+      : this.#instances[ownerId][instanceIndex].papiClient;
   }
 
   // ------------------------------------------------------
