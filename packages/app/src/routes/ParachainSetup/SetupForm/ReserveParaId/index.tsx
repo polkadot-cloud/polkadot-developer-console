@@ -208,6 +208,7 @@ export const ReserveParaId = () => {
             >
               <h3>Find Existing Para ID</h3>
               <Textbox
+                initial={existingParaId || ''}
                 value={existingParaId || ''}
                 onFocus={() => setSelectedOption(tabId, 'existing')}
                 onChange={(val) => setExistingParaIdInput(tabId, val)}

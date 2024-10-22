@@ -5,6 +5,7 @@ import type { InputCallbackProps } from '../types';
 
 export type TextboxProps = InputCallbackProps & {
   label?: string | number;
+  initial: string;
   value: string;
   numeric?: boolean;
   placeholder?: string;
