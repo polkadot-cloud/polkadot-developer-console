@@ -445,7 +445,7 @@ export const useInput = () => {
                   setInputArgAtKey(tabId, namespace, keys, val);
                 }}
                 label={label}
-                value={inputValue || defaultInputValue(input)}
+                value={inputValue}
                 numeric={input === 'number'}
               />
             </Section>

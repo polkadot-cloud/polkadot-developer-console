@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { TextInputWrapper } from 'library/Inputs/Wrappers';
 import type { TextboxProps } from './types';
+import { defaultInputValue } from 'model/Scraper/Utils';
 
 export const Textbox = ({
   label,
@@ -57,6 +58,11 @@ export const Textbox = ({
           value={value || ''}
           onChange={(ev) => handleTextboxChange(ev.currentTarget.value)}
           onFocus={onFocus}
+          onBlur={() => {
+            if (value === '' && onChange !== undefined) {
+              onChange(defaultInputValue(numeric ? 'number' : 'text'));
+            }
+          }}
           placeholder={placeholder}
           className={shrinkPlaceholder ? 'shrinkPlaceholder' : ''}
         />
