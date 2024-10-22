@@ -33,6 +33,7 @@ import {
   getDynamicBuilder,
 } from '@polkadot-api/metadata-builders';
 import { formatChainSpecName } from './util';
+import { MetadataController } from 'controllers/Metadata';
 
 export class Api {
   // ------------------------------------------------------
@@ -205,6 +206,8 @@ export class Api {
         throw new Error();
       }
 
+      console.log(resultMetadata);
+
       // Now metadata has been retrieved, create a dynamic builder for the metadata and persist it
       // to this class.
       this.#papiBuilder = getDynamicBuilder(getLookupFn(resultMetadata));
@@ -222,12 +225,16 @@ export class Api {
         .buildConstant('System', 'SS58Prefix')
         .dec(String(scraper.getConstantValue('System', 'SS58Prefix') || '0x'));
 
+      const metadataPJs = this.api.runtimeMetadata;
+      const metadataPJsJson = metadataPJs.asV15.toJSON();
+
       // Format resulting class chain spec and persist to class.
       this.chainSpec = {
         chain: chainName,
         version: resultChainSpec.specVersion,
         ss58Prefix: Number(ss58Prefix),
-        metadata: resultMetadataV15,
+        // TODO: Replace with Papi / runtime api fetched metadata.
+        metadata: MetadataController.instantiate(metadataPJsJson),
         consts: {},
       };
     } catch (e) {
