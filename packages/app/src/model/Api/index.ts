@@ -16,7 +16,6 @@ import type {
 } from './types';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { AnyJson } from '@w3ux/types';
-import BigNumber from 'bignumber.js';
 import type { ChainSpaceId, OwnerId } from 'types';
 import type { JsonRpcProvider } from '@polkadot-api/ws-provider/web';
 import { getWsProvider } from '@polkadot-api/ws-provider/web';
@@ -34,6 +33,7 @@ import {
 } from '@polkadot-api/metadata-builders';
 import { formatChainSpecName } from './util';
 import { MetadataController } from 'controllers/Metadata';
+import BigNumber from 'bignumber.js';
 
 export class Api {
   // ------------------------------------------------------
@@ -71,7 +71,7 @@ export class Api {
   #rpcEndpoint: string;
 
   // The current chain spec.
-  chainSpec: APIChainSpec | undefined;
+  chainSpec: APIChainSpec;
 
   // Chain constants.
   consts: Record<string, AnyJson> = {};
@@ -271,23 +271,26 @@ export class Api {
 
   // Fetch chain consts. Must be called after chain spec is fetched.
   fetchConsts = () => {
-    const metadata = this.chainSpec?.metadata;
+    const metadata = this.chainSpec.metadata;
+    const newConsts: Record<string, AnyJson> = {};
 
-    // TODO: Fetch consts via #papiClient.
     try {
-      if (metadata) {
-        const hasBalancesPallet = metadata.palletExists('Balances');
+      const scraper = new PalletScraper(metadata);
+      const hasBalancesPallet = metadata.palletExists('Balances');
 
-        const existentialDeposit = hasBalancesPallet
-          ? new BigNumber(
-              this.api.consts.balances.existentialDeposit.toString()
+      // Attempt to fetch existential deposit if Balances pallet exists.
+      if (hasBalancesPallet) {
+        const existentialDeposit = this.#papiBuilder
+          .buildConstant('Balances', 'ExistentialDeposit')
+          .dec(
+            String(
+              scraper.getConstantValue('Balances', 'ExistentialDeposit') || '0x'
             )
-          : null;
+          );
 
-        this.consts = {
-          existentialDeposit,
-        };
+        newConsts['existentialDeposit'] = new BigNumber(existentialDeposit);
       }
+      this.consts = newConsts;
     } catch (e) {
       this.consts = {};
     }
