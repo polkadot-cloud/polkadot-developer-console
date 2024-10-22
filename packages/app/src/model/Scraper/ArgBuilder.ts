@@ -50,11 +50,17 @@ export class ArgBuilder {
     do {
       console.debug('iteration', i);
 
-      // If up to top level arguments, format values and exit early.
+      // If up to top level arguments, format values and exit.
       if (maxLength === 1) {
         this.formattedArgs = Object.entries(this.formattedArgs).reduce(
           (acc: Record<string, AnyJson>, [key, arg]) => {
-            acc[key] = arg?.value || '';
+            // If we've reached one top level argument but they haven't been formatted, return the
+            // inner value, otherwise return the formatted arg.
+            if ('value' in arg) {
+              acc[key] = arg?.value || '';
+            } else {
+              acc[key] = arg || '';
+            }
             return acc;
           },
           {}
@@ -85,7 +91,7 @@ export class ArgBuilder {
       maxLength = newDeepestKeys.maxLength;
 
       i++;
-    } while (deepestKeys.length > 1);
+    } while (deepestKeys.length >= 1);
 
     // If extrinsic args are being formatted, collate arguments into a single array.
     if (Object.keys(this.formattedArgs).length > 1) {
