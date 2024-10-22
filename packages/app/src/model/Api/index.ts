@@ -220,8 +220,7 @@ export class Api {
       const scraper = new PalletScraper(resultMetadataV15);
 
       // Get SS58 Prefix via metadata - defaults to 0.
-      const ss58Prefix = 'ss58prefix: ';
-      this.#papiBuilder
+      const ss58Prefix = this.#papiBuilder
         .buildConstant('System', 'SS58Prefix')
         .dec(String(scraper.getConstantValue('System', 'SS58Prefix') || '0x'));
 
@@ -278,6 +277,7 @@ export class Api {
     try {
       if (metadata) {
         const hasBalancesPallet = metadata.palletExists('Balances');
+
         const existentialDeposit = hasBalancesPallet
           ? new BigNumber(
               this.api.consts.balances.existentialDeposit.toString()
