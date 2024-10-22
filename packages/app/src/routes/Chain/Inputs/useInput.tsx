@@ -446,6 +446,7 @@ export const useInput = () => {
                 }}
                 label={label}
                 value={inputValue}
+                initial={inputValue || defaultInputValue(input)}
                 numeric={input === 'number'}
               />
             </Section>

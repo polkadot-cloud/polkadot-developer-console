@@ -7,6 +7,7 @@ import type { TextboxProps } from './types';
 import { defaultInputValue } from 'model/Scraper/Utils';
 
 export const Textbox = ({
+  initial,
   label,
   value,
   numeric,
@@ -42,10 +43,10 @@ export const Textbox = ({
     }
   };
 
-  // Call on mount logic in initial render if provided.
+  // Call on mount logic in initial render if provided & set the initial value.
   useEffect(() => {
     if (onMount !== undefined) {
-      onMount(value);
+      onMount(initial);
     }
   }, []);
 
