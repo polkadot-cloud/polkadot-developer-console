@@ -6,9 +6,13 @@ import type { ChainId } from 'config/networks/types';
 import type { MetadataVersion } from 'controllers/Metadata/types';
 import type { ChainSpaceId, OwnerId } from 'types';
 
-// TODO: Replace with actual PAPI client interface when available
+// NOTE: Replace with actual PAPI client interface when available.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PapiObservableClient = any;
+
+// NOTE: Replace with actual PAPI builder interface when available.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type PapiDynamicBuilder = any;
 
 // An id associated with an api instance. ChainState, ChainSpec, subscriptions, etc. all use this id
 // to associate with an api instance.
