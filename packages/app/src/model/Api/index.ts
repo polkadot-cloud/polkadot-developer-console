@@ -206,7 +206,7 @@ export class Api {
         throw new Error();
       }
 
-      console.log(resultMetadata);
+      console.log('papi: ', resultMetadata);
 
       // Now metadata has been retrieved, create a dynamic builder for the metadata and persist it
       // to this class.
@@ -226,6 +226,8 @@ export class Api {
 
       const metadataPJs = this.api.runtimeMetadata;
       const metadataPJsJson = metadataPJs.asV15.toJSON();
+
+      console.log('pjs api: ', metadataPJsJson);
 
       // Format resulting class chain spec and persist to class.
       this.chainSpec = {
