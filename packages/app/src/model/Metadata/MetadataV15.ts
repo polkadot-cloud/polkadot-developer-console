@@ -5,7 +5,7 @@ import type { Metadata } from '@polkadot/types';
 import type { MetadataVersion } from './types';
 import type { AnyJson } from '@w3ux/types';
 
-export class MetadataV14 implements MetadataVersion {
+export class MetadataV15 implements MetadataVersion {
   metadata: Metadata;
 
   constructor(metadata: Metadata) {
