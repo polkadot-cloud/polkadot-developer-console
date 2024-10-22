@@ -185,7 +185,7 @@ export class Api {
 
       // Also retreive the JSON formatted metadata here for the UI to construct from.
       const metadataPJs = this.api.runtimeMetadata;
-      const metadataJson = metadataPJs.asV14.toJSON();
+      const metadataJson = metadataPJs.asV15.toJSON();
 
       // Set chainspec and metadata, or dispatch an error and disconnect otherwise.
       if (specVersion && metadataJson) {

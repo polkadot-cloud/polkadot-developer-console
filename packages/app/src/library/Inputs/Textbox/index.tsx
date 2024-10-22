@@ -4,8 +4,10 @@
 import { useEffect } from 'react';
 import { TextInputWrapper } from 'library/Inputs/Wrappers';
 import type { TextboxProps } from './types';
+import { defaultInputValue } from 'model/Scraper/Utils';
 
 export const Textbox = ({
+  initial,
   label,
   value,
   numeric,
@@ -41,10 +43,10 @@ export const Textbox = ({
     }
   };
 
-  // Call on mount logic in initial render if provided.
+  // Call on mount logic in initial render if provided & set the initial value.
   useEffect(() => {
     if (onMount !== undefined) {
-      onMount(value);
+      onMount(initial);
     }
   }, []);
 
@@ -57,6 +59,11 @@ export const Textbox = ({
           value={value || ''}
           onChange={(ev) => handleTextboxChange(ev.currentTarget.value)}
           onFocus={onFocus}
+          onBlur={() => {
+            if (value === '' && onChange !== undefined) {
+              onChange(defaultInputValue(numeric ? 'number' : 'text'));
+            }
+          }}
           placeholder={placeholder}
           className={shrinkPlaceholder ? 'shrinkPlaceholder' : ''}
         />

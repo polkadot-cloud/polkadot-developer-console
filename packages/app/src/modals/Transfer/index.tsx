@@ -150,7 +150,12 @@ export const Transfer = () => {
           />
 
           <Label value="Amount" marginTop />
-          <Textbox value={amount} onChange={(val) => setAmount(val)} numeric />
+          <Textbox
+            initial={amount}
+            value={amount}
+            onChange={(val) => setAmount(val)}
+            numeric
+          />
         </div>
       </ModalPadding>
       <SubmitTx
