@@ -17,12 +17,12 @@ The goal of this test suit is to document how array types are structured to the 
 // Basic array structure.
 describe('Basic array structure is intact', () => {
   const lookup = metadataJson.lookup;
-  const lookupTypes = lookup.types;
+  const lookupTypes = lookup;
 
   // Get all composite types from lookup.
   const lookupArray = lookupTypes
-    .filter(({ type: { def } }) => 'array' in def)
-    .map((item) => item.type.def.array);
+    .filter(({ def: { tag } }) => tag === 'array')
+    .map((item) => item.def.value);
 
   it('Metadata lookup contains 59 array types', () => {
     assert.equal(lookupArray.length, 32);
