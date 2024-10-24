@@ -3,7 +3,7 @@
 
 import assert from 'assert';
 import type { AnyJson } from '@w3ux/types';
-import * as metadataJson from '../../data/metadataV15_PJS.json';
+import * as metadataJson from '../../data/metadataV15_PAPI.json';
 
 /* Metadata compact tests.
 
@@ -17,23 +17,23 @@ The goal of this test suit is to document how compact types are structured to th
 // Basic compact structure.
 describe('Basic compact structure is intact', () => {
   const lookup = metadataJson.lookup;
-  const lookupTypes = lookup.types;
 
   // Get all composite types from lookup.
-  const lookupCompact = lookupTypes
-    .filter(({ type: { def } }) => 'compact' in def)
-    .map((item) => item.type.def.compact);
+  const lookupCompactValues = lookup
+    .filter(({ def: { tag } }) => tag === 'compact')
+    .map((item) => item.def);
 
   it('Metadata lookup contains 8 compact types', () => {
-    assert.ok(lookupCompact.length === 8);
+    assert.ok(lookupCompactValues.length === 8);
   });
 
-  it('Compact types only contain one `type` property', () => {
-    lookupCompact.every(
+  it('Compact defs only contain a `tag` and `value` property', () => {
+    lookupCompactValues.every(
       (item: AnyJson) =>
-        'type' in item &&
-        typeof item.type === 'number' &&
-        Object.keys(item).length === 1
+        'tag' in item &&
+        'value' in item &&
+        typeof item.value === 'number' &&
+        Object.keys(item).length === 2
     );
   });
 });

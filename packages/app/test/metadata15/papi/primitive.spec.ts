@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import assert from 'assert';
-import * as metadataJson from '../../data/metadataV15_PJS.json';
+import * as metadataJson from '../../data/metadataV15_PAPI.json';
 
 /* Metadata primitive tests.
 
@@ -16,12 +16,11 @@ The goal of this test suit is to document how primitive types are structured to 
 // Basic primitive structure.
 describe('Basic primitive structure is intact', () => {
   const lookup = metadataJson.lookup;
-  const lookupTypes = lookup.types;
 
   // Get all primitive types from lookup.
-  const lookupPrimitive = lookupTypes
-    .filter(({ type: { def } }) => 'primitive' in def)
-    .map((item) => item.type.def.primitive);
+  const lookupPrimitive = lookup
+    .filter(({ def: { tag } }) => tag === 'primitive')
+    .map((item) => item.def.value);
 
   // NOTE: The primitive types present in the test metadata do not exhaust all possible primitive
   // types supported in Substrate.

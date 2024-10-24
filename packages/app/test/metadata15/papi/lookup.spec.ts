@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import assert from 'assert';
-import * as metadataJson from '../../data/metadataV15_PJS.json';
+import * as metadataJson from '../../data/metadataV15_PAPI.json';
 
 /* Metadata lookup tests.
 
@@ -17,43 +17,32 @@ NOTES:
 
 describe('Metadata lookup structure is intact', () => {
   const lookup = metadataJson.lookup;
-  const lookupTypes = lookup.types;
 
   it('Lookup exists at metadata top level', () => {
     const keys = Object.keys(metadataJson);
     assert.ok(keys.includes('lookup'));
   });
 
-  it('Lookup only contains `types` field', () => {
-    assert.ok('types' in lookup && Object.keys(lookup).length === 1);
-  });
-
-  it('Lookup types only contain `id` and `type` fields', () => {
-    const result = lookupTypes.every(
-      (item) => 'id' in item && 'type' in item && Object.keys(item).length === 2
-    );
-    assert.ok(result);
-  });
-
   it('Lookup type `id`s are numbers', () => {
-    const result = lookupTypes.every((item) => typeof item.id === 'number');
+    const result = lookup.every((item) => typeof item.id === 'number');
     assert.ok(result);
   });
 
   it('All lookup types contain the same outer structure', () => {
     assert.ok(
-      lookupTypes.every(
-        ({ type }) =>
-          'path' in type &&
-          'params' in type &&
+      lookup.every(
+        (type) =>
           'def' in type &&
           'docs' in type &&
-          Object.keys(type).length === 4
+          'path' in type &&
+          'params' in type &&
+          'id' in type &&
+          Object.keys(type).length === 5
       )
     );
   });
 
-  it('Provided lookup contains 868 types', () => {
-    assert.equal(lookupTypes.length, 857);
+  it('Provided lookup contains 968 types', () => {
+    assert.equal(lookup.length, 968);
   });
 });

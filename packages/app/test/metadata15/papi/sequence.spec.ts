@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import assert from 'assert';
-import * as metadataJson from '../../data/metadataV15_PJS.json';
+import * as metadataJson from '../../data/metadataV15_PAPI.json';
 import type { AnyJson } from '@w3ux/types';
 
 /* Metadata sequence tests.
@@ -17,20 +17,20 @@ The goal of this test suit is to document how sequence types are structured to t
 // Basic sequence structure.
 describe('Basic sequence structure is intact', () => {
   const lookup = metadataJson.lookup;
-  const lookupTypes = lookup.types;
 
   // Get all sequence types from lookup.
-  const lookupSequence = lookupTypes
-    .filter(({ type: { def } }) => 'sequence' in def)
-    .map((item) => item.type.def.sequence);
+  const lookupSequence = lookup
+    .filter(({ def: { tag } }) => tag === 'sequence')
+    .map((item) => item.def);
 
-  it('Metadata lookup contains 109 sequence types', () => {
-    assert.ok(lookupSequence.length === 109);
+  it('Metadata lookup contains 127 sequence types', () => {
+    assert.equal(lookupSequence.length, 127);
   });
 
-  it('Sequence types only contain one `type` property', () => {
+  it('Sequence definitions only contain a `tag` and `value` property', () => {
     lookupSequence.every(
-      (item: AnyJson) => 'type' in item && Object.keys(item).length === 1
+      (def: AnyJson) =>
+        'tag' in def && `value` in def && Object.keys(def).length === 2
     );
   });
 });

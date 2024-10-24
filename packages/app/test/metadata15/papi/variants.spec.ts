@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import assert from 'assert';
-import * as metadataJson from '../../data/metadataV15_PJS.json';
+import * as metadataJson from '../../data/metadataV15_PAPI.json';
 import type { AnyJson } from '@w3ux/types';
 
 /* Metadata variants tests.
@@ -22,74 +22,64 @@ NOTES:
 // Basic variant structure.
 describe('Basic variant structure is intact', () => {
   const lookup = metadataJson.lookup;
-  const lookupTypes = lookup.types;
 
   // Get variant types from lookup.
-  const lookupVariants = lookupTypes
-    .filter(({ type: { def } }) => 'variant' in def)
-    .map((item) => item.type.def.variant);
+  const lookupVariants = lookup
+    .filter(({ def: { tag } }) => tag === 'variant')
+    .map((item) => item.def);
 
-  // Get variant definitions from variant types. Every variant type has a single `variants`
+  // Get variant values from variant types. Every variant type has a single `variants`
   // property.
-  const variantDefs = lookupVariants.map((item: AnyJson) => item.variants);
+  const variantValues = lookupVariants.map((item: AnyJson) => item.value);
 
-  it('Metadata lookup contains 318 variants', () => {
-    assert.equal(lookupVariants.length, 332);
+  it('Metadata lookup contains 381 variants', () => {
+    assert.equal(lookupVariants.length, 381);
   });
 
-  it('Variants only contain one `variants` property', () => {
-    lookupVariants.every(
-      (item: AnyJson) => 'variants' in item && Object.keys(item).length === 1
-    );
+  it('All variant values are arrays', () => {
+    assert.ok(variantValues.every((value: AnyJson) => Array.isArray(value)));
   });
 
-  it('All `variants` contain the same array of properties', () => {
+  it('All `variant` values contain the same properties', () => {
     assert.ok(
-      variantDefs.every((item: AnyJson) => {
-        if (!Array.isArray(item)) {
-          return false;
-        }
-        for (const variantItem of item) {
+      variantValues.every((value: AnyJson) =>
+        value.every((item: AnyJson) => {
           if (
             !(
-              'name' in variantItem &&
-              'fields' in variantItem &&
-              'index' in variantItem &&
-              'docs' in variantItem &&
-              Object.keys(variantItem).length === 4
+              'fields' in item &&
+              'docs' in item &&
+              'index' in item &&
+              'name' in item &&
+              Object.keys(item).length === 4
             )
           ) {
             return false;
           }
-        }
-        return true;
-      })
+          return true;
+        })
+      )
     );
   });
 
   it('Variant `fields` all contain the same properties', () => {
     assert.ok(
-      variantDefs.every((item: AnyJson) => {
-        if (!Array.isArray(item)) {
-          return false;
-        }
-
+      variantValues.every((item: AnyJson) => {
         for (const variantItem of item) {
           // Ignore variants with no fields.
           if (!variantItem.fields.length) {
             continue;
           }
+
           const { fields } = variantItem;
+          assert.ok(Array.isArray(fields));
+
           for (const field of fields) {
             if (
               !(
-                'name' in field &&
                 'type' in field &&
-                'typeName' in field &&
                 'docs' in field &&
-                typeof field.type === 'number' &&
-                Object.keys(field).length === 4
-              )
+                [2, 3, 4].includes(Object.keys(field).length)
+              ) // NOTE: additional `name` and `typeName` fields can be undefined
             ) {
               return false;
             }

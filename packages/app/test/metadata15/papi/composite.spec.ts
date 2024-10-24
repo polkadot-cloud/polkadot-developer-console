@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import assert from 'assert';
-import * as metadataJson from '../../data/metadataV15_PJS.json';
+import * as metadataJson from '../../data/metadataV15_PAPI.json';
 import type { AnyJson } from '@w3ux/types';
 
 /* Metadata composite tests.
@@ -17,48 +17,39 @@ The goal of this test suit is to document how composite types are structured to 
 // Basic composite structure.
 describe('Basic composite structure is intact', () => {
   const lookup = metadataJson.lookup;
-  const lookupTypes = lookup.types;
 
   // Get all composite types from lookup.
-  const lookupComposite = lookupTypes
-    .filter(({ type: { def } }) => 'composite' in def)
-    .map((item) => item.type.def.composite);
+  const lookupComposite = lookup
+    .filter(({ def: { tag } }) => tag === 'composite')
+    .map((item) => item.def);
 
-  // Get composite fields from composite types. Every composite type has a single `fields`
-  // property.
-  const compositeFields = lookupComposite.map(({ fields }: AnyJson) => fields);
+  // Get composite values from composite types. Every composite type has a single `value` property
+  // alongside its `tag`.
+  const compositeValues = lookupComposite.map(({ value }: AnyJson) => value);
 
-  it('Metadata lookup contains 280 composite types', () => {
-    assert.equal(lookupComposite.length, 285);
+  it('Metadata lookup contains 316 composite types', () => {
+    assert.equal(lookupComposite.length, 316);
   });
 
-  it('Composite types only contain one `fields` property', () => {
-    lookupComposite.every(
-      (item: AnyJson) => 'fields' in item && Object.keys(item).length === 1
-    );
-  });
-
-  it('All `fields` contain the same array of properties', () => {
+  it('All `value` items contain `docs` and `type` properties`', () => {
     assert.ok(
-      compositeFields.every((item: AnyJson) => {
-        if (!Array.isArray(item)) {
+      compositeValues.every((value: AnyJson) => {
+        if (!Array.isArray(value)) {
           return false;
         }
-        for (const compositeItem of item) {
+        return value.every((item) => {
           if (
             !(
-              'name' in compositeItem &&
-              'type' in compositeItem &&
-              'typeName' in compositeItem &&
-              'docs' in compositeItem &&
-              typeof compositeItem.type === 'number' &&
-              Object.keys(compositeItem).length === 4
-            )
+              'docs' in item &&
+              'type' in item &&
+              typeof item.type === 'number' &&
+              [2, 3, 4].includes(Object.keys(item).length)
+            ) // NOTE: additional `name` and `typeName` fields can be undefined
           ) {
             return false;
           }
-        }
-        return true;
+          return true;
+        });
       })
     );
   });

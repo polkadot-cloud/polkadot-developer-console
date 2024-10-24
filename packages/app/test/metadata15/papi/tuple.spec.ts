@@ -3,7 +3,7 @@
 
 import assert from 'assert';
 import type { AnyJson } from '@w3ux/types';
-import * as metadataJson from '../../data/metadataV15_PJS.json';
+import * as metadataJson from '../../data/metadataV15_PAPI.json';
 
 /* Metadata tuple tests.
 
@@ -17,15 +17,14 @@ The goal of this test suit is to document how tuple types are structured to the 
 // Basic tuple structure.
 describe('Basic tuple structure is intact', () => {
   const lookup = metadataJson.lookup;
-  const lookupTypes = lookup.types;
 
   // Get all tuple types from lookup.
-  const lookupTuple = lookupTypes
-    .filter(({ type: { def } }) => 'tuple' in def)
-    .map((item) => item.type.def.tuple);
+  const lookupTuple = lookup
+    .filter(({ def: { tag } }) => tag === 'tuple')
+    .map((item) => item.def.value);
 
-  it('Metadata lookup contains 85 tuple types', () => {
-    assert.equal(lookupTuple.length, 82);
+  it('Metadata lookup contains 95 tuple types', () => {
+    assert.equal(lookupTuple.length, 95);
   });
 
   it('Tuple types contain an array of numbers representing the type at that index of the tuple. Tuples contain at least 1 index', () => {

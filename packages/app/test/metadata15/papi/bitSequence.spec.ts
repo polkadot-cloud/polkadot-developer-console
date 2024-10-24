@@ -3,7 +3,7 @@
 
 import assert from 'assert';
 import type { AnyJson } from '@w3ux/types';
-import * as metadataJson from '../../data/metadataV15_PJS.json';
+import * as metadataJson from '../../data/metadataV15_PAPI.json';
 
 /* Metadata bitSequence tests.
 
@@ -17,12 +17,11 @@ The goal of this test suit is to document how bitSequence types are structured t
 // Basic bitSequence structure.
 describe('Basic bitSequence structure is intact', () => {
   const lookup = metadataJson.lookup;
-  const lookupTypes = lookup.types;
 
   // Get all bitSequence types from lookup.
-  const lookupBitSequence = lookupTypes
-    .filter(({ type: { def } }) => 'bitSequence' in def)
-    .map((item) => item.type.def.bitSequence);
+  const lookupBitSequence = lookup
+    .filter(({ def: { tag } }) => tag === 'bitSequence')
+    .map((item) => item.def.value);
 
   it('Metadata lookup contains 1 bitSequence type', () => {
     assert.ok(lookupBitSequence.length === 1);
