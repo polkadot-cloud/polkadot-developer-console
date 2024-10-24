@@ -308,7 +308,7 @@ export class PalletScraper extends MetadataScraper {
   }
 
   // ------------------------------------------------------
-  // Get constants.
+  // Constants.
   // ------------------------------------------------------
 
   // Get a pallet's constants from metadata.
@@ -319,9 +319,8 @@ export class PalletScraper extends MetadataScraper {
     }
 
     let result: PalletItemScraped[] = [];
-    // Defensive: Check if storage items are defined for this pallet.
+    // Defensive: Check if constants are defined for this pallet.
     const items = pallet.constants;
-
     if (items) {
       result = items.map((item, i) => {
         const { name, docs, type, value } = item;
@@ -340,6 +339,22 @@ export class PalletScraper extends MetadataScraper {
       });
     }
 
+    return result;
+  }
+
+  // Get a pallet constant value from metadata.
+  getConstantValue(palletName: string, name: string) {
+    const pallet = this.getPallet(palletName);
+    if (!pallet) {
+      return [];
+    }
+
+    // Defensive: Check if constants are defined for this pallet.
+    const items = pallet.constants;
+    let result = undefined;
+    if (items) {
+      result = items.find((item) => item.name === name)?.value;
+    }
     return result;
   }
 

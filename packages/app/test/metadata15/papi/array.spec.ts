@@ -3,7 +3,7 @@
 
 import assert from 'assert';
 import type { AnyJson } from '@w3ux/types';
-import * as metadataJson from '../data/metadataV14.json';
+import * as metadataJson from '../../data/metadataV15_PAPI.json';
 
 /* Metadata array tests.
 
@@ -17,15 +17,14 @@ The goal of this test suit is to document how array types are structured to the 
 // Basic array structure.
 describe('Basic array structure is intact', () => {
   const lookup = metadataJson.lookup;
-  const lookupTypes = lookup.types;
 
   // Get all composite types from lookup.
-  const lookupArray = lookupTypes
-    .filter(({ type: { def } }) => 'array' in def)
-    .map((item) => item.type.def.array);
+  const lookupArray = lookup
+    .filter(({ def: { tag } }) => tag === 'array')
+    .map((item) => item.def.value);
 
-  it('Metadata lookup contains 59 array types', () => {
-    assert.ok(lookupArray.length === 59);
+  it('Metadata lookup contains 32 array types', () => {
+    assert.equal(lookupArray.length, 32);
   });
 
   it('Array types only contain two properties - `len` and `type`', () => {

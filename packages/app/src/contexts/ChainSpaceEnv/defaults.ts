@@ -35,7 +35,6 @@ export const dummyChainSpec: APIChainSpec = {
     transactionVersion: 0,
   },
   ss58Prefix: 0,
-  magicNumber: 0,
   metadata: {},
   consts: {},
 };
