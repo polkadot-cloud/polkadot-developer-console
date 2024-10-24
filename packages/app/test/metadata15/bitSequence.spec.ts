@@ -3,7 +3,7 @@
 
 import assert from 'assert';
 import type { AnyJson } from '@w3ux/types';
-import * as metadataJson from '../data/metadataV14.json';
+import * as metadataJson from '../data/metadataV15.json';
 
 /* Metadata bitSequence tests.
 

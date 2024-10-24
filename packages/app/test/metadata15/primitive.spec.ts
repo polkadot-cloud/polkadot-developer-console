@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import assert from 'assert';
-import * as metadataJson from '../data/metadataV14.json';
+import * as metadataJson from '../data/metadataV15.json';
 
 /* Metadata primitive tests.
 

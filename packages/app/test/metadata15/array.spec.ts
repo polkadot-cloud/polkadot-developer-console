@@ -3,7 +3,7 @@
 
 import assert from 'assert';
 import type { AnyJson } from '@w3ux/types';
-import * as metadataJson from '../data/metadataV14.json';
+import * as metadataJson from '../data/metadataV15.json';
 
 /* Metadata array tests.
 
@@ -25,7 +25,7 @@ describe('Basic array structure is intact', () => {
     .map((item) => item.type.def.array);
 
   it('Metadata lookup contains 59 array types', () => {
-    assert.ok(lookupArray.length === 59);
+    assert.equal(lookupArray.length, 32);
   });
 
   it('Array types only contain two properties - `len` and `type`', () => {

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import assert from 'assert';
-import * as metadataJson from '../data/metadataV14.json';
+import * as metadataJson from '../data/metadataV15.json';
 
 /* Metadata lookup tests.
 
@@ -54,6 +54,6 @@ describe('Metadata lookup structure is intact', () => {
   });
 
   it('Provided lookup contains 868 types', () => {
-    assert.ok(lookupTypes.length === 868);
+    assert.equal(lookupTypes.length, 857);
   });
 });

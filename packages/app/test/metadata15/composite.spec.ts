@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import assert from 'assert';
-import * as metadataJson from '../data/metadataV14.json';
+import * as metadataJson from '../data/metadataV15.json';
 import type { AnyJson } from '@w3ux/types';
 
 /* Metadata composite tests.
@@ -29,7 +29,7 @@ describe('Basic composite structure is intact', () => {
   const compositeFields = lookupComposite.map(({ fields }: AnyJson) => fields);
 
   it('Metadata lookup contains 280 composite types', () => {
-    assert.ok(lookupComposite.length === 280);
+    assert.equal(lookupComposite.length, 285);
   });
 
   it('Composite types only contain one `fields` property', () => {
