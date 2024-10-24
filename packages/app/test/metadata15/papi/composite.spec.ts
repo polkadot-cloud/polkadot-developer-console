@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import assert from 'assert';
-import * as metadataJson from '../data/metadataV15.json';
+import * as metadataJson from '../../data/metadataV15_PJS.json';
 import type { AnyJson } from '@w3ux/types';
 
 /* Metadata composite tests.

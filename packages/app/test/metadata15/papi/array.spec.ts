@@ -3,7 +3,7 @@
 
 import assert from 'assert';
 import type { AnyJson } from '@w3ux/types';
-import * as metadataJson from '../data/metadataV15.json';
+import * as metadataJson from '../../data/metadataV15_PAPI.json';
 
 /* Metadata array tests.
 
