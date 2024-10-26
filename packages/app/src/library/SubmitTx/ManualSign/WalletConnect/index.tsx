@@ -13,6 +13,7 @@ import { faSquarePen } from '@fortawesome/free-solid-svg-icons';
 import { useExtrinsicData } from 'library/SubmitTx/ExtrinsicDataProvider';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { useWalletConnect } from 'contexts/WalletConnect';
+import type { ChainId } from 'config/networks/types';
 
 export const WalletConnect = ({
   onSubmit,
@@ -29,10 +30,13 @@ export const WalletConnect = ({
     getTxSignature,
     getTxPayloadValue,
   } = useTxMeta();
-  const { signWcTx } = useWalletConnect();
   const { getChainIdCaip } = useChainSpaceEnv();
   const { accountHasSigner } = useImportedAccounts();
   const { instanceId, chainId, ss58Prefix, valid } = useExtrinsicData();
+  const { signWcTx, wcSessionActive, fetchAccounts, connectProvider } =
+    useWalletConnect();
+
+  const from = getSender(instanceId);
 
   // Store whether the user is currently signing a transaction.
   const [isSgning, setIsSigning] = useState<boolean>(false);
@@ -56,14 +60,24 @@ export const WalletConnect = ({
     buttonDisabled = disabled;
   } else {
     buttonOnClick = async () => {
-      const from = getSender(instanceId);
+      setIsSigning(true);
+
+      // If Wallet Connect session is not active, re-connect.
+      if (!wcSessionActive) {
+        await connectProvider();
+      }
+
       const caip = getChainIdCaip(chainId);
+      const wcAccounts = await fetchAccounts(chainId as ChainId);
+
+      // Re-fetch accounts here to ensure that the signer address still exists.
+      const accountExists = from && wcAccounts.includes(from);
 
       const payload = getTxPayloadValue(instanceId);
-      if (!from || !payload) {
+      if (!from || !payload || !accountExists) {
+        setIsSigning(false);
         return;
       }
-      setIsSigning(true);
 
       try {
         const signature = await signWcTx(caip, payload, from);
@@ -71,7 +85,7 @@ export const WalletConnect = ({
           setTxSignature(instanceId, signature);
         }
       } catch (e) {
-        // Silent Error.
+        setIsSigning(false);
       }
       setIsSigning(false);
     };
