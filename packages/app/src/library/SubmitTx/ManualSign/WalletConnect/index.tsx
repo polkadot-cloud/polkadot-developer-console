@@ -92,8 +92,6 @@ export const WalletConnect = ({
     buttonDisabled = disabled;
   }
 
-  // Update text to reflect if session is not active or if account does not exist anymore in
-  // session.
   const buttonText = alreadySubmitted
     ? submitText || ''
     : isSgning
