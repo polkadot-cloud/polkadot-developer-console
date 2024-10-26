@@ -36,8 +36,6 @@ export const WalletConnect = ({
   const { signWcTx, wcSessionActive, fetchAccounts, connectProvider } =
     useWalletConnect();
 
-  const from = getSender(instanceId);
-
   // Store whether the user is currently signing a transaction.
   const [isSgning, setIsSigning] = useState<boolean>(false);
 
@@ -62,6 +60,8 @@ export const WalletConnect = ({
     buttonOnClick = async () => {
       setIsSigning(true);
 
+      const sender = getSender(instanceId);
+
       // If Wallet Connect session is not active, re-connect.
       if (!wcSessionActive) {
         await connectProvider();
@@ -71,16 +71,17 @@ export const WalletConnect = ({
       const wcAccounts = await fetchAccounts(chainId as ChainId);
 
       // Re-fetch accounts here to ensure that the signer address still exists.
-      const accountExists = from && wcAccounts.includes(from);
+      const accountExists = sender && wcAccounts.includes(sender);
 
       const payload = getTxPayloadValue(instanceId);
-      if (!from || !payload || !accountExists) {
-        setIsSigning(false);
+      if (!sender || !payload || !accountExists) {
         return;
       }
 
+      setIsSigning(true);
+
       try {
-        const signature = await signWcTx(caip, payload, from);
+        const signature = await signWcTx(caip, payload, sender);
         if (signature) {
           setTxSignature(instanceId, signature);
         }
