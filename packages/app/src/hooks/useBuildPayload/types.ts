@@ -15,6 +15,7 @@ export interface UseBuildPayloadProps {
   nonce: number;
   setPayload: (
     instanceId: ApiInstanceId,
+    txMetadata: AnyJson,
     payload: AnyJson,
     payloadValue: AnyJson,
     uid: number

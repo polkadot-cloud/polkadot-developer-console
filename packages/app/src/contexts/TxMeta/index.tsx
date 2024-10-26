@@ -82,13 +82,17 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
   const getTxPayload = (instanceId: ApiInstanceId) =>
     txPayloadsRef.current[instanceId]?.payload;
 
-  // Get a  JSON representation of a payload for a given api instance.
+  // Get a JSON representation of a payload for a given api instance.
   const getTxPayloadValue = (instanceId: ApiInstanceId) =>
     txPayloadsRef.current[instanceId]?.payloadValue;
 
   // Get a uid for a given tx payload.
   const getTxPayloadUid = (instanceId: ApiInstanceId) =>
     txPayloadsRef.current[instanceId]?.uid;
+
+  // Get the metadata for a transaction.
+  const getTxMetadata = (instanceId: ApiInstanceId) =>
+    txPayloadsRef.current[instanceId]?.txMetadata || null;
 
   // Increment a payload uid given an api instance.
   const incrementTxPayloadUid = (instanceId: ApiInstanceId) =>
@@ -97,6 +101,7 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
   // Set a transaction payload and uid for a given api instance. Overwrites any existing payload.
   const setTxPayload = (
     instanceId: ApiInstanceId,
+    txMetadata: AnyJson,
     payload: AnyJson,
     payloadValue: AnyJson,
     uid: number
@@ -108,6 +113,7 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
           payload,
           payloadValue,
           uid,
+          txMetadata,
         },
       },
       setTxPayloadsState,
@@ -219,6 +225,7 @@ export const TxMetaProvider = ({ children }: { children: ReactNode }) => {
         getTxPayload,
         getTxPayloadValue,
         getTxPayloadUid,
+        getTxMetadata,
         setTxPayload,
         removeTxPayload,
         incrementTxPayloadUid,

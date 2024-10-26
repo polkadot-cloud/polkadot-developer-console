@@ -38,7 +38,7 @@
     "@walletconnect/universal-provider": "^2.15.2",
     "@walletconnect/utils": "^2.15.3",
     "@web3modal/wagmi": "^5.1.5",
-    "@zondax/ledger-substrate": "^0.44.2",
+    "@zondax/ledger-substrate": "^1.0.0",
     "bignumber.js": "^9.1.2",
     "buffer": "^6.0.3",
     "compare-versions": "^6.1.1",
