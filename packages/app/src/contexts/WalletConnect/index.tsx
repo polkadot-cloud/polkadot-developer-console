@@ -57,7 +57,7 @@ export const WalletConnectProvider = ({
   // Store whether the wallet connect session is active.
   const [wcSessionActive, setWcSessionActive] = useState<boolean>(false);
 
-  // Store the set of chain ids the mot recent session is connected to.
+  // Store the set of chain ids the most recent session is connected to.
   const sessionChains = useRef<Set<string>>(new Set());
 
   // Init WalletConnect provider & modal, and update as wcInitialized.
@@ -105,6 +105,8 @@ export const WalletConnectProvider = ({
     const caips = connectedChains.map(
       (chain) => `polkadot:${chain.genesisHash.substring(2).substring(0, 32)}`
     );
+
+    console.log(caips);
 
     // If there are no chains connected, return early.
     if (!caips.length) {
