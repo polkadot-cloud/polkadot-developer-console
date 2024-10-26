@@ -17,7 +17,6 @@ import type { WCAccount } from '@w3ux/react-connect-kit/types';
 import { remToUnit } from '@w3ux/utils';
 import { NetworkDirectory } from 'config/networks';
 import { useWalletConnect } from 'contexts/WalletConnect';
-import type { AnyJson } from '@w3ux/types';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { iconRefresh, iconLink } from '@polkadot-cloud/icons/duotone';
 import { CloudIcon } from '@polkadot-cloud/icons';
@@ -34,6 +33,7 @@ export const ManageWalletConnect = ({
     removeWcAccount,
   } = useWcAccounts();
   const {
+    fetchAccounts,
     wcInitialized,
     wcSessionActive,
     connectProvider,
@@ -89,34 +89,8 @@ export const ManageWalletConnect = ({
 
     setImportActive(true);
 
-    // Retrieve a new session or get current one.
-    const wcSession = await initializeWcSession();
-    if (wcSession === null) {
-      return;
-    }
-
-    // Get accounts from session.
-    const walletConnectAccounts = Object.values(wcSession.namespaces)
-      .map((namespace: AnyJson) => namespace.accounts)
-      .flat();
-
-    // Get the caip of the active chain.
-    const caip = connectedChains
-      .find((chain) => chain.specName === directoryId)
-      ?.genesisHash.substring(2)
-      .substring(0, 32);
-
-    // Only get accounts for the currently selected `caip`.
-    let filteredAccounts = walletConnectAccounts.filter((wcAccount) => {
-      const prefix = wcAccount.split(':')[1];
-      return prefix === caip;
-    });
-
-    // grab account addresses from CAIP account formatted accounts
-    filteredAccounts = filteredAccounts.map((wcAccount) => {
-      const address = wcAccount.split(':')[2];
-      return address;
-    });
+    // Fetch accounts from Wallet Connect.
+    const filteredAccounts = await fetchAccounts(directoryId);
 
     // Save accounts to local storage.
     filteredAccounts.forEach((address) => {
