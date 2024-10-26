@@ -13,7 +13,7 @@ import { getSdkError } from '@walletconnect/utils';
 import { useTabs } from 'contexts/Tabs';
 import { getUnixTime } from 'date-fns';
 import { isSuperset } from '@w3ux/utils';
-import type { DirectoryId } from 'config/networks/types';
+import type { ChainId } from 'config/networks/types';
 
 export const WalletConnectContext =
   createContext<WalletConnectContextInterface>(defaults.defaultWalletConnect);
@@ -106,8 +106,6 @@ export const WalletConnectProvider = ({
     const caips = connectedChains.map(
       (chain) => `polkadot:${chain.genesisHash.substring(2).substring(0, 32)}`
     );
-
-    console.log(caips);
 
     // If there are no chains connected, return early.
     if (!caips.length) {
@@ -283,7 +281,7 @@ export const WalletConnectProvider = ({
     return result?.signature || null;
   };
 
-  const fetchAccounts = async (directoryId: DirectoryId): Promise<string[]> => {
+  const fetchAccounts = async (chainid: ChainId): Promise<string[]> => {
     // Retrieve a new session or get current one.
     const wcSession = await initializeWcSession();
     if (wcSession === null) {
@@ -297,7 +295,7 @@ export const WalletConnectProvider = ({
 
     // Get the caip of the active chain.
     const caip = connectedChains
-      .find((chain) => chain.specName === directoryId)
+      .find((chain) => chain.specName === chainid)
       ?.genesisHash.substring(2)
       .substring(0, 32);
 

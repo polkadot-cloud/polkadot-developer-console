@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import type { AnyFunction, AnyJson } from '@w3ux/types';
-import type { DirectoryId } from 'config/networks/types';
+import type { ChainId } from 'config/networks/types';
 
 export interface WalletConnectContextInterface {
   connectProvider: () => Promise<void>;
@@ -11,7 +11,7 @@ export interface WalletConnectContextInterface {
   initializeWcSession: () => Promise<AnyJson>;
   updateWcSession: () => Promise<void>;
   disconnectWcSession: () => Promise<void>;
-  fetchAccounts: (directoryId: DirectoryId) => Promise<string[]>;
+  fetchAccounts: (directoryId: ChainId) => Promise<string[]>;
   signWcTx: (
     caip: string,
     payload: AnyJson,
