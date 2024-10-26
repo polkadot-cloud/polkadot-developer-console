@@ -19,8 +19,10 @@ export interface TxMetaContextInterface {
   getTxPayload: (instanceId: ApiInstanceId) => AnyJson | undefined;
   getTxPayloadValue: (instanceId: ApiInstanceId) => AnyJson | undefined;
   getTxPayloadUid: (instanceId: ApiInstanceId) => number;
+  getTxMetadata: (instanceId: ApiInstanceId) => AnyJson;
   setTxPayload: (
     instanceId: ApiInstanceId,
+    txMetadata: AnyJson,
     payload: AnyJson,
     payloadValue: AnyJson,
     uid: number
@@ -43,4 +45,5 @@ export interface TxPayload {
   payload: AnyJson;
   payloadValue: AnyJson;
   uid: number;
+  txMetadata: AnyJson;
 }

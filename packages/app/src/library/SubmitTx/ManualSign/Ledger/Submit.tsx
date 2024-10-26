@@ -29,7 +29,7 @@ export const Submit = ({
   } = useLedgerHardware();
   const { getTxSignature } = useTxMeta();
   const { getAccount } = useImportedAccounts();
-  const { getTxPayload, getTxPayloadUid } = useTxMeta();
+  const { getTxPayload, getTxPayloadUid, getTxMetadata } = useTxMeta();
   const { instanceId, transactionVersion, chainId, ss58Prefix } =
     useExtrinsicData();
 
@@ -44,8 +44,15 @@ export const Submit = ({
     const uid = getTxPayloadUid(instanceId);
     const accountIndex = getAddressIndex();
     const payload = await getTxPayload(instanceId);
+    const txMetadata = getTxMetadata(instanceId);
 
-    await handleSignTx(txMetadataChainId, uid, accountIndex, payload);
+    await handleSignTx(
+      txMetadataChainId,
+      uid,
+      accountIndex,
+      payload,
+      txMetadata
+    );
   };
 
   // Check device runtime version.

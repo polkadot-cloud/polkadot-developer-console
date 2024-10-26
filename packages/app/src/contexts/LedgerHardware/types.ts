@@ -32,7 +32,8 @@ export interface LedgerHardwareContextInterface {
     txMetadataChainId: string,
     uid: number,
     index: number,
-    payload: AnyJson
+    payload: AnyJson,
+    txMetadata: AnyJson
   ) => Promise<void>;
   handleResetLedgerTask: () => void;
 }

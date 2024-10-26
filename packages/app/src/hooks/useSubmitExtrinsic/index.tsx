@@ -32,7 +32,7 @@ export const useSubmitExtrinsic = ({
     setTxFee,
     setSender,
     setTxPayload,
-    getTxPayloadValue,
+    getTxPayload,
     getTxSignature,
     removeTxPayload,
     removeTxSignature,
@@ -154,7 +154,7 @@ export const useSubmitExtrinsic = ({
       if (method === 'ExtrinsicSuccess') {
         NotificationsController.emit({
           title: 'Finalized',
-          subtitle: '"Transaction successful"',
+          subtitle: 'Transaction successful',
         });
       } else if (method === 'ExtrinsicFailed') {
         NotificationsController.emit({
@@ -204,7 +204,7 @@ export const useSubmitExtrinsic = ({
     setSubmitting(true);
 
     const txSignature = getTxSignature(instanceId);
-    const txPayloadValue = getTxPayloadValue(instanceId);
+    const txPayload = getTxPayload(instanceId);
 
     // handle signed transaction.
     if (getTxSignature(instanceId)) {
@@ -212,7 +212,7 @@ export const useSubmitExtrinsic = ({
         txRef.current.addSignature(
           fromRef.current,
           txSignature,
-          txPayloadValue
+          txPayload.toHex()
         );
 
         const unsub = await txRef.current.send(
