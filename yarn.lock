@@ -2068,7 +2068,7 @@ __metadata:
     "@w3ux/react-connect-kit": "npm:^1.7.0"
     "@w3ux/react-odometer": "npm:^1.1.0"
     "@w3ux/react-polkicon": "npm:^1.3.0"
-    "@w3ux/utils": "npm:^0.9.0"
+    "@w3ux/utils": "npm:0.9.1"
     "@walletconnect/modal": "npm:^2.6.2"
     "@walletconnect/universal-provider": "npm:^2.15.2"
     "@walletconnect/utils": "npm:^2.15.3"
@@ -4002,6 +4002,17 @@ __metadata:
   version: 0.2.0
   resolution: "@w3ux/types@npm:0.2.0"
   checksum: 10c0/dae057b008f110f99da6c97c6f43849708234fbabeb5fa7370a3f9908513227f420ba48c6183b421ec9f8c758cd2c98e45a8a380efe6491012341bcc08b3063b
+  languageName: node
+  linkType: hard
+
+"@w3ux/utils@npm:0.9.1":
+  version: 0.9.1
+  resolution: "@w3ux/utils@npm:0.9.1"
+  dependencies:
+    "@polkadot/util": "npm:^13.1.1"
+    "@polkadot/util-crypto": "npm:^13.1.1"
+    bignumber.js: "npm:^9.1.1"
+  checksum: 10c0/624ca3fd80cd5a0ed16b28342b41d643cc1aac7dbe68e00f3c4a9e460da21ac28d09e86582aad7c642e5907069c4544705c3bc638d836625916694e21774861c
   languageName: node
   linkType: hard
 

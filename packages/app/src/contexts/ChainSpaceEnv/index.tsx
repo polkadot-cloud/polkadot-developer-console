@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
-import { setStateWithRef } from '@w3ux/utils';
+import { eqSet, setStateWithRef } from '@w3ux/utils';
 import { isCustomEvent } from 'Utils';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import { AccountBalances } from 'model/AccountBalances';
@@ -36,7 +36,7 @@ import { PalletScraper } from 'model/Scraper/Pallet';
 import { xxhashAsHex } from '@w3ux/utils/util-crypto';
 import { u16 } from 'scale-ts';
 import type { AnyJson } from '@w3ux/types';
-import { eqSet, getApiInstanceOwnerAndIndex } from './Utils';
+import { getApiInstanceOwnerAndIndex } from './Utils';
 import { useTxMeta } from 'contexts/TxMeta';
 
 export const ChainSpaceEnv = createContext<ChainSpaceEnvContextInterface>(
