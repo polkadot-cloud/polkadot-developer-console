@@ -31,7 +31,7 @@ export const QrReader = ({
   const valid =
     isValidAddress(qrData) &&
     !vaultAccountExists(directoryId, qrData) &&
-    !formatAccountSs58(qrData, ss58);
+    formatAccountSs58(qrData, ss58) !== null;
 
   useEffect(() => {
     // Add account and close overlay if valid.
@@ -54,7 +54,7 @@ export const QrReader = ({
     qrData === undefined
       ? 'Waiting for QR Code'
       : isValidAddress(qrData)
-        ? formatAccountSs58(qrData, ss58)
+        ? formatAccountSs58(qrData, ss58) === null
           ? 'Different Network Address'
           : exists
             ? 'Account Already Imported'

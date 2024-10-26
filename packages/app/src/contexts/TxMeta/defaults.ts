@@ -18,8 +18,9 @@ export const defaultTxMeta: TxMetaContextInterface = {
 
   getTxPayload: (instanceId) => undefined,
   getTxPayloadUid: (instanceId) => 0,
+  getTxMetadata: (instanceId) => {},
   getTxPayloadValue: (instanceId) => {},
-  setTxPayload: (instanceId, payload, payloadValue, uid) => {},
+  setTxPayload: (instanceId, txMetadata, payload, payloadValue, uid) => {},
   removeTxPayload: (instanceId) => {},
   incrementTxPayloadUid: (instanceId) => 1,
 

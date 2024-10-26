@@ -11,15 +11,16 @@ import type { AnyFunction, AnyJson } from '@w3ux/types';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { getSdkError } from '@walletconnect/utils';
 import { useTabs } from 'contexts/Tabs';
-import { isSuperset } from 'contexts/ChainSpaceEnv/Utils';
 import { getUnixTime } from 'date-fns';
+import { isSuperset } from '@w3ux/utils';
+import type { ChainId } from 'config/networks/types';
 
 export const WalletConnectContext =
   createContext<WalletConnectContextInterface>(defaults.defaultWalletConnect);
 
 export const useWalletConnect = () => useContext(WalletConnectContext);
 
-// `projectId` is configured on `https://cloud.walletconnect.com/`.
+// `projectId` is configured on `https://cloud.reown.com/`.
 const wcProjectId = 'dcb8a7c6d01ace818286c005f75d70b9';
 
 export const WalletConnectProvider = ({
@@ -57,7 +58,7 @@ export const WalletConnectProvider = ({
   // Store whether the wallet connect session is active.
   const [wcSessionActive, setWcSessionActive] = useState<boolean>(false);
 
-  // Store the set of chain ids the mot recent session is connected to.
+  // Store the set of chain ids the most recent session is connected to.
   const sessionChains = useRef<Set<string>>(new Set());
 
   // Init WalletConnect provider & modal, and update as wcInitialized.
@@ -280,6 +281,39 @@ export const WalletConnectProvider = ({
     return result?.signature || null;
   };
 
+  const fetchAccounts = async (chainid: ChainId): Promise<string[]> => {
+    // Retrieve a new session or get current one.
+    const wcSession = await initializeWcSession();
+    if (wcSession === null) {
+      return [];
+    }
+
+    // Get accounts from session.
+    const walletConnectAccounts = Object.values(wcSession.namespaces)
+      .map((namespace: AnyJson) => namespace.accounts)
+      .flat();
+
+    // Get the caip of the active chain.
+    const caip = connectedChains
+      .find((chain) => chain.specName === chainid)
+      ?.genesisHash.substring(2)
+      .substring(0, 32);
+
+    // Only get accounts for the currently selected `caip`.
+    let filteredAccounts = walletConnectAccounts.filter((wcAccount) => {
+      const prefix = wcAccount.split(':')[1];
+      return prefix === caip;
+    });
+
+    // grab account addresses from CAIP account formatted accounts
+    filteredAccounts = filteredAccounts.map((wcAccount) => {
+      const address = wcAccount.split(':')[2];
+      return address;
+    });
+
+    return filteredAccounts;
+  };
+
   // On initial render, initiate the WalletConnect provider.
   useEffect(() => {
     if (!wcProvider.current) {
@@ -326,6 +360,7 @@ export const WalletConnectProvider = ({
         disconnectWcSession,
         wcInitialized,
         wcSessionActive,
+        fetchAccounts,
         signWcTx,
       }}
     >

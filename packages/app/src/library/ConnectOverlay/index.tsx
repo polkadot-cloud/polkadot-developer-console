@@ -3,7 +3,6 @@
 
 import { useEffect } from 'react';
 import { Wrapper } from './Wrappers';
-import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
 import { motion } from 'framer-motion';
 import { TAB_TRANSITION_DURATION_MS } from 'contexts/Tabs/defaults';
 import { useConnect } from 'contexts/Connect';
@@ -16,6 +15,7 @@ import { mobileCheck } from './Utils';
 import extensions from '@w3ux/extension-assets';
 import type { ExtensionArrayListItem } from '@w3ux/extension-assets/util';
 import { useExtensions } from '@w3ux/react-connect-kit';
+import { useOutsideAlerter } from '@w3ux/hooks';
 
 export const ConnectOverlay = () => {
   const {

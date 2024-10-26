@@ -1096,7 +1096,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/devices@npm:^8.3.0, @ledgerhq/devices@npm:^8.4.0, @ledgerhq/devices@npm:^8.4.4":
+"@ledgerhq/devices@npm:^8.3.0, @ledgerhq/devices@npm:^8.4.2, @ledgerhq/devices@npm:^8.4.4":
   version: 8.4.4
   resolution: "@ledgerhq/devices@npm:8.4.4"
   dependencies:
@@ -1108,7 +1108,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/errors@npm:^6.16.4, @ledgerhq/errors@npm:^6.17.0, @ledgerhq/errors@npm:^6.19.1":
+"@ledgerhq/errors@npm:^6.16.4, @ledgerhq/errors@npm:^6.18.0, @ledgerhq/errors@npm:^6.19.1":
   version: 6.19.1
   resolution: "@ledgerhq/errors@npm:6.19.1"
   checksum: 10c0/5cfbd5ff5e4316afc88c456a74d3dc0e0032dafd88f656e80a5cb5b297a75ba6701c53ce38ef3f38a84a8591c499b0b9248cdf352ff34c97a550440cdaddd8d2
@@ -1139,15 +1139,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport@npm:6.31.0":
-  version: 6.31.0
-  resolution: "@ledgerhq/hw-transport@npm:6.31.0"
+"@ledgerhq/hw-transport@npm:6.31.2":
+  version: 6.31.2
+  resolution: "@ledgerhq/hw-transport@npm:6.31.2"
   dependencies:
-    "@ledgerhq/devices": "npm:^8.4.0"
-    "@ledgerhq/errors": "npm:^6.17.0"
+    "@ledgerhq/devices": "npm:^8.4.2"
+    "@ledgerhq/errors": "npm:^6.18.0"
     "@ledgerhq/logs": "npm:^6.12.0"
     events: "npm:^3.3.0"
-  checksum: 10c0/6d277a05eb5a202a17a7a942e63022ae26321795c640d59a75b032e33274c731da5f23fbf00132efa57bc715bea8505d6a1293c20b121d603459b25c1d784444
+  checksum: 10c0/3fc61c2e844639b7ec73e5eaec2f34235a414ec802df2491ea3d32d854f5f53c592b35b874a9ce899a6087a74a5a750b20c91aae19aaa44eea2faa390edf593f
   languageName: node
   linkType: hard
 
@@ -1831,6 +1831,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@polkadot-api/merkleize-metadata@npm:^1.1.8":
+  version: 1.1.8
+  resolution: "@polkadot-api/merkleize-metadata@npm:1.1.8"
+  dependencies:
+    "@polkadot-api/metadata-builders": "npm:0.9.0"
+    "@polkadot-api/substrate-bindings": "npm:0.9.2"
+    "@polkadot-api/utils": "npm:0.1.2"
+  checksum: 10c0/405ea8ba8f51298e542127b09a52716347b8c7ac3aa4425267853c2cc2a1843a2c9c66210352af072527780fa43a87cba4ec50512716b933d7a4bd35c6f499fb
+  languageName: node
+  linkType: hard
+
 "@polkadot-api/metadata-builders@npm:0.0.1":
   version: 0.0.1
   resolution: "@polkadot-api/metadata-builders@npm:0.0.1"
@@ -1868,6 +1879,16 @@ __metadata:
     "@polkadot-api/substrate-bindings": "npm:0.9.2"
     "@polkadot-api/utils": "npm:0.1.2"
   checksum: 10c0/038b7d5ffce244a806dc85f28ac53bc05721bb4e2c67fce4d8268de816694895320831483460341effc945254d5faf2483e3277c408f7e9c3353f1318c7c65ca
+  languageName: node
+  linkType: hard
+
+"@polkadot-api/metadata-builders@npm:0.9.0":
+  version: 0.9.0
+  resolution: "@polkadot-api/metadata-builders@npm:0.9.0"
+  dependencies:
+    "@polkadot-api/substrate-bindings": "npm:0.9.2"
+    "@polkadot-api/utils": "npm:0.1.2"
+  checksum: 10c0/26f714bea541cbb4e534707561d0b1d1d2322cba6a49b0cb18deac8923fa21b3a172b163380778655cf44c184713656daae3c6d98c1bbc8baca6d6c924d30125
   languageName: node
   linkType: hard
 
@@ -2055,6 +2076,7 @@ __metadata:
     "@fortawesome/free-solid-svg-icons": "npm:^6.5.2"
     "@fortawesome/react-fontawesome": "npm:^0.2.0"
     "@ledgerhq/hw-transport-webhid": "npm:^6.29.2"
+    "@polkadot-api/merkleize-metadata": "npm:^1.1.8"
     "@polkadot-api/metadata-builders": "npm:^0.8.2"
     "@polkadot-api/observable-client": "npm:^0.5.11"
     "@polkadot-api/substrate-client": "npm:^0.2.2"
@@ -2064,16 +2086,16 @@ __metadata:
     "@polkadot/rpc-provider": "npm:12.0.2"
     "@tanstack/react-query": "npm:^5.53.3"
     "@w3ux/extension-assets": "npm:^0.3.1"
-    "@w3ux/hooks": "npm:^1.1.0"
+    "@w3ux/hooks": "npm:1.1.1"
     "@w3ux/react-connect-kit": "npm:^1.7.0"
     "@w3ux/react-odometer": "npm:^1.1.0"
     "@w3ux/react-polkicon": "npm:^1.3.0"
-    "@w3ux/utils": "npm:^0.9.0"
+    "@w3ux/utils": "npm:0.9.1"
     "@walletconnect/modal": "npm:^2.6.2"
     "@walletconnect/universal-provider": "npm:^2.15.2"
     "@walletconnect/utils": "npm:^2.15.3"
     "@web3modal/wagmi": "npm:^5.1.5"
-    "@zondax/ledger-substrate": "npm:^0.44.2"
+    "@zondax/ledger-substrate": "npm:^1.0.0"
     bignumber.js: "npm:^9.1.2"
     buffer: "npm:^6.0.3"
     compare-versions: "npm:^6.1.1"
@@ -3957,6 +3979,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@w3ux/hooks@npm:1.1.1":
+  version: 1.1.1
+  resolution: "@w3ux/hooks@npm:1.1.1"
+  peerDependencies:
+    react: ^18
+  checksum: 10c0/abd315cd4cd5cb45f5dd73d1d661e82de64230d0c9b167d5cb64c768044efc9a52c7a2fe0a88cc951072b2295835738fae05abd1a8f9ac2e07cb811dba184375
+  languageName: node
+  linkType: hard
+
 "@w3ux/hooks@npm:^1.1.0":
   version: 1.1.0
   resolution: "@w3ux/hooks@npm:1.1.0"
@@ -4002,6 +4033,17 @@ __metadata:
   version: 0.2.0
   resolution: "@w3ux/types@npm:0.2.0"
   checksum: 10c0/dae057b008f110f99da6c97c6f43849708234fbabeb5fa7370a3f9908513227f420ba48c6183b421ec9f8c758cd2c98e45a8a380efe6491012341bcc08b3063b
+  languageName: node
+  linkType: hard
+
+"@w3ux/utils@npm:0.9.1":
+  version: 0.9.1
+  resolution: "@w3ux/utils@npm:0.9.1"
+  dependencies:
+    "@polkadot/util": "npm:^13.1.1"
+    "@polkadot/util-crypto": "npm:^13.1.1"
+    bignumber.js: "npm:^9.1.1"
+  checksum: 10c0/624ca3fd80cd5a0ed16b28342b41d643cc1aac7dbe68e00f3c4a9e460da21ac28d09e86582aad7c642e5907069c4544705c3bc638d836625916694e21774861c
   languageName: node
   linkType: hard
 
@@ -4775,23 +4817,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zondax/ledger-js@npm:^0.8.2":
-  version: 0.8.2
-  resolution: "@zondax/ledger-js@npm:0.8.2"
+"@zondax/ledger-js@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "@zondax/ledger-js@npm:0.11.0"
   dependencies:
     "@ledgerhq/hw-transport": "npm:6.30.6"
-  checksum: 10c0/93c4e241dc37098a66829561fa6d8f62daa2b2c70ce51d1134c1ec4a74b38e22044fc764882f9a195f1f6d3a3a4879182978aead8aa7b4dbc4fe398163b5b96b
+  checksum: 10c0/d6f93d2cdc7a78df971181ca1cc0b09d608c7549d09146b48d89c3496203e707fe650f3951d9a74c32e0a9d82d877415c6707a9a118380c4371ecda4b0aa6484
   languageName: node
   linkType: hard
 
-"@zondax/ledger-substrate@npm:^0.44.2":
-  version: 0.44.7
-  resolution: "@zondax/ledger-substrate@npm:0.44.7"
+"@zondax/ledger-substrate@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@zondax/ledger-substrate@npm:1.0.0"
   dependencies:
-    "@ledgerhq/hw-transport": "npm:6.31.0"
-    "@zondax/ledger-js": "npm:^0.8.2"
-    axios: "npm:^1.7.2"
-  checksum: 10c0/f5cf07ae8671b449bf787e21f226fc9c0ac1ed0cc68a5f42e7d4c55b9f9738f2e3c277a4b3eff2cfb66d4664ad7d150eb08156df3fbbcb80b4f5129ac1a659a2
+    "@ledgerhq/hw-transport": "npm:6.31.2"
+    "@zondax/ledger-js": "npm:^0.11.0"
+    axios: "npm:^1.7.4"
+  checksum: 10c0/e3e25d28dbb768b48e5a5e0dff46d71c6061691f8706092728de7b0751c402f14bc5406230240a55297caa8bb2ddee02fc711fc37a10a53333dc5f7d18fd557f
   languageName: node
   linkType: hard
 
@@ -5098,7 +5140,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.7.2":
+"axios@npm:^1.7.4":
   version: 1.7.7
   resolution: "axios@npm:1.7.7"
   dependencies:

@@ -3,7 +3,7 @@
 
 import type { SelectDropdownProps } from './types';
 import { useEffect, useRef } from 'react';
-import { useOutsideAlerter } from 'hooks/useOutsideAlerter';
+import { useOutsideAlerter } from '@w3ux/hooks';
 import { SelectDropdownWrapper } from 'library/Inputs/Wrappers';
 
 export const SelectDropdown = ({

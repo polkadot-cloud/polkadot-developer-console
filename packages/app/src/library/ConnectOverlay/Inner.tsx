@@ -188,12 +188,8 @@ export const ConnectInner = ({ installed, other }: ConnectInnerProps) => {
             <div>
               <h4>Wallet Connect (Beta)</h4>
               <h5>
-                <a
-                  href="https://walletconnect.com/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  walletconnect.com
+                <a href="https://reown.com/" target="_blank" rel="noreferrer">
+                  reown.com
                   <FontAwesomeIcon
                     icon={faExternalLinkAlt}
                     transform="shrink-5"
