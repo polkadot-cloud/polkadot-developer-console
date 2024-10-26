@@ -100,7 +100,6 @@ export const useBuildPayload = ({
         payload = api.registry.createType('ExtrinsicPayload', payloadJson, {
           version: payloadJson.version,
         });
-        txMetadata = null;
       }
 
       // Persist both the payload json and the payload bytes in state, indexed by its uid.
