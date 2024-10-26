@@ -11,8 +11,8 @@ import type { AnyFunction, AnyJson } from '@w3ux/types';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
 import { getSdkError } from '@walletconnect/utils';
 import { useTabs } from 'contexts/Tabs';
-import { isSuperset } from 'contexts/ChainSpaceEnv/Utils';
 import { getUnixTime } from 'date-fns';
+import { isSuperset } from '@w3ux/utils';
 
 export const WalletConnectContext =
   createContext<WalletConnectContextInterface>(defaults.defaultWalletConnect);
