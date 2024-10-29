@@ -6,7 +6,7 @@ import type { AnyJson } from '@w3ux/types';
 import type { UseBuildPayloadProps } from './types';
 import { useImportedAccounts } from 'contexts/ImportedAccounts';
 import type { ApiPromise } from '@polkadot/api';
-import { objectSpread, u8aToHex } from '@w3ux/utils/util';
+import { objectSpread, u8aToHex } from '@polkadot/util';
 
 export const useBuildPayload = ({
   api,
