@@ -4,7 +4,7 @@
 import { capitalizeFirstLetter, removeHexPrefix } from '@w3ux/utils';
 import { EncodedWrapper } from '../Wrappers';
 import type { EncodedDetailsProps } from './types';
-import { xxhashAsHex } from '@w3ux/utils/util-crypto';
+import { xxhashAsHex } from '@polkadot/util-crypto';
 import { ButtonIcon } from 'library/Buttons/ButtonIcon';
 
 export const EncodedDetails = ({
