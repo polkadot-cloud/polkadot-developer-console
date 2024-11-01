@@ -9699,7 +9699,7 @@ __metadata:
     prettier: "npm:^3.2.5"
     prettier-plugin-organize-imports: "npm:^3.2.4"
     rxjs: "npm:^7.8.1"
-    sass: "npm:^1.78.0"
+    sass: "npm:^1.80.5"
     tsup: "npm:^8.0.2"
     tsx: "npm:^4.19.1"
     typescript: "npm:^5.2.2"
@@ -10469,9 +10469,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.78.0":
-  version: 1.79.5
-  resolution: "sass@npm:1.79.5"
+"sass@npm:^1.80.5":
+  version: 1.80.5
+  resolution: "sass@npm:1.80.5"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
     chokidar: "npm:^4.0.0"
@@ -10479,7 +10479,7 @@ __metadata:
     source-map-js: "npm:>=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 10c0/7331865fd1d0c03e6e180a4fe0e175ac1bf1214f6c77f0d99ad72fbe2ed9ede3fab8a64c0c41471cb8a358a9d11624ec59a49283f9b6070eb99c522b34b814bf
+  checksum: 10c0/d592e57c037315f4c5976af3d37ce4c7758b1b4e89d064455d6992829ea59888c71b9dbc86f7fc8dca87ac98ebc9cece10e5c8fc5509bf192db81712a34fd579
   languageName: node
   linkType: hard
 
