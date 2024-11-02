@@ -2088,6 +2088,7 @@ __metadata:
     "@polkadot/util-crypto": "npm:^13.2.2"
     "@tanstack/react-query": "npm:^5.53.3"
     "@w3ux/extension-assets": "npm:^0.4.0"
+    "@w3ux/factories": "npm:^1.0.0-beta.0"
     "@w3ux/hooks": "npm:^1.1.1"
     "@w3ux/react-connect-kit": "npm:^1.8.0"
     "@w3ux/react-odometer": "npm:^1.1.0"
@@ -4156,6 +4157,15 @@ __metadata:
   peerDependencies:
     react: ^18
   checksum: 10c0/8cacff647d2d9c8deef43e83f57cfeb30a252cb716afb18c048b876012b9ce8f10e24d2a79f91e180014a46f9c9ca3346fd061fd6b9f98175881176bee90d4a2
+  languageName: node
+  linkType: hard
+
+"@w3ux/factories@npm:^1.0.0-beta.0":
+  version: 1.0.0-beta.0
+  resolution: "@w3ux/factories@npm:1.0.0-beta.0"
+  peerDependencies:
+    react: ^18
+  checksum: 10c0/1c2a8adb966300fe7e36410e4b91381221a70f2470dfa3c1b5612ddc2e84c4579b6928ac7d4c9cad34291b7d8e1cbc97cbba66ae46fd04627042df50e9646b66
   languageName: node
   linkType: hard
 
