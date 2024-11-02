@@ -2086,7 +2086,7 @@ __metadata:
     "@polkadot/rpc-provider": "npm:12.0.2"
     "@polkadot/util": "npm:^13.2.2"
     "@polkadot/util-crypto": "npm:^13.2.2"
-    "@tanstack/react-query": "npm:^5.53.3"
+    "@tanstack/react-query": "npm:^5.59.16"
     "@w3ux/extension-assets": "npm:^0.4.0"
     "@w3ux/factories": "npm:^1.0.0-beta.0"
     "@w3ux/hooks": "npm:^1.1.1"
@@ -3796,21 +3796,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.59.9":
-  version: 5.59.9
-  resolution: "@tanstack/query-core@npm:5.59.9"
-  checksum: 10c0/a422c7a1b097541c76d7c64321114dae21628feece147fda2362482304c2064db8d327a5192ad286885f4066e515cadc7267aa3ea39063c0f31da65d13d0d0d4
+"@tanstack/query-core@npm:5.59.16":
+  version: 5.59.16
+  resolution: "@tanstack/query-core@npm:5.59.16"
+  checksum: 10c0/487a1ac0df5e02ca4ea5bf3b9ee0010ac7fe0856a36fa7bd10947598d3f0ba356c91aa21b123729b26f2116f05b8b69cd8fb17681c24cdd586de17b6fe021521
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.53.3":
-  version: 5.59.9
-  resolution: "@tanstack/react-query@npm:5.59.9"
+"@tanstack/react-query@npm:^5.59.16":
+  version: 5.59.16
+  resolution: "@tanstack/react-query@npm:5.59.16"
   dependencies:
-    "@tanstack/query-core": "npm:5.59.9"
+    "@tanstack/query-core": "npm:5.59.16"
   peerDependencies:
     react: ^18 || ^19
-  checksum: 10c0/17fca365b478514c11f5f4de9e6f193e1cd94bed12bf0be71e4554d871dbcbc297ec558e053a01015114d9fce201f4d15040a37275b61d4b27ae9901d5dc8c01
+  checksum: 10c0/82acf170d2d169ad18081e4dc52bdcec3b92bd1b134bb704ab6949937a59fd4d7d4ddb1172dd7fdbd1667a2d2e0ffa118e68bde5f53972649b8e55bd0e87244c
   languageName: node
   linkType: hard
 
