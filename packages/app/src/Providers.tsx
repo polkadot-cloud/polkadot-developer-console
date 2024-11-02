@@ -3,10 +3,8 @@
 
 import { App } from 'App';
 import { DappName } from 'consts';
-import type { AnyJson } from '@w3ux/types';
 import { TabsProvider } from 'contexts/Tabs';
-import type { Provider } from 'hooks/withProviders';
-import { withProviders } from 'hooks/withProviders';
+import { withProviders } from '@w3ux/factories';
 import { MenuProvider } from 'contexts/Menu';
 import { TagsProvider } from 'contexts/Tags';
 import { ChainFilterProvider } from 'contexts/ChainFilter';
@@ -41,61 +39,61 @@ import { InputMetaProvider } from 'contexts/InputMeta';
 import { DisconnectTabProvider } from 'contexts/DisconnectTab';
 import { WalletConnectProvider } from 'contexts/WalletConnect';
 
-export const Providers = () => {
+export const Providers = () =>
   // !! --------------------------------
   // !! Provider order matters.
   // !! --------------------------------
-  const providers: Provider<AnyJson>[] = [
-    // Workspace and tab providers.
-    SettingsProvider,
-    TabsProvider,
-    ActiveTabProvider,
-    TagsProvider,
-    GlobalChainSpaceProvider,
+  withProviders(
+    [
+      // Workspace and tab providers.
+      SettingsProvider,
+      TabsProvider,
+      ActiveTabProvider,
+      TagsProvider,
+      GlobalChainSpaceProvider,
 
-    // UI providers.
-    MenuProvider,
-    TooltipProvider,
-    OneShotTooltipProvider,
-    ConnectProvider,
-    ChainUiProvider,
-    OverlayProvider,
-    PromptProvider,
-    InputMetaProvider,
+      // UI providers.
+      MenuProvider,
+      TooltipProvider,
+      OneShotTooltipProvider,
+      ConnectProvider,
+      ChainUiProvider,
+      OverlayProvider,
+      PromptProvider,
+      InputMetaProvider,
 
-    // Transaction providers.
-    TxMetaProvider,
+      // Transaction providers.
+      TxMetaProvider,
 
-    // Chain space environment and api indexer.
-    ApiIndexerProvider,
-    ChainSpaceEnvProvider,
+      // Chain space environment and api indexer.
+      ApiIndexerProvider,
+      ChainSpaceEnvProvider,
 
-    // Account import related providers.
-    ExtensionsProvider,
-    [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
-    WalletConnectProvider,
-    WCAccountsProvider,
-    VaultAccountsProvider,
-    LedgerHardwareProvider,
-    LedgerAccountsProvider,
-    ImportedAccountsProvider,
+      // Account import related providers.
+      ExtensionsProvider,
+      [ExtensionAccountsProvider, { dappName: DappName, network: 'polkadot' }], // TODO: Replace hard-coded `network`.
+      WalletConnectProvider,
+      WCAccountsProvider,
+      VaultAccountsProvider,
+      LedgerHardwareProvider,
+      LedgerAccountsProvider,
+      ImportedAccountsProvider,
 
-    // Account formatting and balances provider.
-    AccountsProvider,
+      // Account formatting and balances provider.
+      AccountsProvider,
 
-    // Task: `chainExplorer` related providers.
-    ChainFilterProvider,
-    ChainStateProvider,
-    ChainExplorerProvider,
+      // Task: `chainExplorer` related providers.
+      ChainFilterProvider,
+      ChainStateProvider,
+      ChainExplorerProvider,
 
-    // Task: `parachainSetup` related providers.
-    ReserveParaIdProvider,
-    RegisterParathreadProvider,
-    ParaSetupProvider,
+      // Task: `parachainSetup` related providers.
+      ReserveParaIdProvider,
+      RegisterParathreadProvider,
+      ParaSetupProvider,
 
-    // Tab disconnect and destroy provider.
-    DisconnectTabProvider,
-  ];
-
-  return withProviders(providers, App);
-};
+      // Tab disconnect and destroy provider.
+      DisconnectTabProvider,
+    ],
+    App
+  );
