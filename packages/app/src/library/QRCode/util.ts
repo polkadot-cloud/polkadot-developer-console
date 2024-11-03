@@ -1,8 +1,8 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
-import { isString, u8aConcat, u8aToU8a } from '@w3ux/utils/util';
-import { decodeAddress } from '@w3ux/utils/util-crypto';
+import { isString, u8aConcat, u8aToU8a } from '@polkadot/util';
+import { decodeAddress } from '@polkadot/util-crypto';
 import { CRYPTO_SR25519, FRAME_SIZE, SUBSTRATE_ID } from './constants.js';
 
 const MULTIPART = new Uint8Array([0]);

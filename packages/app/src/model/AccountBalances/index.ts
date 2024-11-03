@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import type { VoidFn } from '@polkadot/api/types';
-import { stringToBigNumber } from '@w3ux/utils';
+import { rmCommas } from '@w3ux/utils';
+import type { AnyJson } from '@w3ux/types';
 import type { ChainId } from 'config/networks/types';
 import { ApiController } from 'controllers/Api';
 import type { Balances } from './types';
@@ -10,7 +11,7 @@ import type { Unsubscribable } from 'controllers/Subscriptions/types';
 import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';
 import type { OwnerId } from 'types';
-import type { AnyJson } from '@w3ux/types';
+import BigNumber from 'bignumber.js';
 
 export class AccountBalances implements Unsubscribable {
   // ------------------------------------------------------
@@ -88,16 +89,18 @@ export class AccountBalances implements Unsubscribable {
               this.balances[address] = {
                 nonce: nonce.toNumber(),
                 balance: {
-                  free: stringToBigNumber(accountData.free.toString()),
-                  reserved: stringToBigNumber(accountData.reserved.toString()),
-                  frozen: stringToBigNumber(accountData.frozen.toString()),
+                  free: this.stringToBigNumber(accountData.free.toString()),
+                  reserved: this.stringToBigNumber(
+                    accountData.reserved.toString()
+                  ),
+                  frozen: this.stringToBigNumber(accountData.frozen.toString()),
                 },
                 locks: locksResult
                   .toHuman()
                   .map((lock: { id: string; amount: string }) => ({
                     ...lock,
                     id: lock.id.trim(),
-                    amount: stringToBigNumber(lock.amount),
+                    amount: this.stringToBigNumber(lock.amount),
                   })),
               };
 
@@ -156,4 +159,12 @@ export class AccountBalances implements Unsubscribable {
       unsub();
     });
   };
+
+  // ------------------------------------------------------
+  // Utils.
+  // ------------------------------------------------------
+
+  // Convert string to BigNumber.
+  stringToBigNumber = (value: string): BigNumber =>
+    new BigNumber(rmCommas(value));
 }

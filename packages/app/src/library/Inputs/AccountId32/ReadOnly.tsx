@@ -3,7 +3,7 @@
 
 import { Polkicon } from '@w3ux/react-polkicon';
 import { TextInputWrapper } from '../Wrappers';
-import { ellipsisFn, isValidAddress, remToUnit } from '@w3ux/utils';
+import { ellipsisFn, isValidAddress } from '@w3ux/utils';
 import type { AccountId32ReadOnlyProps } from './types';
 
 export const AccountId32ReadOnly = ({
@@ -28,8 +28,8 @@ export const AccountId32ReadOnly = ({
       <span className="icon">
         <Polkicon
           address={address}
-          size={remToUnit('1.5rem')}
-          outerColor="var(--background-primary)"
+          background="var(--background-primary)"
+          fontSize="1.5rem"
         />
       </span>
       <input

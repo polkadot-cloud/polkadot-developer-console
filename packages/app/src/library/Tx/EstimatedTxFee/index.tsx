@@ -6,6 +6,7 @@ import { useTxMeta } from 'contexts/TxMeta';
 import { Wrapper } from './Wrapper';
 import type { EstimatedTxFeeProps } from './types';
 import { useExtrinsicData } from 'library/SubmitTx/ExtrinsicDataProvider';
+import BigNumber from 'bignumber.js';
 
 export const EstimatedTxFee = ({ format }: EstimatedTxFeeProps) => {
   const { getTxFee } = useTxMeta();
@@ -13,7 +14,9 @@ export const EstimatedTxFee = ({ format }: EstimatedTxFeeProps) => {
 
   const txFee = getTxFee(instanceId);
 
-  const txFeesUnit = planckToUnit(txFee, units).toFormat();
+  const txFeesUnit = new BigNumber(
+    planckToUnit(txFee.toString(), units).toString()
+  ).toFormat();
 
   return format === 'table' ? (
     <>
