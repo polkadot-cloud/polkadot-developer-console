@@ -76,7 +76,7 @@ export class AccountBalances implements Unsubscribable {
         accountsAdded.forEach(async (address) => {
           this.#accounts.push(address);
 
-          const unsub = await api.queryMulti<AnyJson>(
+          const unsub = await api.queryMulti(
             [
               [api.query.system.account, address],
               [api.query.balances.locks, address],
@@ -84,7 +84,7 @@ export class AccountBalances implements Unsubscribable {
             async ([
               { data: accountData, nonce },
               locksResult,
-            ]): Promise<void> => {
+            ]: AnyJson): Promise<void> => {
               // Update balance data for this address.
               this.balances[address] = {
                 nonce: nonce.toNumber(),

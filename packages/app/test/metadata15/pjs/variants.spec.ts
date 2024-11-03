@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 
 import assert from 'assert';
-import * as metadataJson from '../data/metadataV14.json';
+import * as metadataJson from '../../data/metadataV15_PJS.json';
 import type { AnyJson } from '@w3ux/types';
 
 /* Metadata variants tests.
@@ -34,7 +34,7 @@ describe('Basic variant structure is intact', () => {
   const variantDefs = lookupVariants.map((item: AnyJson) => item.variants);
 
   it('Metadata lookup contains 318 variants', () => {
-    assert.ok(lookupVariants.length === 318);
+    assert.equal(lookupVariants.length, 332);
   });
 
   it('Variants only contain one `variants` property', () => {
