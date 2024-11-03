@@ -5,7 +5,7 @@ import type { AccountBalances } from 'model/AccountBalances';
 import type { BlockNumber } from 'model/BlockNumber';
 import type { NextFreeParaId } from 'model/NextFreeParaId';
 import type { ChainSpec } from 'model/Observables/ChainSpec';
-import type { Metadata } from 'model/Observables/Metadata';
+import type { TaggedMetadata } from 'model/Observables/TaggedMetadata';
 
 // Define all possible subscription classes.
 export type Subscription = UnsubSubscriptions | ObservableGetters;
@@ -14,7 +14,7 @@ export type Subscription = UnsubSubscriptions | ObservableGetters;
 export type UnsubSubscriptions = AccountBalances | BlockNumber | NextFreeParaId;
 
 // Polkadot API Getters (observables wrapped in an async function that resolve upon completion).
-export type ObservableGetters = ChainSpec | Metadata;
+export type ObservableGetters = ChainSpec | TaggedMetadata;
 
 // the record of subscriptions, keyed by tabId.
 export type ChainSubscriptions = Record<

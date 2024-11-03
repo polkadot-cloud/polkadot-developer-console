@@ -9,7 +9,7 @@ import type { ApiInstanceId } from 'model/Api/types';
 import { getIndexFromInstanceId } from 'model/Api/util';
 import type { OwnerId } from 'types';
 
-export class Metadata implements ObservableGetter {
+export class TaggedMetadata implements ObservableGetter {
   // ------------------------------------------------------
   // Class members.
   // ------------------------------------------------------

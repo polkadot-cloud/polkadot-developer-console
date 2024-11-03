@@ -24,7 +24,7 @@ import { getObservableClient } from '@polkadot-api/observable-client';
 import { ChainSpec } from 'model/Observables/ChainSpec';
 
 import { getDataFromObservable } from 'model/Observables/util';
-import { Metadata } from 'model/Observables/Metadata';
+import { TaggedMetadata } from 'model/Observables/TaggedMetadata';
 import { MetadataV15 } from 'model/Metadata/MetadataV15';
 import { PalletScraper } from 'model/Scraper/Pallet';
 import {
@@ -187,7 +187,7 @@ export class Api {
 
   async fetchChainSpec() {
     try {
-      const [resultChainSpec, resultMetadata] = await Promise.all([
+      const [resultChainSpec, resultTaggedMetadata] = await Promise.all([
         // Get chain spec via observable.
         getDataFromObservable(
           this.#instanceId,
@@ -198,43 +198,39 @@ export class Api {
         getDataFromObservable(
           this.#instanceId,
           'metadata',
-          new Metadata(this.#ownerId, this.#instanceId)
+          new TaggedMetadata(this.#ownerId, this.#instanceId)
         ),
       ]);
 
-      if (!resultChainSpec || !resultMetadata) {
+      if (!resultChainSpec || !resultTaggedMetadata) {
         throw new Error();
       }
 
-      console.log('papi: ', resultMetadata);
-
       // Now metadata has been retrieved, create a dynamic builder for the metadata and persist it
       // to this class.
-      this.#papiBuilder = getDynamicBuilder(getLookupFn(resultMetadata));
+      this.#papiBuilder = getDynamicBuilder(getLookupFn(resultTaggedMetadata));
 
       // Format a human-readable chain name based on spec name.
       const chainName = formatChainSpecName(resultChainSpec.specName);
 
       // Prepare metadata class and scraper to retrieve constants.
-      const resultMetadataV15 = new MetadataV15(resultMetadata);
-      const scraper = new PalletScraper(resultMetadataV15);
+      const resultTaggedMetadataV15 = new MetadataV15(resultTaggedMetadata);
+      const scraper = new PalletScraper(resultTaggedMetadataV15);
 
       // Get SS58 Prefix via metadata - defaults to 0.
       const ss58Prefix = this.#papiBuilder
         .buildConstant('System', 'SS58Prefix')
         .dec(String(scraper.getConstantValue('System', 'SS58Prefix') || '0x'));
 
+      // We are still using the Polkadot JS API raw metadata format.
       const metadataPJs = this.api.runtimeMetadata;
       const metadataPJsJson = metadataPJs.asV15.toJSON();
-
-      console.log('pjs api: ', metadataPJsJson);
 
       // Format resulting class chain spec and persist to class.
       this.chainSpec = {
         chain: chainName,
         version: resultChainSpec.specVersion,
         ss58Prefix: Number(ss58Prefix),
-        // TODO: Replace with Papi / runtime api fetched metadata.
         metadata: MetadataController.instantiate(metadataPJsJson),
         consts: {},
       };
