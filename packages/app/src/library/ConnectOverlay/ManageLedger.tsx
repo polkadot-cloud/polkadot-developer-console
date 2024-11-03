@@ -7,7 +7,7 @@ import type {
   LedgerAddress,
 } from '@w3ux/react-connect-kit/types';
 import { Polkicon } from '@w3ux/react-polkicon';
-import { ellipsisFn, remToUnit, setStateWithRef } from '@w3ux/utils';
+import { ellipsisFn, setStateWithRef } from '@w3ux/utils';
 import { NetworkDirectory } from 'config/networks';
 import type { DirectoryId } from 'config/networks/types';
 import { HardwareAddress } from 'library/HardwareAddress';
@@ -300,9 +300,7 @@ export const ManageLedger = ({
             address={address}
             index={0}
             initial={name}
-            Identicon={
-              <Polkicon address={address} size={remToUnit('2.1rem')} />
-            }
+            Identicon={<Polkicon address={address} fontSize="2.1rem" />}
             existsHandler={ledgerAccountExists}
             renameHandler={handleRename}
             onRemove={handleRemove}
