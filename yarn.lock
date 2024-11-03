@@ -1872,7 +1872,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot-api/metadata-builders@npm:0.8.2, @polkadot-api/metadata-builders@npm:^0.8.2":
+"@polkadot-api/metadata-builders@npm:0.8.2":
   version: 0.8.2
   resolution: "@polkadot-api/metadata-builders@npm:0.8.2"
   dependencies:
@@ -1889,6 +1889,16 @@ __metadata:
     "@polkadot-api/substrate-bindings": "npm:0.9.2"
     "@polkadot-api/utils": "npm:0.1.2"
   checksum: 10c0/26f714bea541cbb4e534707561d0b1d1d2322cba6a49b0cb18deac8923fa21b3a172b163380778655cf44c184713656daae3c6d98c1bbc8baca6d6c924d30125
+  languageName: node
+  linkType: hard
+
+"@polkadot-api/metadata-builders@npm:^0.9.1":
+  version: 0.9.1
+  resolution: "@polkadot-api/metadata-builders@npm:0.9.1"
+  dependencies:
+    "@polkadot-api/substrate-bindings": "npm:0.9.3"
+    "@polkadot-api/utils": "npm:0.1.2"
+  checksum: 10c0/768c14b578fe2d25c58904479a6d37da38f86e84fe11e01d16a86d56640138a2efb67c0706578e871de8529106491b9299173422d29259b045387cf7a35c6210
   languageName: node
   linkType: hard
 
@@ -1982,7 +1992,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot-api/substrate-bindings@npm:^0.9.3":
+"@polkadot-api/substrate-bindings@npm:0.9.3, @polkadot-api/substrate-bindings@npm:^0.9.3":
   version: 0.9.3
   resolution: "@polkadot-api/substrate-bindings@npm:0.9.3"
   dependencies:
@@ -2089,7 +2099,7 @@ __metadata:
     "@fortawesome/react-fontawesome": "npm:^0.2.0"
     "@ledgerhq/hw-transport-webhid": "npm:^6.29.2"
     "@polkadot-api/merkleize-metadata": "npm:^1.1.8"
-    "@polkadot-api/metadata-builders": "npm:^0.8.2"
+    "@polkadot-api/metadata-builders": "npm:^0.9.1"
     "@polkadot-api/observable-client": "npm:^0.5.11"
     "@polkadot-api/substrate-client": "npm:^0.2.2"
     "@polkadot-api/ws-provider": "npm:^0.3.2"
