@@ -9,3 +9,10 @@ export const getIndexFromInstanceId = (str: ApiInstanceId) => {
   const result = str.substring(index + 1);
   return Number(result);
 };
+
+// Format chain spac names into a human-readable format.
+export const formatChainSpecName = (specName: string) =>
+  specName
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');

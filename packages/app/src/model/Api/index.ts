@@ -7,22 +7,33 @@ import type { ChainId } from 'config/networks/types';
 import type {
   APIChainSpec,
   APIStatusEventDetail,
-  APIChainSpecVersion,
   EventStatus,
   ErrDetail,
   ApiInstanceId,
   APIChainSpecEventDetail,
   PapiObservableClient,
+  PapiDynamicBuilder,
 } from './types';
-import { MetadataController } from 'controllers/Metadata';
 import { SubscriptionsController } from 'controllers/Subscriptions';
 import type { AnyJson } from '@w3ux/types';
-import BigNumber from 'bignumber.js';
 import type { ChainSpaceId, OwnerId } from 'types';
 import type { JsonRpcProvider } from '@polkadot-api/ws-provider/web';
 import { getWsProvider } from '@polkadot-api/ws-provider/web';
 import { createClient as createRawClient } from '@polkadot-api/substrate-client';
 import { getObservableClient } from '@polkadot-api/observable-client';
+import { ChainSpec } from 'model/Observables/ChainSpec';
+
+import { getDataFromObservable } from 'model/Observables/util';
+import { TaggedMetadata } from 'model/Observables/TaggedMetadata';
+import { MetadataV15 } from 'model/Metadata/MetadataV15';
+import { PalletScraper } from 'model/Scraper/Pallet';
+import {
+  getLookupFn,
+  getDynamicBuilder,
+} from '@polkadot-api/metadata-builders';
+import { formatChainSpecName } from './util';
+import { MetadataController } from 'controllers/Metadata';
+import BigNumber from 'bignumber.js';
 
 export class Api {
   // ------------------------------------------------------
@@ -53,11 +64,14 @@ export class Api {
   // PAPI Instance.
   #papiClient: PapiObservableClient;
 
+  // PAPI Dynamic Builder.
+  #papiBuilder: PapiDynamicBuilder;
+
   // The current RPC endpoint.
   #rpcEndpoint: string;
 
   // The current chain spec.
-  chainSpec: APIChainSpec | undefined;
+  chainSpec: APIChainSpec;
 
   // Chain constants.
   consts: Record<string, AnyJson> = {};
@@ -102,6 +116,10 @@ export class Api {
 
   get papiClient() {
     return this.#papiClient;
+  }
+
+  get papiBuilder() {
+    return this.#papiBuilder;
   }
 
   get rpcEndpoint() {
@@ -168,48 +186,63 @@ export class Api {
   }
 
   async fetchChainSpec() {
-    // Fetch chain specs.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const newChainSpec = await Promise.all<any>([
-      this.api.rpc.system.chain(),
-      this.api.consts.system.version,
-      this.api.consts.system.ss58Prefix,
-    ]);
+    try {
+      const [resultChainSpec, resultTaggedMetadata] = await Promise.all([
+        // Get chain spec via observable.
+        getDataFromObservable(
+          this.#instanceId,
+          'chainSpec',
+          new ChainSpec(this.#ownerId, this.#instanceId)
+        ),
+        // Get metadata via observable.
+        getDataFromObservable(
+          this.#instanceId,
+          'metadata',
+          new TaggedMetadata(this.#ownerId, this.#instanceId)
+        ),
+      ]);
 
-    // Check that chain values have been fetched before committing to state.
-    if (newChainSpec.every((c) => c?.toHuman() !== undefined)) {
-      const chain = newChainSpec[0].toString();
-      const specVersion =
-        newChainSpec[1].toJSON() as unknown as APIChainSpecVersion;
-      const ss58Prefix = Number(newChainSpec[2].toString());
-
-      // Also retreive the JSON formatted metadata here for the UI to construct from.
-      const metadataPJs = this.api.runtimeMetadata;
-      const metadataJson = metadataPJs.asV15.toJSON();
-
-      // Set chainspec and metadata, or dispatch an error and disconnect otherwise.
-      if (specVersion && metadataJson) {
-        const magicNumber = metadataJson.magicNumber;
-
-        this.chainSpec = {
-          chain,
-          version: specVersion,
-          ss58Prefix,
-          magicNumber: magicNumber as number,
-          metadata: MetadataController.instantiate(metadataJson),
-          consts: {},
-        };
-      } else {
-        this.dispatchEvent(this.ensureEventStatus('error'), {
-          err: 'ChainSpecError',
-        });
+      if (!resultChainSpec || !resultTaggedMetadata) {
+        throw new Error();
       }
+
+      // Now metadata has been retrieved, create a dynamic builder for the metadata and persist it
+      // to this class.
+      this.#papiBuilder = getDynamicBuilder(getLookupFn(resultTaggedMetadata));
+
+      // Format a human-readable chain name based on spec name.
+      const chainName = formatChainSpecName(resultChainSpec.specName);
+
+      // Prepare metadata class and scraper to retrieve constants.
+      const resultTaggedMetadataV15 = new MetadataV15(resultTaggedMetadata);
+      const scraper = new PalletScraper(resultTaggedMetadataV15);
+
+      // Get SS58 Prefix via metadata - defaults to 0.
+      const ss58Prefix = this.#papiBuilder
+        .buildConstant('System', 'SS58Prefix')
+        .dec(String(scraper.getConstantValue('System', 'SS58Prefix') || '0x'));
+
+      // We are still using the Polkadot JS API raw metadata format.
+      const metadataPJs = this.api.runtimeMetadata;
+      const metadataPJsJson = metadataPJs.asV15.toJSON();
+
+      // Format resulting class chain spec and persist to class.
+      this.chainSpec = {
+        chain: chainName,
+        version: resultChainSpec.specVersion,
+        ss58Prefix: Number(ss58Prefix),
+        metadata: MetadataController.instantiate(metadataPJsJson),
+        consts: {},
+      };
+    } catch (e) {
+      // Flag an error if there are any issues bootstrapping chain spec.
+      this.dispatchEvent(this.ensureEventStatus('error'), {
+        err: 'ChainSpecError',
+      });
     }
   }
 
   async handleFetchChainData() {
-    // Fetch chain spec from Polkadot JS API.
-    //
     // NOTE: This is a one-time fetch. It's currently not possible to update the chain spec without
     // a refresh.
     if (!this.chainSpec) {
@@ -236,21 +269,26 @@ export class Api {
 
   // Fetch chain consts. Must be called after chain spec is fetched.
   fetchConsts = () => {
-    const metadata = this.chainSpec?.metadata;
+    const metadata = this.chainSpec.metadata;
+    const newConsts: Record<string, AnyJson> = {};
 
     try {
-      if (metadata) {
-        const hasBalancesPallet = metadata.palletExists('Balances');
-        const existentialDeposit = hasBalancesPallet
-          ? new BigNumber(
-              this.api.consts.balances.existentialDeposit.toString()
-            )
-          : null;
+      const scraper = new PalletScraper(metadata);
+      const hasBalancesPallet = metadata.palletExists('Balances');
 
-        this.consts = {
-          existentialDeposit,
-        };
+      // Attempt to fetch existential deposit if Balances pallet exists.
+      if (hasBalancesPallet) {
+        const existentialDeposit = this.#papiBuilder
+          .buildConstant('Balances', 'ExistentialDeposit')
+          .dec(
+            String(
+              scraper.getConstantValue('Balances', 'ExistentialDeposit') || '0x'
+            )
+          );
+
+        newConsts['existentialDeposit'] = new BigNumber(existentialDeposit);
       }
+      this.consts = newConsts;
     } catch (e) {
       this.consts = {};
     }
