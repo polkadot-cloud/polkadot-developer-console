@@ -29,7 +29,7 @@
     "@polkadot/rpc-provider": "12.0.2",
     "@polkadot/util": "^13.2.2",
     "@polkadot/util-crypto": "^13.2.2",
-    "@tanstack/react-query": "^5.53.3",
+    "@tanstack/react-query": "^5.59.17",
     "@w3ux/extension-assets": "^0.4.0",
     "@w3ux/factories": "^1.0.0",
     "@w3ux/hooks": "^1.2.1",
