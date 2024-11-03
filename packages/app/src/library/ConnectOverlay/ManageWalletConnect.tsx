@@ -14,7 +14,6 @@ import { faSquareMinus } from '@fortawesome/free-solid-svg-icons';
 import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { useWcAccounts } from '@w3ux/react-connect-kit';
 import type { WCAccount } from '@w3ux/react-connect-kit/types';
-import { remToUnit } from '@w3ux/utils';
 import { NetworkDirectory } from 'config/networks';
 import { useWalletConnect } from 'contexts/WalletConnect';
 import { useChainSpaceEnv } from 'contexts/ChainSpaceEnv';
@@ -206,9 +205,7 @@ export const ManageWalletConnect = ({
             address={address}
             index={i}
             initial={name}
-            Identicon={
-              <Polkicon address={address} size={remToUnit('2.1rem')} />
-            }
+            Identicon={<Polkicon address={address} fontSize="2.1rem" />}
             allowAction={false}
             existsHandler={wcAccountExists}
             renameHandler={handleRename}

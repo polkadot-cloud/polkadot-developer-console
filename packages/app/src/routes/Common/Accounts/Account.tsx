@@ -1,7 +1,7 @@
 // Copyright 2024 @polkadot-cloud/polkadot-developer-console authors & contributors
 // SPDX-License-Identifier: AGPL-3.0
 
-import { ellipsisFn, planckToUnit, remToUnit } from '@w3ux/utils';
+import { ellipsisFn, planckToUnit } from '@w3ux/utils';
 import type { AccountProps } from './types';
 import { Polkicon } from '@w3ux/react-polkicon';
 import { useMenu } from 'contexts/Menu';
@@ -57,7 +57,7 @@ export const Account = ({
     <AccountWrapper>
       <div className="inner">
         <div className="icon">
-          <Polkicon address={address} size={remToUnit('1.9rem')} />
+          <Polkicon address={address} fontSize="1.9rem" />
         </div>
         <div className="content">
           {/* NOTE: Currently hiding menu on custom endpoint connections as there is no guarantee Subscan will have the connected chain supported. Once menu contains more links, this check can happen inside the menu. */}
@@ -118,7 +118,9 @@ export const Account = ({
           <div className="free">
             <h5>
               <span>Free:</span>{' '}
-              {planckToUnit(freePlanck, units).decimalPlaces(3).toFormat()}{' '}
+              {new BigNumber(planckToUnit(freePlanck.toString(), units))
+                .decimalPlaces(3)
+                .toFormat()}{' '}
               {unit}
             </h5>
           </div>
