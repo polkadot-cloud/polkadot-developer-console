@@ -8,12 +8,7 @@ import {
   TextInputWrapper,
 } from '../Wrappers';
 import { Polkicon } from '@w3ux/react-polkicon';
-import {
-  ellipsisFn,
-  isValidAddress,
-  remToUnit,
-  setStateWithRef,
-} from '@w3ux/utils';
+import { ellipsisFn, isValidAddress, setStateWithRef } from '@w3ux/utils';
 import { formatInputString } from 'Utils';
 import { SelectDropdown } from 'library/SelectDropdown';
 import type { AccountId32Props } from './types';
@@ -155,8 +150,8 @@ export const AccountId32 = ({
         <span className="icon">
           <Polkicon
             address={selectedAddress}
-            size={remToUnit('1.5rem')}
-            outerColor="var(--background-primary)"
+            background="var(--background-primary)"
+            fontSize="1.5rem"
           />
         </span>
 

@@ -15,7 +15,6 @@ import { useEffectIgnoreInitial } from '@w3ux/hooks';
 import { QrReader } from './QrReader';
 import { useVaultAccounts } from '@w3ux/react-connect-kit';
 import type { VaultAccount } from '@w3ux/react-connect-kit/types';
-import { remToUnit } from '@w3ux/utils';
 import { NetworkDirectory } from 'config/networks';
 
 export const ManageVault = ({
@@ -133,9 +132,7 @@ export const ManageVault = ({
             address={address}
             index={i}
             initial={name}
-            Identicon={
-              <Polkicon address={address} size={remToUnit('2.1rem')} />
-            }
+            Identicon={<Polkicon address={address} fontSize="2.1rem" />}
             existsHandler={vaultAccountExists}
             renameHandler={handleRename}
             onRemove={handleRemove}
