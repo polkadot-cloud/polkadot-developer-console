@@ -21,7 +21,7 @@
     "@ledgerhq/hw-transport-webhid": "^6.29.2",
     "@polkadot-api/merkleize-metadata": "^1.1.8",
     "@polkadot-api/metadata-builders": "^0.9.1",
-    "@polkadot-api/observable-client": "^0.5.11",
+    "@polkadot-api/observable-client": "^0.5.14",
     "@polkadot-api/substrate-client": "^0.2.2",
     "@polkadot-api/ws-provider": "^0.3.2",
     "@polkadot-cloud/icons": "1.0.0",

@@ -1872,16 +1872,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot-api/metadata-builders@npm:0.8.2":
-  version: 0.8.2
-  resolution: "@polkadot-api/metadata-builders@npm:0.8.2"
-  dependencies:
-    "@polkadot-api/substrate-bindings": "npm:0.9.2"
-    "@polkadot-api/utils": "npm:0.1.2"
-  checksum: 10c0/038b7d5ffce244a806dc85f28ac53bc05721bb4e2c67fce4d8268de816694895320831483460341effc945254d5faf2483e3277c408f7e9c3353f1318c7c65ca
-  languageName: node
-  linkType: hard
-
 "@polkadot-api/metadata-builders@npm:0.9.0":
   version: 0.9.0
   resolution: "@polkadot-api/metadata-builders@npm:0.9.0"
@@ -1892,7 +1882,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot-api/metadata-builders@npm:^0.9.1":
+"@polkadot-api/metadata-builders@npm:0.9.1, @polkadot-api/metadata-builders@npm:^0.9.1":
   version: 0.9.1
   resolution: "@polkadot-api/metadata-builders@npm:0.9.1"
   dependencies:
@@ -1930,17 +1920,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot-api/observable-client@npm:^0.5.11":
-  version: 0.5.11
-  resolution: "@polkadot-api/observable-client@npm:0.5.11"
+"@polkadot-api/observable-client@npm:^0.5.14":
+  version: 0.5.14
+  resolution: "@polkadot-api/observable-client@npm:0.5.14"
   dependencies:
-    "@polkadot-api/metadata-builders": "npm:0.8.2"
-    "@polkadot-api/substrate-bindings": "npm:0.9.2"
+    "@polkadot-api/metadata-builders": "npm:0.9.1"
+    "@polkadot-api/substrate-bindings": "npm:0.9.3"
     "@polkadot-api/utils": "npm:0.1.2"
   peerDependencies:
     "@polkadot-api/substrate-client": 0.2.2
     rxjs: ">=7.8.0"
-  checksum: 10c0/a1d7374ab73b801de4ea81f17eac716078c23921e481ca78708747a27fd057568ac36b3d5bc50e0f4b12831779c59e8527fa9509fd199ade37c2b961cdf1370d
+  checksum: 10c0/9f53bf5cd4ffc9aa4f1c4ddd5854e1a6f13822170fa692f07d6ea28b2e128d1daa0040a8409b4507f26be754120de8b1be06512390b14d692d8b0519e6950324
   languageName: node
   linkType: hard
 
@@ -2100,7 +2090,7 @@ __metadata:
     "@ledgerhq/hw-transport-webhid": "npm:^6.29.2"
     "@polkadot-api/merkleize-metadata": "npm:^1.1.8"
     "@polkadot-api/metadata-builders": "npm:^0.9.1"
-    "@polkadot-api/observable-client": "npm:^0.5.11"
+    "@polkadot-api/observable-client": "npm:^0.5.14"
     "@polkadot-api/substrate-client": "npm:^0.2.2"
     "@polkadot-api/ws-provider": "npm:^0.3.2"
     "@polkadot-cloud/icons": "npm:1.0.0"
