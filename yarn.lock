@@ -2123,7 +2123,7 @@ __metadata:
     react-error-boundary: "npm:^4.0.13"
     react-powerglitch: "npm:^1.0.3"
     react-router-dom: "npm:^6.23.0"
-    scale-ts: "npm:^1.6.0"
+    scale-ts: "npm:^1.6.1"
     styled-components: "npm:^6.1.8"
     usehooks-ts: "npm:^3.1.0"
     viem: "npm:^2.21.1"
