@@ -17,10 +17,7 @@ export type UnsubSubscriptions = AccountBalances | BlockNumber | NextFreeParaId;
 export type ObservableGetters = ChainSpec | TaggedMetadata;
 
 // the record of subscriptions, keyed by tabId.
-export type ChainSubscriptions = Record<
-  string,
-  Subscription | ObservableGetters
->;
+export type ChainSubscriptions = Record<string, Subscription>;
 
 // Abstract class that ensures all subscription classes have an unsubscribe method.
 export abstract class Unsubscribable {
