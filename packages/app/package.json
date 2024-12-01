@@ -23,7 +23,7 @@
     "@polkadot-api/metadata-builders": "^0.9.1",
     "@polkadot-api/observable-client": "^0.5.11",
     "@polkadot-api/substrate-client": "^0.2.2",
-    "@polkadot-api/ws-provider": "^0.3.2",
+    "@polkadot-api/ws-provider": "^0.3.6",
     "@polkadot-cloud/icons": "1.0.0",
     "@polkadot/api": "^12.0.2",
     "@polkadot/rpc-provider": "12.0.2",
